@@ -1,18 +1,22 @@
 ﻿@inject NavigationManager Nav
+@inherits SvtComponentBase
 
 <div class="d-flex align-items-center w-100">
 
     <!-- Левая часть (меню) -->
     <div class="d-flex align-items-center gap-2">
-        @foreach (var item in MenuItems)
+        @if (menuItems is not null)
         {
-            <Button Color="ButtonColor.Info"
-                    Type="ButtonType.Link"
-                    Outline="@(!IsActive(item.Url))"
-                    To="@item.Url">
-                <Icon Name="@item.Icon" Class="me-2" />
-                @item.Text
-            </Button>
+            foreach (var item in menuItems)
+            {
+                <Button Color="ButtonColor.Info"
+                        Type="ButtonType.Link"
+                        Outline="@(!IsActive(item.Url))"
+                        To="@item.Url">
+                    <Icon Name="@item.Icon" Class="me-2"/>
+                    @item.Text
+                </Button>
+            }
         }
     </div>
 

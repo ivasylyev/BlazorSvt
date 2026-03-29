@@ -123,4 +123,13 @@
   <data name="Test" xml:space="preserve">
     <value>Тест</value>
   </data>
+  <data name="HeaderMenu.Home" xml:space="preserve">
+	  <value>Домашняя</value>
+  </data>
+  <data name="HeaderMenu.Rates" xml:space="preserve">
+	  <value>Ставки</value>
+  </data>
+  <data name="LoadTimePanel.LoadTimeFormat" xml:space="preserve">
+	  <value>Время загрузки {0:F3} сек.</value>
+  </data>
 </root>

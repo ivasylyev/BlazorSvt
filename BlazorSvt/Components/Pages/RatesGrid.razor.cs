@@ -12,7 +12,8 @@ public partial class RatesGrid : BaseGridPage<RateDto>
 
     protected override async Task<GridDataProviderResult<RateDto>> GetDataAsync(GridDataProviderRequest<RateDto> request)
     {
-        return await RatesDataService.GetRatesAsync(request);
+        //return await Task.FromResult(new GridDataProviderResult<RateDto>());
+         return await RatesDataService.GetRatesAsync(request);
     }
 
 }

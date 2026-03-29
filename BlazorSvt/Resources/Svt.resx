@@ -124,4 +124,13 @@
     <value>Test</value>
     <comment>Test string</comment>
   </data>
+  <data name="HeaderMenu.Home" xml:space="preserve">
+	  <value>Home</value>
+  </data>
+  <data name="HeaderMenu.Rates" xml:space="preserve">
+	  <value>Rates</value>
+  </data>
+  <data name="LoadTimePanel.LoadTimeFormat" xml:space="preserve">
+	  <value>Loading time: {0:F3} s.</value>
+  </data>
 </root>

@@ -1,12 +1,12 @@
 ﻿@using BlazorSvt.Services.Shared
 @inject PageTimingService TimingService
+@inherits SvtComponentBase
 
 <div class="rates-load-time">
     @if (TimingService.LoadDuration > TimeSpan.Zero)
     {
         <span>
-            Время загрузки: 
-            @($"{TimingService.LoadDuration.TotalSeconds:F3} c")
+            @string.Format(L["LoadTimePanel.LoadTimeFormat"], TimingService.LoadDuration.TotalSeconds)
         </span>
     }
     else

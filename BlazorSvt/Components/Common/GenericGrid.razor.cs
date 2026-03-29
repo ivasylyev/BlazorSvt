@@ -2,11 +2,10 @@
 using BlazorSvt.Models.Grid;
 using BlazorSvt.Services.Shared;
 using Microsoft.AspNetCore.Components;
-using static Dapper.SqlMapper;
 
 namespace BlazorSvt.Components.Common;
 
-public partial class GenericGrid<TItem>
+public partial class GenericGrid<TItem> : SvtComponentBase
 {
     private SettingsModal settingsModal = default!;
 

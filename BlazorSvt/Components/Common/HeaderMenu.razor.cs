@@ -4,16 +4,18 @@ using BlazorSvt.Models.Navigation;
 
 namespace BlazorSvt.Components.Common;
 
-public partial class HeaderMenu
+public partial class HeaderMenu : SvtComponentBase
 {
-    private List<MenuItem> MenuItems =
+    private List<MenuItem>? menuItems = default;
+    private List<MenuItem> GetMenuItems() =>
     [
-        new() { Url = "/", Text = "Домашняя", Icon = IconName.HouseDoorFill },
-        new() { Url = "/rates", Text = "Ставки", Icon = IconName.Table }
+        new() { Url = "/", Text = L["HeaderMenu.Home"] , Icon = IconName.HouseDoorFill },
+        new() { Url = "/rates", Text = L["HeaderMenu.Rates"], Icon = IconName.Table }
     ];
 
     protected override void OnInitialized()
     {
+        menuItems = GetMenuItems();
         Nav.LocationChanged += OnLocationChanged;
     }
 
