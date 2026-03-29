@@ -132,4 +132,25 @@
   <data name="LoadTimePanel.LoadTimeFormat" xml:space="preserve">
 	  <value>Время загрузки {0:F3} сек.</value>
   </data>
+  <data name="GenericGrid.Settings" xml:space="preserve">
+	  <value>Настройки</value>
+  </data>
+  <data name="LoadTimePanel.NotLoaded" xml:space="preserve">
+	  <value>Данные еще не загружены</value>
+  </data>
+  <data name="Settings.Ok" xml:space="preserve">
+	  <value>ОК</value>
+  </data>
+  <data name="Settings.Reset" xml:space="preserve">
+	  <value>Сбросить</value>
+  </data>
+  <data name="Settings.Cancel" xml:space="preserve">
+	  <value>Отмена</value>
+  </data>
+  <data name="Home.Home" xml:space="preserve">
+	  <value>Домашняя</value>
+  </data>
+	<data name="Home.Message" xml:space="preserve">
+	  <value>Демо проект СВТ с использованием Blazor Bootstrap Web App (.NET 9) + MS SQL Full Text Search.</value>
+  </data>
 </root>

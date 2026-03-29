@@ -1,4 +1,5 @@
-﻿<Modal @ref="modal" Title="Настройки" Size="ModalSize.Large">
+﻿@inherits SvtComponentBase
+<Modal @ref="modal" Title="Настройки" Size="ModalSize.Large">
     <BodyTemplate>
         <div class="container-fluid">
             <div class="row">
@@ -24,8 +25,8 @@
     </BodyTemplate>
 
     <FooterTemplate>
-        <Button Color="ButtonColor.Primary" @onclick="HandleOk">Ок</Button>
-        <Button Color="ButtonColor.Warning" @onclick="HandleReset">Сбросить</Button>
-        <Button Color="ButtonColor.Secondary" @onclick="HandleCancel">Отмена</Button>
+        <Button Color="ButtonColor.Primary" @onclick="HandleOk">@L["Settings.Ok"]</Button>
+        <Button Color="ButtonColor.Warning" @onclick="HandleReset">@L["Settings.Reset"]</Button>
+        <Button Color="ButtonColor.Secondary" @onclick="HandleCancel">@L["Settings.Cancel"]</Button>
     </FooterTemplate>
 </Modal>

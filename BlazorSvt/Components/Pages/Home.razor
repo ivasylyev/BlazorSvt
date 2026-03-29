@@ -1,12 +1,10 @@
 ﻿@page "/"
-@using System.Globalization
 @using BlazorSvt.Resources
 @using Microsoft.Extensions.Localization
 @inject IStringLocalizer<Svt> L
+@inherits SvtComponentBase
 <PageTitle>СВТ Blazor Demo - Home</PageTitle>
 
-<h1>Домашняя</h1>
+<h1>@L["Home.Home"]</h1>
 
-Демо проект СВТ с использованием Blazor Bootstrap Web App (.NET 9) + MS SQL Full Text Search.
-<br />
-<p>Текст из локализатора: @L["Test"]</p>
+<h2>@L["Home.Message"]</h2>

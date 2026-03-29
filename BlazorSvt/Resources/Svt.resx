@@ -133,4 +133,26 @@
   <data name="LoadTimePanel.LoadTimeFormat" xml:space="preserve">
 	  <value>Loading time: {0:F3} s.</value>
   </data>
+  <data name="GenericGrid.Settings" xml:space="preserve">
+	  <value>Settings</value>
+  </data>
+  <data name="LoadTimePanel.NotLoaded" xml:space="preserve">
+	  <value>Not Loaded</value>
+  </data>
+  <data name="Settings.Ok" xml:space="preserve">
+	  <value>Ok</value>
+  </data>
+  <data name="Settings.Reset" xml:space="preserve">
+	  <value>Reset</value>
+  </data>
+  <data name="Settings.Cancel" xml:space="preserve">
+	  <value>Cancel</value>
+  </data>
+  <data name="Home.Home" xml:space="preserve">
+	  <value>Home</value>
+  </data>
+
+	<data name="Home.Message" xml:space="preserve">
+	  <value>Demo project SVT using Blazor Bootstrap Web App (.NET 9) + MS SQL Full Text Search.</value>
+  </data>
 </root>
