@@ -28,14 +28,25 @@ builder.Services.AddRazorComponents()
 builder.Services.AddHttpClient();
 builder.Services.AddBlazorBootstrap();
 builder.Services.AddBlazoredLocalStorage();
+builder.Services.AddControllers();
+builder.Services.AddLocalization();
 
 builder.Services.Configure<DatabaseOptions>(builder.Configuration.GetSection("Database"));
 builder.Services.AddScoped<PageTimingService>();
 builder.Services.AddScoped<IRatesDataService, RatesDataService>();
 builder.Services.AddScoped<IGridSettingsService<RateDto>, RatesBaseGridSettingsService>();
 
-var app = builder.Build();
 
+var supportedCultures = new[] { "ru-RU", "en-US" };
+var localizationOptions = new RequestLocalizationOptions()
+    .SetDefaultCulture(supportedCultures[0])
+    .AddSupportedCultures(supportedCultures)
+    .AddSupportedUICultures(supportedCultures);
+
+
+var app = builder.Build();
+app.UseRequestLocalization(localizationOptions);
+app.MapControllers();
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
 {

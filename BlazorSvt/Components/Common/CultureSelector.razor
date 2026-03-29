@@ -1,0 +1,21 @@
+﻿@using System.Globalization
+
+
+<Dropdown Color="DropdownColor.Secondary">
+    <DropdownToggleButton>
+        @CultureInfo.CurrentCulture.DisplayName
+    </DropdownToggleButton>
+
+    <DropdownMenu>
+        <DropdownItem Type="DropdownItemType.Button"
+                      @onclick='() => ChangeLanguage("en-US")'>
+            English
+        </DropdownItem>
+
+        <DropdownItem Type="DropdownItemType.Button"
+                      @onclick='() => ChangeLanguage("ru-RU")'>
+            Русский
+        </DropdownItem>
+    </DropdownMenu>
+</Dropdown>
+

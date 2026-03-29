@@ -1,16 +1,25 @@
 ﻿@inject NavigationManager Nav
 
-<div class="d-flex align-items-center gap-2 me-auto">
-    @foreach (var item in MenuItems)
-    {
-        <Button Color="ButtonColor.Info"
-                Type="ButtonType.Link"
-                Outline="@(!IsActive(item.Url))"
-                To="@item.Url">
-            <Icon Name="@item.Icon" Class="me-2" />
-            @item.Text
-        </Button>
-    }
+<div class="d-flex align-items-center w-100">
 
-    <ThemeSwitcher Position="DropdownMenuPosition.End" />
+    <!-- Левая часть (меню) -->
+    <div class="d-flex align-items-center gap-2">
+        @foreach (var item in MenuItems)
+        {
+            <Button Color="ButtonColor.Info"
+                    Type="ButtonType.Link"
+                    Outline="@(!IsActive(item.Url))"
+                    To="@item.Url">
+                <Icon Name="@item.Icon" Class="me-2" />
+                @item.Text
+            </Button>
+        }
+    </div>
+
+    <!-- Правая часть -->
+    <div class="d-flex align-items-center gap-2 ms-auto">
+        <CultureSelector />
+        <ThemeSwitcher Position="DropdownMenuPosition.End" />
+    </div>
+
 </div>
