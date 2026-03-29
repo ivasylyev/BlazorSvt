@@ -5,7 +5,11 @@ using Microsoft.Extensions.Localization;
 
 namespace BlazorSvt.Services.Shared;
 
-public abstract class BaseGridSettingsService<T>(ILocalStorageService localStorage, IStringLocalizer<Svt> L) : IGridSettingsService<T>
+public abstract class BaseGridSettingsService<T>(
+    ILocalStorageService localStorage,
+    IStringLocalizer<Svt> L,
+    ILogger logger)
+    : IGridSettingsService<T>
 {
     protected readonly ILocalStorageService LocalStorage = localStorage;
 
@@ -24,8 +28,7 @@ public abstract class BaseGridSettingsService<T>(ILocalStorageService localStora
         }
         catch (Exception e)
         {
-       //     logger.LogError(e, "Could not load from settings from LocalStorage");
-            // fallback — localStorage недоступен
+            logger.LogError(e, "Could not load from settings from LocalStorage");
             loaded = new Dictionary<string, bool>();
         }
 

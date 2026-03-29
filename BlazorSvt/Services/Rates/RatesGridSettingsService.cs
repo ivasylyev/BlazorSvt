@@ -7,7 +7,7 @@ using Microsoft.Extensions.Localization;
 
 namespace BlazorSvt.Services.Rates;
 
-public class RatesBaseGridSettingsService(ILocalStorageService localStorage, IStringLocalizer<Svt> L) : BaseGridSettingsService<RateDto>(localStorage, L)
+public class RatesGridSettingsService(ILocalStorageService localStorage, IStringLocalizer<Svt> L, ILogger<RatesGridSettingsService> logger) : BaseGridSettingsService<RateDto>(localStorage, L, logger)
 {
     protected override string StorageKey => "RatesGridColumnSettings";
 

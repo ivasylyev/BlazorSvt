@@ -1,10 +1,14 @@
 ﻿@page "/"
-@using BlazorSvt.Resources
-@using Microsoft.Extensions.Localization
-@inject IStringLocalizer<Svt> L
 @inherits SvtComponentBase
-<PageTitle>СВТ Blazor Demo - Home</PageTitle>
+<PageTitle>@L["Home.Home"]</PageTitle>
 
-<h1>@L["Home.Home"]</h1>
-
-<h3>@L["Home.Message"]</h3>
+<div class="row">
+    <div class="col-sm-12">
+        <Card Color="CardColor.Light">
+            <CardBody>
+                <CardTitle>@L["Home.Home"]</CardTitle>
+                <CardText>@L["Home.Message"]</CardText>
+            </CardBody>
+        </Card>
+    </div>
+</div>

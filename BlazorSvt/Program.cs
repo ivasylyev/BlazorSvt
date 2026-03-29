@@ -34,7 +34,7 @@ builder.Services.AddLocalization();
 builder.Services.Configure<DatabaseOptions>(builder.Configuration.GetSection("Database"));
 builder.Services.AddScoped<PageTimingService>();
 builder.Services.AddScoped<IRatesDataService, RatesDataService>();
-builder.Services.AddScoped<IGridSettingsService<RateDto>, RatesBaseGridSettingsService>();
+builder.Services.AddScoped<IGridSettingsService<RateDto>, RatesGridSettingsService>();
 
 
 var supportedCultures = new[] { "ru-RU", "en-US" };
