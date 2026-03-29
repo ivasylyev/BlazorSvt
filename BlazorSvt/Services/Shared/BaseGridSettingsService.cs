@@ -1,9 +1,11 @@
 ﻿using Blazored.LocalStorage;
 using BlazorSvt.Models.Grid;
+using BlazorSvt.Resources;
+using Microsoft.Extensions.Localization;
 
 namespace BlazorSvt.Services.Shared;
 
-public abstract class BaseGridSettingsService<T>(ILocalStorageService localStorage) : IGridSettingsService<T>
+public abstract class BaseGridSettingsService<T>(ILocalStorageService localStorage, IStringLocalizer<Svt> L) : IGridSettingsService<T>
 {
     protected readonly ILocalStorageService LocalStorage = localStorage;
 

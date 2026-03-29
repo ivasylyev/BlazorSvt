@@ -153,4 +153,49 @@
 	<data name="Home.Message" xml:space="preserve">
 	  <value>Демо проект СВТ с использованием Blazor Bootstrap Web App (.NET 9) + MS SQL Full Text Search.</value>
   </data>
+  <data name="RateDto.Code" xml:space="preserve">
+	  <value>Code</value>
+  </data>
+  <data name="RateDto.IsDefRate" xml:space="preserve">
+	  <value>Дефлятор</value>
+  </data>
+  <data name="RateDto.RateTypeName" xml:space="preserve">
+	  <value>Тип ставки</value>
+  </data>
+  <data name="RateDto.NodeFromName" xml:space="preserve">
+	  <value>Узел отправления</value>
+  </data>
+  <data name="RateDto.NodeToName" xml:space="preserve">
+	  <value>Узел назначения</value>
+  </data>
+  <data name="RateDto.ProxyNodeName" xml:space="preserve">
+	  <value>Промежуточный Узел</value>
+  </data>
+  <data name="RateDto.ProductGroupName" xml:space="preserve">
+	  <value>Группа продуктов</value>
+  </data>
+  <data name="RateDto.StartDate" xml:space="preserve">
+	  <value>Дата начала</value>
+  </data>
+  <data name="RateDto.EndDate" xml:space="preserve">
+	  <value>Дата окончания</value>
+  </data>
+  <data name="RateDto.CurrencyCode" xml:space="preserve">
+	  <value>Валюта</value>
+  </data>
+  <data name="RateDto.TotalCostTon" xml:space="preserve">
+	  <value>Стоимость за тонну</value>
+  </data>
+  <data name="RateDto.TotalCostTransport" xml:space="preserve">
+	  <value>Стоимость за ТС</value>
+  </data>
+  <data name="RateDto.CreationDate" xml:space="preserve">
+	  <value>Дата создания</value>
+  </data>
+  <data name="RateDto.LastChangeDate" xml:space="preserve">
+	  <value>Дата изменения</value>
+  </data>
+  <data name="RateDto.IsArchive" xml:space="preserve">
+	  <value>В Архиве</value>
+  </data>
 </root>
