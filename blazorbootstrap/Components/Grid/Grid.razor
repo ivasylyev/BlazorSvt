@@ -1,0 +1,259 @@
+﻿@namespace BlazorBootstrap
+@inherits BlazorBootstrapComponentBase
+@typeparam TItem
+
+<CascadingValue Value="@(this)" Name="Parent" IsFixed="true">
+    @ChildContent
+</CascadingValue>
+
+@if (columns.Any())
+{   
+    var columnCount = columns.Where(c => c.IsVisible).Count();
+    if (AllowSelection) columnCount += 1;
+    if (AllowDetailView) columnCount += 1;
+    
+    <div class="@GridContainerClassNames" style="@GridContainerStyleNames" onscroll="@OnScroll">
+        <table @ref="@Element" id="@Id" class="@ClassNames" style="@StyleNames" @attributes="@AdditionalAttributes">
+            <thead class="@THeadCssClass">
+                <tr class="@(FixedHeader ? BootstrapClass.TextNoWrap : "") @HeaderRowCssClass">
+                    @if (AllowDetailView)
+                    {
+                        <th></th>
+                    }
+                    @if (AllowSelection)
+                    {
+                        @HeaderSelectionTemplate
+                    }
+                    @foreach (var column in columns)
+                    {
+                        @if (!column.IsVisible)
+                        {
+                            continue;
+                        }
+                        @column.HeaderTemplate
+                    }
+                </tr>
+                @if (AllowFiltering)
+                {
+                    <tr class="@FiltersRowCssClass">
+                        @if (AllowDetailView)
+                        {
+                            <th></th>
+                        }
+                        @if (AllowSelection)
+                        {
+                            <th></th>
+                        }
+                        @foreach (var column in columns)
+                        {
+                            @if (!column.IsVisible)
+                            {
+                                continue;
+                            }
+                            var columnClassList = new HashSet<string>();
+                            var columnStyleList = new List<string>();
+
+                            columnClassList.Add(column.Class!);
+                            if (column.Freeze)
+                            {
+                                columnClassList.Add("freeze-column");
+
+                                if (column.FreezeDirection == FreezeDirection.Left)
+                                    columnStyleList.Add($"left:{column.FreezeLeftPosition.ToString(CultureInfo.InvariantCulture)}{Unit.ToCssString()}");
+                                else
+                                {
+                                    columnStyleList.Add($"right:{column.FreezeRightPosition.ToString(CultureInfo.InvariantCulture)}{Unit.ToCssString()}");
+                                    columnClassList.Add("freeze-column-right");
+                                }
+                            }
+
+                            <th class="@string.Join(" ", columnClassList)" style="@string.Join(";", columnStyleList)">
+                                @if (column.Filterable)
+                                {
+                                    <GridColumnFilter EnumFilterSelectText="@EnumFilterSelectText"
+                                    FilterButtonColor="@column.FilterButtonColor"
+                                    FilterButtonCSSClass="@column.FilterButtonCSSClass"
+                                    FilterOperator="@column.FilterOperator"
+                                    FilterValue="@column.FilterValue"
+                                    FilterWidth="@column.FilterTextboxWidth"
+                                    FiltersTranslationProvider="GridFiltersTranslationProviderAsync!"
+                                    FixedHeader="@FixedHeader"
+                                    GridColumnFilterChanged="async args => await column.OnFilterChangedAsync(args, column)"
+                                    PropertyType="@column.GetPropertyType()"
+                                    PropertyTypeName="@column.GetPropertyTypeName()"
+                                    Unit="@column.FilterTextboxWidthUnit" />
+                                }
+                            </th>
+                        }
+                    </tr>
+                }
+            </thead>
+            <tbody>
+                @if (requestInProgress) //|| totalCount is null
+                {
+                    @if (loadingTemplate is null)
+                    {
+                        var placeholderRowCount = AllowPaging ? pageSize : (totalCount < 10 ? totalCount : 10);
+
+                        // show placeholders
+                        @for (var i = 0; i < placeholderRowCount; i++)
+                        {
+                            <tr>
+                                @for (var j = 0; j < columnCount; j++)
+                                {
+                                    <td class="placeholder-glow">
+                                        <span class="placeholder col-12"></span>
+                                    </td>
+                                }
+                            </tr>
+                        }
+                    }
+                    else
+                    {
+                        <div class="my-3">
+                            @loadingTemplate.Template
+                        </div>
+                    }
+                }
+                else if (totalCount == 0)
+                {
+                    // show empty
+                    <tr>
+                        <td colspan="@columnCount">
+                            @if (emptyDataTemplate is null)
+                            {
+                                <div class="text-center text-secondary my-5">
+                                    <div class="fs-3">
+                                        <Icon Name="IconName.Inbox" />
+                                    </div>
+                                    <div>@EmptyText</div>
+                                </div>
+                            }
+                            else
+                            {
+                                <div class="my-3">
+                                    @emptyDataTemplate?.Template
+                                </div>
+                            }
+                        </td>
+                    </tr>
+                }
+                else if (totalCount > 0)
+                {
+                    if (items is not null)
+                    {
+                        var rowIndex = 0;
+                        foreach (var item in items)
+                        {
+                            var rowClass = RowClass?.Invoke(item) ?? "";
+                            var detailViewRowId = IdUtility.GetNextId();
+                            <tr @key="RowKeySelector?.Invoke(item) ?? item?.GetHashCode()" class="@rowClass" @onclick="args => RowClick(item, args)" @ondblclick="args => RowDoubleClick(item, args)" role="@(AllowRowClick ? "button" : "")">
+                                @if (AllowDetailView)
+                                {
+                                    <td class="text-center">
+                                        <span class="bb-detail-view-icon collapsed" data-bs-toggle="collapse" data-bs-target="@($"#collape-{detailViewRowId}")" aria-expanded="false" aria-controls="@($"collape-{detailViewRowId}")" role="button">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                                                <path fill-rule="evenodd" d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708" />
+                                            </svg>
+                                        </span>
+                                    </td>
+                                }
+                                @if (AllowSelection)
+                                {
+                                    @ChildSelectionTemplate(rowIndex, item)
+                                }
+
+                                @foreach (var column in columns)
+                                {
+                                    @if (!column.IsVisible)
+                                    {
+                                        continue;
+                                    }
+                                    @column.CellTemplate(item)
+                                }
+                            </tr>
+                            @if (AllowDetailView)
+                            {
+                                <tr class="collapse" id="@($"collape-{detailViewRowId}")">
+                                    <td></td>
+                                    @if (AllowSelection)
+                                    {
+                                        <td></td>
+                                    }
+                                    <td colspan="@(columnCount - 1)">
+                                        @detailView?.GetTemplate(item)
+                                    </td>
+                                </tr>
+                            }
+                            rowIndex++;
+                        }
+                    }
+                }
+            </tbody>
+            @if (AllowSummary)
+            {
+                <tfoot>
+                    <tr>
+                        @if (totalCount > 0)
+                        {
+                            @if (AllowSelection)
+                            {
+                                <td></td>
+                            }
+                            foreach (var column in columns)
+                            {
+                                @if (!column.IsVisible)
+                                {
+                                    continue;
+                                }
+                                else if (column.SummaryType == GridSummaryColumnType.None)
+                                {
+                                    <td></td>
+                                }
+                                else if (column.SummaryType != GridSummaryColumnType.None)
+                                {
+                                    <td class="@column.TextAlignment.ToTextAlignmentClass()">@GetColumnSummaryValue(column.SummaryType, column.PropertyName, column.SummaryValueDisplayFormat, column.SummaryValuePrefix)</td>
+                                }
+                            }
+                        }
+                    </tr>
+                </tfoot>
+            }
+        </table>
+    </div>
+
+    @if (AllowPaging && totalCount.HasValue && totalCount.Value > 0 && (!AutoHidePaging || (AutoHidePaging && totalCount.Value > pageSize)))
+    {
+        <div class="d-flex justify-content-between align-middle flex-wrap mt-2">
+            <Pagination ActivePageNumber="@gridCurrentState.PageIndex"
+                        TotalPages="@totalPages"
+                        PageChanged="OnPageChangedAsync"
+                        FirstLinkIcon="IconName.ChevronDoubleLeft"
+                        PreviousLinkIcon="IconName.ChevronLeft"
+                        NextLinkIcon="IconName.ChevronRight"
+                        LastLinkIcon="IconName.ChevronDoubleRight"
+                        Alignment="Alignment.Start" />
+
+            @if (PageSizeSelectorVisible && PageSizeSelectorItems is not null && PageSizeSelectorItems.Any())
+            {
+                <div>
+                    <div class="d-flex justify-content-center align-middle">
+                        <div>
+                            <InputSelect class="form-select" role="button" TValue="int" Value="@pageSize" ValueExpression="() => pageSize" ValueChanged="async (value) => await OnPageSizeChangedAsync(value)">
+                                @foreach (var i in PageSizeSelectorItems)
+                                {
+                                    <option value="@i">@i</option>
+                                }
+                            </InputSelect>
+                        </div>
+                        <div class="bb-grid-pagination-text">@ItemsPerPageText</div>
+                    </div>
+                </div>
+            }
+
+            <div class="bb-grid-pagination-text">
+                @paginationItemsText
+            </div>
+        </div>
+    }
+}

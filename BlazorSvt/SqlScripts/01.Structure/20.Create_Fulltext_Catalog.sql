@@ -1,0 +1,8 @@
+﻿USE [mdm]
+GO
+
+DROP FULLTEXT CATALOG ftCatalog ;
+
+CREATE FULLTEXT CATALOG ftCatalog AS DEFAULT;
+
+GO

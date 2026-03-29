@@ -1,0 +1,28 @@
+﻿@using BlazorSvt.Services.Shared
+@inject PageTimingService TimingService
+
+<div class="rates-load-time">
+    @if (TimingService.LoadDuration > TimeSpan.Zero)
+    {
+        <span>
+            Время загрузки: 
+            @($"{TimingService.LoadDuration.TotalSeconds:F3} c")
+        </span>
+    }
+    else
+    {
+        <span>Данные еще не загружены</span>
+    }
+</div>
+
+@code {
+    protected override void OnInitialized()
+    {
+        TimingService.OnChange += StateHasChanged;
+    }
+
+    public void Dispose()
+    {
+        TimingService.OnChange -= StateHasChanged;
+    }
+}

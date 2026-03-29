@@ -1,0 +1,27 @@
+﻿@namespace BlazorBootstrap
+@inherits BlazorBootstrapComponentBase
+
+<li>
+    @if (Type == DropdownItemType.Link)
+    {
+        <a @ref="@Element"
+           id="@Id"
+           class="@ClassNames" 
+           style="@StyleNames"
+           @attributes="@AdditionalAttributes">
+            @ChildContent
+        </a>
+    }
+    else
+    {
+        <button @ref="@Element"
+                type="button"
+                id="@Id"
+                class="@ClassNames"
+                style="@StyleNames"
+                disabled="@Disabled"
+                @attributes="@AdditionalAttributes">
+            @ChildContent
+        </button>
+    }
+</li>

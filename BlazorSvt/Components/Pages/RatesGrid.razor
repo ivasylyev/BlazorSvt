@@ -1,0 +1,6 @@
+﻿@page "/rates"
+@using BlazorSvt.Models.Dto
+@inherits BaseGridPage<RateDto>
+
+<GenericGrid TItem="RateDto"
+             DataProvider="DataProvider" />

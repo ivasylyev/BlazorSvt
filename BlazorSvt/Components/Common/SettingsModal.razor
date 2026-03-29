@@ -1,0 +1,31 @@
+﻿<Modal @ref="modal" Title="Настройки" Size="ModalSize.Large">
+    <BodyTemplate>
+        <div class="container-fluid">
+            <div class="row">
+                @if (ColumnSettings is null)
+                {
+                    <div class="col-12">
+                        <PlaceholderContainer Animation="PlaceholderAnimation.Glow">
+                            <Placeholder Width="PlaceholderWidth.Col12" />
+                        </PlaceholderContainer>
+                    </div>
+                }
+                else
+                {
+                    foreach (var settings in ColumnSettings)
+                    {
+                        <div class="col-12 col-md-6">
+                            <Switch Label="@settings.Header" @bind-Value="@settings.Visible"></Switch>
+                        </div>
+                    }
+                }
+            </div>
+        </div>
+    </BodyTemplate>
+
+    <FooterTemplate>
+        <Button Color="ButtonColor.Primary" @onclick="HandleOk">Ок</Button>
+        <Button Color="ButtonColor.Warning" @onclick="HandleReset">Сбросить</Button>
+        <Button Color="ButtonColor.Secondary" @onclick="HandleCancel">Отмена</Button>
+    </FooterTemplate>
+</Modal>
