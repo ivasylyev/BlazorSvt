@@ -1,6 +1,5 @@
 ﻿using Blazored.LocalStorage;
 using BlazorSvt.Models.Grid;
-using BlazorSvt.Models.Page;
 
 namespace BlazorSvt.Services.Shared;
 
@@ -10,16 +9,23 @@ public abstract class BaseGridSettingsService<T>(ILocalStorageService localStora
 
     protected abstract string StorageKey { get; }
 
-    public abstract PageSettings GetPageSettings();
-
-
     public async Task<GridSettings<T>> GetGridSettingsAsync()
     {
         var defaultSettings = GetDefaultSettings();
 
-        var loaded = await LocalStorage
+        Dictionary<string, bool> loaded;
+        try
+        {
+            loaded = await LocalStorage
                          .GetItemAsync<Dictionary<string, bool>>(StorageKey)
                      ?? new Dictionary<string, bool>();
+        }
+        catch (Exception e)
+        {
+       //     logger.LogError(e, "Could not load from settings from LocalStorage");
+            // fallback — localStorage недоступен
+            loaded = new Dictionary<string, bool>();
+        }
 
         foreach (var column in defaultSettings)
             if (loaded.TryGetValue(column.Name, out var visible))

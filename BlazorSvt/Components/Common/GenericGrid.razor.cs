@@ -1,8 +1,8 @@
 ﻿using BlazorBootstrap;
-using Microsoft.AspNetCore.Components;
 using BlazorSvt.Models.Grid;
-using BlazorSvt.Models.Page;
 using BlazorSvt.Services.Shared;
+using Microsoft.AspNetCore.Components;
+using static Dapper.SqlMapper;
 
 namespace BlazorSvt.Components.Common;
 
@@ -19,16 +19,22 @@ public partial class GenericGrid<TItem>
     [Parameter, EditorRequired]
     public GridDataProviderDelegate<TItem> DataProvider { get; set; } = default!;
 
-    protected PageSettings? PageSettings;
+    [Parameter, EditorRequired]
+    public string PageTitle { get; set; } = default!;
+
     protected GridSettings<TItem>? GridSettings;
 
-    protected override async Task OnInitializedAsync()
+    protected override async Task OnAfterRenderAsync(bool firstRender)
     {
-        Logger.LogInformation("Generic grid initializing");
+        Logger.LogInformation("Generic grid OnAfterRenderAsync");
 
-        PageSettings = GridSettingsService.GetPageSettings();
-        GridSettings = await GridSettingsService.GetGridSettingsAsync();
+        if (firstRender)
+        {
+            GridSettings = await GridSettingsService.GetGridSettingsAsync();
+            StateHasChanged();
+        }
     }
+
 
     private async Task ShowSettingsAsync()
     {

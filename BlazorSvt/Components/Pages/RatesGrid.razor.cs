@@ -1,7 +1,7 @@
 ﻿using BlazorBootstrap;
-using Microsoft.AspNetCore.Components;
 using BlazorSvt.Models.Dto;
 using BlazorSvt.Services.Rates;
+using Microsoft.AspNetCore.Components;
 
 namespace BlazorSvt.Components.Pages;
 
@@ -14,4 +14,5 @@ public partial class RatesGrid : BaseGridPage<RateDto>
     {
         return await RatesDataService.GetRatesAsync(request);
     }
+
 }

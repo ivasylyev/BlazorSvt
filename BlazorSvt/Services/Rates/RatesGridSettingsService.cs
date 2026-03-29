@@ -1,7 +1,6 @@
 ﻿using Blazored.LocalStorage;
 using BlazorSvt.Models.Dto;
 using BlazorSvt.Models.Grid;
-using BlazorSvt.Models.Page;
 using BlazorSvt.Services.Shared;
 
 namespace BlazorSvt.Services.Rates;
@@ -10,14 +9,6 @@ public class RatesBaseGridSettingsService(ILocalStorageService localStorage) : B
 {
     protected override string StorageKey => "RatesGridColumnSettings";
 
-    public override PageSettings GetPageSettings()
-    {
-        return new PageSettings()
-        {
-            PageTitle = "СВТ Blazor Demo - Rates",
-            TopHeader = "Ставки"
-        };
-    }
 
     protected override List<GridColumnSetting<RateDto>> GetDefaultSettings()
     {
