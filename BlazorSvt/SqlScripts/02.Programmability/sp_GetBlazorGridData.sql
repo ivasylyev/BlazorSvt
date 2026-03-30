@@ -66,16 +66,16 @@ Example:
 
 */
 CREATE OR ALTER PROCEDURE dbo.GetBlazorGridData
-    @PageNumber INT = 1,
-    @PageSize INT = 20,
-    @TableName NVARCHAR(300),           -- Полное имя таблицы, например 'mdm.dbo.TransportRateSnapshot'
+    @PageNumber         INT = 1,
+    @PageSize           INT = 20,
+    @TableName          NVARCHAR(300),           -- Полное имя таблицы, например 'mdm.dbo.TransportRateSnapshot'
     @AllowedColumnsJson NVARCHAR(MAX), 
-    @SelectList NVARCHAR(MAX),          -- Список колонок для SELECT, например 'Id, Code, StartDate'
+    @SelectList         NVARCHAR(MAX),          -- Список колонок для SELECT, например 'Id, Code, StartDate'
 
-    @SortKey NVARCHAR(100) = NULL,      -- Колонка для сортировки
-    @SortDirection NVARCHAR(100) = NULL,-- ASC или DESC
+    @SortKey            NVARCHAR(50) = NULL,      -- Колонка для сортировки
+    @SortDirection      NVARCHAR(5) = NULL,-- ASC или DESC
 
-    @FilterJson NVARCHAR(MAX) = NULL
+    @FilterJson         NVARCHAR(MAX) = NULL
 AS
 BEGIN
     SET NOCOUNT ON;

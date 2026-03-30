@@ -1,11 +1,12 @@
-﻿using System.Data;
-using System.Data.SqlClient;
-using BlazorBootstrap;
-using Dapper;
-using Microsoft.Extensions.Options;
+﻿using BlazorBootstrap;
 using BlazorSvt.Models.Config;
 using BlazorSvt.Utils;
+using Dapper;
+using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
+using System.Data;
+using System.Data.SqlClient;
+using System.Globalization;
 
 namespace BlazorSvt.Services.Shared;
 
@@ -103,11 +104,14 @@ public abstract class BaseGridDataService<TItem>(
 
         parameters.Add("PageNumber", pageNumber);
         parameters.Add("PageSize", pageSize);
+        parameters.Add("Lang", CultureInfo.CurrentCulture.TwoLetterISOLanguageName);
+
         parameters.Add("SortKey", sortKey);
         parameters.Add("SortDirection", sortDirection == SortDirection.Descending ? "DESC" : "ASC");
 
         var serializedFilter = JsonConvert.SerializeObject(filters);
         parameters.Add("FilterJson", serializedFilter);
+
 
         return parameters;
     }

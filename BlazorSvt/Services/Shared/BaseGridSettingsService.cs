@@ -1,13 +1,10 @@
 ﻿using Blazored.LocalStorage;
 using BlazorSvt.Models.Grid;
-using BlazorSvt.Resources;
-using Microsoft.Extensions.Localization;
 
 namespace BlazorSvt.Services.Shared;
 
 public abstract class BaseGridSettingsService<T>(
     ILocalStorageService localStorage,
-    IStringLocalizer<Svt> L,
     ILogger logger)
     : IGridSettingsService<T>
 {
@@ -33,8 +30,12 @@ public abstract class BaseGridSettingsService<T>(
         }
 
         foreach (var column in defaultSettings)
+        {
             if (loaded.TryGetValue(column.Name, out var visible))
+            {
                 column.Visible = visible;
+            }
+        }
 
         return new GridSettings<T>(defaultSettings);
     }
@@ -53,8 +54,5 @@ public abstract class BaseGridSettingsService<T>(
     }
 
 
-    /// <summary>
-    ///     Должен вернуть полный набор колонок (дефолт)
-    /// </summary>
     protected abstract List<GridColumnSetting<T>> GetDefaultSettings();
 }

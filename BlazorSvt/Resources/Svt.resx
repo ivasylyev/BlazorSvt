@@ -159,10 +159,10 @@
 	  <value>Code</value>
   </data>
   <data name="RateDto.IsDefRate" xml:space="preserve">
-	  <value>IsDefRate</value>
+	  <value>Deflated</value>
   </data>
   <data name="RateDto.RateTypeName" xml:space="preserve">
-	  <value>RateTypeName</value>
+	  <value>Rate Type</value>
   </data>
   <data name="RateDto.NodeFromName" xml:space="preserve">
 	  <value>Node From</value>

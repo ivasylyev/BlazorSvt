@@ -8,19 +8,16 @@
         public string? RateTypeName { get; set; }
 
         public string? NodeFromCode { get; set; }
-        public string? NodeFromNameEn { get; set; }
-        public string? NodeFromNameRu { get; set; }
+        public string? NodeFromName { get; set; }
 
         public string? ProxyNodeCode { get; set; }
-        public string? ProxyNodeNameEn { get; set; }
-        public string? ProxyNodeNameRu { get; set; }
+        public string? ProxyNodeName { get; set; }
 
         public string? NodeToCode { get; set; }
-        public string? NodeToNameEn { get; set; }
-        public string? NodeToNameRu { get; set; }
+        public string? NodeToName { get; set; }
 
-        public string? TransportKindNameRu { get; set; }
-        public string? TransportTypeNameRu { get; set; }
+        public string? TransportKindName { get; set; }
+        public string? TransportTypeName { get; set; }
 
         public DateOnly StartDate { get; set; }
         public DateOnly EndDate { get; set; }
