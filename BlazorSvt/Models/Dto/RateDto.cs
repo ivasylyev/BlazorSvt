@@ -2,10 +2,10 @@
 {
     public class RateDto
     {
-        public string? Code { get; set; }
+        public required string Code { get; set; }
         public bool IsDefRate { get; set; }
-        public string? RateTypeCode { get; set; }
-        public string? RateTypeName { get; set; }
+        public string RateTypeCode { get; set; }
+        public string RateTypeName { get; set; }
 
         public string? NodeFromCode { get; set; }
         public string? NodeFromName { get; set; }
@@ -16,7 +16,9 @@
         public string? NodeToCode { get; set; }
         public string? NodeToName { get; set; }
 
+        public string? TransportKindCode { get; set; }
         public string? TransportKindName { get; set; }
+        public string? TransportTypeCode { get; set; }
         public string? TransportTypeName { get; set; }
 
         public DateOnly StartDate { get; set; }
@@ -33,8 +35,6 @@
         public decimal TotalCostTransport { get; set; }
 
         public string? CurrencyCode { get; set; }
-        public string? CurrencyName { get; set; }
-
         public bool IsArchive { get; set; }
     }
 

@@ -1,20 +1,23 @@
 ﻿@inherits LayoutComponentBase
+
 <BlazorBootstrapLayout StickyHeader="true">
     <HeaderSection>
         <HeaderMenu />
     </HeaderSection>
 
     <ContentSection>
-        @Body
+        <ErrorBoundary>
+            <ChildContent>
+                @Body
+            </ChildContent>
+
+            <ErrorContent Context="ex">
+                <ErrorDisplay Exception="ex"/>
+            </ErrorContent>
+        </ErrorBoundary>
     </ContentSection>
 
     <FooterSection>
         <LoadTimePanel />
     </FooterSection>
 </BlazorBootstrapLayout>
-
-<div id="blazor-error-ui" data-nosnippet>
-    An unhandled error has occurred.
-    <a href="." class="reload">Reload</a>
-    <span class="dismiss">🗙</span>
-</div>

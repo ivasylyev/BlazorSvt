@@ -8,6 +8,8 @@ CREATE FULLTEXT INDEX ON dbo.TransportRateSnapshot
 (
  
     Code               ,
+
+    CurrencyCode       ,
     RateTypeCode       ,
     RateTypeName       ,
     NodeFromCode       ,
@@ -21,16 +23,18 @@ CREATE FULLTEXT INDEX ON dbo.TransportRateSnapshot
     NodeToNameRu       ,
     TransportKindCode  ,
     TransportKindNameRu,
+    TransportKindNameEn,
     TransportTypeCode  ,
     TransportTypeNameRu,
+    TransportTypeNameEn,
     ProductGroupCode   ,
-    ProductGroupName   ,
+    ProductGroupNameRu ,
+    ProductGroupNameEn ,
+    ProductCode   ,
+    ProductNameRu ,
+    ProductNameEn ,
     ContractorCode     ,
-    ContractorEGRUL    ,
-    CurrencyCode       ,
-    CurrencyName       
-
-
+    ContractorEGRUL    
 )
 KEY INDEX PK_TransportRateSnapshot;
 GO
