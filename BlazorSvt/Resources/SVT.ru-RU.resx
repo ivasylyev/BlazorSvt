@@ -162,40 +162,73 @@
   <data name="RateDto.RateTypeName" xml:space="preserve">
 	  <value>Тип ставки</value>
   </data>
+  <data name="RateDto.NodeFromCode" xml:space="preserve">
+	  <value>Код отправления</value>
+  </data>
   <data name="RateDto.NodeFromName" xml:space="preserve">
-	  <value>Узел отправления</value>
+	  <value>Отправление</value>
+  </data>
+  <data name="RateDto.NodeToCode" xml:space="preserve">
+	  <value>Код назначения</value>
   </data>
   <data name="RateDto.NodeToName" xml:space="preserve">
-	  <value>Узел назначения</value>
+	  <value>Назначение</value>
+  </data>
+  <data name="RateDto.ProxyNodeCode" xml:space="preserve">
+	  <value>Код промежуточного</value>
   </data>
   <data name="RateDto.ProxyNodeName" xml:space="preserve">
-	  <value>Промежуточный Узел</value>
+	  <value>Промежуточный</value>
+  </data>
+  <data name="RateDto.ProductGroupCode" xml:space="preserve">
+	  <value>Код группы продуктов</value>
   </data>
   <data name="RateDto.ProductGroupName" xml:space="preserve">
 	  <value>Группа продуктов</value>
   </data>
+  <data name="RateDto.ProductCode" xml:space="preserve">
+	  <value>Код продукта</value>
+  </data>
+  <data name="RateDto.ProductName" xml:space="preserve">
+	  <value>Продукт</value>
+  </data>
   <data name="RateDto.StartDate" xml:space="preserve">
-	  <value>Дата начала</value>
+	  <value>Начало</value>
   </data>
   <data name="RateDto.EndDate" xml:space="preserve">
-	  <value>Дата окончания</value>
+	  <value>Окончание</value>
   </data>
   <data name="RateDto.CurrencyCode" xml:space="preserve">
 	  <value>Валюта</value>
   </data>
   <data name="RateDto.TotalCostTon" xml:space="preserve">
-	  <value>Стоимость за тонну</value>
+	  <value>За тонну</value>
   </data>
   <data name="RateDto.TotalCostTransport" xml:space="preserve">
-	  <value>Стоимость за ТС</value>
+	  <value>За ТС</value>
   </data>
   <data name="RateDto.CreationDate" xml:space="preserve">
-	  <value>Дата создания</value>
+	  <value>Создано</value>
   </data>
   <data name="RateDto.LastChangeDate" xml:space="preserve">
-	  <value>Дата изменения</value>
+	  <value>Изменено</value>
   </data>
   <data name="RateDto.IsArchive" xml:space="preserve">
 	  <value>В Архиве</value>
+  </data>
+  <data name="RateDto.RateTypeCode" xml:space="preserve">
+	  <value>Код типа ставки</value>
+  </data>
+  <data name="RateDto.TransportKindCode" xml:space="preserve">
+	  <value>Код вида транспорта</value>
+  </data>
+  <data name="RateDto.TransportKindName" xml:space="preserve">
+	  <value>Вид транспорта</value>
+  </data>
+  <data name="RateDto.TransportTypeCode" xml:space="preserve">
+	  <value>Код типа транспорта</value>
+  </data>
+  <data name="RateDto.TransportTypeName" xml:space="preserve">
+	  <value>Тип танспота</value>
   </data>
 </root>
