@@ -22,7 +22,8 @@ h1:focus {
 }
 
 .custom-header-wrapper {
-    background-color: #008c95;
+    /*background-color: #008c95;*/
+    background-color: rgba(0, 140, 149, 0.3) !important;
     /* Компенсируем родительский px-4 (1.5rem) */
     margin-left: -1.5rem;
     margin-right: -1.5rem;
@@ -50,8 +51,9 @@ h1:focus {
     }
 
 .sibur-dark-btn {
-    background-color: #00313c !important;
-    border: 1px solid #00313c !important;
+    /*background-color: #00313c !important;*/
+    background-color: #00606a !important;
+    border: 1px solid #00606a !important;
     color: white !important;
     font-weight: bold !important;
     transition: 0.3s;
@@ -59,12 +61,12 @@ h1:focus {
 
     .sibur-dark-btn:hover {
         background-color: white !important;
-        color: #00313c !important;
+        color: #00606a !important;
     }
 .sibur-dark-inverted-btn {
     background-color: white !important;
-    border: 1px solid #00313c !important;
-    color: #00313c !important;
+    border: 1px solid #00606a !important;
+    color: #00606a !important;
     font-weight: bold !important;
 }
 
