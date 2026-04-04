@@ -7,6 +7,7 @@ namespace BlazorSvt.Components.Common;
 
 public partial class GenericGrid<TItem> : SvtComponentBase
 {
+    private Grid<TItem> grid = default!;
     private SettingsModal settingsModal = default!;
 
     [Inject] 
@@ -34,7 +35,11 @@ public partial class GenericGrid<TItem> : SvtComponentBase
         }
     }
 
-
+    private async Task ClearFiltersAsync()
+    {
+        grid.ClearFilters();
+        await grid.RefreshDataAsync();
+    }
     private async Task ShowSettingsAsync()
     {
         await settingsModal.ShowAsync();

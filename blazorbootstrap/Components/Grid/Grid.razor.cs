@@ -43,6 +43,8 @@ public partial class Grid<TItem> : BlazorBootstrapComponentBase
 
     private int? totalCount = null;
 
+    private int resetCounter = 0;
+
     #endregion
 
     #region Methods
@@ -116,12 +118,33 @@ public partial class Grid<TItem> : BlazorBootstrapComponentBase
     /// Get filters.
     /// </summary>
     /// <returns>IEnumerable</returns>
-    public IEnumerable<FilterItem>? GetFilters() =>
-        !AllowFiltering || columns == null || !columns.Any()
-            ? null
-            : columns
-              .Where(column => column.Filterable && column.GetFilterOperator() != FilterOperator.None && !string.IsNullOrWhiteSpace(column.GetFilterValue()))
-              ?.Select(column => new FilterItem(column.PropertyName, column.GetFilterValue(), column.GetFilterOperator(), column.StringComparison));
+    public IEnumerable<FilterItem>? GetFilters()
+    {
+        if (!AllowFiltering || columns == null || !columns.Any())
+            return null;
+
+        var filterableColumns = columns
+            .Where(column => column.Filterable && column.GetFilterOperator() != FilterOperator.None && !string.IsNullOrWhiteSpace(column.GetFilterValue()));
+
+        return filterableColumns.Select(column => new FilterItem(column.PropertyName, column.GetFilterValue(), column.GetFilterOperator(), column.StringComparison));
+    }
+
+    public void ClearFilters()
+    {
+        if (!AllowFiltering || columns == null || !columns.Any())
+            return;
+
+        var filterableColumns = columns
+            .Where(column => column.PropertyName != "IsArchive" && column.Filterable && column.GetFilterOperator() != FilterOperator.None && !string.IsNullOrWhiteSpace(column.GetFilterValue()));
+
+        foreach (var column in filterableColumns)
+        {
+            column.SetFilterValue(null);
+            //column.SetDefaultFilter();
+        }
+
+        resetCounter++;
+    }
 
     private string GetColumnSummaryValue(GridSummaryColumnType type, string propertyName, string format, string prefix)
     {
@@ -185,7 +208,7 @@ public partial class Grid<TItem> : BlazorBootstrapComponentBase
         }
     }
 
-    internal async Task FilterChangedAsync()
+    public async Task FilterChangedAsync()
     {
         if (cancellationTokenSource is not null
             && !cancellationTokenSource.IsCancellationRequested)

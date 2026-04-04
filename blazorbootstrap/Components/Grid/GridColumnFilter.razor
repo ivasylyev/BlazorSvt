@@ -32,11 +32,11 @@
     </ul>
 
     @if (PropertyTypeName == StringConstants.PropertyTypeNameInt16
-    || PropertyTypeName == StringConstants.PropertyTypeNameInt32
-    || PropertyTypeName == StringConstants.PropertyTypeNameInt64
-    || PropertyTypeName == StringConstants.PropertyTypeNameSingle // float
-    || PropertyTypeName == StringConstants.PropertyTypeNameDecimal
-    || PropertyTypeName == StringConstants.PropertyTypeNameDouble)
+         || PropertyTypeName == StringConstants.PropertyTypeNameInt32
+         || PropertyTypeName == StringConstants.PropertyTypeNameInt64
+         || PropertyTypeName == StringConstants.PropertyTypeNameSingle // float
+         || PropertyTypeName == StringConstants.PropertyTypeNameDecimal
+         || PropertyTypeName == StringConstants.PropertyTypeNameDouble)
     {
         <input class="form-control" style="@filterStyle" type="number" value="@filterValue" @oninput="@(async args => await OnFilterValueChangedAsync(args))">
     }
@@ -79,6 +79,6 @@
     }
     else // guid or string
     {
-        <input class="form-control" style="@filterStyle" type="text" value="@filterValue" @oninput="@(async args => await OnFilterValueChangedAsync(args))" />
+        <input @key="inputKey" class="form-control" style="@filterStyle" type="text" value="@filterValue" @oninput="@(async args => await OnFilterValueChangedAsync(args))" />
     }
 </div>

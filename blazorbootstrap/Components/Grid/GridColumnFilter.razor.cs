@@ -4,6 +4,9 @@ public partial class GridColumnFilter : BlazorBootstrapComponentBase
 {
     #region Fields and Constants
 
+    private int inputKey;
+    private int lastResetTrigger;
+
     private FilterOperator filterOperator;
 
     private IEnumerable<FilterOperatorInfo>? filterOperators;
@@ -27,6 +30,12 @@ public partial class GridColumnFilter : BlazorBootstrapComponentBase
 
     protected override void OnParametersSet()
     {
+        if (ResetTrigger != lastResetTrigger)
+        {
+            lastResetTrigger = ResetTrigger;
+            filterValue = null;
+            inputKey++;
+        }
         SetDefaultFilter();
         SetSelectedFilterSymbol();
     }
@@ -146,6 +155,10 @@ public partial class GridColumnFilter : BlazorBootstrapComponentBase
     #endregion
 
     #region Properties, Indexers
+
+    [Parameter] 
+    public int ResetTrigger { get; set; }
+
 
     [Parameter]
     public string? EnumFilterSelectText { get; set; }

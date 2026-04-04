@@ -24,6 +24,10 @@ public partial class HeaderMenu : SvtComponentBase
         StateHasChanged(); // перерисовать меню, чтобы обновилась подсветка
     }
 
+    private string GetButtonClass(string url)
+    {
+        return IsActive(url) ? "sibur-dark-inverted-btn" : "sibur-dark-btn";
+    }
     private bool IsActive(string url)
     {
          var relative = "/" + Nav.ToBaseRelativePath(Nav.Uri).Trim('/');

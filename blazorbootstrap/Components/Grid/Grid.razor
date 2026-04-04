@@ -81,7 +81,8 @@
                                     GridColumnFilterChanged="async args => await column.OnFilterChangedAsync(args, column)"
                                     PropertyType="@column.GetPropertyType()"
                                     PropertyTypeName="@column.GetPropertyTypeName()"
-                                    Unit="@column.FilterTextboxWidthUnit" />
+                                    Unit="@column.FilterTextboxWidthUnit" 
+                                    ResetTrigger="@resetCounter"/>
                                 }
                             </th>
                         }

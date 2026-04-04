@@ -133,6 +133,9 @@
   <data name="LoadTimePanel.LoadTimeFormat" xml:space="preserve">
 	  <value>Loading time: {0:F3} s.</value>
   </data>
+  <data name="GenericGrid.ResetFilters" xml:space="preserve">
+	  <value>Reset Filters</value>
+  </data>
   <data name="GenericGrid.Settings" xml:space="preserve">
 	  <value>Settings</value>
   </data>

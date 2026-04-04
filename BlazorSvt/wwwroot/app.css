@@ -21,3 +21,50 @@ h1:focus {
     width: max-content !important;
 }
 
+.custom-header-wrapper {
+    background-color: #008c95;
+    /* Компенсируем родительский px-4 (1.5rem) */
+    margin-left: -1.5rem;
+    margin-right: -1.5rem;
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+    /* Растягиваем на всю ширину с учетом выступов */
+    width: calc(100% + 3rem);
+    height: 100%;
+    /* Центрируем содержимое */
+    display: flex;
+    align-items: center;
+}
+
+.sibur-dna-btn {
+    background-color: #008c95 !important;
+    border: 1px solid #008c95 !important;
+    color: white !important;
+    font-weight: bold !important;
+    transition: 0.3s;
+}
+
+    .sibur-dna-btn:hover {
+        background-color: white !important;
+        color: #008c95 !important;
+    }
+
+.sibur-dark-btn {
+    background-color: #00313c !important;
+    border: 1px solid #00313c !important;
+    color: white !important;
+    font-weight: bold !important;
+    transition: 0.3s;
+}
+
+    .sibur-dark-btn:hover {
+        background-color: white !important;
+        color: #00313c !important;
+    }
+.sibur-dark-inverted-btn {
+    background-color: white !important;
+    border: 1px solid #00313c !important;
+    color: #00313c !important;
+    font-weight: bold !important;
+}
+

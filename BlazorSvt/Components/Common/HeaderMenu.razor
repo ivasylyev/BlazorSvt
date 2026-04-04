@@ -1,29 +1,30 @@
 ﻿@inject NavigationManager Nav
 @inherits SvtComponentBase
 
-<div class="d-flex align-items-center w-100">
+<div class="custom-header-wrapper">
+    <div class="d-flex align-items-center w-100">
 
-    <!-- Левая часть (меню) -->
-    <div class="d-flex align-items-center gap-2">
-        @if (menuItems is not null)
-        {
-            foreach (var item in menuItems)
+        <!-- Левая часть (меню) -->
+        <div class="d-flex align-items-center gap-2">
+            @if (menuItems is not null)
             {
-                <Button Color="ButtonColor.Info"
-                        Type="ButtonType.Link"
-                        Outline="@(!IsActive(item.Url))"
-                        To="@item.Url">
-                    <Icon Name="@item.Icon" Class="me-2"/>
-                    @item.Text
-                </Button>
+                foreach (var item in menuItems)
+                {
+                    <Button Class="@GetButtonClass(item.Url)"
+                            Type="ButtonType.Link"
+                            To="@item.Url">
+                        <Icon Name="@item.Icon" Class="me-2"/>
+                        @item.Text
+                    </Button>
+                }
             }
-        }
-    </div>
+        </div>
 
-    <!-- Правая часть -->
-    <div class="d-flex align-items-center gap-2 ms-auto">
-        <CultureSelector />
-        <ThemeSwitcher Position="DropdownMenuPosition.End" />
-    </div>
+        <!-- Правая часть -->
+        <div class="d-flex align-items-center gap-2 ms-auto">
+            <CultureSelector/>
+            <ThemeSwitcher Position="DropdownMenuPosition.End"/>
+        </div>
 
+    </div>
 </div>
