@@ -5,6 +5,7 @@ public partial class GridColumnFilter : BlazorBootstrapComponentBase
     #region Fields and Constants
 
     private int inputKey;
+
     private int lastResetTrigger;
 
     private FilterOperator filterOperator;

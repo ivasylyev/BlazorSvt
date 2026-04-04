@@ -358,7 +358,7 @@ public partial class GridColumn<TItem> : BlazorBootstrapComponentBase
 
                                    builder.AddAttribute(102, "style", string.Join(";", styleList));
                                }
-
+                               classList.Add("text-nowrap");
                                builder.AddAttribute(103, "class", string.Join(" ", classList));
 
                                if (HeaderContent is null)

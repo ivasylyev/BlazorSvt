@@ -203,7 +203,7 @@ public class RatesGridSettingsService(ILocalStorageService localStorage, IString
                 Header = L["RateDto.CurrencyCode"],
                 DisplaySelector = dto => dto.CurrencyCode,
                 SortSelector = dto => dto.CurrencyCode,
-                Filterable = false,
+                Filterable = true,
                 Visible = true
             },
             new GridColumnSetting<RateDto>

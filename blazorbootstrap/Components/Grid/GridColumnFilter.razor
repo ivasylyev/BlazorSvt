@@ -38,23 +38,25 @@
          || PropertyTypeName == StringConstants.PropertyTypeNameDecimal
          || PropertyTypeName == StringConstants.PropertyTypeNameDouble)
     {
-        <input class="form-control" style="@filterStyle" type="number" value="@filterValue" @oninput="@(async args => await OnFilterValueChangedAsync(args))">
+        <input @key="inputKey" class="form-control" style="@filterStyle" type="number" value="@filterValue" @oninput="@(async args => await OnFilterValueChangedAsync(args))">
     }
     else if (PropertyTypeName == StringConstants.PropertyTypeNameDateOnly)
     {
-        <input class="form-control" style="@filterStyle" type="date" value="@filterValue" @oninput="@(async args => await OnFilterValueChangedAsync(args))" />
+        <input @key="inputKey" class="form-control" style="@filterStyle" type="date" value="@filterValue" @oninput="@(async args => await OnFilterValueChangedAsync(args))" />
     }
     else if (PropertyTypeName == StringConstants.PropertyTypeNameDateTime)
     {
-        <input class="form-control" style="@filterStyle" type="datetime-local" value="@filterValue" @oninput="@(async args => await OnFilterValueChangedAsync(args))" />
+        <input @key="inputKey" class="form-control" style="@filterStyle" type="datetime-local" value="@filterValue" @oninput="@(async args => await OnFilterValueChangedAsync(args))" />
     }
     else if (PropertyTypeName == StringConstants.PropertyTypeNameBoolean)
     {
-        <input class="form-check-input" type="checkbox" value="@filterValue" @onchange="@(async args => await OnFilterValueChangedAsync(args))" />
+        <div class="d-flex align-items-center" style="height: 38px;"> <!-- 38px — стандартная высота form-control в Bootstrap 5 -->
+            <input @key="inputKey" class="form-check-input" type="checkbox" value="@filterValue" @onchange="@(async args => await OnFilterValueChangedAsync(args))" />
+        </div>
     }
     else if (PropertyTypeName == StringConstants.PropertyTypeNameEnum)
     {
-        <Dropdown Color="DropdownColor.Light">
+        <Dropdown @key="inputKey"  Color="DropdownColor.Light">
             <DropdownToggleButton Class="px-1" Style="@filterStyle">
                 @if (string.IsNullOrWhiteSpace(filterValue))
                 {
