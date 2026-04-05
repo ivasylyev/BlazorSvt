@@ -14,8 +14,8 @@ public class RatesDataService(
     protected override string StoredProcedureName
         => "dbo.GetTransportRates";
 
-    public async Task<GridDataProviderResult<RateDto>> GetRatesAsync(GridDataProviderRequest<RateDto> request)
+    public async Task<GridDataProviderResult<RateDto>> GetRatesAsync(GridDataProviderRequest<RateDto> request, string lang)
     {
-        return await GetDataAsync(request);
+        return await GetDataAsync(request, lang);
     }
 }

@@ -10,8 +10,8 @@ public partial class RatesGrid : BaseGridPage<RateDto>
     [Inject]
     public IRatesDataService RatesDataService { get; set; } = default!;
 
-    protected override async Task<GridDataProviderResult<RateDto>> GetDataAsync(GridDataProviderRequest<RateDto> request)
+    protected override async Task<GridDataProviderResult<RateDto>> GetDataAsync(GridDataProviderRequest<RateDto> request, string lang)
     {
-         return await RatesDataService.GetRatesAsync(request);
+         return await RatesDataService.GetRatesAsync(request, lang);
     }
 }

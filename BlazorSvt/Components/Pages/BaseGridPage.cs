@@ -2,6 +2,7 @@
 using BlazorSvt.Components.Common;
 using BlazorSvt.Services.Shared;
 using Microsoft.AspNetCore.Components;
+using System.Globalization;
 
 namespace BlazorSvt.Components.Pages;
 
@@ -13,9 +14,10 @@ public abstract class BaseGridPage<TItem> : SvtComponentBase
     {
         using (new StopwatchTransaction(TimingService))
         {
-            return await GetDataAsync(request);
+            var lang = CultureInfo.CurrentCulture.TwoLetterISOLanguageName;
+            return await GetDataAsync(request, lang);
         }
     }
 
-    protected abstract Task<GridDataProviderResult<TItem>> GetDataAsync(GridDataProviderRequest<TItem> request);
+    protected abstract Task<GridDataProviderResult<TItem>> GetDataAsync(GridDataProviderRequest<TItem> request, string lang);
 }

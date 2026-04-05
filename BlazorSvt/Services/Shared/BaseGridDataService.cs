@@ -1,6 +1,5 @@
 ﻿using System.Data;
 using System.Data.SqlClient;
-using System.Globalization;
 using BlazorBootstrap;
 using BlazorSvt.Models.Config;
 using BlazorSvt.Utils;
@@ -20,7 +19,7 @@ public abstract class BaseGridDataService<TItem>(
 
     protected virtual string IsArchiveFieldName => "IsArchive";
 
-    protected async Task<GridDataProviderResult<TItem>> GetDataAsync(GridDataProviderRequest<TItem> request)
+    protected async Task<GridDataProviderResult<TItem>> GetDataAsync(GridDataProviderRequest<TItem> request, string lang)
     {
         var (sortString, sortDirection) = ExtractSorting(request);
 
@@ -32,6 +31,7 @@ public abstract class BaseGridDataService<TItem>(
             request.PageSize,
             sortString,
             sortDirection,
+            lang,
             request.CancellationToken);
 
         return new GridDataProviderResult<TItem>
@@ -94,12 +94,13 @@ public abstract class BaseGridDataService<TItem>(
         int pageSize,
         string? sortKey,
         SortDirection sortDirection,
+        string lang,
         CancellationToken cancellationToken)
     {
         await using var connection = new SqlConnection(connectionString);
         await connection.OpenAsync(cancellationToken);
 
-        var parameters = BuildParameters(filters, pageNumber, pageSize, sortKey, sortDirection);
+        var parameters = BuildParameters(filters, pageNumber, pageSize, sortKey, sortDirection, lang);
 
         var loggingConnection = new DbConnectionLogDecorator(connection, logger);
 
@@ -119,13 +120,13 @@ public abstract class BaseGridDataService<TItem>(
         int pageNumber,
         int pageSize,
         string? sortKey,
-        SortDirection sortDirection)
+        SortDirection sortDirection, string lang)
     {
         var parameters = new DynamicParameters();
 
         parameters.Add("PageNumber", pageNumber);
         parameters.Add("PageSize", pageSize);
-        parameters.Add("Lang", CultureInfo.CurrentCulture.TwoLetterISOLanguageName);
+        parameters.Add("Lang", lang);
 
         parameters.Add("SortKey", sortKey);
         parameters.Add("SortDirection", sortDirection == SortDirection.Descending ? "DESC" : "ASC");

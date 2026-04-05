@@ -5,5 +5,5 @@ namespace BlazorSvt.Services.Rates;
 
 public interface IRatesDataService 
 {
-    public Task<GridDataProviderResult<RateDto>> GetRatesAsync(GridDataProviderRequest<RateDto> request);
+    public Task<GridDataProviderResult<RateDto>> GetRatesAsync(GridDataProviderRequest<RateDto> request, string lang);
 }
