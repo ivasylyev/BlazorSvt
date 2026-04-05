@@ -16,6 +16,7 @@ public class RatesGridSettingsService(ILocalStorageService localStorage, IString
 
     protected override List<GridColumnSetting<RateDto>> GetDefaultSettings(string lang)
     {
+        var isRu = lang == "ru";
         return
         [
             new GridColumnSetting<RateDto>
@@ -38,19 +39,16 @@ public class RatesGridSettingsService(ILocalStorageService localStorage, IString
             },
             new GridColumnSetting<RateDto>
             {
-                Name = nameof(RateDto.RateTypeCodeRu),
+                Name = isRu 
+                    ? nameof(RateDto.RateTypeCodeRu)
+                    : nameof(RateDto.RateTypeCodeEn),
                 Header = L["RateDto.RateTypeCode"],
-                DisplaySelector = dto => typeof(RateTypeRu).GetDisplayName(dto.RateTypeCodeRu.ToString()) ?? string.Empty,
-                SortSelector = dto => dto.RateTypeCodeRu,
-                Filterable = true,
-                Visible = true
-            },
-            new GridColumnSetting<RateDto>
-            {
-                Name = nameof(RateDto.RateTypeCodeEn),
-                Header = L["RateDto.RateTypeCode"],
-                DisplaySelector = dto => typeof(RateTypeEn).GetDisplayName(dto.RateTypeCodeEn.ToString()) ?? string.Empty,
-                SortSelector = dto => dto.RateTypeCodeEn,
+                DisplaySelector = isRu
+                    ? dto => typeof(RateTypeRu).GetDisplayName(dto.RateTypeCodeRu.ToString()) ?? string.Empty
+                    : dto => typeof(RateTypeEn).GetDisplayName(dto.RateTypeCodeEn.ToString()) ?? string.Empty,
+                SortSelector = isRu
+                    ? dto => dto.RateTypeCodeRu
+                    : dto => dto.RateTypeCodeEn,
                 Filterable = true,
                 Visible = true
             },
