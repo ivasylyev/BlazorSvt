@@ -12,15 +12,15 @@ public abstract class BaseGridSettingsService<T>(
 
     protected abstract string StorageKey { get; }
 
-    public async Task<GridSettings<T>> GetGridSettingsAsync()
+    public async Task<GridSettings<T>> GetGridSettingsAsync(string lang)
     {
-        var defaultSettings = GetDefaultSettings();
+        var defaultSettings = GetDefaultSettings(lang);
 
         Dictionary<string, bool> loaded;
         try
         {
             loaded = await LocalStorage
-                         .GetItemAsync<Dictionary<string, bool>>(StorageKey)
+                         .GetItemAsync<Dictionary<string, bool>>($"{StorageKey}_{lang}")
                      ?? new Dictionary<string, bool>();
         }
         catch (Exception e)
@@ -40,19 +40,19 @@ public abstract class BaseGridSettingsService<T>(
         return new GridSettings<T>(defaultSettings);
     }
 
-    public async Task SaveGridSettingsAsync(GridSettings<T> settings)
+    public async Task SaveGridSettingsAsync(GridSettings<T> settings, string lang)
     {
         var visibility = settings.ColumnSettings
             .ToDictionary(x => x.Name, x => x.Visible);
 
-        await LocalStorage.SetItemAsync(StorageKey, visibility);
+        await LocalStorage.SetItemAsync($"{StorageKey}_{lang}", visibility);
     }
 
-    public async Task ResetGridSettingsAsync()
+    public async Task ResetGridSettingsAsync(string lang)
     {
-        await LocalStorage.RemoveItemAsync(StorageKey);
+        await LocalStorage.RemoveItemAsync($"{StorageKey}_{lang}");
     }
 
 
-    protected abstract List<GridColumnSetting<T>> GetDefaultSettings();
+    protected abstract List<GridColumnSetting<T>> GetDefaultSettings(string lang);
 }

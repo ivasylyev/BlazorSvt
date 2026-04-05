@@ -10,7 +10,8 @@ CREATE FULLTEXT INDEX ON dbo.TransportRateSnapshot
     Code               ,
 
     CurrencyCode       ,
-    RateTypeCode       ,
+    RateTypeCodeEn     ,
+    RateTypeCodeRu     ,
     RateTypeName       ,
     NodeFromCode       ,
     NodeFromNameEn     ,

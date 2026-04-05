@@ -24,7 +24,8 @@ public class RateDto
 
     public required string Code { get; set; }
     public required string CurrencyCode { get; set; }
-    public required RateType RateTypeCode { get; set; }
+    public required RateTypeRu RateTypeCodeRu { get; set; }
+    public required RateTypeEn RateTypeCodeEn { get; set; }
     public required string RateTypeName { get; set; }
 
     public required string NodeFromCode { get; set; }

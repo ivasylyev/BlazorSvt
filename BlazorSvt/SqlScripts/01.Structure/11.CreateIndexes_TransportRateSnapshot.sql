@@ -54,12 +54,22 @@ CREATE NONCLUSTERED INDEX [ix_TransportRateSnapshot_IsArchive_IsDefRate] ON [dbo
 )
 GO
 
-DROP INDEX IF EXISTS [ix_TransportRateSnapshot_RateTypeCode_IsArchive] ON [dbo].[TransportRateSnapshot];
+DROP INDEX IF EXISTS [ix_TransportRateSnapshot_RateTypeCodeEn_IsArchive] ON [dbo].[TransportRateSnapshot];
 GO
-CREATE NONCLUSTERED INDEX [ix_TransportRateSnapshot_RateTypeCode_IsArchive] ON [dbo].TransportRateSnapshot
+CREATE NONCLUSTERED INDEX [ix_TransportRateSnapshot_RateTypeCodeEn_IsArchive] ON [dbo].TransportRateSnapshot
 (
-	[RateTypeCode],
+	[RateTypeCodeEn],
     [IsArchive]
 )
 GO
 
+
+
+DROP INDEX IF EXISTS [ix_TransportRateSnapshot_RateTypeCodeRu_IsArchive] ON [dbo].[TransportRateSnapshot];
+GO
+CREATE NONCLUSTERED INDEX [ix_TransportRateSnapshot_RateTypeCodeRu_IsArchive] ON [dbo].TransportRateSnapshot
+(
+	[RateTypeCodeEn],
+    [IsArchive]
+)
+GO

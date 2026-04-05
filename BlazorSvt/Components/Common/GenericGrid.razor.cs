@@ -30,7 +30,7 @@ public partial class GenericGrid<TItem> : SvtComponentBase
 
         if (firstRender)
         {
-            GridSettings = await GridSettingsService.GetGridSettingsAsync();
+            GridSettings = await GridSettingsService.GetGridSettingsAsync(Lang);
             StateHasChanged();
         }
     }
@@ -50,7 +50,7 @@ public partial class GenericGrid<TItem> : SvtComponentBase
         if (GridSettings is not null)
         {
             GridSettings.ApplyGridColumnSettings(settings);
-            await GridSettingsService.SaveGridSettingsAsync(GridSettings);
+            await GridSettingsService.SaveGridSettingsAsync(GridSettings, Lang);
         }
 
         StateHasChanged();
@@ -58,14 +58,14 @@ public partial class GenericGrid<TItem> : SvtComponentBase
 
     private async Task OnCancelClick()
     {
-        GridSettings = await GridSettingsService.GetGridSettingsAsync();
+        GridSettings = await GridSettingsService.GetGridSettingsAsync(Lang);
         StateHasChanged();
     }
 
     private async Task OnResetClick()
     {
-        await GridSettingsService.ResetGridSettingsAsync();
-        GridSettings = await GridSettingsService.GetGridSettingsAsync();
+        await GridSettingsService.ResetGridSettingsAsync(Lang);
+        GridSettings = await GridSettingsService.GetGridSettingsAsync(Lang);
         StateHasChanged();
     }
 }

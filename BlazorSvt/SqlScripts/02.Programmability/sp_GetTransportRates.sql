@@ -35,7 +35,8 @@ BEGIN
     SET @LangSuffix = CASE WHEN @Lang = N'ru' THEN N'Ru' ELSE N'En' END
     SET @AllowedColumnsJson = N'[
             {"ColumnName": "CurrencyCode", "ColumnType": "NVARCHAR"},
-            {"ColumnName": "RateTypeCode", "ColumnType": "CODE"},
+            {"ColumnName": "RateTypeCodeEn", "ColumnType": "CODE"},
+            {"ColumnName": "RateTypeCodeRu", "ColumnType": "CODE"},
             {"ColumnName": "RateTypeName", "ColumnType": "NVARCHAR"},
             {"ColumnName": "NodeFromCode", "ColumnType": "NVARCHAR"},
             {"ColumnName": "NodeFromName' + @LangSuffix + '", "ColumnType": "NVARCHAR"},
@@ -85,10 +86,11 @@ BEGIN
 
             [Code],
             [CurrencyCode],
-            [RateTypeCode],
+            [RateTypeCodeEn],
+            [RateTypeCodeRu],
             [RateTypeName],
             [NodeFromCode],
-            [NodeFromName' + @LangSuffix + '] AS [NodeFromName] ,
+            [NodeFromName' + @LangSuffix + '] AS [NodeFromName] , -- разные зависимые от языка значения должны передаваться в одно и то же поле
             [ProxyNodeCode],
             [ProxyNodeName' + @LangSuffix + '] AS [ProxyNodeName],
             [NodeToCode],
@@ -105,7 +107,7 @@ BEGIN
             [ContractorEGRUL]
             '
 
-    SET @FilterJson = REPLACE(@FilterJson, N'NodeFromName', N'NodeFromName' + @LangSuffix)
+    SET @FilterJson = REPLACE(@FilterJson, N'NodeFromName', N'NodeFromName' + @LangSuffix) -- одно и то же поле превращается в ависимые от языка поля 
     SET @FilterJson = REPLACE(@FilterJson, N'NodeToName', N'NodeToName' + @LangSuffix)
     SET @FilterJson = REPLACE(@FilterJson, N'ProxyNodeName', N'ProxyNodeName' + @LangSuffix)
     SET @FilterJson = REPLACE(@FilterJson, N'TransportKindName', N'TransportKindName' + @LangSuffix)

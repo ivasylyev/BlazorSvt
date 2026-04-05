@@ -14,7 +14,7 @@ public class RatesGridSettingsService(ILocalStorageService localStorage, IString
     protected override string StorageKey => "RatesGridColumnSettings";
 
 
-    protected override List<GridColumnSetting<RateDto>> GetDefaultSettings()
+    protected override List<GridColumnSetting<RateDto>> GetDefaultSettings(string lang)
     {
         return
         [
@@ -38,10 +38,19 @@ public class RatesGridSettingsService(ILocalStorageService localStorage, IString
             },
             new GridColumnSetting<RateDto>
             {
-                Name = nameof(RateDto.RateTypeCode),
+                Name = nameof(RateDto.RateTypeCodeRu),
                 Header = L["RateDto.RateTypeCode"],
-                DisplaySelector = dto => typeof(RateType).GetDisplayName(dto.RateTypeCode.ToString()) ?? string.Empty,
-                SortSelector = dto => dto.RateTypeCode,
+                DisplaySelector = dto => typeof(RateTypeRu).GetDisplayName(dto.RateTypeCodeRu.ToString()) ?? string.Empty,
+                SortSelector = dto => dto.RateTypeCodeRu,
+                Filterable = true,
+                Visible = true
+            },
+            new GridColumnSetting<RateDto>
+            {
+                Name = nameof(RateDto.RateTypeCodeEn),
+                Header = L["RateDto.RateTypeCode"],
+                DisplaySelector = dto => typeof(RateTypeEn).GetDisplayName(dto.RateTypeCodeEn.ToString()) ?? string.Empty,
+                SortSelector = dto => dto.RateTypeCodeEn,
                 Filterable = true,
                 Visible = true
             },

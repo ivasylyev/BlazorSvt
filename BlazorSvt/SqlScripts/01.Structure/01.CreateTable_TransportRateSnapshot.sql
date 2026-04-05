@@ -27,7 +27,8 @@ CREATE TABLE dbo.TransportRateSnapshot (
     Code                NVARCHAR(10) NOT NULL,
 
     CurrencyCode        NVARCHAR(3) NOT NULL,
-    RateTypeCode        NVARCHAR(2) NOT NULL,
+    RateTypeCodeEn      NVARCHAR(2) NOT NULL,
+    RateTypeCodeRu      NVARCHAR(2) NOT NULL,
     RateTypeName        NVARCHAR(20) NOT NULL,
     NodeFromCode        NVARCHAR(10) NOT NULL,
     NodeFromNameEn      NVARCHAR(30) NOT NULL,

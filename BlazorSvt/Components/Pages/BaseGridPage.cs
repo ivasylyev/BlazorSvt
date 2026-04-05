@@ -14,8 +14,7 @@ public abstract class BaseGridPage<TItem> : SvtComponentBase
     {
         using (new StopwatchTransaction(TimingService))
         {
-            var lang = CultureInfo.CurrentCulture.TwoLetterISOLanguageName;
-            return await GetDataAsync(request, lang);
+            return await GetDataAsync(request, Lang);
         }
     }
 
