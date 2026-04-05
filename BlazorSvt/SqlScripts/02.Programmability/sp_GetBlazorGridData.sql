@@ -56,7 +56,6 @@ Example:
         [ContractorCode],
         [ContractorEGRUL],
         [CurrencyCode],
-        [CurrencyName]',
      @SortKey=N'NodeToNameRu',
      @SortDirection=N'ASC',
      @FilterJson=N'[{"PropertType":null,"PropertyName":"Code","Value":"2763157","Operator":7,"StringComparison":5},
@@ -132,14 +131,17 @@ BEGIN
 
     SELECT @WhereClause = STRING_AGG(
         CASE ColumnType
-            -- Логика для СТРОК
+            -- Логика для СТРОК c полнотекстовым поиском
             WHEN 'NVARCHAR' THEN 
                 CASE WHEN LEN(ColumnValue) > 2 THEN
                     N'
                     AND CONTAINS(' + ColumnName + ', N''"' + ColumnValue + '*"'') '
                 ELSE '' 
                 END
-
+            -- Логика для КОДОВ (строк но без полнотекстового поиска, только для равенства)
+            WHEN 'CODE' THEN 
+                N'
+                    AND ' + ColumnName + ' =  N''' + ColumnValue + ''' '
             -- Логика для ДАТ
             WHEN 'DATE' THEN 
                 CASE WHEN ISDATE(ColumnValue) = 1

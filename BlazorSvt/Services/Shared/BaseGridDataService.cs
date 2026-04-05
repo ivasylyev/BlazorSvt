@@ -1,12 +1,12 @@
-﻿using BlazorBootstrap;
+﻿using System.Data;
+using System.Data.SqlClient;
+using System.Globalization;
+using BlazorBootstrap;
 using BlazorSvt.Models.Config;
 using BlazorSvt.Utils;
 using Dapper;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
-using System.Data;
-using System.Data.SqlClient;
-using System.Globalization;
 
 namespace BlazorSvt.Services.Shared;
 
@@ -54,18 +54,39 @@ public abstract class BaseGridDataService<TItem>(
         return (null, SortDirection.None);
     }
 
-    private IEnumerable<FilterItem> ExtractFilters(GridDataProviderRequest<TItem> request)
+    private List<FilterItem> ExtractFilters(GridDataProviderRequest<TItem> request)
     {
+        var filters = new List<FilterItem>();
+
         // Бывает что request.Filters пустой из-за того что компонент не успел инициализироваться
         // ReSharper disable once ConditionIsAlwaysTrueOrFalseAccordingToNullableAPIContract
         if (request.Filters is not null)
-            return request.Filters;
-
-        return new List<FilterItem>
-        {
-            new(IsArchiveFieldName, "False", FilterOperator.Equals, StringComparison.InvariantCultureIgnoreCase)
-        };
+            filters.AddRange(request.Filters.Select(ExtractEnumFilter<TItem>));
+        else
+            filters.Add(new FilterItem(IsArchiveFieldName, "False", FilterOperator.Equals, StringComparison.InvariantCultureIgnoreCase));
+        return filters;
     }
+
+    private FilterItem ExtractEnumFilter<TItem>(FilterItem filter)
+    {
+        var propInfo = typeof(TItem).GetProperty(filter.PropertyName);
+        if (propInfo != null)
+        {
+            // Проверяем, является ли тип перечислением (учитываем Nullable<Enum>)
+            var propType = Nullable.GetUnderlyingType(propInfo.PropertyType) ?? propInfo.PropertyType;
+
+            if (propType.IsEnum && filter.Value != null)
+            {
+                if (Enum.TryParse(propType, filter.Value, out var enumValue))
+                {
+                    var value = ((int)enumValue).ToString();
+                    return new FilterItem(filter.PropertyName, value, filter.Operator, filter.StringComparison);
+                }
+            }
+        }
+        return filter;
+    }
+
 
     private async Task<(IEnumerable<TItem>, int)> ExecuteStoredProcedureAsync(
         IEnumerable<FilterItem> filters,

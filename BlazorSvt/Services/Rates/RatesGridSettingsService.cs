@@ -1,4 +1,5 @@
-﻿using Blazored.LocalStorage;
+﻿using BlazorBootstrap;
+using Blazored.LocalStorage;
 using BlazorSvt.Models.Dto;
 using BlazorSvt.Models.Grid;
 using BlazorSvt.Resources;
@@ -39,19 +40,10 @@ public class RatesGridSettingsService(ILocalStorageService localStorage, IString
             {
                 Name = nameof(RateDto.RateTypeCode),
                 Header = L["RateDto.RateTypeCode"],
-                DisplaySelector = dto => dto.RateTypeCode,
+                DisplaySelector = dto => typeof(RateType).GetDisplayName(dto.RateTypeCode.ToString()) ?? string.Empty,
                 SortSelector = dto => dto.RateTypeCode,
                 Filterable = true,
-                Visible = false
-            },
-            new GridColumnSetting<RateDto>
-            {
-                Name = nameof(RateDto.RateTypeName),
-                Header = L["RateDto.RateTypeName"],
-                DisplaySelector = dto => dto.RateTypeName,
-                SortSelector = dto => dto.RateTypeName,
-                Filterable = true,
-                Visible = false
+                Visible = true
             },
             new GridColumnSetting<RateDto>
             {
