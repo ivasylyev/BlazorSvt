@@ -15,7 +15,7 @@
                 {
                     foreach (var settings in ColumnSettings)
                     {
-                        <div class="col-12 col-md-6">
+                        <div class="col-12 col-md-6 sibur-switch-color">
                             <Switch Label="@settings.Header" @bind-Value="@settings.Visible"></Switch>
                         </div>
                     }
@@ -25,8 +25,8 @@
     </BodyTemplate>
 
     <FooterTemplate>
-        <Button Color="ButtonColor.Primary" @onclick="HandleOk">@L["Settings.Ok"]</Button>
-        <Button Color="ButtonColor.Warning" @onclick="HandleReset">@L["Settings.Reset"]</Button>
-        <Button Color="ButtonColor.Secondary" @onclick="HandleCancel">@L["Settings.Cancel"]</Button>
+        <Button Class="sibur-dark-btn" @onclick="HandleOk">@L["Settings.Ok"]</Button>
+        <Button Class="sibur-warn-btn" @onclick="HandleReset">@L["Settings.Reset"]</Button>
+        <Button Class="sibur-dna-btn" @onclick="HandleCancel">@L["Settings.Cancel"]</Button>
     </FooterTemplate>
 </Modal>

@@ -1,3 +1,4 @@
+
 h1:focus {
     outline: none;
 }
@@ -49,7 +50,18 @@ h1:focus {
         background-color: white !important;
         color: #008c95 !important;
     }
+.sibur-warn-btn {
+    background-color: #EF9987 !important;
+    border: 1px solid #EF9987 !important;
+    color: white !important;
+    font-weight: bold !important;
+    transition: 0.3s;
+}
 
+    .sibur-warn-btn:hover {
+        background-color: #FFE6D7 !important;
+        color: black !important;
+    }
 .sibur-dark-btn {
     /*background-color: #00313c !important;*/
     background-color: #00606a !important;
@@ -70,3 +82,19 @@ h1:focus {
     font-weight: bold !important;
 }
 
+/* 1. Меняем цвет фона включенного трека */
+.sibur-switch-color .form-check-input:checked {
+    background-color: #008c95;
+    border-color: #008c95;
+}
+
+/* 2. Меняем цвет "ползунка" (кружка) */
+.sibur-switch-color .form-check-input:checked:focus {
+        /* Оставляем свечение такого же цвета, либо убираем box-shadow */
+        box-shadow: 0 0 0 0.25rem rgba(0, 140, 149, 0.25);
+    }
+
+/* 3. (Опционально) Меняем цвет "ползунка" при наведении */
+.sibur-switch-color .form-check-input:checked:hover {
+        background-color: #007a82; /* чуть темнее для эффекта наведения */
+    }
