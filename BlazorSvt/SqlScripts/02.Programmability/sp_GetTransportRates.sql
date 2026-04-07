@@ -35,23 +35,25 @@ BEGIN
     SET @LangSuffix = CASE WHEN @Lang = N'ru' THEN N'Ru' ELSE N'En' END
     SET @AllowedColumnsJson = N'[
             {"ColumnName": "CurrencyCode", "ColumnType": "NVARCHAR"},
-            {"ColumnName": "RateTypeCodeEn", "ColumnType": "CODE"},
-            {"ColumnName": "RateTypeCodeRu", "ColumnType": "CODE"},
+            {"ColumnName": "RateTypeId", "ColumnType": "ID"},
             {"ColumnName": "RateTypeName", "ColumnType": "NVARCHAR"},
             {"ColumnName": "NodeFromCode", "ColumnType": "NVARCHAR"},
-            {"ColumnName": "NodeFromName' + @LangSuffix + '", "ColumnType": "NVARCHAR"},
+            {"ColumnName": "NodeFromNameRu", "ColumnType": "NVARCHAR"},
+            {"ColumnName": "NodeFromNameEn", "ColumnType": "NVARCHAR"},
             {"ColumnName": "ProxyNodeCode", "ColumnType": "NVARCHAR"},
-            {"ColumnName": "ProxyNodeName' + @LangSuffix + '", "ColumnType": "NVARCHAR"},
+            {"ColumnName": "ProxyNodeNameRu", "ColumnType": "NVARCHAR"},
+            {"ColumnName": "ProxyNodeNameEn", "ColumnType": "NVARCHAR"},
             {"ColumnName": "NodeToCode", "ColumnType": "NVARCHAR"},
-            {"ColumnName": "NodeToName' + @LangSuffix + '", "ColumnType": "NVARCHAR"},
+            {"ColumnName": "NodeToNameRu", "ColumnType": "NVARCHAR"},
+            {"ColumnName": "NodeToNameEn", "ColumnType": "NVARCHAR"},
+            {"ColumnName": "TransportKindId", "ColumnType": "ID"},
             {"ColumnName": "TransportKindCode", "ColumnType": "NVARCHAR"},
-            {"ColumnName": "TransportKindName' + @LangSuffix + '", "ColumnType": "NVARCHAR"},
+            {"ColumnName": "TransportTypeId", "ColumnType": "ID"},
             {"ColumnName": "TransportTypeCode", "ColumnType": "NVARCHAR"},
-            {"ColumnName": "TransportTypeName' + @LangSuffix + '", "ColumnType": "NVARCHAR"},
-            {"ColumnName": "ProductGroupCode", "ColumnType": "NVARCHAR"},
-            {"ColumnName": "ProductGroupName' + @LangSuffix + '", "ColumnType": "NVARCHAR"},
+            {"ColumnName": "ProductGroupId", "ColumnType": "ID"},
             {"ColumnName": "ProductCode", "ColumnType": "NVARCHAR"},
-            {"ColumnName": "ProductName' + @LangSuffix + '", "ColumnType": "NVARCHAR"},
+            {"ColumnName": "ProductNameRu", "ColumnType": "NVARCHAR"},
+            {"ColumnName": "ProductNameEn", "ColumnType": "NVARCHAR"},
             {"ColumnName": "ContractorCode", "ColumnType": "NVARCHAR"},
             {"ColumnName": "ContractorEGRUL", "ColumnType": "NVARCHAR"},
 
@@ -78,35 +80,46 @@ BEGIN
             [NodeFromId],          
             [ProxyNodeId],         
             [NodeToId],            
-            [TransportKindId],     
-            [TransportTypeId],     
-            [ProductGroupId],      
+            [TransportKindId] AS [TransportKindIdRu], 
+            [TransportKindId] AS [TransportKindIdEn], 
+            [TransportTypeId] AS [TransportTypeIdRu],     
+            [TransportTypeId] AS [TransportTypeIdEn],
+            [ProductGroupId] AS [ProductGroupIdRu],      
+            [ProductGroupId] AS [ProductGroupIdEn], 
             [ProductId],           
-            [RateTypeId],          
+            [RateTypeId] AS [RateTypeIdRu],          
+            [RateTypeId] AS [RateTypeIdEn],   
 
             [Code],
             [CurrencyCode],
-            [RateTypeCodeEn],
-            [RateTypeCodeRu],
+            [RateTypeCode],
             [RateTypeName],
             [NodeFromCode],
-            [NodeFromName' + @LangSuffix + '] AS [NodeFromName] , -- разные зависимые от языка значения должны передаваться в одно и то же поле
+            [NodeFromNameRu],
+            [NodeFromNameEn],
             [ProxyNodeCode],
-            [ProxyNodeName' + @LangSuffix + '] AS [ProxyNodeName],
+            [ProxyNodeNameRu],
+            [ProxyNodeNameEn],
             [NodeToCode],
-            [NodeToName' + @LangSuffix + '] AS [NodeToName],
+            [NodeToNameRu],
+            [NodeToNameEn],
             [TransportKindCode],
-            [TransportKindName' + @LangSuffix + '] AS [TransportKindName],
             [TransportTypeCode],
-            [TransportTypeName' + @LangSuffix + '] AS [TransportTypeName],
             [ProductGroupCode],
-            [ProductGroupName' + @LangSuffix + '] AS [ProductGroupName],
+            [ProductGroupNameRu],
+            [ProductGroupNameEn],
             [ProductCode],
-            [ProductName' + @LangSuffix + '] AS [ProductName],
+            [ProductNameRu],
+            [ProductNameEn],
             [ContractorCode],
             [ContractorEGRUL]
-            '
-
+  
+  '
+   SET @FilterJson = REPLACE(@FilterJson, N'TransportKindId' + @LangSuffix, N'TransportKindId') 
+   SET @FilterJson = REPLACE(@FilterJson, N'TransportTypeId' + @LangSuffix, N'TransportTypeId')  
+   SET @FilterJson = REPLACE(@FilterJson, N'ProductGroupId' + @LangSuffix, N'ProductGroupId')
+   SET @FilterJson = REPLACE(@FilterJson, N'RateTypeId' + @LangSuffix, N'RateTypeId')
+            /*
     SET @FilterJson = REPLACE(@FilterJson, N'NodeFromName', N'NodeFromName' + @LangSuffix) -- одно и то же поле превращается в ависимые от языка поля 
     SET @FilterJson = REPLACE(@FilterJson, N'NodeToName', N'NodeToName' + @LangSuffix)
     SET @FilterJson = REPLACE(@FilterJson, N'ProxyNodeName', N'ProxyNodeName' + @LangSuffix)
@@ -122,6 +135,7 @@ BEGIN
     SET @SortKey = REPLACE(@SortKey, N'TransportTypeName', N'TransportTypeName' + @LangSuffix)
     SET @SortKey = REPLACE(@SortKey, N'ProductGroupName', N'ProductGroupName' + @LangSuffix)
     SET @SortKey = REPLACE(@SortKey, N'ProductName', N'ProductName' + @LangSuffix)
+    */
     --print @FilterJson
 
    --return

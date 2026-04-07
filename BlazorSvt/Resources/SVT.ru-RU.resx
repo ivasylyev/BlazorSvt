@@ -219,6 +219,12 @@
   <data name="RateDto.IsArchive" xml:space="preserve">
 	  <value>В Архиве</value>
   </data>
+  <data name="RateDto.Archive" xml:space="preserve">
+	  <value>Архив</value>
+  </data>
+  <data name="RateDto.Active" xml:space="preserve">
+	  <value>Актив</value>
+  </data>
   <data name="RateDto.RateTypeCode" xml:space="preserve">
 	  <value>Код типа ставки</value>
   </data>
@@ -233,5 +239,11 @@
   </data>
   <data name="RateDto.TransportTypeName" xml:space="preserve">
 	  <value>Тип танспота</value>
+  </data>
+  <data name="RateDto.Yes" xml:space="preserve">
+	  <value>Да</value>
+  </data>
+  <data name="RateDto.No" xml:space="preserve">
+	  <value>Нет</value>
   </data>
 </root>

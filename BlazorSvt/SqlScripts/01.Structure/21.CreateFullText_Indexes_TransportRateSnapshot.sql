@@ -5,13 +5,10 @@ GO
 
 -- Создать новый сразу с несколькими столбцами
 CREATE FULLTEXT INDEX ON dbo.TransportRateSnapshot 
-(
- 
+( 
     Code               ,
 
     CurrencyCode       ,
-    RateTypeCodeEn     ,
-    RateTypeCodeRu     ,
     RateTypeName       ,
     NodeFromCode       ,
     NodeFromNameEn     ,

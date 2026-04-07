@@ -9,7 +9,8 @@ using Microsoft.Extensions.Localization;
 namespace BlazorSvt.Services.Rates;
 
 // ReSharper disable once InconsistentNaming
-public class RatesGridSettingsService(ILocalStorageService localStorage, IStringLocalizer<Svt> L, ILogger<RatesGridSettingsService> logger) : BaseGridSettingsService<RateDto>(localStorage, logger)
+public class RatesGridSettingsService(ILocalStorageService localStorage, IStringLocalizer<Svt> L, ILogger<RatesGridSettingsService> logger)
+    : BaseGridSettingsService<RateDto>(localStorage, logger)
 {
     protected override string StorageKey => "RatesGridColumnSettings";
 
@@ -17,9 +18,31 @@ public class RatesGridSettingsService(ILocalStorageService localStorage, IString
     protected override List<GridColumnSetting<RateDto>> GetDefaultSettings(string lang)
     {
         var isRu = lang == "ru";
-        return
-        [
-            new GridColumnSetting<RateDto>
+
+        var results = new List<GridColumnSetting<RateDto>>();
+        AddCodeSettings(results);
+        AddIsDefRateSettings(results);
+        AddRateTypeSettings(isRu, results);
+        AddTransportKindSettings(results, isRu);
+        AddTransportTypeSettings(results, isRu);
+        AddNodeFromSettings(results, isRu);
+        AddProxyNodeSettings(results, isRu);
+        AddNodeToSettings(results, isRu);
+        AddProductGroupSettings(results, isRu);
+        AddProductCodeSettings(results, isRu);
+        AddStartEndDateSettings(results);
+        AddTotalCostSettings(results);
+        AddCurrencySettings(results);
+        AddCreationChangeDateSettings(results);
+        AddIsArchiveSettings(results);
+
+        return results;
+    }
+
+
+    private void AddCodeSettings(List<GridColumnSetting<RateDto>> results)
+    {
+        results.Add(new GridColumnSetting<RateDto>
             {
                 Name = nameof(RateDto.Code),
                 Header = L["RateDto.Code"],
@@ -27,31 +50,55 @@ public class RatesGridSettingsService(ILocalStorageService localStorage, IString
                 SortSelector = dto => dto.Code,
                 Filterable = true,
                 Visible = true
-            },
-            new GridColumnSetting<RateDto>
+            }
+        );
+    }
+
+    private void AddIsDefRateSettings(List<GridColumnSetting<RateDto>> results)
+    {
+        results.Add(new GridColumnSetting<RateDto>
             {
                 Name = nameof(RateDto.IsDefRate),
                 Header = L["RateDto.IsDefRate"],
-                DisplaySelector = dto => dto.IsDefRate ? "Да" : "Нет",
+                DisplaySelector = dto => dto.IsDefRate
+                    ? L["RateDto.Yes"]
+                    : L["RateDto.No"],
                 SortSelector = dto => dto.IsDefRate,
                 Filterable = true,
                 Visible = true
-            },
-            new GridColumnSetting<RateDto>
-            {
-                Name = isRu 
-                    ? nameof(RateDto.RateTypeCodeRu)
-                    : nameof(RateDto.RateTypeCodeEn),
-                Header = L["RateDto.RateTypeCode"],
-                DisplaySelector = isRu
-                    ? dto => typeof(RateTypeRu).GetDisplayName(dto.RateTypeCodeRu.ToString()) ?? string.Empty
-                    : dto => typeof(RateTypeEn).GetDisplayName(dto.RateTypeCodeEn.ToString()) ?? string.Empty,
-                SortSelector = isRu
-                    ? dto => dto.RateTypeCodeRu
-                    : dto => dto.RateTypeCodeEn,
-                Filterable = true,
-                Visible = true
-            },
+            }
+        );
+    }
+
+    private void AddRateTypeSettings(bool isRu, List<GridColumnSetting<RateDto>> results)
+    {
+        if (isRu)
+            results.Add(new GridColumnSetting<RateDto>
+                {
+                    Name = nameof(RateDto.RateTypeIdRu),
+                    Header = L["RateDto.RateTypeName"],
+                    DisplaySelector = dto => typeof(RateTypeRu).GetDisplayName(dto.RateTypeIdRu.ToString()) ?? string.Empty,
+                    SortSelector = dto => dto.RateTypeIdRu,
+                    Filterable = true,
+                    Visible = true
+                }
+            );
+        else
+            results.Add(new GridColumnSetting<RateDto>
+                {
+                    Name = nameof(RateDto.RateTypeIdEn),
+                    Header = L["RateDto.RateTypeName"],
+                    DisplaySelector = dto => typeof(RateTypeEn).GetDisplayName(dto.RateTypeIdEn.ToString()) ?? string.Empty,
+                    SortSelector = dto => dto.RateTypeIdEn,
+                    Filterable = true,
+                    Visible = true
+                }
+            );
+    }
+
+    private void AddTransportKindSettings(List<GridColumnSetting<RateDto>> results, bool isRu)
+    {
+        results.Add(
             new GridColumnSetting<RateDto>
             {
                 Name = nameof(RateDto.TransportKindCode),
@@ -60,16 +107,37 @@ public class RatesGridSettingsService(ILocalStorageService localStorage, IString
                 SortSelector = dto => dto.TransportKindCode,
                 Filterable = true,
                 Visible = false
-            },
-            new GridColumnSetting<RateDto>
-            {
-                Name = nameof(RateDto.TransportKindName),
-                Header = L["RateDto.TransportKindName"],
-                DisplaySelector = dto => dto.TransportKindName,
-                SortSelector = dto => dto.TransportKindName,
-                Filterable = true,
-                Visible = true
-            },
+            }
+        );
+
+        //TransportKind
+        if (isRu)
+            results.Add(new GridColumnSetting<RateDto>
+                {
+                    Name = nameof(RateDto.TransportKindIdRu),
+                    Header = L["RateDto.TransportKindName"],
+                    DisplaySelector = dto => typeof(TransportKindRu).GetDisplayName(dto.TransportKindIdRu.ToString()) ?? string.Empty,
+                    SortSelector = dto => dto.TransportKindIdRu,
+                    Filterable = true,
+                    Visible = true
+                }
+            );
+        else
+            results.Add(new GridColumnSetting<RateDto>
+                {
+                    Name = nameof(RateDto.TransportKindIdEn),
+                    Header = L["RateDto.TransportKindName"],
+                    DisplaySelector = dto => typeof(TransportKindEn).GetDisplayName(dto.TransportKindIdEn.ToString()) ?? string.Empty,
+                    SortSelector = dto => dto.TransportKindIdEn,
+                    Filterable = true,
+                    Visible = true
+                }
+            );
+    }
+
+    private void AddTransportTypeSettings(List<GridColumnSetting<RateDto>> results, bool isRu)
+    {
+        results.Add(
             new GridColumnSetting<RateDto>
             {
                 Name = nameof(RateDto.TransportTypeCode),
@@ -78,34 +146,78 @@ public class RatesGridSettingsService(ILocalStorageService localStorage, IString
                 SortSelector = dto => dto.TransportTypeCode,
                 Filterable = true,
                 Visible = false
-            },
-            new GridColumnSetting<RateDto>
-            {
-                Name = nameof(RateDto.TransportTypeName),
-                Header = L["RateDto.TransportTypeName"],
-                DisplaySelector = dto => dto.TransportTypeName,
-                SortSelector = dto => dto.TransportTypeName,
-                Filterable = true,
-                Visible = true
-            },
+            }
+        );
+
+        // TransportType
+        if (isRu)
+            results.Add(new GridColumnSetting<RateDto>
+                {
+                    Name = nameof(RateDto.TransportTypeIdRu),
+                    Header = L["RateDto.TransportTypeName"],
+                    DisplaySelector = dto => typeof(TransportTypeLevel3Ru).GetDisplayName(dto.TransportTypeIdRu.ToString()) ?? string.Empty,
+                    SortSelector = dto => dto.TransportTypeIdRu,
+                    Filterable = true,
+                    Visible = true
+                }
+            );
+        else
+            results.Add(new GridColumnSetting<RateDto>
+                {
+                    Name = nameof(RateDto.TransportTypeIdEn),
+                    Header = L["RateDto.TransportTypeName"],
+                    DisplaySelector = dto => typeof(TransportTypeLevel3En).GetDisplayName(dto.TransportTypeIdEn.ToString()) ?? string.Empty,
+                    SortSelector = dto => dto.TransportTypeIdEn,
+                    Filterable = true,
+                    Visible = true
+                }
+            );
+    }
+
+
+    private void AddNodeFromSettings(List<GridColumnSetting<RateDto>> results, bool isRu)
+    {
+        // NodeFromCode
+        results.Add(
             new GridColumnSetting<RateDto>
             {
                 Name = nameof(RateDto.NodeFromCode),
-                Header = L["RateDto.NodeFromCode"] ,
+                Header = L["RateDto.NodeFromCode"],
                 DisplaySelector = dto => dto.NodeFromCode,
                 SortSelector = dto => dto.NodeFromCode,
                 Filterable = true,
                 Visible = false
-            },
-            new GridColumnSetting<RateDto>
-            {
-                Name = nameof(RateDto.NodeFromName),
-                Header = L["RateDto.NodeFromName"] ,
-                DisplaySelector = dto => dto.NodeFromName,
-                SortSelector = dto => dto.NodeFromName,
-                Filterable = true,
-                Visible = true
-            },
+            }
+        );
+
+        // NodeFromName
+        if (isRu)
+            results.Add(new GridColumnSetting<RateDto>
+                {
+                    Name = nameof(RateDto.NodeFromNameRu),
+                    Header = L["RateDto.NodeFromName"],
+                    DisplaySelector = dto => dto.NodeFromNameRu,
+                    SortSelector = dto => dto.NodeFromNameRu,
+                    Filterable = true,
+                    Visible = true
+                }
+            );
+        else
+            results.Add(new GridColumnSetting<RateDto>
+                {
+                    Name = nameof(RateDto.NodeFromNameEn),
+                    Header = L["RateDto.NodeFromName"],
+                    DisplaySelector = dto => dto.NodeFromNameEn,
+                    SortSelector = dto => dto.NodeFromNameEn,
+                    Filterable = true,
+                    Visible = true
+                }
+            );
+    }
+
+    private void AddProxyNodeSettings(List<GridColumnSetting<RateDto>> results, bool isRu)
+    {
+        results.Add(
             new GridColumnSetting<RateDto>
             {
                 Name = nameof(RateDto.ProxyNodeCode),
@@ -114,16 +226,38 @@ public class RatesGridSettingsService(ILocalStorageService localStorage, IString
                 SortSelector = dto => dto.ProxyNodeCode!,
                 Filterable = true,
                 Visible = false
-            },
-            new GridColumnSetting<RateDto>
-            {
-                Name = nameof(RateDto.ProxyNodeName),
-                Header = L["RateDto.ProxyNodeName"],
-                DisplaySelector = dto => dto.ProxyNodeName!,
-                SortSelector = dto => dto.ProxyNodeName!,
-                Filterable = true,
-                Visible = true
-            },
+            }
+        );
+
+        // ProxyNodeName
+        if (isRu)
+            results.Add(new GridColumnSetting<RateDto>
+                {
+                    Name = nameof(RateDto.ProxyNodeNameRu),
+                    Header = L["RateDto.ProxyNodeName"],
+                    DisplaySelector = dto => dto.ProxyNodeNameRu!,
+                    SortSelector = dto => dto.ProxyNodeNameRu!,
+                    Filterable = true,
+                    Visible = true
+                }
+            );
+        else
+            results.Add(new GridColumnSetting<RateDto>
+                {
+                    Name = nameof(RateDto.ProxyNodeNameEn),
+                    Header = L["RateDto.ProxyNodeName"],
+                    DisplaySelector = dto => dto.ProxyNodeNameEn!,
+                    SortSelector = dto => dto.ProxyNodeNameEn!,
+                    Filterable = true,
+                    Visible = true
+                }
+            );
+    }
+
+
+    private void AddNodeToSettings(List<GridColumnSetting<RateDto>> results, bool isRu)
+    {
+        results.Add(
             new GridColumnSetting<RateDto>
             {
                 Name = nameof(RateDto.NodeToCode),
@@ -132,16 +266,38 @@ public class RatesGridSettingsService(ILocalStorageService localStorage, IString
                 SortSelector = dto => dto.NodeToCode,
                 Filterable = true,
                 Visible = false
-            },
-            new GridColumnSetting<RateDto>
-            {
-                Name = nameof(RateDto.NodeToName),
-                Header = L["RateDto.NodeToName"],
-                DisplaySelector = dto => dto.NodeToName,
-                SortSelector = dto => dto.NodeToName,
-                Filterable = true,
-                Visible = true
-            },
+            }
+        );
+
+
+        // NodeToName
+        if (isRu)
+            results.Add(new GridColumnSetting<RateDto>
+                {
+                    Name = nameof(RateDto.NodeToNameRu),
+                    Header = L["RateDto.NodeToName"],
+                    DisplaySelector = dto => dto.NodeToNameRu,
+                    SortSelector = dto => dto.NodeToNameRu,
+                    Filterable = true,
+                    Visible = true
+                }
+            );
+        else
+            results.Add(new GridColumnSetting<RateDto>
+                {
+                    Name = nameof(RateDto.NodeToNameEn),
+                    Header = L["RateDto.NodeToName"],
+                    DisplaySelector = dto => dto.NodeToNameEn,
+                    SortSelector = dto => dto.NodeToNameEn,
+                    Filterable = true,
+                    Visible = true
+                }
+            );
+    }
+
+    private void AddProductGroupSettings(List<GridColumnSetting<RateDto>> results, bool isRu)
+    {
+        results.Add(
             new GridColumnSetting<RateDto>
             {
                 Name = nameof(RateDto.ProductGroupCode),
@@ -150,16 +306,37 @@ public class RatesGridSettingsService(ILocalStorageService localStorage, IString
                 SortSelector = dto => dto.ProductGroupCode!,
                 Filterable = true,
                 Visible = false
-            },
-            new GridColumnSetting<RateDto>
-            {
-                Name = nameof(RateDto.ProductGroupName),
-                Header = L["RateDto.ProductGroupName"],
-                DisplaySelector = dto => dto.ProductGroupName!,
-                SortSelector = dto => dto.ProductGroupName!,
-                Filterable = true,
-                Visible = true
-            },
+            }
+        );
+
+        // ProductGroupName
+        if (isRu)
+            results.Add(new GridColumnSetting<RateDto>
+                {
+                    Name = nameof(RateDto.ProductGroupNameRu),
+                    Header = L["RateDto.ProductGroupName"],
+                    DisplaySelector = dto => dto.ProductGroupNameRu!,
+                    SortSelector = dto => dto.ProductGroupNameRu!,
+                    Filterable = true,
+                    Visible = true
+                }
+            );
+        else
+            results.Add(new GridColumnSetting<RateDto>
+                {
+                    Name = nameof(RateDto.ProductGroupNameEn),
+                    Header = L["RateDto.ProductGroupName"],
+                    DisplaySelector = dto => dto.ProductGroupNameEn!,
+                    SortSelector = dto => dto.ProductGroupNameEn!,
+                    Filterable = true,
+                    Visible = true
+                }
+            );
+    }
+
+    private void AddProductCodeSettings(List<GridColumnSetting<RateDto>> results, bool isRu)
+    {
+        results.Add(
             new GridColumnSetting<RateDto>
             {
                 Name = nameof(RateDto.ProductCode),
@@ -168,34 +345,92 @@ public class RatesGridSettingsService(ILocalStorageService localStorage, IString
                 SortSelector = dto => dto.ProductCode!,
                 Filterable = true,
                 Visible = false
-            },
-            new GridColumnSetting<RateDto>
+            }
+        );
+
+        // ProductName
+        if (isRu)
+            results.Add(new GridColumnSetting<RateDto>
+                {
+                    Name = nameof(RateDto.ProductNameRu),
+                    Header = L["RateDto.ProductName"],
+                    DisplaySelector = dto => dto.ProductNameRu!,
+                    SortSelector = dto => dto.ProductNameRu!,
+                    Filterable = true,
+                    Visible = true
+                }
+            );
+        else
+            results.Add(new GridColumnSetting<RateDto>
+                {
+                    Name = nameof(RateDto.ProductNameEn),
+                    Header = L["RateDto.ProductName"],
+                    DisplaySelector = dto => dto.ProductNameEn!,
+                    SortSelector = dto => dto.ProductNameEn!,
+                    Filterable = true,
+                    Visible = true
+                }
+            );
+    }
+
+
+    private void AddStartEndDateSettings(List<GridColumnSetting<RateDto>> results)
+    {
+        results.AddRange(
+            new[]
             {
-                Name = nameof(RateDto.ProductName),
-                Header = L["RateDto.ProductName"],
-                DisplaySelector = dto => dto.ProductName!,
-                SortSelector = dto => dto.ProductName!,
-                Filterable = true,
-                Visible = false
-            },
-            new GridColumnSetting<RateDto>
+                new GridColumnSetting<RateDto>
+                {
+                    Name = nameof(RateDto.StartDate),
+                    Header = L["RateDto.StartDate"],
+                    DisplaySelector = dto => dto.StartDate.ToShortDateString(),
+                    SortSelector = dto => dto.StartDate,
+                    Filterable = true,
+                    Visible = true
+                },
+                new GridColumnSetting<RateDto>
+                {
+                    Name = nameof(RateDto.EndDate),
+                    Header = L["RateDto.EndDate"],
+                    DisplaySelector = dto => dto.EndDate.ToShortDateString(),
+                    SortSelector = dto => dto.EndDate,
+                    Filterable = true,
+                    Visible = true
+                }
+            }
+        );
+    }
+
+    private void AddTotalCostSettings(List<GridColumnSetting<RateDto>> results)
+    {
+        results.AddRange(
+            new[]
             {
-                Name = nameof(RateDto.StartDate),
-                Header = L["RateDto.StartDate"],
-                DisplaySelector = dto => dto.StartDate.ToShortDateString(),
-                SortSelector = dto => dto.StartDate,
-                Filterable = true,
-                Visible = true
-            },
-            new GridColumnSetting<RateDto>
-            {
-                Name = nameof(RateDto.EndDate),
-                Header = L["RateDto.EndDate"],
-                DisplaySelector = dto => dto.EndDate.ToShortDateString(),
-                SortSelector = dto => dto.EndDate,
-                Filterable = true,
-                Visible = true
-            },
+                new GridColumnSetting<RateDto>
+                {
+                    Name = nameof(RateDto.TotalCostTon),
+                    Header = L["RateDto.TotalCostTon"],
+                    DisplaySelector = dto => dto.TotalCostTon,
+                    SortSelector = dto => dto.TotalCostTon,
+                    Filterable = false,
+                    Visible = true
+                },
+                new GridColumnSetting<RateDto>
+                {
+                    Name = nameof(RateDto.TotalCostTransport),
+                    Header = L["RateDto.TotalCostTransport"],
+                    DisplaySelector = dto => dto.TotalCostTransport,
+                    SortSelector = dto => dto.TotalCostTransport,
+                    Filterable = false,
+                    Visible = false
+                }
+            }
+        );
+    }
+
+    private void AddCurrencySettings(List<GridColumnSetting<RateDto>> results)
+    {
+        results.Add(
             new GridColumnSetting<RateDto>
             {
                 Name = nameof(RateDto.CurrencyCode),
@@ -204,53 +439,53 @@ public class RatesGridSettingsService(ILocalStorageService localStorage, IString
                 SortSelector = dto => dto.CurrencyCode,
                 Filterable = true,
                 Visible = true
-            },
-            new GridColumnSetting<RateDto>
+            }
+        );
+    }
+
+    private void AddCreationChangeDateSettings(List<GridColumnSetting<RateDto>> results)
+    {
+        results.AddRange(
+            new[]
             {
-                Name = nameof(RateDto.TotalCostTon),
-                Header = L["RateDto.TotalCostTon"],
-                DisplaySelector = dto => dto.TotalCostTon,
-                SortSelector = dto => dto.TotalCostTon,
-                Filterable = false,
-                Visible = true
-            },
-            new GridColumnSetting<RateDto>
-            {
-                Name = nameof(RateDto.TotalCostTransport),
-                Header = L["RateDto.TotalCostTransport"],
-                DisplaySelector = dto => dto.TotalCostTransport,
-                SortSelector = dto => dto.TotalCostTransport,
-                Filterable = false,
-                Visible = false
-            },
-            new GridColumnSetting<RateDto>
-            {
-                Name = nameof(RateDto.CreationDate),
-                Header = L["RateDto.CreationDate"],
-                DisplaySelector = dto => dto.CreationDate,
-                SortSelector = dto => dto.CreationDate,
-                Filterable = true,
-                Visible = false
-            },
-            new GridColumnSetting<RateDto>
-            {
-                Name = nameof(RateDto.LastChangeDate),
-                Header = L["RateDto.LastChangeDate"],
-                DisplaySelector = dto => dto.LastChangeDate,
-                SortSelector = dto => dto.LastChangeDate,
-                Filterable = true,
-                Visible = false
-            },
+                new GridColumnSetting<RateDto>
+                {
+                    Name = nameof(RateDto.CreationDate),
+                    Header = L["RateDto.CreationDate"],
+                    DisplaySelector = dto => dto.CreationDate,
+                    SortSelector = dto => dto.CreationDate,
+                    Filterable = true,
+                    Visible = false
+                },
+                new GridColumnSetting<RateDto>
+                {
+                    Name = nameof(RateDto.LastChangeDate),
+                    Header = L["RateDto.LastChangeDate"],
+                    DisplaySelector = dto => dto.LastChangeDate,
+                    SortSelector = dto => dto.LastChangeDate,
+                    Filterable = true,
+                    Visible = false
+                }
+            }
+        );
+    }
+
+
+    private void AddIsArchiveSettings(List<GridColumnSetting<RateDto>> results)
+    {
+        results.Add(
             new GridColumnSetting<RateDto>
             {
                 Name = nameof(RateDto.IsArchive),
                 Header = L["RateDto.IsArchive"],
-                DisplaySelector = dto => dto.IsArchive ? "Архив" : "Актив",
+                DisplaySelector = dto => dto.IsArchive
+                    ? L["RateDto.Archive"]
+                    : L["RateDto.Active"],
                 SortSelector = dto => dto.IsArchive,
                 Filterable = true,
                 Visible = false,
                 FilterValue = "False"
             }
-        ];
+        );
     }
 }

@@ -23,8 +23,7 @@ INSERT INTO dbo.TransportRateSnapshot (
     Code,                  
 
     CurrencyCode,
-    RateTypeCodeEn,
-    RateTypeCodeRu,
+    RateTypeCode,
     RateTypeName,
     NodeFromCode,
     NodeFromNameEn,
@@ -74,8 +73,7 @@ SELECT
         LEFT(r.Code, 10),              -- Code (NVARCHAR(10))
 
         LEFT(cur.Code, 3),             -- CurrencyCode (NVARCHAR(3))
-        LEFT(rt.Code, 2),              -- RateTypeCodeEn (NVARCHAR(2)) -- для разных языков коды совпадают
-        LEFT(rt.Code, 2),              -- RateTypeCodeRu (NVARCHAR(2))
+        LEFT(rt.Code, 2),              -- RateTypeCode (NVARCHAR(2)) 
         LEFT(rt.[Name], 20),           -- RateTypeName (NVARCHAR(20))
         LEFT(nf.Code, 10),             -- NodeFromCode (NVARCHAR(10))
         LEFT(nf.a_2123, 30),           -- NodeFromNameEn (NVARCHAR(30))

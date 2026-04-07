@@ -222,6 +222,12 @@
   <data name="RateDto.IsArchive" xml:space="preserve">
 	  <value>Is Archive</value>
   </data>
+  <data name="RateDto.Archive" xml:space="preserve">
+	  <value>Archive</value>
+  </data>
+  <data name="RateDto.Active" xml:space="preserve">
+	  <value>Active</value>
+  </data>	
   <data name="RateDto.RateTypeCode" xml:space="preserve">
 	  <value>Rate Type Code</value>
   </data>
@@ -236,5 +242,11 @@
   </data>
   <data name="RateDto.TransportTypeName" xml:space="preserve">
 	  <value>Transport Type Name</value>
+  </data>
+  <data name="RateDto.Yes" xml:space="preserve">
+	  <value>Yes</value>
+  </data>
+  <data name="RateDto.No" xml:space="preserve">
+	  <value>No</value>
   </data>
 </root>

@@ -5,17 +5,17 @@ namespace BlazorSvt.Models.Dto;
 public enum RateTypeRu
 {
     [Display(Name = "Тендерная")] 
-    Tender = 2, //Тендерная
+    Tender = 543746, // 2 Тендерная
 
     [Display(Name = "Спотовая")] 
-    Spot = 3, //Спотовая
+    Spot = 543748, //3 Спотовая
 
     [Display(Name = "Индикативная")] 
-    Indicative = 4, //Индикативная
+    Indicative = 543749, // 4 Индикативная
 
     [Display(Name = "Договорная")] 
-    Agreement = 5, //Договорная
+    Agreement = 19434322, //5 Договорная
 
     [Display(Name = "Фактическая")] 
-    Fact = 6 //Фактическая
+    Fact = 19434323 // 6 Фактическая
 }

@@ -138,10 +138,10 @@ BEGIN
                     AND CONTAINS(' + ColumnName + ', N''"' + ColumnValue + '*"'') '
                 ELSE '' 
                 END
-            -- Логика для КОДОВ (строк но без полнотекстового поиска, только для равенства)
-            WHEN 'CODE' THEN 
+            -- Логика для ID INT
+            WHEN 'ID' THEN 
                 N'
-                    AND ' + ColumnName + ' =  N''' + ColumnValue + ''' '
+                    AND ' + ColumnName + ' =  ' + ColumnValue + ' '
             -- Логика для ДАТ
             WHEN 'DATE' THEN 
                 CASE WHEN ISDATE(ColumnValue) = 1
