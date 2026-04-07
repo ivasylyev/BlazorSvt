@@ -23,6 +23,7 @@ CREATE TABLE dbo.TransportRateSnapshot (
     ProductGroupId      BIGINT NULL,
     ProductId           BIGINT NULL,
     RateTypeId          BIGINT NOT NULL,
+    CurrencyId          BIGINT NOT NULL,
 
     Code                NVARCHAR(10) NOT NULL,
 

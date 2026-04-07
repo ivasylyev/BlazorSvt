@@ -85,3 +85,12 @@ CREATE NONCLUSTERED INDEX [ix_TransportRateSnapshot_ProductGroupId_ProductId_IsA
     [IsArchive]
 )
 GO
+
+DROP INDEX IF EXISTS [ix_TransportRateSnapshot_CurrencyId_IsArchive] ON [dbo].[TransportRateSnapshot];
+GO
+CREATE NONCLUSTERED INDEX [ix_TransportRateSnapshot_CurrencyId_IsArchive] ON [dbo].TransportRateSnapshot
+(
+	[CurrencyId],
+    [IsArchive]
+)
+GO

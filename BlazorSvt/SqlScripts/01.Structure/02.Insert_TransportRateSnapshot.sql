@@ -20,6 +20,8 @@ INSERT INTO dbo.TransportRateSnapshot (
     ProductGroupId,      
     ProductId, 
     RateTypeId,
+    CurrencyId,
+
     Code,                  
 
     CurrencyCode,
@@ -69,6 +71,7 @@ SELECT
         r.ProductGroup,      
         r.Product,     
         r.RateType,
+        r.CurrencyStandard,
 
         LEFT(r.Code, 10),              -- Code (NVARCHAR(10))
 

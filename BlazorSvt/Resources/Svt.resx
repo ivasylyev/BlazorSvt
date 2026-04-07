@@ -207,6 +207,9 @@
   <data name="RateDto.CurrencyCode" xml:space="preserve">
 	  <value>Currency</value>
   </data>
+  <data name="RateDto.Currency" xml:space="preserve">
+	  <value>Currency</value>
+  </data>
   <data name="RateDto.TotalCostTon" xml:space="preserve">
 	  <value>Total Cost Ton</value>
   </data>

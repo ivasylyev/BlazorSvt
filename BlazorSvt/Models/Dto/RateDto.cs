@@ -22,7 +22,7 @@ public class RateDto
     public long? ProductId { get; set; }
 
     public required string Code { get; set; }
-    public required string CurrencyCode { get; set; }
+    public required Currency CurrencyId { get; set; }
     public required RateTypeRu RateTypeIdRu { get; set; }
     public required RateTypeEn RateTypeIdEn { get; set; }
     public required string RateTypeName { get; set; }

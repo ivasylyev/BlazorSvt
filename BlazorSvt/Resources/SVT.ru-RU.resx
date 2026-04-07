@@ -204,6 +204,9 @@
   <data name="RateDto.CurrencyCode" xml:space="preserve">
 	  <value>Валюта</value>
   </data>
+  <data name="RateDto.Currency" xml:space="preserve">
+	  <value>Валюта</value>
+  </data>
   <data name="RateDto.TotalCostTon" xml:space="preserve">
 	  <value>За тонну</value>
   </data>

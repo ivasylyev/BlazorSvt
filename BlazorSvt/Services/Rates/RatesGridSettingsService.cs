@@ -430,13 +430,12 @@ public class RatesGridSettingsService(ILocalStorageService localStorage, IString
 
     private void AddCurrencySettings(List<GridColumnSetting<RateDto>> results)
     {
-        results.Add(
-            new GridColumnSetting<RateDto>
+        results.Add(new GridColumnSetting<RateDto>
             {
-                Name = nameof(RateDto.CurrencyCode),
-                Header = L["RateDto.CurrencyCode"],
-                DisplaySelector = dto => dto.CurrencyCode,
-                SortSelector = dto => dto.CurrencyCode,
+                Name = nameof(RateDto.CurrencyId),
+                Header = L["RateDto.Currency"],
+                DisplaySelector = dto => typeof(Currency).GetDisplayName(dto.CurrencyId.ToString()) ?? string.Empty,
+                SortSelector = dto => dto.CurrencyId,
                 Filterable = true,
                 Visible = true
             }
