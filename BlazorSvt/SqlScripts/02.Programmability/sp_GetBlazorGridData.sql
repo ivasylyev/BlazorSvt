@@ -93,6 +93,7 @@ BEGIN
     )
     DECLARE
         @Offset INT = (@PageNumber - 1) * @PageSize,
+        @CTEs NVARCHAR(MAX) = '',
         @JoinClause NVARCHAR(MAX) = '',
         @WhereClause NVARCHAR(MAX) = '',
         @MainSQL NVARCHAR(MAX),
@@ -128,15 +129,28 @@ BEGIN
     JOIN @AllowedColumns AC
     ON JS.PropertyName = AC.ColumnName
 
+     -- Логика фильтров для СТРОК c полнотекстовым поиском
+    SELECT 
+    @CTEs = STRING_AGG(
+        '
+        ,FTE_' + ColumnName + ' AS (
+            SELECT [KEY]
+            FROM CONTAINSTABLE(' + @TableName + ', ' + ColumnName + ', N''"' + ColumnValue + '*"'')
+        )', '' 
+    ),
+    @JoinClause = STRING_AGG(
+        '
+        JOIN FTE_' + ColumnName + ' ON FTE_' + ColumnName + '.[KEY] = Id', '' 
+    )
+    FROM @FilteredColumns
+    WHERE ColumnType = 'NVARCHAR' AND LEN(ColumnValue) > 2;
+
+    SET @CTEs = ISNULL(@CTEs, '')   
+    SET @JoinClause = ISNULL(@JoinClause, '')
+
+     -- Логика остальных фильтов 
     SELECT @WhereClause = STRING_AGG(
-        CASE ColumnType
-            -- Логика для СТРОК c полнотекстовым поиском
-            WHEN 'NVARCHAR' THEN 
-                CASE WHEN LEN(ColumnValue) > 2 THEN
-                    N'
-                    AND CONTAINS(' + ColumnName + ', N''"' + ColumnValue + '*"'') '
-                ELSE '' 
-                END
+        CASE ColumnType           
             -- Логика для ID INT
             WHEN 'ID' THEN 
                 N'
@@ -172,12 +186,16 @@ BEGIN
 
     SET @MainSQL = '
     DECLARE @TotalCount INT
+    WITH CTE AS (SELECT 1 AS TST)
+    ' + @CTEs + '
     SELECT @TotalCount = COUNT(1)
     FROM 
     ' + @TableName + ' 
     ' + @JoinClause + ' 
     ' + @WhereClause + ';' + '
 
+    WITH CTE AS (SELECT 1 AS TST)
+    ' + @CTEs + '
     ' + @SelectList + '
         FROM 
     ' + @TableName + '
@@ -196,35 +214,6 @@ BEGIN
 
     EXEC sp_executesql @MainSQL;
     
-
-    /*
-
-;WITH FT AS (
-    SELECT [KEY]
-    FROM CONTAINSTABLE(mdm.dbo.TransportRateSnapshot, NodeFromNameRu, N'"каз*"')
-),
-FT1 AS (
-    SELECT [KEY]
-    FROM CONTAINSTABLE(mdm.dbo.TransportRateSnapshot, NodeToNameRu, N'"кит*"')
-)
-
-SELECT      t.*
-FROM mdm.dbo.TransportRateSnapshot t
-JOIN FT
-    ON t.Id = FT.[KEY]
-JOIN FT1 
-    ON t.Id = FT1.[KEY]
-
-    
-WHERE
-    t.RateTypeId = 543749
-    AND t.IsArchive = 0
-    
-    
-    ORDER BY   Id DESC
-    OFFSET 10 ROWS
-    FETCH NEXT 10 ROWS ONLY;
-    */
 
 END
 GO
