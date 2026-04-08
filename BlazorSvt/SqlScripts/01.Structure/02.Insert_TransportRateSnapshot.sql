@@ -67,10 +67,10 @@ SELECT
         r.RateType,
         r.CurrencyStandard,
 
-        LEFT(r.Code, 10),              -- Code (NVARCHAR(10))
+        TRY_CAST(LEFT(r.Code, 10) AS BIGINT),              -- Code (NVARCHAR(10))
 
         LEFT(cur.Code, 3),             -- CurrencyCode (NVARCHAR(3))
-        LEFT(rt.Code, 2),              -- RateTypeCode (NVARCHAR(2)) 
+        TRY_CAST(LEFT(rt.Code, 2) AS BIGINT),              -- RateTypeCode (NVARCHAR(2)) 
         LEFT(nf.Code, 10),             -- NodeFromCode (NVARCHAR(10))
         LEFT(nf.a_2123, 30),           -- NodeFromNameEn (NVARCHAR(30))
         LEFT(nf.a_1020, 30),           -- NodeFromNameRu (NVARCHAR(30))
@@ -85,7 +85,7 @@ SELECT
         LEFT(pg.Code, 5),              -- ProductGroupCode (NVARCHAR(5))
         LEFT(pg.[Name], 100),          -- ProductGroupNameRu (NVARCHAR(100))
         LEFT(pg.NameEn, 100),          -- ProductGroupNameEn (NVARCHAR(100))
-        LEFT(p.Code, 7),               -- ProductCode (NVARCHAR(7))
+        TRY_CAST(LEFT(p.Code, 7) AS BIGINT),               -- ProductCode (NVARCHAR(7))
         LEFT(p.NameShort_ru, 100),     -- ProductNameRu (NVARCHAR(100))
         LEFT(p.NameShort_en, 100),     -- ProductNameEn (NVARCHAR(100))
         LEFT(cn.Code, 10),             -- ContractorCode (NVARCHAR(10))
@@ -106,4 +106,7 @@ SELECT
 
     where r.TotalCostTon is not null
     and r.TotalCostTransport is not null
+    and TRY_CAST(LEFT(r.Code, 10) AS BIGINT) IS NOT NULL
+    and TRY_CAST(LEFT(rt.Code, 2) AS BIGINT) IS NOT NULL
+    and (LEFT(p.Code, 7) IS NULL OR TRY_CAST(LEFT(p.Code, 7) AS BIGINT) IS NOT NULL);
 

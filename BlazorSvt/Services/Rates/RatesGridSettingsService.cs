@@ -105,7 +105,7 @@ public class RatesGridSettingsService(ILocalStorageService localStorage, IString
                 Header = L["RateDto.TransportKindCode"],
                 DisplaySelector = dto => dto.TransportKindCode,
                 SortSelector = dto => dto.TransportKindCode,
-                Filterable = true,
+                Filterable = false,
                 Visible = false
             }
         );
@@ -144,7 +144,7 @@ public class RatesGridSettingsService(ILocalStorageService localStorage, IString
                 Header = L["RateDto.TransportTypeCode"],
                 DisplaySelector = dto => dto.TransportTypeCode,
                 SortSelector = dto => dto.TransportTypeCode,
-                Filterable = true,
+                Filterable = false,
                 Visible = false
             }
         );

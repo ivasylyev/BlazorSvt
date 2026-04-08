@@ -34,6 +34,8 @@ BEGIN
 
     SET @LangSuffix = CASE WHEN @Lang = N'ru' THEN N'Ru' ELSE N'En' END
     SET @AllowedColumnsJson = N'[
+            {"ColumnName": "Code", "ColumnType": "ID"},
+            {"ColumnName": "RateTypeCode", "ColumnType": "ID"},
             {"ColumnName": "CurrencyId", "ColumnType": "ID"},
             {"ColumnName": "RateTypeId", "ColumnType": "ID"},
             {"ColumnName": "NodeFromCode", "ColumnType": "NVARCHAR"},
@@ -51,7 +53,7 @@ BEGIN
             {"ColumnName": "ProductGroupCode", "ColumnType": "NVARCHAR"},
             {"ColumnName": "ProductGroupNameRu", "ColumnType": "NVARCHAR"},
             {"ColumnName": "ProductGroupNameEn", "ColumnType": "NVARCHAR"},
-            {"ColumnName": "ProductCode", "ColumnType": "NVARCHAR"},
+            {"ColumnName": "ProductCode", "ColumnType": "ID"},
             {"ColumnName": "ProductNameRu", "ColumnType": "NVARCHAR"},
             {"ColumnName": "ProductNameEn", "ColumnType": "NVARCHAR"},
             {"ColumnName": "ContractorCode", "ColumnType": "NVARCHAR"},

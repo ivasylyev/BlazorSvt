@@ -21,7 +21,7 @@ public class RateDto
     public long? ProductGroupId { get; set; }
     public long? ProductId { get; set; }
 
-    public required string Code { get; set; }
+    public required long Code { get; set; }
     public required Currency CurrencyId { get; set; }
     public required RateTypeRu RateTypeIdRu { get; set; }
     public required RateTypeEn RateTypeIdEn { get; set; }
@@ -43,7 +43,7 @@ public class RateDto
     public string? ProductGroupCode { get; set; }
     public string? ProductGroupNameRu { get; set; }
     public string? ProductGroupNameEn { get; set; }
-    public string? ProductCode { get; set; }
+    public long? ProductCode { get; set; }
     public string? ProductNameRu { get; set; }
     public string? ProductNameEn { get; set; }
     public string? ContractorCode { get; set; }

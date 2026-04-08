@@ -93,7 +93,6 @@ BEGIN
     )
     DECLARE
         @Offset INT = (@PageNumber - 1) * @PageSize,
-        @CTEs NVARCHAR(MAX) = '',
         @JoinClause NVARCHAR(MAX) = '',
         @WhereClause NVARCHAR(MAX) = '',
         @MainSQL NVARCHAR(MAX),
@@ -170,34 +169,62 @@ BEGIN
     SET @WhereClause = CONCAT('WHERE 1 = 1', @WhereClause)
 
     -- Основной SELECT с подставленными CTE и JOIN'ами
+
     SET @MainSQL = '
-    WITH CTE AS (SELECT 1 AS TST)
-    ' + @CTEs + '
+    DECLARE @TotalCount INT
+    SELECT @TotalCount = COUNT(1)
+    FROM 
+    ' + @TableName + ' 
+    ' + @JoinClause + ' 
+    ' + @WhereClause + ';' + '
+
     ' + @SelectList + '
         FROM 
     ' + @TableName + '
     ' + @JoinClause + ' 
     ' + @WhereClause + '
+    AND @TotalCount > 0
     ORDER BY '+ ISNULL(@SortKey + ' ' + @SortDirection + ', ', '')  + '  Id DESC
     OFFSET ' + CAST(@Offset AS NVARCHAR(20)) + ' ROWS
     FETCH NEXT ' + CAST(@PageSize AS NVARCHAR(20)) + ' ROWS ONLY;
+
+    SELECT @TotalCount AS TotalCount;
     ';
 
-    SET @TotalCountSQL = '
-    WITH CTE AS (SELECT 1 AS TST)
-    ' + @CTEs + '
-    SELECT COUNT(1) AS TotalCount 
-    FROM 
-    ' + @TableName + ' 
-    ' + @JoinClause + ' 
-    ' + @WhereClause + ';';
-
-    SET @BothSQL = @MainSQL + CHAR(13) + CHAR(10) + @TotalCountSQL;
-
     -- Для отладки можно раскомментировать:
-    PRINT @BothSQL;
+    PRINT @MainSQL;
 
-    EXEC sp_executesql @BothSQL;
+    EXEC sp_executesql @MainSQL;
     
+
+    /*
+
+;WITH FT AS (
+    SELECT [KEY]
+    FROM CONTAINSTABLE(mdm.dbo.TransportRateSnapshot, NodeFromNameRu, N'"каз*"')
+),
+FT1 AS (
+    SELECT [KEY]
+    FROM CONTAINSTABLE(mdm.dbo.TransportRateSnapshot, NodeToNameRu, N'"кит*"')
+)
+
+SELECT      t.*
+FROM mdm.dbo.TransportRateSnapshot t
+JOIN FT
+    ON t.Id = FT.[KEY]
+JOIN FT1 
+    ON t.Id = FT1.[KEY]
+
+    
+WHERE
+    t.RateTypeId = 543749
+    AND t.IsArchive = 0
+    
+    
+    ORDER BY   Id DESC
+    OFFSET 10 ROWS
+    FETCH NEXT 10 ROWS ONLY;
+    */
+
 END
 GO
