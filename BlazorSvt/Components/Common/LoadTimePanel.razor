@@ -2,7 +2,7 @@
 @inject PageTimingService TimingService
 @inherits SvtComponentBase
 
-<div class="rates-load-time">
+<div>
     @if (TimingService.LoadDuration > TimeSpan.Zero)
     {
         <span>
