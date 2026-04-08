@@ -1,38 +1,29 @@
 ﻿USE [mdm]
 GO
-
-
-
--- Создать новый сразу с несколькими столбцами
+DROP FULLTEXT INDEX ON dbo.TransportRateSnapshot
+GO
 CREATE FULLTEXT INDEX ON dbo.TransportRateSnapshot 
 ( 
     Code               ,
-
-    CurrencyCode       ,
-    --RateTypeName       ,
-    NodeFromCode       ,
-    NodeFromNameEn     ,
-    NodeFromNameRu     ,
-    ProxyNodeCode      ,
-    ProxyNodeNameEn    ,
-    ProxyNodeNameRu    ,
-    NodeToCode         ,
-    NodeToNameEn       ,
-    NodeToNameRu       ,
-    TransportKindCode  ,
-    --TransportKindNameRu,
-    --TransportKindNameEn,
-    TransportTypeCode  ,
-    --TransportTypeNameRu,
-    --TransportTypeNameEn,
-    ProductGroupCode   ,
-    ProductGroupNameRu ,
-    ProductGroupNameEn ,
-    ProductCode   ,
-    ProductNameRu ,
-    ProductNameEn ,
-    ContractorCode     ,
+    NodeFromCode       LANGUAGE 1033,      -- English,
+    NodeFromNameEn     LANGUAGE 1033,      -- English,
+    NodeFromNameRu     LANGUAGE 1049,      -- Russian,
+    ProxyNodeCode      LANGUAGE 1033,      -- English,
+    ProxyNodeNameEn    LANGUAGE 1033,      -- English,
+    ProxyNodeNameRu    LANGUAGE 1049,      -- Russian,
+    NodeToCode         LANGUAGE 1033,      -- English,
+    NodeToNameEn       LANGUAGE 1033,      -- English,
+    NodeToNameRu       LANGUAGE 1049,      -- Russian,
+    ProductGroupCode   LANGUAGE 1033,      -- English,
+    ProductGroupNameRu LANGUAGE 1049,      -- Russian,
+    ProductGroupNameEn LANGUAGE 1033,      -- English,
+    ProductCode        LANGUAGE 1033,      -- English,
+    ProductNameRu      LANGUAGE 1049,      -- Russian,
+    ProductNameEn      LANGUAGE 1033,      -- English,
+    ContractorCode     LANGUAGE 1033,      -- English,
     ContractorEGRUL    
 )
-KEY INDEX PK_TransportRateSnapshot;
+KEY INDEX UX_TransportRateSnapshot_Id
+WITH STOPLIST = SYSTEM, 
+     CHANGE_TRACKING = AUTO;
 GO

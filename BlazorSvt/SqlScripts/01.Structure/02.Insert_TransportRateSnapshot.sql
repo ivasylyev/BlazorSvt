@@ -1,7 +1,6 @@
-﻿SET IDENTITY_INSERT dbo.TransportRateSnapshot ON
-
+﻿
 INSERT INTO dbo.TransportRateSnapshot (
-    Id,
+    RateId,
     IsArchive,
     IsDefRate,
     StartDate,
@@ -26,7 +25,6 @@ INSERT INTO dbo.TransportRateSnapshot (
 
     CurrencyCode,
     RateTypeCode,
-    --RateTypeName,
     NodeFromCode,
     NodeFromNameEn,
     NodeFromNameRu,
@@ -37,11 +35,7 @@ INSERT INTO dbo.TransportRateSnapshot (
     NodeToNameEn,
     NodeToNameRu,
     TransportKindCode,
-    --TransportKindNameRu,
-    --TransportKindNameEn,
     TransportTypeCode,
-    --TransportTypeNameRu,
-    --TransportTypeNameEn,
     ProductGroupCode,
     ProductGroupNameRu,
     ProductGroupNameEn,
@@ -77,7 +71,6 @@ SELECT
 
         LEFT(cur.Code, 3),             -- CurrencyCode (NVARCHAR(3))
         LEFT(rt.Code, 2),              -- RateTypeCode (NVARCHAR(2)) 
-        --LEFT(rt.[Name], 20),           -- RateTypeName (NVARCHAR(20))
         LEFT(nf.Code, 10),             -- NodeFromCode (NVARCHAR(10))
         LEFT(nf.a_2123, 30),           -- NodeFromNameEn (NVARCHAR(30))
         LEFT(nf.a_1020, 30),           -- NodeFromNameRu (NVARCHAR(30))
@@ -88,11 +81,7 @@ SELECT
         LEFT(nt.a_2123, 30),           -- NodeToNameEn (NVARCHAR(30))
         LEFT(nt.a_1020, 30),           -- NodeToNameRu (NVARCHAR(30))
         LEFT(tk.Code, 5),              -- TransportKindCode (NVARCHAR(5))
-        --LEFT(tk.[Name], 50),           -- TransportKindNameRu (NVARCHAR(50))
-        --LEFT(tk.NameEnRu, 50),         -- TransportKindNameEn (NVARCHAR(50))
         LEFT(tt.Code, 20),             -- TransportTypeCode (NVARCHAR(20))
-        --LEFT(tt.[Name], 100),          -- TransportTypeNameRu (NVARCHAR(100))
-        --LEFT(tt.NameEnRu, 100),        -- TransportTypeNameEn (NVARCHAR(100))
         LEFT(pg.Code, 5),              -- ProductGroupCode (NVARCHAR(5))
         LEFT(pg.[Name], 100),          -- ProductGroupNameRu (NVARCHAR(100))
         LEFT(pg.NameEn, 100),          -- ProductGroupNameEn (NVARCHAR(100))
@@ -104,11 +93,9 @@ SELECT
        
     
     FROM vw_TransportRate r (NOLOCK)
-    --JOIN FilteredNF nf (NOLOCK) ON r.NodeFrom = nf.PrimitiveEntityItemId
     JOIN PrimitiveEntityData_1014 nf (NOLOCK) ON r.NodeFrom = nf.PrimitiveEntityItemId
     JOIN PrimitiveEntityData_1014 nt (NOLOCK) ON r.NodeTo = nt.PrimitiveEntityItemId
     LEFT JOIN PrimitiveEntityData_1014 np (NOLOCK) ON r.ProxyNode = np.PrimitiveEntityItemId
-    --LEFT JOIN FilteredNP np ON r.ProxyNode = np.PrimitiveEntityItemId
     LEFT JOIN vw_ProductGroup pg (NOLOCK) ON r.ProductGroup = pg.Id
     LEFT JOIN vw_MTR p (NOLOCK) ON r.Product = p.Id
     JOIN vw_RateType rt (NOLOCK) ON r.RateType = rt.Id
@@ -120,4 +107,3 @@ SELECT
     where r.TotalCostTon is not null
     and r.TotalCostTransport is not null
 
-SET IDENTITY_INSERT dbo.TransportRateSnapshot OFF

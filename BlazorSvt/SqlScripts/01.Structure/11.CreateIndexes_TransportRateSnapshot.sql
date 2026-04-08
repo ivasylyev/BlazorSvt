@@ -2,57 +2,104 @@
 GO
 
 
-DROP INDEX IF EXISTS [ix_TransportRateSnapshot_IsArchive_IsDefRate] ON [dbo].[TransportRateSnapshot];
+-- Для полнтотекстового индекса
+DROP INDEX IF EXISTS UX_TransportRateSnapshot_Id ON [dbo].[TransportRateSnapshot];
 GO
-CREATE NONCLUSTERED INDEX [ix_TransportRateSnapshot_IsArchive_IsDefRate] ON [dbo].TransportRateSnapshot
+
+CREATE UNIQUE NONCLUSTERED INDEX UX_TransportRateSnapshot_Id
+ON dbo.TransportRateSnapshot (Id)
+ON [PRIMARY];  -- важно: НЕ на partition scheme
+
+
+
+-- Даты
+DROP INDEX IF EXISTS ix_TransportRateSnapshot_Active_Date ON [dbo].[TransportRateSnapshot];
+GO
+CREATE NONCLUSTERED INDEX ix_TransportRateSnapshot_Active_Date 
+ON dbo.TransportRateSnapshot (StartDate, EndDate)
+WHERE IsArchive = 0;
+GO
+
+DROP INDEX IF EXISTS ix_TransportRateSnapshot_Archive_Date ON [dbo].[TransportRateSnapshot];
+GO
+CREATE NONCLUSTERED INDEX ix_TransportRateSnapshot_Archive_Date 
+ON dbo.TransportRateSnapshot (StartDate, EndDate)
+WHERE IsArchive = 1;
+GO
+
+
+-- Код
+
+DROP INDEX IF EXISTS ix_TransportRateSnapshot_Active_Code ON [dbo].[TransportRateSnapshot];
+GO
+CREATE NONCLUSTERED INDEX ix_TransportRateSnapshot_Active_Code 
+ON dbo.TransportRateSnapshot (Code)
+WHERE IsArchive = 0;
+GO
+
+DROP INDEX IF EXISTS ix_TransportRateSnapshot_Archive_Code ON [dbo].[TransportRateSnapshot];
+GO
+CREATE NONCLUSTERED INDEX ix_TransportRateSnapshot_Archive_Code 
+ON dbo.TransportRateSnapshot (Code)
+WHERE IsArchive = 1;
+GO
+
+
+
+
+-- Транспорт
+
+DROP INDEX IF EXISTS [ix_TransportRateSnapshot_Active_TransportKindId_TransportTypeId] ON [dbo].[TransportRateSnapshot];
+GO
+CREATE NONCLUSTERED INDEX [ix_TransportRateSnapshot_Active_TransportKindId_TransportTypeId] ON [dbo].TransportRateSnapshot
 (
-	[IsArchive],
-    [IsDefRate]
+	[TransportKindId],
+    [TransportTypeId]
 )
+WHERE IsArchive = 0;
 GO
 
-
-DROP INDEX IF EXISTS [ix_TransportRateSnapshot_code_include_id] ON [dbo].[TransportRateSnapshot];
+DROP INDEX IF EXISTS [ix_TransportRateSnapshot_Archive_TransportKindId_TransportTypeId] ON [dbo].[TransportRateSnapshot];
 GO
-CREATE NONCLUSTERED  INDEX [ix_TransportRateSnapshot_code_include_id] ON [dbo].TransportRateSnapshot
+CREATE NONCLUSTERED INDEX [ix_TransportRateSnapshot_Archive_TransportKindId_TransportTypeId] ON [dbo].TransportRateSnapshot
 (
-	[Code] ASC,
-    [IsArchive]
+	[TransportKindId],
+    [TransportTypeId]
 )
+WHERE IsArchive = 1;
 GO
 
+/*
+-- Группа и продукт
 
-DROP INDEX IF EXISTS [ix_TransportRateSnapshot_NodeFromNameRu] ON [dbo].[TransportRateSnapshot];
+DROP INDEX IF EXISTS [ix_TransportRateSnapshot_Active_ProductGroupId_ProductId] ON [dbo].[TransportRateSnapshot];
 GO
-
-CREATE NONCLUSTERED  INDEX [ix_TransportRateSnapshot_NodeFromNameRu] ON [dbo].TransportRateSnapshot
+CREATE NONCLUSTERED INDEX [ix_TransportRateSnapshot_Active_ProductGroupId_ProductId] ON [dbo].TransportRateSnapshot
 (
-	[NodeFromNameRu] ASC,
-    [IsArchive]
+	[ProductGroupId],
+    [ProductId]
 )
-GO
-
---drop  INDEX [ix_TransportRateSnapshot_NodeToNameRu] ON [dbo].TransportRateSnapshot
-DROP INDEX IF EXISTS ix_TransportRateSnapshot_NodeToNameRu ON [dbo].[TransportRateSnapshot];
+WHERE IsArchive = 0;
 GO
 
 
-CREATE NONCLUSTERED  INDEX ix_TransportRateSnapshot_NodeToNameRu ON [dbo].TransportRateSnapshot
+DROP INDEX IF EXISTS [ix_TransportRateSnapshot_Archive_ProductGroupId_ProductId] ON [dbo].[TransportRateSnapshot];
+GO
+CREATE NONCLUSTERED INDEX [ix_TransportRateSnapshot_Archive_ProductGroupId_ProductId] ON [dbo].TransportRateSnapshot
 (
-	[NodeToNameRu] ASC,
-    [IsArchive]
+	[ProductGroupId],
+    [ProductId]
 )
+WHERE IsArchive = 1;
 GO
 
+*/
 
-DROP INDEX IF EXISTS [ix_TransportRateSnapshot_IsArchive_IsDefRate] ON [dbo].[TransportRateSnapshot];
+-- =====================================================
+UPDATE STATISTICS dbo.TransportRateSnapshot WITH FULLSCAN;
 GO
-CREATE NONCLUSTERED INDEX [ix_TransportRateSnapshot_IsArchive_IsDefRate] ON [dbo].TransportRateSnapshot
-(
-	[IsArchive],
-    [IsDefRate]
-)
-GO
+
+/*
 
 DROP INDEX IF EXISTS [ix_TransportRateSnapshot_RateTypeCode_IsArchive] ON [dbo].[TransportRateSnapshot];
 GO
@@ -65,26 +112,8 @@ GO
 
 
 
-DROP INDEX IF EXISTS [ix_TransportRateSnapshot_TransportKindId_TransportTypeId_IsArchive] ON [dbo].[TransportRateSnapshot];
-GO
-CREATE NONCLUSTERED INDEX [ix_TransportRateSnapshot_TransportKindId_TransportTypeId_IsArchive] ON [dbo].TransportRateSnapshot
-(
-	[TransportKindId],
-    [TransportTypeId],
-    [IsArchive]
-)
-GO
 
 
-DROP INDEX IF EXISTS [ix_TransportRateSnapshot_ProductGroupId_ProductId_IsArchive] ON [dbo].[TransportRateSnapshot];
-GO
-CREATE NONCLUSTERED INDEX [ix_TransportRateSnapshot_ProductGroupId_ProductId_IsArchive] ON [dbo].TransportRateSnapshot
-(
-	[ProductGroupId],
-    [ProductId],
-    [IsArchive]
-)
-GO
 
 DROP INDEX IF EXISTS [ix_TransportRateSnapshot_CurrencyId_IsArchive] ON [dbo].[TransportRateSnapshot];
 GO
@@ -95,12 +124,4 @@ CREATE NONCLUSTERED INDEX [ix_TransportRateSnapshot_CurrencyId_IsArchive] ON [db
 )
 GO
 
-DROP INDEX IF EXISTS [ix_TransportRateSnapshot_IsArchive_StartDate_EndDate] ON [dbo].[TransportRateSnapshot];
-GO
-CREATE NONCLUSTERED INDEX [ix_TransportRateSnapshot_IsArchive_StartDate_EndDate] ON [dbo].TransportRateSnapshot
-(
-    [IsArchive],
-	[StartDate],
-    [EndDate]
-)
-GO
+*/
