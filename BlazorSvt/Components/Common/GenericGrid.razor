@@ -15,40 +15,41 @@
                OnOk="OnOkClick"
                OnCancel="OnCancelClick"
                OnReset="OnResetClick" />
+<div class="sibur-grid">
+    <Grid @ref="grid"
+          TItem="TItem"
+          Class="table table-hover table-bordered table-striped"
+          DataProvider="DataProvider"
+          AllowFiltering="true"
+          AllowPaging="true"
+          AllowSorting="true"
+          PaginationItemsTextFormat="{0} - {1} из {2} элементов"
+          Responsive="true">
 
-<Grid @ref="grid"
-      TItem="TItem"
-      Class="table table-hover table-bordered table-striped"
-      DataProvider="DataProvider"
-      AllowFiltering="true"
-      AllowPaging="true"
-      AllowSorting="true"
-      PaginationItemsTextFormat="{0} - {1} из {2} элементов"
-      Responsive="true">
-
-    @if (GridSettings is null)
-    {
-        <PlaceholderContainer Animation="PlaceholderAnimation.Glow">
-            <Placeholder Width="PlaceholderWidth.Col12" />
-        </PlaceholderContainer>
-    }
-    else
-    {
-        @foreach (var settings in GridSettings.ColumnSettings)
+        @if (GridSettings is null)
         {
-            <GridColumn TItem="TItem"
-                        HeaderText="@settings.Header"
-                        PropertyName="@settings.Name"
-                        SortString="@settings.Name"
-                        IsVisible="@settings.Visible"
-                        Filterable="@settings.Filterable"
-                        FilterValue="@settings.FilterValue"
-                        SortKeySelector="@settings.SortSelector"
-                        >
-                <div class="text-truncate" style="max-width: 200px;" title="@settings.DisplaySelector(context)">
-                    @settings.DisplaySelector(context)
-                </div>
-            </GridColumn>
+            <PlaceholderContainer Animation="PlaceholderAnimation.Glow">
+                <Placeholder Width="PlaceholderWidth.Col12" />
+            </PlaceholderContainer>
         }
-    }
-</Grid>
+        else
+        {
+            @foreach (var settings in GridSettings.ColumnSettings)
+            {
+                <GridColumn TItem="TItem"
+                            HeaderText="@settings.Header"
+                            PropertyName="@settings.Name"
+                            SortString="@settings.Name"
+                            IsVisible="@settings.Visible"
+                            Filterable="@settings.Filterable"
+                            FilterValue="@settings.FilterValue"
+                            SortKeySelector="@settings.SortSelector"
+                >
+                    <div class="text-truncate" style="max-width: 200px;" title="@settings.DisplaySelector(context)">
+                        @settings.DisplaySelector(context)
+                    </div>
+                </GridColumn>
+            }
+        }
+    </Grid>
+</div>

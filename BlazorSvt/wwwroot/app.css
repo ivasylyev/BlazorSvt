@@ -16,12 +16,9 @@ h1:focus {
     flex-wrap: wrap;
 }
 
-.bb-grid-filter {
-    /*display: none !important;*/
-    flex-basis: 100% !important;
-    width: max-content !important;
-}
 
+
+/*Site Header*/
 .custom-header-wrapper {
     /*background-color: #008c95;*/
     background-color: rgba(0, 140, 149, 0.3) !important;
@@ -38,6 +35,7 @@ h1:focus {
     align-items: center;
 }
 
+/*Button*/
 .sibur-dna-btn {
     background-color: #008c95 !important;
     border: 1px solid #008c95 !important;
@@ -50,6 +48,8 @@ h1:focus {
         background-color: white !important;
         color: #008c95 !important;
     }
+
+
 .sibur-warn-btn {
     background-color: #EF9987 !important;
     border: 1px solid #EF9987 !important;
@@ -57,24 +57,26 @@ h1:focus {
     font-weight: bold !important;
     transition: 0.3s;
 }
-
     .sibur-warn-btn:hover {
         background-color: #FFE6D7 !important;
         color: black !important;
     }
+
+
 .sibur-dark-btn {
-    /*background-color: #00313c !important;*/
     background-color: #00606a !important;
     border: 1px solid #00606a !important;
     color: white !important;
     font-weight: bold !important;
     transition: 0.3s;
 }
-
     .sibur-dark-btn:hover {
         background-color: white !important;
         color: #00606a !important;
     }
+
+
+
 .sibur-dark-inverted-btn {
     background-color: white !important;
     border: 1px solid #00606a !important;
@@ -82,19 +84,45 @@ h1:focus {
     font-weight: bold !important;
 }
 
-/* 1. Меняем цвет фона включенного трека */
+/* Switch  */
+/* цвет фона включенного трека */
 .sibur-switch-color .form-check-input:checked {
     background-color: #008c95;
     border-color: #008c95;
 }
 
-/* 2. Меняем цвет "ползунка" (кружка) */
+/* цвет "ползунка" (кружка) */
 .sibur-switch-color .form-check-input:checked:focus {
         /* Оставляем свечение такого же цвета, либо убираем box-shadow */
         box-shadow: 0 0 0 0.25rem rgba(0, 140, 149, 0.25);
     }
 
-/* 3. (Опционально) Меняем цвет "ползунка" при наведении */
+/* цвет "ползунка" при наведении */
 .sibur-switch-color .form-check-input:checked:hover {
         background-color: #007a82; /* чуть темнее для эффекта наведения */
     }
+
+
+/* Grid  */
+
+/* Переводим выбор фильтра на следующую строку  */
+.bb-grid-filter {
+    /*display: none !important;*/ /*Если надо скрыть выбор фильтра*/
+    flex-basis: 100% !important;
+    width: max-content !important;
+}
+
+/* Нечетные строки (полосатая раскраска)  */
+.sibur-grid .table-striped > tbody > tr:nth-of-type(odd) td {
+    background-color: rgba(0, 240, 255, 0.03) !important;
+}
+
+/* Четные строки  */
+.sibur-grid .table-striped > tbody > tr:nth-of-type(even) td {
+    background-color: #ffffff !important;
+}
+
+/* Любая строка при наведении  */
+.sibur-grid .table-hover > tbody > tr:hover td {
+    background-color: rgba(0, 240, 255, 0.06) !important;
+}
