@@ -13,6 +13,7 @@ ON [PRIMARY];  -- важно: НЕ на partition scheme
 
 
 -- Даты
+/*
 DROP INDEX IF EXISTS ix_TransportRateSnapshot_Active_Date ON [dbo].[TransportRateSnapshot];
 GO
 CREATE NONCLUSTERED INDEX ix_TransportRateSnapshot_Active_Date 
@@ -26,7 +27,7 @@ CREATE NONCLUSTERED INDEX ix_TransportRateSnapshot_Archive_Date
 ON dbo.TransportRateSnapshot (StartDate, EndDate)
 WHERE IsArchive = 1;
 GO
-
+*/
 
 -- Код
 
@@ -48,6 +49,7 @@ GO
 
 
 -- Транспорт
+/*
 
 DROP INDEX IF EXISTS [ix_TransportRateSnapshot_Active_TransportKindId_TransportTypeId] ON [dbo].[TransportRateSnapshot];
 GO
@@ -68,7 +70,7 @@ CREATE NONCLUSTERED INDEX [ix_TransportRateSnapshot_Archive_TransportKindId_Tran
 )
 WHERE IsArchive = 1;
 GO
-
+*/
 
 --  тип ставки
 /*
