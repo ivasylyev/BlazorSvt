@@ -26,7 +26,7 @@ INSERT INTO dbo.TransportRateSnapshot (
 
     CurrencyCode,
     RateTypeCode,
-    RateTypeName,
+    --RateTypeName,
     NodeFromCode,
     NodeFromNameEn,
     NodeFromNameRu,
@@ -37,11 +37,11 @@ INSERT INTO dbo.TransportRateSnapshot (
     NodeToNameEn,
     NodeToNameRu,
     TransportKindCode,
-    TransportKindNameRu,
-    TransportKindNameEn,
+    --TransportKindNameRu,
+    --TransportKindNameEn,
     TransportTypeCode,
-    TransportTypeNameRu,
-    TransportTypeNameEn,
+    --TransportTypeNameRu,
+    --TransportTypeNameEn,
     ProductGroupCode,
     ProductGroupNameRu,
     ProductGroupNameEn,
@@ -77,7 +77,7 @@ SELECT
 
         LEFT(cur.Code, 3),             -- CurrencyCode (NVARCHAR(3))
         LEFT(rt.Code, 2),              -- RateTypeCode (NVARCHAR(2)) 
-        LEFT(rt.[Name], 20),           -- RateTypeName (NVARCHAR(20))
+        --LEFT(rt.[Name], 20),           -- RateTypeName (NVARCHAR(20))
         LEFT(nf.Code, 10),             -- NodeFromCode (NVARCHAR(10))
         LEFT(nf.a_2123, 30),           -- NodeFromNameEn (NVARCHAR(30))
         LEFT(nf.a_1020, 30),           -- NodeFromNameRu (NVARCHAR(30))
@@ -88,11 +88,11 @@ SELECT
         LEFT(nt.a_2123, 30),           -- NodeToNameEn (NVARCHAR(30))
         LEFT(nt.a_1020, 30),           -- NodeToNameRu (NVARCHAR(30))
         LEFT(tk.Code, 5),              -- TransportKindCode (NVARCHAR(5))
-        LEFT(tk.[Name], 50),           -- TransportKindNameRu (NVARCHAR(50))
-        LEFT(tk.NameEnRu, 50),         -- TransportKindNameEn (NVARCHAR(50))
+        --LEFT(tk.[Name], 50),           -- TransportKindNameRu (NVARCHAR(50))
+        --LEFT(tk.NameEnRu, 50),         -- TransportKindNameEn (NVARCHAR(50))
         LEFT(tt.Code, 20),             -- TransportTypeCode (NVARCHAR(20))
-        LEFT(tt.[Name], 100),          -- TransportTypeNameRu (NVARCHAR(100))
-        LEFT(tt.NameEnRu, 100),        -- TransportTypeNameEn (NVARCHAR(100))
+        --LEFT(tt.[Name], 100),          -- TransportTypeNameRu (NVARCHAR(100))
+        --LEFT(tt.NameEnRu, 100),        -- TransportTypeNameEn (NVARCHAR(100))
         LEFT(pg.Code, 5),              -- ProductGroupCode (NVARCHAR(5))
         LEFT(pg.[Name], 100),          -- ProductGroupNameRu (NVARCHAR(100))
         LEFT(pg.NameEn, 100),          -- ProductGroupNameEn (NVARCHAR(100))

@@ -25,8 +25,6 @@ public class RateDto
     public required Currency CurrencyId { get; set; }
     public required RateTypeRu RateTypeIdRu { get; set; }
     public required RateTypeEn RateTypeIdEn { get; set; }
-    public required string RateTypeName { get; set; }
-
     public required string NodeFromCode { get; set; }
     public required string NodeFromNameRu { get; set; }
     public required string NodeFromNameEn { get; set; }
@@ -39,12 +37,9 @@ public class RateDto
     public required TransportKindRu TransportKindIdRu { get; set; }
     public required TransportKindEn TransportKindIdEn { get; set; }
     public required string TransportKindCode { get; set; }
-    public required string TransportKindName { get; set; }
     public required string TransportTypeCode { get; set; }
     public required TransportTypeLevel3Ru TransportTypeIdRu { get; set; }
     public required TransportTypeLevel3En TransportTypeIdEn { get; set; }
-    public required string TransportTypeName { get; set; }
-
     public string? ProductGroupCode { get; set; }
     public string? ProductGroupNameRu { get; set; }
     public string? ProductGroupNameEn { get; set; }

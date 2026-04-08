@@ -36,7 +36,6 @@ BEGIN
     SET @AllowedColumnsJson = N'[
             {"ColumnName": "CurrencyId", "ColumnType": "ID"},
             {"ColumnName": "RateTypeId", "ColumnType": "ID"},
-            {"ColumnName": "RateTypeName", "ColumnType": "NVARCHAR"},
             {"ColumnName": "NodeFromCode", "ColumnType": "NVARCHAR"},
             {"ColumnName": "NodeFromNameRu", "ColumnType": "NVARCHAR"},
             {"ColumnName": "NodeFromNameEn", "ColumnType": "NVARCHAR"},
@@ -94,7 +93,6 @@ BEGIN
             [Code],
             [CurrencyCode],
             [RateTypeCode],
-            [RateTypeName],
             [NodeFromCode],
             [NodeFromNameRu],
             [NodeFromNameEn],
@@ -120,26 +118,7 @@ BEGIN
    SET @FilterJson = REPLACE(@FilterJson, N'TransportTypeId' + @LangSuffix, N'TransportTypeId')  
    SET @FilterJson = REPLACE(@FilterJson, N'ProductGroupId' + @LangSuffix, N'ProductGroupId')
    SET @FilterJson = REPLACE(@FilterJson, N'RateTypeId' + @LangSuffix, N'RateTypeId')
-            /*
-    SET @FilterJson = REPLACE(@FilterJson, N'NodeFromName', N'NodeFromName' + @LangSuffix) -- одно и то же поле превращается в ависимые от языка поля 
-    SET @FilterJson = REPLACE(@FilterJson, N'NodeToName', N'NodeToName' + @LangSuffix)
-    SET @FilterJson = REPLACE(@FilterJson, N'ProxyNodeName', N'ProxyNodeName' + @LangSuffix)
-    SET @FilterJson = REPLACE(@FilterJson, N'TransportKindName', N'TransportKindName' + @LangSuffix)
-    SET @FilterJson = REPLACE(@FilterJson, N'TransportTypeName', N'TransportTypeName' + @LangSuffix)
-    SET @FilterJson = REPLACE(@FilterJson, N'ProductGroupName', N'ProductGroupName' + @LangSuffix)
-    SET @FilterJson = REPLACE(@FilterJson, N'ProductName', N'ProductName' + @LangSuffix)
 
-    SET @SortKey = REPLACE(@SortKey, N'NodeFromName', N'NodeFromName' + @LangSuffix)
-    SET @SortKey = REPLACE(@SortKey, N'NodeToName', N'NodeToName' + @LangSuffix)
-    SET @SortKey = REPLACE(@SortKey, N'ProxyNodeName', N'ProxyNodeName' + @LangSuffix)
-    SET @SortKey = REPLACE(@SortKey, N'TransportKindName', N'TransportKindName' + @LangSuffix)
-    SET @SortKey = REPLACE(@SortKey, N'TransportTypeName', N'TransportTypeName' + @LangSuffix)
-    SET @SortKey = REPLACE(@SortKey, N'ProductGroupName', N'ProductGroupName' + @LangSuffix)
-    SET @SortKey = REPLACE(@SortKey, N'ProductName', N'ProductName' + @LangSuffix)
-    */
-    --print @FilterJson
-
-   --return
 
     EXEC dbo.GetBlazorGridData 
         @PageNumber = @PageNumber,
