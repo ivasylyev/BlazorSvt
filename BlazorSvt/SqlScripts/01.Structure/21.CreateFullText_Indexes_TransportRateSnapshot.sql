@@ -34,3 +34,9 @@ KEY INDEX UX_TransportRateSnapshot_Id
 WITH STOPLIST = SYSTEM, 
      CHANGE_TRACKING = AUTO;
 GO
+
+
+ALTER FULLTEXT INDEX ON mdm.dbo.TransportRateSnapshot
+SET STOPLIST = OFF;
+
+GO
