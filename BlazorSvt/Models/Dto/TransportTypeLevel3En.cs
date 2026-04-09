@@ -47,79 +47,79 @@ public enum TransportTypeLevel3En
     // [Display(Name = "Loading_Rack")]
     // Loading_Rack = 543834,
 
-    [Display(Name = "Multimodal container 20ft")]
+    [Display(Name = "Mix container 20ft")]
     Mix_20 = 543840,
 
-    [Display(Name = "Multimodal container 40ft")]
+    [Display(Name = "Mix container 40ft")]
     Mix_40 = 543841,
 
-    [Display(Name = "Multimodal: Auto container for barrels")]
+    [Display(Name = "Mix: Auto container for barrels")]
     Mix_auto_barrel = 28834725,
 
-    [Display(Name = "Multimodal: Auto container 20ft")]
+    [Display(Name = "Mix: Auto container 20ft")]
     Mix_auto_cont_20 = 9687418,
 
-    [Display(Name = "Multimodal: Auto container 40ft")]
+    [Display(Name = "Mix: Auto container 40ft")]
     Mix_auto_cont_40 = 9687419,
 
-    [Display(Name = "Multimodal: auto container to port")]
+    [Display(Name = "Mix: auto container to port")]
     Mix_auto_port = 28834726,
 
-    [Display(Name = "Multimodal Auto tank container")]
+    [Display(Name = "Mix Auto tank container")]
     Mix_auto_TK = 21959144,
 
-    [Display(Name = "Multimodal: Rail container 20ft")]
+    [Display(Name = "Mix: Rail container 20ft")]
     Mix_rail_cont_20 = 9687416,
 
-    [Display(Name = "Multimodal: Rail container 40ft")]
+    [Display(Name = "Mix: Rail container 40ft")]
     Mix_rail_cont_40 = 9687417,
 
-    // [Display(Name = "Multimodal: Rail container 40ft second level")]
+    // [Display(Name = "Mix: Rail container 40ft second level")]
     // Mix_rail_cont_40_1 = 34800231,
 
-    // [Display(Name = "Multimodal: Rail container 40ft third level")]
+    // [Display(Name = "Mix: Rail container 40ft third level")]
     // Mix_rail_cont_40_2 = 34800232,
 
-    // [Display(Name = "Multimodal: Rail container 40ft forth level")]
+    // [Display(Name = "Mix: Rail container 40ft forth level")]
     // Mix_rail_cont_40_3 = 34800233,
 
-    // [Display(Name = "Multimodal: Rail container 40ft fifth level")]
+    // [Display(Name = "Mix: Rail container 40ft fifth level")]
     // Mix_rail_cont_40_4 = 34800234,
 
-    // [Display(Name = "Multimodal: Rail container 40ft sixth level")]
+    // [Display(Name = "Mix: Rail container 40ft sixth level")]
     // Mix_rail_cont_40_5 = 34800235,
 
-    // [Display(Name = "Multimodal: Rail container 40ft seventh level")]
+    // [Display(Name = "Mix: Rail container 40ft seventh level")]
     // Mix_rail_cont_40_6 = 34800236,
 
-    [Display(Name = "Multimodal Rail tank container")]
+    [Display(Name = "Mix Rail tank container")]
     Mix_rail_TK = 21959145,
 
-    [Display(Name = "Multimodal: Sea")]
+    [Display(Name = "Mix: Sea")]
     Mix_sea = 9687420,
 
-    // [Display(Name = "Multimodal: Sea second level")]
+    // [Display(Name = "Mix: Sea second level")]
     // Mix_sea_1 = 34800225,
 
-    // [Display(Name = "Multimodal: Sea third level")]
+    // [Display(Name = "Mix: Sea third level")]
     // Mix_sea_2 = 34800226,
 
-    // [Display(Name = "Multimodal: Sea fourth level")]
+    // [Display(Name = "Mix: Sea fourth level")]
     // Mix_sea_3 = 34800227,
 
-    // [Display(Name = "Multimodal: Sea fifth level")]
+    // [Display(Name = "Mix: Sea fifth level")]
     // Mix_sea_4 = 34800228,
 
-    // [Display(Name = "Multimodal: Sea sixth level")]
+    // [Display(Name = "Mix: Sea sixth level")]
     // Mix_sea_5 = 34800229,
 
-    // [Display(Name = "Multimodal: Sea seventh level")]
+    // [Display(Name = "Mix: Sea seventh level")]
     // Mix_sea_6 = 34800230,
 
-    // [Display(Name = "Multimodal: sea refrigerated")]
+    // [Display(Name = "Mix: sea refrigerated")]
     // Mix_sea_ref = 32892872,
 
-    [Display(Name = "Multimodal tank container")]
+    [Display(Name = "Mix tank container")]
     Mix_TK = 2448668,
 
     // [Display(Name = "Pipe")]

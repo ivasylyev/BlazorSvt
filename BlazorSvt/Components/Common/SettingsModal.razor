@@ -13,12 +13,16 @@
                 }
                 else
                 {
-                    foreach (var settings in ColumnSettings)
-                    {
-                        <div class="col-12 col-md-6 sibur-switch-color">
-                            <Switch Label="@settings.Header" @bind-Value="@settings.Visible"></Switch>
+                    <div class="col-12">
+                        <div style="column-count: 2; column-gap: 20px;">
+                            @foreach (var settings in ColumnSettings)
+                            {
+                                <div class="sibur-switch-color" style="break-inside: avoid;">
+                                    <Switch Label="@settings.Header" @bind-Value="@settings.Visible"></Switch>
+                                </div>
+                            }
                         </div>
-                    }
+                    </div>
                 }
             </div>
         </div>
