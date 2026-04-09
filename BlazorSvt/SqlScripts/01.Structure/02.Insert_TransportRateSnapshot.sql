@@ -83,7 +83,7 @@ SELECT
         LEFT(tk.Code, 5),              -- TransportKindCode (NVARCHAR(5))
         LEFT(tt.Code, 20),             -- TransportTypeCode (NVARCHAR(20))
         LEFT(pg.Code, 5),              -- ProductGroupCode (NVARCHAR(5))
-        LEFT(pg.[Name], 100),          -- ProductGroupNameRu (NVARCHAR(100))
+        LEFT(pg.ShortName, 100),       -- ProductGroupNameRu (NVARCHAR(100))
         LEFT(pg.NameEn, 100),          -- ProductGroupNameEn (NVARCHAR(100))
         TRY_CAST(LEFT(p.Code, 7) AS BIGINT),               -- ProductCode (NVARCHAR(7))
         LEFT(p.NameShort_ru, 100),     -- ProductNameRu (NVARCHAR(100))

@@ -23,7 +23,8 @@
           AllowFiltering="true"
           AllowPaging="true"
           AllowSorting="true"
-          PaginationItemsTextFormat="{0} - {1} из {2} элементов"
+          EnumFilterSelectText = "@L["GenericGrid.EnumFilterSelectText"]"
+          PaginationItemsTextFormat="@L["GenericGrid.PaginationItemsTextFormat"]"
           Responsive="true">
 
         @if (GridSettings is null)
@@ -45,7 +46,7 @@
                             FilterValue="@settings.FilterValue"
                             SortKeySelector="@settings.SortSelector"
                 >
-                    <div class="text-truncate" style="max-width: 200px;" title="@settings.DisplaySelector(context)">
+                    <div class="cell-truncate" title="@settings.DisplaySelector(context)">
                         @settings.DisplaySelector(context)
                     </div>
                 </GridColumn>

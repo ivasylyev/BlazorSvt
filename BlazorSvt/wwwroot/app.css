@@ -110,11 +110,35 @@ h1:focus {
 /* Grid  */
 
 /* Переводим выбор фильтра на следующую строку  */
-.bb-grid-filter {
+.sibur-grid  .bb-grid-filter {
     /*display: none !important;*/ /*Если надо скрыть выбор фильтра*/
     flex-basis: 100% !important;
     width: max-content !important;
 }
+
+.sibur-grid .table {
+    table-layout: auto;
+    width: 100%;
+}
+
+    .sibur-grid .table th {
+        white-space: nowrap;
+        background-color: #f8f9fa;
+    }
+
+    .sibur-grid .table td {
+        max-width: 200px;
+    }
+
+
+.sibur-grid .cell-truncate {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    width: 100%;
+    display: block;
+}
+
 
 /* Нечетные строки (полосатая раскраска)  */
 .sibur-grid .table-striped > tbody > tr:nth-of-type(odd) td {
@@ -158,3 +182,4 @@ h1:focus {
     background-color: rgba(0, 240, 255, 0.03) !important;
     border: 1px solid rgba(0, 240, 255, 0.1); 
 }
+

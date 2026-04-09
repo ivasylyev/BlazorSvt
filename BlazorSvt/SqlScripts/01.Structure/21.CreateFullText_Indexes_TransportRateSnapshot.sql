@@ -1,6 +1,15 @@
 ﻿USE [mdm]
 GO
---DROP FULLTEXT INDEX ON dbo.TransportRateSnapshot
+IF EXISTS (
+    SELECT 1
+    FROM sys.fulltext_indexes fti
+    INNER JOIN sys.objects o ON fti.object_id = o.object_id
+    WHERE o.object_id = OBJECT_ID(N'dbo.TransportRateSnapshot')
+)
+BEGIN
+    DROP FULLTEXT INDEX ON dbo.TransportRateSnapshot;
+END
+
 GO
 CREATE FULLTEXT INDEX ON dbo.TransportRateSnapshot 
 ( 

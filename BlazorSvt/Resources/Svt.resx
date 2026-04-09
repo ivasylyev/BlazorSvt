@@ -139,6 +139,13 @@
   <data name="GenericGrid.Settings" xml:space="preserve">
 	  <value>Settings</value>
   </data>
+  <data name="GenericGrid.EnumFilterSelectText" xml:space="preserve">
+	  <value>Select</value>
+  </data>
+  <data name="GenericGrid.PaginationItemsTextFormat" xml:space="preserve">
+	  <value>{0} - {1} from {2} items</value>
+  </data>
+  
   <data name="LoadTimePanel.NotLoaded" xml:space="preserve">
 	  <value>Not Loaded</value>
   </data>

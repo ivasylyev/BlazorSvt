@@ -138,6 +138,12 @@
   <data name="GenericGrid.ResetFilters" xml:space="preserve">
 	  <value>Сбросить фильтры</value>
   </data>
+  <data name="GenericGrid.EnumFilterSelectText" xml:space="preserve">
+	  <value>Выберите</value>
+  </data>
+  <data name="GenericGrid.PaginationItemsTextFormat" xml:space="preserve">
+	  <value>{0} - {1} из {2} элементов</value>
+  </data>
   <data name="LoadTimePanel.NotLoaded" xml:space="preserve">
 	  <value>Данные еще не загружены</value>
   </data>
