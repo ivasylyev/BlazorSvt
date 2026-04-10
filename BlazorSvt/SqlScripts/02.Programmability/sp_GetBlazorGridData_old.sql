@@ -129,6 +129,7 @@ BEGIN
     )
     DECLARE
         @Offset INT = (@PageNumber - 1) * @PageSize,
+        @CTEs NVARCHAR(MAX) = '',
         @JoinClause NVARCHAR(MAX) = '',
         @WhereClause NVARCHAR(MAX) = '',
         @MainSQL NVARCHAR(MAX),
@@ -168,29 +169,35 @@ BEGIN
      -- Логика фильтров для СТРОК c полнотекстовым поиском
      
     SELECT 
-    @JoinClause = STRING_AGG(
+    @CTEs = STRING_AGG(
         '
+        ,FTE_' + ColumnName + ' AS (
             SELECT [KEY]
             FROM CONTAINSTABLE(' + @TableName + ', ' + ColumnName + ', N''"' + ColumnValue + '*"'')
-        ', 
-        'INTERSECT' 
+        )', '' 
+    ),
+    @JoinClause = STRING_AGG(
+        '
+        JOIN FTE_' + ColumnName + ' ON FTE_' + ColumnName + '.[KEY] = Id', '' 
     )
     FROM @FilteredColumns
     WHERE ColumnType = 'NVARCHAR' AND LEN(ColumnValue) > 2;
     
-    -- если нет полей для полнотекстового поиска, то @JoinClause в итоге останется NULL. Это так и задумано.
-    SET @JoinClause = 'JOIN 
-    (
-    ' + @JoinClause + '
-    ) X
-    ON X.[KEY] = Id'
-
+    SET @CTEs = ISNULL(@CTEs, '')   
     SET @JoinClause = ISNULL(@JoinClause, '')
 
-    
      -- Логика остальных фильтов 
     SELECT @WhereClause = STRING_AGG(
         CASE ColumnType         
+        /*
+            -- Логика для СТРОК c полнотекстовым поиском
+            WHEN 'NVARCHAR' THEN 
+                CASE WHEN LEN(ColumnValue) > 2 THEN
+                    N'
+                    AND CONTAINS(' + ColumnName + ', N''"' + ColumnValue + '*"'') '
+                ELSE '' 
+                END      
+                */
             -- Логика для ID INT
             WHEN 'ID' THEN 
                 N'
@@ -226,12 +233,16 @@ BEGIN
 
     SET @MainSQL = '
     DECLARE @TotalCount INT
+    WITH CTE AS (SELECT 1 AS TST)
+    ' + @CTEs + '
     SELECT @TotalCount = COUNT(1)
     FROM 
     ' + @TableName + ' 
     ' + @JoinClause + ' 
     ' + @WhereClause + ';' + '
 
+    WITH CTE AS (SELECT 1 AS TST)
+    ' + @CTEs + '
     ' + @SelectList + '
         FROM 
     ' + @TableName + '
