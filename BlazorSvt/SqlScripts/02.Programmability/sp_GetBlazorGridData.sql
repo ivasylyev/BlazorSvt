@@ -167,6 +167,7 @@ BEGIN
         OR (JS.PropertyName = AC.ColumnName + @LangSuffix AND AC.ColumnType = 'ID')
 
      -- Логика фильтров для СТРОК c полнотекстовым поиском
+     
     SELECT 
     @CTEs = STRING_AGG(
         '
@@ -181,13 +182,22 @@ BEGIN
     )
     FROM @FilteredColumns
     WHERE ColumnType = 'NVARCHAR' AND LEN(ColumnValue) > 2;
-
+    
     SET @CTEs = ISNULL(@CTEs, '')   
     SET @JoinClause = ISNULL(@JoinClause, '')
 
      -- Логика остальных фильтов 
     SELECT @WhereClause = STRING_AGG(
-        CASE ColumnType           
+        CASE ColumnType         
+        /*
+            -- Логика для СТРОК c полнотекстовым поиском
+            WHEN 'NVARCHAR' THEN 
+                CASE WHEN LEN(ColumnValue) > 2 THEN
+                    N'
+                    AND CONTAINS(' + ColumnName + ', N''"' + ColumnValue + '*"'') '
+                ELSE '' 
+                END      
+                */
             -- Логика для ID INT
             WHEN 'ID' THEN 
                 N'
