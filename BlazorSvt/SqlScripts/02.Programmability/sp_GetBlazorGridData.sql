@@ -4,69 +4,105 @@ GO
 /*
 Example:
 
- exec dbo.GetBlazorGridData 
+USE mdm
+GO
+
+EXEC dbo.GetBlazorGridData 
      @PageNumber=1,
      @PageSize=10,
+     @LangSuffix = 'Ru',
      @TableName = N'mdm.dbo.TransportRateSnapshot',
      @AllowedColumnsJson = N'[
-      {"ColumnName": "StartDate", "ColumnType": "DATE"},
-      {"ColumnName": "EndDate", "ColumnType": "DATE"},
-      {"ColumnName": "CreationDate", "ColumnType": "DATE"},
-      {"ColumnName": "LastChangeDate", "ColumnType": "DATE"},
-      {"ColumnName": "NodeFromNameRu", "ColumnType": "NVARCHAR"},
-      {"ColumnName": "NodeFromNameEn", "ColumnType": "NVARCHAR"},
-      {"ColumnName": "ProxyNodeNameRu", "ColumnType": "NVARCHAR"},
-      {"ColumnName": "ProxyNodeNameEn", "ColumnType": "NVARCHAR"},
-      {"ColumnName": "NodeToNameRu", "ColumnType": "NVARCHAR"},
-      {"ColumnName": "NodeToNameEn", "ColumnType": "NVARCHAR"},
-      {"ColumnName": "RateTypeName", "ColumnType": "NVARCHAR"},
-      {"ColumnName": "ProductGroupName", "ColumnType": "NVARCHAR"},
-      {"ColumnName": "IsArchive", "ColumnType": "BIT"},
-      {"ColumnName": "IsDefRate", "ColumnType": "BIT"}
-    ]',
-    @SelectList = '
-    SELECT
-        [Id],
-        [IsArchive],
-        [Code],
-        [IsDefRate],
-        CAST([StartDate] AS DATE) StartDate,
-        CAST([EndDate] AS DATE) EndDate,
-        [CreationDate],
-        [LastChangeDate],
-        [TotalCostTon],
-        [TotalCostTransport],
-        [RateTypeCode],
-        [RateTypeName],
-        [NodeFromCode],
-        [NodeFromNameEn],
-        [NodeFromNameRu],
-        [ProxyNodeCode],
-        [ProxyNodeNameEn],
-        [ProxyNodeNameRu],
-        [NodeToCode],
-        [NodeToNameEn],
-        [NodeToNameRu],
-        [TransportKindCode],
-        [TransportKindNameRu],
-        [TransportTypeCode],
-        [TransportTypeNameRu],
-        [ProductGroupCode],
-        [ProductGroupName],
-        [ContractorCode],
-        [ContractorEGRUL],
-        [CurrencyCode],
-     @SortKey=N'NodeToNameRu',
-     @SortDirection=N'ASC',
-     @FilterJson=N'[{"PropertType":null,"PropertyName":"Code","Value":"2763157","Operator":7,"StringComparison":5},
-        {"PropertType":null,"PropertyName":"NodeFromNameRu","Value":"каз","Operator":7,"StringComparison":5},
-        {"PropertType":null,"PropertyName":"ProductGroupName","Value":"полиоле","Operator":7,"StringComparison":5},
-        {"PropertType":null,"PropertyName":"StartDate","Value":"2026-02-28","Operator":4,"StringComparison":5}]'
+            {"ColumnName": "Code", "ColumnType": "ID"},
+            {"ColumnName": "RateTypeCode", "ColumnType": "ID"},
+            {"ColumnName": "CurrencyId", "ColumnType": "ID"},
+            {"ColumnName": "RateTypeId", "ColumnType": "ID"},
+            {"ColumnName": "NodeFromCode", "ColumnType": "NVARCHAR"},
+            {"ColumnName": "NodeFromNameRu", "ColumnType": "NVARCHAR"},
+            {"ColumnName": "NodeFromNameEn", "ColumnType": "NVARCHAR"},
+            {"ColumnName": "ProxyNodeCode", "ColumnType": "NVARCHAR"},
+            {"ColumnName": "ProxyNodeNameRu", "ColumnType": "NVARCHAR"},
+            {"ColumnName": "ProxyNodeNameEn", "ColumnType": "NVARCHAR"},
+            {"ColumnName": "NodeToCode", "ColumnType": "NVARCHAR"},
+            {"ColumnName": "NodeToNameRu", "ColumnType": "NVARCHAR"},
+            {"ColumnName": "NodeToNameEn", "ColumnType": "NVARCHAR"},
+            {"ColumnName": "TransportKindId", "ColumnType": "ID"},
+            {"ColumnName": "TransportTypeId", "ColumnType": "ID"},
+            {"ColumnName": "ProductGroupId", "ColumnType": "ID"},
+            {"ColumnName": "ProductGroupCode", "ColumnType": "NVARCHAR"},
+            {"ColumnName": "ProductGroupNameRu", "ColumnType": "NVARCHAR"},
+            {"ColumnName": "ProductGroupNameEn", "ColumnType": "NVARCHAR"},
+            {"ColumnName": "ProductCode", "ColumnType": "ID"},
+            {"ColumnName": "ProductNameRu", "ColumnType": "NVARCHAR"},
+            {"ColumnName": "ProductNameEn", "ColumnType": "NVARCHAR"},
+            {"ColumnName": "CreationDate", "ColumnType": "DATE"},
+            {"ColumnName": "LastChangeDate", "ColumnType": "DATE"},
+            {"ColumnName": "StartDate", "ColumnType": "DATE"},
+            {"ColumnName": "EndDate", "ColumnType": "DATE"},
+            {"ColumnName": "IsArchive", "ColumnType": "BIT"},
+            {"ColumnName": "IsDefRate", "ColumnType": "BIT"}
+        ]',
+     @SelectList = '
+     SELECT
+            [Id],
+            [IsArchive],
+            [IsDefRate],
+            CAST([StartDate] AS DATE)   AS [StartDate],
+            CAST([EndDate] AS DATE)     AS [EndDate],
+            [CreationDate],
+            [LastChangeDate],
+
+            [TotalCostTon],
+            [TotalCostTransport],
+
+            [NodeFromId],          
+            [ProxyNodeId],         
+            [NodeToId],            
+            [TransportKindId] AS [TransportKindIdRu], 
+            [TransportKindId] AS [TransportKindIdEn], 
+            [TransportTypeId] AS [TransportTypeIdRu],     
+            [TransportTypeId] AS [TransportTypeIdEn],
+            [ProductGroupId] AS [ProductGroupIdRu],      
+            [ProductGroupId] AS [ProductGroupIdEn], 
+            [ProductId],           
+            [RateTypeId] AS [RateTypeIdRu],          
+            [RateTypeId] AS [RateTypeIdEn],   
+            [CurrencyId],
+
+            [Code],
+            [CurrencyCode],
+            [RateTypeCode],
+            [NodeFromCode],
+            [NodeFromNameRu],
+            [NodeFromNameEn],
+            [ProxyNodeCode],
+            [ProxyNodeNameRu],
+            [ProxyNodeNameEn],
+            [NodeToCode],
+            [NodeToNameRu],
+            [NodeToNameEn],
+            [TransportKindCode],
+            [TransportTypeCode],
+            [ProductGroupCode],
+            [ProductGroupNameRu],
+            [ProductGroupNameEn],
+            [ProductCode],
+            [ProductNameRu],
+            [ProductNameEn]',
+    @SortKey=N'NodeToNameRu',
+    @SortDirection=N'ASC',
+    @FilterJson=N'[
+        {"PropertType":null,"PropertyName":"RateTypeIdRu","Value":"543746","Operator":1,"StringComparison":5},
+        {"PropertType":null,"PropertyName":"NodeFromNameRu","Value":"казань","Operator":7,"StringComparison":5},
+        {"PropertType":null,"PropertyName":"ProxyNodeNameRu","Value":"находка","Operator":7,"StringComparison":5},
+        {"PropertType":null,"PropertyName":"IsArchive","Value":"False","Operator":1,"StringComparison":5}
+        ]'
 
 */
 CREATE OR ALTER PROCEDURE dbo.GetBlazorGridData
     @PageNumber         INT = 1,
     @PageSize           INT = 20,
+    @LangSuffix         NVARCHAR(2),
     @TableName          NVARCHAR(300),           -- Полное имя таблицы, например 'mdm.dbo.TransportRateSnapshot'
     @AllowedColumnsJson NVARCHAR(MAX), 
     @SelectList         NVARCHAR(MAX),          -- Список колонок для SELECT, например 'Id, Code, StartDate'
@@ -122,12 +158,13 @@ BEGIN
     WITH (
         PropertType      INT            '$.PropertType',
         PropertyName     NVARCHAR(100)  '$.PropertyName',
-        Value            NVARCHAR(MAX)  '$.Value',
+        [Value]          NVARCHAR(MAX)  '$.Value',
         Operator         INT            '$.Operator',
         StringComparison INT            '$.StringComparison'
     ) JS
     JOIN @AllowedColumns AC
-    ON JS.PropertyName = AC.ColumnName
+        ON JS.PropertyName = AC.ColumnName AND AC.ColumnType <> 'ID'
+        OR (JS.PropertyName = AC.ColumnName + @LangSuffix AND AC.ColumnType = 'ID')
 
      -- Логика фильтров для СТРОК c полнотекстовым поиском
     SELECT 

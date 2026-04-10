@@ -4,16 +4,21 @@ GO
 /*
 Example:
 
- EXEC dbo.GetTransportRates 
-     @PageNumber=1,
-     @PageSize=10,
-     @Lang = N'ru',
-     @SortKey=N'NodeToName',
-     @SortDirection=N'ASC',
-     @FilterJson=N'[{"PropertType":null,"PropertyName":"Code","Value":"2763157","Operator":7,"StringComparison":5},
-        {"PropertType":null,"PropertyName":"NodeFromName","Value":"каз","Operator":7,"StringComparison":5},
-        {"PropertType":null,"PropertyName":"ProductGroupName","Value":"полиоле","Operator":7,"StringComparison":5},
-        {"PropertType":null,"PropertyName":"StartDate","Value":"2026-02-28","Operator":4,"StringComparison":5}]'
+use mdm
+go
+
+exec dbo.GetTransportRates 
+    @PageNumber=1,
+    @PageSize=10,
+    @Lang=N'ru',
+    @SortKey=N'StartDate',
+    @SortDirection=N'ASC',
+    @FilterJson=N'[
+        {"PropertType":null,"PropertyName":"RateTypeIdRu","Value":"543746","Operator":1,"StringComparison":5},
+        {"PropertType":null,"PropertyName":"NodeFromNameRu","Value":"казань","Operator":7,"StringComparison":5},
+        {"PropertType":null,"PropertyName":"ProxyNodeNameRu","Value":"находка","Operator":7,"StringComparison":5},
+        {"PropertType":null,"PropertyName":"IsArchive","Value":"False","Operator":1,"StringComparison":5}
+        ]'
 
 */
 CREATE OR ALTER PROCEDURE dbo.GetTransportRates
@@ -32,7 +37,11 @@ BEGIN
             @AllowedColumnsJson NVARCHAR(MAX),
             @SelectList NVARCHAR(MAX)
 
-    SET @LangSuffix = CASE WHEN @Lang = N'ru' THEN N'Ru' ELSE N'En' END
+    SET @LangSuffix = CASE 
+                        WHEN @Lang = N'ru' THEN N'Ru' 
+                        ELSE N'En' 
+                      END
+
     SET @AllowedColumnsJson = N'[
             {"ColumnName": "Code", "ColumnType": "ID"},
             {"ColumnName": "RateTypeCode", "ColumnType": "ID"},
@@ -66,6 +75,8 @@ BEGIN
             {"ColumnName": "IsArchive", "ColumnType": "BIT"},
             {"ColumnName": "IsDefRate", "ColumnType": "BIT"}
         ]'
+
+
     SET @SelectList = N'
         SELECT
             [Id],
@@ -112,20 +123,15 @@ BEGIN
             [ProductGroupNameEn],
             [ProductCode],
             [ProductNameRu],
-            [ProductNameEn],
-            [ContractorCode],
-            [ContractorEGRUL]
-  
+            [ProductNameEn]
   '
-   SET @FilterJson = REPLACE(@FilterJson, N'TransportKindId' + @LangSuffix, N'TransportKindId') 
-   SET @FilterJson = REPLACE(@FilterJson, N'TransportTypeId' + @LangSuffix, N'TransportTypeId')  
-   SET @FilterJson = REPLACE(@FilterJson, N'ProductGroupId' + @LangSuffix, N'ProductGroupId')
-   SET @FilterJson = REPLACE(@FilterJson, N'RateTypeId' + @LangSuffix, N'RateTypeId')
 
 
     EXEC dbo.GetBlazorGridData 
         @PageNumber = @PageNumber,
         @PageSize = @PageSize,
+        @LangSuffix = @LangSuffix,
+
         @SortKey = @SortKey,
         @SortDirection = @SortDirection,
         @FilterJson = @FilterJson,
@@ -133,6 +139,7 @@ BEGIN
         @TableName = N'mdm.dbo.TransportRateSnapshot',
         @AllowedColumnsJson = @AllowedColumnsJson,
         @SelectList = @SelectList
+        
         
 END
 GO
