@@ -46,7 +46,5 @@ public class RateDto
     public long? ProductCode { get; set; }
     public string? ProductNameRu { get; set; }
     public string? ProductNameEn { get; set; }
-    public string? ContractorCode { get; set; }
-    // ReSharper disable once InconsistentNaming
-    public string? ContractorEGRUL { get; set; }
+   
 }

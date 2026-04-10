@@ -22,39 +22,29 @@ WHERE object_id = OBJECT_ID('dbo.TransportRateSnapshot')
 EXEC sp_executesql @sql;
 GO
 
--- =====================================================
 -- 2. Удаляем таблицу
--- =====================================================
 DROP TABLE IF EXISTS dbo.TransportRateSnapshot;
 GO
 
--- =====================================================
 -- 3. Удаляем SEQUENCE
--- =====================================================
 DROP SEQUENCE IF EXISTS dbo.seq_TransportRateId;
 GO
 
--- =====================================================
 -- 4. Удаляем схему партиционирования
--- =====================================================
 IF EXISTS (SELECT * FROM sys.partition_schemes WHERE name = 'ps_TransportRate')
 BEGIN
     DROP PARTITION SCHEME ps_TransportRate;
 END
 GO
 
--- =====================================================
 -- 5. Удаляем функцию партиционирования
--- =====================================================
 IF EXISTS (SELECT * FROM sys.partition_functions WHERE name = 'pf_TransportRate_IsArchive')
 BEGIN
     DROP PARTITION FUNCTION pf_TransportRate_IsArchive;
 END
 GO
 
--- =====================================================
 -- 6. Создаем функцию партиционирования
--- =====================================================
 CREATE PARTITION FUNCTION pf_TransportRate_IsArchive (BIT)
 AS RANGE RIGHT FOR VALUES (0);
 -- Partition 1: IsArchive < 0 (пусто)
@@ -62,25 +52,19 @@ AS RANGE RIGHT FOR VALUES (0);
 -- Partition 3: IsArchive >= 1 (IsArchive = 1)
 GO
 
--- =====================================================
 -- 7. Создаем схему партиционирования
--- =====================================================
 CREATE PARTITION SCHEME ps_TransportRate
 AS PARTITION pf_TransportRate_IsArchive
 ALL TO ([PRIMARY]);
 GO
 
--- =====================================================
 -- 8. Создаем SEQUENCE для Id
--- =====================================================
 CREATE SEQUENCE dbo.seq_TransportRateId AS BIGINT 
 START WITH 1 
 INCREMENT BY 1;
 GO
 
--- =====================================================
 -- 9. Создаем таблицу с партиционированием
--- =====================================================
 CREATE TABLE dbo.TransportRateSnapshot (
     Id                  BIGINT NOT NULL,
     RateId              BIGINT NOT NULL,
@@ -116,13 +100,11 @@ CREATE TABLE dbo.TransportRateSnapshot (
     TransportKindCode   NVARCHAR(5) NOT NULL,
     TransportTypeCode   NVARCHAR(20) NOT NULL,
     ProductGroupCode    NVARCHAR(5) NULL,
-    ProductGroupNameRu  NVARCHAR(100) NULL,
-    ProductGroupNameEn  NVARCHAR(100) NULL,
+    ProductGroupNameRu  NVARCHAR(110) NULL,
+    ProductGroupNameEn  NVARCHAR(110) NULL,
     ProductCode         BIGINT NULL,
     ProductNameRu       NVARCHAR(100) NULL,
-    ProductNameEn       NVARCHAR(100) NULL,
-    ContractorCode      NVARCHAR(10) NULL,
-    ContractorEGRUL     NVARCHAR(20) NULL,
+    ProductNameEn       NVARCHAR(100) NULL
     
     CONSTRAINT PK_TransportRateSnapshot PRIMARY KEY CLUSTERED (IsArchive, Id)
 ) ON ps_TransportRate(IsArchive);

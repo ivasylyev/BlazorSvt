@@ -36,9 +36,7 @@ CREATE FULLTEXT INDEX ON dbo.TransportRateSnapshot
     ProductGroupNameRu LANGUAGE 1049,      -- Russian,
     ProductGroupNameEn LANGUAGE 1033,      -- English,
     ProductNameRu      LANGUAGE 1049,      -- Russian,
-    ProductNameEn      LANGUAGE 1033,      -- English,
-    ContractorCode     LANGUAGE 1033,      -- English,
-    ContractorEGRUL    
+    ProductNameEn      LANGUAGE 1033      -- English
 )
 KEY INDEX UX_TransportRateSnapshot_Id
 WITH STOPLIST = SYSTEM, 

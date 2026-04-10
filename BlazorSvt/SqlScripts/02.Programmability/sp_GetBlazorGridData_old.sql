@@ -249,7 +249,7 @@ BEGIN
     ' + @JoinClause + ' 
     ' + @WhereClause + '
     AND @TotalCount > 0
-    ORDER BY '+ ISNULL(@SortKey + ' ' + @SortDirection + ', ', '')  + '  Id DESC
+    ORDER BY '+ ISNULL(@SortKey + ' ' + @SortDirection + ', ', '')  + '  Id
     OFFSET ' + CAST(@Offset AS NVARCHAR(20)) + ' ROWS
     FETCH NEXT ' + CAST(@PageSize AS NVARCHAR(20)) + ' ROWS ONLY;
 
