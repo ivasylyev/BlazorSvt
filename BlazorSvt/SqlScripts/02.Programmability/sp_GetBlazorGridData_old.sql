@@ -229,18 +229,28 @@ BEGIN
     FROM @FilteredColumns;
     SET @WhereClause = CONCAT('WHERE 1 = 1', @WhereClause)
 
-    -- Основной SELECT с подставленными CTE и JOIN'ами
+     
+    DECLARE @TotalCount INT;
 
-    SET @MainSQL = '
-    DECLARE @TotalCount INT
-    WITH CTE AS (SELECT 1 AS TST)
-    ' + @CTEs + '
-    SELECT @TotalCount = COUNT(1)
-    FROM 
-    ' + @TableName + ' 
-    ' + @JoinClause + ' 
-    ' + @WhereClause + ';' + '
+    SET @TotalCountSQL = '
+        WITH CTE AS (SELECT 1 AS TST)
+        ' + @CTEs + '
+        SELECT @TotalCount_OUT = COUNT(1)
+        FROM ' + @TableName + '
+        ' + @JoinClause + '
+        ' + @WhereClause + ';';
 
+    -- Для отладки  раскомментировать:
+    PRINT @TotalCountSQL;
+
+    EXEC sp_executesql
+        @TotalCountSQL,
+        N'@TotalCount_OUT INT OUTPUT',
+        @TotalCount_OUT = @TotalCount OUTPUT;
+
+    DECLARE @HasRows INT = CASE WHEN @TotalCount > 0 THEN 1 ELSE 0 END;
+
+    SET @MainSQL = ' 
     WITH CTE AS (SELECT 1 AS TST)
     ' + @CTEs + '
     ' + @SelectList + '
@@ -248,18 +258,18 @@ BEGIN
     ' + @TableName + '
     ' + @JoinClause + ' 
     ' + @WhereClause + '
-    AND @TotalCount > 0
-    ORDER BY '+ ISNULL(@SortKey + ' ' + @SortDirection + ', ', '')  + '  Id
+    AND ' + CAST(@HasRows AS NVARCHAR(1)) + ' > 0
+    ORDER BY '+ ISNULL(@SortKey + ' ' + @SortDirection + ', ', '')  + '  Id 
     OFFSET ' + CAST(@Offset AS NVARCHAR(20)) + ' ROWS
     FETCH NEXT ' + CAST(@PageSize AS NVARCHAR(20)) + ' ROWS ONLY;
-
-    SELECT @TotalCount AS TotalCount;
     ';
 
-    -- Для отладки можно раскомментировать:
+    -- Для отладки  раскомментировать:
     PRINT @MainSQL;
 
     EXEC sp_executesql @MainSQL;
+
+    SELECT @TotalCount AS TotalCount
     
 
 END
