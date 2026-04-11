@@ -119,18 +119,18 @@ GO
 
 --  НЕ НАДО создавать индекс на Тип ставки  - он не селективный и портит планы запроса при использовании полнотекстового индекса 
 /*
-DROP INDEX IF EXISTS [ix_TransportRateSnapshot_Active_RateTypeCode] ON [dbo].[TransportRateSnapshot];
+DROP INDEX IF EXISTS [ix_TransportRateSnapshot_Active_RateTypeId] ON [dbo].[TransportRateSnapshot];
 GO
-CREATE NONCLUSTERED INDEX [ix_TransportRateSnapshot_Active_RateTypeCode] ON [dbo].TransportRateSnapshot
+CREATE NONCLUSTERED INDEX [ix_TransportRateSnapshot_Active_RateTypeId] ON [dbo].TransportRateSnapshot
 (
 	[RateTypeId]
 )
 WHERE IsArchive = 0;
 GO
 
-DROP INDEX IF EXISTS [ix_TransportRateSnapshot_Archive_RateTypeCode] ON [dbo].[TransportRateSnapshot];
+DROP INDEX IF EXISTS [ix_TransportRateSnapshot_Archive_RateTypeId] ON [dbo].[TransportRateSnapshot];
 GO
-CREATE NONCLUSTERED INDEX [ix_TransportRateSnapshot_Archive_RateTypeCode] ON [dbo].TransportRateSnapshot
+CREATE NONCLUSTERED INDEX [ix_TransportRateSnapshot_Archive_RateTypeId] ON [dbo].TransportRateSnapshot
 (
 	[RateTypeId]
 )

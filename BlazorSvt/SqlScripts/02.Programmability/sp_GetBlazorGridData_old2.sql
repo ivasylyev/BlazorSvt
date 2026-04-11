@@ -125,22 +125,15 @@ BEGIN
         ColumnName  NVARCHAR(100) NOT NULL,
         ColumnType  NVARCHAR(100) NOT NULL,
         ColumnValue NVARCHAR(100) NULL,
-        Operator    NVARCHAR(100) NULL,
-        FilterPart  NVARCHAR(MAX) NULL
+        Operator    NVARCHAR(100) NULL
     )
     DECLARE
         @Offset INT = (@PageNumber - 1) * @PageSize,
-        @TempTableSQL NVARCHAR(MAX) = '',
         @JoinClause NVARCHAR(MAX) = '',
-        @TotalCountWhereClause NVARCHAR(MAX) = '',
-        @MainWhereClause NVARCHAR(MAX) = '',
+        @WhereClause NVARCHAR(MAX) = '',
         @MainSQL NVARCHAR(MAX),
         @TotalCountSQL NVARCHAR(MAX),
-        @BothSQL NVARCHAR(MAX),
-        @TotalCount INT,
-        @HasRows INT,
-        @IsComplexQuery BIT,
-        @FulltextFilterCount INT;
+        @BothSQL NVARCHAR(MAX);
 
     SET @PageNumber = IIF(@PageNumber < 1, 1, @PageNumber);
     SET @PageSize = IIF(@PageSize < 1, 20, @PageSize);
@@ -172,16 +165,32 @@ BEGIN
         ON JS.PropertyName = AC.ColumnName AND AC.ColumnType <> 'ID'
         OR (JS.PropertyName = AC.ColumnName + @LangSuffix AND AC.ColumnType = 'ID')
 
-    UPDATE @FilteredColumns
-    SET FilterPart = CASE ColumnType         
-            -- Логика для СТРОК c полнотекстовым поиском 
-            WHEN 'NVARCHAR' THEN 
-                CASE WHEN LEN(ColumnValue) > 2 THEN
-                    N'
-                    AND CONTAINS(' + ColumnName + ', N''"' + ColumnValue + '*"'') '
-                ELSE '' 
-                END      
-                
+     -- Логика фильтров для СТРОК c полнотекстовым поиском
+     
+    SELECT 
+    @JoinClause = STRING_AGG(
+        '
+            SELECT [KEY]
+            FROM CONTAINSTABLE(' + @TableName + ', ' + ColumnName + ', N''"' + ColumnValue + '*"'')
+        ', 
+        'INTERSECT' 
+    )
+    FROM @FilteredColumns
+    WHERE ColumnType = 'NVARCHAR' AND LEN(ColumnValue) > 2;
+    
+    -- если нет полей для полнотекстового поиска, то @JoinClause в итоге останется NULL. Это так и задумано.
+    SET @JoinClause = 'JOIN 
+    (
+    ' + @JoinClause + '
+    ) X
+    ON X.[KEY] = Id'
+
+    SET @JoinClause = ISNULL(@JoinClause, '')
+
+    
+     -- Логика остальных фильтов 
+    SELECT @WhereClause = STRING_AGG(
+        CASE ColumnType         
             -- Логика для ID INT
             WHEN 'ID' THEN 
                 N'
@@ -207,103 +216,19 @@ BEGIN
 
             -- Логика по умолчанию для остальных типов
             ELSE ''
-        END
+        END, 
+        ''
+    )
     FROM @FilteredColumns;
+    SET @WhereClause = CONCAT('WHERE 1 = 1', @WhereClause)
 
-
-    SELECT @FulltextFilterCount = COUNT(1) 
-    FROM  @FilteredColumns
-    WHERE ColumnType = 'NVARCHAR'
-
-    -- Запрос считается сложным, если есть 2 и более полнотекстовых фильтров с сортировкой.
-    -- В этом случае планировщик сходит с ума. Приходится идти на дорогую операцию:создание временной таблицы для фиксации промежуточных результатов.
-    SET @IsComplexQuery = CASE 
-                            WHEN  (@FulltextFilterCount > 1) AND (ISNULL(@SortKey, '' ) <> '') THEN 1
-                            ELSE 0
-                          END
-        
-    -- Логика для СТРОК c полнотекстовым поиском включается для получения общего числа строк, подпадающих под критерий
-    SELECT @TotalCountWhereClause = STRING_AGG(FilterPart, '')
-    FROM @FilteredColumns;
-
-    SET @TotalCountWhereClause = CONCAT('WHERE 1 = 1', @TotalCountWhereClause)
-
-    -- Логика для СТРОК c полнотекстовым поиском включается только для простых запросов. 
-    -- Для сложных запросов полнотекстовый поиск исключается из условия Where и включается в специаьно созданную для результатов поиска промежуточную таблицу
-    SELECT @MainWhereClause = STRING_AGG(FilterPart, '')
-    FROM @FilteredColumns
-    WHERE (ColumnType <> 'NVARCHAR' OR @IsComplexQuery = 0)
-
-    SET @MainWhereClause = CONCAT('WHERE 1 = 1', @MainWhereClause)
-
-  
-     -- Логика фильтров для СТРОК c полнотекстовым поиском для сложных условий
-    IF (@IsComplexQuery = 1)  
-    BEGIN
-
-        WITH CTE AS
-        (
-            SELECT 
-                ColumnName,
-                ColumnValue,
-                RN = ROW_NUMBER() OVER (ORDER BY ColumnName) -- лучше детерминированно
-            FROM @FilteredColumns
-            WHERE ColumnType = 'NVARCHAR' 
-                  AND ColumnValue IS NOT NULL
-                  AND LEN(ColumnValue) > 2
-        )
-
-        SELECT @TempTableSQL = STRING_AGG(Batch, '')
-        FROM
-        (
-            SELECT 
-                RN,
-                Batch =
-                    CASE 
-                        WHEN RN = 1 THEN
-                            '
-                            FROM CONTAINSTABLE(' + @TableName + ', ' + ColumnName + ', N''"' + ColumnValue + '*"'') AS T1'
-                        ELSE
-                            '
-                            JOIN CONTAINSTABLE(' + @TableName + ', ' + ColumnName + ', N''"' + ColumnValue + '*"'') AS T' + CAST(RN AS NVARCHAR) + '
-                              ON T' + CAST(RN AS NVARCHAR) + '.[KEY] = T1.[KEY]'
-                    END
-            FROM CTE
-        ) q;
-
-        SET @TempTableSQL = 
-        '        
-        DROP TABLE IF EXISTS #FTSResult;
-        CREATE TABLE #FTSResult
-        (
-            [KEY] INT PRIMARY KEY
-        );
-        
-        INSERT INTO #FTSResult([KEY])
-        SELECT T1.[KEY]
-        ' +  @TempTableSQL +'
-        GROUP BY T1.[KEY];';  
-
-        SET @JoinClause = 
-            '
-            JOIN #FTSResult f ON f.[KEY] = Id
-            '
-    END
-
-    SET @TempTableSQL = ISNULL(@TempTableSQL, '')   
-    SET @JoinClause = ISNULL(@JoinClause, '')
-
-   
-    -- Логика для СТРОК c полнотекстовым поиском включается только для простых запросов
-    SELECT @TotalCountWhereClause = STRING_AGG(FilterPart, '')
-    FROM @FilteredColumns;
-
-    SET @TotalCountWhereClause = CONCAT('WHERE 1 = 1', @TotalCountWhereClause)
+    DECLARE @TotalCount INT;
 
     SET @TotalCountSQL = '
         SELECT @TotalCount_OUT = COUNT(1)
         FROM ' + @TableName + '
-        ' + @TotalCountWhereClause + ';';
+        ' + @JoinClause + '
+        ' + @WhereClause + ';';
 
     -- Для отладки  раскомментировать:
     PRINT @TotalCountSQL;
@@ -313,15 +238,14 @@ BEGIN
         N'@TotalCount_OUT INT OUTPUT',
         @TotalCount_OUT = @TotalCount OUTPUT;
 
-    SET @HasRows = CASE WHEN @TotalCount > 0 THEN 1 ELSE 0 END;
+    DECLARE @HasRows INT = CASE WHEN @TotalCount > 0 THEN 1 ELSE 0 END;
 
-    SET @MainSQL = ' 
-    ' + @TempTableSQL + '
+    SET @MainSQL = '
     ' + @SelectList + '
         FROM 
     ' + @TableName + '
     ' + @JoinClause + ' 
-    ' + @MainWhereClause + '
+    ' + @WhereClause + '
     AND ' + CAST(@HasRows AS NVARCHAR(1)) + ' > 0
     ORDER BY '+ ISNULL(@SortKey + ' ' + @SortDirection + ', ', '')  + '  Id 
     OFFSET ' + CAST(@Offset AS NVARCHAR(20)) + ' ROWS
