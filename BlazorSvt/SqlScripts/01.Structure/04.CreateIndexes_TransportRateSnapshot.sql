@@ -49,19 +49,17 @@ SET STOPLIST = OFF;
 GO
 
 
--- Удаляем индекс для Кода для активного партишена
+--  индекс для Кода для активного партишена
 DROP INDEX IF EXISTS ix_TransportRateSnapshot_Active_Code ON [dbo].[TransportRateSnapshot];
 GO
--- Создаем индекс Кода для для активного партишена. Он селективный, он хороший
 CREATE NONCLUSTERED INDEX ix_TransportRateSnapshot_Active_Code 
 ON dbo.TransportRateSnapshot (Code)
 WHERE IsArchive = 0;
 GO
 
--- Удаляем индекс для Кода для архивного партишена
+--  индекс для Кода для архивного партишена
 DROP INDEX IF EXISTS ix_TransportRateSnapshot_Archive_Code ON [dbo].[TransportRateSnapshot];
 GO
--- Создаем индекс Кода для для архивного партишена . Он селективный, он хороший
 CREATE NONCLUSTERED INDEX ix_TransportRateSnapshot_Archive_Code 
 ON dbo.TransportRateSnapshot (Code)
 WHERE IsArchive = 1;
@@ -69,14 +67,13 @@ GO
 
 
 
-UPDATE STATISTICS dbo.TransportRateSnapshot WITH FULLSCAN;
-GO
 
 
 
 
---  НЕ НАДО создавать индекс на Даты - он не селективный, он портит планы запроса при использовании полнотекстового индекса
-/*
+
+--  индекс на Даты 
+
 DROP INDEX IF EXISTS ix_TransportRateSnapshot_Active_Date ON [dbo].[TransportRateSnapshot];
 GO
 CREATE NONCLUSTERED INDEX ix_TransportRateSnapshot_Active_Date 
@@ -90,11 +87,10 @@ CREATE NONCLUSTERED INDEX ix_TransportRateSnapshot_Archive_Date
 ON dbo.TransportRateSnapshot (StartDate, EndDate)
 WHERE IsArchive = 1;
 GO
-*/
 
 
---  НЕ НАДО создавать индекс на Транспорт - он не селективный и портит планы запроса при использовании полнотекстового индекса 
-/*
+
+--  индекс на Транспорт
 
 DROP INDEX IF EXISTS [ix_TransportRateSnapshot_Active_TransportKindId_TransportTypeId] ON [dbo].[TransportRateSnapshot];
 GO
@@ -115,10 +111,10 @@ CREATE NONCLUSTERED INDEX [ix_TransportRateSnapshot_Archive_TransportKindId_Tran
 )
 WHERE IsArchive = 1;
 GO
-*/
 
---  НЕ НАДО создавать индекс на Тип ставки  - он не селективный и портит планы запроса при использовании полнотекстового индекса 
-/*
+
+-- индекс на Тип ставки 
+
 DROP INDEX IF EXISTS [ix_TransportRateSnapshot_Active_RateTypeId] ON [dbo].[TransportRateSnapshot];
 GO
 CREATE NONCLUSTERED INDEX [ix_TransportRateSnapshot_Active_RateTypeId] ON [dbo].TransportRateSnapshot
@@ -137,20 +133,32 @@ CREATE NONCLUSTERED INDEX [ix_TransportRateSnapshot_Archive_RateTypeId] ON [dbo]
 WHERE IsArchive = 1;
 GO
 
-*/
 
+UPDATE STATISTICS dbo.TransportRateSnapshot WITH FULLSCAN;
+GO
 
 --  НЕ НАДО создавать индекс на Валюты  - он не селективный и портит планы запроса при использовании полнотекстового индекса 
 /*
 
-DROP INDEX IF EXISTS [ix_TransportRateSnapshot_CurrencyId_IsArchive] ON [dbo].[TransportRateSnapshot];
+DROP INDEX IF EXISTS [ix_TransportRateSnapshot_Active_CurrencyId] ON [dbo].[TransportRateSnapshot];
 GO
-CREATE NONCLUSTERED INDEX [ix_TransportRateSnapshot_CurrencyId_IsArchive] ON [dbo].TransportRateSnapshot
+CREATE NONCLUSTERED INDEX [ix_TransportRateSnapshot_Active_CurrencyId] ON [dbo].TransportRateSnapshot
 (
-	[CurrencyId],
-    [IsArchive]
+	[CurrencyId]
 )
+WHERE IsArchive = 0;
 GO
+
+
+DROP INDEX IF EXISTS [ix_TransportRateSnapshot_Archive_CurrencyId] ON [dbo].[TransportRateSnapshot];
+GO
+CREATE NONCLUSTERED INDEX [ix_TransportRateSnapshot_Archive_CurrencyId] ON [dbo].TransportRateSnapshot
+(
+	[CurrencyId]
+)
+WHERE IsArchive = 1;
+GO
+
 
 
 --  НЕ НАДО создавать индекс на Группа и продукт  - он ортит планы запроса при использовании полнотекстового индекса 

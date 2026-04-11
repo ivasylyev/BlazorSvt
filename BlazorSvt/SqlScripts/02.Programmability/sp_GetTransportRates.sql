@@ -7,18 +7,37 @@ Example:
 use mdm
 go
 
+-- простой поиск (это когда или нет сортировки, или менее 2х полнотекстовых фильтров)
+
 exec dbo.GetTransportRates 
     @PageNumber=1,
     @PageSize=10,
     @Lang=N'ru',
-    @SortKey=N'StartDate',
-    @SortDirection=N'ASC',
+    @SortKey=NULL,
+    @SortDirection=NULL,
     @FilterJson=N'[
         {"PropertType":null,"PropertyName":"RateTypeIdRu","Value":"543746","Operator":1,"StringComparison":5},
         {"PropertType":null,"PropertyName":"NodeFromNameRu","Value":"казань","Operator":7,"StringComparison":5},
         {"PropertType":null,"PropertyName":"ProxyNodeNameRu","Value":"находка","Operator":7,"StringComparison":5},
         {"PropertType":null,"PropertyName":"IsArchive","Value":"False","Operator":1,"StringComparison":5}
         ]'
+
+
+-- сложный поиск (это когда сортировка с двумя и более полнотекстовыми фильтрами)
+
+exec dbo.GetTransportRates 
+    @PageNumber=2,
+    @PageSize=10,
+    @Lang=N'ru',
+    @SortKey=N'StartDate',
+    @SortDirection=N'ASC',
+    @FilterJson=N'[{"PropertType":null,"PropertyName":"RateTypeIdRu","Value":"543746","Operator":1,"StringComparison":5},
+        {"PropertType":null,"PropertyName":"TransportKindIdRu","Value":"543763","Operator":1,"StringComparison":5},
+        {"PropertType":null,"PropertyName":"TransportTypeIdRu","Value":"9687420","Operator":1,"StringComparison":5},
+        {"PropertType":null,"PropertyName":"NodeFromNameRu","Value":"нижн","Operator":7,"StringComparison":5},
+        {"PropertType":null,"PropertyName":"ProxyNodeNameRu","Value":"нах","Operator":7,"StringComparison":5},
+        {"PropertType":null,"PropertyName":"ProductGroupNameRu","Value":"кау","Operator":7,"StringComparison":5},
+        {"PropertType":null,"PropertyName":"IsArchive","Value":"False","Operator":1,"StringComparison":5}]'
 
 */
 CREATE OR ALTER PROCEDURE dbo.GetTransportRates

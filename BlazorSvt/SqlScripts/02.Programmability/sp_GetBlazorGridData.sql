@@ -138,7 +138,8 @@ BEGIN
         @TotalCountSQL NVARCHAR(MAX),
         @BothSQL NVARCHAR(MAX),
         @TotalCount INT,
-        @HasRows INT,
+        @HasRowsClause NVARCHAR(50) = '',
+        @HavingRowsClause NVARCHAR(50) = '',
         @IsComplexQuery BIT,
         @FulltextFilterCount INT;
 
@@ -169,7 +170,7 @@ BEGIN
         StringComparison INT            '$.StringComparison'
     ) JS
     JOIN @AllowedColumns AC
-        ON JS.PropertyName = AC.ColumnName AND AC.ColumnType <> 'ID'
+        ON JS.PropertyName = AC.ColumnName -- AND AC.ColumnType <> 'ID'
         OR (JS.PropertyName = AC.ColumnName + @LangSuffix AND AC.ColumnType = 'ID')
 
     UPDATE @FilteredColumns
@@ -246,7 +247,7 @@ BEGIN
             SELECT 
                 ColumnName,
                 ColumnValue,
-                RN = ROW_NUMBER() OVER (ORDER BY ColumnName) -- лучше детерминированно
+                RN = ROW_NUMBER() OVER (ORDER BY ColumnName)
             FROM @FilteredColumns
             WHERE ColumnType = 'NVARCHAR' 
                   AND ColumnValue IS NOT NULL
@@ -260,9 +261,8 @@ BEGIN
                 RN,
                 Batch =
                     CASE 
-                        WHEN RN = 1 THEN
-                            '
-                            FROM CONTAINSTABLE(' + @TableName + ', ' + ColumnName + ', N''"' + ColumnValue + '*"'') AS T1'
+                        WHEN RN = 1 THEN -- первове условие используется как основа для соединения с остальными
+                            'FROM CONTAINSTABLE(' + @TableName + ', ' + ColumnName + ', N''"' + ColumnValue + '*"'') AS T1'
                         ELSE
                             '
                             JOIN CONTAINSTABLE(' + @TableName + ', ' + ColumnName + ', N''"' + ColumnValue + '*"'') AS T' + CAST(RN AS NVARCHAR) + '
@@ -282,7 +282,8 @@ BEGIN
         INSERT INTO #FTSResult([KEY])
         SELECT T1.[KEY]
         ' +  @TempTableSQL +'
-        GROUP BY T1.[KEY];';  
+        GROUP BY T1.[KEY]
+        ';  
 
         SET @JoinClause = 
             '
@@ -313,16 +314,25 @@ BEGIN
         N'@TotalCount_OUT INT OUTPUT',
         @TotalCount_OUT = @TotalCount OUTPUT;
 
-    SET @HasRows = CASE WHEN @TotalCount > 0 THEN 1 ELSE 0 END;
+    SET @HasRowsClause = CASE 
+            WHEN @TotalCount > 0 THEN ' AND 1 = 1' 
+            ELSE ' AND 0 = 1' END;
+    IF (@IsComplexQuery = 1)  
+    BEGIN
+        SET @HavingRowsClause = CASE 
+                WHEN @TotalCount > 0 THEN ' HAVING 1 = 1' 
+                ELSE ' HAVING 0 = 1' END;
+    END
 
     SET @MainSQL = ' 
     ' + @TempTableSQL + '
+    ' + @HavingRowsClause + ';
     ' + @SelectList + '
         FROM 
     ' + @TableName + '
     ' + @JoinClause + ' 
     ' + @MainWhereClause + '
-    AND ' + CAST(@HasRows AS NVARCHAR(1)) + ' > 0
+    ' + @HasRowsClause + '
     ORDER BY '+ ISNULL(@SortKey + ' ' + @SortDirection + ', ', '')  + '  Id 
     OFFSET ' + CAST(@Offset AS NVARCHAR(20)) + ' ROWS
     FETCH NEXT ' + CAST(@PageSize AS NVARCHAR(20)) + ' ROWS ONLY;
