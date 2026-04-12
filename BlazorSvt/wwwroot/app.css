@@ -109,6 +109,13 @@ h1:focus {
 
 /* Grid  */
 
+
+/* Убираем анимацию и перекрашиваение ячеек во время загрузки - это лишний визукальный шум  */
+.sibur-grid .placeholder-glow .placeholder {
+    animation: none !important;
+    background-color: transparent !important;
+}
+
 /* Переводим выбор фильтра на следующую строку  */
 .sibur-grid  .bb-grid-filter {
     /*display: none !important;*/ /*Если надо скрыть выбор фильтра*/

@@ -115,6 +115,8 @@ AS
 BEGIN
     SET NOCOUNT ON;
 
+    --waitfor delay '00:00:20' -- debug
+
     DECLARE @AllowedColumns TABLE
     (
         ColumnName NVARCHAR(100) NOT NULL,
