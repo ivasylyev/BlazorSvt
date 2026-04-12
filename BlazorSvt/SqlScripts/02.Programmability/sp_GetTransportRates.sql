@@ -109,9 +109,6 @@ BEGIN
             [TotalCostTon],
             [TotalCostTransport],
 
-            [NodeFromId],          
-            [ProxyNodeId],         
-            [NodeToId],            
             [TransportKindId] AS [TransportKindIdRu], 
             [TransportKindId] AS [TransportKindIdEn], 
             [TransportTypeId] AS [TransportTypeIdRu],     

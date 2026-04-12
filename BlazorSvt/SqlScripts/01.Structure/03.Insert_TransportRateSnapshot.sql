@@ -11,9 +11,6 @@ INSERT INTO dbo.TransportRateSnapshot (
     TotalCostTon,
     TotalCostTransport,
 
-    NodeFromId,          
-    ProxyNodeId,         
-    NodeToId,            
     TransportKindId,     
     TransportTypeId,     
     ProductGroupId,      
@@ -44,7 +41,7 @@ INSERT INTO dbo.TransportRateSnapshot (
     ProductNameEn
 )
 SELECT 
-        r.Id        AS RateId,
+        CAST(r.Id AS INT)      AS RateId,
         CASE WHEN ISNULL(r.PrimitiveEntityDataStateId, 2) = 2 THEN 1 ELSE 0 END AS IsArchive,
         ISNULL(r.IsDefRate, 0) AS IsDefRate,
         r.StartDate,
@@ -55,20 +52,17 @@ SELECT
         r.TotalCostTon,
         r.TotalCostTransport,
 
-        r.NodeFrom,          
-        r.ProxyNode,         
-        r.NodeTo,            
-        r.TransportKind,     
-        r.TransportType,     
-        r.ProductGroup,      
-        r.Product,     
-        r.RateType,
-        r.CurrencyStandard,
+        CAST(r.TransportKind AS INT),     
+        CAST(r.TransportType AS INT),       
+        CAST(r.ProductGroup AS INT),        
+        CAST(r.Product AS INT),       
+        CAST(r.RateType AS INT),  
+        CAST(r.CurrencyStandard AS INT),  
 
-        TRY_CAST(LEFT(r.Code, 10) AS BIGINT),              -- Code (NVARCHAR(10))
+        TRY_CAST(LEFT(r.Code, 10) AS INT),              -- Code (NVARCHAR(10))
 
         LEFT(cur.Code, 3),             -- CurrencyCode (NVARCHAR(3))
-        TRY_CAST(LEFT(rt.Code, 2) AS BIGINT),              -- RateTypeCode (NVARCHAR(2)) 
+        TRY_CAST(LEFT(rt.Code, 2) AS INT),              -- RateTypeCode (NVARCHAR(2)) 
         LEFT(nf.Code, 10),             -- NodeFromCode (NVARCHAR(10))
         LEFT(nf.a_2123, 30),           -- NodeFromNameEn (NVARCHAR(30))
         LEFT(nf.a_1020, 30),           -- NodeFromNameRu (NVARCHAR(30))
@@ -83,7 +77,7 @@ SELECT
         LEFT(pg.Code, 5),              -- ProductGroupCode (NVARCHAR(5))
         '(' + LEFT(pg.Code, 3) + ') ' + LEFT(pg.ShortName, 100),       -- ProductGroupNameRu (NVARCHAR(100))
         '(' + LEFT(pg.Code, 3) + ') ' + LEFT(pg.NameEn, 100),          -- ProductGroupNameEn (NVARCHAR(100))
-        TRY_CAST(LEFT(p.Code, 7) AS BIGINT),               -- ProductCode (NVARCHAR(7))
+        TRY_CAST(LEFT(p.Code, 7) AS INT),               -- ProductCode (NVARCHAR(7))
         LEFT(p.NameShort_ru, 100),     -- ProductNameRu (NVARCHAR(100))
         LEFT(p.NameShort_en, 100)     -- ProductNameEn (NVARCHAR(100))
       --  LEFT(cn.Code, 10),             -- ContractorCode (NVARCHAR(10))
@@ -104,7 +98,7 @@ SELECT
 
     where r.TotalCostTon is not null
     and r.TotalCostTransport is not null
-    and TRY_CAST(LEFT(r.Code, 10) AS BIGINT) IS NOT NULL
-    and TRY_CAST(LEFT(rt.Code, 2) AS BIGINT) IS NOT NULL
-    and (LEFT(p.Code, 7) IS NULL OR TRY_CAST(LEFT(p.Code, 7) AS BIGINT) IS NOT NULL);
+    and TRY_CAST(LEFT(r.Code, 10) AS INT) IS NOT NULL
+    and TRY_CAST(LEFT(rt.Code, 2) AS INT) IS NOT NULL
+    and (LEFT(p.Code, 7) IS NULL OR TRY_CAST(LEFT(p.Code, 7) AS INT) IS NOT NULL);
 

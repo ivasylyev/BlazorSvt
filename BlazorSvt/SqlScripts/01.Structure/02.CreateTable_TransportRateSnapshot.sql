@@ -1,10 +1,6 @@
 ﻿USE [mdm];
 GO
 
--- =====================================================
--- 1. Удаляем внешние зависимости (если есть)
--- =====================================================
-
 -- Удаляем полнотекстовый индекс
 IF EXISTS (SELECT * FROM sys.fulltext_indexes WHERE object_id = OBJECT_ID('dbo.TransportRateSnapshot'))
 BEGIN
@@ -66,8 +62,8 @@ GO
 
 -- 9. Создаем таблицу с партиционированием
 CREATE TABLE dbo.TransportRateSnapshot (
-    Id                  BIGINT NOT NULL,
-    RateId              BIGINT NOT NULL,
+    Id                  INT NOT NULL,
+    RateId              INT NOT NULL,
     IsArchive           BIT NOT NULL,
     IsDefRate           BIT NOT NULL,
     StartDate           DATETIME NOT NULL,
@@ -76,18 +72,16 @@ CREATE TABLE dbo.TransportRateSnapshot (
     LastChangeDate      DATETIME NOT NULL,
     TotalCostTon        DECIMAL(15,2) NOT NULL,
     TotalCostTransport  DECIMAL(15,2) NOT NULL,
-    NodeFromId          BIGINT NOT NULL,
-    ProxyNodeId         BIGINT NULL,
-    NodeToId            BIGINT NOT NULL,
-    TransportKindId     BIGINT NOT NULL,
-    TransportTypeId     BIGINT NOT NULL,
-    ProductGroupId      BIGINT NULL,
-    ProductId           BIGINT NULL,
-    RateTypeId          BIGINT NOT NULL,
-    CurrencyId          BIGINT NOT NULL,
-    Code                BIGINT NOT NULL,
+    TransportKindId     INT NOT NULL,
+    TransportTypeId     INT NOT NULL,
+    ProductGroupId      INT NULL,
+    ProductId           INT NULL,
+    RateTypeId          INT NOT NULL,
+    CurrencyId          INT NOT NULL,
+    Code                INT NOT NULL,
+    RateTypeCode        INT NOT NULL,
+    ProductCode         INT NULL,
     CurrencyCode        NVARCHAR(3) NOT NULL,
-    RateTypeCode        BIGINT NOT NULL,
     NodeFromCode        NVARCHAR(10) NOT NULL,
     NodeFromNameEn      NVARCHAR(30) NOT NULL,
     NodeFromNameRu      NVARCHAR(30) NOT NULL,
@@ -102,7 +96,6 @@ CREATE TABLE dbo.TransportRateSnapshot (
     ProductGroupCode    NVARCHAR(5) NULL,
     ProductGroupNameRu  NVARCHAR(110) NULL,
     ProductGroupNameEn  NVARCHAR(110) NULL,
-    ProductCode         BIGINT NULL,
     ProductNameRu       NVARCHAR(100) NULL,
     ProductNameEn       NVARCHAR(100) NULL
     

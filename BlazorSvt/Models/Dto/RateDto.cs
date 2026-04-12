@@ -14,9 +14,6 @@ public class RateDto
     public decimal TotalCostTon { get; set; }
     public decimal TotalCostTransport { get; set; }
 
-    public long NodeFromId { get; set; }
-    public long? ProxyNodeId { get; set; }
-    public long NodeToId { get; set; }
     public long TransportTypeId { get; set; }
     public long? ProductGroupId { get; set; }
     public long? ProductId { get; set; }
