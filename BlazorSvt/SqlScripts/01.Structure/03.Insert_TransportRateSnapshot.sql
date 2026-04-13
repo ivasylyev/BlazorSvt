@@ -1,4 +1,6 @@
-﻿
+﻿USE [mdm];
+GO
+
 INSERT INTO dbo.TransportRateSnapshot (
     RateId,
     IsArchive,
@@ -47,7 +49,7 @@ SELECT
         r.StartDate,
         r.EndDate,
         r.CreationDate,
-        r.LastChangeDate,
+        ISNULL(r.LastChangeDate, r.CreationDate) AS LastChangeDate,
 
         r.TotalCostTon,
         r.TotalCostTransport,

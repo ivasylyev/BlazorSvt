@@ -55,7 +55,7 @@ ALL TO ([PRIMARY]);
 GO
 
 -- 8. Создаем SEQUENCE для Id
-CREATE SEQUENCE dbo.seq_TransportRateId AS BIGINT 
+CREATE SEQUENCE dbo.seq_TransportRateId AS INT 
 START WITH 1 
 INCREMENT BY 1;
 GO

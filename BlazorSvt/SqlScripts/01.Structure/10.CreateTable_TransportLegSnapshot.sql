@@ -55,58 +55,61 @@ ALL TO ([PRIMARY]);
 GO
 
 -- 8. Создаем SEQUENCE для Id
-CREATE SEQUENCE dbo.seq_TransportLegId AS BIGINT 
+CREATE SEQUENCE dbo.seq_TransportLegId AS INT 
 START WITH 1 
 INCREMENT BY 1;
 GO
 
 -- 9. Создаем таблицу с партиционированием
 CREATE TABLE dbo.TransportLegSnapshot (
-    Id                  BIGINT NOT NULL,
-    LegId               BIGINT NOT NULL,
-    IsArchive           BIT NOT NULL,
-    CanBeUsed           BIT NOT NULL,
-    CreationDate        DATETIME NOT NULL,
-    LastChangeDate      DATETIME NOT NULL,
-    NodeFromId          BIGINT NOT NULL,
-    RegionFromId        BIGINT NOT NULL,
-    ProxyNodeId         BIGINT NULL,
-    ProxyRegionId       BIGINT NULL,
-    NodeToId            BIGINT NOT NULL,
-    RegionToId          BIGINT NOT NULL,
-    TransportKindId     BIGINT NOT NULL,
-    ShipmentTypeId      BIGINT NOT NULL,
-
+    Id                  INT NOT NULL,
+    LegId               INT NOT NULL,
     Code                NVARCHAR(50) NOT NULL,
+
+    IsArchive           BIT NOT NULL,
+    CanBeUsed           BIT NOT NULL, -- активное плечо (то есть используется) или нет. Не то же самое что IsArchive!
+
+    ShipmentTypeId      INT NOT NULL,
+
+    TransportKindId     INT NOT NULL,
     TransportKindCode   NVARCHAR(5) NOT NULL,
-    ShipmentTypeCode    NVARCHAR(3) NOT NULL,
+    
+    SearchTimeT         NVARCHAR(20) NULL,
+    LoadTimeT           NVARCHAR(20) NULL,
+    TravelTimeT         NVARCHAR(20) NOT NULL,
+    DaysWaitingT        NVARCHAR(20) NULL,
+    UnLoadTimeT         NVARCHAR(20) NULL,
+    TransportationTimeT NVARCHAR(20) NOT NULL,
 
     NodeFromCode        NVARCHAR(10) NOT NULL,
     NodeFromNameEn      NVARCHAR(30) NOT NULL,
     NodeFromNameRu      NVARCHAR(30) NOT NULL,
-    RegionFromCode        NVARCHAR(10) NOT NULL,
-    RegionFromNameEn      NVARCHAR(60) NOT NULL,
-    RegionFromNameRu      NVARCHAR(60) NOT NULL,
+    RegionFromCode      NVARCHAR(10) NOT NULL,
+    RegionFromNameEn    NVARCHAR(60) NOT NULL,
+    RegionFromNameRu    NVARCHAR(60) NOT NULL,
+
     ProxyNodeCode       NVARCHAR(10) NULL,
     ProxyNodeNameEn     NVARCHAR(30) NULL,
     ProxyNodeNameRu     NVARCHAR(30) NULL,
-    ProxyRegionCode       NVARCHAR(10) NULL,
-    ProxyRegionNameEn     NVARCHAR(60) NULL,
-    ProxyRegionNameRu     NVARCHAR(60) NULL,
+    ProxyRegionCode     NVARCHAR(10) NULL,
+    ProxyRegionNameEn   NVARCHAR(60) NULL,
+    ProxyRegionNameRu   NVARCHAR(60) NULL,
+
     NodeToCode          NVARCHAR(10) NOT NULL,
     NodeToNameEn        NVARCHAR(30) NOT NULL,
     NodeToNameRu        NVARCHAR(30) NOT NULL,
-    RegionToCode          NVARCHAR(10) NOT NULL,
-    RegionToNameEn        NVARCHAR(60) NOT NULL,
-    RegionToNameRu        NVARCHAR(60) NOT NULL,
+    RegionToCode        NVARCHAR(10) NOT NULL,
+    RegionToNameEn      NVARCHAR(60) NOT NULL,
+    RegionToNameRu      NVARCHAR(60) NOT NULL,
+    
+    CreationDate        DATETIME NOT NULL,
+    LastChangeDate      DATETIME NOT NULL
     
     CONSTRAINT PK_TransportLegSnapshot PRIMARY KEY CLUSTERED (IsArchive, Id)
 ) ON ps_TransportLeg(IsArchive);
 GO
 
--- =====================================================
 -- 10. Добавляем DEFAULT constraints
--- =====================================================
 ALTER TABLE dbo.TransportLegSnapshot 
 ADD CONSTRAINT DF_TransportLegSnapshot_Id 
 DEFAULT (NEXT VALUE FOR dbo.seq_TransportLegId) FOR Id;
