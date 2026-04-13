@@ -110,8 +110,6 @@ BEGIN
             TransportKindId AS TransportKindIdRu, 
             TransportKindId AS TransportKindIdEn, 
 
-            TransportKindCode,
-
             SearchTimeT,         
             LoadTimeT,           
             TravelTimeT,         

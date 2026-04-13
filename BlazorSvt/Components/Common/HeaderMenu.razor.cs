@@ -10,7 +10,8 @@ public partial class HeaderMenu : SvtComponentBase
     private List<MenuItem> GetMenuItems() =>
     [
         new() { Url = "/", Text = L["HeaderMenu.Home"] , Icon = IconName.HouseDoorFill },
-        new() { Url = "/rates", Text = L["HeaderMenu.Rates"], Icon = IconName.Table }
+        new() { Url = "/rates", Text = L["HeaderMenu.Rates"], Icon = IconName.Table },
+        new() { Url = "/legs", Text = L["HeaderMenu.Legs"], Icon = IconName.Table }
     ];
 
     protected override void OnInitialized()

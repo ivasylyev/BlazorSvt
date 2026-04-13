@@ -1,6 +1,7 @@
 ﻿using BlazorBootstrap;
 using Blazored.LocalStorage;
 using BlazorSvt.Models.Dto;
+using BlazorSvt.Models.Dto.IdsEnum;
 using BlazorSvt.Models.Grid;
 using BlazorSvt.Resources;
 using BlazorSvt.Services.Shared;

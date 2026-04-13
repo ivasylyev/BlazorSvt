@@ -1,0 +1,7 @@
+﻿@page "/legs"
+@using BlazorSvt.Models.Dto
+@inherits BaseGridPage<LegDto>
+
+<GenericGrid TItem="LegDto"
+             DataProvider="DataProvider"
+             PageTitle="@L["LegsGrid.Title"]"/>

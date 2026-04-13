@@ -129,7 +129,10 @@
   <data name="HeaderMenu.Rates" xml:space="preserve">
 	  <value>Ставки</value>
   </data>
-  <data name="LoadTimePanel.LoadTimeFormat" xml:space="preserve">
+  <data name="HeaderMenu.Legs" xml:space="preserve">
+	  <value>Транспортные плечи</value>
+  </data>
+	<data name="LoadTimePanel.LoadTimeFormat" xml:space="preserve">
 	  <value>Время загрузки {0:F3} сек.</value>
   </data>
   <data name="GenericGrid.Settings" xml:space="preserve">
@@ -254,5 +257,8 @@
   </data>
   <data name="RateDto.No" xml:space="preserve">
 	  <value>Нет</value>
+  </data>
+  <data name="LegsGrid.Title" xml:space="preserve">
+	  <value>Транспортные плечи</value>
   </data>
 </root>

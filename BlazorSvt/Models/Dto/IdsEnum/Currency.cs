@@ -1,4 +1,4 @@
-﻿namespace BlazorSvt.Models.Dto;
+﻿namespace BlazorSvt.Models.Dto.IdsEnum;
 
 public enum Currency
 {

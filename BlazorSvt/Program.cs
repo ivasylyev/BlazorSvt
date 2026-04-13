@@ -4,6 +4,7 @@ using Dapper;
 using BlazorSvt.Components;
 using BlazorSvt.Models.Config;
 using BlazorSvt.Models.Dto;
+using BlazorSvt.Services.Legs;
 using BlazorSvt.Services.Rates;
 using BlazorSvt.Services.Shared;
 using BlazorSvt.Utils;
@@ -33,9 +34,12 @@ builder.Services.AddLocalization();
 
 builder.Services.Configure<DatabaseOptions>(builder.Configuration.GetSection("Database"));
 builder.Services.AddScoped<PageTimingService>();
+
 builder.Services.AddScoped<IRatesDataService, RatesDataService>();
 builder.Services.AddScoped<IGridSettingsService<RateDto>, RatesGridSettingsService>();
 
+builder.Services.AddScoped<ILegsDataService, LegsDataService>();
+builder.Services.AddScoped<IGridSettingsService<LegDto>, LegsGridSettingsService>();
 
 var supportedCultures = new[] { "ru-RU", "en-US" };
 var localizationOptions = new RequestLocalizationOptions()
