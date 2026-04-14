@@ -150,7 +150,10 @@
   <data name="LoadTimePanel.NotLoaded" xml:space="preserve">
 	  <value>Данные еще не загружены</value>
   </data>
-  <data name="Settings.Ok" xml:space="preserve">
+  <data name="Settings.Title" xml:space="preserve">
+	  <value>Настройки</value>
+  </data>
+	<data name="Settings.Ok" xml:space="preserve">
 	  <value>ОК</value>
   </data>
   <data name="Settings.Reset" xml:space="preserve">
@@ -260,5 +263,17 @@
   </data>
   <data name="LegsGrid.Title" xml:space="preserve">
 	  <value>Транспортные плечи</value>
+  </data>
+  <data name="ErrorDisplay.Message" xml:space="preserve">
+	  <value>Сообщение:</value>
+  </data>
+  <data name="ErrorDisplay.Type" xml:space="preserve">
+	  <value>Тип:</value>
+  </data>
+  <data name="ErrorDisplay.StackTrace" xml:space="preserve">
+	  <value>StackTrace:</value>
+  </data>
+  <data name="ErrorDisplay.Title" xml:space="preserve">
+	  <value>При выполнении программы возникла ошибка. Нажмите для просмотра деталей.</value>
   </data>
 </root>

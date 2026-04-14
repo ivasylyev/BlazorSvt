@@ -152,7 +152,11 @@
   <data name="LoadTimePanel.NotLoaded" xml:space="preserve">
 	  <value>Not Loaded</value>
   </data>
-  <data name="Settings.Ok" xml:space="preserve">
+  <data name="Settings.Title" xml:space="preserve">
+	  <value>Settings</value>
+  </data>
+
+	<data name="Settings.Ok" xml:space="preserve">
 	  <value>Ok</value>
   </data>
   <data name="Settings.Reset" xml:space="preserve">
@@ -264,5 +268,18 @@
   </data>
   <data name="LegsGrid.Title" xml:space="preserve">
 	  <value>Transport Legs</value>
+  </data>
+  <data name="ErrorDisplay.Message" xml:space="preserve">
+	  <value>Message:</value>
+  </data>
+  <data name="ErrorDisplay.Type" xml:space="preserve">
+	  <value>Type:</value>
+  </data>
+  <data name="ErrorDisplay.StackTrace" xml:space="preserve">
+	  <value>StackTrace:</value>
+  </data>
+  <data name="ErrorDisplay.Title" xml:space="preserve">
+	  <value>Un error </value>
+	  <comment>A program error occurred. Click for details.</comment>
   </data>
 </root>
