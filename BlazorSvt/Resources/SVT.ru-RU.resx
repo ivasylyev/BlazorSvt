@@ -276,4 +276,37 @@
   <data name="ErrorDisplay.Title" xml:space="preserve">
 	  <value>При выполнении программы возникла ошибка. Нажмите для просмотра деталей.</value>
   </data>
+  <data name="FilterOperator.Contains" xml:space="preserve">
+	  <value>Содержит</value>
+  </data>
+  <data name="FilterOperator.DoesNotContain" xml:space="preserve">
+	  <value>Не содержит</value>
+  </data>
+  <data name="FilterOperator.StartsWith" xml:space="preserve">
+	  <value>Начинается с</value>
+  </data>
+  <data name="FilterOperator.EndsWith" xml:space="preserve">
+	  <value>Заканчивается на</value>
+  </data>
+  <data name="FilterOperator.Equals" xml:space="preserve">
+	  <value>Равно</value>
+  </data>
+  <data name="FilterOperator.NotEquals" xml:space="preserve">
+	  <value>Не равно</value>
+  </data>
+  <data name="FilterOperator.LessThan" xml:space="preserve">
+	  <value>Меньше</value>
+  </data>
+  <data name="FilterOperator.LessThanOrEquals" xml:space="preserve">
+	  <value>Меньше или равно</value>
+  </data>
+  <data name="FilterOperator.GreaterThan" xml:space="preserve">
+	  <value>Больше</value>
+  </data>
+  <data name="FilterOperator.GreaterThanOrEquals" xml:space="preserve">
+	  <value>Больше или равно</value>
+  </data>
+  <data name="FilterOperator.Clear" xml:space="preserve">
+	  <value>Очистить</value>
+  </data>
 </root>

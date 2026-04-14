@@ -282,4 +282,37 @@
 	  <value>Un error </value>
 	  <comment>A program error occurred. Click for details.</comment>
   </data>
+  <data name="FilterOperator.Contains" xml:space="preserve">
+	  <value>Contains</value>
+  </data>
+  <data name="FilterOperator.DoesNotContain" xml:space="preserve">
+	  <value>Does Not Contain</value>
+  </data>
+  <data name="FilterOperator.StartsWith" xml:space="preserve">
+	  <value>Starts With</value>
+  </data>
+  <data name="FilterOperator.EndsWith" xml:space="preserve">
+	  <value>Ends With</value>
+  </data>
+  <data name="FilterOperator.Equals" xml:space="preserve">
+	  <value>Equals</value>
+  </data>
+  <data name="FilterOperator.NotEquals" xml:space="preserve">
+	  <value>Not Equals</value>
+  </data>
+  <data name="FilterOperator.LessThan" xml:space="preserve">
+	  <value>Less Than</value>
+  </data>
+  <data name="FilterOperator.LessThanOrEquals" xml:space="preserve">
+	  <value>Less Than Or Equals</value>
+  </data>
+  <data name="FilterOperator.GreaterThan" xml:space="preserve">
+	  <value>Greater Than</value>
+  </data>
+  <data name="FilterOperator.GreaterThanOrEquals" xml:space="preserve">
+	  <value>Greater Than Or Equals</value>
+  </data>
+  <data name="FilterOperator.Clear" xml:space="preserve">
+	  <value>Clear</value>
+  </data>
 </root>
