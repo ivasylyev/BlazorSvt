@@ -28,8 +28,13 @@ public class LegsGridSettingsService(ILocalStorageService localStorage, IStringL
         AddTransportKindSettings(results, isRu);
 
         AddNodeFromSettings(results, isRu);
+        AddRegionFromSettings(results, isRu);
+
         AddProxyNodeSettings(results, isRu);
+        AddProxyRegionSettings(results, isRu);
+
         AddNodeToSettings(results, isRu);
+        AddRegionToSettings(results, isRu);
 
         AddCreationChangeDateSettings(results);
         AddIsArchiveSettings(results);
@@ -172,6 +177,45 @@ public class LegsGridSettingsService(ILocalStorageService localStorage, IStringL
                 }
             );
     }
+    private void AddRegionFromSettings(List<GridColumnSetting<LegDto>> results, bool isRu)
+    {
+        // RegionFromCode
+        results.Add(
+            new GridColumnSetting<LegDto>
+            {
+                Name = nameof(LegDto.RegionFromCode),
+                Header = L["LegDto.RegionFromCode"],
+                DisplaySelector = dto => dto.RegionFromCode,
+                SortSelector = dto => dto.RegionFromCode,
+                Filterable = true,
+                Visible = false
+            }
+        );
+
+        // RegionFromName
+        if (isRu)
+            results.Add(new GridColumnSetting<LegDto>
+                {
+                    Name = nameof(LegDto.RegionFromNameRu),
+                    Header = L["LegDto.RegionFromName"],
+                    DisplaySelector = dto => dto.RegionFromNameRu,
+                    SortSelector = dto => dto.RegionFromNameRu,
+                    Filterable = true,
+                    Visible = true
+                }
+            );
+        else
+            results.Add(new GridColumnSetting<LegDto>
+                {
+                    Name = nameof(LegDto.RegionFromNameEn),
+                    Header = L["LegDto.RegionFromName"],
+                    DisplaySelector = dto => dto.RegionFromNameEn,
+                    SortSelector = dto => dto.RegionFromNameEn,
+                    Filterable = true,
+                    Visible = true
+                }
+            );
+    }
 
     private void AddProxyNodeSettings(List<GridColumnSetting<LegDto>> results, bool isRu)
     {
@@ -212,6 +256,44 @@ public class LegsGridSettingsService(ILocalStorageService localStorage, IStringL
             );
     }
 
+    private void AddProxyRegionSettings(List<GridColumnSetting<LegDto>> results, bool isRu)
+    {
+        results.Add(
+            new GridColumnSetting<LegDto>
+            {
+                Name = nameof(LegDto.ProxyRegionCode),
+                Header = L["LegDto.ProxyRegionCode"],
+                DisplaySelector = dto => dto.ProxyRegionCode!,
+                SortSelector = dto => dto.ProxyRegionCode!,
+                Filterable = true,
+                Visible = false
+            }
+        );
+
+        // ProxyRegionName
+        if (isRu)
+            results.Add(new GridColumnSetting<LegDto>
+                {
+                    Name = nameof(LegDto.ProxyRegionNameRu),
+                    Header = L["LegDto.ProxyRegionName"],
+                    DisplaySelector = dto => dto.ProxyRegionNameRu!,
+                    SortSelector = dto => dto.ProxyRegionNameRu!,
+                    Filterable = true,
+                    Visible = true
+                }
+            );
+        else
+            results.Add(new GridColumnSetting<LegDto>
+                {
+                    Name = nameof(LegDto.ProxyRegionNameEn),
+                    Header = L["LegDto.ProxyRegionName"],
+                    DisplaySelector = dto => dto.ProxyRegionNameEn!,
+                    SortSelector = dto => dto.ProxyRegionNameEn!,
+                    Filterable = true,
+                    Visible = true
+                }
+            );
+    }
 
     private void AddNodeToSettings(List<GridColumnSetting<LegDto>> results, bool isRu)
     {
@@ -253,7 +335,45 @@ public class LegsGridSettingsService(ILocalStorageService localStorage, IStringL
             );
     }
 
+    private void AddRegionToSettings(List<GridColumnSetting<LegDto>> results, bool isRu)
+    {
+        results.Add(
+            new GridColumnSetting<LegDto>
+            {
+                Name = nameof(LegDto.RegionToCode),
+                Header = L["LegDto.RegionToCode"],
+                DisplaySelector = dto => dto.RegionToCode,
+                SortSelector = dto => dto.RegionToCode,
+                Filterable = true,
+                Visible = false
+            }
+        );
 
+
+        // RegionToName
+        if (isRu)
+            results.Add(new GridColumnSetting<LegDto>
+                {
+                    Name = nameof(LegDto.RegionToNameRu),
+                    Header = L["LegDto.RegionToName"],
+                    DisplaySelector = dto => dto.RegionToNameRu,
+                    SortSelector = dto => dto.RegionToNameRu,
+                    Filterable = true,
+                    Visible = true
+                }
+            );
+        else
+            results.Add(new GridColumnSetting<LegDto>
+                {
+                    Name = nameof(LegDto.RegionToNameEn),
+                    Header = L["LegDto.RegionToName"],
+                    DisplaySelector = dto => dto.RegionToNameEn,
+                    SortSelector = dto => dto.RegionToNameEn,
+                    Filterable = true,
+                    Visible = true
+                }
+            );
+    }
     private void AddCreationChangeDateSettings(List<GridColumnSetting<LegDto>> results)
     {
         results.AddRange(

@@ -315,4 +315,78 @@
   <data name="FilterOperator.Clear" xml:space="preserve">
 	  <value>Clear</value>
   </data>
+  <data name="LegDto.Code" xml:space="preserve">
+  <value>Code</value>
+ </data>
+  <data name="LegDto.NodeFromCode" xml:space="preserve">
+  <value>Node From Code</value>
+ </data>
+  <data name="LegDto.NodeFromName" xml:space="preserve">
+  <value>Node From</value>
+ </data>
+  <data name="LegDto.NodeToCode" xml:space="preserve">
+  <value>Node To Code</value>
+ </data>
+  <data name="LegDto.NodeToName" xml:space="preserve">
+  <value>Node To</value>
+ </data>
+  <data name="LegDto.ProxyNodeName" xml:space="preserve">
+  <value>Proxy Node</value>
+ </data>
+  <data name="LegDto.ProxyNodeCode" xml:space="preserve">
+  <value>Proxy Node Code</value>
+ </data>
+
+	<data name="LegDto.RegionFromCode" xml:space="preserve">
+  <value>Region From Code</value>
+ </data>
+  <data name="LegDto.RegionFromName" xml:space="preserve">
+  <value>Region From</value>
+ </data>
+  <data name="LegDto.RegionToCode" xml:space="preserve">
+  <value>Region To Code</value>
+ </data>
+  <data name="LegDto.RegionToName" xml:space="preserve">
+  <value>Region To</value>
+ </data>
+  <data name="LegDto.ProxyRegionName" xml:space="preserve">
+  <value>Proxy Region</value>
+ </data>
+  <data name="LegDto.ProxyRegionCode" xml:space="preserve">
+  <value>Proxy Region Code</value>
+ </data>
+
+  <data name="LegDto.CreationDate" xml:space="preserve">
+  <value>Created</value>
+ </data>
+  <data name="LegDto.LastChangeDate" xml:space="preserve">
+  <value>Changed</value>
+ </data>
+  <data name="LegDto.IsArchive" xml:space="preserve">
+  <value>Is Archive</value>
+ </data>
+  <data name="LegDto.CanBeUsed" xml:space="preserve">
+  <value>Active</value>
+ </data>
+  <data name="LegDto.TransportKindCode" xml:space="preserve">
+  <value>Transport Kind Code</value>
+ </data>
+  <data name="LegDto.TransportKindName" xml:space="preserve">
+  <value>Transport Kind Name</value>
+ </data>
+  <data name="LegDto.Yes" xml:space="preserve">
+  <value>Yes</value>
+ </data>
+  <data name="LegDto.No" xml:space="preserve">
+  <value>No</value>
+ </data>
+  <data name="LegDto.Archive" xml:space="preserve">
+	  <value>Archive</value>
+  </data>
+  <data name="LegDto.Active" xml:space="preserve">
+	  <value>Active</value>
+  </data>
+  <data name="LegDto.ShipmentTypeName" xml:space="preserve">
+	  <value>Shipment Type</value>
+  </data>
 </root>

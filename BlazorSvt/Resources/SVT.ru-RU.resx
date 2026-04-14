@@ -309,4 +309,77 @@
   <data name="FilterOperator.Clear" xml:space="preserve">
 	  <value>Очистить</value>
   </data>
+  <data name="LegDto.Code" xml:space="preserve">
+ <value>Code</value>
+</data>
+  <data name="LegDto.NodeFromCode" xml:space="preserve">
+ <value>Код отправления</value>
+</data>
+  <data name="LegDto.NodeFromName" xml:space="preserve">
+ <value>Отправление</value>
+</data>
+  <data name="LegDto.NodeToCode" xml:space="preserve">
+ <value>Код назначения</value>
+</data>
+  <data name="LegDto.NodeToName" xml:space="preserve">
+ <value>Назначение</value>
+</data>
+  <data name="LegDto.ProxyNodeCode" xml:space="preserve">
+ <value>Код промежуточного</value>
+</data>
+  <data name="LegDto.ProxyNodeName" xml:space="preserve">
+ <value>Промежуточный</value>
+</data>
+  <data name="LegDto.RegionFromCode" xml:space="preserve">
+ <value>Код региона от</value>
+</data>
+  <data name="LegDto.RegionFromName" xml:space="preserve">
+ <value>Регион от</value>
+</data>
+  <data name="LegDto.RegionToCode" xml:space="preserve">
+ <value>Код региона наз</value>
+</data>
+  <data name="LegDto.RegionToName" xml:space="preserve">
+ <value>Регион наз</value>
+</data>
+  <data name="LegDto.ProxyRegionCode" xml:space="preserve">
+ <value>Код пр. региона</value>
+</data>
+  <data name="LegDto.ProxyRegionName" xml:space="preserve">
+ <value>Пр. регион</value>
+</data>
+	
+  <data name="LegDto.CreationDate" xml:space="preserve">
+ <value>Создано</value>
+</data>
+  <data name="LegDto.LastChangeDate" xml:space="preserve">
+ <value>Изменено</value>
+</data>
+  <data name="LegDto.IsArchive" xml:space="preserve">
+ <value>В Архиве</value>
+</data>
+  <data name="LegDto.CanBeUsed" xml:space="preserve">
+ <value>Действует</value>
+</data>
+  <data name="LegDto.TransportKindCode" xml:space="preserve">
+ <value>Код вида транспорта</value>
+</data>
+  <data name="LegDto.TransportKindName" xml:space="preserve">
+ <value>Вид транспорта</value>
+</data>
+  <data name="LegDto.Yes" xml:space="preserve">
+ <value>Да</value>
+</data>
+  <data name="LegDto.No" xml:space="preserve">
+ <value>Нет</value>
+</data>
+  <data name="LegDto.Archive" xml:space="preserve">
+	  <value>Архив</value>
+  </data>
+  <data name="LegDto.Active" xml:space="preserve">
+	  <value>Актив</value>
+  </data>
+  <data name="LegDto.ShipmentTypeName" xml:space="preserve">
+	  <value>Тип отправки</value>
+  </data>
 </root>
