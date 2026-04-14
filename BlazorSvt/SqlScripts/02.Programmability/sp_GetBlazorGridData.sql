@@ -185,7 +185,7 @@ BEGIN
             -- Логика для ID INT
             WHEN 'ID' THEN 
                 N'
-                    AND ' + ColumnName + ' =  ' + ColumnValue + ' '
+                    AND ' + ColumnName + dbo.fn_GetDateSqlOperator(Operator) + ColumnValue + ' '
             -- Логика для ДАТ
             WHEN 'DATE' THEN 
                 CASE WHEN ISDATE(ColumnValue) = 1

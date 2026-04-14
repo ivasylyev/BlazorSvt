@@ -6,7 +6,12 @@ public static class FilterOperatorUtility
 
     public static IEnumerable<FilterOperatorInfo> GetBooleanFilterOperators()
     {
-        List<FilterOperatorInfo> result = new() { new FilterOperatorInfo("=", "Equals", FilterOperator.Equals), new FilterOperatorInfo("!=", "Not equals", FilterOperator.NotEquals), new FilterOperatorInfo("x", "Clear", FilterOperator.Clear) };
+        List<FilterOperatorInfo> result = new()
+        {
+            new FilterOperatorInfo("=", "Equals", FilterOperator.Equals), 
+            // new FilterOperatorInfo("!=", "Not equals", FilterOperator.NotEquals), 
+            new FilterOperatorInfo("x", "Clear", FilterOperator.Clear)
+        };
 
         return result;
     }
@@ -14,15 +19,15 @@ public static class FilterOperatorUtility
     public static IEnumerable<FilterOperatorInfo> GetDateFilterOperators()
     {
         List<FilterOperatorInfo> result = new()
-                                          {
-                                              new FilterOperatorInfo("=", "Equals", FilterOperator.Equals),
-                                              new FilterOperatorInfo("!=", "Not equals", FilterOperator.NotEquals),
-                                              new FilterOperatorInfo("<", "Less than", FilterOperator.LessThan),
-                                              new FilterOperatorInfo("<=", "Less than or equals", FilterOperator.LessThanOrEquals),
-                                              new FilterOperatorInfo(">", "Greater than", FilterOperator.GreaterThan),
-                                              new FilterOperatorInfo(">=", "Greater than or equals", FilterOperator.GreaterThanOrEquals),
-                                              new FilterOperatorInfo("x", "Clear", FilterOperator.Clear)
-                                          };
+        {
+            new FilterOperatorInfo("=", "Equals", FilterOperator.Equals),
+            new FilterOperatorInfo("!=", "Not equals", FilterOperator.NotEquals),
+            new FilterOperatorInfo("<", "Less than", FilterOperator.LessThan),
+            new FilterOperatorInfo("<=", "Less than or equals", FilterOperator.LessThanOrEquals),
+            new FilterOperatorInfo(">", "Greater than", FilterOperator.GreaterThan),
+            new FilterOperatorInfo(">=", "Greater than or equals", FilterOperator.GreaterThanOrEquals),
+            new FilterOperatorInfo("x", "Clear", FilterOperator.Clear)
+        };
 
         return result;
     }
@@ -30,11 +35,11 @@ public static class FilterOperatorUtility
     public static IEnumerable<FilterOperatorInfo> GetEnumFilterOperators()
     {
         List<FilterOperatorInfo> result = new()
-                                          {
-                                              new FilterOperatorInfo("=", "Equals", FilterOperator.Equals),
-                                              new FilterOperatorInfo("!=", "Not equals", FilterOperator.NotEquals),
-                                              new FilterOperatorInfo("x", "Clear", FilterOperator.Clear)
-                                          };
+        {
+            new FilterOperatorInfo("=", "Equals", FilterOperator.Equals),
+            new FilterOperatorInfo("!=", "Not equals", FilterOperator.NotEquals),
+            new FilterOperatorInfo("x", "Clear", FilterOperator.Clear)
+        };
 
         return result;
     }
@@ -90,11 +95,11 @@ public static class FilterOperatorUtility
     public static IEnumerable<FilterOperatorInfo> GetGuidFilterOperators()
     {
         List<FilterOperatorInfo> result = new()
-                                          {
-                                              new FilterOperatorInfo("=", "Equals", FilterOperator.Equals),
-                                              new FilterOperatorInfo("!=", "Not equals", FilterOperator.NotEquals),
-                                              new FilterOperatorInfo("x", "Clear", FilterOperator.Clear)
-                                          };
+        {
+            new FilterOperatorInfo("=", "Equals", FilterOperator.Equals),
+            new FilterOperatorInfo("!=", "Not equals", FilterOperator.NotEquals),
+            new FilterOperatorInfo("x", "Clear", FilterOperator.Clear)
+        };
 
         return result;
     }
@@ -102,15 +107,15 @@ public static class FilterOperatorUtility
     public static IEnumerable<FilterOperatorInfo> GetNumberFilterOperators()
     {
         List<FilterOperatorInfo> result = new()
-                                          {
-                                              new FilterOperatorInfo("=", "Equals", FilterOperator.Equals),
-                                              new FilterOperatorInfo("!=", "Not equals", FilterOperator.NotEquals),
-                                              new FilterOperatorInfo("<", "Less than", FilterOperator.LessThan),
-                                              new FilterOperatorInfo("<=", "Less than or equals", FilterOperator.LessThanOrEquals),
-                                              new FilterOperatorInfo(">", "Greater than", FilterOperator.GreaterThan),
-                                              new FilterOperatorInfo(">=", "Greater than or equals", FilterOperator.GreaterThanOrEquals),
-                                              new FilterOperatorInfo("x", "Clear", FilterOperator.Clear)
-                                          };
+        {
+            new FilterOperatorInfo("=", "Equals", FilterOperator.Equals),
+            // new FilterOperatorInfo("!=", "Not equals", FilterOperator.NotEquals),
+            // new FilterOperatorInfo("<", "Less than", FilterOperator.LessThan),
+            // new FilterOperatorInfo("<=", "Less than or equals", FilterOperator.LessThanOrEquals),
+            // new FilterOperatorInfo(">", "Greater than", FilterOperator.GreaterThan),
+            // new FilterOperatorInfo(">=", "Greater than or equals", FilterOperator.GreaterThanOrEquals),
+            new FilterOperatorInfo("x", "Clear", FilterOperator.Clear)
+        };
 
         return result;
     }
@@ -118,19 +123,19 @@ public static class FilterOperatorUtility
     public static IEnumerable<FilterOperatorInfo> GetStringFilterOperators()
     {
         List<FilterOperatorInfo> result = new()
-                                          {
-                                              new FilterOperatorInfo("*a*", "Contains", FilterOperator.Contains),
-                                              new FilterOperatorInfo("!*a*", "Does not contain", FilterOperator.DoesNotContain),
-                                              new FilterOperatorInfo("a**", "Starts with", FilterOperator.StartsWith),
-                                              new FilterOperatorInfo("**a", "Ends with", FilterOperator.EndsWith),
-                                              //result.Add(new("=''", "Is empty", FilterOperator.IsEmpty));
-                                              //result.Add(new("!=''", "Is not empty", FilterOperator.IsNotEmpty));
-                                              new FilterOperatorInfo("=", "Equals", FilterOperator.Equals),
-                                              new FilterOperatorInfo("!=", "Not equals", FilterOperator.NotEquals),
-                                              //result.Add(new("null", "Is null", FilterOperator.IsNull));
-                                              //result.Add(new("!null", "Is not null", FilterOperator.IsNotNull));
-                                              new FilterOperatorInfo("x", "Clear", FilterOperator.Clear)
-                                          };
+        {
+            new FilterOperatorInfo("*a*", "Contains", FilterOperator.Contains),
+            // new FilterOperatorInfo("!*a*", "Does not contain", FilterOperator.DoesNotContain),
+            // new FilterOperatorInfo("a**", "Starts with", FilterOperator.StartsWith),
+            // new FilterOperatorInfo("**a", "Ends with", FilterOperator.EndsWith),
+            // //result.Add(new("=''", "Is empty", FilterOperator.IsEmpty));
+            //result.Add(new("!=''", "Is not empty", FilterOperator.IsNotEmpty));
+            // new FilterOperatorInfo("=", "Equals", FilterOperator.Equals),
+            // new FilterOperatorInfo("!=", "Not equals", FilterOperator.NotEquals),
+            //result.Add(new("null", "Is null", FilterOperator.IsNull));
+            //result.Add(new("!null", "Is not null", FilterOperator.IsNotNull));
+            new FilterOperatorInfo("x", "Clear", FilterOperator.Clear)
+        };
 
         return result;
     }
