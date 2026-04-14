@@ -50,6 +50,8 @@ public partial class GenericGrid<TItem> : SvtComponentBase
             await GridSettingsService.SaveGridSettingsAsync(GridSettings, Lang);
         }
 
+        await ClearFiltersAsync();
+
         StateHasChanged();
     }
 
@@ -63,6 +65,7 @@ public partial class GenericGrid<TItem> : SvtComponentBase
     {
         await GridSettingsService.ResetGridSettingsAsync(Lang);
         GridSettings = await GridSettingsService.GetGridSettingsAsync(Lang);
+        await ClearFiltersAsync();
         StateHasChanged();
     }
 
