@@ -36,6 +36,8 @@ public class LegsGridSettingsService(ILocalStorageService localStorage, IStringL
         AddNodeToSettings(results, isRu);
         AddRegionToSettings(results, isRu);
 
+        AddLeadtimeSettings(results);
+
         AddCreationChangeDateSettings(results);
         AddIsArchiveSettings(results);
 
@@ -177,6 +179,7 @@ public class LegsGridSettingsService(ILocalStorageService localStorage, IStringL
                 }
             );
     }
+
     private void AddRegionFromSettings(List<GridColumnSetting<LegDto>> results, bool isRu)
     {
         // RegionFromCode
@@ -374,11 +377,73 @@ public class LegsGridSettingsService(ILocalStorageService localStorage, IStringL
                 }
             );
     }
+
+    private void AddLeadtimeSettings(List<GridColumnSetting<LegDto>> results)
+    {
+        results.AddRange(
+            [
+                new GridColumnSetting<LegDto>
+                {
+                    Name = nameof(LegDto.SearchTimeT),
+                    Header = L["LegDto.SearchTime"],
+                    DisplaySelector = dto => dto.SearchTimeT,
+                    SortSelector = dto => dto.SearchTimeT,
+                    Filterable = false,
+                    Visible = false
+                },
+                new GridColumnSetting<LegDto>
+                {
+                    Name = nameof(LegDto.LoadTimeT),
+                    Header = L["LegDto.LoadTime"],
+                    DisplaySelector = dto => dto.LoadTimeT,
+                    SortSelector = dto => dto.LoadTimeT,
+                    Filterable = false,
+                    Visible = false
+                },
+                new GridColumnSetting<LegDto>
+                {
+                    Name = nameof(LegDto.DaysWaitingT),
+                    Header = L["LegDto.DaysWaiting"],
+                    DisplaySelector = dto => dto.DaysWaitingT,
+                    SortSelector = dto => dto.DaysWaitingT,
+                    Filterable = false,
+                    Visible = false
+                },
+                new GridColumnSetting<LegDto>
+                {
+                    Name = nameof(LegDto.TravelTimeT),
+                    Header = L["LegDto.TravelTime"],
+                    DisplaySelector = dto => dto.TravelTimeT,
+                    SortSelector = dto => dto.TravelTimeT,
+                    Filterable = false,
+                    Visible = false
+                },
+                new GridColumnSetting<LegDto>
+                {
+                    Name = nameof(LegDto.UnLoadTimeT),
+                    Header = L["LegDto.UnLoadTime"],
+                    DisplaySelector = dto => dto.UnLoadTimeT,
+                    SortSelector = dto => dto.UnLoadTimeT,
+                    Filterable = false,
+                    Visible = false
+                },
+                new GridColumnSetting<LegDto>
+                {
+                    Name = nameof(LegDto.TransportationTimeT),
+                    Header = L["LegDto.TransportationTime"],
+                    DisplaySelector = dto => dto.TransportationTimeT,
+                    SortSelector = dto => dto.TransportationTimeT,
+                    Filterable = false,
+                    Visible = true
+                }
+            ]
+        );
+    }
+
     private void AddCreationChangeDateSettings(List<GridColumnSetting<LegDto>> results)
     {
         results.AddRange(
-            new[]
-            {
+            [
                 new GridColumnSetting<LegDto>
                 {
                     Name = nameof(LegDto.CreationDate),
@@ -397,7 +462,7 @@ public class LegsGridSettingsService(ILocalStorageService localStorage, IStringL
                     Filterable = true,
                     Visible = false
                 }
-            }
+            ]
         );
     }
 

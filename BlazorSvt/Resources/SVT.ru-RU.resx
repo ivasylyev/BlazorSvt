@@ -382,4 +382,22 @@
   <data name="LegDto.ShipmentTypeName" xml:space="preserve">
 	  <value>Тип отправки</value>
   </data>
+  <data name="LegDto.SearchTime" xml:space="preserve">
+	  <value>Поиск</value>
+  </data>
+  <data name="LegDto.LoadTime" xml:space="preserve">
+	  <value>Зарузка</value>
+  </data>
+  <data name="LegDto.DaysWaiting" xml:space="preserve">
+	  <value>Ожидание</value>
+  </data>
+  <data name="LegDto.TravelTime" xml:space="preserve">
+	  <value>В пути</value>
+  </data>
+  <data name="LegDto.UnLoadTime" xml:space="preserve">
+	  <value>Разгрузка</value>
+  </data>
+  <data name="LegDto.TransportationTime" xml:space="preserve">
+	  <value>Транспортировка</value>
+  </data>
 </root>

@@ -22,12 +22,12 @@ public class LegDto
     public required TransportKindEn TransportKindIdEn { get; set; }
 
 
-    public required string SearchTime { get; set; }
-    public required string LoadTime{ get; set; }
-    public required string TravelTime{ get; set; }
-    public required string DaysWaiting{ get; set; }
-    public required string UnLoadTime{ get; set; }
-    public required string TransportationTime{ get; set; } 
+    public required string SearchTimeT { get; set; }
+    public required string LoadTimeT{ get; set; }
+    public required string DaysWaitingT { get; set; }
+    public required string TravelTimeT{ get; set; }
+    public required string UnLoadTimeT{ get; set; }
+    public required string TransportationTimeT{ get; set; } 
     
 
     public required string NodeFromCode { get; set; }
