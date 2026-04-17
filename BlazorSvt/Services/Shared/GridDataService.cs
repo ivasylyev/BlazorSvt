@@ -1,5 +1,6 @@
 ﻿using System.Data;
 using System.Data.SqlClient;
+using System.Reflection;
 using BlazorBootstrap;
 using BlazorSvt.Models.Config;
 using BlazorSvt.Utils;
@@ -9,17 +10,13 @@ using Newtonsoft.Json;
 
 namespace BlazorSvt.Services.Shared;
 
-public abstract class BaseGridDataService<TItem>(
-    IOptions<DatabaseOptions> options,
-    ILogger logger)
+public class GridDataService<TItem>(IOptions<DatabaseOptions> options, ILogger<GridDataService<TItem>> logger) :IGridDataService<TItem>
 {
+    private const string IsArchiveFieldName = "IsArchive";
+
     private readonly string connectionString = options.Value.MdmDb;
 
-    protected abstract string StoredProcedureName { get; }
-
-    protected virtual string IsArchiveFieldName => "IsArchive";
-
-    protected async Task<GridDataProviderResult<TItem>> GetDataAsync(GridDataProviderRequest<TItem> request, string lang)
+    public async Task<GridDataProviderResult<TItem>> GetDataAsync(GridDataProviderRequest<TItem> request, string lang)
     {
         var (sortString, sortDirection) = ExtractSorting(request);
 
@@ -56,25 +53,29 @@ public abstract class BaseGridDataService<TItem>(
 
     private List<FilterItem> ExtractFilters(GridDataProviderRequest<TItem> request)
     {
-        var filters = new List<FilterItem>();
-
         // Бывает что request.Filters пустой из-за того что компонент не успел инициализироваться
         // ReSharper disable once ConditionIsAlwaysTrueOrFalseAccordingToNullableAPIContract
         if (request.Filters is not null)
-            filters.AddRange(request.Filters.Select(ExtractEnumFilter<TItem>));
-        else
-            filters.Add(new FilterItem(IsArchiveFieldName, "False", FilterOperator.Equals, StringComparison.InvariantCultureIgnoreCase));
-        return filters;
+            return request.Filters.Select(ExtractEnumFilter).ToList();
+
+        return
+        [
+            new FilterItem(
+                IsArchiveFieldName,
+                "False",
+                FilterOperator.Equals,
+                StringComparison.InvariantCultureIgnoreCase)
+        ];
     }
 
-    private FilterItem ExtractEnumFilter<TItem>(FilterItem filter)
+    private static FilterItem ExtractEnumFilter(FilterItem filter)
     {
-        var propInfo = typeof(TItem).GetProperty(filter.PropertyName);
+        DtoProperties.TryGetValue(filter.PropertyName, out var propInfo);
         if (propInfo != null)
         {
             // Проверяем, является ли тип перечислением (учитываем Nullable<Enum>)
             var propType = Nullable.GetUnderlyingType(propInfo.PropertyType) ?? propInfo.PropertyType;
-
+            // ReSharper disable once ConditionIsAlwaysTrueOrFalseAccordingToNullableAPIContract
             if (propType.IsEnum && filter.Value != null)
             {
                 if (Enum.TryParse(propType, filter.Value, out var enumValue))
@@ -88,6 +89,7 @@ public abstract class BaseGridDataService<TItem>(
     }
 
 
+
     private async Task<(IEnumerable<TItem>, int)> ExecuteStoredProcedureAsync(
         IEnumerable<FilterItem> filters,
         int pageNumber,
@@ -97,7 +99,9 @@ public abstract class BaseGridDataService<TItem>(
         string lang,
         CancellationToken cancellationToken)
     {
+#pragma warning disable CS0618 // Type or member is obsolete
         await using var connection = new SqlConnection(connectionString);
+#pragma warning restore CS0618 // Type or member is obsolete
         await connection.OpenAsync(cancellationToken);
 
         var parameters = BuildParameters(filters, pageNumber, pageSize, sortKey, sortDirection, lang);
@@ -137,8 +141,18 @@ public abstract class BaseGridDataService<TItem>(
 
         return parameters;
     }
+    private static readonly Dictionary<string, PropertyInfo> DtoProperties =
+        typeof(TItem)
+            .GetProperties()
+            .ToDictionary(p => p.Name);
 
-    protected virtual async Task<int> ReadCountAsync(SqlMapper.GridReader multi)
+    private static readonly string StoredProcedureName =
+        typeof(TItem).GetCustomAttribute<GridStoredProcedureAttribute>()?.Name
+        ?? throw new InvalidOperationException(
+            $"DTO {typeof(TItem).Name} does not have GridStoredProcedureAttribute");
+
+
+    private static async Task<int> ReadCountAsync(SqlMapper.GridReader multi)
     {
         var result = await multi.ReadFirstOrDefaultAsync<dynamic>();
         return result?.TotalCount ?? 0;

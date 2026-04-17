@@ -35,10 +35,10 @@ builder.Services.AddLocalization();
 builder.Services.Configure<DatabaseOptions>(builder.Configuration.GetSection("Database"));
 builder.Services.AddScoped<PageTimingService>();
 
-builder.Services.AddScoped<IRatesDataService, RatesDataService>();
+builder.Services.AddScoped(typeof(IGridDataService<>), typeof(GridDataService<>));
+
 builder.Services.AddScoped<IGridSettingsService<RateDto>, RatesGridSettingsService>();
 
-builder.Services.AddScoped<ILegsDataService, LegsDataService>();
 builder.Services.AddScoped<IGridSettingsService<LegDto>, LegsGridSettingsService>();
 
 var supportedCultures = new[] { "ru-RU", "en-US" };
