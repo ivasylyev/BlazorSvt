@@ -28,6 +28,7 @@
           PaginationItemsTextFormat="@L["GenericGrid.PaginationItemsTextFormat"]"
           FiltersTranslationProvider="GridFiltersTranslationProvider"
           AllowDetailView="true"
+          RowKeySelector="DetailKeySelector"
           Responsive="true">
 
         @if (gridSettings is null)
@@ -48,7 +49,8 @@
                                 IsVisible="@settings.Visible"
                                 Filterable="@settings.Filterable"
                                 FilterValue="@settings.FilterValue"
-                                SortKeySelector="@settings.SortSelector">
+                                SortKeySelector="@settings.SortSelector"
+                                >
                         <div class="cell-truncate" title="@settings.DisplaySelector(context)">
                             @settings.DisplaySelector(context)
                         </div>

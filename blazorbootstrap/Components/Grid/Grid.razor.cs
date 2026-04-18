@@ -651,6 +651,14 @@ public partial class Grid<TItem> : BlazorBootstrapComponentBase
         }
     }
 
+    private HashSet<string> expandedRows = new();
+    private void ToggleDetail(string id)
+    {
+        if (!expandedRows.Add(id))
+            expandedRows.Remove(id);
+        StateHasChanged();
+    }
+
     #endregion
 
     #region Properties, Indexers
