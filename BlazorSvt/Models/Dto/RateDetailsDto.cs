@@ -5,11 +5,11 @@ using BlazorSvt.Models.Dto.IdsEnum;
 namespace BlazorSvt.Models.Dto;
 
 
-[GridStoredProcedure("dbo.GetTransportRates")]
+[StoredProcedure("dbo.GetTransportRateDetail")]
 public class RateDetailsDto
 {
     public long Id { get; set; }
-    //public long RateId { get; set; }
+    public long RateId { get; set; }
     //public bool IsArchive { get; set; }
     //public bool IsDefRate { get; set; }
     //public DateOnly StartDate { get; set; }

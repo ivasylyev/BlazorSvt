@@ -10,13 +10,16 @@ public partial class RatesGrid : BaseGridPage<RateDto, RateDetailsDto>
     [Inject] 
     public IGridDataService<RateDto, RateDetailsDto> RatesDataService { get; set; } = default!;
 
-    protected override async Task<GridDataProviderResult<RateDto>> GetDataAsync(GridDataProviderRequest<RateDto> request, string lang)
-    {
-        return await RatesDataService.GetDataAsync(request, lang);
-    }
+    protected override object DetailKeySelector(RateDto request)
+        => request.RateId;
+
+    protected override async Task<GridDataProviderResult<RateDto>> GetDataAsync(GridDataProviderRequest<RateDto> request, string lang) 
+        => await RatesDataService.GetDataAsync(request, lang);
 
     protected override async Task<RateDetailsDto> GetDetailDataAsync(RateDto request, string lang)
     {
-        return await RatesDataService.GetDetailDataAsync(request, lang);
+        var key = DetailKeySelector(request);
+        return await RatesDataService.GetDetailDataAsync(key, lang) ?? new RateDetailsDto();
     }
+
 }

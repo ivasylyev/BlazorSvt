@@ -4,7 +4,7 @@ using BlazorSvt.Models.Dto.IdsEnum;
 
 namespace BlazorSvt.Models.Dto;
 
-[GridStoredProcedure("dbo.GetTransportLegs")]
+[StoredProcedure("dbo.GetTransportLegDetail")]
 public class LegDetailsDto
 {
     public long Id { get; set; }

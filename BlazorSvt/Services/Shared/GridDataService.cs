@@ -1,12 +1,14 @@
-﻿using System.Data;
-using System.Data.SqlClient;
-using System.Reflection;
-using BlazorBootstrap;
+﻿using BlazorBootstrap;
 using BlazorSvt.Models.Config;
 using BlazorSvt.Utils;
 using Dapper;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
+using System.Data;
+using System.Data.SqlClient;
+using System.Globalization;
+using System.Reflection;
+using System.Threading;
 
 namespace BlazorSvt.Services.Shared;
 
@@ -15,6 +17,27 @@ public class GridDataService<TItem, TDetailItem>(IOptions<DatabaseOptions> optio
     private const string IsArchiveFieldName = "IsArchive";
 
     private readonly string connectionString = options.Value.MdmDb;
+
+    public async Task<TDetailItem?> GetDetailDataAsync(object key, string lang)
+    {
+#pragma warning disable CS0618 // Type or member is obsolete
+        await using var connection = new SqlConnection(connectionString);
+#pragma warning restore CS0618 // Type or member is obsolete
+        await connection.OpenAsync();
+
+        var parameters = new DynamicParameters();
+        parameters.Add("Key", key.ToString());
+        parameters.Add("Lang", lang);
+
+        var loggingConnection = new DbConnectionLogDecorator(connection, logger);
+
+        var result = await loggingConnection.QuerySingleOrDefault<TDetailItem?>(
+            StoredProcedureDetailName,
+            parameters,
+            CommandType.StoredProcedure);
+
+        return result;
+    }
 
     public async Task<GridDataProviderResult<TItem>> GetDataAsync(GridDataProviderRequest<TItem> request, string lang)
     {
@@ -36,11 +59,6 @@ public class GridDataService<TItem, TDetailItem>(IOptions<DatabaseOptions> optio
             Data = data,
             TotalCount = totalCount
         };
-    }
-
-    public Task<TDetailItem> GetDetailDataAsync(TItem request, string lang)
-    {
-        throw new NotImplementedException();
     }
 
     private static (string? sortString, SortDirection sortDirection) ExtractSorting(GridDataProviderRequest<TItem> request)
@@ -152,9 +170,14 @@ public class GridDataService<TItem, TDetailItem>(IOptions<DatabaseOptions> optio
             .ToDictionary(p => p.Name);
 
     private static readonly string StoredProcedureName =
-        typeof(TItem).GetCustomAttribute<GridStoredProcedureAttribute>()?.Name
+        typeof(TItem).GetCustomAttribute<StoredProcedureAttribute>()?.Name
         ?? throw new InvalidOperationException(
-            $"DTO {typeof(TItem).Name} does not have GridStoredProcedureAttribute");
+            $"DTO {typeof(TItem).Name} does not have StoredProcedureAttribute");
+
+    private static readonly string StoredProcedureDetailName =
+        typeof(TDetailItem).GetCustomAttribute<StoredProcedureAttribute>()?.Name
+        ?? throw new InvalidOperationException(
+            $"DTO {typeof(TDetailItem).Name} does not have StoredProcedureAttribute");
 
 
     private static async Task<int> ReadCountAsync(SqlMapper.GridReader multi)

@@ -7,7 +7,8 @@ namespace BlazorSvt.Components.Pages;
 
 public abstract class BaseGridPage<TItem, TDetailItem> : SvtComponentBase
 {
-    [Inject] protected PageTimingService TimingService { get; set; } = default!;
+    [Inject] 
+    protected PageTimingService TimingService { get; set; } = default!;
 
     protected async Task<GridDataProviderResult<TItem>> DataProvider(GridDataProviderRequest<TItem> request)
     {
@@ -28,4 +29,6 @@ public abstract class BaseGridPage<TItem, TDetailItem> : SvtComponentBase
     protected abstract Task<GridDataProviderResult<TItem>> GetDataAsync(GridDataProviderRequest<TItem> request, string lang);
 
     protected abstract Task<TDetailItem> GetDetailDataAsync(TItem request, string lang);
+
+    protected abstract object DetailKeySelector(TItem request);
 }
