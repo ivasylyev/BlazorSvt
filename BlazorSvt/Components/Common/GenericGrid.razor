@@ -38,23 +38,24 @@
         }
         else
         {
-            @foreach (var settings in gridSettings.ColumnSettings)
-            {
-                <GridColumn TItem="TItem"
-                            HeaderText="@settings.Header"
-                            PropertyName="@settings.Name"
-                            SortString="@settings.Name"
-                            IsVisible="@settings.Visible"
-                            Filterable="@settings.Filterable"
-                            FilterValue="@settings.FilterValue"
-                            SortKeySelector="@settings.SortSelector"
-                >
-                    <div class="cell-truncate" title="@settings.DisplaySelector(context)">
-                        @settings.DisplaySelector(context)
-                    </div>
-                </GridColumn>
-            }
+            <GridColumns>
+                @foreach (var settings in gridSettings.ColumnSettings)
+                {
+                    <GridColumn TItem="TItem"
+                                HeaderText="@settings.Header"
+                                PropertyName="@settings.Name"
+                                SortString="@settings.Name"
+                                IsVisible="@settings.Visible"
+                                Filterable="@settings.Filterable"
+                                FilterValue="@settings.FilterValue"
+                                SortKeySelector="@settings.SortSelector">
+                        <div class="cell-truncate" title="@settings.DisplaySelector(context)">
+                            @settings.DisplaySelector(context)
+                        </div>
+                    </GridColumn>
+                }
 
+            </GridColumns>
             <GridDetailView TItem="TItem">
                 <AsyncDetailView TItem="TItem"
                                  TDetailItem="TDetailItem"
