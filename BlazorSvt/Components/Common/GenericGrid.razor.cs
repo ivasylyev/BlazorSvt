@@ -5,20 +5,36 @@ using Microsoft.AspNetCore.Components;
 
 namespace BlazorSvt.Components.Common;
 
-public partial class GenericGrid<TItem> : SvtComponentBase
+public partial class GenericGrid<TItem, TDetailItem> : SvtComponentBase
 {
     private Grid<TItem> grid = default!;
 
     protected GridSettings<TItem>? GridSettings;
     private SettingsModal settingsModal = default!;
 
-    [Inject] public ILogger<GenericGrid<TItem>> Logger { get; set; } = default!;
+    [Inject] public ILogger<GenericGrid<TItem, TDetailItem>> Logger { get; set; } = default!;
 
     [Inject] public IGridSettingsService<TItem> GridSettingsService { get; set; } = default!;
 
-    [Parameter] [EditorRequired] public GridDataProviderDelegate<TItem> DataProvider { get; set; } = default!;
+    [Parameter] 
+    [EditorRequired] 
+    public GridDataProviderDelegate<TItem> DataProvider { get; set; } = default!;
 
-    [Parameter] [EditorRequired] public string PageTitle { get; set; } = default!;
+    [Parameter]
+    [EditorRequired]
+    public Func<TItem, Task<TDetailItem>> DetailsDataProvider { get; set; } = default!;
+
+    [Parameter] 
+    [EditorRequired] 
+    public string PageTitle { get; set; } = default!;
+
+    [Parameter] 
+    public Func<TItem, object> DetailKeySelector { get; set; } = default!;
+
+
+
+    [Parameter] 
+    public RenderFragment<TDetailItem>? DetailViewTemplate { get; set; }
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {

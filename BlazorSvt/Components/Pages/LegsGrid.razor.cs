@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Components;
 
 namespace BlazorSvt.Components.Pages;
 
-public partial class LegsGrid : BaseGridPage<LegDto>
+public partial class LegsGrid : BaseGridPage<LegDto, LegDetailsDto>
 {
     [Inject] public IGridDataService<LegDto> LegsDataService { get; set; } = default!;
 
@@ -13,4 +13,10 @@ public partial class LegsGrid : BaseGridPage<LegDto>
     {
         return await LegsDataService.GetDataAsync(request, lang);
     }
+    protected override async Task<LegDetailsDto> GetDetailDataAsync(LegDto request, string lang)
+    {
+        await Task.CompletedTask;
+        return new LegDetailsDto();
+    }
+
 }

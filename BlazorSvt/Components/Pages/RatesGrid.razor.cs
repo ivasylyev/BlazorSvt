@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Components;
 
 namespace BlazorSvt.Components.Pages;
 
-public partial class RatesGrid : BaseGridPage<RateDto>
+public partial class RatesGrid : BaseGridPage<RateDto, RateDetailsDto>
 {
     [Inject] public IGridDataService<RateDto> RatesDataService { get; set; } = default!;
 
@@ -13,4 +13,12 @@ public partial class RatesGrid : BaseGridPage<RateDto>
     {
         return await RatesDataService.GetDataAsync(request, lang);
     }
+
+    protected override async Task<RateDetailsDto> GetDetailDataAsync(RateDto request, string lang)
+    {
+        await Task.CompletedTask;
+        return new RateDetailsDto();
+    }
+
+
 }

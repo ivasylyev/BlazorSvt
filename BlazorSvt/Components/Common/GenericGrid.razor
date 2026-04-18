@@ -1,4 +1,5 @@
 ﻿@typeparam TItem
+@typeparam TDetailItem
 @inherits SvtComponentBase
 <PageTitle>@PageTitle</PageTitle>
 
@@ -26,6 +27,7 @@
           EnumFilterSelectText = "@L["GenericGrid.EnumFilterSelectText"]"
           PaginationItemsTextFormat="@L["GenericGrid.PaginationItemsTextFormat"]"
           FiltersTranslationProvider="GridFiltersTranslationProvider"
+          AllowDetailView="true"
           Responsive="true">
 
         @if (GridSettings is null)
@@ -52,6 +54,15 @@
                     </div>
                 </GridColumn>
             }
+
+            <GridDetailView TItem="TItem">
+                <AsyncDetailView TItem="TItem"
+                                 TDetailItem="TDetailItem"
+                                 Item="context"
+                                 KeySelector="DetailKeySelector"
+                                 DetailsDataProvider="DetailsDataProvider"
+                                 Template="DetailViewTemplate" />
+            </GridDetailView>
         }
     </Grid>
 </div>
