@@ -35,7 +35,7 @@ builder.Services.AddLocalization();
 builder.Services.Configure<DatabaseOptions>(builder.Configuration.GetSection("Database"));
 builder.Services.AddScoped<PageTimingService>();
 
-builder.Services.AddScoped(typeof(IGridDataService<>), typeof(GridDataService<>));
+builder.Services.AddScoped(typeof(IGridDataService<,>), typeof(GridDataService<,>));
 
 builder.Services.AddScoped<IGridSettingsService<RateDto>, RatesGridSettingsService>();
 

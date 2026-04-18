@@ -12,7 +12,7 @@
 </div>
 
 <SettingsModal @ref="settingsModal"
-               ColumnSettings="GridSettings?.GetGridColumnSettingsCopy()"
+               ColumnSettings="gridSettings?.GetGridColumnSettingsCopy()"
                OnOk="OnOkClick"
                OnCancel="OnCancelClick"
                OnReset="OnResetClick" />
@@ -30,7 +30,7 @@
           AllowDetailView="true"
           Responsive="true">
 
-        @if (GridSettings is null)
+        @if (gridSettings is null)
         {
             <PlaceholderContainer Animation="PlaceholderAnimation.Glow">
                 <Placeholder Width="PlaceholderWidth.Col12" />
@@ -38,7 +38,7 @@
         }
         else
         {
-            @foreach (var settings in GridSettings.ColumnSettings)
+            @foreach (var settings in gridSettings.ColumnSettings)
             {
                 <GridColumn TItem="TItem"
                             HeaderText="@settings.Header"
@@ -61,7 +61,7 @@
                                  Item="context"
                                  KeySelector="DetailKeySelector"
                                  DetailsDataProvider="DetailsDataProvider"
-                                 Template="DetailViewTemplate" />
+                                 Template="DetailViewTemplate"/>
             </GridDetailView>
         }
     </Grid>

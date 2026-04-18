@@ -8,14 +8,20 @@ namespace BlazorSvt.Components.Common;
 public partial class GenericGrid<TItem, TDetailItem> : SvtComponentBase
 {
     private Grid<TItem> grid = default!;
-
-    protected GridSettings<TItem>? GridSettings;
     private SettingsModal settingsModal = default!;
 
-    [Inject] public ILogger<GenericGrid<TItem, TDetailItem>> Logger { get; set; } = default!;
+    private GridSettings<TItem>? gridSettings;
 
-    [Inject] public IGridSettingsService<TItem> GridSettingsService { get; set; } = default!;
 
+    [Inject] 
+    public ILogger<GenericGrid<TItem, TDetailItem>> Logger { get; set; } = default!;
+
+    [Inject] 
+    public IGridSettingsService<TItem> GridSettingsService { get; set; } = default!;
+
+    [Parameter]
+    [EditorRequired]
+    public string PageTitle { get; set; } = default!;
     [Parameter] 
     [EditorRequired] 
     public GridDataProviderDelegate<TItem> DataProvider { get; set; } = default!;
@@ -24,15 +30,9 @@ public partial class GenericGrid<TItem, TDetailItem> : SvtComponentBase
     [EditorRequired]
     public Func<TItem, Task<TDetailItem>> DetailsDataProvider { get; set; } = default!;
 
-    [Parameter] 
-    [EditorRequired] 
-    public string PageTitle { get; set; } = default!;
-
-    [Parameter] 
+    [Parameter]
+    [EditorRequired]
     public Func<TItem, object> DetailKeySelector { get; set; } = default!;
-
-
-
     [Parameter] 
     public RenderFragment<TDetailItem>? DetailViewTemplate { get; set; }
 
@@ -42,7 +42,7 @@ public partial class GenericGrid<TItem, TDetailItem> : SvtComponentBase
 
         if (firstRender)
         {
-            GridSettings = await GridSettingsService.GetGridSettingsAsync(Lang);
+            gridSettings = await GridSettingsService.GetGridSettingsAsync(Lang);
             StateHasChanged();
         }
     }
@@ -60,10 +60,10 @@ public partial class GenericGrid<TItem, TDetailItem> : SvtComponentBase
 
     private async Task OnOkClick(IReadOnlyCollection<IGridColumnSetting> settings)
     {
-        if (GridSettings is not null)
+        if (gridSettings is not null)
         {
-            GridSettings.ApplyGridColumnSettings(settings);
-            await GridSettingsService.SaveGridSettingsAsync(GridSettings, Lang);
+            gridSettings.ApplyGridColumnSettings(settings);
+            await GridSettingsService.SaveGridSettingsAsync(gridSettings, Lang);
         }
 
         await ClearFiltersAsync();
@@ -73,14 +73,14 @@ public partial class GenericGrid<TItem, TDetailItem> : SvtComponentBase
 
     private async Task OnCancelClick()
     {
-        GridSettings = await GridSettingsService.GetGridSettingsAsync(Lang);
+        gridSettings = await GridSettingsService.GetGridSettingsAsync(Lang);
         StateHasChanged();
     }
 
     private async Task OnResetClick()
     {
         await GridSettingsService.ResetGridSettingsAsync(Lang);
-        GridSettings = await GridSettingsService.GetGridSettingsAsync(Lang);
+        gridSettings = await GridSettingsService.GetGridSettingsAsync(Lang);
         await ClearFiltersAsync();
         StateHasChanged();
     }

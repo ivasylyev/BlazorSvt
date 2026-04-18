@@ -5,10 +5,14 @@ namespace BlazorSvt.Components.Common;
 
 public partial class AsyncDetailView<TItem, TDetailItem> : ComponentBase
 {
-    [Parameter] public TItem Item { get; set; } = default!;
-    [Parameter] public Func<TItem, object> KeySelector { get; set; } = default!;
-    [Parameter] public Func<TItem, Task<TDetailItem>> DetailsDataProvider { get; set; } = default!;
-    [Parameter] public RenderFragment<TDetailItem>? Template { get; set; }
+    [Parameter] 
+    public TItem Item { get; set; } = default!;
+    [Parameter] 
+    public Func<TItem, object> KeySelector { get; set; } = default!;
+    [Parameter] 
+    public Func<TItem, Task<TDetailItem>> DetailsDataProvider { get; set; } = default!;
+    [Parameter] 
+    public RenderFragment<TDetailItem>? Template { get; set; }
 
     private static readonly Dictionary<object, TDetailItem> Cache = new();
 
@@ -18,6 +22,8 @@ public partial class AsyncDetailView<TItem, TDetailItem> : ComponentBase
 
     protected override async Task OnParametersSetAsync()
     {
+        if (Item is null)
+            return;
         var key = KeySelector(Item);
 
         if (Cache.TryGetValue(key, out var cached))

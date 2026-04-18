@@ -7,7 +7,8 @@ namespace BlazorSvt.Components.Pages;
 
 public partial class RatesGrid : BaseGridPage<RateDto, RateDetailsDto>
 {
-    [Inject] public IGridDataService<RateDto> RatesDataService { get; set; } = default!;
+    [Inject] 
+    public IGridDataService<RateDto, RateDetailsDto> RatesDataService { get; set; } = default!;
 
     protected override async Task<GridDataProviderResult<RateDto>> GetDataAsync(GridDataProviderRequest<RateDto> request, string lang)
     {
@@ -16,9 +17,6 @@ public partial class RatesGrid : BaseGridPage<RateDto, RateDetailsDto>
 
     protected override async Task<RateDetailsDto> GetDetailDataAsync(RateDto request, string lang)
     {
-        await Task.CompletedTask;
-        return new RateDetailsDto();
+        return await RatesDataService.GetDetailDataAsync(request, lang);
     }
-
-
 }

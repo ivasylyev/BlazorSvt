@@ -10,7 +10,7 @@ using Newtonsoft.Json;
 
 namespace BlazorSvt.Services.Shared;
 
-public class GridDataService<TItem>(IOptions<DatabaseOptions> options, ILogger<GridDataService<TItem>> logger) :IGridDataService<TItem>
+public class GridDataService<TItem, TDetailItem>(IOptions<DatabaseOptions> options, ILogger<GridDataService<TItem, TDetailItem>> logger) :IGridDataService<TItem, TDetailItem>
 {
     private const string IsArchiveFieldName = "IsArchive";
 
@@ -36,6 +36,11 @@ public class GridDataService<TItem>(IOptions<DatabaseOptions> options, ILogger<G
             Data = data,
             TotalCount = totalCount
         };
+    }
+
+    public Task<TDetailItem> GetDetailDataAsync(TItem request, string lang)
+    {
+        throw new NotImplementedException();
     }
 
     private static (string? sortString, SortDirection sortDirection) ExtractSorting(GridDataProviderRequest<TItem> request)

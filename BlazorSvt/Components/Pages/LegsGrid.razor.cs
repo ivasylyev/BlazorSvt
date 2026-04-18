@@ -7,16 +7,16 @@ namespace BlazorSvt.Components.Pages;
 
 public partial class LegsGrid : BaseGridPage<LegDto, LegDetailsDto>
 {
-    [Inject] public IGridDataService<LegDto> LegsDataService { get; set; } = default!;
+    [Inject] 
+    public IGridDataService<LegDto, LegDetailsDto> LegsDataService { get; set; } = default!;
 
     protected override async Task<GridDataProviderResult<LegDto>> GetDataAsync(GridDataProviderRequest<LegDto> request, string lang)
     {
         return await LegsDataService.GetDataAsync(request, lang);
     }
+
     protected override async Task<LegDetailsDto> GetDetailDataAsync(LegDto request, string lang)
     {
-        await Task.CompletedTask;
-        return new LegDetailsDto();
+        return await LegsDataService.GetDetailDataAsync(request, lang);
     }
-
 }
