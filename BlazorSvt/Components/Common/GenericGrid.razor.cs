@@ -12,16 +12,11 @@ public partial class GenericGrid<TItem, TDetailItem> : SvtComponentBase
 
     private GridColumnSettingsCollection<TItem>? gridSettings;
 
-
     [Inject] 
     public ILogger<GenericGrid<TItem, TDetailItem>> Logger { get; set; } = default!;
 
     [Inject] 
     public IGridSettingsService<TItem> GridSettingsService { get; set; } = default!;
-
-
-    [Inject]
-    public IGridDetailSettingsService<TDetailItem> GridDetailService { get; set; } = default!;
 
     [Parameter]
     [EditorRequired]

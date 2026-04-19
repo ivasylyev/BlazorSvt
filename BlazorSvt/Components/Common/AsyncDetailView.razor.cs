@@ -1,18 +1,27 @@
-﻿using Microsoft.AspNetCore.Components;
+﻿using BlazorSvt.Models.Grid;
+using BlazorSvt.Services.Shared;
+using Microsoft.AspNetCore.Components;
 
 namespace BlazorSvt.Components.Common;
 
 
-public partial class AsyncDetailView<TItem, TDetailItem> : ComponentBase
+public partial class AsyncDetailView<TItem, TDetailItem> : SvtComponentBase
 {
+    private GridDetailSettingsCollection<TDetailItem>? detailSettings;
+
+    [Inject]
+    public IGridDetailSettingsService<TDetailItem> GridDetailSettingsService { get; set; } = default!;
+
     [Parameter] 
     public TItem Item { get; set; } = default!;
     [Parameter] 
     public Func<TItem, object> KeySelector { get; set; } = default!;
     [Parameter] 
     public Func<TItem, Task<TDetailItem>> DetailsDataProvider { get; set; } = default!;
+
     [Parameter] 
     public RenderFragment<TDetailItem>? Template { get; set; }
+
 
     private static readonly Dictionary<object, TDetailItem> Cache = new();
 
@@ -24,6 +33,9 @@ public partial class AsyncDetailView<TItem, TDetailItem> : ComponentBase
     {
         if (Item is null)
             return;
+
+        detailSettings ??= GridDetailSettingsService.GetGridDetailSettings(Lang);
+
         var key = KeySelector(Item);
 
         if (Cache.TryGetValue(key, out var cached))
