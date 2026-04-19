@@ -6,9 +6,9 @@ using Microsoft.Extensions.Localization;
 
 namespace BlazorSvt.Services.Rates;
 
-public class RatesGridDetailSettingsService(IStringLocalizer<Svt> L, ILogger<RatesGridDetailSettingsService> logger) : IGridDetailSettingsService<RateDetailsDto>
+public class RatesDetailSettingsService(IStringLocalizer<Svt> L, ILogger<RatesDetailSettingsService> logger) : IDetailSettingsService<RateDetailDto>
 {
-    public GridDetailSettingsCollection<RateDetailsDto> GetGridDetailSettings(string lang)
+    public DetailSettingsCollection<RateDetailDto> GetGridDetailSettings(string lang)
     {
         throw new NotImplementedException();
     }

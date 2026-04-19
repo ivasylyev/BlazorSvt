@@ -1,16 +1,16 @@
 ﻿@page "/rates"
 @using BlazorSvt.Models.Dto
-@inherits BaseGridPage<RateDto, RateDetailsDto>
+@inherits BaseGridPage<RateDto, RateDetailDto>
 
 <GenericGrid TItem="RateDto"
-             TDetailItem="RateDetailsDto"
+             TDetailItem="RateDetailDto"
              PageTitle="@L["RatesGrid.Title"]"
              DataProvider="DataProvider"
-             DetailsDataProvider="DetailsDataProvider"
+             DetailDataProvider="DetailDataProvider"
              DetailKeySelector="DetailKeySelector">
 
     <DetailViewTemplate Context="detail">
-        <div class="p-3">
+        <div class="mb-3">
             @GetCustomMessage(detail);
         </div>
     </DetailViewTemplate>

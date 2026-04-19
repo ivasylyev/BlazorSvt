@@ -5,10 +5,10 @@ using Microsoft.AspNetCore.Components;
 
 namespace BlazorSvt.Components.Pages;
 
-public partial class RatesGrid : BaseGridPage<RateDto, RateDetailsDto>
+public partial class RatesGrid : BaseGridPage<RateDto, RateDetailDto>
 {
     [Inject] 
-    public IGridDataService<RateDto, RateDetailsDto> RatesDataService { get; set; } = default!;
+    public IGridDataService<RateDto, RateDetailDto> RatesDataService { get; set; } = default!;
 
     protected override object DetailKeySelector(RateDto request)
         => request.RateId;
@@ -16,12 +16,12 @@ public partial class RatesGrid : BaseGridPage<RateDto, RateDetailsDto>
     protected override async Task<GridDataProviderResult<RateDto>> GetDataAsync(GridDataProviderRequest<RateDto> request, string lang) 
         => await RatesDataService.GetDataAsync(request, lang);
 
-    protected override async Task<RateDetailsDto> GetDetailDataAsync(RateDto request, string lang)
+    protected override async Task<RateDetailDto> GetDetailDataAsync(RateDto request, string lang)
     {
         var key = DetailKeySelector(request);
         return await RatesDataService.GetDetailDataAsync(key);
     }
-    private string GetCustomMessage(RateDetailsDto detail)
+    private string GetCustomMessage(RateDetailDto detail)
     {
         var message = "Кастомное сообщение от ставок: ";
         message += detail.ProxyNodeCode is null

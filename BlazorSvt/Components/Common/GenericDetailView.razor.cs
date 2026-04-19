@@ -5,19 +5,19 @@ using Microsoft.AspNetCore.Components;
 namespace BlazorSvt.Components.Common;
 
 
-public partial class AsyncDetailView<TItem, TDetailItem> : SvtComponentBase
+public partial class GenericDetailView<TItem, TDetailItem> : SvtComponentBase
 {
-    private GridDetailSettingsCollection<TDetailItem>? detailSettings;
+    private DetailSettingsCollection<TDetailItem>? detailSettings;
 
     [Inject]
-    public IGridDetailSettingsService<TDetailItem> GridDetailSettingsService { get; set; } = default!;
+    public IDetailSettingsService<TDetailItem> DetailSettingsService { get; set; } = default!;
 
     [Parameter] 
     public TItem Item { get; set; } = default!;
     [Parameter] 
     public Func<TItem, object> KeySelector { get; set; } = default!;
     [Parameter] 
-    public Func<TItem, Task<TDetailItem>> DetailsDataProvider { get; set; } = default!;
+    public Func<TItem, Task<TDetailItem>> DetailDataProvider { get; set; } = default!;
 
     [Parameter] 
     public RenderFragment<TDetailItem>? Template { get; set; }
@@ -34,7 +34,7 @@ public partial class AsyncDetailView<TItem, TDetailItem> : SvtComponentBase
         if (Item is null)
             return;
 
-        detailSettings ??= GridDetailSettingsService.GetGridDetailSettings(Lang);
+        detailSettings ??= DetailSettingsService.GetGridDetailSettings(Lang);
 
         var key = KeySelector(Item);
 
@@ -49,7 +49,7 @@ public partial class AsyncDetailView<TItem, TDetailItem> : SvtComponentBase
             isLoading = true;
             errorMessage = null;
 
-            detail = await DetailsDataProvider(Item);
+            detail = await DetailDataProvider(Item);
             Cache[key] = detail;
         }
         catch (Exception ex)

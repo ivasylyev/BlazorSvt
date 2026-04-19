@@ -27,7 +27,7 @@ public partial class GenericGrid<TItem, TDetailItem> : SvtComponentBase
 
     [Parameter]
     [EditorRequired]
-    public Func<TItem, Task<TDetailItem>> DetailsDataProvider { get; set; } = default!;
+    public Func<TItem, Task<TDetailItem>> DetailDataProvider { get; set; } = default!;
 
     [Parameter]
     [EditorRequired]

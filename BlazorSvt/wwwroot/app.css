@@ -189,4 +189,19 @@ h1:focus {
     background-color: rgba(0, 240, 255, 0.03) !important;
     border: 1px solid rgba(0, 240, 255, 0.1); 
 }
+/* ќтображение деталей внутри грида */
+.sibur-grid-detail-container {
+    display: grid;
+    grid-template-columns: 150px 1fr; /* ѕерва€ колонка фиксированна€, втора€ Ч на весь остаток */
+    gap: 10px; /* ќтступ между колонками и строками */
+    max-width: 500px;
+}
 
+.sibur-grid-detail-label {
+    font-weight: bold;
+    color: #555;
+}
+
+.sibur-grid-detail-value {
+    color: #000;
+}

@@ -1,6 +1,6 @@
 ﻿namespace BlazorSvt.Models.Grid;
 
-public class GridDetailSetting<T>
+public class DetailSetting<T>
 {
     public required string Name { get; set; }
     public required string Header { get; set; }

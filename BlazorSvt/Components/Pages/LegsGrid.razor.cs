@@ -5,10 +5,10 @@ using Microsoft.AspNetCore.Components;
 
 namespace BlazorSvt.Components.Pages;
 
-public partial class LegsGrid : BaseGridPage<LegDto, LegDetailsDto>
+public partial class LegsGrid : BaseGridPage<LegDto, LegDetailDto>
 {
     [Inject] 
-    public IGridDataService<LegDto, LegDetailsDto> LegsDataService { get; set; } = default!;
+    public IGridDataService<LegDto, LegDetailDto> LegsDataService { get; set; } = default!;
 
     protected override object DetailKeySelector(LegDto request)
     {
@@ -20,13 +20,13 @@ public partial class LegsGrid : BaseGridPage<LegDto, LegDetailsDto>
         return await LegsDataService.GetDataAsync(request, lang);
     }
 
-    protected override async Task<LegDetailsDto> GetDetailDataAsync(LegDto request, string lang)
+    protected override async Task<LegDetailDto> GetDetailDataAsync(LegDto request, string lang)
     {
         var key = DetailKeySelector(request);
         return await LegsDataService.GetDetailDataAsync(key);
     }
 
-    private string GetCustomMessage(LegDetailsDto detail)
+    private string GetCustomMessage(LegDetailDto detail)
     {
         var message = "Кастомное сообщение от транспортных плеч: ";
         message += detail.ProxyNodeCode is null

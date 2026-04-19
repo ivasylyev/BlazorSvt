@@ -59,11 +59,11 @@
 
             </GridColumns>
             <GridDetailView TItem="TItem">
-                <AsyncDetailView TItem="TItem"
+                <GenericDetailView TItem="TItem"
                                  TDetailItem="TDetailItem"
                                  Item="context"
                                  KeySelector="DetailKeySelector"
-                                 DetailsDataProvider="DetailsDataProvider"
+                                 DetailDataProvider="DetailDataProvider"
                                  Template="DetailViewTemplate"/>
                
             </GridDetailView>

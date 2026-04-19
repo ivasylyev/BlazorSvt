@@ -1,16 +1,16 @@
 ﻿@page "/legs"
 @using BlazorSvt.Models.Dto
-@inherits BaseGridPage<LegDto, LegDetailsDto>
+@inherits BaseGridPage<LegDto, LegDetailDto>
 
 <GenericGrid TItem="LegDto"
-             TDetailItem="LegDetailsDto"
+             TDetailItem="LegDetailDto"
              PageTitle="@L["LegsGrid.Title"]"
              DataProvider="DataProvider"
-             DetailsDataProvider="DetailsDataProvider"
+             DetailDataProvider="DetailDataProvider"
              DetailKeySelector="DetailKeySelector">
 
     <DetailViewTemplate Context="detail">
-        <div class="p-3">
+        <div class="mb-3">
             @GetCustomMessage(detail);
         </div>
     </DetailViewTemplate>
