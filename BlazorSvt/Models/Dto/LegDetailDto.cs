@@ -7,6 +7,7 @@ namespace BlazorSvt.Models.Dto;
 [StoredProcedure("dbo.GetTransportLegDetail")]
 public class LegDetailDto
 {
+    public long Id { get; set; }
     public long LegId { get; set; }
     public required string Code { get; set; }
 
@@ -30,18 +31,26 @@ public class LegDetailDto
 
 
     public required string NodeFromCode { get; set; }
-    public required string NodeFromName { get; set; }
+    public required string NodeFromNameRu { get; set; }
+    public required string NodeFromNameEn { get; set; }
     public required string RegionFromCode { get; set; }
-    public required string RegionFromName { get; set; }
+    public required string RegionFromNameRu { get; set; }
+    public required string RegionFromNameEn { get; set; }
+
     public string? ProxyNodeCode { get; set; }
-    public string? ProxyNodeName { get; set; }
+    public string? ProxyNodeNameRu { get; set; }
+    public string? ProxyNodeNameEn { get; set; }
     public string? ProxyRegionCode { get; set; }
-    public string? ProxyRegionName { get; set; }
+    public string? ProxyRegionNameRu { get; set; }
+    public string? ProxyRegionNameEn { get; set; }
 
     public required string NodeToCode { get; set; }
-    public required string NodeToName { get; set; }
+    public required string NodeToNameRu { get; set; }
+    public required string NodeToNameEn { get; set; }
     public required string RegionToCode { get; set; }
-    public required string RegionToName { get; set; }
+    public required string RegionToNameRu { get; set; }
+    public required string RegionToNameEn { get; set; }
+
 
     public DateTime CreationDate { get; set; }
     public DateTime LastChangeDate { get; set; }

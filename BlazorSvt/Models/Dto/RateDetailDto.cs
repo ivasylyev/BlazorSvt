@@ -8,6 +8,7 @@ namespace BlazorSvt.Models.Dto;
 [StoredProcedure("dbo.GetTransportRateDetail")]
 public class RateDetailDto
 {
+    public long Id { get; set; }
     public long RateId { get; set; }
     public bool IsArchive { get; set; }
     public bool IsDefRate { get; set; }
