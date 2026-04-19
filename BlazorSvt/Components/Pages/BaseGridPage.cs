@@ -18,7 +18,7 @@ public abstract class BaseGridPage<TItem, TDetailItem> : SvtComponentBase
         }
     }
 
-    protected async Task<TDetailItem> DetailsDataProvider(TItem request)
+    protected async Task<TDetailItem?> DetailsDataProvider(TItem request)
     {
         using (new StopwatchTransaction(TimingService))
         {

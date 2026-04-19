@@ -9,14 +9,29 @@ public partial class LegsGrid : BaseGridPage<LegDto, LegDetailsDto>
 {
     [Inject] 
     public IGridDataService<LegDto, LegDetailsDto> LegsDataService { get; set; } = default!;
+
     protected override object DetailKeySelector(LegDto request)
-        => request.LegId;
-    protected override async Task<GridDataProviderResult<LegDto>> GetDataAsync(GridDataProviderRequest<LegDto> request, string lang) 
-        => await LegsDataService.GetDataAsync(request, lang);
+    {
+        return request.LegId;
+    }
+
+    protected override async Task<GridDataProviderResult<LegDto>> GetDataAsync(GridDataProviderRequest<LegDto> request, string lang)
+    {
+        return await LegsDataService.GetDataAsync(request, lang);
+    }
 
     protected override async Task<LegDetailsDto> GetDetailDataAsync(LegDto request, string lang)
     {
         var key = DetailKeySelector(request);
-        return await LegsDataService.GetDetailDataAsync(key, lang) ?? new LegDetailsDto();
+        return await LegsDataService.GetDetailDataAsync(key, lang);
+    }
+
+    private string GetCustomMessage(LegDetailsDto detail)
+    {
+        var message = "Кастомное сообщение от транспортных плеч: ";
+        message += detail.ProxyNodeCode is null
+            ? "Плечо без промежуточного узла"
+            : "Плечо с промежуточным узлом";
+        return message;
     }
 }

@@ -19,7 +19,14 @@ public partial class RatesGrid : BaseGridPage<RateDto, RateDetailsDto>
     protected override async Task<RateDetailsDto> GetDetailDataAsync(RateDto request, string lang)
     {
         var key = DetailKeySelector(request);
-        return await RatesDataService.GetDetailDataAsync(key, lang) ?? new RateDetailsDto();
+        return await RatesDataService.GetDetailDataAsync(key, lang);
     }
-
+    private string GetCustomMessage(RateDetailsDto detail)
+    {
+        var message = "Кастомное сообщение от ставок: ";
+        message += detail.ProxyNodeCode is null
+            ? "Ставка без промежуточного узла"
+            : "Ставка с промежуточным узлом";
+        return message;
+    }
 }

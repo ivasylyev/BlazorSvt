@@ -6,9 +6,7 @@ using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 using System.Data;
 using System.Data.SqlClient;
-using System.Globalization;
 using System.Reflection;
-using System.Threading;
 
 namespace BlazorSvt.Services.Shared;
 
@@ -18,7 +16,7 @@ public class GridDataService<TItem, TDetailItem>(IOptions<DatabaseOptions> optio
 
     private readonly string connectionString = options.Value.MdmDb;
 
-    public async Task<TDetailItem?> GetDetailDataAsync(object key, string lang)
+    public async Task<TDetailItem> GetDetailDataAsync(object key, string lang)
     {
 #pragma warning disable CS0618 // Type or member is obsolete
         await using var connection = new SqlConnection(connectionString);
@@ -31,12 +29,12 @@ public class GridDataService<TItem, TDetailItem>(IOptions<DatabaseOptions> optio
 
         var loggingConnection = new DbConnectionLogDecorator(connection, logger);
 
-        var result = await loggingConnection.QuerySingleOrDefault<TDetailItem?>(
+        var result = await loggingConnection.QuerySingleOrDefaultAsync<TDetailItem?>(
             StoredProcedureDetailName,
             parameters,
             CommandType.StoredProcedure);
 
-        return result;
+        return result ?? throw new Exception($"{StoredProcedureDetailName} with {key} returns no data");
     }
 
     public async Task<GridDataProviderResult<TItem>> GetDataAsync(GridDataProviderRequest<TItem> request, string lang)
