@@ -10,7 +10,7 @@ public partial class GenericGrid<TItem, TDetailItem> : SvtComponentBase
     private Grid<TItem> grid = default!;
     private SettingsModal settingsModal = default!;
 
-    private GridSettings<TItem>? gridSettings;
+    private GridColumnSettingsCollection<TItem>? gridSettings;
 
 
     [Inject] 
@@ -18,6 +18,10 @@ public partial class GenericGrid<TItem, TDetailItem> : SvtComponentBase
 
     [Inject] 
     public IGridSettingsService<TItem> GridSettingsService { get; set; } = default!;
+
+
+    [Inject]
+    public IGridDetailSettingsService<TDetailItem> GridDetailService { get; set; } = default!;
 
     [Parameter]
     [EditorRequired]

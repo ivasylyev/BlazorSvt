@@ -1,8 +1,8 @@
 ﻿namespace BlazorSvt.Models.Grid;
 
-public class GridSettings<T>(List<GridColumnSetting<T>> columnSettings)
+public class GridColumnSettingsCollection<T>(List<GridColumnSetting<T>> columnSettings)
 {
-    public GridSettings() : this(new List<GridColumnSetting<T>>())
+    public GridColumnSettingsCollection() : this(new List<GridColumnSetting<T>>())
     {
     }
 

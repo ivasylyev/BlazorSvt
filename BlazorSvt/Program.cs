@@ -38,8 +38,10 @@ builder.Services.AddScoped<PageTimingService>();
 builder.Services.AddScoped(typeof(IGridDataService<,>), typeof(GridDataService<,>));
 
 builder.Services.AddScoped<IGridSettingsService<RateDto>, RatesGridSettingsService>();
+builder.Services.AddScoped<IGridDetailSettingsService<RateDetailsDto>, RatesGridDetailSettingsService>();
 
 builder.Services.AddScoped<IGridSettingsService<LegDto>, LegsGridSettingsService>();
+builder.Services.AddScoped<IGridDetailSettingsService<LegDetailsDto>, LegsGridDetailSettingsService>();
 
 var supportedCultures = new[] { "ru-RU", "en-US" };
 var localizationOptions = new RequestLocalizationOptions()

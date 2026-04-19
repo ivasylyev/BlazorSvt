@@ -12,7 +12,7 @@ public abstract class BaseGridSettingsService<T>(
 
     protected abstract string StorageKey { get; }
 
-    public async Task<GridSettings<T>> GetGridSettingsAsync(string lang)
+    public async Task<GridColumnSettingsCollection<T>> GetGridSettingsAsync(string lang)
     {
         var defaultSettings = GetDefaultSettings(lang);
 
@@ -37,12 +37,12 @@ public abstract class BaseGridSettingsService<T>(
             }
         }
 
-        return new GridSettings<T>(defaultSettings);
+        return new GridColumnSettingsCollection<T>(defaultSettings);
     }
 
-    public async Task SaveGridSettingsAsync(GridSettings<T> settings, string lang)
+    public async Task SaveGridSettingsAsync(GridColumnSettingsCollection<T> columnSettingsCollection, string lang)
     {
-        var visibility = settings.ColumnSettings
+        var visibility = columnSettingsCollection.ColumnSettings
             .ToDictionary(x => x.Name, x => x.Visible);
 
         await LocalStorage.SetItemAsync($"{StorageKey}_{lang}", visibility);
