@@ -23,7 +23,7 @@ public partial class LegsGrid : BaseGridPage<LegDto, LegDetailsDto>
     protected override async Task<LegDetailsDto> GetDetailDataAsync(LegDto request, string lang)
     {
         var key = DetailKeySelector(request);
-        return await LegsDataService.GetDetailDataAsync(key, lang);
+        return await LegsDataService.GetDetailDataAsync(key);
     }
 
     private string GetCustomMessage(LegDetailsDto detail)

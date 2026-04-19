@@ -16,7 +16,7 @@ public class GridDataService<TItem, TDetailItem>(IOptions<DatabaseOptions> optio
 
     private readonly string connectionString = options.Value.MdmDb;
 
-    public async Task<TDetailItem> GetDetailDataAsync(object key, string lang)
+    public async Task<TDetailItem> GetDetailDataAsync(object key)
     {
 #pragma warning disable CS0618 // Type or member is obsolete
         await using var connection = new SqlConnection(connectionString);
@@ -25,7 +25,6 @@ public class GridDataService<TItem, TDetailItem>(IOptions<DatabaseOptions> optio
 
         var parameters = new DynamicParameters();
         parameters.Add("Key", key.ToString());
-        parameters.Add("Lang", lang);
 
         var loggingConnection = new DbConnectionLogDecorator(connection, logger);
 

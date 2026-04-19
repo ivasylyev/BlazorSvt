@@ -19,7 +19,7 @@ public partial class RatesGrid : BaseGridPage<RateDto, RateDetailsDto>
     protected override async Task<RateDetailsDto> GetDetailDataAsync(RateDto request, string lang)
     {
         var key = DetailKeySelector(request);
-        return await RatesDataService.GetDetailDataAsync(key, lang);
+        return await RatesDataService.GetDetailDataAsync(key);
     }
     private string GetCustomMessage(RateDetailsDto detail)
     {

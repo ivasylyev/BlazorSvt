@@ -7,28 +7,16 @@ Example:
 use mdm
 go
 
--- простой поиск (это когда или нет сортировки, или менее 2х полнотекстовых фильтров)
 
-exec dbo.GetTransportLegDetail @Key=31618174, @Lang='ru'
-exec dbo.GetTransportLegDetail @Key=31618174, @Lang='en'
+exec dbo.GetTransportLegDetail '2845464'
  
 
 */
 CREATE OR ALTER PROCEDURE dbo.GetTransportLegDetail
-    @Key            NVARCHAR(50),
-    @Lang           NVARCHAR(2)
+    @Key            NVARCHAR(50)
 AS
 BEGIN
     SET NOCOUNT ON;
-
-    DECLARE @LangSuffix NVARCHAR(2),
-            @AllowedColumnsJson NVARCHAR(MAX),
-            @SelectList NVARCHAR(MAX)
-
-    SET @LangSuffix = CASE 
-                        WHEN @Lang = N'ru' THEN N'Ru' 
-                        ELSE N'En' 
-                      END
 
     SELECT 
         CAST(l.Id AS INT)      AS LegId,
@@ -50,34 +38,29 @@ BEGIN
         LEFT(l.TransportationTimeT, 20) AS TransportationTimeT,
         
         LEFT(nf.Code, 10)               AS NodeFromCode,   
-        CASE 
-            WHEN @Lang = N'ru' THEN LEFT(nf.Name_ru, 30) 
-            ELSE LEFT(nf.Name_en, 30) 
-        END                             AS NodeFromName,
-                CASE 
-            WHEN @Lang = N'ru' THEN LEFT(nf.Name_ru, 30) 
-            ELSE LEFT(nf.Name_en, 30) 
-        END                             AS NodeFromName, 
+        LEFT(nf.Name_en, 30)            AS NodeFromNameEn, 
+        LEFT(nf.Name_ru, 30)            AS NodeFromNameRu, 
         LEFT(rf.Code, 10)               AS RegionFromCode,   
-        CASE 
-            WHEN @Lang = N'ru' THEN LEFT(rf.Name_ru, 60) 
-            ELSE LEFT(rf.Name_en, 60) 
-        END                             AS RegionFromName, 
+        LEFT(rf.Name_en, 60)            AS RegionFromNameEn, 
+        LEFT(rf.Name_ru, 60)            AS RegionFromNameRu, 
 
         LEFT(np.Code, 10)               AS ProxyNodeCode,  
-        CASE 
-            WHEN @Lang = N'ru' THEN LEFT(np.Name_ru, 30) 
-            ELSE LEFT(np.Name_en, 30) 
-        END                             AS ProxyNodeName,
+        LEFT(np.Name_en, 30)            AS ProxyNodeNameEn,
+        LEFT(np.Name_ru, 30)            AS ProxyNodeNameRu,
         LEFT(rp.Code, 10)               AS ProxyRegionCode,  
-        CASE 
-            WHEN @Lang = N'ru' THEN LEFT(rp.Name_ru, 30) 
-            ELSE LEFT(rp.Name_en, 30) 
-        END                             AS ProxyRegionName,
+        LEFT(rp.Name_en, 30)            AS ProxyRegionNameEn,
+        LEFT(rp.Name_ru, 30)            AS ProxyRegionNameRu,
+
+        LEFT(nt.Code, 10)               AS NodeToCode,     
+        LEFT(nt.Name_en, 30)            AS NodeToNameEn,   
+        LEFT(nt.Name_ru, 30)            AS NodeToNameRu,   
+        LEFT(rt.Code, 10)               AS RegionToCode,     
+        LEFT(rt.Name_en, 30)            AS RegionToNameEn,   
+        LEFT(rt.Name_ru, 30)            AS RegionToNameRu,   
+
         l.CreationDate                  AS CreationDate,
         ISNULL(l.LastChangeDate, l.CreationDate) AS LastChangeDate
 
-    
     FROM vw_TransportLeg l (NOLOCK)
     JOIN vw_TransportKind tk (NOLOCK) ON l.TransportKind = tk.Id
     JOIN vw_ShipmentType st (NOLOCK) ON l.ShipmentTypeCodeT = st.Code
@@ -88,8 +71,8 @@ BEGIN
     JOIN vw_Region rt (NOLOCK) ON rt.Id = nt.Region
     LEFT JOIN vw_LocationsNodes np (NOLOCK) ON l.ProxyNode = np.Id
     LEFT JOIN vw_Region rp (NOLOCK) ON rp.Id = np.Region
-
-    WHERE l.Id = CAST(@Key AS INT)         
+    
+    WHERE l.Id = CAST(@Key AS INT)        
         
 END
 GO
