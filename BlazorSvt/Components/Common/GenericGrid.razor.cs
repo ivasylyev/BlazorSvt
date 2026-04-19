@@ -21,6 +21,10 @@ public partial class GenericGrid<TItem, TDetailItem> : SvtComponentBase
     [Parameter]
     [EditorRequired]
     public string PageTitle { get; set; } = default!;
+
+    [Parameter]
+    public bool AllowDetailView { get; set; } = default!;
+
     [Parameter] 
     [EditorRequired] 
     public GridDataProviderDelegate<TItem> DataProvider { get; set; } = default!;
