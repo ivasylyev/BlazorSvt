@@ -16,8 +16,11 @@ else if (detail is not null)
     <div class="sibur-grid-detail-container">
         @foreach (var setting in detailSettings.GetGridDetailSettingsCopy())
         {
-            <div class="sibur-grid-detail-label ">@setting.Header:</div>
-            <div class="sibur-grid-detail-value">@(setting.DisplaySelector(detail))</div>
+            if (setting.VisibleSelector(detail))
+            {
+                <div class="sibur-grid-detail-label">@setting.Header:</div>
+                <div class="sibur-grid-detail-value">@(setting.DisplaySelector(detail))</div>
+            }
         }
     </div>
 }
