@@ -23,7 +23,7 @@ public partial class GenericDetailView<TItem, TDetailItem> : SvtComponentBase
     public RenderFragment<TDetailItem>? Template { get; set; }
 
 
-    private static readonly Dictionary<object, TDetailItem> Cache = new();
+    private static readonly Dictionary<object, TDetailItem> ItemsCache = new();
 
     private TDetailItem? detail;
     private bool isLoading;
@@ -34,23 +34,23 @@ public partial class GenericDetailView<TItem, TDetailItem> : SvtComponentBase
         if (Item is null)
             return;
 
-        detailSettings ??= DetailSettingsService.GetGridDetailSettings(Lang);
-
         var key = KeySelector(Item);
-
-        if (Cache.TryGetValue(key, out var cached))
-        {
-            detail = cached;
-            return;
-        }
 
         try
         {
             isLoading = true;
             errorMessage = null;
-
-            detail = await DetailDataProvider(Item);
-            Cache[key] = detail;
+            if (ItemsCache.TryGetValue(key, out var cached))
+            {
+                detail = cached;
+            }
+            else
+            {
+                detail = await DetailDataProvider(Item);
+                ItemsCache[key] = detail;
+            }
+            
+            detailSettings ??= DetailSettingsService.GetGridDetailSettings(Lang);
         }
         catch (Exception ex)
         {

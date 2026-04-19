@@ -407,4 +407,97 @@
   <data name="LegDto.TransportationTime" xml:space="preserve">
 	  <value>Transportation Time</value>
   </data>
+
+	<data name="LegDetailDto.Code" xml:space="preserve">
+  <value>Code</value>
+ </data>
+	<data name="LegDetailDto.NodeFromCode" xml:space="preserve">
+  <value>Node From Code</value>
+ </data>
+	<data name="LegDetailDto.NodeFromName" xml:space="preserve">
+  <value>Node From Name</value>
+ </data>
+	<data name="LegDetailDto.NodeToCode" xml:space="preserve">
+  <value>Node To Code</value>
+ </data>
+	<data name="LegDetailDto.NodeToName" xml:space="preserve">
+  <value>Node To Name</value>
+ </data>
+	<data name="LegDetailDto.ProxyNodeName" xml:space="preserve">
+  <value>Proxy Node Name</value>
+ </data>
+	<data name="LegDetailDto.ProxyNodeCode" xml:space="preserve">
+  <value>Proxy Node Code</value>
+ </data>
+
+	<data name="LegDetailDto.RegionFromCode" xml:space="preserve">
+  <value>Region From Code</value>
+ </data>
+	<data name="LegDetailDto.RegionFromName" xml:space="preserve">
+  <value>Region From Name</value>
+ </data>
+	<data name="LegDetailDto.RegionToCode" xml:space="preserve">
+  <value>Region To Code</value>
+ </data>
+	<data name="LegDetailDto.RegionToName" xml:space="preserve">
+  <value>Region To Name</value>
+ </data>
+	<data name="LegDetailDto.ProxyRegionName" xml:space="preserve">
+  <value>Proxy Region Name</value>
+ </data>
+	<data name="LegDetailDto.ProxyRegionCode" xml:space="preserve">
+  <value>Proxy Region Code</value>
+ </data>
+
+	<data name="LegDetailDto.CreationDate" xml:space="preserve">
+  <value>Date Created</value>
+ </data>
+	<data name="LegDetailDto.LastChangeDate" xml:space="preserve">
+  <value>Date Changed</value>
+ </data>
+	<data name="LegDetailDto.IsArchive" xml:space="preserve">
+  <value>Is Archive</value>
+ </data>
+	<data name="LegDetailDto.CanBeUsed" xml:space="preserve">
+  <value>Active</value>
+ </data>
+	<data name="LegDetailDto.TransportKindCode" xml:space="preserve">
+  <value>Transport Kind Code</value>
+ </data>
+	<data name="LegDetailDto.TransportKindName" xml:space="preserve">
+  <value>Transport Kind Name</value>
+ </data>
+	<data name="LegDetailDto.Yes" xml:space="preserve">
+  <value>Yes</value>
+ </data>
+	<data name="LegDetailDto.No" xml:space="preserve">
+  <value>No</value>
+ </data>
+	<data name="LegDetailDto.Archive" xml:space="preserve">
+	  <value>Archive</value>
+  </data>
+	<data name="LegDetailDto.Active" xml:space="preserve">
+	  <value>Active</value>
+  </data>
+	<data name="LegDetailDto.ShipmentTypeName" xml:space="preserve">
+	  <value>Shipment Type Name</value>
+  </data>
+	<data name="LegDetailDto.SearchTime" xml:space="preserve">
+	  <value>Search Time, days</value>
+  </data>
+	<data name="LegDetailDto.LoadTime" xml:space="preserve">
+	  <value>Load Time, days</value>
+  </data>
+	<data name="LegDetailDto.DaysWaiting" xml:space="preserve">
+	  <value>Days Waiting, days</value>
+  </data>
+	<data name="LegDetailDto.TravelTime" xml:space="preserve">
+	  <value>Travel Time, days</value>
+  </data>
+	<data name="LegDetailDto.UnLoadTime" xml:space="preserve">
+	  <value>UnLoad Time, days</value>
+  </data>
+	<data name="LegDetailDto.TransportationTime" xml:space="preserve">
+	  <value>Transportation Time, days</value>
+  </data>
 </root>

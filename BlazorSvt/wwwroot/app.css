@@ -192,9 +192,8 @@ h1:focus {
 /* ќтображение деталей внутри грида */
 .sibur-grid-detail-container {
     display: grid;
-    grid-template-columns: 150px 1fr; /* ѕерва€ колонка фиксированна€, втора€ Ч на весь остаток */
-    gap: 10px; /* ќтступ между колонками и строками */
-    max-width: 500px;
+    grid-template-columns: fit-content(500px) 1fr;
+    gap: 10px;
 }
 
 .sibur-grid-detail-label {

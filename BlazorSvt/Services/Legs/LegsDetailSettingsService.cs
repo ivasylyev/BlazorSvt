@@ -46,7 +46,7 @@ public class LegsDetailSettingsService(IStringLocalizer<Svt> L, ILogger<LegsDeta
         results.Add(new DetailSetting<LegDetailDto>
             {
                 Name = nameof(LegDetailDto.Code),
-                Header = L["LegDto.Code"],
+                Header = L["LegDetailDto.Code"],
                 DisplaySelector = dto => dto.Code,
                 VisibleSelector = _ => true
             }
@@ -58,10 +58,10 @@ public class LegsDetailSettingsService(IStringLocalizer<Svt> L, ILogger<LegsDeta
         results.Add(new DetailSetting<LegDetailDto>
         {
             Name = nameof(LegDetailDto.CanBeUsed),
-            Header = L["LegDto.CanBeUsed"],
+            Header = L["LegDetailDto.CanBeUsed"],
             DisplaySelector = dto => dto.CanBeUsed
-                ? L["LegDto.Yes"]
-                : L["LegDto.No"],
+                ? L["LegDetailDto.Yes"]
+                : L["LegDetailDto.No"],
             VisibleSelector = _ => true
         }
         );
@@ -73,7 +73,7 @@ public class LegsDetailSettingsService(IStringLocalizer<Svt> L, ILogger<LegsDeta
             results.Add(new DetailSetting<LegDetailDto>
                 {
                     Name = nameof(LegDetailDto.ShipmentTypeIdRu),
-                    Header = L["LegDto.ShipmentTypeName"],
+                    Header = L["LegDetailDto.ShipmentTypeName"],
                     DisplaySelector = dto => typeof(ShipmentTypeRu).GetDisplayName(dto.ShipmentTypeIdRu.ToString()) ?? string.Empty,
                     VisibleSelector = _ => true
                 }
@@ -82,7 +82,7 @@ public class LegsDetailSettingsService(IStringLocalizer<Svt> L, ILogger<LegsDeta
             results.Add(new DetailSetting<LegDetailDto>
                 {
                     Name = nameof(LegDetailDto.ShipmentTypeIdEn),
-                    Header = L["LegDto.ShipmentTypeName"],
+                    Header = L["LegDetailDto.ShipmentTypeName"],
                     DisplaySelector = dto => typeof(ShipmentTypeEn).GetDisplayName(dto.ShipmentTypeIdEn.ToString()) ?? string.Empty,
                     VisibleSelector = _ => true
                 }
@@ -95,7 +95,7 @@ public class LegsDetailSettingsService(IStringLocalizer<Svt> L, ILogger<LegsDeta
             results.Add(new DetailSetting<LegDetailDto>
                 {
                     Name = nameof(LegDetailDto.TransportKindIdRu),
-                    Header = L["LegDto.TransportKindName"],
+                    Header = L["LegDetailDto.TransportKindName"],
                     DisplaySelector = dto => typeof(TransportKindRu).GetDisplayName(dto.TransportKindIdRu.ToString()) ?? string.Empty,
                     VisibleSelector = _ => true
                 }
@@ -104,7 +104,7 @@ public class LegsDetailSettingsService(IStringLocalizer<Svt> L, ILogger<LegsDeta
             results.Add(new DetailSetting<LegDetailDto>
                 {
                     Name = nameof(LegDetailDto.TransportKindIdEn),
-                    Header = L["LegDto.TransportKindName"],
+                    Header = L["LegDetailDto.TransportKindName"],
                     DisplaySelector = dto => typeof(TransportKindEn).GetDisplayName(dto.TransportKindIdEn.ToString()) ?? string.Empty,
                     VisibleSelector = _ => true
                 }
@@ -118,7 +118,7 @@ public class LegsDetailSettingsService(IStringLocalizer<Svt> L, ILogger<LegsDeta
             new DetailSetting<LegDetailDto>
             {
                 Name = nameof(LegDetailDto.NodeFromCode),
-                Header = L["LegDto.NodeFromCode"],
+                Header = L["LegDetailDto.NodeFromCode"],
                 DisplaySelector = dto => dto.NodeFromCode,
                 VisibleSelector = _ => true
             }
@@ -129,7 +129,7 @@ public class LegsDetailSettingsService(IStringLocalizer<Svt> L, ILogger<LegsDeta
             results.Add(new DetailSetting<LegDetailDto>
                 {
                     Name = nameof(LegDetailDto.NodeFromNameRu),
-                    Header = L["LegDto.NodeFromName"],
+                    Header = L["LegDetailDto.NodeFromName"],
                     DisplaySelector = dto => dto.NodeFromNameRu,
                     VisibleSelector = _ => true
                 }
@@ -138,7 +138,7 @@ public class LegsDetailSettingsService(IStringLocalizer<Svt> L, ILogger<LegsDeta
             results.Add(new DetailSetting<LegDetailDto>
                 {
                     Name = nameof(LegDetailDto.NodeFromNameEn),
-                    Header = L["LegDto.NodeFromName"],
+                    Header = L["LegDetailDto.NodeFromName"],
                     DisplaySelector = dto => dto.NodeFromNameEn,
                     VisibleSelector = _ => true
                 }
@@ -152,7 +152,7 @@ public class LegsDetailSettingsService(IStringLocalizer<Svt> L, ILogger<LegsDeta
             new DetailSetting<LegDetailDto>
             {
                 Name = nameof(LegDetailDto.RegionFromCode),
-                Header = L["LegDto.RegionFromCode"],
+                Header = L["LegDetailDto.RegionFromCode"],
                 DisplaySelector = dto => dto.RegionFromCode,
                 VisibleSelector = _ => true
             }
@@ -163,7 +163,7 @@ public class LegsDetailSettingsService(IStringLocalizer<Svt> L, ILogger<LegsDeta
             results.Add(new DetailSetting<LegDetailDto>
                 {
                     Name = nameof(LegDetailDto.RegionFromNameRu),
-                    Header = L["LegDto.RegionFromName"],
+                    Header = L["LegDetailDto.RegionFromName"],
                     DisplaySelector = dto => dto.RegionFromNameRu,
                     VisibleSelector = _ => true
                 }
@@ -172,7 +172,7 @@ public class LegsDetailSettingsService(IStringLocalizer<Svt> L, ILogger<LegsDeta
             results.Add(new DetailSetting<LegDetailDto>
                 {
                     Name = nameof(LegDetailDto.RegionFromNameEn),
-                    Header = L["LegDto.RegionFromName"],
+                    Header = L["LegDetailDto.RegionFromName"],
                     DisplaySelector = dto => dto.RegionFromNameEn,
                     VisibleSelector = _ => true
                 }
@@ -185,7 +185,7 @@ public class LegsDetailSettingsService(IStringLocalizer<Svt> L, ILogger<LegsDeta
             new DetailSetting<LegDetailDto>
             {
                 Name = nameof(LegDetailDto.ProxyNodeCode),
-                Header = L["LegDto.ProxyNodeCode"],
+                Header = L["LegDetailDto.ProxyNodeCode"],
                 DisplaySelector = dto => dto.ProxyNodeCode!,
                 VisibleSelector = dto => dto.ProxyNodeCode is not null
             }
@@ -196,7 +196,7 @@ public class LegsDetailSettingsService(IStringLocalizer<Svt> L, ILogger<LegsDeta
             results.Add(new DetailSetting<LegDetailDto>
                 {
                     Name = nameof(LegDetailDto.ProxyNodeNameRu),
-                    Header = L["LegDto.ProxyNodeName"],
+                    Header = L["LegDetailDto.ProxyNodeName"],
                     DisplaySelector = dto => dto.ProxyNodeNameRu!,
                     VisibleSelector = dto => dto.ProxyNodeCode is not null
                 }
@@ -205,7 +205,7 @@ public class LegsDetailSettingsService(IStringLocalizer<Svt> L, ILogger<LegsDeta
             results.Add(new DetailSetting<LegDetailDto>
                 {
                     Name = nameof(LegDetailDto.ProxyNodeNameEn),
-                    Header = L["LegDto.ProxyNodeName"],
+                    Header = L["LegDetailDto.ProxyNodeName"],
                     DisplaySelector = dto => dto.ProxyNodeNameEn!,
                     VisibleSelector = dto => dto.ProxyNodeCode is not null
                 }
@@ -218,7 +218,7 @@ public class LegsDetailSettingsService(IStringLocalizer<Svt> L, ILogger<LegsDeta
             new DetailSetting<LegDetailDto>
             {
                 Name = nameof(LegDetailDto.ProxyRegionCode),
-                Header = L["LegDto.ProxyRegionCode"],
+                Header = L["LegDetailDto.ProxyRegionCode"],
                 DisplaySelector = dto => dto.ProxyRegionCode!,
                 VisibleSelector = dto => dto.ProxyNodeCode is not null
             }
@@ -229,7 +229,7 @@ public class LegsDetailSettingsService(IStringLocalizer<Svt> L, ILogger<LegsDeta
             results.Add(new DetailSetting<LegDetailDto>
                 {
                     Name = nameof(LegDetailDto.ProxyRegionNameRu),
-                    Header = L["LegDto.ProxyRegionName"],
+                    Header = L["LegDetailDto.ProxyRegionName"],
                     DisplaySelector = dto => dto.ProxyRegionNameRu!,
                     VisibleSelector = dto => dto.ProxyNodeCode is not null
                 }
@@ -238,7 +238,7 @@ public class LegsDetailSettingsService(IStringLocalizer<Svt> L, ILogger<LegsDeta
             results.Add(new DetailSetting<LegDetailDto>
                 {
                     Name = nameof(LegDetailDto.ProxyRegionNameEn),
-                    Header = L["LegDto.ProxyRegionName"],
+                    Header = L["LegDetailDto.ProxyRegionName"],
                     DisplaySelector = dto => dto.ProxyRegionNameEn!,
                     VisibleSelector = dto => dto.ProxyNodeCode is not null
                 }
@@ -251,7 +251,7 @@ public class LegsDetailSettingsService(IStringLocalizer<Svt> L, ILogger<LegsDeta
             new DetailSetting<LegDetailDto>
             {
                 Name = nameof(LegDetailDto.NodeToCode),
-                Header = L["LegDto.NodeToCode"],
+                Header = L["LegDetailDto.NodeToCode"],
                 DisplaySelector = dto => dto.NodeToCode,
                 VisibleSelector = _ => true
             }
@@ -263,7 +263,7 @@ public class LegsDetailSettingsService(IStringLocalizer<Svt> L, ILogger<LegsDeta
             results.Add(new DetailSetting<LegDetailDto>
                 {
                     Name = nameof(LegDetailDto.NodeToNameRu),
-                    Header = L["LegDto.NodeToName"],
+                    Header = L["LegDetailDto.NodeToName"],
                     DisplaySelector = dto => dto.NodeToNameRu,
                     VisibleSelector = _ => true
                 }
@@ -272,7 +272,7 @@ public class LegsDetailSettingsService(IStringLocalizer<Svt> L, ILogger<LegsDeta
             results.Add(new DetailSetting<LegDetailDto>
                 {
                     Name = nameof(LegDetailDto.NodeToNameEn),
-                    Header = L["LegDto.NodeToName"],
+                    Header = L["LegDetailDto.NodeToName"],
                     DisplaySelector = dto => dto.NodeToNameEn,
                     VisibleSelector = _ => true
                 }
@@ -285,7 +285,7 @@ public class LegsDetailSettingsService(IStringLocalizer<Svt> L, ILogger<LegsDeta
             new DetailSetting<LegDetailDto>
             {
                 Name = nameof(LegDetailDto.RegionToCode),
-                Header = L["LegDto.RegionToCode"],
+                Header = L["LegDetailDto.RegionToCode"],
                 DisplaySelector = dto => dto.RegionToCode,
                 VisibleSelector = _ => true
             }
@@ -297,7 +297,7 @@ public class LegsDetailSettingsService(IStringLocalizer<Svt> L, ILogger<LegsDeta
             results.Add(new DetailSetting<LegDetailDto>
                 {
                     Name = nameof(LegDetailDto.RegionToNameRu),
-                    Header = L["LegDto.RegionToName"],
+                    Header = L["LegDetailDto.RegionToName"],
                     DisplaySelector = dto => dto.RegionToNameRu,
                     VisibleSelector = _ => true
                 }
@@ -306,7 +306,7 @@ public class LegsDetailSettingsService(IStringLocalizer<Svt> L, ILogger<LegsDeta
             results.Add(new DetailSetting<LegDetailDto>
                 {
                     Name = nameof(LegDetailDto.RegionToNameEn),
-                    Header = L["LegDto.RegionToName"],
+                    Header = L["LegDetailDto.RegionToName"],
                     DisplaySelector = dto => dto.RegionToNameEn,
                     VisibleSelector = _ => true
                 }
@@ -320,42 +320,42 @@ public class LegsDetailSettingsService(IStringLocalizer<Svt> L, ILogger<LegsDeta
                 new DetailSetting<LegDetailDto>
                 {
                     Name = nameof(LegDetailDto.SearchTimeT),
-                    Header = L["LegDto.SearchTime"],
+                    Header = L["LegDetailDto.SearchTime"],
                     DisplaySelector = dto => dto.SearchTimeT,
                     VisibleSelector = _ => true
                 },
                 new DetailSetting<LegDetailDto>
                 {
                     Name = nameof(LegDetailDto.LoadTimeT),
-                    Header = L["LegDto.LoadTime"],
+                    Header = L["LegDetailDto.LoadTime"],
                     DisplaySelector = dto => dto.LoadTimeT,
                     VisibleSelector = _ => true
                 },
                 new DetailSetting<LegDetailDto>
                 {
                     Name = nameof(LegDetailDto.DaysWaitingT),
-                    Header = L["LegDto.DaysWaiting"],
+                    Header = L["LegDetailDto.DaysWaiting"],
                     DisplaySelector = dto => dto.DaysWaitingT,
                     VisibleSelector = _ => true
                 },
                 new DetailSetting<LegDetailDto>
                 {
                     Name = nameof(LegDetailDto.TravelTimeT),
-                    Header = L["LegDto.TravelTime"],
+                    Header = L["LegDetailDto.TravelTime"],
                     DisplaySelector = dto => dto.TravelTimeT,
                     VisibleSelector = _ => true
                 },
                 new DetailSetting<LegDetailDto>
                 {
                     Name = nameof(LegDetailDto.UnLoadTimeT),
-                    Header = L["LegDto.UnLoadTime"],
+                    Header = L["LegDetailDto.UnLoadTime"],
                     DisplaySelector = dto => dto.UnLoadTimeT,
                     VisibleSelector = _ => true
                 },
                 new DetailSetting<LegDetailDto>
                 {
                     Name = nameof(LegDetailDto.TransportationTimeT),
-                    Header = L["LegDto.TransportationTime"],
+                    Header = L["LegDetailDto.TransportationTime"],
                     DisplaySelector = dto => dto.TransportationTimeT,
                     VisibleSelector = _ => true
                 }
@@ -370,14 +370,14 @@ public class LegsDetailSettingsService(IStringLocalizer<Svt> L, ILogger<LegsDeta
                 new DetailSetting<LegDetailDto>
                 {
                     Name = nameof(LegDetailDto.CreationDate),
-                    Header = L["LegDto.CreationDate"],
+                    Header = L["LegDetailDto.CreationDate"],
                     DisplaySelector = dto => dto.CreationDate,
                     VisibleSelector = _ => true
                 },
                 new DetailSetting<LegDetailDto>
                 {
                     Name = nameof(LegDetailDto.LastChangeDate),
-                    Header = L["LegDto.LastChangeDate"],
+                    Header = L["LegDetailDto.LastChangeDate"],
                     DisplaySelector = dto => dto.LastChangeDate,
                     VisibleSelector = _ => true
                 }
@@ -392,10 +392,10 @@ public class LegsDetailSettingsService(IStringLocalizer<Svt> L, ILogger<LegsDeta
             new DetailSetting<LegDetailDto>
             {
                 Name = nameof(LegDetailDto.IsArchive),
-                Header = L["LegDto.IsArchive"],
+                Header = L["LegDetailDto.IsArchive"],
                 DisplaySelector = dto => dto.IsArchive
-                    ? L["LegDto.Archive"]
-                    : L["LegDto.Active"],
+                    ? L["LegDetailDto.Archive"]
+                    : L["LegDetailDto.Active"],
                 VisibleSelector = _ => true
             }
         );
