@@ -25,9 +25,11 @@ BEGIN
         CASE WHEN ISNULL(l.PrimitiveEntityDataStateId, 2) = 2 THEN 1 ELSE 0 END AS IsArchive,
         ISNULL(l.LegIsActive, 0)        AS CanBeUsed,
 
-        CAST(st.Id AS INT)              AS ShipmentTypeId,  
+        CAST(st.Id AS INT)              AS ShipmentTypeIdRu,  
+        CAST(st.Id AS INT)              AS ShipmentTypeIdEn,  
 
-        CAST(l.TransportKind AS INT)    AS TransportKindId,     
+        CAST(l.TransportKind AS INT)    AS TransportKindIdRu,     
+        CAST(l.TransportKind AS INT)    AS TransportKindIdEn,     
         LEFT(tk.Code, 5)                AS TransportKindCode,
 
         LEFT(l.SearchTimeT, 20)         AS SearchTimeT,

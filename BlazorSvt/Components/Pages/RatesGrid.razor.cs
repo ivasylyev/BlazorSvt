@@ -23,10 +23,10 @@ public partial class RatesGrid : BaseGridPage<RateDto, RateDetailDto>
     }
     private string GetCustomMessage(RateDetailDto detail)
     {
-        var message = "Кастомное сообщение от ставок: ";
+        var message = L["RateDetailDto.CustomMessage"].Value;
         message += detail.ProxyNodeCode is null
-            ? "Ставка без промежуточного узла"
-            : "Ставка с промежуточным узлом";
+            ? L["RateDetailDto.CustomMessageWithoutProxy"].Value 
+            : L["RateDetailDto.CustomMessageWithProxy"].Value; 
         return message;
     }
 }

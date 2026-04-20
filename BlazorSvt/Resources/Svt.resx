@@ -512,4 +512,23 @@
   <data name="LegDetailDto.Group4Leadtimes" xml:space="preserve">
 	  <value>4. Leadtimes</value>
   </data>
+  <data name="LegDetailDto.CustomMessage" xml:space="preserve">
+	  <value>Custom Message From Transport Leg Details: </value>
+  </data>
+  <data name="LegDetailDto.CustomMessageWithoutProxy" xml:space="preserve">
+	  <value>Transport Leg Without Proxy</value>
+  </data>
+  <data name="LegDetailDto.CustomMessageWithProxy" xml:space="preserve">
+	  <value>Transport Leg With Proxy</value>
+  </data>
+
+	<data name="RateDetailDto.CustomMessage" xml:space="preserve">
+	  <value>Custom Message From Transport Rate Details: </value>
+  </data>
+  <data name="RateDetailDto.CustomMessageWithoutProxy" xml:space="preserve">
+	  <value>Transport Rate Without Proxy</value>
+  </data>
+  <data name="RateDetailDto.CustomMessageWithProxy" xml:space="preserve">
+	  <value>Transport Rate With Proxy</value>
+  </data>
 </root>

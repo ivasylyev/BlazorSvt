@@ -504,4 +504,23 @@
   <data name="LegDetailDto.Group4Leadtimes" xml:space="preserve">
 	  <value>4. Лидтаймы </value>
   </data>
+  <data name="LegDetailDto.CustomMessage" xml:space="preserve">
+	  <value>Кастомное сообщение от транспортных плеч: </value>
+  </data>
+  <data name="LegDetailDto.CustomMessageWithoutProxy" xml:space="preserve">
+	  <value>Плечо без промежуточного узла</value>
+  </data>
+  <data name="LegDetailDto.CustomMessageWithProxy" xml:space="preserve">
+	  <value>Плечо с промежуточным узлом</value>
+  </data>
+
+	<data name="RateDetailDto.CustomMessage" xml:space="preserve">
+	  <value>Кастомное сообщение от ставок: </value>
+  </data>
+  <data name="RateDetailDto.CustomMessageWithoutProxy" xml:space="preserve">
+	  <value>Ставка без промежуточного узла</value>
+  </data>
+  <data name="RateDetailDto.CustomMessageWithProxy" xml:space="preserve">
+	  <value>Ставка с промежуточным узлом</value>
+  </data>
 </root>

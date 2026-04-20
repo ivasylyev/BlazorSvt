@@ -28,10 +28,10 @@ public partial class LegsGrid : BaseGridPage<LegDto, LegDetailDto>
 
     private string GetCustomMessage(LegDetailDto detail)
     {
-        var message = "Кастомное сообщение от транспортных плеч: ";
+        var message = L["LegDetailDto.CustomMessage"].Value;//"Кастомное сообщение от транспортных плеч: ";
         message += detail.ProxyNodeCode is null
-            ? "Плечо без промежуточного узла"
-            : "Плечо с промежуточным узлом";
+            ? L["LegDetailDto.CustomMessageWithoutProxy"].Value //"Плечо без промежуточного узла"
+            : L["LegDetailDto.CustomMessageWithProxy"].Value; //"Плечо с промежуточным узлом";
         return message;
     }
 }
