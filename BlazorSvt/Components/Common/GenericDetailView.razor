@@ -13,14 +13,23 @@ else if (detail is not null)
 {
     @Template?.Invoke(detail)
 
-    <div class="sibur-grid-detail-container">
-        @foreach (var setting in detailSettings.GetGridDetailSettingsCopy())
+    <Accordion AlwaysOpen="true">
+        @foreach (var groupPair in detailSettings.GroupSettings)
         {
-            if (setting.VisibleSelector(detail))
+            if (groupPair.Value.Any(s => s.VisibleSelector(detail)))
             {
-                <div class="sibur-grid-detail-label">@setting.Header:</div>
-                <div class="sibur-grid-detail-value">@(setting.DisplaySelector(detail))</div>
+                <AccordionItem Title="@groupPair.Key" Active="true">
+                    <Content>
+                        <div class="sibur-grid-detail-container">
+                            @foreach (var setting in groupPair.Value.Where(v => v.VisibleSelector(detail)))
+                            {
+                                <div class="sibur-grid-detail-label">@setting.Header:</div>
+                                <div class="sibur-grid-detail-value">@(setting.DisplaySelector(detail))</div>
+                            }
+                        </div>
+                    </Content>
+                </AccordionItem>
             }
         }
-    </div>
+    </Accordion>
 }

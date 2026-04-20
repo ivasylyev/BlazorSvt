@@ -150,11 +150,13 @@ h1:focus {
 /* Нечетные строки (полосатая раскраска)  */
 .sibur-grid .table-striped > tbody > tr:nth-of-type(odd) td {
     background-color: rgba(0, 240, 255, 0.03) !important;
+    /* background-color: #ffffff !important; */
 }
 
 /* Четные строки  */
 .sibur-grid .table-striped > tbody > tr:nth-of-type(even) td {
-    background-color: #ffffff !important;
+    background-color: rgba(0, 240, 255, 0.03) !important;
+    /* background-color: #ffffff !important; */
 }
 
 /* Любая строка при наведении  */
@@ -184,23 +186,43 @@ h1:focus {
     color: #6c757d; 
 }
 
-/* Card */
-.sibur-card {
-    background-color: rgba(0, 240, 255, 0.03) !important;
-    border: 1px solid rgba(0, 240, 255, 0.1); 
+/* Отображение аккордиона внутри деталей грида */
+
+.sibur-grid .accordion-button {
+    background-color: #EAF2F2 !important;
+    font-weight: bold;
+    color: #00606a;
 }
+
+.sibur-grid .accordion-body {
+    background-color: rgba(0, 240, 255, 0.03) !important;
+}
+
+
 /* Отображение деталей внутри грида */
 .sibur-grid-detail-container {
     display: grid;
-    grid-template-columns: fit-content(500px) 1fr;
+    grid-template-columns: minmax(300px, 500px) 1fr;
+    width: 100%;
     gap: 10px;
 }
 
 .sibur-grid-detail-label {
-    font-weight: bold;
-    color: #555;
+    color: #000;
+    
+    word-wrap: break-word;
+    overflow-wrap: break-word;
 }
 
 .sibur-grid-detail-value {
-    color: #000;
+    font-weight: bold;
+    color: #555;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+}
+
+/* Card */
+.sibur-card {
+    background-color: rgba(0, 240, 255, 0.03) !important;
+    border: 1px solid rgba(0, 240, 255, 0.1);
 }

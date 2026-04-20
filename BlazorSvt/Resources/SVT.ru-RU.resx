@@ -492,4 +492,16 @@
 	<data name="LegDetailDto.TransportationTime" xml:space="preserve">
 	  <value>Транспортировка, сут.</value>
   </data>
+  <data name="LegDetailDto.Group1Parameters" xml:space="preserve">
+	  <value>1. Параметры плеча</value>
+  </data>
+  <data name="LegDetailDto.Group2FromTo" xml:space="preserve">
+	  <value>2. Отправление - назначение</value>
+  </data>
+  <data name="LegDetailDto.Group3Transport" xml:space="preserve">
+	  <value>3. Транспорт</value>
+  </data>
+  <data name="LegDetailDto.Group4Leadtimes" xml:space="preserve">
+	  <value>4. Лидтаймы </value>
+  </data>
 </root>

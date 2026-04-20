@@ -500,4 +500,16 @@
 	<data name="LegDetailDto.TransportationTime" xml:space="preserve">
 	  <value>Transportation Time, days</value>
   </data>
+  <data name="LegDetailDto.Group1Parameters" xml:space="preserve">
+	  <value>1. Parameters</value>
+  </data>
+  <data name="LegDetailDto.Group2FromTo" xml:space="preserve">
+	  <value>2. From - To</value>
+  </data>
+  <data name="LegDetailDto.Group3Transport" xml:space="preserve">
+	  <value>3. Transport</value>
+  </data>
+  <data name="LegDetailDto.Group4Leadtimes" xml:space="preserve">
+	  <value>4. Leadtimes</value>
+  </data>
 </root>
