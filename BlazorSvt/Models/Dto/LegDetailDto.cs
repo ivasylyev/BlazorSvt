@@ -30,8 +30,6 @@ public class LegDetailDto
     public required string TransportationTimeT { get; set; }
     public required int Distance { get; set; }
 
-    public required TransportKindRu Leg1_TransportKindIdRu { get; set; }
-    public required TransportKindEn Leg1_TransportKindIdEn { get; set; }
     public required decimal Leg1_SearchTime { get; set; }
     public required decimal Leg1_LoadTime { get; set; }
     public required decimal Leg1_TravelTime { get; set; }
@@ -40,8 +38,6 @@ public class LegDetailDto
     public required int Leg1_Distance { get; set; }
 
 
-    public required TransportKindRu Leg2_TransportKindIdRu { get; set; }
-    public required TransportKindEn Leg2_TransportKindIdEn { get; set; }
     public required decimal Leg2_UpLoadTime { get; set; }
     public required decimal Leg2_TravelTime { get; set; }
     public required decimal Leg2_DaysWaiting { get; set; }

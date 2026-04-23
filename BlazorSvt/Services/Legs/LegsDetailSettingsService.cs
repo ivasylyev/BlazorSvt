@@ -83,7 +83,8 @@ public class LegsDetailSettingsService(IStringLocalizer<Svt> L, ILogger<LegsDeta
                     Header = L["LegDetailDto.CreationDate"],
                     GroupHeader = L["LegDetailDto.Group1Parameters"],
                     DisplaySelector = dto => dto.CreationDate,
-                    VisibleSelector = _ => true
+                    VisibleSelector = _ => true,
+                    HasMargin = true
                 },
                 new DetailSetting<LegDetailDto>
                 {
@@ -109,7 +110,8 @@ public class LegsDetailSettingsService(IStringLocalizer<Svt> L, ILogger<LegsDeta
                 DisplaySelector = dto => dto.IsArchive
                     ? L["LegDetailDto.Archive"]
                     : L["LegDetailDto.Active"],
-                VisibleSelector = _ => true
+                VisibleSelector = _ => true,
+                HasMargin = true
             }
         );
     }
@@ -160,7 +162,7 @@ public class LegsDetailSettingsService(IStringLocalizer<Svt> L, ILogger<LegsDeta
                 Header = L["LegDetailDto.RegionFromCode"],
                 GroupHeader = L["LegDetailDto.Group2FromTo"],
                 DisplaySelector = dto => dto.RegionFromCode,
-                VisibleSelector = _ => true
+                VisibleSelector = _ => true,
             }
         );
 
@@ -196,7 +198,8 @@ public class LegsDetailSettingsService(IStringLocalizer<Svt> L, ILogger<LegsDeta
                 Header = L["LegDetailDto.ProxyNodeCode"],
                 GroupHeader = L["LegDetailDto.Group2FromTo"],
                 DisplaySelector = dto => dto.ProxyNodeCode!,
-                VisibleSelector = dto => dto.ProxyNodeCode is not null
+                VisibleSelector = dto => dto.ProxyNodeCode is not null,
+                HasMargin = true
             }
         );
 
@@ -232,7 +235,7 @@ public class LegsDetailSettingsService(IStringLocalizer<Svt> L, ILogger<LegsDeta
                 Header = L["LegDetailDto.ProxyRegionCode"],
                 GroupHeader = L["LegDetailDto.Group2FromTo"],
                 DisplaySelector = dto => dto.ProxyRegionCode!,
-                VisibleSelector = dto => dto.ProxyNodeCode is not null
+                VisibleSelector = dto => dto.ProxyNodeCode is not null,
             }
         );
 
@@ -268,7 +271,8 @@ public class LegsDetailSettingsService(IStringLocalizer<Svt> L, ILogger<LegsDeta
                 Header = L["LegDetailDto.NodeToCode"],
                 GroupHeader = L["LegDetailDto.Group2FromTo"],
                 DisplaySelector = dto => dto.NodeToCode,
-                VisibleSelector = _ => true
+                VisibleSelector = _ => true,
+                HasMargin = true
             }
         );
 
@@ -343,7 +347,7 @@ public class LegsDetailSettingsService(IStringLocalizer<Svt> L, ILogger<LegsDeta
                     GroupHeader = L["LegDetailDto.Group3Transport"],
                     DisplaySelector = dto => typeof(TransportKindRu).GetDisplayName(dto.TransportKindIdRu.ToString()) ?? string.Empty,
                     VisibleSelector = _ => true
-                }
+            }
             );
         else
             results.Add(new DetailSetting<LegDetailDto>
@@ -392,7 +396,8 @@ public class LegsDetailSettingsService(IStringLocalizer<Svt> L, ILogger<LegsDeta
                     Header = L["LegDetailDto.SearchTime"],
                     GroupHeader = L["LegDetailDto.Group4Leadtimes"],
                     DisplaySelector = dto => dto.SearchTimeT,
-                    VisibleSelector = _ => true
+                    VisibleSelector = _ => true,
+                    HasMargin = true
                 },
                 new DetailSetting<LegDetailDto>
                 {
@@ -440,7 +445,8 @@ public class LegsDetailSettingsService(IStringLocalizer<Svt> L, ILogger<LegsDeta
                     Header = L["LegDetailDto.Distance"],
                     GroupHeader = L["LegDetailDto.Group4Leadtimes"],
                     DisplaySelector = dto => dto.Distance,
-                    VisibleSelector = _ => true
+                    VisibleSelector = _ => true,
+                    HasMargin = true
                 }
 
             ]
@@ -497,7 +503,8 @@ public class LegsDetailSettingsService(IStringLocalizer<Svt> L, ILogger<LegsDeta
                     Header = L["LegDetailDto.Leg1_Distance"],
                     GroupHeader = L["LegDetailDto.Group41LeadtimesLeg1"],
                     DisplaySelector = dto => dto.Leg1_Distance,
-                    VisibleSelector = dto => dto.ProxyNodeCode is not null
+                    VisibleSelector = dto => dto.ProxyNodeCode is not null,
+                    HasMargin = true
                 }
             ]
         );
@@ -545,7 +552,8 @@ public class LegsDetailSettingsService(IStringLocalizer<Svt> L, ILogger<LegsDeta
                     Header = L["LegDetailDto.Leg2_Distance"],
                     GroupHeader = L["LegDetailDto.Group42LeadtimesLeg2"],
                     DisplaySelector = dto => dto.Leg2_Distance,
-                    VisibleSelector = dto => dto.ProxyNodeCode is not null
+                    VisibleSelector = dto => dto.ProxyNodeCode is not null,
+                    HasMargin = true
                 }
             ]
         );

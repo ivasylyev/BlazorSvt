@@ -23,8 +23,9 @@ else if (detail is not null)
                         <div class="sibur-grid-detail-container">
                             @foreach (var setting in groupPair.Value.Where(v => v.VisibleSelector(detail)))
                             {
-                                <div class="sibur-grid-detail-label">@setting.Header:</div>
-                                <div class="sibur-grid-detail-value">@(setting.DisplaySelector(detail))</div>
+                                var marginClass = setting.HasMargin ? "mt-4" : string.Empty;
+                                <div class="sibur-grid-detail-label @marginClass">@setting.Header:</div>
+                                <div class="sibur-grid-detail-value @marginClass">@(setting.DisplaySelector(detail))</div>
                             }
                         </div>
                     </Content>
