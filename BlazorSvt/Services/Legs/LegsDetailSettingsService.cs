@@ -35,7 +35,11 @@ public class LegsDetailSettingsService(IStringLocalizer<Svt> L, ILogger<LegsDeta
 
         AddLegTypeSettings(isRu, results);
         AddLeadtimeSettings(results);
-        
+
+        AddLeadtimeLeg1Settings(results);
+
+        AddLeadtimeLeg2Settings(results);
+
         return new DetailSettingsCollection<LegDetailDto>(results);
     }
 
@@ -429,6 +433,119 @@ public class LegsDetailSettingsService(IStringLocalizer<Svt> L, ILogger<LegsDeta
                     GroupHeader = L["LegDetailDto.Group4Leadtimes"],
                     DisplaySelector = dto => dto.TransportationTimeT,
                     VisibleSelector = _ => true
+                },
+                new DetailSetting<LegDetailDto>
+                {
+                    Name = nameof(LegDetailDto.Distance),
+                    Header = L["LegDetailDto.Distance"],
+                    GroupHeader = L["LegDetailDto.Group4Leadtimes"],
+                    DisplaySelector = dto => dto.Distance,
+                    VisibleSelector = _ => true
+                }
+
+            ]
+        );
+    }
+
+    private void AddLeadtimeLeg1Settings(List<DetailSetting<LegDetailDto>> results)
+    {
+        results.AddRange(
+            [
+                new DetailSetting<LegDetailDto>
+                {
+                    Name = nameof(LegDetailDto.Leg1_SearchTime),
+                    Header = L["LegDetailDto.Leg1_SearchTime"],
+                    GroupHeader = L["LegDetailDto.Group41LeadtimesLeg1"],
+                    DisplaySelector = dto => dto.Leg1_SearchTime,
+                    VisibleSelector = dto => dto.ProxyNodeCode is not null
+                },
+                new DetailSetting<LegDetailDto>
+                {
+                    Name = nameof(LegDetailDto.Leg1_LoadTime),
+                    Header = L["LegDetailDto.Leg1_LoadTime"],
+                    GroupHeader = L["LegDetailDto.Group41LeadtimesLeg1"],
+                    DisplaySelector = dto => dto.Leg1_LoadTime,
+                    VisibleSelector = dto => dto.ProxyNodeCode is not null
+                },
+                new DetailSetting<LegDetailDto>
+                {
+                    Name = nameof(LegDetailDto.Leg1_DaysWaiting),
+                    Header = L["LegDetailDto.Leg1_DaysWaiting"],
+                    GroupHeader = L["LegDetailDto.Group41LeadtimesLeg1"],
+                    DisplaySelector = dto => dto.Leg1_DaysWaiting,
+                    VisibleSelector = dto => dto.ProxyNodeCode is not null
+                },
+                new DetailSetting<LegDetailDto>
+                {
+                    Name = nameof(LegDetailDto.Leg1_TravelTime),
+                    Header = L["LegDetailDto.Leg1_TravelTime"],
+                    GroupHeader = L["LegDetailDto.Group41LeadtimesLeg1"],
+                    DisplaySelector = dto => dto.Leg1_TravelTime,
+                    VisibleSelector = dto => dto.ProxyNodeCode is not null
+                },
+                new DetailSetting<LegDetailDto>
+                {
+                    Name = nameof(LegDetailDto.Leg1_TransportationTime),
+                    Header = L["LegDetailDto.Leg1_TransportationTime"],
+                    GroupHeader = L["LegDetailDto.Group41LeadtimesLeg1"],
+                    DisplaySelector = dto => dto.Leg1_TransportationTime,
+                    VisibleSelector = dto => dto.ProxyNodeCode is not null
+                },
+                new DetailSetting<LegDetailDto>
+                {
+                    Name = nameof(LegDetailDto.Leg1_Distance),
+                    Header = L["LegDetailDto.Leg1_Distance"],
+                    GroupHeader = L["LegDetailDto.Group41LeadtimesLeg1"],
+                    DisplaySelector = dto => dto.Leg1_Distance,
+                    VisibleSelector = dto => dto.ProxyNodeCode is not null
+                }
+            ]
+        );
+    }
+
+    private void AddLeadtimeLeg2Settings(List<DetailSetting<LegDetailDto>> results)
+    {
+        results.AddRange(
+            [
+                new DetailSetting<LegDetailDto>
+                {
+                    Name = nameof(LegDetailDto.Leg2_UpLoadTime),
+                    Header = L["LegDetailDto.Leg2_UpLoadTime"],
+                    GroupHeader = L["LegDetailDto.Group42LeadtimesLeg2"],
+                    DisplaySelector = dto => dto.Leg2_UpLoadTime,
+                    VisibleSelector = dto => dto.ProxyNodeCode is not null
+                },
+                new DetailSetting<LegDetailDto>
+                {
+                    Name = nameof(LegDetailDto.Leg2_DaysWaiting),
+                    Header = L["LegDetailDto.Leg2_DaysWaiting"],
+                    GroupHeader = L["LegDetailDto.Group42LeadtimesLeg2"],
+                    DisplaySelector = dto => dto.Leg2_DaysWaiting,
+                    VisibleSelector = dto => dto.ProxyNodeCode is not null
+                },
+                new DetailSetting<LegDetailDto>
+                {
+                    Name = nameof(LegDetailDto.Leg2_TravelTime),
+                    Header = L["LegDetailDto.Leg2_TravelTime"],
+                    GroupHeader = L["LegDetailDto.Group42LeadtimesLeg2"],
+                    DisplaySelector = dto => dto.Leg2_TravelTime,
+                    VisibleSelector = dto => dto.ProxyNodeCode is not null
+                },
+                new DetailSetting<LegDetailDto>
+                {
+                    Name = nameof(LegDetailDto.Leg2_TransportationTime),
+                    Header = L["LegDetailDto.Leg2_TransportationTime"],
+                    GroupHeader = L["LegDetailDto.Group42LeadtimesLeg2"],
+                    DisplaySelector = dto => dto.Leg2_TransportationTime,
+                    VisibleSelector = dto => dto.ProxyNodeCode is not null
+                },
+                new DetailSetting<LegDetailDto>
+                {
+                    Name = nameof(LegDetailDto.Leg2_Distance),
+                    Header = L["LegDetailDto.Leg2_Distance"],
+                    GroupHeader = L["LegDetailDto.Group42LeadtimesLeg2"],
+                    DisplaySelector = dto => dto.Leg2_Distance,
+                    VisibleSelector = dto => dto.ProxyNodeCode is not null
                 }
             ]
         );

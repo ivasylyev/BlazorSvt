@@ -38,7 +38,8 @@ BEGIN
         LEFT(l.DaysWaitingT, 20)        AS DaysWaitingT,
         LEFT(l.UnLoadTimeT, 20)         AS UnLoadTimeT,
         LEFT(l.TransportationTimeT, 20) AS TransportationTimeT,
-        
+
+        l.Distance                      AS Distance,
         LEFT(nf.Code, 10)               AS NodeFromCode,   
         LEFT(nf.Name_en, 30)            AS NodeFromNameEn, 
         LEFT(nf.Name_ru, 30)            AS NodeFromNameRu, 
@@ -61,7 +62,23 @@ BEGIN
         LEFT(rt.Name_ru, 30)            AS RegionToNameRu,   
 
         l.CreationDate                  AS CreationDate,
-        ISNULL(l.LastChangeDate, l.CreationDate) AS LastChangeDate
+        ISNULL(l.LastChangeDate, l.CreationDate) AS LastChangeDate,
+        l.Leg1_TransportType            AS Leg1_TransportTypeIdRu,
+        l.Leg1_TransportType            AS Leg1_TransportTypeIdEn,
+        l.Leg1_SearchTime,
+        l.Leg1_LoadTime,
+        l.Leg1_TravelTime,
+        l.Leg1_DaysWaiting,
+        l.Leg1_TransportationTime,
+        l.Leg1_Distance,
+        l.Leg2_TransportType            AS Leg2_TransportTypeIdRu,
+        l.Leg2_TransportType            AS Leg2_TransportTypeIdEn,
+        l.Leg2_UpLoadTime,
+        l.Leg2_TravelTime,
+        l.Leg2_DaysWaiting,
+        l.Leg2_TransportationTime,
+        l.Leg2_Distance
+    
 
     FROM vw_TransportLeg l (NOLOCK)
     JOIN vw_TransportKind tk (NOLOCK) ON l.TransportKind = tk.Id

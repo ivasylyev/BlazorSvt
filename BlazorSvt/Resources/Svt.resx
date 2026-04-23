@@ -266,6 +266,15 @@
   <data name="RateDto.No" xml:space="preserve">
 	  <value>No</value>
   </data>
+  <data name="RateDetailDto.CustomMessage" xml:space="preserve">
+	  <value>Custom Message From Transport Rate Details: </value>
+  </data>
+  <data name="RateDetailDto.CustomMessageWithoutProxy" xml:space="preserve">
+	  <value>Transport Rate Without Proxy</value>
+  </data>
+  <data name="RateDetailDto.CustomMessageWithProxy" xml:space="preserve">
+	  <value>Transport Rate With Proxy</value>
+  </data>
   <data name="LegsGrid.Title" xml:space="preserve">
 	  <value>Transport Legs</value>
   </data>
@@ -500,7 +509,10 @@
 	<data name="LegDetailDto.TransportationTime" xml:space="preserve">
 	  <value>Transportation Time, days</value>
   </data>
-  <data name="LegDetailDto.Group1Parameters" xml:space="preserve">
+  <data name="LegDetailDto.Distance" xml:space="preserve">
+	  <value>Distance</value>
+  </data>
+	<data name="LegDetailDto.Group1Parameters" xml:space="preserve">
 	  <value>1. Parameters</value>
   </data>
   <data name="LegDetailDto.Group2FromTo" xml:space="preserve">
@@ -512,6 +524,12 @@
   <data name="LegDetailDto.Group4Leadtimes" xml:space="preserve">
 	  <value>4. Leadtimes</value>
   </data>
+  <data name="LegDetailDto.Group41LeadtimesLeg1" xml:space="preserve">
+	  <value>4.1. Leadtimes Leg 1</value>
+  </data>
+  <data name="LegDetailDto.Group42LeadtimesLeg2" xml:space="preserve">
+	  <value>4.2. Leadtimes Leg 2</value>
+  </data>
   <data name="LegDetailDto.CustomMessage" xml:space="preserve">
 	  <value>Custom Message From Transport Leg Details: </value>
   </data>
@@ -521,14 +539,38 @@
   <data name="LegDetailDto.CustomMessageWithProxy" xml:space="preserve">
 	  <value>Transport Leg With Proxy</value>
   </data>
-
-	<data name="RateDetailDto.CustomMessage" xml:space="preserve">
-	  <value>Custom Message From Transport Rate Details: </value>
+  <data name="LegDetailDto.Leg1_SearchTime" xml:space="preserve">
+	  <value>Leg 1. Search Time, days</value>
   </data>
-  <data name="RateDetailDto.CustomMessageWithoutProxy" xml:space="preserve">
-	  <value>Transport Rate Without Proxy</value>
+	<data name="LegDetailDto.Leg1_LoadTime" xml:space="preserve">
+	  <value>Leg 1. Load Time, days</value>
   </data>
-  <data name="RateDetailDto.CustomMessageWithProxy" xml:space="preserve">
-	  <value>Transport Rate With Proxy</value>
+  <data name="LegDetailDto.Leg1_DaysWaiting" xml:space="preserve">
+	  <value>Leg 1. Days Waiting, days</value>
+  </data>
+  <data name="LegDetailDto.Leg1_TravelTime" xml:space="preserve">
+	  <value>Leg 1. Travel Time, days</value>
+  </data>
+  <data name="LegDetailDto.Leg1_TransportationTime" xml:space="preserve">
+	  <value>Leg 1. Transportation Time, days</value>
+  </data>
+  <data name="LegDetailDto.Leg1_Distance" xml:space="preserve">
+	  <value>Leg 1. Distance</value>
+  </data>
+  
+  <data name="LegDetailDto.Leg2_UpLoadTime" xml:space="preserve">
+	  <value>Leg 2. UnLoad Time, days</value>
+  </data>
+  <data name="LegDetailDto.Leg2_DaysWaiting" xml:space="preserve">
+	  <value>Leg 2. Days Waiting, days</value>
+  </data>
+  <data name="LegDetailDto.Leg2_TravelTime" xml:space="preserve">
+	  <value>Leg 2. Travel Time, days</value>
+  </data>
+  <data name="LegDetailDto.Leg2_TransportationTime" xml:space="preserve">
+	  <value>Leg 2. Transportation Time, days</value>
+  </data>
+  <data name="LegDetailDto.Leg2_Distance" xml:space="preserve">
+	  <value>Leg 2. Distance</value>
   </data>
 </root>

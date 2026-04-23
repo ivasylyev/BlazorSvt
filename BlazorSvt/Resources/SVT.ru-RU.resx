@@ -261,6 +261,15 @@
   <data name="RateDto.No" xml:space="preserve">
 	  <value>Нет</value>
   </data>
+  <data name="RateDetailDto.CustomMessage" xml:space="preserve">
+	  <value>Кастомное сообщение от ставок: </value>
+  </data>
+  <data name="RateDetailDto.CustomMessageWithoutProxy" xml:space="preserve">
+	  <value>Ставка без промежуточного узла</value>
+  </data>
+  <data name="RateDetailDto.CustomMessageWithProxy" xml:space="preserve">
+	  <value>Ставка с промежуточным узлом</value>
+  </data>
   <data name="LegsGrid.Title" xml:space="preserve">
 	  <value>Транспортные плечи</value>
   </data>
@@ -492,6 +501,9 @@
 	<data name="LegDetailDto.TransportationTime" xml:space="preserve">
 	  <value>Транспортировка, сут.</value>
   </data>
+  <data name="LegDetailDto.Distance" xml:space="preserve">
+	  <value>Расстояние, км </value>
+  </data>	
   <data name="LegDetailDto.Group1Parameters" xml:space="preserve">
 	  <value>1. Параметры плеча</value>
   </data>
@@ -504,6 +516,12 @@
   <data name="LegDetailDto.Group4Leadtimes" xml:space="preserve">
 	  <value>4. Лидтаймы </value>
   </data>
+  <data name="LegDetailDto.Group41LeadtimesLeg1" xml:space="preserve">
+	  <value>4.1. Лидтаймы Плечо 1</value>
+  </data>
+  <data name="LegDetailDto.Group42LeadtimesLeg2" xml:space="preserve">
+	  <value>4.2. Лидтаймы Плечо 2</value>
+  </data>	
   <data name="LegDetailDto.CustomMessage" xml:space="preserve">
 	  <value>Кастомное сообщение от транспортных плеч: </value>
   </data>
@@ -513,14 +531,37 @@
   <data name="LegDetailDto.CustomMessageWithProxy" xml:space="preserve">
 	  <value>Плечо с промежуточным узлом</value>
   </data>
-
-	<data name="RateDetailDto.CustomMessage" xml:space="preserve">
-	  <value>Кастомное сообщение от ставок: </value>
+  <data name="LegDetailDto.Leg1_SearchTime" xml:space="preserve">
+	  <value>Плечо 1. Поиск, сут.</value>
   </data>
-  <data name="RateDetailDto.CustomMessageWithoutProxy" xml:space="preserve">
-	  <value>Ставка без промежуточного узла</value>
+  <data name="LegDetailDto.Leg1_LoadTime" xml:space="preserve">
+	  <value>Плечо 1. Погрузка, сут.</value>
   </data>
-  <data name="RateDetailDto.CustomMessageWithProxy" xml:space="preserve">
-	  <value>Ставка с промежуточным узлом</value>
+  <data name="LegDetailDto.Leg1_DaysWaiting" xml:space="preserve">
+	  <value>Плечо 1. Ожидание, сут.</value>
+  </data>
+  <data name="LegDetailDto.Leg1_TravelTime" xml:space="preserve">
+	  <value>Плечо 1. В пути, сут.</value>
+  </data>
+  <data name="LegDetailDto.Leg1_TransportationTime" xml:space="preserve">
+	  <value>Плечо 1. Транспортировка, сут.</value>
+  </data>
+  <data name="LegDetailDto.Leg1_Distance" xml:space="preserve">
+	  <value>Плечо 1. Расстояние, км </value>
+  </data>
+  <data name="LegDetailDto.Leg2_UpLoadTime" xml:space="preserve">
+	  <value>Плечо 2. Зарузка, сут.</value>
+  </data>
+  <data name="LegDetailDto.Leg2_DaysWaiting" xml:space="preserve">
+	  <value>Плечо 2. Ожидание, сут.</value>
+  </data>
+  <data name="LegDetailDto.Leg2_TravelTime" xml:space="preserve">
+	  <value>Плечо 2. В пути, сут.</value>
+  </data>
+  <data name="LegDetailDto.Leg2_TransportationTime" xml:space="preserve">
+	  <value>Плечо 2. Транспортировка, сут.</value>
+  </data>
+  <data name="LegDetailDto.Leg2_Distance" xml:space="preserve">
+	  <value>Плечо 2. Расстояние, км </value>
   </data>
 </root>
