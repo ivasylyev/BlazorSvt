@@ -262,7 +262,7 @@
 	  <value>Нет</value>
   </data>
   <data name="RateDetailDto.Code" xml:space="preserve">
-	  <value>Code</value>
+	  <value>Код ставки</value>
   </data>
   <data name="RateDetailDto.IsDefRate" xml:space="preserve">
 	  <value>Ставка является результатом дефлятора</value>
@@ -274,10 +274,10 @@
 	  <value>Нет</value>
   </data>
   <data name="RateDetailDto.CreationDate" xml:space="preserve">
-	  <value>Создано</value>
+	  <value>Дата создания</value>
   </data>
   <data name="RateDetailDto.LastChangeDate" xml:space="preserve">
-	  <value>Изменено</value>
+	  <value>Дата изменения</value>
   </data>
   <data name="RateDetailDto.IsArchive" xml:space="preserve">
 	  <value>В Архиве</value>
@@ -364,16 +364,16 @@
 	  <value>12. Лидтаймы</value>
   </data>
   <data name="RateDetailDto.Group13Parameters" xml:space="preserve">
-	  <value>13. Плечо 1</value>
+	  <value>13. Плечо 1. Ставка</value>
   </data>
   <data name="RateDetailDto.Group14Parameters" xml:space="preserve">
-	  <value>14. Лидтаймы. Ставка 1</value>
+	  <value>14. Плечо 1. Лидтаймы</value>
   </data>
   <data name="RateDetailDto.Group15Parameters" xml:space="preserve">
-	  <value>15. Плечо 2</value>
+	  <value>15. Плечо 2. Ставка</value>
   </data>
   <data name="RateDetailDto.Group16Parameters" xml:space="preserve">
-	  <value>16. Лидтаймы. Ставка 2</value>
+	  <value>16. Плечо 2. Лидтаймы</value>
   </data>
   <data name="RateDetailDto.NodeFromCode" xml:space="preserve">
 	  <value>Код узла отправления</value>
@@ -466,7 +466,7 @@
 	  <value>Плечо 2. Расстояние, км </value>
   </data>
   <data name="RateDetailDto.AverageRateCode" xml:space="preserve">
-	  <value>Код средней ставки</value>
+	  <value>Код связанной средневзвешенной ставки</value>
   </data>
   <data name="RateDetailDto.AverageRateLevel3TotalCostTon" xml:space="preserve">
 	  <value>Ставка входит в расчет средневзвешенной ставки 3-го уровня</value>
@@ -643,19 +643,19 @@
 	  <value>Код плеча</value>
   </data>
   <data name="RateDetailDto.LegChangeDate" xml:space="preserve">
-	  <value>Изменение плеча</value>
+	  <value>Дата изменения плеча</value>
   </data>
   <data name="RateDetailDto.LeadTimeChangeDate" xml:space="preserve">
-	  <value>Изменение lead time</value>
+	  <value>Дата изменения лидтайма</value>
   </data>
   <data name="RateDetailDto.LeadTimeStartDate" xml:space="preserve">
-	  <value>Начало lead time</value>
+	  <value>Начало действия лидтайма</value>
   </data>
   <data name="RateDetailDto.LeadTimeEndDate" xml:space="preserve">
-	  <value>Окончание lead time</value>
+	  <value>Окончание действия лидтайма</value>
   </data>
   <data name="RateDetailDto.LeadTimeCode" xml:space="preserve">
-	  <value>Код lead time</value>
+	  <value>Код лидтайма</value>
   </data>
   <data name="RateDetailDto.Leg1_EffectiveLoad" xml:space="preserve">
 	  <value>Плечо 1.Эффективная загрузка, т</value>

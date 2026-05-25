@@ -16,12 +16,13 @@ public class RatesDetailSettingsService(IStringLocalizer<Svt> L, ILogger<RatesDe
         var results = new List<DetailSetting<RateDetailDto>>();
 
         AddGroup1CodeSettings(results);
+        AddGroup1AverageRateCodeSettings(results);
         AddGroup1TypeSettings(results);
         AddGroup1TenderAndContractorSettings(results);
         AddGroup1DeflatorSettings(results);
         AddGroup1CreationChangeDateSettings(results);
         AddGroup1IsArchiveSettings(results);
-        AddGroup1AverageRateCodeSettings(results);
+
 
         AddGroup2Settings(results);
 
@@ -51,8 +52,6 @@ public class RatesDetailSettingsService(IStringLocalizer<Svt> L, ILogger<RatesDe
         AddGroup15Settings(results, isRu);
         AddGroup16Settings(results);
 
-
-
         return new DetailSettingsCollection<RateDetailDto>(results);
     }
 
@@ -64,6 +63,17 @@ public class RatesDetailSettingsService(IStringLocalizer<Svt> L, ILogger<RatesDe
             Header = L["RateDetailDto.Code"],
             GroupHeader = L["RateDetailDto.Group1Parameters"],
             DisplaySelector = dto => dto.Code,
+            VisibleSelector = _ => true
+        });
+    }
+    private void AddGroup1AverageRateCodeSettings(List<DetailSetting<RateDetailDto>> results)
+    {
+        results.Add(new DetailSetting<RateDetailDto>
+        {
+            Name = nameof(RateDetailDto.AverageRateCode),
+            Header = L["RateDetailDto.AverageRateCode"],
+            GroupHeader = L["RateDetailDto.Group1Parameters"],
+            DisplaySelector = dto => dto.AverageRateCode,
             VisibleSelector = _ => true
         });
     }
@@ -118,8 +128,7 @@ public class RatesDetailSettingsService(IStringLocalizer<Svt> L, ILogger<RatesDe
                 Header = L["RateDetailDto.TenderNumber"],
                 GroupHeader = L["RateDetailDto.Group1Parameters"],
                 DisplaySelector = dto => dto.TenderNumber!,
-                VisibleSelector = dto => dto.TenderNumber is not null,
-                HasMargin = true
+                VisibleSelector = dto => dto.TenderNumber is not null
             },
             new DetailSetting<RateDetailDto>
             {
@@ -180,10 +189,11 @@ public class RatesDetailSettingsService(IStringLocalizer<Svt> L, ILogger<RatesDe
             DisplaySelector = dto => dto.IsArchive
                 ? L["RateDetailDto.Archive"]
                 : L["RateDetailDto.Active"],
-            VisibleSelector = _ => true,
-            HasMargin = true
+            VisibleSelector = _ => true
         });
     }
+
+   
 
     private void AddGroup2Settings(List<DetailSetting<RateDetailDto>> results)
     {
@@ -206,204 +216,6 @@ public class RatesDetailSettingsService(IStringLocalizer<Svt> L, ILogger<RatesDe
                 VisibleSelector = _ => true
             }
         ]);
-    }
-
-    private void AddGroup1AverageRateCodeSettings(List<DetailSetting<RateDetailDto>> results)
-    {
-        results.Add(new DetailSetting<RateDetailDto>
-        {
-            Name = nameof(RateDetailDto.AverageRateCode),
-            Header = L["RateDetailDto.AverageRateCode"],
-            GroupHeader = L["RateDetailDto.Group1Parameters"],
-            DisplaySelector = dto => dto.AverageRateCode,
-            VisibleSelector = _ => true,
-            HasMargin = true
-        });
-    }
-
-    private void AddGroup7Settings(List<DetailSetting<RateDetailDto>> results)
-    {
-        results.AddRange(
-        [
-            new DetailSetting<RateDetailDto>
-            {
-                Name = nameof(RateDetailDto.CalcType),
-                Header = L["RateDetailDto.CalcType"],
-                GroupHeader = L["RateDetailDto.Group7Parameters"],
-                DisplaySelector = dto => dto.CalcType,
-                VisibleSelector = _ => true
-            },
-            new DetailSetting<RateDetailDto>
-            {
-                Name = nameof(RateDetailDto.TotalCostTransport),
-                Header = L["RateDetailDto.TotalCostTransport"],
-                GroupHeader = L["RateDetailDto.Group7Parameters"],
-                DisplaySelector = dto => dto.TotalCostTransport,
-                VisibleSelector = _ => true
-            },
-            new DetailSetting<RateDetailDto>
-            {
-                Name = nameof(RateDetailDto.TotalCostTon),
-                Header = L["RateDetailDto.TotalCostTon"],
-                GroupHeader = L["RateDetailDto.Group7Parameters"],
-                DisplaySelector = dto => dto.TotalCostTon,
-                VisibleSelector = _ => true
-            },
-            new DetailSetting<RateDetailDto>
-            {
-                Name = nameof(RateDetailDto.CurrencyStandard),
-                Header = L["RateDetailDto.Currency"],
-                GroupHeader = L["RateDetailDto.Group7Parameters"],
-                DisplaySelector = dto => dto.CurrencyStandard,
-                VisibleSelector = _ => true
-            },
-            new DetailSetting<RateDetailDto>
-            {
-                Name = nameof(RateDetailDto.CurrencyRateMonth),
-                Header = L["RateDetailDto.CurrencyRateMonth"],
-                GroupHeader = L["RateDetailDto.Group7Parameters"],
-                DisplaySelector = dto => dto.CurrencyRateMonth,
-                VisibleSelector = _ => true
-            },
-            new DetailSetting<RateDetailDto>
-            {
-                Name = nameof(RateDetailDto.TotalCostTonRUB),
-                Header = L["RateDetailDto.TotalCostTonRUB"],
-                GroupHeader = L["RateDetailDto.Group7Parameters"],
-                DisplaySelector = dto => dto.TotalCostTonRUB,
-                VisibleSelector = _ => true
-            }
-        ]);
-    }
-
-    private void AddGroup11Settings(List<DetailSetting<RateDetailDto>> results)
-    {
-        results.AddRange(
-        [
-            new DetailSetting<RateDetailDto>
-            {
-                Name = nameof(RateDetailDto.TotalCostTonUSD),
-                Header = L["RateDetailDto.TotalCostTonUSD"],
-                GroupHeader = L["RateDetailDto.Group11Parameters"],
-                DisplaySelector = dto => dto.TotalCostTonUSD,
-                VisibleSelector = _ => true
-            },
-            new DetailSetting<RateDetailDto>
-            {
-                Name = nameof(RateDetailDto.TotalCostTonEUR),
-                Header = L["RateDetailDto.TotalCostTonEUR"],
-                GroupHeader = L["RateDetailDto.Group11Parameters"],
-                DisplaySelector = dto => dto.TotalCostTonEUR,
-                VisibleSelector = _ => true
-            },
-            new DetailSetting<RateDetailDto>
-            {
-                Name = nameof(RateDetailDto.TotalCostTonCNY),
-                Header = L["RateDetailDto.TotalCostTonCNY"],
-                GroupHeader = L["RateDetailDto.Group11Parameters"],
-                DisplaySelector = dto => dto.TotalCostTonCNY,
-                VisibleSelector = _ => true
-            },
-            new DetailSetting<RateDetailDto>
-            {
-                Name = nameof(RateDetailDto.TotalCostTransportRUB),
-                Header = L["RateDetailDto.TotalCostTransportRUB"],
-                GroupHeader = L["RateDetailDto.Group11Parameters"],
-                DisplaySelector = dto => dto.TotalCostTransportRUB,
-                VisibleSelector = _ => true,
-                HasMargin = true
-            },
-            new DetailSetting<RateDetailDto>
-            {
-                Name = nameof(RateDetailDto.TotalCostTransportUSD),
-                Header = L["RateDetailDto.TotalCostTransportUSD"],
-                GroupHeader = L["RateDetailDto.Group11Parameters"],
-                DisplaySelector = dto => dto.TotalCostTransportUSD,
-                VisibleSelector = _ => true
-            },
-            new DetailSetting<RateDetailDto>
-            {
-                Name = nameof(RateDetailDto.TotalCostTransportEUR),
-                Header = L["RateDetailDto.TotalCostTransportEUR"],
-                GroupHeader = L["RateDetailDto.Group11Parameters"],
-                DisplaySelector = dto => dto.TotalCostTransportEUR,
-                VisibleSelector = _ => true
-            },
-            new DetailSetting<RateDetailDto>
-            {
-                Name = nameof(RateDetailDto.TotalCostTransportCNY),
-                Header = L["RateDetailDto.TotalCostTransportCNY"],
-                GroupHeader = L["RateDetailDto.Group11Parameters"],
-                DisplaySelector = dto => dto.TotalCostTransportCNY,
-                VisibleSelector = _ => true
-            }
-        ]);
-    }
-
-    private void AddGroup8Settings(List<DetailSetting<RateDetailDto>> results)
-    {
-        Func<RateDetailDto, bool> visibleSelector = dto => dto.CalcType != "ТС";
-        var group = L["RateDetailDto.Group8Parameters"].Value;
-
-        AddFeePair(results, nameof(RateDetailDto.LoadedRFSize), nameof(RateDetailDto.LoadedRFCurrency),
-            dto => dto.LoadedRFSize, dto => dto.LoadedRFCurrency, _=>true, group);
-        AddFeePair(results, nameof(RateDetailDto.LoadedCISSize), nameof(RateDetailDto.LoadedCISCurrency),
-            dto => dto.LoadedCISSize, dto => dto.LoadedCISCurrency, visibleSelector, group);
-        AddFeePair(results, nameof(RateDetailDto.EmptyRFSize), nameof(RateDetailDto.EmptyRFCurrency),
-            dto => dto.EmptyRFSize, dto => dto.EmptyRFCurrency, visibleSelector, group);
-        AddFeePair(results, nameof(RateDetailDto.EmptyCISSize), nameof(RateDetailDto.EmptyCISCurrency),
-            dto => dto.EmptyCISSize, dto => dto.EmptyCISCurrency, visibleSelector, group);
-        AddFeePair(results, nameof(RateDetailDto.ProvisionTransportSize), nameof(RateDetailDto.ProvisionTransportCurrency),
-            dto => dto.ProvisionTransportSize, dto => dto.ProvisionTransportCurrency, visibleSelector, group);
-        AddFeePair(results, nameof(RateDetailDto.TEFromSize), nameof(RateDetailDto.TEFromCurrency),
-            dto => dto.TEFromSize, dto => dto.TEFromCurrency, visibleSelector, group);
-        AddFeePair(results, nameof(RateDetailDto.RatePNPFromSize), nameof(RateDetailDto.PNPFromCurrency),
-            dto => dto.RatePNPFromSize, dto => dto.PNPFromCurrency, visibleSelector, group);
-        AddFeePair(results, nameof(RateDetailDto.TEFromSize_fix), nameof(RateDetailDto.TEFromCurrency_fix),
-            dto => dto.TEFromSize_fix, dto => dto.TEFromCurrency_fix, visibleSelector, group);
-        AddFeePair(results, nameof(RateDetailDto.TEToSize), nameof(RateDetailDto.TEToCurrency),
-            dto => dto.TEToSize, dto => dto.TEToCurrency, visibleSelector, group);
-        AddFeePair(results, nameof(RateDetailDto.PNPToSize), nameof(RateDetailDto.PNPToCurrency),
-            dto => dto.PNPToSize, dto => dto.PNPToCurrency, visibleSelector, group);
-        AddFeePair(results, nameof(RateDetailDto.TEToSize_fix), nameof(RateDetailDto.TEToCurrency_fix),
-            dto => dto.TEToSize_fix, dto => dto.TEToCurrency_fix, visibleSelector, group);
-        AddFeePair(results, nameof(RateDetailDto.DrainLoadingSize), nameof(RateDetailDto.DrainLoadingCurrency),
-            dto => dto.DrainLoadingSize, dto => dto.DrainLoadingCurrency, visibleSelector, group);
-        AddFeePair(results, nameof(RateDetailDto.TransshipmentSize), nameof(RateDetailDto.TransshipmentCurrency),
-            dto => dto.TransshipmentSize, dto => dto.TransshipmentCurrency, visibleSelector, group);
-        AddFeePair(results, nameof(RateDetailDto.FreightSize), nameof(RateDetailDto.FreightCurrency),
-            dto => dto.FreightSize, dto => dto.FreightCurrency, visibleSelector, group);
-        AddFeePair(results, nameof(RateDetailDto.AdditionalFeesCISSize), nameof(RateDetailDto.AdditionalFeesCISCurrency),
-            dto => dto.AdditionalFeesCISSize, dto => dto.AdditionalFeesCISCurrency, visibleSelector, group);
-        AddFeePair(results, nameof(RateDetailDto.FerryboatSize), nameof(RateDetailDto.FerryboatCurrency),
-            dto => dto.FerryboatSize, dto => dto.FerryboatCurrency, visibleSelector, group);
-    }
-
-    private void AddFeePair(
-        List<DetailSetting<RateDetailDto>> results,
-        string sizeName,
-        string currencyName,
-        Func<RateDetailDto, decimal> sizeSelector,
-        Func<RateDetailDto, string?> currencySelector,
-        Func<RateDetailDto, bool> visibleSelector,
-        string group)
-    {
-        results.Add(new DetailSetting<RateDetailDto>
-        {
-            Name = sizeName,
-            Header = L[$"RateDetailDto.{sizeName}"],
-            GroupHeader = group,
-            DisplaySelector = dto => sizeSelector(dto),
-            VisibleSelector = visibleSelector
-        });
-        results.Add(new DetailSetting<RateDetailDto>
-        {
-            Name = currencyName,
-            Header = L[$"RateDetailDto.{currencyName}"],
-            GroupHeader = group,
-            DisplaySelector = dto => currencySelector(dto)!,
-            VisibleSelector = visibleSelector
-        });
     }
 
     private void AddGroup3Settings(List<DetailSetting<RateDetailDto>> results, bool isRu)
@@ -771,6 +583,128 @@ public class RatesDetailSettingsService(IStringLocalizer<Svt> L, ILogger<RatesDe
         });
     }
 
+    private void AddGroup7Settings(List<DetailSetting<RateDetailDto>> results)
+    {
+        results.AddRange(
+        [
+            new DetailSetting<RateDetailDto>
+            {
+                Name = nameof(RateDetailDto.CalcType),
+                Header = L["RateDetailDto.CalcType"],
+                GroupHeader = L["RateDetailDto.Group7Parameters"],
+                DisplaySelector = dto => dto.CalcType,
+                VisibleSelector = _ => true
+            },
+            new DetailSetting<RateDetailDto>
+            {
+                Name = nameof(RateDetailDto.TotalCostTransport),
+                Header = L["RateDetailDto.TotalCostTransport"],
+                GroupHeader = L["RateDetailDto.Group7Parameters"],
+                DisplaySelector = dto => dto.TotalCostTransport,
+                VisibleSelector = _ => true
+            },
+            new DetailSetting<RateDetailDto>
+            {
+                Name = nameof(RateDetailDto.TotalCostTon),
+                Header = L["RateDetailDto.TotalCostTon"],
+                GroupHeader = L["RateDetailDto.Group7Parameters"],
+                DisplaySelector = dto => dto.TotalCostTon,
+                VisibleSelector = _ => true
+            },
+            new DetailSetting<RateDetailDto>
+            {
+                Name = nameof(RateDetailDto.CurrencyStandard),
+                Header = L["RateDetailDto.Currency"],
+                GroupHeader = L["RateDetailDto.Group7Parameters"],
+                DisplaySelector = dto => dto.CurrencyStandard,
+                VisibleSelector = _ => true
+            },
+            new DetailSetting<RateDetailDto>
+            {
+                Name = nameof(RateDetailDto.CurrencyRateMonth),
+                Header = L["RateDetailDto.CurrencyRateMonth"],
+                GroupHeader = L["RateDetailDto.Group7Parameters"],
+                DisplaySelector = dto => dto.CurrencyRateMonth,
+                VisibleSelector = _ => true
+            },
+            new DetailSetting<RateDetailDto>
+            {
+                Name = nameof(RateDetailDto.TotalCostTonRUB),
+                Header = L["RateDetailDto.TotalCostTonRUB"],
+                GroupHeader = L["RateDetailDto.Group7Parameters"],
+                DisplaySelector = dto => dto.TotalCostTonRUB,
+                VisibleSelector = _ => true
+            }
+        ]);
+    }
+
+   
+
+    private void AddGroup8Settings(List<DetailSetting<RateDetailDto>> results)
+    {
+        Func<RateDetailDto, bool> visibleSelector = dto => dto.CalcType != "ТС";
+        var group = L["RateDetailDto.Group8Parameters"].Value;
+
+        AddFeePair(results, nameof(RateDetailDto.LoadedRFSize), nameof(RateDetailDto.LoadedRFCurrency),
+            dto => dto.LoadedRFSize, dto => dto.LoadedRFCurrency, _=>true, group);
+        AddFeePair(results, nameof(RateDetailDto.LoadedCISSize), nameof(RateDetailDto.LoadedCISCurrency),
+            dto => dto.LoadedCISSize, dto => dto.LoadedCISCurrency, visibleSelector, group);
+        AddFeePair(results, nameof(RateDetailDto.EmptyRFSize), nameof(RateDetailDto.EmptyRFCurrency),
+            dto => dto.EmptyRFSize, dto => dto.EmptyRFCurrency, visibleSelector, group);
+        AddFeePair(results, nameof(RateDetailDto.EmptyCISSize), nameof(RateDetailDto.EmptyCISCurrency),
+            dto => dto.EmptyCISSize, dto => dto.EmptyCISCurrency, visibleSelector, group);
+        AddFeePair(results, nameof(RateDetailDto.ProvisionTransportSize), nameof(RateDetailDto.ProvisionTransportCurrency),
+            dto => dto.ProvisionTransportSize, dto => dto.ProvisionTransportCurrency, visibleSelector, group);
+        AddFeePair(results, nameof(RateDetailDto.TEFromSize), nameof(RateDetailDto.TEFromCurrency),
+            dto => dto.TEFromSize, dto => dto.TEFromCurrency, visibleSelector, group);
+        AddFeePair(results, nameof(RateDetailDto.RatePNPFromSize), nameof(RateDetailDto.PNPFromCurrency),
+            dto => dto.RatePNPFromSize, dto => dto.PNPFromCurrency, visibleSelector, group);
+        AddFeePair(results, nameof(RateDetailDto.TEFromSize_fix), nameof(RateDetailDto.TEFromCurrency_fix),
+            dto => dto.TEFromSize_fix, dto => dto.TEFromCurrency_fix, visibleSelector, group);
+        AddFeePair(results, nameof(RateDetailDto.TEToSize), nameof(RateDetailDto.TEToCurrency),
+            dto => dto.TEToSize, dto => dto.TEToCurrency, visibleSelector, group);
+        AddFeePair(results, nameof(RateDetailDto.PNPToSize), nameof(RateDetailDto.PNPToCurrency),
+            dto => dto.PNPToSize, dto => dto.PNPToCurrency, visibleSelector, group);
+        AddFeePair(results, nameof(RateDetailDto.TEToSize_fix), nameof(RateDetailDto.TEToCurrency_fix),
+            dto => dto.TEToSize_fix, dto => dto.TEToCurrency_fix, visibleSelector, group);
+        AddFeePair(results, nameof(RateDetailDto.DrainLoadingSize), nameof(RateDetailDto.DrainLoadingCurrency),
+            dto => dto.DrainLoadingSize, dto => dto.DrainLoadingCurrency, visibleSelector, group);
+        AddFeePair(results, nameof(RateDetailDto.TransshipmentSize), nameof(RateDetailDto.TransshipmentCurrency),
+            dto => dto.TransshipmentSize, dto => dto.TransshipmentCurrency, visibleSelector, group);
+        AddFeePair(results, nameof(RateDetailDto.FreightSize), nameof(RateDetailDto.FreightCurrency),
+            dto => dto.FreightSize, dto => dto.FreightCurrency, visibleSelector, group);
+        AddFeePair(results, nameof(RateDetailDto.AdditionalFeesCISSize), nameof(RateDetailDto.AdditionalFeesCISCurrency),
+            dto => dto.AdditionalFeesCISSize, dto => dto.AdditionalFeesCISCurrency, visibleSelector, group);
+        AddFeePair(results, nameof(RateDetailDto.FerryboatSize), nameof(RateDetailDto.FerryboatCurrency),
+            dto => dto.FerryboatSize, dto => dto.FerryboatCurrency, visibleSelector, group);
+    }
+    private void AddFeePair(
+        List<DetailSetting<RateDetailDto>> results,
+        string sizeName,
+        string currencyName,
+        Func<RateDetailDto, decimal> sizeSelector,
+        Func<RateDetailDto, string?> currencySelector,
+        Func<RateDetailDto, bool> visibleSelector,
+        string group)
+    {
+        results.Add(new DetailSetting<RateDetailDto>
+        {
+            Name = sizeName,
+            Header = L[$"RateDetailDto.{sizeName}"],
+            GroupHeader = group,
+            DisplaySelector = dto => sizeSelector(dto) != 0 ? sizeSelector(dto):string.Empty,
+            VisibleSelector = visibleSelector
+        });
+        results.Add(new DetailSetting<RateDetailDto>
+        {
+            Name = currencyName,
+            Header = L[$"RateDetailDto.{currencyName}"],
+            GroupHeader = group,
+            DisplaySelector = dto => currencySelector(dto)!,
+            VisibleSelector = visibleSelector
+        });
+    }
+
     private void AddGroup10Settings(List<DetailSetting<RateDetailDto>> results)
     {
         results.Add(new DetailSetting<RateDetailDto>
@@ -781,6 +715,70 @@ public class RatesDetailSettingsService(IStringLocalizer<Svt> L, ILogger<RatesDe
             DisplaySelector = dto => dto.Comment!,
             VisibleSelector = dto => dto.Comment is not null
         });
+    }
+
+    private void AddGroup11Settings(List<DetailSetting<RateDetailDto>> results)
+    {
+        results.AddRange(
+        [
+            new DetailSetting<RateDetailDto>
+            {
+                Name = nameof(RateDetailDto.TotalCostTonUSD),
+                Header = L["RateDetailDto.TotalCostTonUSD"],
+                GroupHeader = L["RateDetailDto.Group11Parameters"],
+                DisplaySelector = dto => dto.TotalCostTonUSD,
+                VisibleSelector = _ => true
+            },
+            new DetailSetting<RateDetailDto>
+            {
+                Name = nameof(RateDetailDto.TotalCostTonEUR),
+                Header = L["RateDetailDto.TotalCostTonEUR"],
+                GroupHeader = L["RateDetailDto.Group11Parameters"],
+                DisplaySelector = dto => dto.TotalCostTonEUR,
+                VisibleSelector = _ => true
+            },
+            new DetailSetting<RateDetailDto>
+            {
+                Name = nameof(RateDetailDto.TotalCostTonCNY),
+                Header = L["RateDetailDto.TotalCostTonCNY"],
+                GroupHeader = L["RateDetailDto.Group11Parameters"],
+                DisplaySelector = dto => dto.TotalCostTonCNY,
+                VisibleSelector = _ => true
+            },
+            new DetailSetting<RateDetailDto>
+            {
+                Name = nameof(RateDetailDto.TotalCostTransportRUB),
+                Header = L["RateDetailDto.TotalCostTransportRUB"],
+                GroupHeader = L["RateDetailDto.Group11Parameters"],
+                DisplaySelector = dto => dto.TotalCostTransportRUB,
+                VisibleSelector = _ => true,
+                HasMargin = true
+            },
+            new DetailSetting<RateDetailDto>
+            {
+                Name = nameof(RateDetailDto.TotalCostTransportUSD),
+                Header = L["RateDetailDto.TotalCostTransportUSD"],
+                GroupHeader = L["RateDetailDto.Group11Parameters"],
+                DisplaySelector = dto => dto.TotalCostTransportUSD,
+                VisibleSelector = _ => true
+            },
+            new DetailSetting<RateDetailDto>
+            {
+                Name = nameof(RateDetailDto.TotalCostTransportEUR),
+                Header = L["RateDetailDto.TotalCostTransportEUR"],
+                GroupHeader = L["RateDetailDto.Group11Parameters"],
+                DisplaySelector = dto => dto.TotalCostTransportEUR,
+                VisibleSelector = _ => true
+            },
+            new DetailSetting<RateDetailDto>
+            {
+                Name = nameof(RateDetailDto.TotalCostTransportCNY),
+                Header = L["RateDetailDto.TotalCostTransportCNY"],
+                GroupHeader = L["RateDetailDto.Group11Parameters"],
+                DisplaySelector = dto => dto.TotalCostTransportCNY,
+                VisibleSelector = _ => true
+            }
+        ]);
     }
 
     private void AddGroup12LegReferenceSettings(List<DetailSetting<RateDetailDto>> results)
@@ -1057,8 +1055,7 @@ public class RatesDetailSettingsService(IStringLocalizer<Svt> L, ILogger<RatesDe
                 Header = L["RateDetailDto.Leg1_SearchTime"],
                 GroupHeader = L["RateDetailDto.Group14Parameters"],
                 DisplaySelector = dto => dto.LeadTimeLeg1_SearchTime!,
-                VisibleSelector = dto => dto.ProxyNodeCode is not null,
-                HasMargin = true
+                VisibleSelector = dto => dto.ProxyNodeCode is not null
             },
             new DetailSetting<RateDetailDto>
             {
@@ -1250,8 +1247,7 @@ public class RatesDetailSettingsService(IStringLocalizer<Svt> L, ILogger<RatesDe
                 Header = L["RateDetailDto.Leg2_TravelTime"],
                 GroupHeader = L["RateDetailDto.Group16Parameters"],
                 DisplaySelector = dto => dto.LeadTimeLeg2_TravelTime!,
-                VisibleSelector = dto => dto.ProxyNodeCode is not null,
-                HasMargin = true
+                VisibleSelector = dto => dto.ProxyNodeCode is not null
             },
             new DetailSetting<RateDetailDto>
             {
