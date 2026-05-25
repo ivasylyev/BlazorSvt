@@ -15,72 +15,80 @@ public class RatesDetailSettingsService(IStringLocalizer<Svt> L, ILogger<RatesDe
 
         var results = new List<DetailSetting<RateDetailDto>>();
 
-        AddTypeSettings(results);
+        AddGroup1CodeSettings(results);
+        AddGroup1TypeSettings(results);
         AddGroup1TenderAndContractorSettings(results);
-        AddDeflatorSettings(results);
+        AddGroup1DeflatorSettings(results);
+        AddGroup1CreationChangeDateSettings(results);
+        AddGroup1IsArchiveSettings(results);
+        AddGroup1AverageRateCodeSettings(results);
 
-        AddStartEndDateSettings(results);
+        AddGroup2Settings(results);
 
-        AddOriginDestinationSettings(results, isRu);
+        AddGroup3Settings(results, isRu);
 
-        AddTransportSettings(results, isRu);
+        AddGroup4Settings(results, isRu);
 
-        AddMultimodalSettings(results);
+        AddGroup5Settings(results);
 
-        AddProductSettings(results, isRu);
+        AddGroup6Settings(results, isRu);
 
-        AddRateAmountSettings(results);
+        AddGroup7Settings(results);
 
-        AddFeeComponentSettings(results);
+        AddGroup8Settings(results);
 
-        AddRateFlagsSettings(results);
+        AddGroup10Settings(results);
 
-        AddCommentSettings(results);
+        AddGroup11Settings(results);
 
-        AddReferenceCurrencySettings(results);
+        AddGroup12LegReferenceSettings(results);
+        AddGroup12LeadtimeMetaSettings(results);
+        AddGroup12LeadtimeSettings(results);
 
-        AddLegReferenceSettings(results);
-        AddLeadtimeMetaSettings(results);
-        AddLeadtimeSettings(results);
+        AddGroup13Settings(results, isRu);
+        AddGroup14Settings(results);
 
-        AddLeg1TransportAndCostSettings(results, isRu);
-        AddLeadtimeLeg1Settings(results);
+        AddGroup15Settings(results, isRu);
+        AddGroup16Settings(results);
 
-        AddLeg2TransportAndCostSettings(results, isRu);
-        AddLeadtimeLeg2Settings(results);
 
-        AddTypeCodeSettings(results);
-        AddCreationChangeDateSettings(results);
-        AddIsArchiveSettings(results);
-        AddAverageRateCodeSettings(results);
-        AddFerryboatSettings(results);
 
         return new DetailSettingsCollection<RateDetailDto>(results);
     }
 
-    private void AddTypeSettings(List<DetailSetting<RateDetailDto>> results)
+    private void AddGroup1CodeSettings(List<DetailSetting<RateDetailDto>> results)
     {
         results.Add(new DetailSetting<RateDetailDto>
         {
-            Name = nameof(RateDetailDto.TypeName),
-            Header = L["RateDetailDto.RateTypeName"],
+            Name = nameof(RateDetailDto.Code),
+            Header = L["RateDetailDto.Code"],
             GroupHeader = L["RateDetailDto.Group1Parameters"],
-            DisplaySelector = dto => dto.TypeName,
+            DisplaySelector = dto => dto.Code,
             VisibleSelector = _ => true
         });
     }
 
-    private void AddTypeCodeSettings(List<DetailSetting<RateDetailDto>> results)
+    private void AddGroup1TypeSettings(List<DetailSetting<RateDetailDto>> results)
     {
-        results.Add(new DetailSetting<RateDetailDto>
-        {
-            Name = nameof(RateDetailDto.TypeCode),
-            Header = L["RateDetailDto.RateTypeCode"],
-            GroupHeader = L["RateDetailDto.Group1Parameters"],
-            DisplaySelector = dto => dto.TypeCode,
-            VisibleSelector = _ => true,
-            HasMargin = true
-        });
+        results.AddRange(
+        [
+            new DetailSetting<RateDetailDto>
+            {
+                Name = nameof(RateDetailDto.TypeName),
+                Header = L["RateDetailDto.RateTypeName"],
+                GroupHeader = L["RateDetailDto.Group1Parameters"],
+                DisplaySelector = dto => dto.TypeName,
+                VisibleSelector = _ => true
+            },
+            new DetailSetting<RateDetailDto>
+            {
+                Name = nameof(RateDetailDto.TypeCode),
+                Header = L["RateDetailDto.RateTypeCode"],
+                GroupHeader = L["RateDetailDto.Group1Parameters"],
+                DisplaySelector = dto => dto.TypeCode,
+                VisibleSelector = _ => true
+            }
+        ]);
     }
 
     private void AddGroup1TenderAndContractorSettings(List<DetailSetting<RateDetailDto>> results)
@@ -110,7 +118,8 @@ public class RatesDetailSettingsService(IStringLocalizer<Svt> L, ILogger<RatesDe
                 Header = L["RateDetailDto.TenderNumber"],
                 GroupHeader = L["RateDetailDto.Group1Parameters"],
                 DisplaySelector = dto => dto.TenderNumber!,
-                VisibleSelector = dto => dto.TenderNumber is not null
+                VisibleSelector = dto => dto.TenderNumber is not null,
+                HasMargin = true
             },
             new DetailSetting<RateDetailDto>
             {
@@ -123,7 +132,7 @@ public class RatesDetailSettingsService(IStringLocalizer<Svt> L, ILogger<RatesDe
         ]);
     }
 
-    private void AddDeflatorSettings(List<DetailSetting<RateDetailDto>> results)
+    private void AddGroup1DeflatorSettings(List<DetailSetting<RateDetailDto>> results)
     {
         results.Add(new DetailSetting<RateDetailDto>
         {
@@ -137,7 +146,7 @@ public class RatesDetailSettingsService(IStringLocalizer<Svt> L, ILogger<RatesDe
         });
     }
 
-    private void AddCreationChangeDateSettings(List<DetailSetting<RateDetailDto>> results)
+    private void AddGroup1CreationChangeDateSettings(List<DetailSetting<RateDetailDto>> results)
     {
         results.AddRange(
         [
@@ -161,7 +170,7 @@ public class RatesDetailSettingsService(IStringLocalizer<Svt> L, ILogger<RatesDe
         ]);
     }
 
-    private void AddIsArchiveSettings(List<DetailSetting<RateDetailDto>> results)
+    private void AddGroup1IsArchiveSettings(List<DetailSetting<RateDetailDto>> results)
     {
         results.Add(new DetailSetting<RateDetailDto>
         {
@@ -176,7 +185,7 @@ public class RatesDetailSettingsService(IStringLocalizer<Svt> L, ILogger<RatesDe
         });
     }
 
-    private void AddStartEndDateSettings(List<DetailSetting<RateDetailDto>> results)
+    private void AddGroup2Settings(List<DetailSetting<RateDetailDto>> results)
     {
         results.AddRange(
         [
@@ -199,7 +208,7 @@ public class RatesDetailSettingsService(IStringLocalizer<Svt> L, ILogger<RatesDe
         ]);
     }
 
-    private void AddAverageRateCodeSettings(List<DetailSetting<RateDetailDto>> results)
+    private void AddGroup1AverageRateCodeSettings(List<DetailSetting<RateDetailDto>> results)
     {
         results.Add(new DetailSetting<RateDetailDto>
         {
@@ -212,31 +221,7 @@ public class RatesDetailSettingsService(IStringLocalizer<Svt> L, ILogger<RatesDe
         });
     }
 
-    private void AddRateFlagsSettings(List<DetailSetting<RateDetailDto>> results)
-    {
-        results.AddRange(
-        [
-            new DetailSetting<RateDetailDto>
-            {
-                Name = nameof(RateDetailDto.AverageRateLevel3TotalCostTon),
-                Header = L["RateDetailDto.AverageRateLevel3TotalCostTon"],
-                GroupHeader = L["RateDetailDto.Group9Parameters"],
-                DisplaySelector = dto => dto.AverageRateLevel3TotalCostTon,
-                VisibleSelector = _ => true,
-                HasMargin = true
-            },
-            new DetailSetting<RateDetailDto>
-            {
-                Name = nameof(RateDetailDto.Code),
-                Header = L["RateDetailDto.Code"],
-                GroupHeader = L["RateDetailDto.Group9Parameters"],
-                DisplaySelector = dto => dto.Code,
-                VisibleSelector = _ => true
-            }
-        ]);
-    }
-
-    private void AddRateAmountSettings(List<DetailSetting<RateDetailDto>> results)
+    private void AddGroup7Settings(List<DetailSetting<RateDetailDto>> results)
     {
         results.AddRange(
         [
@@ -246,8 +231,7 @@ public class RatesDetailSettingsService(IStringLocalizer<Svt> L, ILogger<RatesDe
                 Header = L["RateDetailDto.CalcType"],
                 GroupHeader = L["RateDetailDto.Group7Parameters"],
                 DisplaySelector = dto => dto.CalcType,
-                VisibleSelector = _ => true,
-                HasMargin = true
+                VisibleSelector = _ => true
             },
             new DetailSetting<RateDetailDto>
             {
@@ -292,7 +276,7 @@ public class RatesDetailSettingsService(IStringLocalizer<Svt> L, ILogger<RatesDe
         ]);
     }
 
-    private void AddReferenceCurrencySettings(List<DetailSetting<RateDetailDto>> results)
+    private void AddGroup11Settings(List<DetailSetting<RateDetailDto>> results)
     {
         results.AddRange(
         [
@@ -302,8 +286,7 @@ public class RatesDetailSettingsService(IStringLocalizer<Svt> L, ILogger<RatesDe
                 Header = L["RateDetailDto.TotalCostTonUSD"],
                 GroupHeader = L["RateDetailDto.Group11Parameters"],
                 DisplaySelector = dto => dto.TotalCostTonUSD,
-                VisibleSelector = _ => true,
-                HasMargin = true
+                VisibleSelector = _ => true
             },
             new DetailSetting<RateDetailDto>
             {
@@ -357,46 +340,43 @@ public class RatesDetailSettingsService(IStringLocalizer<Svt> L, ILogger<RatesDe
         ]);
     }
 
-    private void AddFeeComponentSettings(List<DetailSetting<RateDetailDto>> results)
+    private void AddGroup8Settings(List<DetailSetting<RateDetailDto>> results)
     {
+        Func<RateDetailDto, bool> visibleSelector = dto => dto.CalcType != "ТС";
         var group = L["RateDetailDto.Group8Parameters"].Value;
-        AddFeePair(results, nameof(RateDetailDto.LoadedRFSize), nameof(RateDetailDto.LoadedRFCurrency),
-            dto => dto.LoadedRFSize, dto => dto.LoadedRFCurrency, group);
-        AddFeePair(results, nameof(RateDetailDto.LoadedCISSize), nameof(RateDetailDto.LoadedCISCurrency),
-            dto => dto.LoadedCISSize, dto => dto.LoadedCISCurrency, group);
-        AddFeePair(results, nameof(RateDetailDto.EmptyRFSize), nameof(RateDetailDto.EmptyRFCurrency),
-            dto => dto.EmptyRFSize, dto => dto.EmptyRFCurrency, group);
-        AddFeePair(results, nameof(RateDetailDto.EmptyCISSize), nameof(RateDetailDto.EmptyCISCurrency),
-            dto => dto.EmptyCISSize, dto => dto.EmptyCISCurrency, group);
-        AddFeePair(results, nameof(RateDetailDto.ProvisionTransportSize), nameof(RateDetailDto.ProvisionTransportCurrency),
-            dto => dto.ProvisionTransportSize, dto => dto.ProvisionTransportCurrency, group);
-        AddFeePair(results, nameof(RateDetailDto.TEFromSize), nameof(RateDetailDto.TEFromCurrency),
-            dto => dto.TEFromSize, dto => dto.TEFromCurrency, group);
-        AddFeePair(results, nameof(RateDetailDto.RatePNPFromSize), nameof(RateDetailDto.PNPFromCurrency),
-            dto => dto.RatePNPFromSize, dto => dto.PNPFromCurrency, group);
-        AddFeePair(results, nameof(RateDetailDto.TEFromSize_fix), nameof(RateDetailDto.TEFromCurrency_fix),
-            dto => dto.TEFromSize_fix, dto => dto.TEFromCurrency_fix, group);
-        AddFeePair(results, nameof(RateDetailDto.TEToSize), nameof(RateDetailDto.TEToCurrency),
-            dto => dto.TEToSize, dto => dto.TEToCurrency, group);
-        AddFeePair(results, nameof(RateDetailDto.PNPToSize), nameof(RateDetailDto.PNPToCurrency),
-            dto => dto.PNPToSize, dto => dto.PNPToCurrency, group);
-        AddFeePair(results, nameof(RateDetailDto.TEToSize_fix), nameof(RateDetailDto.TEToCurrency_fix),
-            dto => dto.TEToSize_fix, dto => dto.TEToCurrency_fix, group);
-        AddFeePair(results, nameof(RateDetailDto.DrainLoadingSize), nameof(RateDetailDto.DrainLoadingCurrency),
-            dto => dto.DrainLoadingSize, dto => dto.DrainLoadingCurrency, group);
-        AddFeePair(results, nameof(RateDetailDto.TransshipmentSize), nameof(RateDetailDto.TransshipmentCurrency),
-            dto => dto.TransshipmentSize, dto => dto.TransshipmentCurrency, group);
-        AddFeePair(results, nameof(RateDetailDto.FreightSize), nameof(RateDetailDto.FreightCurrency),
-            dto => dto.FreightSize, dto => dto.FreightCurrency, group);
-        AddFeePair(results, nameof(RateDetailDto.AdditionalFeesCISSize), nameof(RateDetailDto.AdditionalFeesCISCurrency),
-            dto => dto.AdditionalFeesCISSize, dto => dto.AdditionalFeesCISCurrency, group, hasMargin: true);
-    }
 
-    private void AddFerryboatSettings(List<DetailSetting<RateDetailDto>> results)
-    {
-        var group = L["RateDetailDto.Group1Parameters"].Value;
+        AddFeePair(results, nameof(RateDetailDto.LoadedRFSize), nameof(RateDetailDto.LoadedRFCurrency),
+            dto => dto.LoadedRFSize, dto => dto.LoadedRFCurrency, _=>true, group);
+        AddFeePair(results, nameof(RateDetailDto.LoadedCISSize), nameof(RateDetailDto.LoadedCISCurrency),
+            dto => dto.LoadedCISSize, dto => dto.LoadedCISCurrency, visibleSelector, group);
+        AddFeePair(results, nameof(RateDetailDto.EmptyRFSize), nameof(RateDetailDto.EmptyRFCurrency),
+            dto => dto.EmptyRFSize, dto => dto.EmptyRFCurrency, visibleSelector, group);
+        AddFeePair(results, nameof(RateDetailDto.EmptyCISSize), nameof(RateDetailDto.EmptyCISCurrency),
+            dto => dto.EmptyCISSize, dto => dto.EmptyCISCurrency, visibleSelector, group);
+        AddFeePair(results, nameof(RateDetailDto.ProvisionTransportSize), nameof(RateDetailDto.ProvisionTransportCurrency),
+            dto => dto.ProvisionTransportSize, dto => dto.ProvisionTransportCurrency, visibleSelector, group);
+        AddFeePair(results, nameof(RateDetailDto.TEFromSize), nameof(RateDetailDto.TEFromCurrency),
+            dto => dto.TEFromSize, dto => dto.TEFromCurrency, visibleSelector, group);
+        AddFeePair(results, nameof(RateDetailDto.RatePNPFromSize), nameof(RateDetailDto.PNPFromCurrency),
+            dto => dto.RatePNPFromSize, dto => dto.PNPFromCurrency, visibleSelector, group);
+        AddFeePair(results, nameof(RateDetailDto.TEFromSize_fix), nameof(RateDetailDto.TEFromCurrency_fix),
+            dto => dto.TEFromSize_fix, dto => dto.TEFromCurrency_fix, visibleSelector, group);
+        AddFeePair(results, nameof(RateDetailDto.TEToSize), nameof(RateDetailDto.TEToCurrency),
+            dto => dto.TEToSize, dto => dto.TEToCurrency, visibleSelector, group);
+        AddFeePair(results, nameof(RateDetailDto.PNPToSize), nameof(RateDetailDto.PNPToCurrency),
+            dto => dto.PNPToSize, dto => dto.PNPToCurrency, visibleSelector, group);
+        AddFeePair(results, nameof(RateDetailDto.TEToSize_fix), nameof(RateDetailDto.TEToCurrency_fix),
+            dto => dto.TEToSize_fix, dto => dto.TEToCurrency_fix, visibleSelector, group);
+        AddFeePair(results, nameof(RateDetailDto.DrainLoadingSize), nameof(RateDetailDto.DrainLoadingCurrency),
+            dto => dto.DrainLoadingSize, dto => dto.DrainLoadingCurrency, visibleSelector, group);
+        AddFeePair(results, nameof(RateDetailDto.TransshipmentSize), nameof(RateDetailDto.TransshipmentCurrency),
+            dto => dto.TransshipmentSize, dto => dto.TransshipmentCurrency, visibleSelector, group);
+        AddFeePair(results, nameof(RateDetailDto.FreightSize), nameof(RateDetailDto.FreightCurrency),
+            dto => dto.FreightSize, dto => dto.FreightCurrency, visibleSelector, group);
+        AddFeePair(results, nameof(RateDetailDto.AdditionalFeesCISSize), nameof(RateDetailDto.AdditionalFeesCISCurrency),
+            dto => dto.AdditionalFeesCISSize, dto => dto.AdditionalFeesCISCurrency, visibleSelector, group);
         AddFeePair(results, nameof(RateDetailDto.FerryboatSize), nameof(RateDetailDto.FerryboatCurrency),
-            dto => dto.FerryboatSize, dto => dto.FerryboatCurrency, group, hasMargin: true);
+            dto => dto.FerryboatSize, dto => dto.FerryboatCurrency, visibleSelector, group);
     }
 
     private void AddFeePair(
@@ -405,8 +385,8 @@ public class RatesDetailSettingsService(IStringLocalizer<Svt> L, ILogger<RatesDe
         string currencyName,
         Func<RateDetailDto, decimal> sizeSelector,
         Func<RateDetailDto, string?> currencySelector,
-        string group,
-        bool hasMargin = false)
+        Func<RateDetailDto, bool> visibleSelector,
+        string group)
     {
         results.Add(new DetailSetting<RateDetailDto>
         {
@@ -414,8 +394,7 @@ public class RatesDetailSettingsService(IStringLocalizer<Svt> L, ILogger<RatesDe
             Header = L[$"RateDetailDto.{sizeName}"],
             GroupHeader = group,
             DisplaySelector = dto => sizeSelector(dto),
-            VisibleSelector = _ => true,
-            HasMargin = hasMargin
+            VisibleSelector = visibleSelector
         });
         results.Add(new DetailSetting<RateDetailDto>
         {
@@ -423,11 +402,11 @@ public class RatesDetailSettingsService(IStringLocalizer<Svt> L, ILogger<RatesDe
             Header = L[$"RateDetailDto.{currencyName}"],
             GroupHeader = group,
             DisplaySelector = dto => currencySelector(dto)!,
-            VisibleSelector = dto => currencySelector(dto) is not null
+            VisibleSelector = visibleSelector
         });
     }
 
-    private void AddOriginDestinationSettings(List<DetailSetting<RateDetailDto>> results, bool isRu)
+    private void AddGroup3Settings(List<DetailSetting<RateDetailDto>> results, bool isRu)
     {
         var group = L["RateDetailDto.Group3Parameters"];
 
@@ -450,6 +429,15 @@ public class RatesDetailSettingsService(IStringLocalizer<Svt> L, ILogger<RatesDe
                 VisibleSelector = _ => true
             });
 
+        results.Add(new DetailSetting<RateDetailDto>
+        {
+            Name = nameof(RateDetailDto.NodeFromCode),
+            Header = L["RateDetailDto.NodeFromCode"],
+            GroupHeader = group,
+            DisplaySelector = dto => dto.NodeFromCode,
+            VisibleSelector = _ => true
+        });
+
         if (isRu)
             results.Add(new DetailSetting<RateDetailDto>
             {
@@ -469,6 +457,15 @@ public class RatesDetailSettingsService(IStringLocalizer<Svt> L, ILogger<RatesDe
                 VisibleSelector = _ => true
             });
 
+        results.Add(new DetailSetting<RateDetailDto>
+        {
+            Name = nameof(RateDetailDto.RegionFromCode),
+            Header = L["RateDetailDto.RegionFromCode"],
+            GroupHeader = group,
+            DisplaySelector = dto => dto.RegionFromCode!,
+            VisibleSelector = _ => true
+        });
+
         if (isRu)
             results.Add(new DetailSetting<RateDetailDto>
             {
@@ -476,7 +473,8 @@ public class RatesDetailSettingsService(IStringLocalizer<Svt> L, ILogger<RatesDe
                 Header = L["RateDetailDto.ProxyNodeName"],
                 GroupHeader = group,
                 DisplaySelector = dto => dto.ProxyNodeNameRu!,
-                VisibleSelector = dto => dto.ProxyNodeCode is not null
+                VisibleSelector = dto => dto.ProxyNodeCode is not null,
+                HasMargin = true
             });
         else
             results.Add(new DetailSetting<RateDetailDto>
@@ -485,48 +483,18 @@ public class RatesDetailSettingsService(IStringLocalizer<Svt> L, ILogger<RatesDe
                 Header = L["RateDetailDto.ProxyNodeName"],
                 GroupHeader = group,
                 DisplaySelector = dto => dto.ProxyNodeNameEn!,
-                VisibleSelector = dto => dto.ProxyNodeCode is not null
-            });
-
-        if (isRu)
-            results.Add(new DetailSetting<RateDetailDto>
-            {
-                Name = nameof(RateDetailDto.NodeToNameRu),
-                Header = L["RateDetailDto.NodeToName"],
-                GroupHeader = group,
-                DisplaySelector = dto => dto.NodeToNameRu,
-                VisibleSelector = _ => true,
-                HasMargin = true
-            });
-        else
-            results.Add(new DetailSetting<RateDetailDto>
-            {
-                Name = nameof(RateDetailDto.NodeToNameEn),
-                Header = L["RateDetailDto.NodeToName"],
-                GroupHeader = group,
-                DisplaySelector = dto => dto.NodeToNameEn,
-                VisibleSelector = _ => true,
+                VisibleSelector = dto => dto.ProxyNodeCode is not null,
                 HasMargin = true
             });
 
-        if (isRu)
-            results.Add(new DetailSetting<RateDetailDto>
-            {
-                Name = nameof(RateDetailDto.RegionToNameRu),
-                Header = L["RateDetailDto.RegionToName"],
-                GroupHeader = group,
-                DisplaySelector = dto => dto.RegionToNameRu!,
-                VisibleSelector = _ => true
-            });
-        else
-            results.Add(new DetailSetting<RateDetailDto>
-            {
-                Name = nameof(RateDetailDto.RegionToNameEn),
-                Header = L["RateDetailDto.RegionToName"],
-                GroupHeader = group,
-                DisplaySelector = dto => dto.RegionToNameEn!,
-                VisibleSelector = _ => true
-            });
+        results.Add(new DetailSetting<RateDetailDto>
+        {
+            Name = nameof(RateDetailDto.ProxyNodeCode),
+            Header = L["RateDetailDto.ProxyNodeCode"],
+            GroupHeader = group,
+            DisplaySelector = dto => dto.ProxyNodeCode!,
+            VisibleSelector = dto => dto.ProxyNodeCode is not null
+        });
 
         if (isRu)
             results.Add(new DetailSetting<RateDetailDto>
@@ -549,12 +517,78 @@ public class RatesDetailSettingsService(IStringLocalizer<Svt> L, ILogger<RatesDe
 
         results.Add(new DetailSetting<RateDetailDto>
         {
+            Name = nameof(RateDetailDto.ProxyRegionCode),
+            Header = L["RateDetailDto.ProxyRegionCode"],
+            GroupHeader = group,
+            DisplaySelector = dto => dto.ProxyRegionCode!,
+            VisibleSelector = dto => dto.ProxyNodeCode is not null
+        });
+
+        if (isRu)
+            results.Add(new DetailSetting<RateDetailDto>
+            {
+                Name = nameof(RateDetailDto.NodeToNameRu),
+                Header = L["RateDetailDto.NodeToName"],
+                GroupHeader = group,
+                DisplaySelector = dto => dto.NodeToNameRu,
+                VisibleSelector = _ => true,
+                HasMargin = true
+            });
+        else
+            results.Add(new DetailSetting<RateDetailDto>
+            {
+                Name = nameof(RateDetailDto.NodeToNameEn),
+                Header = L["RateDetailDto.NodeToName"],
+                GroupHeader = group,
+                DisplaySelector = dto => dto.NodeToNameEn,
+                VisibleSelector = _ => true,
+                HasMargin = true
+            });
+
+        results.Add(new DetailSetting<RateDetailDto>
+        {
+            Name = nameof(RateDetailDto.NodeToCode),
+            Header = L["RateDetailDto.NodeToCode"],
+            GroupHeader = group,
+            DisplaySelector = dto => dto.NodeToCode,
+            VisibleSelector = _ => true
+        });
+
+        if (isRu)
+            results.Add(new DetailSetting<RateDetailDto>
+            {
+                Name = nameof(RateDetailDto.RegionToNameRu),
+                Header = L["RateDetailDto.RegionToName"],
+                GroupHeader = group,
+                DisplaySelector = dto => dto.RegionToNameRu!,
+                VisibleSelector = _ => true
+            });
+        else
+            results.Add(new DetailSetting<RateDetailDto>
+            {
+                Name = nameof(RateDetailDto.RegionToNameEn),
+                Header = L["RateDetailDto.RegionToName"],
+                GroupHeader = group,
+                DisplaySelector = dto => dto.RegionToNameEn!,
+                VisibleSelector = _ => true
+            });
+
+        results.Add(new DetailSetting<RateDetailDto>
+        {
+            Name = nameof(RateDetailDto.RegionToCode),
+            Header = L["RateDetailDto.RegionToCode"],
+            GroupHeader = group,
+            DisplaySelector = dto => dto.RegionToCode!,
+            VisibleSelector = _ => true
+        });
+
+        results.Add(new DetailSetting<RateDetailDto>
+        {
             Name = nameof(RateDetailDto.Basis),
             Header = L["RateDetailDto.Basis"],
             GroupHeader = group,
             DisplaySelector = dto => dto.Basis!,
-            VisibleSelector = dto => dto.Basis is not null,
-            HasMargin = true
+            VisibleSelector = dto => dto.Basis is not null
         });
 
         if (isRu)
@@ -569,56 +603,6 @@ public class RatesDetailSettingsService(IStringLocalizer<Svt> L, ILogger<RatesDe
 
         results.Add(new DetailSetting<RateDetailDto>
         {
-            Name = nameof(RateDetailDto.NodeFromCode),
-            Header = L["RateDetailDto.NodeFromCode"],
-            GroupHeader = group,
-            DisplaySelector = dto => dto.NodeFromCode,
-            VisibleSelector = _ => true
-        });
-        results.Add(new DetailSetting<RateDetailDto>
-        {
-            Name = nameof(RateDetailDto.RegionFromCode),
-            Header = L["RateDetailDto.RegionFromCode"],
-            GroupHeader = group,
-            DisplaySelector = dto => dto.RegionFromCode!,
-            VisibleSelector = _ => true
-        });
-        results.Add(new DetailSetting<RateDetailDto>
-        {
-            Name = nameof(RateDetailDto.ProxyNodeCode),
-            Header = L["RateDetailDto.ProxyNodeCode"],
-            GroupHeader = group,
-            DisplaySelector = dto => dto.ProxyNodeCode!,
-            VisibleSelector = dto => dto.ProxyNodeCode is not null,
-            HasMargin = true
-        });
-        results.Add(new DetailSetting<RateDetailDto>
-        {
-            Name = nameof(RateDetailDto.ProxyRegionCode),
-            Header = L["RateDetailDto.ProxyRegionCode"],
-            GroupHeader = group,
-            DisplaySelector = dto => dto.ProxyRegionCode!,
-            VisibleSelector = dto => dto.ProxyNodeCode is not null
-        });
-        results.Add(new DetailSetting<RateDetailDto>
-        {
-            Name = nameof(RateDetailDto.NodeToCode),
-            Header = L["RateDetailDto.NodeToCode"],
-            GroupHeader = group,
-            DisplaySelector = dto => dto.NodeToCode,
-            VisibleSelector = _ => true,
-            HasMargin = true
-        });
-        results.Add(new DetailSetting<RateDetailDto>
-        {
-            Name = nameof(RateDetailDto.RegionToCode),
-            Header = L["RateDetailDto.RegionToCode"],
-            GroupHeader = group,
-            DisplaySelector = dto => dto.RegionToCode!,
-            VisibleSelector = _ => true
-        });
-        results.Add(new DetailSetting<RateDetailDto>
-        {
             Name = nameof(RateDetailDto.BasisNodeCode),
             Header = L["RateDetailDto.BasisNodeCode"],
             GroupHeader = group,
@@ -627,7 +611,7 @@ public class RatesDetailSettingsService(IStringLocalizer<Svt> L, ILogger<RatesDe
         });
     }
 
-    private void AddTransportSettings(List<DetailSetting<RateDetailDto>> results, bool isRu)
+    private void AddGroup4Settings(List<DetailSetting<RateDetailDto>> results, bool isRu)
     {
         var group = L["RateDetailDto.Group4Parameters"];
 
@@ -650,27 +634,6 @@ public class RatesDetailSettingsService(IStringLocalizer<Svt> L, ILogger<RatesDe
                 VisibleSelector = _ => true
             });
 
-        if (isRu)
-            results.Add(new DetailSetting<RateDetailDto>
-            {
-                Name = nameof(RateDetailDto.TransportTypeNameRu),
-                Header = L["RateDetailDto.TransportTypeName"],
-                GroupHeader = group,
-                DisplaySelector = dto => dto.TransportTypeNameRu,
-                VisibleSelector = _ => true,
-                HasMargin = true
-            });
-        else
-            results.Add(new DetailSetting<RateDetailDto>
-            {
-                Name = nameof(RateDetailDto.TransportTypeNameRuEn),
-                Header = L["RateDetailDto.TransportTypeName"],
-                GroupHeader = group,
-                DisplaySelector = dto => dto.TransportTypeNameRuEn,
-                VisibleSelector = _ => true,
-                HasMargin = true
-            });
-
         results.Add(new DetailSetting<RateDetailDto>
         {
             Name = nameof(RateDetailDto.TransportKindCode),
@@ -679,18 +642,37 @@ public class RatesDetailSettingsService(IStringLocalizer<Svt> L, ILogger<RatesDe
             DisplaySelector = dto => dto.TransportKindCode,
             VisibleSelector = _ => true
         });
+
+        if (isRu)
+            results.Add(new DetailSetting<RateDetailDto>
+            {
+                Name = nameof(RateDetailDto.TransportTypeNameRu),
+                Header = L["RateDetailDto.TransportTypeName"],
+                GroupHeader = group,
+                DisplaySelector = dto => dto.TransportTypeNameRu,
+                VisibleSelector = _ => true
+            });
+        else
+            results.Add(new DetailSetting<RateDetailDto>
+            {
+                Name = nameof(RateDetailDto.TransportTypeNameRuEn),
+                Header = L["RateDetailDto.TransportTypeName"],
+                GroupHeader = group,
+                DisplaySelector = dto => dto.TransportTypeNameRuEn,
+                VisibleSelector = _ => true
+            });
+
         results.Add(new DetailSetting<RateDetailDto>
         {
             Name = nameof(RateDetailDto.TransportTypeCode),
             Header = L["RateDetailDto.TransportTypeCode"],
             GroupHeader = group,
             DisplaySelector = dto => dto.TransportTypeCode,
-            VisibleSelector = _ => true,
-            HasMargin = true
+            VisibleSelector = _ => true
         });
     }
 
-    private void AddMultimodalSettings(List<DetailSetting<RateDetailDto>> results)
+    private void AddGroup5Settings(List<DetailSetting<RateDetailDto>> results)
     {
         results.Add(new DetailSetting<RateDetailDto>
         {
@@ -702,7 +684,7 @@ public class RatesDetailSettingsService(IStringLocalizer<Svt> L, ILogger<RatesDe
         });
     }
 
-    private void AddProductSettings(List<DetailSetting<RateDetailDto>> results, bool isRu)
+    private void AddGroup6Settings(List<DetailSetting<RateDetailDto>> results, bool isRu)
     {
         var group = L["RateDetailDto.Group6Parameters"];
 
@@ -789,7 +771,7 @@ public class RatesDetailSettingsService(IStringLocalizer<Svt> L, ILogger<RatesDe
         });
     }
 
-    private void AddCommentSettings(List<DetailSetting<RateDetailDto>> results)
+    private void AddGroup10Settings(List<DetailSetting<RateDetailDto>> results)
     {
         results.Add(new DetailSetting<RateDetailDto>
         {
@@ -801,7 +783,7 @@ public class RatesDetailSettingsService(IStringLocalizer<Svt> L, ILogger<RatesDe
         });
     }
 
-    private void AddLegReferenceSettings(List<DetailSetting<RateDetailDto>> results)
+    private void AddGroup12LegReferenceSettings(List<DetailSetting<RateDetailDto>> results)
     {
         results.AddRange(
         [
@@ -824,7 +806,7 @@ public class RatesDetailSettingsService(IStringLocalizer<Svt> L, ILogger<RatesDe
         ]);
     }
 
-    private void AddLeadtimeMetaSettings(List<DetailSetting<RateDetailDto>> results)
+    private void AddGroup12LeadtimeMetaSettings(List<DetailSetting<RateDetailDto>> results)
     {
         results.AddRange(
         [
@@ -864,7 +846,7 @@ public class RatesDetailSettingsService(IStringLocalizer<Svt> L, ILogger<RatesDe
         ]);
     }
 
-    private void AddLeadtimeSettings(List<DetailSetting<RateDetailDto>> results)
+    private void AddGroup12LeadtimeSettings(List<DetailSetting<RateDetailDto>> results)
     {
         results.AddRange(
         [
@@ -929,7 +911,7 @@ public class RatesDetailSettingsService(IStringLocalizer<Svt> L, ILogger<RatesDe
         ]);
     }
 
-    private void AddLeg1TransportAndCostSettings(List<DetailSetting<RateDetailDto>> results, bool isRu)
+    private void AddGroup13Settings(List<DetailSetting<RateDetailDto>> results, bool isRu)
     {
         var group = L["RateDetailDto.Group13Parameters"];
 
@@ -1065,7 +1047,7 @@ public class RatesDetailSettingsService(IStringLocalizer<Svt> L, ILogger<RatesDe
         ]);
     }
 
-    private void AddLeadtimeLeg1Settings(List<DetailSetting<RateDetailDto>> results)
+    private void AddGroup14Settings(List<DetailSetting<RateDetailDto>> results)
     {
         results.AddRange(
         [
@@ -1122,7 +1104,7 @@ public class RatesDetailSettingsService(IStringLocalizer<Svt> L, ILogger<RatesDe
         ]);
     }
 
-    private void AddLeg2TransportAndCostSettings(List<DetailSetting<RateDetailDto>> results, bool isRu)
+    private void AddGroup15Settings(List<DetailSetting<RateDetailDto>> results, bool isRu)
     {
         var group = L["RateDetailDto.Group15Parameters"];
 
@@ -1258,7 +1240,7 @@ public class RatesDetailSettingsService(IStringLocalizer<Svt> L, ILogger<RatesDe
         ]);
     }
 
-    private void AddLeadtimeLeg2Settings(List<DetailSetting<RateDetailDto>> results)
+    private void AddGroup16Settings(List<DetailSetting<RateDetailDto>> results)
     {
         results.AddRange(
         [

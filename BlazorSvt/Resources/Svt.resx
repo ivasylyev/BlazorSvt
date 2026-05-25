@@ -359,9 +359,6 @@
   <data name="RateDetailDto.Group8Parameters" xml:space="preserve">
 	  <value>8. Rate Components (excluding VAT, per ton)</value>
   </data>
-  <data name="RateDetailDto.Group9Parameters" xml:space="preserve">
-	  <value>9. Rate Flags and Codes</value>
-  </data>
   <data name="RateDetailDto.Group10Parameters" xml:space="preserve">
 	  <value>10. Comments</value>
   </data>

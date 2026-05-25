@@ -354,9 +354,6 @@
   <data name="RateDetailDto.Group8Parameters" xml:space="preserve">
 	  <value>8. Составляющие ставки (без учёта НДС, за тонну)</value>
   </data>
-  <data name="RateDetailDto.Group9Parameters" xml:space="preserve">
-	  <value>9. Признаки и коды ставки</value>
-  </data>
   <data name="RateDetailDto.Group10Parameters" xml:space="preserve">
 	  <value>10. Комментарии</value>
   </data>
