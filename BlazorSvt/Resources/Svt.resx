@@ -362,9 +362,6 @@
   <data name="RateDetailDto.Group9Parameters" xml:space="preserve">
 	  <value>9. Rate Flags and Codes</value>
   </data>
-  <data name="RateDetailDto.Group10Parameters" xml:space="preserve">
-	  <value>10. Deflator</value>
-  </data>
   <data name="RateDetailDto.Group11Parameters" xml:space="preserve">
 	  <value>11. Comments</value>
   </data>
@@ -376,12 +373,6 @@
   </data>
   <data name="RateDetailDto.Group14Parameters" xml:space="preserve">
 	  <value>14. Leg 2</value>
-  </data>
-  <data name="RateDetailDto.Group2FromTo" xml:space="preserve">
-	  <value>2. From - To</value>
-  </data>
-  <data name="RateDetailDto.Group3Transport" xml:space="preserve">
-	  <value>3. Transport</value>
   </data>
   <data name="RateDetailDto.Group4Leadtimes" xml:space="preserve">
 	  <value>4. Leadtimes</value>
@@ -745,9 +736,6 @@
   </data>
   <data name="RateDetailDto.Leg2_TotalCostTransportCNY" xml:space="preserve">
 	  <value>Leg 2. Total Cost Transport, CNY</value>
-  </data>
-  <data name="RateDetailDto.Group5ProductContractor" xml:space="preserve">
-	  <value>5. Product and Contractor</value>
   </data>
   <data name="RateDetailDto.CustomMessage" xml:space="preserve">
 	  <value>Custom Message From Transport Rate Details: </value>

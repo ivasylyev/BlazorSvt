@@ -357,9 +357,6 @@
   <data name="RateDetailDto.Group9Parameters" xml:space="preserve">
 	  <value>9. Признаки и коды ставки</value>
   </data>
-  <data name="RateDetailDto.Group10Parameters" xml:space="preserve">
-	  <value>10. Дефлятор</value>
-  </data>
   <data name="RateDetailDto.Group11Parameters" xml:space="preserve">
 	  <value>11. Комментарии</value>
   </data>
@@ -371,12 +368,6 @@
   </data>
   <data name="RateDetailDto.Group14Parameters" xml:space="preserve">
 	  <value>14. Плечо 2</value>
-  </data>
-  <data name="RateDetailDto.Group2FromTo" xml:space="preserve">
-	  <value>2. Отправление - назначение</value>
-  </data>
-  <data name="RateDetailDto.Group3Transport" xml:space="preserve">
-	  <value>3. Транспорт</value>
   </data>
   <data name="RateDetailDto.Group4Leadtimes" xml:space="preserve">
 	  <value>4. Лидтаймы </value>
@@ -740,9 +731,6 @@
   </data>
   <data name="RateDetailDto.Leg2_TotalCostTransportCNY" xml:space="preserve">
 	  <value>Плечо 2.Ставка за ТС, CNY</value>
-  </data>
-  <data name="RateDetailDto.Group5ProductContractor" xml:space="preserve">
-	  <value>5. Продукт и контрагент</value>
   </data>
   <data name="RateDetailDto.CustomMessage" xml:space="preserve">
 	  <value>Кастомное сообщение от ставок: </value>

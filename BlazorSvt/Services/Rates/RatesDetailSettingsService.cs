@@ -15,19 +15,19 @@ public class RatesDetailSettingsService(IStringLocalizer<Svt> L, ILogger<RatesDe
 
         var results = new List<DetailSetting<RateDetailDto>>();
 
-        // Groups 1–14 (listed parameters)
         AddTypeSettings(results);
         AddGroup1TenderAndContractorSettings(results);
+        AddDeflatorSettings(results);
 
         AddStartEndDateSettings(results);
 
-        AddOriginDestinationListedSettings(results, isRu);
+        AddOriginDestinationSettings(results, isRu);
 
-        AddTransportListedSettings(results, isRu);
+        AddTransportSettings(results, isRu);
 
         AddMultimodalSettings(results);
 
-        AddProductListedSettings(results, isRu);
+        AddProductSettings(results, isRu);
 
         AddRateAmountSettings(results);
 
@@ -35,30 +35,25 @@ public class RatesDetailSettingsService(IStringLocalizer<Svt> L, ILogger<RatesDe
 
         AddRateFlagsSettings(results);
 
-        AddDeflatorSettings(results);
-
         AddCommentSettings(results);
 
         AddReferenceCurrencySettings(results);
 
-        AddLeg1TransportAndCostSettings(results, isRu);
-        AddLeg2TransportAndCostSettings(results, isRu);
+        AddLegReferenceSettings(results);
+        AddLeadtimeMetaSettings(results);
+        AddLeadtimeSettings(results);
 
-        // Unlisted parameters — original group headers, after groups 1–14
+        AddLeg1TransportAndCostSettings(results, isRu);
+        AddLeadtimeLeg1Settings(results);
+
+        AddLeg2TransportAndCostSettings(results, isRu);
+        AddLeadtimeLeg2Settings(results);
+
         AddTypeCodeSettings(results);
         AddCreationChangeDateSettings(results);
         AddIsArchiveSettings(results);
         AddAverageRateCodeSettings(results);
-        AddOriginDestinationUnlistedSettings(results);
-        AddTransportUnlistedSettings(results, isRu);
-        AddProductContractorUnlistedSettings(results, isRu);
         AddFerryboatSettings(results);
-
-        AddLegReferenceSettings(results);
-        AddLeadtimeMetaSettings(results);
-        AddLeadtimeSettings(results);
-        AddLeadtimeLeg1Settings(results);
-        AddLeadtimeLeg2Settings(results);
 
         return new DetailSettingsCollection<RateDetailDto>(results);
     }
@@ -134,7 +129,7 @@ public class RatesDetailSettingsService(IStringLocalizer<Svt> L, ILogger<RatesDe
         {
             Name = nameof(RateDetailDto.IsDefRate),
             Header = L["RateDetailDto.IsDefRate"],
-            GroupHeader = L["RateDetailDto.Group10Parameters"],
+            GroupHeader = L["RateDetailDto.Group1Parameters"],
             DisplaySelector = dto => dto.IsDefRate
                 ? L["RateDetailDto.Yes"]
                 : L["RateDetailDto.No"],
@@ -432,7 +427,7 @@ public class RatesDetailSettingsService(IStringLocalizer<Svt> L, ILogger<RatesDe
         });
     }
 
-    private void AddOriginDestinationListedSettings(List<DetailSetting<RateDetailDto>> results, bool isRu)
+    private void AddOriginDestinationSettings(List<DetailSetting<RateDetailDto>> results, bool isRu)
     {
         var group = L["RateDetailDto.Group3Parameters"];
 
@@ -571,11 +566,6 @@ public class RatesDetailSettingsService(IStringLocalizer<Svt> L, ILogger<RatesDe
                 DisplaySelector = dto => dto.BasisNodeNameRu!,
                 VisibleSelector = dto => dto.BasisNodeCode is not null
             });
-    }
-
-    private void AddOriginDestinationUnlistedSettings(List<DetailSetting<RateDetailDto>> results)
-    {
-        var group = L["RateDetailDto.Group2FromTo"];
 
         results.Add(new DetailSetting<RateDetailDto>
         {
@@ -637,7 +627,7 @@ public class RatesDetailSettingsService(IStringLocalizer<Svt> L, ILogger<RatesDe
         });
     }
 
-    private void AddTransportListedSettings(List<DetailSetting<RateDetailDto>> results, bool isRu)
+    private void AddTransportSettings(List<DetailSetting<RateDetailDto>> results, bool isRu)
     {
         var group = L["RateDetailDto.Group4Parameters"];
 
@@ -680,11 +670,6 @@ public class RatesDetailSettingsService(IStringLocalizer<Svt> L, ILogger<RatesDe
                 VisibleSelector = _ => true,
                 HasMargin = true
             });
-    }
-
-    private void AddTransportUnlistedSettings(List<DetailSetting<RateDetailDto>> results, bool isRu)
-    {
-        var group = L["RateDetailDto.Group3Transport"];
 
         results.Add(new DetailSetting<RateDetailDto>
         {
@@ -717,7 +702,7 @@ public class RatesDetailSettingsService(IStringLocalizer<Svt> L, ILogger<RatesDe
         });
     }
 
-    private void AddProductListedSettings(List<DetailSetting<RateDetailDto>> results, bool isRu)
+    private void AddProductSettings(List<DetailSetting<RateDetailDto>> results, bool isRu)
     {
         var group = L["RateDetailDto.Group6Parameters"];
 
@@ -759,11 +744,6 @@ public class RatesDetailSettingsService(IStringLocalizer<Svt> L, ILogger<RatesDe
             DisplaySelector = dto => dto.EffectiveLoadOfTransportType,
             VisibleSelector = _ => true
         });
-    }
-
-    private void AddProductContractorUnlistedSettings(List<DetailSetting<RateDetailDto>> results, bool isRu)
-    {
-        var group = L["RateDetailDto.Group5ProductContractor"];
 
         results.Add(new DetailSetting<RateDetailDto>
         {
