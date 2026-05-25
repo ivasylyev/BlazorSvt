@@ -1,0 +1,162 @@
+﻿CalcDate | Дата расчета
+StartDate | Период действия с
+EndDate | Период действия по
+Product | Продукт
+UnitOfMeasure | Единица измерения
+TransportType | Тип транспорта
+ProductGroup | Группа продуктов
+ETSNGCode | Код ЕТСНГ
+DangerClass | Класс опасности
+DensityCargo | Плотность груза (г/см3)
+PartyMembership | Партионность
+Railcar | Количество вагонов
+MinDailyTransportation | Минимальный суточный объем транспортировки (т)
+MaxDailyTransportation | Максимальный суточный объем транспортировки (т)
+TotalCostTransport | Общая стоимость за транспортное средство
+Currency | Валюта за транспортное средство
+VariableCost | Переменные затраты за тонну (без учета НДС)
+TotalCostTon | Общая стоимость за тонну
+GeneralCurrency | Общая валюта затрат
+LoadedRFSize | Гружёный рейс по РФ. Размер
+LoadedRFCurrency | Гружёный рейс по РФ. Валюта
+LoadedRFForwarder | Груженый рейс по РФ (за тонну) (без учета НДС). Экспедитор  
+LoadedCISSize | Гружёный рейс по СНГ. Размер
+LoadedCISCurrency | Гружёный рейс по СНГ. Валюта
+LoadedCISForwarder | Груженый рейс по СНГ (за тонну) (без учета НДС). Экспедитор
+EmptyRFSize | Порожний рейс по РФ. Размер
+EmptyRFCurrency | Порожний рейс по РФ. Валюта
+EmptyRFForwarder | Порожний рейс по РФ (за тонну) (без учета НДС). Экспедитор
+EmptyCISSize | Порожний рейс по СНГ. Размер
+EmptyCISCurrency | Порожний рейс по СНГ. Валюта
+EmptyCISForwarder | Порожний рейс по СНГ (за тонну) (без учета НДС). Экспедитор
+ProvisionTransportSize | Предоставление ТС. Размер
+ProvisionTransportCurrency | Предоставление ТС. Валюта
+ProvisionTransportForwarder | Предоставление ТС (за тонну) (без учета НДС). Экспедитор
+FerryboatSize | Услуги паромной переправы. Размер
+FerryboatCurrency | Услуги паромной переправы. Валюта
+FerryboatForwarder | Услуги паромной переправы (за тонну) (без учета НДС). Экспедитор
+TEFromSize | ТЭ на станции отправления (переменные затраты). Размер
+TEFromCurrency | ТЭ на станции отправления (переменные затраты). Валюта
+TEFromForwarder | ТЭ на станции отправления (переменные затраты) (за тонну) (без учета НДС). Экспедитор
+PNPFromSize | ПНП на станции отправления. Размер
+PNPFromCurrency | ПНП на станции отправления. Валюта
+PNPFromForwarder | ПНП на станции отправления (за тонну) (без учета НДС). Экспедитор
+TEToSize | ТЭ на станции назначения (переменные затраты). Размер
+TEToCurrency | ТЭ на станции назначения (переменные затраты). Валюта
+TEToForwarder | ТЭ на станции назначения (переменные затраты) (за тонну) (без учета НДС). Экспедитор
+PNPToSize | ПНП на станции назначения. Размер
+PNPToCurrency | ПНП на станции назначения. Валюта
+PNPToForwarder | ПНП на станции назначения (за тонну) (без учета НДС). Экспедитор
+DrainLoadingSize | Слив-налив. Размер
+DrainLoadingCurrency | Слив-налив. Валюта
+DrainLoadingForwarder | Слив-налив (за тонну) (без учета НДС). Экспедитор
+TransshipmentSize | Перевалка. Размер
+TransshipmentCurrency | Перевалка. Валюта
+TransshipmentForwarder | Перевалка (за тонну) (без учета НДС). Экспедитор
+FreightSize | Фрахт. Размер
+FreightCurrency | Фрахт. Валюта
+FreightForwarder | Фрахт (за тонну) (без учета НДС). Экспедитор
+AdditionalFeesCISSize | Дополнительные сборы по СНГ (вознаграждение экспедитора). Размер
+AdditionalFeesCISCurrency | Дополнительные сборы по СНГ (вознаграждение экспедитора). Валюта
+AdditionalFeesCISForwarder | Дополнительные сборы по СНГ (вознаграждение экспедитора) (за тонну) (без учета НДС). Экспедитор  
+AdditionalKind | Вид дополнительных затрат
+AdditionalCurrency | Валюта дополнительных затрат
+Comment | Примечание
+IsUsedInCBD | Ставка используется в ЦБД
+EffectiveLoadOfTransportType | Эффективная загрузка типа транспорта (в тоннах)
+IsWeightedAverageRate | Средневзвешенная ставка
+ParentRate | Родительская ставка
+NodeFrom | Узел отправления
+FIASFrom | ФИАС отправления
+NodeTo | Узел назначения
+FIASTo | ФИАС назначения
+CurrencyRateMonth | Плановый курс валют действителен на
+TransportKind | Вид транспорта
+CBDCode | Код ЦБД
+Department | Дирекция
+TotalCostTonRUB | Общая стоимость за тонну (RUB)
+RateType | Тип ставки
+Terminal | Терминал
+ZDCodeFrom | Код жд станции отправления
+ZDCodeTo | Код жд станции назначения
+Vessel | Судно
+Weight | Вес нетто
+Temperature | Температурный режим
+TemperatureLoad | Температура при загрузке (по Цельсию)
+TemperatureUnload | Температура при выгрузке (по Цельсию)
+SentNotice | Отправлено уведомление о завершении срока действия ставки
+VariableCostStandard | Переменные затраты за тонну без НДС (в валюте-эталоне)
+TotalCostTonStandard | Общая стоимость транспортировки (за тонну) (без учета НДС) (в валюте-эталоне)
+Nomination | Номинация по результатам тендера
+AdditionalSize | Размер дополнительных затрат
+RegionFrom | Регион отправления
+RegionTo | Регион назначения
+OpenStreetMapFROM | Код OpenStreetMap отправления
+OpenStreetMapTO | Код OpenStreetMap назначения
+TransportType2ForCBD | Тип транспорта для ЦБД (2 уровень)
+MorMGForCBD | Группа продуктов (ЦБД) (M | MG)
+Counterparty | Контрагент (транспортная компания)
+RateLevel3 | Ставка входит в расчет средневзвешенной ставки 3-го уровня
+CurrencyStandard | Валюта-эталон
+Rate | Исходная ставка для дефлированной
+IsDefRate | Ставка является результатом дефлятора
+CounterpartyNotNSI | Контрагент без НСИ
+NodeFromEN | Узел отправления (англ)
+NodeToEN | Узел назначения (англ)
+RateTenderServicePack | Пакет услуг
+RateContractNum | Номер договора с перевозчиком
+RateContractType | Вид договора с перевозчиком
+RateSourceTermID | Код терминала в порту отправления
+RateSourceTermName | Наименование терминала в порту отправления
+RateDestinationTermID | Код терминала в порту назначения
+RateDestinationTermName | Наименование терминала в порту назначения
+RateSeaLineBase | Основная морская линия
+RateCalcType | Способ расчёта ставки
+ActualRate | Фактическая ставка
+CategoryRate | Категория ставок
+TotalCostTonUSD | Ставка за т, USD
+TotalCostTonEUR | Ставка за т, EUR
+TotalCostTonCNY | Ставка за т, CNY
+TotalCostTransportRUB | Ставка за ТС, RUR
+TotalCostTransportUSD | Ставка за ТС, USD
+TotalCostTransportEUR | Ставка за ТС, EUR
+TotalCostTransportCNY | Ставка за ТС, CNY
+ProxyNode | Узел промежуточный
+ProxyRegion | Регион промежуточный
+Basis | Базис
+BasisNode | Базис Узел
+Leg1_TransportType | Плечо 1.Тип транспорта
+Leg1_EffectiveLoad | Плечо 1.Эффективная загрузка, т
+Leg1_TotalCostTon | Плечо 1.Ставка за тонну
+Leg1_TotalCostTransport | Плечо 1.Ставка за ТС
+Leg1_BaseCurrency | Плечо 1.Валюта базовая
+Leg1_TotalCostTonRUB | Плечо 1.Ставка за т, RUB
+Leg1_TotalCostTonUSD | Плечо 1.Ставка за т, USD
+Leg1_TotalCostTonEUR | Плечо 1.Ставка за т, EUR
+Leg1_TotalCostTonCNY | Плечо 1.Ставка за т, CNY
+Leg1_TotalCostTransportRUB | Плечо 1.Ставка за ТС, RUB
+Leg1_TotalCostTransportUSD | Плечо 1.Ставка за ТС, USD
+Leg1_TotalCostTransportEUR | Плечо 1.Ставка за ТС, EUR
+Leg1_TotalCostTransportCNY | Плечо 1.Ставка за ТС, CNY
+Leg2_TransportType | Плечо 2.Тип транспорта
+Leg2_EffectiveLoad | Плечо 2.Эффективная загрузка, т
+Leg2_TotalCostTon | Плечо 2.Ставка за тонну
+Leg2_TotalCostTransport | Плечо 2.Ставка за ТС
+Leg2_BaseCurrency | Плечо 2.Валюта базовая
+Leg2_TotalCostTonRUB | Плечо 2.Ставка за т, RUB
+Leg2_TotalCostTonUSD | Плечо 2.Ставка за т, USD
+Leg2_TotalCostTonEUR | Плечо 2.Ставка за т, EUR
+Leg2_TotalCostTonCNY | Плечо 2.Ставка за т, CNY
+Leg2_TotalCostTransportRUB | Плечо 2.Ставка за ТС, RUB
+Leg2_TotalCostTransportUSD | Плечо 2.Ставка за ТС, USD
+Leg2_TotalCostTransportEUR | Плечо 2.Ставка за ТС, EUR
+Leg2_TotalCostTransportCNY | Плечо 2.Ставка за ТС, CNY
+TEFromSize_fix | ТЭ на станции отправления (постоянные затраты). Размер
+TEFromCurrency_fix | ТЭ на станции отправления (постоянные затраты). Валюта
+TEFromForwarder_fix | ТЭ на станции отправления (постоянные затраты) (за тонну) (без учета НДС). Экспедитор
+TEToSize_fix | ТЭ на станции назначения (постоянные затраты). Размер
+TEToCurrency_fix | ТЭ на станции назначения (постоянные затраты). Валюта
+TEToForwarder_fix | ТЭ на станции назначения (постоянные затраты) (за тонну) (без учета НДС). Экспедитор
+TenderNumber | Номер тендера
+AdditionalAgreementNumber | Номер ДС
+IsExportToIntegration | Экспортируется в интеграцию

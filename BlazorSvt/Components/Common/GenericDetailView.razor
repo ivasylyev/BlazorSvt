@@ -1,13 +1,13 @@
 ﻿@typeparam TItem
 @typeparam TDetailItem
 @inherits SvtComponentBase
-@if (isLoading || detailSettings is null)
-{
-    <div class="p-3">Loading...</div>
-}
-else if (errorMessage is not null)
+@if (errorMessage is not null)
 {
     <div class="p-3 text-danger">@errorMessage</div>
+}
+else if (isLoading || detailSettings is null)
+{
+    <div class="p-3">Loading...</div>
 }
 else if (detail is not null)
 {

@@ -261,6 +261,450 @@
   <data name="RateDto.No" xml:space="preserve">
 	  <value>Нет</value>
   </data>
+  <data name="RateDetailDto.Code" xml:space="preserve">
+	  <value>Code</value>
+  </data>
+  <data name="RateDetailDto.IsDefRate" xml:space="preserve">
+	  <value>Ставка является результатом дефлятора</value>
+  </data>
+  <data name="RateDetailDto.Yes" xml:space="preserve">
+	  <value>Да</value>
+  </data>
+  <data name="RateDetailDto.No" xml:space="preserve">
+	  <value>Нет</value>
+  </data>
+  <data name="RateDetailDto.CreationDate" xml:space="preserve">
+	  <value>Создано</value>
+  </data>
+  <data name="RateDetailDto.LastChangeDate" xml:space="preserve">
+	  <value>Изменено</value>
+  </data>
+  <data name="RateDetailDto.IsArchive" xml:space="preserve">
+	  <value>В Архиве</value>
+  </data>
+  <data name="RateDetailDto.Archive" xml:space="preserve">
+	  <value>Архив</value>
+  </data>
+  <data name="RateDetailDto.Active" xml:space="preserve">
+	  <value>Актив</value>
+  </data>
+  <data name="RateDetailDto.StartDate" xml:space="preserve">
+	  <value>Период действия с</value>
+  </data>
+  <data name="RateDetailDto.EndDate" xml:space="preserve">
+	  <value>Период действия по</value>
+  </data>
+  <data name="RateDetailDto.TotalCostTon" xml:space="preserve">
+	  <value>Общая стоимость за тонну</value>
+  </data>
+  <data name="RateDetailDto.TotalCostTransport" xml:space="preserve">
+	  <value>Общая стоимость за транспортное средство</value>
+  </data>
+  <data name="RateDetailDto.Currency" xml:space="preserve">
+	  <value>Валюта-эталон</value>
+  </data>
+  <data name="RateDetailDto.RateTypeCode" xml:space="preserve">
+	  <value>Код типа ставки</value>
+  </data>
+  <data name="RateDetailDto.RateTypeName" xml:space="preserve">
+	  <value>Тип ставки</value>
+  </data>
+  <data name="RateDetailDto.TransportKindCode" xml:space="preserve">
+	  <value>Код вида транспорта</value>
+  </data>
+  <data name="RateDetailDto.TransportKindName" xml:space="preserve">
+	  <value>Вид транспорта</value>
+  </data>
+  <data name="RateDetailDto.TransportTypeCode" xml:space="preserve">
+	  <value>Код типа транспорта</value>
+  </data>
+  <data name="RateDetailDto.TransportTypeName" xml:space="preserve">
+	  <value>Тип транспорта</value>
+  </data>
+  <data name="RateDetailDto.ProductGroupCode" xml:space="preserve">
+	  <value>Группа продуктов</value>
+  </data>
+  <data name="RateDetailDto.ProductCode" xml:space="preserve">
+	  <value>Продукт</value>
+  </data>
+  <data name="RateDetailDto.ProductName" xml:space="preserve">
+	  <value>Продукт</value>
+  </data>
+  <data name="RateDetailDto.Group1Parameters" xml:space="preserve">
+	  <value>1. Параметры ставки</value>
+  </data>
+  <data name="RateDetailDto.Group2FromTo" xml:space="preserve">
+	  <value>2. Отправление - назначение</value>
+  </data>
+  <data name="RateDetailDto.Group3Transport" xml:space="preserve">
+	  <value>3. Транспорт</value>
+  </data>
+  <data name="RateDetailDto.Group4Leadtimes" xml:space="preserve">
+	  <value>4. Лидтаймы </value>
+  </data>
+  <data name="RateDetailDto.Group41LeadtimesLeg1" xml:space="preserve">
+	  <value>4.1. Лидтаймы. Ставка 1</value>
+  </data>
+  <data name="RateDetailDto.Group42LeadtimesLeg2" xml:space="preserve">
+	  <value>4.2. Лидтаймы. Ставка 2</value>
+  </data>
+  <data name="RateDetailDto.NodeFromCode" xml:space="preserve">
+	  <value>Код узла отправления</value>
+  </data>
+  <data name="RateDetailDto.NodeFromName" xml:space="preserve">
+	  <value>Узел отправления</value>
+  </data>
+  <data name="RateDetailDto.RegionFromCode" xml:space="preserve">
+	  <value>Код региона отправления</value>
+  </data>
+  <data name="RateDetailDto.RegionFromName" xml:space="preserve">
+	  <value>Регион отправления</value>
+  </data>
+  <data name="RateDetailDto.ProxyNodeCode" xml:space="preserve">
+	  <value>Код промежуточного узла</value>
+  </data>
+  <data name="RateDetailDto.ProxyNodeName" xml:space="preserve">
+	  <value>Узел промежуточный</value>
+  </data>
+  <data name="RateDetailDto.ProxyRegionCode" xml:space="preserve">
+	  <value>Код промежуточного региона</value>
+  </data>
+  <data name="RateDetailDto.ProxyRegionName" xml:space="preserve">
+	  <value>Регион промежуточный</value>
+  </data>
+  <data name="RateDetailDto.NodeToCode" xml:space="preserve">
+	  <value>Код узла назначения</value>
+  </data>
+  <data name="RateDetailDto.NodeToName" xml:space="preserve">
+	  <value>Узел назначения</value>
+  </data>
+  <data name="RateDetailDto.RegionToCode" xml:space="preserve">
+	  <value>Код региона назначения</value>
+  </data>
+  <data name="RateDetailDto.RegionToName" xml:space="preserve">
+	  <value>Регион назначения</value>
+  </data>
+  <data name="RateDetailDto.SearchTime" xml:space="preserve">
+	  <value>Поиск, сут.</value>
+  </data>
+  <data name="RateDetailDto.LoadTime" xml:space="preserve">
+	  <value>Зарузка, сут.</value>
+  </data>
+  <data name="RateDetailDto.DaysWaiting" xml:space="preserve">
+	  <value>Ожидание, сут.</value>
+  </data>
+  <data name="RateDetailDto.TravelTime" xml:space="preserve">
+	  <value>В пути, сут.</value>
+  </data>
+  <data name="RateDetailDto.UnLoadTime" xml:space="preserve">
+	  <value>Разгрузка, сут.</value>
+  </data>
+  <data name="RateDetailDto.TransportationTime" xml:space="preserve">
+	  <value>Транспортировка, сут.</value>
+  </data>
+  <data name="RateDetailDto.Distance" xml:space="preserve">
+	  <value>Расстояние, км </value>
+  </data>
+  <data name="RateDetailDto.Leg1_SearchTime" xml:space="preserve">
+	  <value>Плечо 1. Поиск, сут.</value>
+  </data>
+  <data name="RateDetailDto.Leg1_LoadTime" xml:space="preserve">
+	  <value>Плечо 1. Погрузка, сут.</value>
+  </data>
+  <data name="RateDetailDto.Leg1_DaysWaiting" xml:space="preserve">
+	  <value>Плечо 1. Ожидание, сут.</value>
+  </data>
+  <data name="RateDetailDto.Leg1_TravelTime" xml:space="preserve">
+	  <value>Плечо 1. В пути, сут.</value>
+  </data>
+  <data name="RateDetailDto.Leg1_TransportationTime" xml:space="preserve">
+	  <value>Плечо 1. Транспортировка, сут.</value>
+  </data>
+  <data name="RateDetailDto.Leg1_Distance" xml:space="preserve">
+	  <value>Плечо 1. Расстояние, км </value>
+  </data>
+  <data name="RateDetailDto.Leg2_UpLoadTime" xml:space="preserve">
+	  <value>Плечо 2. Зарузка, сут.</value>
+  </data>
+  <data name="RateDetailDto.Leg2_DaysWaiting" xml:space="preserve">
+	  <value>Плечо 2. Ожидание, сут.</value>
+  </data>
+  <data name="RateDetailDto.Leg2_TravelTime" xml:space="preserve">
+	  <value>Плечо 2. В пути, сут.</value>
+  </data>
+  <data name="RateDetailDto.Leg2_TransportationTime" xml:space="preserve">
+	  <value>Плечо 2. Транспортировка, сут.</value>
+  </data>
+  <data name="RateDetailDto.Leg2_Distance" xml:space="preserve">
+	  <value>Плечо 2. Расстояние, км </value>
+  </data>
+  <data name="RateDetailDto.AverageRateCode" xml:space="preserve">
+	  <value>Код средней ставки</value>
+  </data>
+  <data name="RateDetailDto.AverageRateLevel3TotalCostTon" xml:space="preserve">
+	  <value>Ставка входит в расчет средневзвешенной ставки 3-го уровня</value>
+  </data>
+  <data name="RateDetailDto.CalcType" xml:space="preserve">
+	  <value>Способ расчёта ставки</value>
+  </data>
+  <data name="RateDetailDto.CurrencyRateMonth" xml:space="preserve">
+	  <value>Плановый курс валют действителен на</value>
+  </data>
+  <data name="RateDetailDto.EffectiveLoadOfTransportType" xml:space="preserve">
+	  <value>Эффективная загрузка типа транспорта (в тоннах)</value>
+  </data>
+  <data name="RateDetailDto.TotalCostTonRUB" xml:space="preserve">
+	  <value>Общая стоимость за тонну (RUB)</value>
+  </data>
+  <data name="RateDetailDto.TotalCostTonEUR" xml:space="preserve">
+	  <value>Ставка за т, EUR</value>
+  </data>
+  <data name="RateDetailDto.TotalCostTonCNY" xml:space="preserve">
+	  <value>Ставка за т, CNY</value>
+  </data>
+  <data name="RateDetailDto.TotalCostTonUSD" xml:space="preserve">
+	  <value>Ставка за т, USD</value>
+  </data>
+  <data name="RateDetailDto.TotalCostTransportRUB" xml:space="preserve">
+	  <value>Ставка за ТС, RUR</value>
+  </data>
+  <data name="RateDetailDto.TotalCostTransportEUR" xml:space="preserve">
+	  <value>Ставка за ТС, EUR</value>
+  </data>
+  <data name="RateDetailDto.TotalCostTransportCNY" xml:space="preserve">
+	  <value>Ставка за ТС, CNY</value>
+  </data>
+  <data name="RateDetailDto.TotalCostTransportUSD" xml:space="preserve">
+	  <value>Ставка за ТС, USD</value>
+  </data>
+  <data name="RateDetailDto.EmptyRFSize" xml:space="preserve">
+	  <value>Порожний рейс по РФ. Размер</value>
+  </data>
+  <data name="RateDetailDto.EmptyRFCurrency" xml:space="preserve">
+	  <value>Порожний рейс по РФ. Валюта</value>
+  </data>
+  <data name="RateDetailDto.EmptyCISSize" xml:space="preserve">
+	  <value>Порожний рейс по СНГ. Размер</value>
+  </data>
+  <data name="RateDetailDto.EmptyCISCurrency" xml:space="preserve">
+	  <value>Порожний рейс по СНГ. Валюта</value>
+  </data>
+  <data name="RateDetailDto.ProvisionTransportSize" xml:space="preserve">
+	  <value>Предоставление ТС. Размер</value>
+  </data>
+  <data name="RateDetailDto.ProvisionTransportCurrency" xml:space="preserve">
+	  <value>Предоставление ТС. Валюта</value>
+  </data>
+  <data name="RateDetailDto.FerryboatSize" xml:space="preserve">
+	  <value>Услуги паромной переправы. Размер</value>
+  </data>
+  <data name="RateDetailDto.FerryboatCurrency" xml:space="preserve">
+	  <value>Услуги паромной переправы. Валюта</value>
+  </data>
+  <data name="RateDetailDto.TEFromSize" xml:space="preserve">
+	  <value>ТЭ на станции отправления (переменные затраты). Размер</value>
+  </data>
+  <data name="RateDetailDto.TEFromCurrency" xml:space="preserve">
+	  <value>ТЭ на станции отправления (переменные затраты). Валюта</value>
+  </data>
+  <data name="RateDetailDto.RatePNPFromSize" xml:space="preserve">
+	  <value>ПНП на станции отправления. Размер</value>
+  </data>
+  <data name="RateDetailDto.PNPFromCurrency" xml:space="preserve">
+	  <value>ПНП на станции отправления. Валюта</value>
+  </data>
+  <data name="RateDetailDto.TEToSize" xml:space="preserve">
+	  <value>ТЭ на станции назначения (переменные затраты). Размер</value>
+  </data>
+  <data name="RateDetailDto.TEToCurrency" xml:space="preserve">
+	  <value>ТЭ на станции назначения (переменные затраты). Валюта</value>
+  </data>
+  <data name="RateDetailDto.PNPToSize" xml:space="preserve">
+	  <value>ПНП на станции назначения. Размер</value>
+  </data>
+  <data name="RateDetailDto.PNPToCurrency" xml:space="preserve">
+	  <value>ПНП на станции назначения. Валюта</value>
+  </data>
+  <data name="RateDetailDto.DrainLoadingSize" xml:space="preserve">
+	  <value>Слив-налив. Размер</value>
+  </data>
+  <data name="RateDetailDto.DrainLoadingCurrency" xml:space="preserve">
+	  <value>Слив-налив. Валюта</value>
+  </data>
+  <data name="RateDetailDto.TransshipmentSize" xml:space="preserve">
+	  <value>Перевалка. Размер</value>
+  </data>
+  <data name="RateDetailDto.TransshipmentCurrency" xml:space="preserve">
+	  <value>Перевалка. Валюта</value>
+  </data>
+  <data name="RateDetailDto.FreightSize" xml:space="preserve">
+	  <value>Фрахт. Размер</value>
+  </data>
+  <data name="RateDetailDto.FreightCurrency" xml:space="preserve">
+	  <value>Фрахт. Валюта</value>
+  </data>
+  <data name="RateDetailDto.AdditionalFeesCISSize" xml:space="preserve">
+	  <value>Дополнительные сборы по СНГ (вознаграждение экспедитора). Размер</value>
+  </data>
+  <data name="RateDetailDto.AdditionalFeesCISCurrency" xml:space="preserve">
+	  <value>Дополнительные сборы по СНГ (вознаграждение экспедитора). Валюта</value>
+  </data>
+  <data name="RateDetailDto.LoadedCISSize" xml:space="preserve">
+	  <value>Гружёный рейс по СНГ. Размер</value>
+  </data>
+  <data name="RateDetailDto.LoadedCISCurrency" xml:space="preserve">
+	  <value>Гружёный рейс по СНГ. Валюта</value>
+  </data>
+  <data name="RateDetailDto.LoadedRFSize" xml:space="preserve">
+	  <value>Гружёный рейс по РФ. Размер</value>
+  </data>
+  <data name="RateDetailDto.LoadedRFCurrency" xml:space="preserve">
+	  <value>Гружёный рейс по РФ. Валюта</value>
+  </data>
+  <data name="RateDetailDto.TEFromSize_fix" xml:space="preserve">
+	  <value>ТЭ на станции отправления (постоянные затраты). Размер</value>
+  </data>
+  <data name="RateDetailDto.TEFromCurrency_fix" xml:space="preserve">
+	  <value>ТЭ на станции отправления (постоянные затраты). Валюта</value>
+  </data>
+  <data name="RateDetailDto.TEToSize_fix" xml:space="preserve">
+	  <value>ТЭ на станции назначения (постоянные затраты). Размер</value>
+  </data>
+  <data name="RateDetailDto.TEToCurrency_fix" xml:space="preserve">
+	  <value>ТЭ на станции назначения (постоянные затраты). Валюта</value>
+  </data>
+  <data name="RateDetailDto.Basis" xml:space="preserve">
+	  <value>Базис</value>
+  </data>
+  <data name="RateDetailDto.BasisNodeCode" xml:space="preserve">
+	  <value>Базис Узел</value>
+  </data>
+  <data name="RateDetailDto.BasisNodeNameRu" xml:space="preserve">
+	  <value>Базис Узел</value>
+  </data>
+  <data name="RateDetailDto.ProductGroupNameEnRu" xml:space="preserve">
+	  <value>Группа продуктов</value>
+  </data>
+  <data name="RateDetailDto.ProductDPOCOde" xml:space="preserve">
+	  <value>Код DPO продукта</value>
+  </data>
+  <data name="RateDetailDto.ContractorCode" xml:space="preserve">
+	  <value>Код контрагента</value>
+  </data>
+  <data name="RateDetailDto.ContractorNameSearch" xml:space="preserve">
+	  <value>Контрагент (транспортная компания)</value>
+  </data>
+  <data name="RateDetailDto.ContractorEGRUL" xml:space="preserve">
+	  <value>Контрагент ЕГРЮЛ</value>
+  </data>
+  <data name="RateDetailDto.Nomination" xml:space="preserve">
+	  <value>Номинация по результатам тендера</value>
+  </data>
+  <data name="RateDetailDto.TenderServicePack" xml:space="preserve">
+	  <value>Пакет услуг</value>
+  </data>
+  <data name="RateDetailDto.TenderNumber" xml:space="preserve">
+	  <value>Номер тендера</value>
+  </data>
+  <data name="RateDetailDto.AdditionalAgreementNumber" xml:space="preserve">
+	  <value>Номер ДС</value>
+  </data>
+  <data name="RateDetailDto.Comment" xml:space="preserve">
+	  <value>Примечание</value>
+  </data>
+  <data name="RateDetailDto.LegCode" xml:space="preserve">
+	  <value>Код плеча</value>
+  </data>
+  <data name="RateDetailDto.LegChangeDate" xml:space="preserve">
+	  <value>Изменение плеча</value>
+  </data>
+  <data name="RateDetailDto.LeadTimeChangeDate" xml:space="preserve">
+	  <value>Изменение lead time</value>
+  </data>
+  <data name="RateDetailDto.LeadTimeStartDate" xml:space="preserve">
+	  <value>Начало lead time</value>
+  </data>
+  <data name="RateDetailDto.LeadTimeEndDate" xml:space="preserve">
+	  <value>Окончание lead time</value>
+  </data>
+  <data name="RateDetailDto.LeadTimeCode" xml:space="preserve">
+	  <value>Код lead time</value>
+  </data>
+  <data name="RateDetailDto.Leg1_EffectiveLoad" xml:space="preserve">
+	  <value>Плечо 1.Эффективная загрузка, т</value>
+  </data>
+  <data name="RateDetailDto.Leg1_TotalCostTon" xml:space="preserve">
+	  <value>Плечо 1.Ставка за тонну</value>
+  </data>
+  <data name="RateDetailDto.Leg1_TotalCostTransport" xml:space="preserve">
+	  <value>Плечо 1.Ставка за ТС</value>
+  </data>
+  <data name="RateDetailDto.Leg1_BaseCurrency" xml:space="preserve">
+	  <value>Плечо 1.Валюта базовая</value>
+  </data>
+  <data name="RateDetailDto.Leg1_TotalCostTonRUB" xml:space="preserve">
+	  <value>Плечо 1.Ставка за т, RUB</value>
+  </data>
+  <data name="RateDetailDto.Leg1_TotalCostTonUSD" xml:space="preserve">
+	  <value>Плечо 1.Ставка за т, USD</value>
+  </data>
+  <data name="RateDetailDto.Leg1_TotalCostTonEUR" xml:space="preserve">
+	  <value>Плечо 1.Ставка за т, EUR</value>
+  </data>
+  <data name="RateDetailDto.Leg1_TotalCostTonCNY" xml:space="preserve">
+	  <value>Плечо 1.Ставка за т, CNY</value>
+  </data>
+  <data name="RateDetailDto.Leg1_TotalCostTransportRUB" xml:space="preserve">
+	  <value>Плечо 1.Ставка за ТС, RUB</value>
+  </data>
+  <data name="RateDetailDto.Leg1_TotalCostTransportUSD" xml:space="preserve">
+	  <value>Плечо 1.Ставка за ТС, USD</value>
+  </data>
+  <data name="RateDetailDto.Leg1_TotalCostTransportEUR" xml:space="preserve">
+	  <value>Плечо 1.Ставка за ТС, EUR</value>
+  </data>
+  <data name="RateDetailDto.Leg1_TotalCostTransportCNY" xml:space="preserve">
+	  <value>Плечо 1.Ставка за ТС, CNY</value>
+  </data>
+  <data name="RateDetailDto.Leg2_EffectiveLoad" xml:space="preserve">
+	  <value>Плечо 2.Эффективная загрузка, т</value>
+  </data>
+  <data name="RateDetailDto.Leg2_TotalCostTon" xml:space="preserve">
+	  <value>Плечо 2.Ставка за тонну</value>
+  </data>
+  <data name="RateDetailDto.Leg2_TotalCostTransport" xml:space="preserve">
+	  <value>Плечо 2.Ставка за ТС</value>
+  </data>
+  <data name="RateDetailDto.Leg2_BaseCurrency" xml:space="preserve">
+	  <value>Плечо 2.Валюта базовая</value>
+  </data>
+  <data name="RateDetailDto.Leg2_TotalCostTonRUB" xml:space="preserve">
+	  <value>Плечо 2.Ставка за т, RUB</value>
+  </data>
+  <data name="RateDetailDto.Leg2_TotalCostTonUSD" xml:space="preserve">
+	  <value>Плечо 2.Ставка за т, USD</value>
+  </data>
+  <data name="RateDetailDto.Leg2_TotalCostTonEUR" xml:space="preserve">
+	  <value>Плечо 2.Ставка за т, EUR</value>
+  </data>
+  <data name="RateDetailDto.Leg2_TotalCostTonCNY" xml:space="preserve">
+	  <value>Плечо 2.Ставка за т, CNY</value>
+  </data>
+  <data name="RateDetailDto.Leg2_TotalCostTransportRUB" xml:space="preserve">
+	  <value>Плечо 2.Ставка за ТС, RUB</value>
+  </data>
+  <data name="RateDetailDto.Leg2_TotalCostTransportUSD" xml:space="preserve">
+	  <value>Плечо 2.Ставка за ТС, USD</value>
+  </data>
+  <data name="RateDetailDto.Leg2_TotalCostTransportEUR" xml:space="preserve">
+	  <value>Плечо 2.Ставка за ТС, EUR</value>
+  </data>
+  <data name="RateDetailDto.Leg2_TotalCostTransportCNY" xml:space="preserve">
+	  <value>Плечо 2.Ставка за ТС, CNY</value>
+  </data>
+  <data name="RateDetailDto.Group5ProductContractor" xml:space="preserve">
+	  <value>5. Продукт и контрагент</value>
+  </data>
   <data name="RateDetailDto.CustomMessage" xml:space="preserve">
 	  <value>Кастомное сообщение от ставок: </value>
   </data>

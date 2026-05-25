@@ -266,6 +266,450 @@
   <data name="RateDto.No" xml:space="preserve">
 	  <value>No</value>
   </data>
+  <data name="RateDetailDto.Code" xml:space="preserve">
+	  <value>Code</value>
+  </data>
+  <data name="RateDetailDto.IsDefRate" xml:space="preserve">
+	  <value>Deflated</value>
+  </data>
+  <data name="RateDetailDto.Yes" xml:space="preserve">
+	  <value>Yes</value>
+  </data>
+  <data name="RateDetailDto.No" xml:space="preserve">
+	  <value>No</value>
+  </data>
+  <data name="RateDetailDto.CreationDate" xml:space="preserve">
+	  <value>Created</value>
+  </data>
+  <data name="RateDetailDto.LastChangeDate" xml:space="preserve">
+	  <value>Changed</value>
+  </data>
+  <data name="RateDetailDto.IsArchive" xml:space="preserve">
+	  <value>Is Archive</value>
+  </data>
+  <data name="RateDetailDto.Archive" xml:space="preserve">
+	  <value>Archive</value>
+  </data>
+  <data name="RateDetailDto.Active" xml:space="preserve">
+	  <value>Active</value>
+  </data>
+  <data name="RateDetailDto.StartDate" xml:space="preserve">
+	  <value>Start Date</value>
+  </data>
+  <data name="RateDetailDto.EndDate" xml:space="preserve">
+	  <value>End Date</value>
+  </data>
+  <data name="RateDetailDto.TotalCostTon" xml:space="preserve">
+	  <value>Total Cost Ton</value>
+  </data>
+  <data name="RateDetailDto.TotalCostTransport" xml:space="preserve">
+	  <value>Total Cost Transport</value>
+  </data>
+  <data name="RateDetailDto.Currency" xml:space="preserve">
+	  <value>Currency</value>
+  </data>
+  <data name="RateDetailDto.RateTypeCode" xml:space="preserve">
+	  <value>Rate Type Code</value>
+  </data>
+  <data name="RateDetailDto.RateTypeName" xml:space="preserve">
+	  <value>Rate Type</value>
+  </data>
+  <data name="RateDetailDto.TransportKindCode" xml:space="preserve">
+	  <value>Transport Kind Code</value>
+  </data>
+  <data name="RateDetailDto.TransportKindName" xml:space="preserve">
+	  <value>Transport Kind Name</value>
+  </data>
+  <data name="RateDetailDto.TransportTypeCode" xml:space="preserve">
+	  <value>Transport Type Code</value>
+  </data>
+  <data name="RateDetailDto.TransportTypeName" xml:space="preserve">
+	  <value>Transport Type Name</value>
+  </data>
+  <data name="RateDetailDto.ProductGroupCode" xml:space="preserve">
+	  <value>Product Group Code</value>
+  </data>
+  <data name="RateDetailDto.ProductCode" xml:space="preserve">
+	  <value>Product Code</value>
+  </data>
+  <data name="RateDetailDto.ProductName" xml:space="preserve">
+	  <value>Product</value>
+  </data>
+  <data name="RateDetailDto.Group1Parameters" xml:space="preserve">
+	  <value>1. Rate Parameters</value>
+  </data>
+  <data name="RateDetailDto.Group2FromTo" xml:space="preserve">
+	  <value>2. From - To</value>
+  </data>
+  <data name="RateDetailDto.Group3Transport" xml:space="preserve">
+	  <value>3. Transport</value>
+  </data>
+  <data name="RateDetailDto.Group4Leadtimes" xml:space="preserve">
+	  <value>4. Leadtimes</value>
+  </data>
+  <data name="RateDetailDto.Group41LeadtimesLeg1" xml:space="preserve">
+	  <value>4.1. Leadtimes Rate 1</value>
+  </data>
+  <data name="RateDetailDto.Group42LeadtimesLeg2" xml:space="preserve">
+	  <value>4.2. Leadtimes Rate 2</value>
+  </data>
+  <data name="RateDetailDto.NodeFromCode" xml:space="preserve">
+	  <value>Node From Code</value>
+  </data>
+  <data name="RateDetailDto.NodeFromName" xml:space="preserve">
+	  <value>Node From Name</value>
+  </data>
+  <data name="RateDetailDto.RegionFromCode" xml:space="preserve">
+	  <value>Region From Code</value>
+  </data>
+  <data name="RateDetailDto.RegionFromName" xml:space="preserve">
+	  <value>Region From Name</value>
+  </data>
+  <data name="RateDetailDto.ProxyNodeCode" xml:space="preserve">
+	  <value>Proxy Node Code</value>
+  </data>
+  <data name="RateDetailDto.ProxyNodeName" xml:space="preserve">
+	  <value>Proxy Node Name</value>
+  </data>
+  <data name="RateDetailDto.ProxyRegionCode" xml:space="preserve">
+	  <value>Proxy Region Code</value>
+  </data>
+  <data name="RateDetailDto.ProxyRegionName" xml:space="preserve">
+	  <value>Proxy Region Name</value>
+  </data>
+  <data name="RateDetailDto.NodeToCode" xml:space="preserve">
+	  <value>Node To Code</value>
+  </data>
+  <data name="RateDetailDto.NodeToName" xml:space="preserve">
+	  <value>Node To Name</value>
+  </data>
+  <data name="RateDetailDto.RegionToCode" xml:space="preserve">
+	  <value>Region To Code</value>
+  </data>
+  <data name="RateDetailDto.RegionToName" xml:space="preserve">
+	  <value>Region To Name</value>
+  </data>
+  <data name="RateDetailDto.SearchTime" xml:space="preserve">
+	  <value>Search Time, days</value>
+  </data>
+  <data name="RateDetailDto.LoadTime" xml:space="preserve">
+	  <value>Load Time, days</value>
+  </data>
+  <data name="RateDetailDto.DaysWaiting" xml:space="preserve">
+	  <value>Days Waiting, days</value>
+  </data>
+  <data name="RateDetailDto.TravelTime" xml:space="preserve">
+	  <value>Travel Time, days</value>
+  </data>
+  <data name="RateDetailDto.UnLoadTime" xml:space="preserve">
+	  <value>UnLoad Time, days</value>
+  </data>
+  <data name="RateDetailDto.TransportationTime" xml:space="preserve">
+	  <value>Transportation Time, days</value>
+  </data>
+  <data name="RateDetailDto.Distance" xml:space="preserve">
+	  <value>Distance</value>
+  </data>
+  <data name="RateDetailDto.Leg1_SearchTime" xml:space="preserve">
+	  <value>Leg 1. Search Time, days</value>
+  </data>
+  <data name="RateDetailDto.Leg1_LoadTime" xml:space="preserve">
+	  <value>Leg 1. Load Time, days</value>
+  </data>
+  <data name="RateDetailDto.Leg1_DaysWaiting" xml:space="preserve">
+	  <value>Leg 1. Days Waiting, days</value>
+  </data>
+  <data name="RateDetailDto.Leg1_TravelTime" xml:space="preserve">
+	  <value>Leg 1. Travel Time, days</value>
+  </data>
+  <data name="RateDetailDto.Leg1_TransportationTime" xml:space="preserve">
+	  <value>Leg 1. Transportation Time, days</value>
+  </data>
+  <data name="RateDetailDto.Leg1_Distance" xml:space="preserve">
+	  <value>Leg 1. Distance</value>
+  </data>
+  <data name="RateDetailDto.Leg2_UpLoadTime" xml:space="preserve">
+	  <value>Leg 2. UnLoad Time, days</value>
+  </data>
+  <data name="RateDetailDto.Leg2_DaysWaiting" xml:space="preserve">
+	  <value>Leg 2. Days Waiting, days</value>
+  </data>
+  <data name="RateDetailDto.Leg2_TravelTime" xml:space="preserve">
+	  <value>Leg 2. Travel Time, days</value>
+  </data>
+  <data name="RateDetailDto.Leg2_TransportationTime" xml:space="preserve">
+	  <value>Leg 2. Transportation Time, days</value>
+  </data>
+  <data name="RateDetailDto.Leg2_Distance" xml:space="preserve">
+	  <value>Leg 2. Distance</value>
+  </data>
+  <data name="RateDetailDto.AverageRateCode" xml:space="preserve">
+	  <value>Average Rate Code</value>
+  </data>
+  <data name="RateDetailDto.AverageRateLevel3TotalCostTon" xml:space="preserve">
+	  <value>Average Rate Level 3, per ton</value>
+  </data>
+  <data name="RateDetailDto.CalcType" xml:space="preserve">
+	  <value>Calculation Type</value>
+  </data>
+  <data name="RateDetailDto.CurrencyRateMonth" xml:space="preserve">
+	  <value>Currency Rate Month</value>
+  </data>
+  <data name="RateDetailDto.EffectiveLoadOfTransportType" xml:space="preserve">
+	  <value>Effective Load</value>
+  </data>
+  <data name="RateDetailDto.TotalCostTonRUB" xml:space="preserve">
+	  <value>Total Cost Ton, RUB</value>
+  </data>
+  <data name="RateDetailDto.TotalCostTonEUR" xml:space="preserve">
+	  <value>Total Cost Ton, EUR</value>
+  </data>
+  <data name="RateDetailDto.TotalCostTonCNY" xml:space="preserve">
+	  <value>Total Cost Ton, CNY</value>
+  </data>
+  <data name="RateDetailDto.TotalCostTonUSD" xml:space="preserve">
+	  <value>Total Cost Ton, USD</value>
+  </data>
+  <data name="RateDetailDto.TotalCostTransportRUB" xml:space="preserve">
+	  <value>Total Cost Transport, RUB</value>
+  </data>
+  <data name="RateDetailDto.TotalCostTransportEUR" xml:space="preserve">
+	  <value>Total Cost Transport, EUR</value>
+  </data>
+  <data name="RateDetailDto.TotalCostTransportCNY" xml:space="preserve">
+	  <value>Total Cost Transport, CNY</value>
+  </data>
+  <data name="RateDetailDto.TotalCostTransportUSD" xml:space="preserve">
+	  <value>Total Cost Transport, USD</value>
+  </data>
+  <data name="RateDetailDto.EmptyRFSize" xml:space="preserve">
+	  <value>Empty RF</value>
+  </data>
+  <data name="RateDetailDto.EmptyRFCurrency" xml:space="preserve">
+	  <value>Empty RF Currency</value>
+  </data>
+  <data name="RateDetailDto.EmptyCISSize" xml:space="preserve">
+	  <value>Empty CIS</value>
+  </data>
+  <data name="RateDetailDto.EmptyCISCurrency" xml:space="preserve">
+	  <value>Empty CIS Currency</value>
+  </data>
+  <data name="RateDetailDto.ProvisionTransportSize" xml:space="preserve">
+	  <value>Provision Transport</value>
+  </data>
+  <data name="RateDetailDto.ProvisionTransportCurrency" xml:space="preserve">
+	  <value>Provision Transport Currency</value>
+  </data>
+  <data name="RateDetailDto.FerryboatSize" xml:space="preserve">
+	  <value>Ferryboat</value>
+  </data>
+  <data name="RateDetailDto.FerryboatCurrency" xml:space="preserve">
+	  <value>Ferryboat Currency</value>
+  </data>
+  <data name="RateDetailDto.TEFromSize" xml:space="preserve">
+	  <value>TE From</value>
+  </data>
+  <data name="RateDetailDto.TEFromCurrency" xml:space="preserve">
+	  <value>TE From Currency</value>
+  </data>
+  <data name="RateDetailDto.RatePNPFromSize" xml:space="preserve">
+	  <value>PNP From</value>
+  </data>
+  <data name="RateDetailDto.PNPFromCurrency" xml:space="preserve">
+	  <value>PNP From Currency</value>
+  </data>
+  <data name="RateDetailDto.TEToSize" xml:space="preserve">
+	  <value>TE To</value>
+  </data>
+  <data name="RateDetailDto.TEToCurrency" xml:space="preserve">
+	  <value>TE To Currency</value>
+  </data>
+  <data name="RateDetailDto.PNPToSize" xml:space="preserve">
+	  <value>PNP To</value>
+  </data>
+  <data name="RateDetailDto.PNPToCurrency" xml:space="preserve">
+	  <value>PNP To Currency</value>
+  </data>
+  <data name="RateDetailDto.DrainLoadingSize" xml:space="preserve">
+	  <value>Drain Loading</value>
+  </data>
+  <data name="RateDetailDto.DrainLoadingCurrency" xml:space="preserve">
+	  <value>Drain Loading Currency</value>
+  </data>
+  <data name="RateDetailDto.TransshipmentSize" xml:space="preserve">
+	  <value>Transshipment</value>
+  </data>
+  <data name="RateDetailDto.TransshipmentCurrency" xml:space="preserve">
+	  <value>Transshipment Currency</value>
+  </data>
+  <data name="RateDetailDto.FreightSize" xml:space="preserve">
+	  <value>Freight</value>
+  </data>
+  <data name="RateDetailDto.FreightCurrency" xml:space="preserve">
+	  <value>Freight Currency</value>
+  </data>
+  <data name="RateDetailDto.AdditionalFeesCISSize" xml:space="preserve">
+	  <value>Additional Fees CIS</value>
+  </data>
+  <data name="RateDetailDto.AdditionalFeesCISCurrency" xml:space="preserve">
+	  <value>Additional Fees CIS Currency</value>
+  </data>
+  <data name="RateDetailDto.LoadedCISSize" xml:space="preserve">
+	  <value>Loaded CIS</value>
+  </data>
+  <data name="RateDetailDto.LoadedCISCurrency" xml:space="preserve">
+	  <value>Loaded CIS Currency</value>
+  </data>
+  <data name="RateDetailDto.LoadedRFSize" xml:space="preserve">
+	  <value>Loaded RF</value>
+  </data>
+  <data name="RateDetailDto.LoadedRFCurrency" xml:space="preserve">
+	  <value>Loaded RF Currency</value>
+  </data>
+  <data name="RateDetailDto.TEFromSize_fix" xml:space="preserve">
+	  <value>TE From (fix)</value>
+  </data>
+  <data name="RateDetailDto.TEFromCurrency_fix" xml:space="preserve">
+	  <value>TE From Currency (fix)</value>
+  </data>
+  <data name="RateDetailDto.TEToSize_fix" xml:space="preserve">
+	  <value>TE To (fix)</value>
+  </data>
+  <data name="RateDetailDto.TEToCurrency_fix" xml:space="preserve">
+	  <value>TE To Currency (fix)</value>
+  </data>
+  <data name="RateDetailDto.Basis" xml:space="preserve">
+	  <value>Basis</value>
+  </data>
+  <data name="RateDetailDto.BasisNodeCode" xml:space="preserve">
+	  <value>Basis Node Code</value>
+  </data>
+  <data name="RateDetailDto.BasisNodeNameRu" xml:space="preserve">
+	  <value>Basis Node</value>
+  </data>
+  <data name="RateDetailDto.ProductGroupNameEnRu" xml:space="preserve">
+	  <value>Product Group</value>
+  </data>
+  <data name="RateDetailDto.ProductDPOCOde" xml:space="preserve">
+	  <value>Product DPO Code</value>
+  </data>
+  <data name="RateDetailDto.ContractorCode" xml:space="preserve">
+	  <value>Contractor Code</value>
+  </data>
+  <data name="RateDetailDto.ContractorNameSearch" xml:space="preserve">
+	  <value>Contractor</value>
+  </data>
+  <data name="RateDetailDto.ContractorEGRUL" xml:space="preserve">
+	  <value>Contractor EGRUL</value>
+  </data>
+  <data name="RateDetailDto.Nomination" xml:space="preserve">
+	  <value>Nomination</value>
+  </data>
+  <data name="RateDetailDto.TenderServicePack" xml:space="preserve">
+	  <value>Tender Service Pack</value>
+  </data>
+  <data name="RateDetailDto.TenderNumber" xml:space="preserve">
+	  <value>Tender Number</value>
+  </data>
+  <data name="RateDetailDto.AdditionalAgreementNumber" xml:space="preserve">
+	  <value>Additional Agreement Number</value>
+  </data>
+  <data name="RateDetailDto.Comment" xml:space="preserve">
+	  <value>Comment</value>
+  </data>
+  <data name="RateDetailDto.LegCode" xml:space="preserve">
+	  <value>Leg Code</value>
+  </data>
+  <data name="RateDetailDto.LegChangeDate" xml:space="preserve">
+	  <value>Leg Changed</value>
+  </data>
+  <data name="RateDetailDto.LeadTimeChangeDate" xml:space="preserve">
+	  <value>Lead Time Changed</value>
+  </data>
+  <data name="RateDetailDto.LeadTimeStartDate" xml:space="preserve">
+	  <value>Lead Time Start</value>
+  </data>
+  <data name="RateDetailDto.LeadTimeEndDate" xml:space="preserve">
+	  <value>Lead Time End</value>
+  </data>
+  <data name="RateDetailDto.LeadTimeCode" xml:space="preserve">
+	  <value>Lead Time Code</value>
+  </data>
+  <data name="RateDetailDto.Leg1_EffectiveLoad" xml:space="preserve">
+	  <value>Leg 1. Effective Load</value>
+  </data>
+  <data name="RateDetailDto.Leg1_TotalCostTon" xml:space="preserve">
+	  <value>Leg 1. Total Cost Ton</value>
+  </data>
+  <data name="RateDetailDto.Leg1_TotalCostTransport" xml:space="preserve">
+	  <value>Leg 1. Total Cost Transport</value>
+  </data>
+  <data name="RateDetailDto.Leg1_BaseCurrency" xml:space="preserve">
+	  <value>Leg 1. Base Currency</value>
+  </data>
+  <data name="RateDetailDto.Leg1_TotalCostTonRUB" xml:space="preserve">
+	  <value>Leg 1. Total Cost Ton, RUB</value>
+  </data>
+  <data name="RateDetailDto.Leg1_TotalCostTonUSD" xml:space="preserve">
+	  <value>Leg 1. Total Cost Ton, USD</value>
+  </data>
+  <data name="RateDetailDto.Leg1_TotalCostTonEUR" xml:space="preserve">
+	  <value>Leg 1. Total Cost Ton, EUR</value>
+  </data>
+  <data name="RateDetailDto.Leg1_TotalCostTonCNY" xml:space="preserve">
+	  <value>Leg 1. Total Cost Ton, CNY</value>
+  </data>
+  <data name="RateDetailDto.Leg1_TotalCostTransportRUB" xml:space="preserve">
+	  <value>Leg 1. Total Cost Transport, RUB</value>
+  </data>
+  <data name="RateDetailDto.Leg1_TotalCostTransportUSD" xml:space="preserve">
+	  <value>Leg 1. Total Cost Transport, USD</value>
+  </data>
+  <data name="RateDetailDto.Leg1_TotalCostTransportEUR" xml:space="preserve">
+	  <value>Leg 1. Total Cost Transport, EUR</value>
+  </data>
+  <data name="RateDetailDto.Leg1_TotalCostTransportCNY" xml:space="preserve">
+	  <value>Leg 1. Total Cost Transport, CNY</value>
+  </data>
+  <data name="RateDetailDto.Leg2_EffectiveLoad" xml:space="preserve">
+	  <value>Leg 2. Effective Load</value>
+  </data>
+  <data name="RateDetailDto.Leg2_TotalCostTon" xml:space="preserve">
+	  <value>Leg 2. Total Cost Ton</value>
+  </data>
+  <data name="RateDetailDto.Leg2_TotalCostTransport" xml:space="preserve">
+	  <value>Leg 2. Total Cost Transport</value>
+  </data>
+  <data name="RateDetailDto.Leg2_BaseCurrency" xml:space="preserve">
+	  <value>Leg 2. Base Currency</value>
+  </data>
+  <data name="RateDetailDto.Leg2_TotalCostTonRUB" xml:space="preserve">
+	  <value>Leg 2. Total Cost Ton, RUB</value>
+  </data>
+  <data name="RateDetailDto.Leg2_TotalCostTonUSD" xml:space="preserve">
+	  <value>Leg 2. Total Cost Ton, USD</value>
+  </data>
+  <data name="RateDetailDto.Leg2_TotalCostTonEUR" xml:space="preserve">
+	  <value>Leg 2. Total Cost Ton, EUR</value>
+  </data>
+  <data name="RateDetailDto.Leg2_TotalCostTonCNY" xml:space="preserve">
+	  <value>Leg 2. Total Cost Ton, CNY</value>
+  </data>
+  <data name="RateDetailDto.Leg2_TotalCostTransportRUB" xml:space="preserve">
+	  <value>Leg 2. Total Cost Transport, RUB</value>
+  </data>
+  <data name="RateDetailDto.Leg2_TotalCostTransportUSD" xml:space="preserve">
+	  <value>Leg 2. Total Cost Transport, USD</value>
+  </data>
+  <data name="RateDetailDto.Leg2_TotalCostTransportEUR" xml:space="preserve">
+	  <value>Leg 2. Total Cost Transport, EUR</value>
+  </data>
+  <data name="RateDetailDto.Leg2_TotalCostTransportCNY" xml:space="preserve">
+	  <value>Leg 2. Total Cost Transport, CNY</value>
+  </data>
+  <data name="RateDetailDto.Group5ProductContractor" xml:space="preserve">
+	  <value>5. Product and Contractor</value>
+  </data>
   <data name="RateDetailDto.CustomMessage" xml:space="preserve">
 	  <value>Custom Message From Transport Rate Details: </value>
   </data>
