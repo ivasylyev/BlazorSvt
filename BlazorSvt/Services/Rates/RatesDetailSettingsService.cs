@@ -16,12 +16,14 @@ public class RatesDetailSettingsService(IStringLocalizer<Svt> L, ILogger<RatesDe
         var results = new List<DetailSetting<RateDetailDto>>();
 
         AddCodeSettings(results);
+        AddTypeSettings(results);
+        AddTenderSettings(results);
         AddIsDefRateSettings(results);
         AddCreationChangeDateSettings(results);
         AddIsArchiveSettings(results);
         AddStartEndDateSettings(results);
         AddAverageRateAndCostSettings(results);
-        AddCalcCurrencyAndTypeSettings(results);
+        AddCalcCurrencySettings(results);
         AddMultiCurrencyCostSettings(results);
         AddFeeComponentSettings(results);
 
@@ -38,7 +40,8 @@ public class RatesDetailSettingsService(IStringLocalizer<Svt> L, ILogger<RatesDe
 
         AddProductSettings(results, isRu);
         AddContractorSettings(results);
-        AddTenderAndCommentSettings(results);
+     
+        AddCommentSettings(results);
 
         AddLegReferenceSettings(results);
         AddLeadtimeMetaSettings(results);
@@ -161,27 +164,35 @@ public class RatesDetailSettingsService(IStringLocalizer<Svt> L, ILogger<RatesDe
                 GroupHeader = L["RateDetailDto.Group1Parameters"],
                 DisplaySelector = dto => dto.AverageRateLevel3TotalCostTon,
                 VisibleSelector = _ => true
+            }
+        ]);
+    }
+
+    private void AddTypeSettings(List<DetailSetting<RateDetailDto>> results)
+    {
+        results.AddRange(
+        [
+            new DetailSetting<RateDetailDto>
+            {
+                Name = nameof(RateDetailDto.TypeCode),
+                Header = L["RateDetailDto.RateTypeCode"],
+                GroupHeader = L["RateDetailDto.Group1Parameters"],
+                DisplaySelector = dto => dto.TypeCode,
+                VisibleSelector = _ => true,
+                HasMargin = true
             },
             new DetailSetting<RateDetailDto>
             {
-                Name = nameof(RateDetailDto.TotalCostTon),
-                Header = L["RateDetailDto.TotalCostTon"],
+                Name = nameof(RateDetailDto.TypeName),
+                Header = L["RateDetailDto.RateTypeName"],
                 GroupHeader = L["RateDetailDto.Group1Parameters"],
-                DisplaySelector = dto => dto.TotalCostTon,
-                VisibleSelector = _ => true
-            },
-            new DetailSetting<RateDetailDto>
-            {
-                Name = nameof(RateDetailDto.TotalCostTransport),
-                Header = L["RateDetailDto.TotalCostTransport"],
-                GroupHeader = L["RateDetailDto.Group1Parameters"],
-                DisplaySelector = dto => dto.TotalCostTransport,
+                DisplaySelector = dto => dto.TypeName,
                 VisibleSelector = _ => true
             }
         ]);
     }
 
-    private void AddCalcCurrencyAndTypeSettings(List<DetailSetting<RateDetailDto>> results)
+    private void AddCalcCurrencySettings(List<DetailSetting<RateDetailDto>> results)
     {
         results.AddRange(
         [
@@ -749,7 +760,7 @@ public class RatesDetailSettingsService(IStringLocalizer<Svt> L, ILogger<RatesDe
         ]);
     }
 
-    private void AddTenderAndCommentSettings(List<DetailSetting<RateDetailDto>> results)
+    private void AddTenderSettings(List<DetailSetting<RateDetailDto>> results)
     {
         results.AddRange(
         [
@@ -785,7 +796,15 @@ public class RatesDetailSettingsService(IStringLocalizer<Svt> L, ILogger<RatesDe
                 GroupHeader = L["RateDetailDto.Group5ProductContractor"],
                 DisplaySelector = dto => dto.AdditionalAgreementNumber!,
                 VisibleSelector = dto => dto.AdditionalAgreementNumber is not null
-            },
+            }
+        ]);
+    }
+
+    private void AddCommentSettings(List<DetailSetting<RateDetailDto>> results)
+    {
+        results.AddRange(
+        [
+           
             new DetailSetting<RateDetailDto>
             {
                 Name = nameof(RateDetailDto.Comment),
