@@ -300,7 +300,7 @@ public class RatesDetailSettingsService(IStringLocalizer<Svt> L, ILogger<RatesDe
             {
                 Name = nameof(RateDetailDto.TotalCostTonUSD),
                 Header = L["RateDetailDto.TotalCostTonUSD"],
-                GroupHeader = L["RateDetailDto.Group12Parameters"],
+                GroupHeader = L["RateDetailDto.Group11Parameters"],
                 DisplaySelector = dto => dto.TotalCostTonUSD,
                 VisibleSelector = _ => true,
                 HasMargin = true
@@ -309,7 +309,7 @@ public class RatesDetailSettingsService(IStringLocalizer<Svt> L, ILogger<RatesDe
             {
                 Name = nameof(RateDetailDto.TotalCostTonEUR),
                 Header = L["RateDetailDto.TotalCostTonEUR"],
-                GroupHeader = L["RateDetailDto.Group12Parameters"],
+                GroupHeader = L["RateDetailDto.Group11Parameters"],
                 DisplaySelector = dto => dto.TotalCostTonEUR,
                 VisibleSelector = _ => true
             },
@@ -317,7 +317,7 @@ public class RatesDetailSettingsService(IStringLocalizer<Svt> L, ILogger<RatesDe
             {
                 Name = nameof(RateDetailDto.TotalCostTonCNY),
                 Header = L["RateDetailDto.TotalCostTonCNY"],
-                GroupHeader = L["RateDetailDto.Group12Parameters"],
+                GroupHeader = L["RateDetailDto.Group11Parameters"],
                 DisplaySelector = dto => dto.TotalCostTonCNY,
                 VisibleSelector = _ => true
             },
@@ -325,7 +325,7 @@ public class RatesDetailSettingsService(IStringLocalizer<Svt> L, ILogger<RatesDe
             {
                 Name = nameof(RateDetailDto.TotalCostTransportRUB),
                 Header = L["RateDetailDto.TotalCostTransportRUB"],
-                GroupHeader = L["RateDetailDto.Group12Parameters"],
+                GroupHeader = L["RateDetailDto.Group11Parameters"],
                 DisplaySelector = dto => dto.TotalCostTransportRUB,
                 VisibleSelector = _ => true,
                 HasMargin = true
@@ -334,7 +334,7 @@ public class RatesDetailSettingsService(IStringLocalizer<Svt> L, ILogger<RatesDe
             {
                 Name = nameof(RateDetailDto.TotalCostTransportUSD),
                 Header = L["RateDetailDto.TotalCostTransportUSD"],
-                GroupHeader = L["RateDetailDto.Group12Parameters"],
+                GroupHeader = L["RateDetailDto.Group11Parameters"],
                 DisplaySelector = dto => dto.TotalCostTransportUSD,
                 VisibleSelector = _ => true
             },
@@ -342,7 +342,7 @@ public class RatesDetailSettingsService(IStringLocalizer<Svt> L, ILogger<RatesDe
             {
                 Name = nameof(RateDetailDto.TotalCostTransportEUR),
                 Header = L["RateDetailDto.TotalCostTransportEUR"],
-                GroupHeader = L["RateDetailDto.Group12Parameters"],
+                GroupHeader = L["RateDetailDto.Group11Parameters"],
                 DisplaySelector = dto => dto.TotalCostTransportEUR,
                 VisibleSelector = _ => true
             },
@@ -350,7 +350,7 @@ public class RatesDetailSettingsService(IStringLocalizer<Svt> L, ILogger<RatesDe
             {
                 Name = nameof(RateDetailDto.TotalCostTransportCNY),
                 Header = L["RateDetailDto.TotalCostTransportCNY"],
-                GroupHeader = L["RateDetailDto.Group12Parameters"],
+                GroupHeader = L["RateDetailDto.Group11Parameters"],
                 DisplaySelector = dto => dto.TotalCostTransportCNY,
                 VisibleSelector = _ => true
             }
@@ -795,7 +795,7 @@ public class RatesDetailSettingsService(IStringLocalizer<Svt> L, ILogger<RatesDe
         {
             Name = nameof(RateDetailDto.Comment),
             Header = L["RateDetailDto.Comment"],
-            GroupHeader = L["RateDetailDto.Group11Parameters"],
+            GroupHeader = L["RateDetailDto.Group10Parameters"],
             DisplaySelector = dto => dto.Comment!,
             VisibleSelector = dto => dto.Comment is not null
         });
@@ -809,7 +809,7 @@ public class RatesDetailSettingsService(IStringLocalizer<Svt> L, ILogger<RatesDe
             {
                 Name = nameof(RateDetailDto.LegCode),
                 Header = L["RateDetailDto.LegCode"],
-                GroupHeader = L["RateDetailDto.Group4Leadtimes"],
+                GroupHeader = L["RateDetailDto.Group12Parameters"],
                 DisplaySelector = dto => dto.LegCode,
                 VisibleSelector = _ => true
             },
@@ -817,7 +817,7 @@ public class RatesDetailSettingsService(IStringLocalizer<Svt> L, ILogger<RatesDe
             {
                 Name = nameof(RateDetailDto.LegChangeDate),
                 Header = L["RateDetailDto.LegChangeDate"],
-                GroupHeader = L["RateDetailDto.Group4Leadtimes"],
+                GroupHeader = L["RateDetailDto.Group12Parameters"],
                 DisplaySelector = dto => dto.LegChangeDate,
                 VisibleSelector = _ => true
             }
@@ -832,7 +832,7 @@ public class RatesDetailSettingsService(IStringLocalizer<Svt> L, ILogger<RatesDe
             {
                 Name = nameof(RateDetailDto.LeadTimeCode),
                 Header = L["RateDetailDto.LeadTimeCode"],
-                GroupHeader = L["RateDetailDto.Group4Leadtimes"],
+                GroupHeader = L["RateDetailDto.Group12Parameters"],
                 DisplaySelector = dto => dto.LeadTimeCode!,
                 VisibleSelector = dto => dto.LeadTimeCode is not null,
                 HasMargin = true
@@ -841,7 +841,7 @@ public class RatesDetailSettingsService(IStringLocalizer<Svt> L, ILogger<RatesDe
             {
                 Name = nameof(RateDetailDto.LeadTimeStartDate),
                 Header = L["RateDetailDto.LeadTimeStartDate"],
-                GroupHeader = L["RateDetailDto.Group4Leadtimes"],
+                GroupHeader = L["RateDetailDto.Group12Parameters"],
                 DisplaySelector = dto => dto.LeadTimeStartDate!,
                 VisibleSelector = dto => dto.LeadTimeCode is not null
             },
@@ -849,7 +849,7 @@ public class RatesDetailSettingsService(IStringLocalizer<Svt> L, ILogger<RatesDe
             {
                 Name = nameof(RateDetailDto.LeadTimeEndDate),
                 Header = L["RateDetailDto.LeadTimeEndDate"],
-                GroupHeader = L["RateDetailDto.Group4Leadtimes"],
+                GroupHeader = L["RateDetailDto.Group12Parameters"],
                 DisplaySelector = dto => dto.LeadTimeEndDate!,
                 VisibleSelector = dto => dto.LeadTimeCode is not null
             },
@@ -857,7 +857,7 @@ public class RatesDetailSettingsService(IStringLocalizer<Svt> L, ILogger<RatesDe
             {
                 Name = nameof(RateDetailDto.LeadTimeChangeDate),
                 Header = L["RateDetailDto.LeadTimeChangeDate"],
-                GroupHeader = L["RateDetailDto.Group4Leadtimes"],
+                GroupHeader = L["RateDetailDto.Group12Parameters"],
                 DisplaySelector = dto => dto.LeadTimeChangeDate!,
                 VisibleSelector = dto => dto.LeadTimeCode is not null
             }
@@ -872,7 +872,7 @@ public class RatesDetailSettingsService(IStringLocalizer<Svt> L, ILogger<RatesDe
             {
                 Name = nameof(RateDetailDto.LeadTimeSearchTime),
                 Header = L["RateDetailDto.SearchTime"],
-                GroupHeader = L["RateDetailDto.Group4Leadtimes"],
+                GroupHeader = L["RateDetailDto.Group12Parameters"],
                 DisplaySelector = dto => dto.LeadTimeSearchTime!,
                 VisibleSelector = dto => dto.LeadTimeCode is not null,
                 HasMargin = true
@@ -881,7 +881,7 @@ public class RatesDetailSettingsService(IStringLocalizer<Svt> L, ILogger<RatesDe
             {
                 Name = nameof(RateDetailDto.LeadTimeLoadTime),
                 Header = L["RateDetailDto.LoadTime"],
-                GroupHeader = L["RateDetailDto.Group4Leadtimes"],
+                GroupHeader = L["RateDetailDto.Group12Parameters"],
                 DisplaySelector = dto => dto.LeadTimeLoadTime!,
                 VisibleSelector = dto => dto.LeadTimeCode is not null
             },
@@ -889,7 +889,7 @@ public class RatesDetailSettingsService(IStringLocalizer<Svt> L, ILogger<RatesDe
             {
                 Name = nameof(RateDetailDto.LeadTimeDaysWaiting),
                 Header = L["RateDetailDto.DaysWaiting"],
-                GroupHeader = L["RateDetailDto.Group4Leadtimes"],
+                GroupHeader = L["RateDetailDto.Group12Parameters"],
                 DisplaySelector = dto => dto.LeadTimeDaysWaiting!,
                 VisibleSelector = dto => dto.LeadTimeCode is not null
             },
@@ -897,7 +897,7 @@ public class RatesDetailSettingsService(IStringLocalizer<Svt> L, ILogger<RatesDe
             {
                 Name = nameof(RateDetailDto.LeadTimeTravelTime),
                 Header = L["RateDetailDto.TravelTime"],
-                GroupHeader = L["RateDetailDto.Group4Leadtimes"],
+                GroupHeader = L["RateDetailDto.Group12Parameters"],
                 DisplaySelector = dto => dto.LeadTimeTravelTime!,
                 VisibleSelector = dto => dto.LeadTimeCode is not null
             },
@@ -905,7 +905,7 @@ public class RatesDetailSettingsService(IStringLocalizer<Svt> L, ILogger<RatesDe
             {
                 Name = nameof(RateDetailDto.LeadTimeUnLoadTime),
                 Header = L["RateDetailDto.UnLoadTime"],
-                GroupHeader = L["RateDetailDto.Group4Leadtimes"],
+                GroupHeader = L["RateDetailDto.Group12Parameters"],
                 DisplaySelector = dto => dto.LeadTimeUnLoadTime!,
                 VisibleSelector = dto => dto.LeadTimeCode is not null
             },
@@ -913,7 +913,7 @@ public class RatesDetailSettingsService(IStringLocalizer<Svt> L, ILogger<RatesDe
             {
                 Name = nameof(RateDetailDto.LeadTimeTransportationTime),
                 Header = L["RateDetailDto.TransportationTime"],
-                GroupHeader = L["RateDetailDto.Group4Leadtimes"],
+                GroupHeader = L["RateDetailDto.Group12Parameters"],
                 DisplaySelector = dto => dto.LeadTimeTransportationTime!,
                 VisibleSelector = dto => dto.LeadTimeCode is not null
             },
@@ -921,7 +921,7 @@ public class RatesDetailSettingsService(IStringLocalizer<Svt> L, ILogger<RatesDe
             {
                 Name = nameof(RateDetailDto.LeadTimeDistance),
                 Header = L["RateDetailDto.Distance"],
-                GroupHeader = L["RateDetailDto.Group4Leadtimes"],
+                GroupHeader = L["RateDetailDto.Group12Parameters"],
                 DisplaySelector = dto => dto.LeadTimeDistance!,
                 VisibleSelector = dto => dto.LeadTimeCode is not null,
                 HasMargin = true
@@ -1073,7 +1073,7 @@ public class RatesDetailSettingsService(IStringLocalizer<Svt> L, ILogger<RatesDe
             {
                 Name = nameof(RateDetailDto.LeadTimeLeg1_SearchTime),
                 Header = L["RateDetailDto.Leg1_SearchTime"],
-                GroupHeader = L["RateDetailDto.Group41LeadtimesLeg1"],
+                GroupHeader = L["RateDetailDto.Group14Parameters"],
                 DisplaySelector = dto => dto.LeadTimeLeg1_SearchTime!,
                 VisibleSelector = dto => dto.ProxyNodeCode is not null,
                 HasMargin = true
@@ -1082,7 +1082,7 @@ public class RatesDetailSettingsService(IStringLocalizer<Svt> L, ILogger<RatesDe
             {
                 Name = nameof(RateDetailDto.LeadTimeLeg1_LoadTime),
                 Header = L["RateDetailDto.Leg1_LoadTime"],
-                GroupHeader = L["RateDetailDto.Group41LeadtimesLeg1"],
+                GroupHeader = L["RateDetailDto.Group14Parameters"],
                 DisplaySelector = dto => dto.LeadTimeLeg1_LoadTime!,
                 VisibleSelector = dto => dto.ProxyNodeCode is not null
             },
@@ -1090,7 +1090,7 @@ public class RatesDetailSettingsService(IStringLocalizer<Svt> L, ILogger<RatesDe
             {
                 Name = nameof(RateDetailDto.LeadTimeLeg1_DaysWaiting),
                 Header = L["RateDetailDto.Leg1_DaysWaiting"],
-                GroupHeader = L["RateDetailDto.Group41LeadtimesLeg1"],
+                GroupHeader = L["RateDetailDto.Group14Parameters"],
                 DisplaySelector = dto => dto.LeadTimeLeg1_DaysWaiting!,
                 VisibleSelector = dto => dto.ProxyNodeCode is not null
             },
@@ -1098,7 +1098,7 @@ public class RatesDetailSettingsService(IStringLocalizer<Svt> L, ILogger<RatesDe
             {
                 Name = nameof(RateDetailDto.LeadTimeLeg1_TravelTime),
                 Header = L["RateDetailDto.Leg1_TravelTime"],
-                GroupHeader = L["RateDetailDto.Group41LeadtimesLeg1"],
+                GroupHeader = L["RateDetailDto.Group14Parameters"],
                 DisplaySelector = dto => dto.LeadTimeLeg1_TravelTime!,
                 VisibleSelector = dto => dto.ProxyNodeCode is not null
             },
@@ -1106,7 +1106,7 @@ public class RatesDetailSettingsService(IStringLocalizer<Svt> L, ILogger<RatesDe
             {
                 Name = nameof(RateDetailDto.LeadTimeLeg1_TransportationTime),
                 Header = L["RateDetailDto.Leg1_TransportationTime"],
-                GroupHeader = L["RateDetailDto.Group41LeadtimesLeg1"],
+                GroupHeader = L["RateDetailDto.Group14Parameters"],
                 DisplaySelector = dto => dto.LeadTimeLeg1_TransportationTime!,
                 VisibleSelector = dto => dto.ProxyNodeCode is not null
             },
@@ -1114,7 +1114,7 @@ public class RatesDetailSettingsService(IStringLocalizer<Svt> L, ILogger<RatesDe
             {
                 Name = nameof(RateDetailDto.LeadTimeLeg1_Distance),
                 Header = L["RateDetailDto.Leg1_Distance"],
-                GroupHeader = L["RateDetailDto.Group41LeadtimesLeg1"],
+                GroupHeader = L["RateDetailDto.Group14Parameters"],
                 DisplaySelector = dto => dto.LeadTimeLeg1_Distance!,
                 VisibleSelector = dto => dto.ProxyNodeCode is not null,
                 HasMargin = true
@@ -1124,7 +1124,7 @@ public class RatesDetailSettingsService(IStringLocalizer<Svt> L, ILogger<RatesDe
 
     private void AddLeg2TransportAndCostSettings(List<DetailSetting<RateDetailDto>> results, bool isRu)
     {
-        var group = L["RateDetailDto.Group14Parameters"];
+        var group = L["RateDetailDto.Group15Parameters"];
 
         results.Add(new DetailSetting<RateDetailDto>
         {
@@ -1266,7 +1266,7 @@ public class RatesDetailSettingsService(IStringLocalizer<Svt> L, ILogger<RatesDe
             {
                 Name = nameof(RateDetailDto.LeadTimeLeg2_TravelTime),
                 Header = L["RateDetailDto.Leg2_TravelTime"],
-                GroupHeader = L["RateDetailDto.Group42LeadtimesLeg2"],
+                GroupHeader = L["RateDetailDto.Group16Parameters"],
                 DisplaySelector = dto => dto.LeadTimeLeg2_TravelTime!,
                 VisibleSelector = dto => dto.ProxyNodeCode is not null,
                 HasMargin = true
@@ -1275,7 +1275,7 @@ public class RatesDetailSettingsService(IStringLocalizer<Svt> L, ILogger<RatesDe
             {
                 Name = nameof(RateDetailDto.LeadTimeLeg2_DaysWaiting),
                 Header = L["RateDetailDto.Leg2_DaysWaiting"],
-                GroupHeader = L["RateDetailDto.Group42LeadtimesLeg2"],
+                GroupHeader = L["RateDetailDto.Group16Parameters"],
                 DisplaySelector = dto => dto.LeadTimeLeg2_DaysWaiting!,
                 VisibleSelector = dto => dto.ProxyNodeCode is not null
             },
@@ -1283,7 +1283,7 @@ public class RatesDetailSettingsService(IStringLocalizer<Svt> L, ILogger<RatesDe
             {
                 Name = nameof(RateDetailDto.LeadTimeLeg2_UploadTime),
                 Header = L["RateDetailDto.Leg2_UpLoadTime"],
-                GroupHeader = L["RateDetailDto.Group42LeadtimesLeg2"],
+                GroupHeader = L["RateDetailDto.Group16Parameters"],
                 DisplaySelector = dto => dto.LeadTimeLeg2_UploadTime!,
                 VisibleSelector = dto => dto.ProxyNodeCode is not null
             },
@@ -1291,7 +1291,7 @@ public class RatesDetailSettingsService(IStringLocalizer<Svt> L, ILogger<RatesDe
             {
                 Name = nameof(RateDetailDto.LeadTimeLeg2_TransportationTime),
                 Header = L["RateDetailDto.Leg2_TransportationTime"],
-                GroupHeader = L["RateDetailDto.Group42LeadtimesLeg2"],
+                GroupHeader = L["RateDetailDto.Group16Parameters"],
                 DisplaySelector = dto => dto.LeadTimeLeg2_TransportationTime!,
                 VisibleSelector = dto => dto.ProxyNodeCode is not null
             },
@@ -1299,7 +1299,7 @@ public class RatesDetailSettingsService(IStringLocalizer<Svt> L, ILogger<RatesDe
             {
                 Name = nameof(RateDetailDto.LeadTimeLeg2_Distance),
                 Header = L["RateDetailDto.Leg2_Distance"],
-                GroupHeader = L["RateDetailDto.Group42LeadtimesLeg2"],
+                GroupHeader = L["RateDetailDto.Group16Parameters"],
                 DisplaySelector = dto => dto.LeadTimeLeg2_Distance!,
                 VisibleSelector = dto => dto.ProxyNodeCode is not null,
                 HasMargin = true

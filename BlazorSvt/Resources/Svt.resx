@@ -362,26 +362,26 @@
   <data name="RateDetailDto.Group9Parameters" xml:space="preserve">
 	  <value>9. Rate Flags and Codes</value>
   </data>
+  <data name="RateDetailDto.Group10Parameters" xml:space="preserve">
+	  <value>10. Comments</value>
+  </data>
   <data name="RateDetailDto.Group11Parameters" xml:space="preserve">
-	  <value>11. Comments</value>
+	  <value>11. Reference. Calculated Costs in Currencies</value>
   </data>
   <data name="RateDetailDto.Group12Parameters" xml:space="preserve">
-	  <value>12. Reference. Calculated Costs in Currencies</value>
+	  <value>12. Leadtimes</value>
   </data>
   <data name="RateDetailDto.Group13Parameters" xml:space="preserve">
 	  <value>13. Leg 1</value>
   </data>
   <data name="RateDetailDto.Group14Parameters" xml:space="preserve">
-	  <value>14. Leg 2</value>
+	  <value>14. Leadtimes. Rate 1</value>
   </data>
-  <data name="RateDetailDto.Group4Leadtimes" xml:space="preserve">
-	  <value>4. Leadtimes</value>
+  <data name="RateDetailDto.Group15Parameters" xml:space="preserve">
+	  <value>15. Leg 2</value>
   </data>
-  <data name="RateDetailDto.Group41LeadtimesLeg1" xml:space="preserve">
-	  <value>4.1. Leadtimes Rate 1</value>
-  </data>
-  <data name="RateDetailDto.Group42LeadtimesLeg2" xml:space="preserve">
-	  <value>4.2. Leadtimes Rate 2</value>
+  <data name="RateDetailDto.Group16Parameters" xml:space="preserve">
+	  <value>16. Leadtimes. Rate 2</value>
   </data>
   <data name="RateDetailDto.NodeFromCode" xml:space="preserve">
 	  <value>Node From Code</value>

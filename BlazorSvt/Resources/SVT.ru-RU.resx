@@ -357,26 +357,26 @@
   <data name="RateDetailDto.Group9Parameters" xml:space="preserve">
 	  <value>9. Признаки и коды ставки</value>
   </data>
+  <data name="RateDetailDto.Group10Parameters" xml:space="preserve">
+	  <value>10. Комментарии</value>
+  </data>
   <data name="RateDetailDto.Group11Parameters" xml:space="preserve">
-	  <value>11. Комментарии</value>
+	  <value>11. Справочно. Рассчетные стоимости в валютах</value>
   </data>
   <data name="RateDetailDto.Group12Parameters" xml:space="preserve">
-	  <value>12. Справочно. Рассчетные стоимости в валютах</value>
+	  <value>12. Лидтаймы</value>
   </data>
   <data name="RateDetailDto.Group13Parameters" xml:space="preserve">
 	  <value>13. Плечо 1</value>
   </data>
   <data name="RateDetailDto.Group14Parameters" xml:space="preserve">
-	  <value>14. Плечо 2</value>
+	  <value>14. Лидтаймы. Ставка 1</value>
   </data>
-  <data name="RateDetailDto.Group4Leadtimes" xml:space="preserve">
-	  <value>4. Лидтаймы </value>
+  <data name="RateDetailDto.Group15Parameters" xml:space="preserve">
+	  <value>15. Плечо 2</value>
   </data>
-  <data name="RateDetailDto.Group41LeadtimesLeg1" xml:space="preserve">
-	  <value>4.1. Лидтаймы. Ставка 1</value>
-  </data>
-  <data name="RateDetailDto.Group42LeadtimesLeg2" xml:space="preserve">
-	  <value>4.2. Лидтаймы. Ставка 2</value>
+  <data name="RateDetailDto.Group16Parameters" xml:space="preserve">
+	  <value>16. Лидтаймы. Ставка 2</value>
   </data>
   <data name="RateDetailDto.NodeFromCode" xml:space="preserve">
 	  <value>Код узла отправления</value>
