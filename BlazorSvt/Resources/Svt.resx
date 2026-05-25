@@ -338,6 +338,45 @@
   <data name="RateDetailDto.Group1Parameters" xml:space="preserve">
 	  <value>1. Rate Parameters</value>
   </data>
+  <data name="RateDetailDto.Group2Parameters" xml:space="preserve">
+	  <value>2. Rate Dates</value>
+  </data>
+  <data name="RateDetailDto.Group3Parameters" xml:space="preserve">
+	  <value>3. Origin - Destination</value>
+  </data>
+  <data name="RateDetailDto.Group4Parameters" xml:space="preserve">
+	  <value>4. Transport</value>
+  </data>
+  <data name="RateDetailDto.Group5Parameters" xml:space="preserve">
+	  <value>5. Multimodal Transportation</value>
+  </data>
+  <data name="RateDetailDto.Group6Parameters" xml:space="preserve">
+	  <value>6. Cargo</value>
+  </data>
+  <data name="RateDetailDto.Group7Parameters" xml:space="preserve">
+	  <value>7. Rate Amount (excluding VAT)</value>
+  </data>
+  <data name="RateDetailDto.Group8Parameters" xml:space="preserve">
+	  <value>8. Rate Components (excluding VAT, per ton)</value>
+  </data>
+  <data name="RateDetailDto.Group9Parameters" xml:space="preserve">
+	  <value>9. Rate Flags and Codes</value>
+  </data>
+  <data name="RateDetailDto.Group10Parameters" xml:space="preserve">
+	  <value>10. Deflator</value>
+  </data>
+  <data name="RateDetailDto.Group11Parameters" xml:space="preserve">
+	  <value>11. Comments</value>
+  </data>
+  <data name="RateDetailDto.Group12Parameters" xml:space="preserve">
+	  <value>12. Reference. Calculated Costs in Currencies</value>
+  </data>
+  <data name="RateDetailDto.Group13Parameters" xml:space="preserve">
+	  <value>13. Leg 1</value>
+  </data>
+  <data name="RateDetailDto.Group14Parameters" xml:space="preserve">
+	  <value>14. Leg 2</value>
+  </data>
   <data name="RateDetailDto.Group2FromTo" xml:space="preserve">
 	  <value>2. From - To</value>
   </data>

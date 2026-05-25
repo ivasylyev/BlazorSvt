@@ -333,6 +333,45 @@
   <data name="RateDetailDto.Group1Parameters" xml:space="preserve">
 	  <value>1. Параметры ставки</value>
   </data>
+  <data name="RateDetailDto.Group2Parameters" xml:space="preserve">
+	  <value>2. Даты ставки</value>
+  </data>
+  <data name="RateDetailDto.Group3Parameters" xml:space="preserve">
+	  <value>3. Отправление - назначение</value>
+  </data>
+  <data name="RateDetailDto.Group4Parameters" xml:space="preserve">
+	  <value>4. Транспорт</value>
+  </data>
+  <data name="RateDetailDto.Group5Parameters" xml:space="preserve">
+	  <value>5. Мультимодальные перевозки</value>
+  </data>
+  <data name="RateDetailDto.Group6Parameters" xml:space="preserve">
+	  <value>6. Груз</value>
+  </data>
+  <data name="RateDetailDto.Group7Parameters" xml:space="preserve">
+	  <value>7. Размер ставки (без учёта НДС)</value>
+  </data>
+  <data name="RateDetailDto.Group8Parameters" xml:space="preserve">
+	  <value>8. Составляющие ставки (без учёта НДС, за тонну)</value>
+  </data>
+  <data name="RateDetailDto.Group9Parameters" xml:space="preserve">
+	  <value>9. Признаки и коды ставки</value>
+  </data>
+  <data name="RateDetailDto.Group10Parameters" xml:space="preserve">
+	  <value>10. Дефлятор</value>
+  </data>
+  <data name="RateDetailDto.Group11Parameters" xml:space="preserve">
+	  <value>11. Комментарии</value>
+  </data>
+  <data name="RateDetailDto.Group12Parameters" xml:space="preserve">
+	  <value>12. Справочно. Рассчетные стоимости в валютах</value>
+  </data>
+  <data name="RateDetailDto.Group13Parameters" xml:space="preserve">
+	  <value>13. Плечо 1</value>
+  </data>
+  <data name="RateDetailDto.Group14Parameters" xml:space="preserve">
+	  <value>14. Плечо 2</value>
+  </data>
   <data name="RateDetailDto.Group2FromTo" xml:space="preserve">
 	  <value>2. Отправление - назначение</value>
   </data>
