@@ -8,7 +8,7 @@
         <div class="d-flex align-items-center gap-2">
             @if (menuItems is not null)
             {
-                foreach (var item in menuItems)
+                foreach (var item in menuItems.Where(i => i.Enabled))
                 {
                     <Button Class="@GetButtonClass(item.Url)"
                             Type="ButtonType.Link"

@@ -132,6 +132,18 @@
   <data name="HeaderMenu.Legs" xml:space="preserve">
 	  <value>Транспортные плечи</value>
   </data>
+  <data name="HeaderMenu.Load" xml:space="preserve">
+	  <value>Загрузка</value>
+  </data>
+  <data name="Load.Title" xml:space="preserve">
+	  <value>Загрузка</value>
+  </data>
+  <data name="Load.WithoutProxy" xml:space="preserve">
+	  <value>Плечи без прокси</value>
+  </data>
+  <data name="Load.Proxy" xml:space="preserve">
+	  <value>Плечи с прокси</value>
+  </data>
 	<data name="LoadTimePanel.LoadTimeFormat" xml:space="preserve">
 	  <value>Время загрузки {0:F3} сек.</value>
   </data>
@@ -149,6 +161,9 @@
   </data>
   <data name="LoadTimePanel.NotLoaded" xml:space="preserve">
 	  <value>Данные еще не загружены</value>
+  </data>
+  <data name="ExcelLoader.Load" xml:space="preserve">
+	  <value>Загрузить</value>
   </data>
   <data name="Settings.Title" xml:space="preserve">
 	  <value>Настройки</value>

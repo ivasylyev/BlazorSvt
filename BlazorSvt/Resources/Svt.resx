@@ -133,6 +133,18 @@
   <data name="HeaderMenu.Legs" xml:space="preserve">
 	  <value>Transport Legs</value>
   </data>
+  <data name="HeaderMenu.Load" xml:space="preserve">
+	  <value>Load</value>
+  </data>
+  <data name="Load.Title" xml:space="preserve">
+	  <value>Load</value>
+  </data>
+  <data name="Load.WithoutProxy" xml:space="preserve">
+	  <value>Legs without proxy</value>
+  </data>
+  <data name="Load.Proxy" xml:space="preserve">
+	  <value>Legs with proxy</value>
+  </data>
   <data name="LoadTimePanel.LoadTimeFormat" xml:space="preserve">
 	  <value>Loading time: {0:F3} s.</value>
   </data>
@@ -151,6 +163,9 @@
   
   <data name="LoadTimePanel.NotLoaded" xml:space="preserve">
 	  <value>Not Loaded</value>
+  </data>
+  <data name="ExcelLoader.Load" xml:space="preserve">
+	  <value>Load</value>
   </data>
   <data name="Settings.Title" xml:space="preserve">
 	  <value>Settings</value>

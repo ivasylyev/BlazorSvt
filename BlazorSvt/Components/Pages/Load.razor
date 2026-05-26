@@ -1,0 +1,23 @@
+@page "/load"
+@using BlazorSvt.Models.Dto
+@inherits SvtComponentBase
+
+<PageTitle>@L["Load.Title"]</PageTitle>
+
+<h1 class="mb-4">@L["Load.Title"]</h1>
+
+<div class="d-flex flex-column gap-4">
+    <Card class="sibur-card">
+        <CardBody>
+            <CardTitle>@L["Load.WithoutProxy"]</CardTitle>
+            <ExcelLoader TItem="LegStgWithoutProxyDto" />
+        </CardBody>
+    </Card>
+
+    <Card class="sibur-card">
+        <CardBody>
+            <CardTitle>@L["Load.Proxy"]</CardTitle>
+            <ExcelLoader TItem="LegStgProxyDto" />
+        </CardBody>
+    </Card>
+</div>

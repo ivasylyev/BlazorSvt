@@ -1,0 +1,10 @@
+@typeparam TItem
+@inherits SvtComponentBase
+
+<label class="btn sibur-dna-btn mb-0">
+    @L["ExcelLoader.Load"]
+    <InputFile OnChange="OnFileSelectedAsync"
+               accept=".xlsx,.xlsm,.xls"
+               class="d-none"
+               MaxAllowedSize="10485760" />
+</label>
