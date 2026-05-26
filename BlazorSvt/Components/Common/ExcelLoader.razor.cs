@@ -10,6 +10,9 @@ public partial class ExcelLoader<TItem> : SvtComponentBase, IDisposable where TI
 {
     private const int HeaderRowNumber = 3;
     private const int DataStartRowNumber = 4;
+    private const double CopyBufferProgressPercent = 10;
+    private const double WorkbookCreateProgressPercent = 20;
+    private const double RowsReadProgressPercent = 70;
 
     private static readonly Dictionary<string, PropertyInfo> Properties =
         typeof(TItem)
@@ -17,8 +20,14 @@ public partial class ExcelLoader<TItem> : SvtComponentBase, IDisposable where TI
             .Where(p => p.CanWrite)
             .ToDictionary(p => p.Name, StringComparer.OrdinalIgnoreCase);
 
+    private const int ProgressUpdateRowBatch = 25;
+
     [Inject]
     public ILogger<ExcelLoader<TItem>> Logger { get; set; } = default!;
+
+    private bool _isLoading;
+    private bool _showProgress;
+    private double _progressPercent;
 
     public List<TItem> Items { get; private set; } = [];
 
@@ -32,20 +41,28 @@ public partial class ExcelLoader<TItem> : SvtComponentBase, IDisposable where TI
             return;
         }
 
+        await StartProgressAsync();
+
         try
         {
             await using var uploadStream = file.OpenReadStream(maxAllowedSize: 10 * 1024 * 1024);
             using var buffer = new MemoryStream();
             await uploadStream.CopyToAsync(buffer);
+            await SetProgressStageAsync(ExcelLoaderStage.BufferCopyCompleted);
 
             ReplaceWorkbookCopy(buffer.ToArray());
-            Items = ParseWorkbook(WorkbookCopy!);
+            Items = await ParseWorkbookAsync(WorkbookCopy!);
+            await CompleteProgressAsync();
         }
         catch (Exception ex)
         {
             Logger.LogError(ex, "Failed to load Excel file {FileName}", file.Name);
             Items = [];
             throw;
+        }
+        finally
+        {
+            await FinishProgressAsync();
         }
     }
 
@@ -55,10 +72,11 @@ public partial class ExcelLoader<TItem> : SvtComponentBase, IDisposable where TI
         WorkbookCopy = new MemoryStream(content);
     }
 
-    private static List<TItem> ParseWorkbook(Stream stream)
+    private async Task<List<TItem>> ParseWorkbookAsync(Stream stream)
     {
         stream.Position = 0;
         using var workbook = new XLWorkbook(stream);
+        await SetProgressStageAsync(ExcelLoaderStage.WorkbookCreated);
         var worksheet = workbook.Worksheets.First();
 
         var columnMap = BuildColumnMap(worksheet);
@@ -69,29 +87,37 @@ public partial class ExcelLoader<TItem> : SvtComponentBase, IDisposable where TI
 
         var items = new List<TItem>();
         var lastRow = worksheet.LastRowUsed()?.RowNumber() ?? HeaderRowNumber;
+        var totalRows = Math.Max(1, lastRow - DataStartRowNumber + 1);
+        var processedRows = 0;
 
         for (var rowNumber = DataStartRowNumber; rowNumber <= lastRow; rowNumber++)
         {
             var row = worksheet.Row(rowNumber);
-            if (IsEmptyRow(row, columnMap.Keys))
+            if (!IsEmptyRow(row, columnMap.Keys))
             {
-                continue;
-            }
-
-            var item = new TItem();
-            foreach (var (columnNumber, property) in columnMap)
-            {
-                var cellValue = row.Cell(columnNumber).GetString();
-                if (string.IsNullOrWhiteSpace(cellValue))
+                var item = new TItem();
+                foreach (var (columnNumber, property) in columnMap)
                 {
-                    continue;
+                    var cellValue = row.Cell(columnNumber).GetString();
+                    if (string.IsNullOrWhiteSpace(cellValue))
+                    {
+                        continue;
+                    }
+
+                    var converted = ConvertCellValue(cellValue, property.PropertyType);
+                    property.SetValue(item, converted);
                 }
 
-                var converted = ConvertCellValue(cellValue, property.PropertyType);
-                property.SetValue(item, converted);
+                items.Add(item);
             }
 
-            items.Add(item);
+            processedRows++;
+            UpdateRowsReadProgress(processedRows, totalRows);
+
+            if (processedRows % ProgressUpdateRowBatch == 0 || processedRows == totalRows)
+            {
+                await InvokeAsync(StateHasChanged);
+            }
         }
 
         return items;
@@ -177,5 +203,54 @@ public partial class ExcelLoader<TItem> : SvtComponentBase, IDisposable where TI
     public void Dispose()
     {
         WorkbookCopy?.Dispose();
+    }
+
+    private enum ExcelLoaderStage
+    {
+        BufferCopyCompleted,
+        WorkbookCreated
+    }
+
+    private async Task StartProgressAsync()
+    {
+        _isLoading = true;
+        _showProgress = true;
+        _progressPercent = 0;
+        await InvokeAsync(StateHasChanged);
+    }
+
+    private async Task SetProgressStageAsync(ExcelLoaderStage stage)
+    {
+        _progressPercent = stage switch
+        {
+            ExcelLoaderStage.BufferCopyCompleted => CopyBufferProgressPercent,
+            ExcelLoaderStage.WorkbookCreated => CopyBufferProgressPercent + WorkbookCreateProgressPercent,
+            _ => _progressPercent
+        };
+
+        await InvokeAsync(StateHasChanged);
+    }
+
+    private void UpdateRowsReadProgress(int processedRows, int totalRows)
+    {
+        var rowsProgress = processedRows / (double)totalRows;
+        _progressPercent = CopyBufferProgressPercent
+                           + WorkbookCreateProgressPercent
+                           + rowsProgress * RowsReadProgressPercent;
+    }
+
+    private async Task CompleteProgressAsync()
+    {
+        _progressPercent = 100;
+        await InvokeAsync(StateHasChanged);
+    }
+
+    private async Task FinishProgressAsync()
+    {
+        _isLoading = false;
+        await InvokeAsync(StateHasChanged);
+        await Task.Delay(500);
+        _showProgress = false;
+        await InvokeAsync(StateHasChanged);
     }
 }
