@@ -11,19 +11,7 @@
             <CardTitle>@L["Load.WithoutProxy"]</CardTitle>
             <ExcelLoader OnLoaded="ImportAsync" />
 
-            @if (_withoutProxy.SuccessMessage is not null)
-            {
-                <div class="alert alert-success mt-3 mb-0">@_withoutProxy.SuccessMessage</div>
-            }
-            else if (_withoutProxy.ErrorMessage is not null)
-            {
-                <div class="alert alert-danger mt-3 mb-0 d-flex align-items-center justify-content-between gap-3 flex-wrap">
-                    <span>@_withoutProxy.ErrorMessage</span>
-                    <button type="button" class="btn btn-sm btn-outline-danger" @onclick="DownloadAsync">
-                        @L["Load.DownloadErrors"]
-                    </button>
-                </div>
-            }
+            <ImportResultPanel State="_withoutProxy" />
         </CardBody>
     </Card>
 </div>

@@ -41,7 +41,6 @@ builder.Services.AddScoped(typeof(IGridDataService<,>), typeof(GridDataService<,
 builder.Services.AddScoped<IExcelParser, ExcelParser>();
 builder.Services.AddScoped<IExcelErrorWriter, ExcelErrorWriter>();
 builder.Services.AddScoped(typeof(IStagingRepository<>), typeof(StagingRepository<>));
-builder.Services.AddScoped(typeof(IExcelImportService<>), typeof(ExcelImportService<>));
 builder.Services.AddValidatorsFromAssemblyContaining<Program>();
 
 builder.Services.AddScoped<IGridSettingsService<RateDto>, RatesGridSettingsService>();

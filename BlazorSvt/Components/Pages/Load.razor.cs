@@ -1,18 +1,25 @@
 using BlazorSvt.Components.Common;
+using BlazorSvt.Models.Dto;
 using BlazorSvt.Models.Excel;
 using BlazorSvt.Services.Shared;
+using FluentValidation;
 using Microsoft.AspNetCore.Components;
-using Microsoft.JSInterop;
 
 namespace BlazorSvt.Components.Pages;
 
 public partial class Load : SvtComponentBase
 {
     [Inject]
-    public IExcelImportService<Models.Dto.LegStgWithoutProxyDto> WithoutProxyImporter { get; set; } = default!;
+    public IExcelParser Parser { get; set; } = default!;
 
     [Inject]
-    public IJSRuntime JS { get; set; } = default!;
+    public IValidator<LegStgWithoutProxyDto> Validator { get; set; } = default!;
+
+    [Inject]
+    public IExcelErrorWriter ErrorWriter { get; set; } = default!;
+
+    [Inject]
+    public IStagingRepository<LegStgWithoutProxyDto> Repository { get; set; } = default!;
 
     private readonly ImportState _withoutProxy = new();
 
@@ -20,31 +27,37 @@ public partial class Load : SvtComponentBase
     {
         _withoutProxy.Reset();
 
-        var result = await WithoutProxyImporter.ImportAsync(file.Content);
-        switch (result)
-        {
-            case ImportResult.Succeeded succeeded:
-                _withoutProxy.SuccessMessage = L["Load.ImportSuccess", succeeded.InsertedCount];
-                break;
+        using var stream = new MemoryStream(file.Content);
+        var rows = Parser.Parse<LegStgWithoutProxyDto>(stream);
 
-            case ImportResult.HasErrors hasErrors:
-                _withoutProxy.ErrorMessage = L["Load.ImportHasErrors", hasErrors.InvalidRowCount];
-                _withoutProxy.AnnotatedWorkbook = hasErrors.AnnotatedWorkbook;
-                _withoutProxy.AnnotatedFileName = BuildErrorFileName(file.FileName);
-                break;
-        }
-    }
+        var results = rows.Select(Validate).ToList();
 
-    private async Task DownloadAsync()
-    {
-        if (_withoutProxy.AnnotatedWorkbook is null)
+        var invalidRows = results
+            .Where(result => !result.IsValid)
+            .ToDictionary(result => result.RowNumber, result => result.Errors);
+
+        if (invalidRows.Count > 0)
         {
+            _withoutProxy.AnnotatedWorkbook = ErrorWriter.WriteErrors(file.Content, invalidRows);
+            _withoutProxy.AnnotatedFileName = BuildErrorFileName(file.FileName);
+            _withoutProxy.ErrorMessage = L["Load.ImportHasErrors", invalidRows.Count];
             return;
         }
 
-        using var stream = new MemoryStream(_withoutProxy.AnnotatedWorkbook);
-        using var streamRef = new DotNetStreamReference(stream);
-        await JS.InvokeVoidAsync("downloadFileFromStream", _withoutProxy.AnnotatedFileName, streamRef);
+        var validItems = results.Select(result => result.Item).ToList();
+        var inserted = await Repository.BulkInsertAsync(validItems);
+        _withoutProxy.SuccessMessage = L["Load.ImportSuccess", inserted];
+    }
+
+    private RowValidationResult<LegStgWithoutProxyDto> Validate(ExcelRow<LegStgWithoutProxyDto> row)
+    {
+        var errors = new List<ValidationError>(row.ParseErrors);
+
+        var validation = Validator.Validate(row.Item);
+        errors.AddRange(validation.Errors.Select(failure =>
+            new ValidationError(failure.PropertyName, failure.ErrorMessage)));
+
+        return new RowValidationResult<LegStgWithoutProxyDto>(row.RowNumber, row.Item, errors);
     }
 
     private static string BuildErrorFileName(string original)
@@ -52,20 +65,5 @@ public partial class Load : SvtComponentBase
         var name = Path.GetFileNameWithoutExtension(original);
         var extension = Path.GetExtension(original);
         return $"{name}_errors{extension}";
-    }
-
-    private sealed class ImportState
-    {
-        public string? SuccessMessage { get; set; }
-        public string? ErrorMessage { get; set; }
-        public byte[]? AnnotatedWorkbook { get; set; }
-        public string AnnotatedFileName { get; set; } = "errors.xlsx";
-
-        public void Reset()
-        {
-            SuccessMessage = null;
-            ErrorMessage = null;
-            AnnotatedWorkbook = null;
-        }
     }
 }
