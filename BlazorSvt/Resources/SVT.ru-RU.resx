@@ -159,6 +159,15 @@
   <data name="GenericGrid.PaginationItemsTextFormat" xml:space="preserve">
 	  <value>{0} - {1} из {2} элементов</value>
   </data>
+  <data name="GenericGrid.Reports" xml:space="preserve">
+	  <value>Отчеты</value>
+  </data>
+  <data name="GenericGrid.ShortReport" xml:space="preserve">
+	  <value>Краткий отчет</value>
+  </data>
+  <data name="GenericGrid.FullReport" xml:space="preserve">
+	  <value>Полный отчет</value>
+  </data>
   <data name="LoadTimePanel.NotLoaded" xml:space="preserve">
 	  <value>Данные еще не загружены</value>
   </data>

@@ -50,6 +50,16 @@ public partial class GenericGrid<TItem, TDetailItem> : SvtComponentBase
         }
     }
 
+    private async Task OnShortReportAsync()
+    {
+        await Task.CompletedTask;
+    }
+
+    private async Task OnFullReportAsync()
+    {
+        await Task.CompletedTask;
+    }
+
     private async Task ClearFiltersAsync()
     {
         grid.ClearFilters();

@@ -57,7 +57,7 @@ var localizationOptions = new RequestLocalizationOptions()
 
 
 var app = builder.Build();
-//app.UsePathBase("/v2");
+app.UsePathBase("/v2");
 app.UseRequestLocalization(localizationOptions);
 app.MapControllers();
 // Configure the HTTP request pipeline.

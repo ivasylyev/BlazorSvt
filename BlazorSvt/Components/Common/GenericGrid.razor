@@ -6,6 +6,21 @@
 <div class="d-flex justify-content-between align-items-center">
     <h1 class="mb-0">@PageTitle</h1>
     <div class="d-flex gap-2">
+        <Dropdown Color="DropdownColor.Secondary">
+            <DropdownToggleButton Class="sibur-dna-btn">
+                @L["GenericGrid.Reports"]
+            </DropdownToggleButton>
+            <DropdownMenu>
+                <DropdownItem Type="DropdownItemType.Button"
+                              @onclick="OnShortReportAsync">
+                    @L["GenericGrid.ShortReport"]
+                </DropdownItem>
+                <DropdownItem Type="DropdownItemType.Button"
+                              @onclick="OnFullReportAsync">
+                    @L["GenericGrid.FullReport"]
+                </DropdownItem>
+            </DropdownMenu>
+        </Dropdown>
         <Button Class="sibur-dna-btn" @onclick="ClearFiltersAsync">@L["GenericGrid.ResetFilters"]</Button>
         <Button Class="sibur-dna-btn" @onclick="ShowSettingsAsync">@L["GenericGrid.Settings"]</Button>
     </div>

@@ -160,6 +160,15 @@
   <data name="GenericGrid.PaginationItemsTextFormat" xml:space="preserve">
 	  <value>{0} - {1} from {2} items</value>
   </data>
+  <data name="GenericGrid.Reports" xml:space="preserve">
+	  <value>Reports</value>
+  </data>
+  <data name="GenericGrid.ShortReport" xml:space="preserve">
+	  <value>Short report</value>
+  </data>
+  <data name="GenericGrid.FullReport" xml:space="preserve">
+	  <value>Full report</value>
+  </data>
   
   <data name="LoadTimePanel.NotLoaded" xml:space="preserve">
 	  <value>Not Loaded</value>
