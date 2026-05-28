@@ -1,11 +1,5 @@
 @page "/load"
-@using BlazorSvt.Models.Dto
-@using BlazorSvt.Models.Excel
-@using BlazorSvt.Services.Shared
 @inherits SvtComponentBase
-@inject IExcelImportService<LegStgWithoutProxyDto> WithoutProxyImporter
-@inject IExcelImportService<LegStgProxyDto> ProxyImporter
-@inject IJSRuntime JS
 
 <PageTitle>@L["Load.Title"]</PageTitle>
 
@@ -15,7 +9,7 @@
     <Card class="sibur-card">
         <CardBody>
             <CardTitle>@L["Load.WithoutProxy"]</CardTitle>
-            <ExcelLoader OnLoaded="@(file => ImportAsync(file, WithoutProxyImporter, _withoutProxy))" />
+            <ExcelLoader OnLoaded="ImportAsync" />
 
             @if (_withoutProxy.SuccessMessage is not null)
             {
@@ -25,28 +19,7 @@
             {
                 <div class="alert alert-danger mt-3 mb-0 d-flex align-items-center justify-content-between gap-3 flex-wrap">
                     <span>@_withoutProxy.ErrorMessage</span>
-                    <button type="button" class="btn btn-sm btn-outline-danger" @onclick="() => DownloadAsync(_withoutProxy)">
-                        @L["Load.DownloadErrors"]
-                    </button>
-                </div>
-            }
-        </CardBody>
-    </Card>
-
-    <Card class="sibur-card">
-        <CardBody>
-            <CardTitle>@L["Load.Proxy"]</CardTitle>
-            <ExcelLoader OnLoaded="@(file => ImportAsync(file, ProxyImporter, _proxy))" />
-
-            @if (_proxy.SuccessMessage is not null)
-            {
-                <div class="alert alert-success mt-3 mb-0">@_proxy.SuccessMessage</div>
-            }
-            else if (_proxy.ErrorMessage is not null)
-            {
-                <div class="alert alert-danger mt-3 mb-0 d-flex align-items-center justify-content-between gap-3 flex-wrap">
-                    <span>@_proxy.ErrorMessage</span>
-                    <button type="button" class="btn btn-sm btn-outline-danger" @onclick="() => DownloadAsync(_proxy)">
+                    <button type="button" class="btn btn-sm btn-outline-danger" @onclick="DownloadAsync">
                         @L["Load.DownloadErrors"]
                     </button>
                 </div>
@@ -54,62 +27,3 @@
         </CardBody>
     </Card>
 </div>
-
-@code {
-    private readonly ImportState _withoutProxy = new();
-    private readonly ImportState _proxy = new();
-
-    private async Task ImportAsync<TItem>(ExcelFile file, IExcelImportService<TItem> importer, ImportState state)
-        where TItem : new()
-    {
-        state.Reset();
-
-        var result = await importer.ImportAsync(file.Content);
-        switch (result)
-        {
-            case ImportResult.Succeeded succeeded:
-                state.SuccessMessage = L["Load.ImportSuccess", succeeded.InsertedCount];
-                break;
-
-            case ImportResult.HasErrors hasErrors:
-                state.ErrorMessage = L["Load.ImportHasErrors", hasErrors.InvalidRowCount];
-                state.AnnotatedWorkbook = hasErrors.AnnotatedWorkbook;
-                state.AnnotatedFileName = BuildErrorFileName(file.FileName);
-                break;
-        }
-    }
-
-    private async Task DownloadAsync(ImportState state)
-    {
-        if (state.AnnotatedWorkbook is null)
-        {
-            return;
-        }
-
-        using var stream = new MemoryStream(state.AnnotatedWorkbook);
-        using var streamRef = new DotNetStreamReference(stream);
-        await JS.InvokeVoidAsync("downloadFileFromStream", state.AnnotatedFileName, streamRef);
-    }
-
-    private static string BuildErrorFileName(string original)
-    {
-        var name = Path.GetFileNameWithoutExtension(original);
-        var extension = Path.GetExtension(original);
-        return $"{name}_errors{extension}";
-    }
-
-    private sealed class ImportState
-    {
-        public string? SuccessMessage { get; set; }
-        public string? ErrorMessage { get; set; }
-        public byte[]? AnnotatedWorkbook { get; set; }
-        public string AnnotatedFileName { get; set; } = "errors.xlsx";
-
-        public void Reset()
-        {
-            SuccessMessage = null;
-            ErrorMessage = null;
-            AnnotatedWorkbook = null;
-        }
-    }
-}

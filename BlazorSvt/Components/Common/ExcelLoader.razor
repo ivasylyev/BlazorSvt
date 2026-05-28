@@ -9,15 +9,4 @@
                    MaxAllowedSize="10485760"
                    disabled="@_isLoading" />
     </label>
-
-    @if (_showProgress)
-    {
-        <div class="flex-grow-1" style="min-width: 12rem; max-width: 24rem;">
-            <Progress>
-                <ProgressBar Width="_progressPercent"
-                             Label="@($"{_progressPercent:F0}%")"
-                             Color="ProgressColor.Primary" />
-            </Progress>
-        </div>
-    }
 </div>
