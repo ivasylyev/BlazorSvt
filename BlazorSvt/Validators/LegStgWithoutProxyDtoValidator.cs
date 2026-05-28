@@ -1,0 +1,31 @@
+using BlazorSvt.Models.Dto;
+using BlazorSvt.Resources;
+using FluentValidation;
+using Microsoft.Extensions.Localization;
+
+namespace BlazorSvt.Validators;
+
+public class LegStgWithoutProxyDtoValidator : AbstractValidator<LegStgWithoutProxyDto>
+{
+    public LegStgWithoutProxyDtoValidator(IStringLocalizer<Svt> localizer)
+    {
+        RuleFor(x => x.Code)
+            .NotEmpty()
+            .WithMessage(localizer["Validation.Required"]);
+
+        RuleFor(x => x.NodeFrom)
+            .NotEmpty()
+            .WithMessage(localizer["Validation.Required"]);
+
+        RuleFor(x => x.NodeTo)
+            .NotEmpty()
+            .WithMessage(localizer["Validation.Required"]);
+
+        RuleFor(x => x.Distance)
+            .GreaterThan(0)
+            .When(x => x.Distance.HasValue)
+            .WithMessage(localizer["Validation.GreaterThanZero"]);
+
+        // TODO: add the remaining business checks here.
+    }
+}

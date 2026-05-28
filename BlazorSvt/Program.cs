@@ -8,6 +8,7 @@ using BlazorSvt.Services.Legs;
 using BlazorSvt.Services.Rates;
 using BlazorSvt.Services.Shared;
 using BlazorSvt.Utils;
+using FluentValidation;
 using Serilog;
 
 
@@ -37,6 +38,12 @@ builder.Services.AddScoped<PageTimingService>();
 
 builder.Services.AddScoped(typeof(IGridDataService<,>), typeof(GridDataService<,>));
 
+builder.Services.AddScoped<IExcelParser, ExcelParser>();
+builder.Services.AddScoped<IExcelErrorWriter, ExcelErrorWriter>();
+builder.Services.AddScoped(typeof(IStagingRepository<>), typeof(StagingRepository<>));
+builder.Services.AddScoped(typeof(IExcelImportService<>), typeof(ExcelImportService<>));
+builder.Services.AddValidatorsFromAssemblyContaining<Program>();
+
 builder.Services.AddScoped<IGridSettingsService<RateDto>, RatesGridSettingsService>();
 builder.Services.AddScoped<IDetailSettingsService<RateDetailDto>, RatesDetailSettingsService>();
 
@@ -51,7 +58,7 @@ var localizationOptions = new RequestLocalizationOptions()
 
 
 var app = builder.Build();
-app.UsePathBase("/v2");
+//app.UsePathBase("/v2");
 app.UseRequestLocalization(localizationOptions);
 app.MapControllers();
 // Configure the HTTP request pipeline.

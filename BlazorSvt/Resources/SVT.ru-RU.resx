@@ -1047,4 +1047,25 @@
   <data name="LegDetailDto.Leg2_Distance" xml:space="preserve">
 	  <value>Плечо 2. Расстояние, км </value>
   </data>
+  <data name="Validation.ParseError" xml:space="preserve">
+	  <value>Не удалось преобразовать значение '{0}' для поля '{1}'</value>
+  </data>
+  <data name="Validation.Required" xml:space="preserve">
+	  <value>Обязательное поле</value>
+  </data>
+  <data name="Validation.GreaterThanZero" xml:space="preserve">
+	  <value>Значение должно быть больше нуля</value>
+  </data>
+  <data name="Excel.ErrorsColumnHeader" xml:space="preserve">
+	  <value>Ошибки</value>
+  </data>
+  <data name="Load.ImportSuccess" xml:space="preserve">
+	  <value>Загружено строк: {0}</value>
+  </data>
+  <data name="Load.ImportHasErrors" xml:space="preserve">
+	  <value>Найдены ошибки в строках: {0}</value>
+  </data>
+  <data name="Load.DownloadErrors" xml:space="preserve">
+	  <value>Скачать файл с ошибками</value>
+  </data>
 </root>

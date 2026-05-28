@@ -1056,4 +1056,25 @@
   <data name="LegDetailDto.Leg2_Distance" xml:space="preserve">
 	  <value>Leg 2. Distance</value>
   </data>
+  <data name="Validation.ParseError" xml:space="preserve">
+	  <value>Failed to convert value '{0}' for field '{1}'</value>
+  </data>
+  <data name="Validation.Required" xml:space="preserve">
+	  <value>Required field</value>
+  </data>
+  <data name="Validation.GreaterThanZero" xml:space="preserve">
+	  <value>Value must be greater than zero</value>
+  </data>
+  <data name="Excel.ErrorsColumnHeader" xml:space="preserve">
+	  <value>Errors</value>
+  </data>
+  <data name="Load.ImportSuccess" xml:space="preserve">
+	  <value>Loaded {0} row(s)</value>
+  </data>
+  <data name="Load.ImportHasErrors" xml:space="preserve">
+	  <value>Found errors in {0} row(s)</value>
+  </data>
+  <data name="Load.DownloadErrors" xml:space="preserve">
+	  <value>Download file with errors</value>
+  </data>
 </root>
