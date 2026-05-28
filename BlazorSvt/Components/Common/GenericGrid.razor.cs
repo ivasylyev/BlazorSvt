@@ -2,6 +2,7 @@
 using BlazorSvt.Models.Grid;
 using BlazorSvt.Services.Shared;
 using Microsoft.AspNetCore.Components;
+using Microsoft.JSInterop;
 
 namespace BlazorSvt.Components.Common;
 
@@ -17,6 +18,12 @@ public partial class GenericGrid<TItem, TDetailItem> : SvtComponentBase
 
     [Inject] 
     public IGridSettingsService<TItem> GridSettingsService { get; set; } = default!;
+
+    [Inject]
+    public IGridExcelExporter GridExcelExporter { get; set; } = default!;
+
+    [Inject]
+    public IJSRuntime JS { get; set; } = default!;
 
     [Parameter]
     [EditorRequired]
@@ -52,7 +59,41 @@ public partial class GenericGrid<TItem, TDetailItem> : SvtComponentBase
 
     private async Task OnShortReportAsync()
     {
-        await Task.CompletedTask;
+        if (gridSettings is null)
+        {
+            Logger.LogWarning("Short report skipped: grid settings are not loaded yet");
+            return;
+        }
+
+        var items = await GetAllGridDataAsync();
+        var workbook = GridExcelExporter.Export(items, gridSettings.ColumnSettings);
+        await DownloadFileAsync(workbook, BuildShortReportFileName());
+        Logger.LogInformation("Short report: exported {Count} items", items.Count);
+    }
+
+    private async Task DownloadFileAsync(byte[] content, string fileName)
+    {
+        using var stream = new MemoryStream(content);
+        using var streamRef = new DotNetStreamReference(stream);
+        await JS.InvokeVoidAsync("downloadFileFromStream", fileName, streamRef);
+    }
+
+    private string BuildShortReportFileName()
+    {
+        var safeTitle = string.Join("_", PageTitle.Split(Path.GetInvalidFileNameChars(), StringSplitOptions.RemoveEmptyEntries));
+        return $"{safeTitle}_short_report_{DateTime.Now:yyyyMMdd_HHmmss}.xlsx";
+    }
+
+    private async Task<IReadOnlyList<TItem>> GetAllGridDataAsync()
+    {
+        var countResult = await DataProvider.Invoke(grid.CreateDataProviderRequest(pageNumber: 1, pageSizeOverride: 1));
+        var totalCount = countResult.TotalCount ?? 0;
+
+        if (totalCount == 0)
+            return [];
+
+        var dataResult = await DataProvider.Invoke(grid.CreateDataProviderRequest(pageNumber: 1, pageSizeOverride: totalCount));
+        return dataResult.Data?.ToList() ?? [];
     }
 
     private async Task OnFullReportAsync()

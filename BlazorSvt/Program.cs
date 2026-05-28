@@ -40,6 +40,7 @@ builder.Services.AddScoped(typeof(IGridDataService<,>), typeof(GridDataService<,
 
 builder.Services.AddScoped<IExcelParser, ExcelParser>();
 builder.Services.AddScoped<IExcelErrorWriter, ExcelErrorWriter>();
+builder.Services.AddScoped<IGridExcelExporter, GridExcelExporter>();
 builder.Services.AddScoped(typeof(IStagingRepository<>), typeof(StagingRepository<>));
 builder.Services.AddValidatorsFromAssemblyContaining<Program>();
 
@@ -57,7 +58,7 @@ var localizationOptions = new RequestLocalizationOptions()
 
 
 var app = builder.Build();
-app.UsePathBase("/v2");
+//app.UsePathBase("/v2");
 app.UseRequestLocalization(localizationOptions);
 app.MapControllers();
 // Configure the HTTP request pipeline.

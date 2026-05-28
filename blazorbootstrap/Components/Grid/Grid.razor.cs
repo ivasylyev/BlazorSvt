@@ -129,6 +129,20 @@ public partial class Grid<TItem> : BlazorBootstrapComponentBase
         return filterableColumns.Select(column => new FilterItem(column.PropertyName, column.GetFilterValue(), column.GetFilterOperator(), column.StringComparison));
     }
 
+    /// <summary>
+    /// Creates a data provider request that reflects the grid's current filters and sorting.
+    /// </summary>
+    public GridDataProviderRequest<TItem> CreateDataProviderRequest(int? pageNumber = null, int? pageSizeOverride = null)
+    {
+        return new GridDataProviderRequest<TItem>
+        {
+            PageNumber = pageNumber ?? (AllowPaging ? gridCurrentState.PageIndex : 0),
+            PageSize = pageSizeOverride ?? (AllowPaging ? pageSize : 0),
+            Sorting = AllowSorting ? gridCurrentState.Sorting ?? GetDefaultSorting()! : null!,
+            Filters = AllowFiltering ? GetFilters()! : null!,
+        };
+    }
+
     public void ClearFilters()
     {
         if (!AllowFiltering || columns == null || !columns.Any())
