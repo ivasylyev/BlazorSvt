@@ -9,7 +9,7 @@ go
 
 -- простой поиск (это когда или нет сортировки, или менее 2х полнотекстовых фильтров)
 
-exec dbo.GetTransportLegs 
+exec v2.GetTransportLegs 
     @PageNumber=1,
     @PageSize=10,
     @Lang=N'ru',
@@ -24,7 +24,7 @@ exec dbo.GetTransportLegs
 
 -- сложный поиск (это когда сортировка с двумя и более полнотекстовыми фильтрами)
 
-exec dbo.GetTransportLegs 
+exec v2.GetTransportLegs 
     @PageNumber=2,
     @PageSize=10,
     @Lang=N'ru',
@@ -38,7 +38,7 @@ exec dbo.GetTransportLegs
         ]'
 
 */
-CREATE OR ALTER PROCEDURE dbo.GetTransportLegs
+CREATE OR ALTER PROCEDURE v2.GetTransportLegs
     @PageNumber     INT = 1,
     @PageSize       INT = 20,
     @Lang           NVARCHAR(2),
@@ -145,7 +145,7 @@ BEGIN
   '
 
 
-    EXEC dbo.GetBlazorGridData 
+    EXEC v2.GetBlazorGridData 
         @PageNumber = @PageNumber,
         @PageSize = @PageSize,
         @LangSuffix = @LangSuffix,
@@ -154,7 +154,7 @@ BEGIN
         @SortDirection = @SortDirection,
         @FilterJson = @FilterJson,
 
-        @TableName = N'mdm.dbo.TransportLegSnapshot',
+        @TableName = N'mdm.v2.TransportLegSnapshot',
         @AllowedColumnsJson = @AllowedColumnsJson,
         @SelectList = @SelectList
         

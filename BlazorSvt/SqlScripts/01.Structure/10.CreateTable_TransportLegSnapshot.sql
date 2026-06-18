@@ -2,28 +2,28 @@
 GO
 
 -- Удаляем полнотекстовый индекс
-IF EXISTS (SELECT * FROM sys.fulltext_indexes WHERE object_id = OBJECT_ID('dbo.TransportLegSnapshot'))
+IF EXISTS (SELECT * FROM sys.fulltext_indexes WHERE object_id = OBJECT_ID('v2.TransportLegSnapshot'))
 BEGIN
-    DROP FULLTEXT INDEX ON dbo.TransportLegSnapshot;
+    DROP FULLTEXT INDEX ON v2.TransportLegSnapshot;
 END
 GO
 
 -- Удаляем индексы (если существуют)
 DECLARE @sql NVARCHAR(MAX) = '';
-SELECT @sql = @sql + 'DROP INDEX IF EXISTS [' + name + '] ON dbo.TransportLegSnapshot; '
+SELECT @sql = @sql + 'DROP INDEX IF EXISTS [' + name + '] ON v2.TransportLegSnapshot; '
 FROM sys.indexes 
-WHERE object_id = OBJECT_ID('dbo.TransportLegSnapshot')
+WHERE object_id = OBJECT_ID('v2.TransportLegSnapshot')
   AND name IS NOT NULL
   AND name NOT LIKE 'PK_%';  -- Не удаляем PRIMARY KEY
 EXEC sp_executesql @sql;
 GO
 
 -- 2. Удаляем таблицу
-DROP TABLE IF EXISTS dbo.TransportLegSnapshot;
+DROP TABLE IF EXISTS v2.TransportLegSnapshot;
 GO
 
 -- 3. Удаляем SEQUENCE
-DROP SEQUENCE IF EXISTS dbo.seq_TransportLegId;
+DROP SEQUENCE IF EXISTS v2.seq_TransportLegId;
 GO
 
 -- 4. Удаляем схему партиционирования
@@ -55,13 +55,13 @@ ALL TO ([PRIMARY]);
 GO
 
 -- 8. Создаем SEQUENCE для Id
-CREATE SEQUENCE dbo.seq_TransportLegId AS INT 
+CREATE SEQUENCE v2.seq_TransportLegId AS INT 
 START WITH 1 
 INCREMENT BY 1;
 GO
 
 -- 9. Создаем таблицу с партиционированием
-CREATE TABLE dbo.TransportLegSnapshot (
+CREATE TABLE v2.TransportLegSnapshot (
     Id                  INT NOT NULL,
     LegId               INT NOT NULL,
     Code                NVARCHAR(50) NOT NULL,
@@ -110,12 +110,12 @@ CREATE TABLE dbo.TransportLegSnapshot (
 GO
 
 -- 10. Добавляем DEFAULT constraints
-ALTER TABLE dbo.TransportLegSnapshot 
+ALTER TABLE v2.TransportLegSnapshot 
 ADD CONSTRAINT DF_TransportLegSnapshot_Id 
-DEFAULT (NEXT VALUE FOR dbo.seq_TransportLegId) FOR Id;
+DEFAULT (NEXT VALUE FOR v2.seq_TransportLegId) FOR Id;
 GO
 
-ALTER TABLE dbo.TransportLegSnapshot 
+ALTER TABLE v2.TransportLegSnapshot 
 ADD CONSTRAINT DF_TransportLegSnapshot_CreationDate 
 DEFAULT (GETDATE()) FOR CreationDate;
 GO

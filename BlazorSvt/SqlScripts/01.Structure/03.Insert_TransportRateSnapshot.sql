@@ -1,7 +1,7 @@
 ﻿USE [mdm];
 GO
 
-INSERT INTO dbo.TransportRateSnapshot (
+INSERT INTO v2.TransportRateSnapshot (
     RateId,
     IsArchive,
     IsDefRate,

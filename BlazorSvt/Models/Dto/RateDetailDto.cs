@@ -3,7 +3,7 @@ using BlazorSvt.Models.Config;
 
 namespace BlazorSvt.Models.Dto;
 
-[StoredProcedure("dbo.GetTransportRateDetail")]
+[StoredProcedure("v2.GetTransportRateDetail")]
 public class RateDetailDto
 {
     public long RateId { get; set; }

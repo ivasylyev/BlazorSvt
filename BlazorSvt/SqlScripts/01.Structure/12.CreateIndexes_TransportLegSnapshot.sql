@@ -2,26 +2,26 @@
 GO
 
 -- Удаляем полнотекстовый индекс
-IF EXISTS (SELECT * FROM sys.fulltext_indexes WHERE object_id = OBJECT_ID('dbo.TransportLegSnapshot'))
+IF EXISTS (SELECT * FROM sys.fulltext_indexes WHERE object_id = OBJECT_ID('v2.TransportLegSnapshot'))
 BEGIN
-    DROP FULLTEXT INDEX ON dbo.TransportLegSnapshot;
+    DROP FULLTEXT INDEX ON v2.TransportLegSnapshot;
 END
 GO
 
 
 
 -- Удаляем уникальный индекс для полнтотекстового индекса
-DROP INDEX IF EXISTS UX_TransportLegSnapshot_Id ON [dbo].[TransportLegSnapshot];
+DROP INDEX IF EXISTS UX_TransportLegSnapshot_Id ON [v2].[TransportLegSnapshot];
 GO
 
 -- Создаем уникальный индекс для полнтотекстового индекса
 CREATE UNIQUE NONCLUSTERED INDEX UX_TransportLegSnapshot_Id
-    ON dbo.TransportLegSnapshot (Id)
+    ON v2.TransportLegSnapshot (Id)
     ON [PRIMARY];  -- важно: НЕ на partition scheme
 GO
 
 -- Создаем полнотекстовый индекс
-CREATE FULLTEXT INDEX ON dbo.TransportLegSnapshot 
+CREATE FULLTEXT INDEX ON v2.TransportLegSnapshot 
 ( 
     Code               LANGUAGE 1033,      -- English,
     NodeFromCode       LANGUAGE 1033,      -- English,
@@ -49,24 +49,24 @@ WITH STOPLIST = SYSTEM,
 GO
 
 -- Отключаем стоп-лист для полнотекстового индекса. Если не сделать - слова типа "прочее" не попадут в индекс
-ALTER FULLTEXT INDEX ON mdm.dbo.TransportLegSnapshot
+ALTER FULLTEXT INDEX ON mdm.v2.TransportLegSnapshot
 SET STOPLIST = OFF;
 GO
 
 
 --  индекс для Кода для активного партишена
-DROP INDEX IF EXISTS ix_TransportLegSnapshot_Active_Code ON [dbo].[TransportLegSnapshot];
+DROP INDEX IF EXISTS ix_TransportLegSnapshot_Active_Code ON [v2].[TransportLegSnapshot];
 GO
 CREATE NONCLUSTERED INDEX ix_TransportLegSnapshot_Active_Code 
-ON dbo.TransportLegSnapshot (Code)
+ON v2.TransportLegSnapshot (Code)
 WHERE IsArchive = 0;
 GO
 
 --  индекс для Кода для архивного партишена
-DROP INDEX IF EXISTS ix_TransportLegSnapshot_Archive_Code ON [dbo].[TransportLegSnapshot];
+DROP INDEX IF EXISTS ix_TransportLegSnapshot_Archive_Code ON [v2].[TransportLegSnapshot];
 GO
 CREATE NONCLUSTERED INDEX ix_TransportLegSnapshot_Archive_Code 
-ON dbo.TransportLegSnapshot (Code)
+ON v2.TransportLegSnapshot (Code)
 WHERE IsArchive = 1;
 GO
 
@@ -76,18 +76,18 @@ GO
 
 --  индекс на Транспорт
 
-DROP INDEX IF EXISTS [ix_TransportLegSnapshot_Active_TransportKindId] ON [dbo].[TransportLegSnapshot];
+DROP INDEX IF EXISTS [ix_TransportLegSnapshot_Active_TransportKindId] ON [v2].[TransportLegSnapshot];
 GO
-CREATE NONCLUSTERED INDEX [ix_TransportLegSnapshot_Active_TransportKindId] ON [dbo].TransportLegSnapshot
+CREATE NONCLUSTERED INDEX [ix_TransportLegSnapshot_Active_TransportKindId] ON [v2].TransportLegSnapshot
 (
 	[TransportKindId]
 )
 WHERE IsArchive = 0;
 GO
 
-DROP INDEX IF EXISTS [ix_TransportLegSnapshot_Archive_TransportKindId] ON [dbo].[TransportLegSnapshot];
+DROP INDEX IF EXISTS [ix_TransportLegSnapshot_Archive_TransportKindId] ON [v2].[TransportLegSnapshot];
 GO
-CREATE NONCLUSTERED INDEX [ix_TransportLegSnapshot_Archive_TransportKindId] ON [dbo].TransportLegSnapshot
+CREATE NONCLUSTERED INDEX [ix_TransportLegSnapshot_Archive_TransportKindId] ON [v2].TransportLegSnapshot
 (
 	[TransportKindId]
 )
@@ -97,18 +97,18 @@ GO
 
 -- индекс на Тип отгрузки 
 
-DROP INDEX IF EXISTS [ix_TransportLegSnapshot_Active_ShipmentTypeId] ON [dbo].[TransportLegSnapshot];
+DROP INDEX IF EXISTS [ix_TransportLegSnapshot_Active_ShipmentTypeId] ON [v2].[TransportLegSnapshot];
 GO
-CREATE NONCLUSTERED INDEX [ix_TransportLegSnapshot_Active_ShipmentTypeId] ON [dbo].TransportLegSnapshot
+CREATE NONCLUSTERED INDEX [ix_TransportLegSnapshot_Active_ShipmentTypeId] ON [v2].TransportLegSnapshot
 (
 	ShipmentTypeId
 )
 WHERE IsArchive = 0;
 GO
 
-DROP INDEX IF EXISTS [ix_TransportLegSnapshot_Archive_ShipmentTypeId] ON [dbo].[TransportLegSnapshot];
+DROP INDEX IF EXISTS [ix_TransportLegSnapshot_Archive_ShipmentTypeId] ON [v2].[TransportLegSnapshot];
 GO
-CREATE NONCLUSTERED INDEX [ix_TransportLegSnapshot_Archive_ShipmentTypeId] ON [dbo].TransportLegSnapshot
+CREATE NONCLUSTERED INDEX [ix_TransportLegSnapshot_Archive_ShipmentTypeId] ON [v2].TransportLegSnapshot
 (
 	ShipmentTypeId
 )
@@ -116,7 +116,7 @@ WHERE IsArchive = 1;
 GO
 
 
-UPDATE STATISTICS dbo.TransportLegSnapshot WITH FULLSCAN;
+UPDATE STATISTICS v2.TransportLegSnapshot WITH FULLSCAN;
 GO
 
 

@@ -8,11 +8,11 @@ use mdm
 go
 
 
-exec dbo.GetTransportRateDetail '34041206'
+exec v2.GetTransportRateDetail '34041206'
  
 
 */
-CREATE OR ALTER PROCEDURE dbo.GetTransportRateDetail
+CREATE OR ALTER PROCEDURE v2.GetTransportRateDetail
     @Key            NVARCHAR(50)
 AS
 BEGIN

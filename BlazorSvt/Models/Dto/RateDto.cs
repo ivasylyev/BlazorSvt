@@ -5,7 +5,7 @@ using BlazorSvt.Models.Dto.IdsEnum;
 namespace BlazorSvt.Models.Dto;
 
 
-[StoredProcedure("dbo.GetTransportRates")]
+[StoredProcedure("v2.GetTransportRates")]
 public class RateDto
 {
     public long Id { get; set; }

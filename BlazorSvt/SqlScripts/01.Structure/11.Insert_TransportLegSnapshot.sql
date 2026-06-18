@@ -1,7 +1,7 @@
 ﻿USE [mdm];
 GO
 
-INSERT INTO dbo.TransportLegSnapshot (
+INSERT INTO v2.TransportLegSnapshot (
      LegId             
     ,Code               
     

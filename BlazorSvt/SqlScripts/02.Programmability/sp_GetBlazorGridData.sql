@@ -7,11 +7,11 @@ Example:
 USE mdm
 GO
 
-EXEC dbo.GetBlazorGridData 
+EXEC v2.GetBlazorGridData 
      @PageNumber=1,
      @PageSize=10,
      @LangSuffix = 'Ru',
-     @TableName = N'mdm.dbo.TransportRateSnapshot',
+     @TableName = N'mdm.v2.TransportRateSnapshot',
      @AllowedColumnsJson = N'[
             {"ColumnName": "Code", "ColumnType": "ID"},
             {"ColumnName": "RateTypeCode", "ColumnType": "ID"},
@@ -96,11 +96,11 @@ EXEC dbo.GetBlazorGridData
         ]'
 
 */
-CREATE OR ALTER PROCEDURE dbo.GetBlazorGridData
+CREATE OR ALTER PROCEDURE v2.GetBlazorGridData
     @PageNumber         INT = 1,
     @PageSize           INT = 20,
     @LangSuffix         NVARCHAR(2),
-    @TableName          NVARCHAR(300),           -- Полное имя таблицы, например 'mdm.dbo.TransportRateSnapshot'
+    @TableName          NVARCHAR(300),           -- Полное имя таблицы, например 'mdm.v2.TransportRateSnapshot'
     @AllowedColumnsJson NVARCHAR(MAX), 
     @SelectList         NVARCHAR(MAX),          -- Список колонок для SELECT, например 'Id, Code, StartDate'
 
@@ -185,13 +185,13 @@ BEGIN
             -- Логика для ID INT
             WHEN 'ID' THEN 
                 N'
-                    AND ' + ColumnName + dbo.fn_GetDateSqlOperator(Operator) + ColumnValue + ' '
+                    AND ' + ColumnName + v2.fn_GetDateSqlOperator(Operator) + ColumnValue + ' '
             -- Логика для ДАТ
             WHEN 'DATE' THEN 
                 CASE WHEN ISDATE(ColumnValue) = 1
                 THEN
                     ISNULL(N'
-                    AND  ' + ColumnName + ' ' + dbo.fn_GetDateSqlOperator(Operator) -- если функция вернет NULL, весь фильтр обнулится. И это правильное поведение
+                    AND  ' + ColumnName + ' ' + v2.fn_GetDateSqlOperator(Operator) -- если функция вернет NULL, весь фильтр обнулится. И это правильное поведение
                     +''''+ ColumnValue + '''','')
                 ELSE ''
                 END

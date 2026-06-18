@@ -1,10 +1,10 @@
 ﻿USE [mdm]
 GO
 
-DROP TABLE IF EXISTS dbo.LocationNodesSnapshot
+DROP TABLE IF EXISTS v2.LocationNodesSnapshot
 GO
 
-CREATE TABLE dbo.LocationNodesSnapshot (
+CREATE TABLE v2.LocationNodesSnapshot (
     Id              BIGINT IDENTITY(1,1) NOT NULL,
     IsArchive       BIT NOT NULL,
     NodeTypeId      BIGINT NULL,
@@ -27,13 +27,13 @@ CREATE TABLE dbo.LocationNodesSnapshot (
     CountryNameEn    NVARCHAR(100) NULL,
 );
 
-ALTER TABLE dbo.LocationNodesSnapshot ADD  CONSTRAINT [PK_LocationNodesSnapshot] PRIMARY KEY CLUSTERED 
+ALTER TABLE v2.LocationNodesSnapshot ADD  CONSTRAINT [PK_LocationNodesSnapshot] PRIMARY KEY CLUSTERED 
 (
 	Id ASC
 )
 GO
 
-ALTER TABLE dbo.LocationNodesSnapshot ADD  CONSTRAINT [DF_LocationNodesSnapshot_CreationDate]  DEFAULT (getdate()) FOR [CreationDate]
+ALTER TABLE v2.LocationNodesSnapshot ADD  CONSTRAINT [DF_LocationNodesSnapshot_CreationDate]  DEFAULT (getdate()) FOR [CreationDate]
 GO
 
 

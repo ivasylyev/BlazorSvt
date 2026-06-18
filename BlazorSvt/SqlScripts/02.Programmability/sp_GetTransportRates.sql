@@ -9,7 +9,7 @@ go
 
 -- простой поиск (это когда или нет сортировки, или менее 2х полнотекстовых фильтров)
 
-exec dbo.GetTransportRates 
+exec v2.GetTransportRates 
     @PageNumber=1,
     @PageSize=10,
     @Lang=N'ru',
@@ -25,7 +25,7 @@ exec dbo.GetTransportRates
 
 -- сложный поиск (это когда сортировка с двумя и более полнотекстовыми фильтрами)
 
-exec dbo.GetTransportRates 
+exec v2.GetTransportRates 
     @PageNumber=2,
     @PageSize=10,
     @Lang=N'ru',
@@ -40,7 +40,7 @@ exec dbo.GetTransportRates
         {"PropertType":null,"PropertyName":"IsArchive","Value":"False","Operator":1,"StringComparison":5}]'
 
 */
-CREATE OR ALTER PROCEDURE dbo.GetTransportRates
+CREATE OR ALTER PROCEDURE v2.GetTransportRates
     @PageNumber     INT = 1,
     @PageSize       INT = 20,
     @Lang           NVARCHAR(2),
@@ -144,7 +144,7 @@ BEGIN
   '
 
 
-    EXEC dbo.GetBlazorGridData 
+    EXEC v2.GetBlazorGridData 
         @PageNumber = @PageNumber,
         @PageSize = @PageSize,
         @LangSuffix = @LangSuffix,
@@ -153,7 +153,7 @@ BEGIN
         @SortDirection = @SortDirection,
         @FilterJson = @FilterJson,
 
-        @TableName = N'mdm.dbo.TransportRateSnapshot',
+        @TableName = N'mdm.v2.TransportRateSnapshot',
         @AllowedColumnsJson = @AllowedColumnsJson,
         @SelectList = @SelectList
         

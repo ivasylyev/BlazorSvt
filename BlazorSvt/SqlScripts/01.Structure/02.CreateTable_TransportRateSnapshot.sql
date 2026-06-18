@@ -2,28 +2,28 @@
 GO
 
 -- Удаляем полнотекстовый индекс
-IF EXISTS (SELECT * FROM sys.fulltext_indexes WHERE object_id = OBJECT_ID('dbo.TransportRateSnapshot'))
+IF EXISTS (SELECT * FROM sys.fulltext_indexes WHERE object_id = OBJECT_ID('v2.TransportRateSnapshot'))
 BEGIN
-    DROP FULLTEXT INDEX ON dbo.TransportRateSnapshot;
+    DROP FULLTEXT INDEX ON v2.TransportRateSnapshot;
 END
 GO
 
 -- Удаляем индексы (если существуют)
 DECLARE @sql NVARCHAR(MAX) = '';
-SELECT @sql = @sql + 'DROP INDEX IF EXISTS [' + name + '] ON dbo.TransportRateSnapshot; '
+SELECT @sql = @sql + 'DROP INDEX IF EXISTS [' + name + '] ON v2.TransportRateSnapshot; '
 FROM sys.indexes 
-WHERE object_id = OBJECT_ID('dbo.TransportRateSnapshot')
+WHERE object_id = OBJECT_ID('v2.TransportRateSnapshot')
   AND name IS NOT NULL
   AND name NOT LIKE 'PK_%';  -- Не удаляем PRIMARY KEY
 EXEC sp_executesql @sql;
 GO
 
 -- 2. Удаляем таблицу
-DROP TABLE IF EXISTS dbo.TransportRateSnapshot;
+DROP TABLE IF EXISTS v2.TransportRateSnapshot;
 GO
 
 -- 3. Удаляем SEQUENCE
-DROP SEQUENCE IF EXISTS dbo.seq_TransportRateId;
+DROP SEQUENCE IF EXISTS v2.seq_TransportRateId;
 GO
 
 -- 4. Удаляем схему партиционирования
@@ -55,13 +55,13 @@ ALL TO ([PRIMARY]);
 GO
 
 -- 8. Создаем SEQUENCE для Id
-CREATE SEQUENCE dbo.seq_TransportRateId AS INT 
+CREATE SEQUENCE v2.seq_TransportRateId AS INT 
 START WITH 1 
 INCREMENT BY 1;
 GO
 
 -- 9. Создаем таблицу с партиционированием
-CREATE TABLE dbo.TransportRateSnapshot (
+CREATE TABLE v2.TransportRateSnapshot (
     Id                  INT NOT NULL,
     RateId              INT NOT NULL,
     IsArchive           BIT NOT NULL,
@@ -106,12 +106,12 @@ GO
 -- =====================================================
 -- 10. Добавляем DEFAULT constraints
 -- =====================================================
-ALTER TABLE dbo.TransportRateSnapshot 
+ALTER TABLE v2.TransportRateSnapshot 
 ADD CONSTRAINT DF_TransportRateSnapshot_Id 
-DEFAULT (NEXT VALUE FOR dbo.seq_TransportRateId) FOR Id;
+DEFAULT (NEXT VALUE FOR v2.seq_TransportRateId) FOR Id;
 GO
 
-ALTER TABLE dbo.TransportRateSnapshot 
+ALTER TABLE v2.TransportRateSnapshot 
 ADD CONSTRAINT DF_TransportRateSnapshot_CreationDate 
 DEFAULT (GETDATE()) FOR CreationDate;
 GO
