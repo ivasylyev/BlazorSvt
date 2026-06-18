@@ -31,6 +31,9 @@ public partial class GenericGrid<TItem, TDetailItem> : SvtComponentBase
     [Inject]
     public IOptions<ReportOptions> ReportOptions { get; set; } = default!;
 
+    [Inject]
+    public PreloadService PreloadService { get; set; } = default!;
+
     [Parameter]
     [EditorRequired]
     public string PageTitle { get; set; } = default!;
@@ -82,7 +85,20 @@ public partial class GenericGrid<TItem, TDetailItem> : SvtComponentBase
                 return;
         }
 
-        await ExportShortReportAsync(totalCount);
+        await RunReportGenerationAsync(() => ExportShortReportAsync(totalCount));
+    }
+
+    private async Task RunReportGenerationAsync(Func<Task> generateReport)
+    {
+        PreloadService.Show(SpinnerColor.Light, L["GenericGrid.ReportGenerating"]);
+        try
+        {
+            await generateReport();
+        }
+        finally
+        {
+            PreloadService.Hide();
+        }
     }
 
     private async Task ExportShortReportAsync(int totalCount)

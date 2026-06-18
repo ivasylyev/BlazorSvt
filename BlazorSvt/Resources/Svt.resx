@@ -181,6 +181,9 @@
   <data name="GenericGrid.ReportConfirm.No" xml:space="preserve">
 	  <value>No</value>
   </data>
+  <data name="GenericGrid.ReportGenerating" xml:space="preserve">
+	  <value>Report is being generated...</value>
+  </data>
   
   <data name="LoadTimePanel.NotLoaded" xml:space="preserve">
 	  <value>Not Loaded</value>
