@@ -2,6 +2,7 @@
 using BlazorSvt.Models.Config;
 using BlazorSvt.Models.Grid;
 using BlazorSvt.Services.Shared;
+using BlazorSvt.Utils;
 using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.Options;
 
@@ -184,15 +185,15 @@ public partial class GenericGrid<TItem, TDetailItem> : SvtComponentBase
                 return;
         }
 
-        await RunReportGenerationAsync(() => generateReport(totalCount));
+        await RunReportGenerationAsync(reportName, () => generateReport(totalCount));
     }
 
-    private async Task RunReportGenerationAsync(Func<Task> generateReport)
+    private async Task RunReportGenerationAsync(string reportName, Func<Task> generateReport)
     {
         PreloadService.Show(SpinnerColor.Light, L["GenericGrid.ReportGenerating"]);
         try
         {
-            await generateReport();
+            await LoggedOperation.ExecuteAsync(Logger, $"{reportName} report", generateReport);
         }
         finally
         {
