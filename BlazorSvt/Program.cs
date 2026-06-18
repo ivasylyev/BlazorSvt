@@ -57,8 +57,14 @@ var localizationOptions = new RequestLocalizationOptions()
     .AddSupportedUICultures(supportedCultures);
 
 
+var pathBase = builder.Configuration["PathBase"];
+
 var app = builder.Build();
-app.UsePathBase("/v2");
+
+if (!string.IsNullOrEmpty(pathBase) && pathBase != "/")
+{
+    app.UsePathBase(pathBase);
+}
 app.UseRequestLocalization(localizationOptions);
 app.MapControllers();
 // Configure the HTTP request pipeline.
