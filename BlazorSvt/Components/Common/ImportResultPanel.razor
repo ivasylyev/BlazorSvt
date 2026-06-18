@@ -1,6 +1,7 @@
 @inherits SvtComponentBase
 @using BlazorSvt.Models.Excel
-@inject IJSRuntime JS
+@using BlazorSvt.Services.Shared
+@inject IFileDownloadService FileDownloadService
 
 @if (State.SuccessMessage is not null)
 {
@@ -27,8 +28,6 @@ else if (State.ErrorMessage is not null)
             return;
         }
 
-        using var stream = new MemoryStream(State.AnnotatedWorkbook);
-        using var streamRef = new DotNetStreamReference(stream);
-        await JS.InvokeVoidAsync("downloadFileFromStream", State.AnnotatedFileName, streamRef);
+        await FileDownloadService.DownloadFromBytesAsync(State.AnnotatedWorkbook, State.AnnotatedFileName);
     }
 }

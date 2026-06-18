@@ -4,8 +4,6 @@ using BlazorSvt.Models.Grid;
 using BlazorSvt.Services.Shared;
 using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.Options;
-using Microsoft.JSInterop;
-
 namespace BlazorSvt.Components.Common;
 
 public partial class GenericGrid<TItem, TDetailItem> : SvtComponentBase
@@ -26,7 +24,7 @@ public partial class GenericGrid<TItem, TDetailItem> : SvtComponentBase
     public IGridExcelExporter GridExcelExporter { get; set; } = default!;
 
     [Inject]
-    public IJSRuntime JS { get; set; } = default!;
+    public IFileDownloadService FileDownloadService { get; set; } = default!;
 
     [Inject]
     public IOptions<ReportOptions> ReportOptions { get; set; } = default!;
@@ -109,12 +107,8 @@ public partial class GenericGrid<TItem, TDetailItem> : SvtComponentBase
         Logger.LogInformation("Short report: exported {Count} items", items.Count);
     }
 
-    private async Task DownloadFileAsync(byte[] content, string fileName)
-    {
-        using var stream = new MemoryStream(content);
-        using var streamRef = new DotNetStreamReference(stream);
-        await JS.InvokeVoidAsync("downloadFileFromStream", fileName, streamRef);
-    }
+    private Task DownloadFileAsync(byte[] content, string fileName) =>
+        FileDownloadService.DownloadFromBytesAsync(content, fileName);
 
     private string BuildShortReportFileName()
     {
