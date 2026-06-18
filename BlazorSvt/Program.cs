@@ -34,6 +34,7 @@ builder.Services.AddControllers();
 builder.Services.AddLocalization();
 
 builder.Services.Configure<DatabaseOptions>(builder.Configuration.GetSection("Database"));
+builder.Services.Configure<ReportOptions>(builder.Configuration.GetSection("Reports"));
 builder.Services.AddScoped<PageTimingService>();
 
 builder.Services.AddScoped(typeof(IGridDataService<,>), typeof(GridDataService<,>));

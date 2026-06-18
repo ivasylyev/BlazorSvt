@@ -168,6 +168,18 @@
   <data name="GenericGrid.FullReport" xml:space="preserve">
 	  <value>Полный отчет</value>
   </data>
+  <data name="GenericGrid.ReportConfirm.Title" xml:space="preserve">
+	  <value>Подтверждение отчёта</value>
+  </data>
+  <data name="GenericGrid.ReportConfirm.Message" xml:space="preserve">
+	  <value>Отчёт имеет {0} строчек. Формирование может занять несколько минут. Продолжить?</value>
+  </data>
+  <data name="GenericGrid.ReportConfirm.Yes" xml:space="preserve">
+	  <value>Да</value>
+  </data>
+  <data name="GenericGrid.ReportConfirm.No" xml:space="preserve">
+	  <value>Нет</value>
+  </data>
   <data name="LoadTimePanel.NotLoaded" xml:space="preserve">
 	  <value>Данные еще не загружены</value>
   </data>

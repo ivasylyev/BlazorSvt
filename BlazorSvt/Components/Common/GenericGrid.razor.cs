@@ -1,7 +1,9 @@
 ﻿using BlazorBootstrap;
+using BlazorSvt.Models.Config;
 using BlazorSvt.Models.Grid;
 using BlazorSvt.Services.Shared;
 using Microsoft.AspNetCore.Components;
+using Microsoft.Extensions.Options;
 using Microsoft.JSInterop;
 
 namespace BlazorSvt.Components.Common;
@@ -10,6 +12,7 @@ public partial class GenericGrid<TItem, TDetailItem> : SvtComponentBase
 {
     private Grid<TItem> grid = default!;
     private SettingsModal settingsModal = default!;
+    private ReportConfirmModal reportConfirmModal = default!;
 
     private GridColumnSettingsCollection<TItem>? gridSettings;
 
@@ -24,6 +27,9 @@ public partial class GenericGrid<TItem, TDetailItem> : SvtComponentBase
 
     [Inject]
     public IJSRuntime JS { get; set; } = default!;
+
+    [Inject]
+    public IOptions<ReportOptions> ReportOptions { get; set; } = default!;
 
     [Parameter]
     [EditorRequired]
@@ -65,8 +71,24 @@ public partial class GenericGrid<TItem, TDetailItem> : SvtComponentBase
             return;
         }
 
-        var items = await GetAllGridDataAsync();
-        var workbook = GridExcelExporter.Export(items, gridSettings.ColumnSettings);
+        var totalCount = await GetTotalCountAsync();
+        if (totalCount == 0)
+            return;
+
+        if (totalCount > ReportOptions.Value.ShortReportConfirmationThreshold)
+        {
+            var confirmed = await reportConfirmModal.ConfirmAsync(totalCount);
+            if (!confirmed)
+                return;
+        }
+
+        await ExportShortReportAsync(totalCount);
+    }
+
+    private async Task ExportShortReportAsync(int totalCount)
+    {
+        var items = await GetAllGridDataAsync(totalCount);
+        var workbook = GridExcelExporter.Export(items, gridSettings!.ColumnSettings);
         await DownloadFileAsync(workbook, BuildShortReportFileName());
         Logger.LogInformation("Short report: exported {Count} items", items.Count);
     }
@@ -84,11 +106,14 @@ public partial class GenericGrid<TItem, TDetailItem> : SvtComponentBase
         return $"{safeTitle}_short_report_{DateTime.Now:yyyyMMdd_HHmmss}.xlsx";
     }
 
-    private async Task<IReadOnlyList<TItem>> GetAllGridDataAsync()
+    private async Task<int> GetTotalCountAsync()
     {
         var countResult = await DataProvider.Invoke(grid.CreateDataProviderRequest(pageNumber: 1, pageSizeOverride: 1));
-        var totalCount = countResult.TotalCount ?? 0;
+        return countResult.TotalCount ?? 0;
+    }
 
+    private async Task<IReadOnlyList<TItem>> GetAllGridDataAsync(int totalCount)
+    {
         if (totalCount == 0)
             return [];
 
@@ -98,6 +123,23 @@ public partial class GenericGrid<TItem, TDetailItem> : SvtComponentBase
 
     private async Task OnFullReportAsync()
     {
+        if (gridSettings is null)
+        {
+            Logger.LogWarning("Full report skipped: grid settings are not loaded yet");
+            return;
+        }
+
+        var totalCount = await GetTotalCountAsync();
+        if (totalCount == 0)
+            return;
+
+        if (totalCount > ReportOptions.Value.FullReportConfirmationThreshold)
+        {
+            var confirmed = await reportConfirmModal.ConfirmAsync(totalCount);
+            if (!confirmed)
+                return;
+        }
+
         await Task.CompletedTask;
     }
 

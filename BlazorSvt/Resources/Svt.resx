@@ -169,6 +169,18 @@
   <data name="GenericGrid.FullReport" xml:space="preserve">
 	  <value>Full report</value>
   </data>
+  <data name="GenericGrid.ReportConfirm.Title" xml:space="preserve">
+	  <value>Report confirmation</value>
+  </data>
+  <data name="GenericGrid.ReportConfirm.Message" xml:space="preserve">
+	  <value>The report has {0} rows. Generation may take several minutes. Continue?</value>
+  </data>
+  <data name="GenericGrid.ReportConfirm.Yes" xml:space="preserve">
+	  <value>Yes</value>
+  </data>
+  <data name="GenericGrid.ReportConfirm.No" xml:space="preserve">
+	  <value>No</value>
+  </data>
   
   <data name="LoadTimePanel.NotLoaded" xml:space="preserve">
 	  <value>Not Loaded</value>
