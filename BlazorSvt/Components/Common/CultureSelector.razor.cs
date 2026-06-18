@@ -8,9 +8,9 @@ public partial class CultureSelector
 
     private void ChangeLanguage(string culture)
     {
-        var uri = new Uri(Navigation.Uri).GetComponents(UriComponents.PathAndQuery, UriFormat.Unescaped);
-        var query = $"/Culture/Set?culture={culture}&redirectUri={Uri.EscapeDataString(uri)}";
+        var redirectUri = "/" + Navigation.ToBaseRelativePath(Navigation.Uri).Trim('/');
+        var query = $"Culture/Set?culture={culture}&redirectUri={Uri.EscapeDataString(redirectUri)}";
 
-        Navigation.NavigateTo(query, true);
+        Navigation.NavigateTo(query, forceLoad: true);
     }
 }
