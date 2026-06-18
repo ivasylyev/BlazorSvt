@@ -150,11 +150,26 @@ public partial class GenericGrid<TItem, TDetailItem> : SvtComponentBase
 
     #region Reports
 
-    private async Task OnShortReportAsync()
+    private Task OnShortReportAsync() =>
+        RunReportAsync(
+            reportName: "Short",
+            confirmationThreshold: ReportOptions.Value.ShortReportConfirmationThreshold,
+            generateReport: ExportShortReportAsync);
+
+    private Task OnFullReportAsync() =>
+        RunReportAsync(
+            reportName: "Full",
+            confirmationThreshold: ReportOptions.Value.FullReportConfirmationThreshold,
+            generateReport: ExportFullReportAsync);
+
+    private async Task RunReportAsync(
+        string reportName,
+        int confirmationThreshold,
+        Func<int, Task> generateReport)
     {
         if (gridSettings is null)
         {
-            Logger.LogWarning("Short report skipped: grid settings are not loaded yet");
+            Logger.LogWarning("{ReportName} report skipped: grid settings are not loaded yet", reportName);
             return;
         }
 
@@ -162,36 +177,14 @@ public partial class GenericGrid<TItem, TDetailItem> : SvtComponentBase
         if (totalCount == 0)
             return;
 
-        if (totalCount > ReportOptions.Value.ShortReportConfirmationThreshold)
+        if (totalCount > confirmationThreshold)
         {
             var confirmed = await reportConfirmModal.ConfirmAsync(totalCount);
             if (!confirmed)
                 return;
         }
 
-        await RunReportGenerationAsync(() => ExportShortReportAsync(totalCount));
-    }
-
-    private async Task OnFullReportAsync()
-    {
-        if (gridSettings is null)
-        {
-            Logger.LogWarning("Full report skipped: grid settings are not loaded yet");
-            return;
-        }
-
-        var totalCount = await GetTotalCountAsync();
-        if (totalCount == 0)
-            return;
-
-        if (totalCount > ReportOptions.Value.FullReportConfirmationThreshold)
-        {
-            var confirmed = await reportConfirmModal.ConfirmAsync(totalCount);
-            if (!confirmed)
-                return;
-        }
-
-        await Task.CompletedTask;
+        await RunReportGenerationAsync(() => generateReport(totalCount));
     }
 
     private async Task RunReportGenerationAsync(Func<Task> generateReport)
@@ -214,6 +207,8 @@ public partial class GenericGrid<TItem, TDetailItem> : SvtComponentBase
         await DownloadFileAsync(workbook, BuildShortReportFileName());
         Logger.LogInformation("Short report: exported {Count} items", items.Count);
     }
+
+    private Task ExportFullReportAsync(int _) => Task.CompletedTask;
 
     private Task DownloadFileAsync(byte[] content, string fileName) =>
         FileDownloadService.DownloadFromBytesAsync(content, fileName);
