@@ -27,21 +27,21 @@ DROP SEQUENCE IF EXISTS v2.seq_TransportRateId;
 GO
 
 -- 4. Удаляем схему партиционирования
-IF EXISTS (SELECT * FROM sys.partition_schemes WHERE name = 'ps_TransportRate')
+IF EXISTS (SELECT * FROM sys.partition_schemes WHERE name = 'v2_ps_TransportRate')
 BEGIN
-    DROP PARTITION SCHEME ps_TransportRate;
+    DROP PARTITION SCHEME v2_ps_TransportRate;
 END
 GO
 
 -- 5. Удаляем функцию партиционирования
-IF EXISTS (SELECT * FROM sys.partition_functions WHERE name = 'pf_TransportRate_IsArchive')
+IF EXISTS (SELECT * FROM sys.partition_functions WHERE name = 'v2_pf_TransportRate_IsArchive')
 BEGIN
-    DROP PARTITION FUNCTION pf_TransportRate_IsArchive;
+    DROP PARTITION FUNCTION v2_pf_TransportRate_IsArchive;
 END
 GO
 
 -- 6. Создаем функцию партиционирования
-CREATE PARTITION FUNCTION pf_TransportRate_IsArchive (BIT)
+CREATE PARTITION FUNCTION v2_pf_TransportRate_IsArchive (BIT)
 AS RANGE RIGHT FOR VALUES (0);
 -- Partition 1: IsArchive < 0 (пусто)
 -- Partition 2: IsArchive >= 0 AND < 1 (IsArchive = 0)  
@@ -49,8 +49,8 @@ AS RANGE RIGHT FOR VALUES (0);
 GO
 
 -- 7. Создаем схему партиционирования
-CREATE PARTITION SCHEME ps_TransportRate
-AS PARTITION pf_TransportRate_IsArchive
+CREATE PARTITION SCHEME v2_ps_TransportRate
+AS PARTITION v2_pf_TransportRate_IsArchive
 ALL TO ([PRIMARY]);
 GO
 
@@ -100,7 +100,7 @@ CREATE TABLE v2.TransportRateSnapshot (
     ProductNameEn       NVARCHAR(100) NULL
     
     CONSTRAINT PK_TransportRateSnapshot PRIMARY KEY CLUSTERED (IsArchive, Id)
-) ON ps_TransportRate(IsArchive);
+) ON v2_ps_TransportRate(IsArchive);
 GO
 
 -- =====================================================

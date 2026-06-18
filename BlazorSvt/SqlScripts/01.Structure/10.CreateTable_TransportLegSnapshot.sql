@@ -27,21 +27,21 @@ DROP SEQUENCE IF EXISTS v2.seq_TransportLegId;
 GO
 
 -- 4. Удаляем схему партиционирования
-IF EXISTS (SELECT * FROM sys.partition_schemes WHERE name = 'ps_TransportLeg')
+IF EXISTS (SELECT * FROM sys.partition_schemes WHERE name = 'v2_ps_TransportLeg')
 BEGIN
-    DROP PARTITION SCHEME ps_TransportLeg;
+    DROP PARTITION SCHEME v2_ps_TransportLeg;
 END
 GO
 
 -- 5. Удаляем функцию партиционирования
-IF EXISTS (SELECT * FROM sys.partition_functions WHERE name = 'pf_TransportLeg_IsArchive')
+IF EXISTS (SELECT * FROM sys.partition_functions WHERE name = 'v2_pf_TransportLeg_IsArchive')
 BEGIN
-    DROP PARTITION FUNCTION pf_TransportLeg_IsArchive;
+    DROP PARTITION FUNCTION v2_pf_TransportLeg_IsArchive;
 END
 GO
 
 -- 6. Создаем функцию партиционирования
-CREATE PARTITION FUNCTION pf_TransportLeg_IsArchive (BIT)
+CREATE PARTITION FUNCTION v2_pf_TransportLeg_IsArchive (BIT)
 AS RANGE RIGHT FOR VALUES (0);
 -- Partition 1: IsArchive < 0 (пусто)
 -- Partition 2: IsArchive >= 0 AND < 1 (IsArchive = 0)  
@@ -49,8 +49,8 @@ AS RANGE RIGHT FOR VALUES (0);
 GO
 
 -- 7. Создаем схему партиционирования
-CREATE PARTITION SCHEME ps_TransportLeg
-AS PARTITION pf_TransportLeg_IsArchive
+CREATE PARTITION SCHEME v2_ps_TransportLeg
+AS PARTITION v2_pf_TransportLeg_IsArchive
 ALL TO ([PRIMARY]);
 GO
 
@@ -106,7 +106,7 @@ CREATE TABLE v2.TransportLegSnapshot (
     LastChangeDate      DATETIME NOT NULL
     
     CONSTRAINT PK_TransportLegSnapshot PRIMARY KEY CLUSTERED (IsArchive, Id)
-) ON ps_TransportLeg(IsArchive);
+) ON v2_ps_TransportLeg(IsArchive);
 GO
 
 -- 10. Добавляем DEFAULT constraints
