@@ -185,15 +185,10 @@ public partial class GenericGrid<TItem, TDetailItem> : SvtComponentBase
                 return;
         }
 
-        await RunReportGenerationAsync(reportName, () => generateReport(totalCount));
-    }
-
-    private async Task RunReportGenerationAsync(string reportName, Func<Task> generateReport)
-    {
         PreloadService.Show(SpinnerColor.Light, L["GenericGrid.ReportGenerating"]);
         try
         {
-            await LoggedOperation.ExecuteAsync(Logger, $"{reportName} report", generateReport);
+            await LoggedOperation.ExecuteAsync(Logger, $"{reportName} report", () => generateReport(totalCount));
         }
         finally
         {
