@@ -15,6 +15,29 @@ public class GridDataService<TItem, TDetailItem>(IOptions<DatabaseOptions> optio
     private const string IsArchiveFieldName = "IsArchive";
 
     private readonly string connectionString = options.Value.MdmDb;
+    private readonly int defaultQueryTimeoutSeconds = options.Value.DefaultQueryTimeoutSeconds;
+    private readonly int reportQueryTimeoutSeconds = options.Value.ReportQueryTimeoutSeconds;
+
+    public async Task<IReadOnlyList<TItem>> GetShortReportDataAsync(
+        GridDataProviderRequest<TItem> request,
+        string lang,
+        int totalCount)
+    {
+        var (sortString, sortDirection) = ExtractSorting(request);
+        var filters = ExtractFilters(request);
+
+        var (data, _) = await ExecuteStoredProcedureAsync(
+            filters,
+            pageNumber: 1,
+            pageSize: totalCount,
+            sortString,
+            sortDirection,
+            lang,
+            request.CancellationToken,
+            reportQueryTimeoutSeconds);
+
+        return data.ToList();
+    }
 
     public async Task<IReadOnlyList<TDetailItem>> GetFullReportDataAsync(
         GridDataProviderRequest<TItem> request,
@@ -31,7 +54,7 @@ public class GridDataService<TItem, TDetailItem>(IOptions<DatabaseOptions> optio
 
         var parameters = BuildExportParameters(filters, totalCount, sortString, sortDirection, lang);
 
-        var loggingConnection = new DbConnectionLogDecorator(connection, logger);
+        var loggingConnection = new DbConnectionLogDecorator(connection, logger, reportQueryTimeoutSeconds);
 
         var data = (await loggingConnection.QueryAsync<TDetailItem>(
             FullReportExportProcedureName,
@@ -53,7 +76,7 @@ public class GridDataService<TItem, TDetailItem>(IOptions<DatabaseOptions> optio
 
         var sql = $"SELECT * FROM {DetailTableFunctionName}() WHERE {DetailTableFunctionKeyColumn} = @Key";
 
-        var loggingConnection = new DbConnectionLogDecorator(connection, logger);
+        var loggingConnection = new DbConnectionLogDecorator(connection, logger, defaultQueryTimeoutSeconds);
 
         var result = await loggingConnection.QuerySingleOrDefaultAsync<TDetailItem?>(
             sql,
@@ -76,7 +99,8 @@ public class GridDataService<TItem, TDetailItem>(IOptions<DatabaseOptions> optio
             sortString,
             sortDirection,
             lang,
-            request.CancellationToken);
+            request.CancellationToken,
+            defaultQueryTimeoutSeconds);
 
         return new GridDataProviderResult<TItem>
         {
@@ -144,7 +168,8 @@ public class GridDataService<TItem, TDetailItem>(IOptions<DatabaseOptions> optio
         string? sortKey,
         SortDirection sortDirection,
         string lang,
-        CancellationToken cancellationToken)
+        CancellationToken cancellationToken,
+        int commandTimeoutSeconds)
     {
 #pragma warning disable CS0618 // Type or member is obsolete
         await using var connection = new SqlConnection(connectionString);
@@ -153,7 +178,7 @@ public class GridDataService<TItem, TDetailItem>(IOptions<DatabaseOptions> optio
 
         var parameters = BuildParameters(filters, pageNumber, pageSize, sortKey, sortDirection, lang);
 
-        var loggingConnection = new DbConnectionLogDecorator(connection, logger);
+        var loggingConnection = new DbConnectionLogDecorator(connection, logger, commandTimeoutSeconds);
 
         await using var multi = await loggingConnection.QueryMultipleAsync(
             StoredProcedureName,

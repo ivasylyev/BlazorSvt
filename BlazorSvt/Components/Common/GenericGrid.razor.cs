@@ -204,7 +204,8 @@ public partial class GenericGrid<TItem, TDetailItem> : SvtComponentBase
 
     private async Task ExportShortReportAsync(int totalCount)
     {
-        var items = await GetAllGridDataAsync(totalCount);
+        var request = grid.CreateDataProviderRequest(pageNumber: 1, pageSizeOverride: totalCount);
+        var items = await GridDataService.GetShortReportDataAsync(request, Lang, totalCount);
         var workbook = GridExcelExporter.ExportShortReport(items, gridSettings!.ColumnSettings);
         await DownloadFileAsync(workbook, BuildReportFileName("short"));
         Logger.LogInformation("Short report: exported {Count} items", items.Count);
@@ -234,15 +235,6 @@ public partial class GenericGrid<TItem, TDetailItem> : SvtComponentBase
     {
         var countResult = await DataProvider.Invoke(grid.CreateDataProviderRequest(pageNumber: 1, pageSizeOverride: 1));
         return countResult.TotalCount ?? 0;
-    }
-
-    private async Task<IReadOnlyList<TItem>> GetAllGridDataAsync(int totalCount)
-    {
-        if (totalCount == 0)
-            return [];
-
-        var dataResult = await DataProvider.Invoke(grid.CreateDataProviderRequest(pageNumber: 1, pageSizeOverride: totalCount));
-        return dataResult.Data?.ToList() ?? [];
     }
 
     #endregion

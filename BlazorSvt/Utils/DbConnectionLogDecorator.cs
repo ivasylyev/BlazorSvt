@@ -3,7 +3,7 @@ using Dapper;
 
 namespace BlazorSvt.Utils;
 
-public class DbConnectionLogDecorator(IDbConnection connection, ILogger logger)
+public class DbConnectionLogDecorator(IDbConnection connection, ILogger logger, int commandTimeoutSeconds)
 {
     public Task<SqlMapper.GridReader> QueryMultipleAsync(
         string sql,
@@ -16,7 +16,8 @@ public class DbConnectionLogDecorator(IDbConnection connection, ILogger logger)
             () => connection.QueryMultipleAsync(
                 sql,
                 parameters,
-                commandType: commandType));
+                commandType: commandType,
+                commandTimeout: commandTimeoutSeconds));
     }
 
     public Task<TDetailItem?> QuerySingleOrDefaultAsync<TDetailItem>(
@@ -30,7 +31,8 @@ public class DbConnectionLogDecorator(IDbConnection connection, ILogger logger)
             () => connection.QuerySingleOrDefaultAsync<TDetailItem>(
                 sql,
                 parameters,
-                commandType: commandType));
+                commandType: commandType,
+                commandTimeout: commandTimeoutSeconds));
     }
 
     public Task<IEnumerable<T>> QueryAsync<T>(
@@ -44,6 +46,7 @@ public class DbConnectionLogDecorator(IDbConnection connection, ILogger logger)
             () => connection.QueryAsync<T>(
                 sql,
                 parameters,
-                commandType: commandType));
+                commandType: commandType,
+                commandTimeout: commandTimeoutSeconds));
     }
 }
