@@ -45,7 +45,8 @@ CREATE OR ALTER PROCEDURE v2.GetTransportLegs
     @SortKey        NVARCHAR(50) = NULL,
     @SortDirection  NVARCHAR(5) = NULL,
 
-    @FilterJson     NVARCHAR(MAX) = NULL
+    @FilterJson     NVARCHAR(MAX) = NULL,
+    @KeysOnly       BIT = 0
 AS
 BEGIN
     SET NOCOUNT ON;
@@ -95,7 +96,12 @@ BEGIN
         ]'
 
 
-    SET @SelectList = N'
+    SET @SelectList = CASE WHEN @KeysOnly = 1 THEN
+        N'
+        SELECT
+            LegId
+  '
+    ELSE N'
         SELECT
             Id,
             LegId,
@@ -143,6 +149,7 @@ BEGIN
             CreationDate,       
             LastChangeDate
   '
+    END
 
 
     EXEC v2.GetBlazorGridData 

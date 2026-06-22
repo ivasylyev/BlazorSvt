@@ -47,7 +47,8 @@ CREATE OR ALTER PROCEDURE v2.GetTransportRates
     @SortKey        NVARCHAR(50) = NULL,
     @SortDirection  NVARCHAR(5) = NULL,
 
-    @FilterJson     NVARCHAR(MAX) = NULL
+    @FilterJson     NVARCHAR(MAX) = NULL,
+    @KeysOnly       BIT = 0
 AS
 BEGIN
     SET NOCOUNT ON;
@@ -96,7 +97,12 @@ BEGIN
         ]'
 
 
-    SET @SelectList = N'
+    SET @SelectList = CASE WHEN @KeysOnly = 1 THEN
+        N'
+        SELECT
+            RateId
+  '
+    ELSE N'
         SELECT
             Id,
             RateId,
@@ -142,6 +148,7 @@ BEGIN
             ProductNameRu,
             ProductNameEn
   '
+    END
 
 
     EXEC v2.GetBlazorGridData 

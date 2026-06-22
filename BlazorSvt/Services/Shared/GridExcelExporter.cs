@@ -5,27 +5,42 @@ namespace BlazorSvt.Services.Shared;
 
 public class GridExcelExporter : IGridExcelExporter
 {
-    public byte[] Export<T>(IReadOnlyList<T> items, IEnumerable<GridColumnSetting<T>> columns)
-    {
-        var visibleColumns = columns.Where(c => c.Visible).ToList();
+    private sealed record ExportColumn<T>(string Header, Func<T, object?> GetValue);
 
+    public byte[] ExportShortReport<T>(IReadOnlyList<T> items, IEnumerable<GridColumnSetting<T>> columns) =>
+        ExportCore(
+            items,
+            columns
+                .Where(c => c.Visible)
+                .Select(c => new ExportColumn<T>(c.Header, item => c.DisplaySelector(item)))
+                .ToList());
+
+    public byte[] ExportFullReport<T>(IReadOnlyList<T> items, IEnumerable<DetailSetting<T>> columns) =>
+        ExportCore(
+            items,
+            columns
+                .Select(c => new ExportColumn<T>(
+                    c.Header,
+                    item => c.VisibleSelector(item) ? c.DisplaySelector(item) : null))
+                .ToList());
+
+    private static byte[] ExportCore<T>(IReadOnlyList<T> items, IReadOnlyList<ExportColumn<T>> columns)
+    {
         using var workbook = new XLWorkbook();
         var worksheet = workbook.Worksheets.Add("Report");
 
-        for (var col = 0; col < visibleColumns.Count; col++)
+        for (var col = 0; col < columns.Count; col++)
         {
             var headerCell = worksheet.Cell(1, col + 1);
-            headerCell.Value = visibleColumns[col].Header;
+            headerCell.Value = columns[col].Header;
             headerCell.Style.Font.Bold = true;
         }
 
         for (var row = 0; row < items.Count; row++)
         {
             var item = items[row];
-            for (var col = 0; col < visibleColumns.Count; col++)
-            {
-                SetCellValue(worksheet.Cell(row + 2, col + 1), visibleColumns[col].DisplaySelector(item));
-            }
+            for (var col = 0; col < columns.Count; col++)
+                SetCellValue(worksheet.Cell(row + 2, col + 1), columns[col].GetValue(item));
         }
 
         worksheet.Columns().AdjustToContents();

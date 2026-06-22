@@ -32,4 +32,18 @@ public class DbConnectionLogDecorator(IDbConnection connection, ILogger logger)
                 parameters,
                 commandType: commandType));
     }
+
+    public Task<IEnumerable<T>> QueryAsync<T>(
+        string sql,
+        DynamicParameters parameters,
+        CommandType commandType)
+    {
+        return LoggedOperation.ExecuteAsync(
+            logger,
+            sql,
+            () => connection.QueryAsync<T>(
+                sql,
+                parameters,
+                commandType: commandType));
+    }
 }

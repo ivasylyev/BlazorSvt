@@ -16,6 +16,31 @@ public class GridDataService<TItem, TDetailItem>(IOptions<DatabaseOptions> optio
 
     private readonly string connectionString = options.Value.MdmDb;
 
+    public async Task<IReadOnlyList<TDetailItem>> GetFullReportDataAsync(
+        GridDataProviderRequest<TItem> request,
+        string lang,
+        int totalCount)
+    {
+        var (sortString, sortDirection) = ExtractSorting(request);
+        var filters = ExtractFilters(request);
+
+#pragma warning disable CS0618 // Type or member is obsolete
+        await using var connection = new SqlConnection(connectionString);
+#pragma warning restore CS0618 // Type or member is obsolete
+        await connection.OpenAsync(request.CancellationToken);
+
+        var parameters = BuildExportParameters(filters, totalCount, sortString, sortDirection, lang);
+
+        var loggingConnection = new DbConnectionLogDecorator(connection, logger);
+
+        var data = (await loggingConnection.QueryAsync<TDetailItem>(
+            FullReportExportProcedureName,
+            parameters,
+            CommandType.StoredProcedure)).ToList();
+
+        return data;
+    }
+
     public async Task<TDetailItem> GetDetailDataAsync(object key)
     {
 #pragma warning disable CS0618 // Type or member is obsolete
@@ -141,6 +166,26 @@ public class GridDataService<TItem, TDetailItem>(IOptions<DatabaseOptions> optio
         return (data, count);
     }
 
+    private static DynamicParameters BuildExportParameters(
+        IEnumerable<FilterItem> filters,
+        int pageSize,
+        string? sortKey,
+        SortDirection sortDirection,
+        string lang)
+    {
+        var parameters = new DynamicParameters();
+
+        parameters.Add("PageSize", pageSize);
+        parameters.Add("Lang", lang);
+        parameters.Add("SortKey", sortKey);
+        parameters.Add("SortDirection", sortDirection == SortDirection.Descending ? "DESC" : "ASC");
+
+        var serializedFilter = JsonConvert.SerializeObject(filters);
+        parameters.Add("FilterJson", serializedFilter);
+
+        return parameters;
+    }
+
     private static DynamicParameters BuildParameters(
         IEnumerable<FilterItem> filters,
         int pageNumber,
@@ -172,6 +217,11 @@ public class GridDataService<TItem, TDetailItem>(IOptions<DatabaseOptions> optio
         typeof(TItem).GetCustomAttribute<StoredProcedureAttribute>()?.Name
         ?? throw new InvalidOperationException(
             $"DTO {typeof(TItem).Name} does not have StoredProcedureAttribute");
+
+    private static readonly string FullReportExportProcedureName =
+        typeof(TDetailItem).GetCustomAttribute<FullReportExportAttribute>()?.Name
+        ?? throw new InvalidOperationException(
+            $"DTO {typeof(TDetailItem).Name} does not have FullReportExportAttribute");
 
     private static readonly string DetailTableFunctionName =
         typeof(TDetailItem).GetCustomAttribute<TableFunctionAttribute>()?.Name

@@ -4,6 +4,7 @@ using BlazorSvt.Models.Config;
 namespace BlazorSvt.Models.Dto;
 
 [TableFunction("v2.fn_GetTransportRateDetail", "RateId")]
+[FullReportExport("v2.ExportTransportRatesFull")]
 public class RateDetailDto
 {
     public long RateId { get; set; }

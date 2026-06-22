@@ -39,6 +39,12 @@ public partial class GenericGrid<TItem, TDetailItem> : SvtComponentBase
     [Inject]
     public PreloadService PreloadService { get; set; } = default!;
 
+    [Inject]
+    public IGridDataService<TItem, TDetailItem> GridDataService { get; set; } = default!;
+
+    [Inject]
+    public IDetailSettingsService<TDetailItem> DetailSettingsService { get; set; } = default!;
+
     #endregion
 
     #region Parameters
@@ -199,12 +205,21 @@ public partial class GenericGrid<TItem, TDetailItem> : SvtComponentBase
     private async Task ExportShortReportAsync(int totalCount)
     {
         var items = await GetAllGridDataAsync(totalCount);
-        var workbook = GridExcelExporter.Export(items, gridSettings!.ColumnSettings);
+        var workbook = GridExcelExporter.ExportShortReport(items, gridSettings!.ColumnSettings);
         await DownloadFileAsync(workbook, BuildShortReportFileName());
         Logger.LogInformation("Short report: exported {Count} items", items.Count);
     }
 
-    private Task ExportFullReportAsync(int _) => Task.CompletedTask;
+    private async Task ExportFullReportAsync(int totalCount)
+    {
+        var request = grid.CreateDataProviderRequest(pageNumber: 1, pageSizeOverride: totalCount);
+        var items = await GridDataService.GetFullReportDataAsync(request, Lang, totalCount);
+        var detailSettings = DetailSettingsService.GetGridDetailSettings(Lang);
+        var columns = detailSettings.GroupSettings.Values.SelectMany(settings => settings);
+        var workbook = GridExcelExporter.ExportFullReport(items, columns);
+        await DownloadFileAsync(workbook, BuildFullReportFileName());
+        Logger.LogInformation("Full report: exported {Count} items", items.Count);
+    }
 
     private Task DownloadFileAsync(byte[] content, string fileName) =>
         FileDownloadService.DownloadFromBytesAsync(content, fileName);
@@ -213,6 +228,12 @@ public partial class GenericGrid<TItem, TDetailItem> : SvtComponentBase
     {
         var safeTitle = string.Join("_", PageTitle.Split(Path.GetInvalidFileNameChars(), StringSplitOptions.RemoveEmptyEntries));
         return $"{safeTitle}_short_report_{DateTime.Now:yyyyMMdd_HHmmss}.xlsx";
+    }
+
+    private string BuildFullReportFileName()
+    {
+        var safeTitle = string.Join("_", PageTitle.Split(Path.GetInvalidFileNameChars(), StringSplitOptions.RemoveEmptyEntries));
+        return $"{safeTitle}_full_report_{DateTime.Now:yyyyMMdd_HHmmss}.xlsx";
     }
 
     private async Task<int> GetTotalCountAsync()
