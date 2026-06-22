@@ -24,16 +24,18 @@ public class GridDataService<TItem, TDetailItem>(IOptions<DatabaseOptions> optio
         await connection.OpenAsync();
 
         var parameters = new DynamicParameters();
-        parameters.Add("Key", key.ToString());
+        parameters.Add("Key", key);
+
+        var sql = $"SELECT * FROM {DetailTableFunctionName}() WHERE {DetailTableFunctionKeyColumn} = @Key";
 
         var loggingConnection = new DbConnectionLogDecorator(connection, logger);
 
         var result = await loggingConnection.QuerySingleOrDefaultAsync<TDetailItem?>(
-            StoredProcedureDetailName,
+            sql,
             parameters,
-            CommandType.StoredProcedure);
+            CommandType.Text);
 
-        return result ?? throw new Exception($"{StoredProcedureDetailName} with {key} returns no data");
+        return result ?? throw new Exception($"{DetailTableFunctionName} with {key} returns no data");
     }
 
     public async Task<GridDataProviderResult<TItem>> GetDataAsync(GridDataProviderRequest<TItem> request, string lang)
@@ -171,10 +173,15 @@ public class GridDataService<TItem, TDetailItem>(IOptions<DatabaseOptions> optio
         ?? throw new InvalidOperationException(
             $"DTO {typeof(TItem).Name} does not have StoredProcedureAttribute");
 
-    private static readonly string StoredProcedureDetailName =
-        typeof(TDetailItem).GetCustomAttribute<StoredProcedureAttribute>()?.Name
+    private static readonly string DetailTableFunctionName =
+        typeof(TDetailItem).GetCustomAttribute<TableFunctionAttribute>()?.Name
         ?? throw new InvalidOperationException(
-            $"DTO {typeof(TDetailItem).Name} does not have StoredProcedureAttribute");
+            $"DTO {typeof(TDetailItem).Name} does not have TableFunctionAttribute");
+
+    private static readonly string DetailTableFunctionKeyColumn =
+        typeof(TDetailItem).GetCustomAttribute<TableFunctionAttribute>()?.KeyColumn
+        ?? throw new InvalidOperationException(
+            $"DTO {typeof(TDetailItem).Name} does not have TableFunctionAttribute");
 
 
     private static async Task<int> ReadCountAsync(SqlMapper.GridReader multi)

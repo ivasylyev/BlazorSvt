@@ -1,4 +1,4 @@
-﻿USE mdm
+USE mdm
 GO
 
 /*
@@ -7,17 +7,16 @@ Example:
 use mdm
 go
 
-
-exec v2.GetTransportRateDetail '34041206'
- 
+SELECT *
+FROM v2.fn_GetTransportRateDetail()
+WHERE RateId = 34041206
 
 */
-CREATE OR ALTER PROCEDURE v2.GetTransportRateDetail
-    @Key            NVARCHAR(50)
+CREATE OR ALTER FUNCTION v2.fn_GetTransportRateDetail()
+RETURNS TABLE
 AS
-BEGIN
-    SET NOCOUNT ON;
-
+RETURN
+(
     SELECT
      CAST(r.Id AS INT)              AS RateId
     ,CAST(r.Code AS BIGINT)	        AS Code
@@ -311,9 +310,5 @@ BEGIN
 
     LEFT JOIN mdm.dbo.vw_TransportRateTenderServicePack tsp 
         ON r.Id = tsp.TransportRateId
-
-    
-    WHERE r.Id = CAST(@Key AS INT)          
-        
-END
+)
 GO

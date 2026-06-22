@@ -1,4 +1,4 @@
-﻿USE mdm
+USE mdm
 GO
 
 /*
@@ -7,17 +7,16 @@ Example:
 use mdm
 go
 
-
-exec v2.GetTransportLegDetail '2845464'
- 
+SELECT *
+FROM v2.fn_GetTransportLegDetail()
+WHERE LegId = 2845464
 
 */
-CREATE OR ALTER PROCEDURE v2.GetTransportLegDetail
-    @Key            NVARCHAR(50)
+CREATE OR ALTER FUNCTION v2.fn_GetTransportLegDetail()
+RETURNS TABLE
 AS
-BEGIN
-    SET NOCOUNT ON;
-
+RETURN
+(
     SELECT 
         CAST(l.Id AS INT)      AS LegId,
         l.Code                 AS Code,
@@ -90,8 +89,5 @@ BEGIN
     JOIN vw_Region rt (NOLOCK) ON rt.Id = nt.Region
     LEFT JOIN vw_LocationsNodes np (NOLOCK) ON l.ProxyNode = np.Id
     LEFT JOIN vw_Region rp (NOLOCK) ON rp.Id = np.Region
-    
-    WHERE l.Id = CAST(@Key AS INT)        
-        
-END
+)
 GO
