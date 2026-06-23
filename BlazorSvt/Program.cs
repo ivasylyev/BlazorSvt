@@ -37,6 +37,7 @@ builder.Services.Configure<DatabaseOptions>(builder.Configuration.GetSection("Da
 builder.Services.Configure<ReportOptions>(builder.Configuration.GetSection("Reports"));
 builder.Services.AddScoped<PageTimingService>();
 
+builder.Services.AddScoped(typeof(IGridQueryFactory<>), typeof(GridQueryFactory<>));
 builder.Services.AddScoped(typeof(IGridDataService<,>), typeof(GridDataService<,>));
 
 builder.Services.AddScoped<IExcelParser, ExcelParser>();
