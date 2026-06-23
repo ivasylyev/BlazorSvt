@@ -44,7 +44,7 @@ BEGIN
         @KeysOnly      = 1;
 
     SELECT d.*
-    FROM v2.fn_GetTransportLegDetail() d
+    FROM v2.vw_TransportLegDetail d
     WHERE d.LegId IN (SELECT LegId FROM #Filtered)
     ORDER BY (SELECT f.RowNum FROM #Filtered f WHERE f.LegId = d.LegId);
 END

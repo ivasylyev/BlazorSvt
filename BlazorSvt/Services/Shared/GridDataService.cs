@@ -68,7 +68,7 @@ public class GridDataService<TItem, TDetailItem>(IOptions<DatabaseOptions> optio
         var parameters = new DynamicParameters();
         parameters.Add("Key", key);
 
-        var sql = $"SELECT * FROM {DetailTableFunctionName}() WHERE {DetailTableFunctionKeyColumn} = @Key";
+        var sql = $"SELECT * FROM {DetailSourceName} WHERE {DetailSourceKeyColumn} = @Key";
 
         var loggingConnection = new DbConnectionLogDecorator(connection, logger, defaultQueryTimeoutSeconds);
 
@@ -77,7 +77,7 @@ public class GridDataService<TItem, TDetailItem>(IOptions<DatabaseOptions> optio
             parameters,
             CommandType.Text);
 
-        return result ?? throw new Exception($"{DetailTableFunctionName} with {key} returns no data");
+        return result ?? throw new Exception($"{DetailSourceName} with {key} returns no data");
     }
 
     public async Task<GridDataProviderResult<TItem>> GetDataAsync(GridDataProviderRequest<TItem> request, string lang)
@@ -253,15 +253,15 @@ public class GridDataService<TItem, TDetailItem>(IOptions<DatabaseOptions> optio
         ?? throw new InvalidOperationException(
             $"DTO {typeof(TDetailItem).Name} does not have FullReportExportAttribute");
 
-    private static readonly string DetailTableFunctionName =
-        typeof(TDetailItem).GetCustomAttribute<TableFunctionAttribute>()?.Name
+    private static readonly string DetailSourceName =
+        typeof(TDetailItem).GetCustomAttribute<DetailSourceAttribute>()?.Name
         ?? throw new InvalidOperationException(
-            $"DTO {typeof(TDetailItem).Name} does not have TableFunctionAttribute");
+            $"DTO {typeof(TDetailItem).Name} does not have DetailSourceAttribute");
 
-    private static readonly string DetailTableFunctionKeyColumn =
-        typeof(TDetailItem).GetCustomAttribute<TableFunctionAttribute>()?.KeyColumn
+    private static readonly string DetailSourceKeyColumn =
+        typeof(TDetailItem).GetCustomAttribute<DetailSourceAttribute>()?.KeyColumn
         ?? throw new InvalidOperationException(
-            $"DTO {typeof(TDetailItem).Name} does not have TableFunctionAttribute");
+            $"DTO {typeof(TDetailItem).Name} does not have DetailSourceAttribute");
 
 
     private static async Task<int> ReadCountAsync(SqlMapper.GridReader multi)

@@ -8,15 +8,15 @@ use mdm
 go
 
 SELECT *
-FROM v2.fn_GetTransportLegDetail()
+FROM v2.vw_TransportLegDetail
 WHERE LegId = 2845464
 
 */
-CREATE OR ALTER FUNCTION v2.fn_GetTransportLegDetail()
-RETURNS TABLE
+DROP FUNCTION IF EXISTS v2.fn_GetTransportLegDetail;
+GO
+
+CREATE OR ALTER VIEW v2.vw_TransportLegDetail
 AS
-RETURN
-(
     SELECT 
         CAST(l.Id AS INT)      AS LegId,
         l.Code                 AS Code,
@@ -89,5 +89,4 @@ RETURN
     JOIN vw_Region rt (NOLOCK) ON rt.Id = nt.Region
     LEFT JOIN vw_LocationsNodes np (NOLOCK) ON l.ProxyNode = np.Id
     LEFT JOIN vw_Region rp (NOLOCK) ON rp.Id = np.Region
-)
 GO

@@ -1,7 +1,7 @@
 namespace BlazorSvt.Models.Config;
 
 [AttributeUsage(AttributeTargets.Class)]
-public class TableFunctionAttribute(string name, string keyColumn) : Attribute
+public class DetailSourceAttribute(string name, string keyColumn) : Attribute
 {
     public string Name { get; } = name;
 

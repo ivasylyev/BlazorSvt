@@ -44,7 +44,7 @@ BEGIN
         @KeysOnly      = 1;
 
     SELECT d.*
-    FROM v2.fn_GetTransportRateDetail() d
+    FROM v2.vw_TransportRateDetail d
     WHERE d.RateId IN (SELECT RateId FROM #Filtered)
     ORDER BY (SELECT f.RowNum FROM #Filtered f WHERE f.RateId = d.RateId);
 END

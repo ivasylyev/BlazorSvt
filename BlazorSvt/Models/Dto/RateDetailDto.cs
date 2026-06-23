@@ -3,7 +3,7 @@ using BlazorSvt.Models.Config;
 
 namespace BlazorSvt.Models.Dto;
 
-[TableFunction("v2.fn_GetTransportRateDetail", "RateId")]
+[DetailSource("v2.vw_TransportRateDetail", "RateId")]
 [FullReportExport("v2.ExportTransportRatesFull")]
 public class RateDetailDto
 {

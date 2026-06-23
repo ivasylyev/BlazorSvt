@@ -8,15 +8,15 @@ use mdm
 go
 
 SELECT *
-FROM v2.fn_GetTransportRateDetail()
+FROM v2.vw_TransportRateDetail
 WHERE RateId = 34041206
 
 */
-CREATE OR ALTER FUNCTION v2.fn_GetTransportRateDetail()
-RETURNS TABLE
+DROP FUNCTION IF EXISTS v2.fn_GetTransportRateDetail;
+GO
+
+CREATE OR ALTER VIEW v2.vw_TransportRateDetail
 AS
-RETURN
-(
     SELECT
      CAST(r.Id AS INT)              AS RateId
     ,CAST(r.Code AS BIGINT)	        AS Code
@@ -310,5 +310,4 @@ RETURN
 
     LEFT JOIN mdm.dbo.vw_TransportRateTenderServicePack tsp 
         ON r.Id = tsp.TransportRateId
-)
 GO

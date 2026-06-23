@@ -4,7 +4,7 @@ using BlazorSvt.Models.Dto.IdsEnum;
 
 namespace BlazorSvt.Models.Dto;
 
-[TableFunction("v2.fn_GetTransportLegDetail", "LegId")]
+[DetailSource("v2.vw_TransportLegDetail", "LegId")]
 [FullReportExport("v2.ExportTransportLegsFull")]
 public class LegDetailDto
 {
