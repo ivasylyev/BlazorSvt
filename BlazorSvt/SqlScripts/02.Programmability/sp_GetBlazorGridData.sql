@@ -116,16 +116,20 @@ BEGIN
 
     DECLARE @AllowedColumns TABLE
     (
-        ColumnName NVARCHAR(100) NOT NULL,
-        ColumnType NVARCHAR(100) NOT NULL
+        ColumnName SYSNAME NOT NULL,
+        ColumnType NVARCHAR(20) NOT NULL
     )
     DECLARE @FilteredColumns TABLE
     (
-        ColumnName  NVARCHAR(100) NOT NULL,
-        ColumnType  NVARCHAR(100) NOT NULL,
-        ColumnValue NVARCHAR(100) NULL,
-        Operator    NVARCHAR(100) NULL,
-        FilterPart  NVARCHAR(MAX) NULL
+        ColumnName    SYSNAME NOT NULL,
+        SqlColumnName NVARCHAR(258) NOT NULL,
+        ColumnType    NVARCHAR(20) NOT NULL,
+        ColumnValue   NVARCHAR(4000) NULL,
+        Operator      INT NULL,
+        SqlOperator   NVARCHAR(2) NULL,
+        SqlValue      NVARCHAR(4000) NULL,
+        FtsValue      NVARCHAR(4000) NULL,
+        FilterPart    NVARCHAR(MAX) NULL
     )
     DECLARE
         @Offset INT = (@PageNumber - 1) * @PageSize,
@@ -140,26 +144,101 @@ BEGIN
         @HasRowsClause NVARCHAR(50) = '',
         @HavingRowsClause NVARCHAR(50) = '',
         @IsComplexQuery BIT,
-        @FulltextFilterCount INT;
+        @FulltextFilterCount INT,
+        @DatabaseName SYSNAME,
+        @SchemaName SYSNAME,
+        @ObjectName SYSNAME,
+        @SafeTableName NVARCHAR(776),
+        @TableObjectId INT,
+        @SortColumn SYSNAME,
+        @OrderByClause NVARCHAR(300) = N'ORDER BY [Id]';
 
     SET @PageNumber = IIF(@PageNumber < 1, 1, @PageNumber);
     SET @PageSize = IIF(@PageSize < 1, 20, @PageSize);
+    SET @LangSuffix = CASE WHEN @LangSuffix = N'Ru' THEN N'Ru' ELSE N'En' END;
+
+    SET @DatabaseName = PARSENAME(@TableName, 3);
+    SET @SchemaName = PARSENAME(@TableName, 2);
+    SET @ObjectName = PARSENAME(@TableName, 1);
+
+    IF PARSENAME(@TableName, 4) IS NOT NULL OR @SchemaName IS NULL OR @ObjectName IS NULL
+        THROW 50000, 'Invalid table name.', 1;
+
+    IF @DatabaseName IS NOT NULL AND @DatabaseName <> DB_NAME()
+        THROW 50000, 'Table name must refer to the current database.', 1;
+
+    SET @SafeTableName = CASE
+        WHEN @DatabaseName IS NULL THEN QUOTENAME(@SchemaName) + N'.' + QUOTENAME(@ObjectName)
+        ELSE QUOTENAME(@DatabaseName) + N'.' + QUOTENAME(@SchemaName) + N'.' + QUOTENAME(@ObjectName)
+    END;
+
+    SET @TableObjectId = OBJECT_ID(@SafeTableName, 'U');
+
+    IF @TableObjectId IS NULL
+        THROW 50000, 'Table does not exist.', 1;
 
     INSERT INTO @AllowedColumns (ColumnName, ColumnType)
-    SELECT ColumnName, ColumnType
+    SELECT ColumnName, UPPER(ColumnType)
     FROM OPENJSON(@AllowedColumnsJson)
     WITH (
-        ColumnName NVARCHAR(100) '$.ColumnName',
-        ColumnType NVARCHAR(100) '$.ColumnType'
-    );
+        ColumnName SYSNAME '$.ColumnName',
+        ColumnType NVARCHAR(20) '$.ColumnType'
+    )
+    WHERE ColumnName IS NOT NULL
+      AND UPPER(ColumnType) IN (N'NVARCHAR', N'ID', N'DATE', N'BIT');
+
+    SET @SortKey = NULLIF(LTRIM(RTRIM(@SortKey)), N'');
+    SET @SortDirection = UPPER(NULLIF(LTRIM(RTRIM(@SortDirection)), N''));
+
+    IF @SortKey IS NOT NULL
+    BEGIN
+        SET @SortDirection = ISNULL(@SortDirection, N'ASC');
+
+        IF @SortDirection NOT IN (N'ASC', N'DESC')
+            THROW 50000, 'Invalid sort direction.', 1;
+
+        SELECT TOP (1)
+            @SortColumn = CASE
+                WHEN AC.ColumnType = N'ID' AND @SortKey = AC.ColumnName + @LangSuffix THEN AC.ColumnName
+                ELSE @SortKey
+            END
+        FROM @AllowedColumns AC
+        WHERE AC.ColumnName = @SortKey
+           OR (AC.ColumnType = N'ID' AND @SortKey = AC.ColumnName + @LangSuffix);
+
+        IF @SortColumn IS NULL
+           AND EXISTS (
+                SELECT 1
+                FROM sys.columns
+                WHERE object_id = @TableObjectId
+                  AND name = @SortKey
+           )
+        BEGIN
+            SET @SortColumn = @SortKey;
+        END
+
+        IF @SortColumn IS NULL
+           OR NOT EXISTS (
+                SELECT 1
+                FROM sys.columns
+                WHERE object_id = @TableObjectId
+                  AND name = @SortColumn
+           )
+        BEGIN
+            THROW 50000, 'Invalid sort column.', 1;
+        END
+
+        SET @OrderByClause = N'ORDER BY ' + QUOTENAME(@SortColumn) + N' ' + @SortDirection + N', [Id]';
+    END;
 
     
-    INSERT INTO @FilteredColumns (ColumnName, ColumnType, ColumnValue, Operator)
+    INSERT INTO @FilteredColumns (ColumnName, SqlColumnName, ColumnType, ColumnValue, Operator)
     SELECT 
         AC.ColumnName,
+        QUOTENAME(AC.ColumnName),
         AC.ColumnType,
-        ISNULL(LTRIM(RTRIM(JS.[Value])), '') AS ColumnValue,
-        JS.Operator
+        ISNULL(LTRIM(RTRIM(JS.[Value])), N'') AS ColumnValue,
+        TRY_CONVERT(INT, JS.Operator)
     FROM OPENJSON(@FilterJson)
     WITH (
         PropertType      INT            '$.PropertType',
@@ -173,36 +252,62 @@ BEGIN
         OR (JS.PropertyName = AC.ColumnName + @LangSuffix AND AC.ColumnType = 'ID')
 
     UPDATE @FilteredColumns
+    SET SqlOperator = v2.fn_GetDateSqlOperator(Operator),
+        SqlValue = CASE ColumnType
+            WHEN N'ID' THEN CONVERT(NVARCHAR(30), TRY_CONVERT(BIGINT, ColumnValue))
+            WHEN N'DATE' THEN CONVERT(NVARCHAR(10), TRY_CONVERT(DATE, ColumnValue), 23)
+            ELSE ColumnValue
+        END,
+        FtsValue = NULLIF(LTRIM(RTRIM(
+            REPLACE(
+                REPLACE(
+                    REPLACE(
+                        REPLACE(
+                            REPLACE(
+                                REPLACE(
+                                    REPLACE(ColumnValue, N'''', N''''''),
+                                N'"', N' '),
+                            N'*', N' '),
+                        N'(', N' '),
+                    N')', N' '),
+                N'&', N' '),
+            N'|', N' ')
+        )), N'');
+
+    UPDATE @FilteredColumns
     SET FilterPart = CASE ColumnType         
             -- Логика для СТРОК c полнотекстовым поиском 
-            WHEN 'NVARCHAR' THEN 
-                CASE WHEN LEN(ColumnValue) > 2 THEN
+            WHEN N'NVARCHAR' THEN 
+                CASE WHEN LEN(FtsValue) > 2 THEN
                     N'
-                    AND CONTAINS(' + ColumnName + ', N''"' + ColumnValue + '*"'') '
+                    AND CONTAINS(' + SqlColumnName + ', N''"' + FtsValue + '*"'') '
                 ELSE '' 
                 END      
                 
             -- Логика для ID INT
-            WHEN 'ID' THEN 
-                N'
-                    AND ' + ColumnName + v2.fn_GetDateSqlOperator(Operator) + ColumnValue + ' '
+            WHEN N'ID' THEN
+                CASE WHEN SqlOperator IS NOT NULL AND SqlValue IS NOT NULL THEN
+                    N'
+                    AND ' + SqlColumnName + N' ' + SqlOperator + N' ' + SqlValue + N' '
+                ELSE ''
+                END
             -- Логика для ДАТ
-            WHEN 'DATE' THEN 
-                CASE WHEN ISDATE(ColumnValue) = 1
-                THEN
-                    ISNULL(N'
-                    AND  ' + ColumnName + ' ' + v2.fn_GetDateSqlOperator(Operator) -- если функция вернет NULL, весь фильтр обнулится. И это правильное поведение
-                    +''''+ ColumnValue + '''','')
+            WHEN N'DATE' THEN 
+                CASE WHEN SqlOperator IS NOT NULL AND SqlValue IS NOT NULL THEN
+                    N'
+                    AND ' + SqlColumnName + N' ' + SqlOperator + N' ''' + SqlValue + N''' '
                 ELSE ''
                 END
 
             -- Логика для ФЛАГОВ
-            WHEN 'BIT' THEN 
-                CASE WHEN ColumnValue = 'True' THEN
+            WHEN N'BIT' THEN 
+                CASE WHEN ColumnValue IN (N'True', N'true', N'1') THEN
                     N'
-                    AND ' + ColumnName + ' = 1' 
-                ELSE  N'
-                    AND ' + ColumnName + ' = 0' 
+                    AND ' + SqlColumnName + N' = 1'
+                WHEN ColumnValue IN (N'False', N'false', N'0') THEN
+                    N'
+                    AND ' + SqlColumnName + N' = 0'
+                ELSE ''
                 END
 
             -- Логика по умолчанию для остальных типов
@@ -213,7 +318,8 @@ BEGIN
 
     SELECT @FulltextFilterCount = COUNT(1) 
     FROM  @FilteredColumns
-    WHERE ColumnType = 'NVARCHAR'
+    WHERE ColumnType = N'NVARCHAR'
+      AND LEN(FtsValue) > 2
 
     -- Запрос считается сложным, если есть 2 и более полнотекстовых фильтров с сортировкой.
     -- В этом случае планировщик сходит с ума. Приходится идти на дорогую операцию:создание временной таблицы для фиксации промежуточных результатов.
@@ -244,13 +350,13 @@ BEGIN
         WITH CTE AS
         (
             SELECT 
-                ColumnName,
-                ColumnValue,
+                SqlColumnName,
+                FtsValue,
                 RN = ROW_NUMBER() OVER (ORDER BY ColumnName)
             FROM @FilteredColumns
-            WHERE ColumnType = 'NVARCHAR' 
-                  AND ColumnValue IS NOT NULL
-                  AND LEN(ColumnValue) > 2
+            WHERE ColumnType = N'NVARCHAR' 
+                  AND FtsValue IS NOT NULL
+                  AND LEN(FtsValue) > 2
         )
 
         SELECT @TempTableSQL = STRING_AGG(Batch, '')
@@ -261,10 +367,10 @@ BEGIN
                 Batch =
                     CASE 
                         WHEN RN = 1 THEN -- первове условие используется как основа для соединения с остальными
-                            'FROM CONTAINSTABLE(' + @TableName + ', ' + ColumnName + ', N''"' + ColumnValue + '*"'') AS T1'
+                            'FROM CONTAINSTABLE(' + @SafeTableName + ', ' + SqlColumnName + ', N''"' + FtsValue + '*"'') AS T1'
                         ELSE
                             '
-                            JOIN CONTAINSTABLE(' + @TableName + ', ' + ColumnName + ', N''"' + ColumnValue + '*"'') AS T' + CAST(RN AS NVARCHAR) + '
+                            JOIN CONTAINSTABLE(' + @SafeTableName + ', ' + SqlColumnName + ', N''"' + FtsValue + '*"'') AS T' + CAST(RN AS NVARCHAR) + '
                               ON T' + CAST(RN AS NVARCHAR) + '.[KEY] = T1.[KEY]'
                     END
             FROM CTE
@@ -302,7 +408,7 @@ BEGIN
 
     SET @TotalCountSQL = '
         SELECT @TotalCount_OUT = COUNT(1)
-        FROM ' + @TableName + '
+        FROM ' + @SafeTableName + '
         ' + @TotalCountWhereClause + ';';
 
     -- Для отладки  раскомментировать:
@@ -328,11 +434,11 @@ BEGIN
     ' + @HavingRowsClause + ';
     ' + @SelectList + '
         FROM 
-    ' + @TableName + '
+    ' + @SafeTableName + '
     ' + @JoinClause + ' 
     ' + @MainWhereClause + '
     ' + @HasRowsClause + '
-    ORDER BY '+ ISNULL(@SortKey + ' ' + @SortDirection + ', ', '')  + '  Id 
+    ' + @OrderByClause + '
     OFFSET ' + CAST(@Offset AS NVARCHAR(20)) + ' ROWS
     FETCH NEXT ' + CAST(@PageSize AS NVARCHAR(20)) + ' ROWS ONLY;
     ';
