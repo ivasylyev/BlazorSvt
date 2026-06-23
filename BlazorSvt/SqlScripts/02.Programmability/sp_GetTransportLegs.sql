@@ -16,9 +16,9 @@ exec v2.GetTransportLegs
     @SortKey=NULL,
     @SortDirection=NULL,
     @FilterJson=N'[
-    {"PropertType":null,"PropertyName":"NodeFromNameRu","Value":"казань","Operator":7,"StringComparison":5},
-        {"PropertType":null,"PropertyName":"ProxyNodeNameRu","Value":"находка","Operator":7,"StringComparison":5},
-        {"PropertType":null,"PropertyName":"IsArchive","Value":"False","Operator":1,"StringComparison":5}
+        {"PropertyName":"NodeFromNameRu","Value":"казань","Operator":"Contains"},
+        {"PropertyName":"ProxyNodeNameRu","Value":"находка","Operator":"Contains"},
+        {"PropertyName":"IsArchive","Value":"False","Operator":"Equals"}
         ]'
 
 
@@ -31,10 +31,10 @@ exec v2.GetTransportLegs
     @SortKey=N'CreationDate',
     @SortDirection=N'ASC',
     @FilterJson=N'[
-        {"PropertType":null,"PropertyName":"TransportKindIdRu","Value":"543763","Operator":1,"StringComparison":5},
-        {"PropertType":null,"PropertyName":"NodeFromNameRu","Value":"нижн","Operator":7,"StringComparison":5},
-        {"PropertType":null,"PropertyName":"ProxyNodeNameRu","Value":"нах","Operator":7,"StringComparison":5},
-        {"PropertType":null,"PropertyName":"IsArchive","Value":"False","Operator":1,"StringComparison":5}
+        {"PropertyName":"TransportKindIdRu","Value":"543763","Operator":"Equals"},
+        {"PropertyName":"NodeFromNameRu","Value":"нижн","Operator":"Contains"},
+        {"PropertyName":"ProxyNodeNameRu","Value":"нах","Operator":"Contains"},
+        {"PropertyName":"IsArchive","Value":"False","Operator":"Equals"}
         ]'
 
 */

@@ -1,5 +1,6 @@
 ﻿using BlazorBootstrap;
 using BlazorSvt.Models.Config;
+using BlazorSvt.Models.Grid;
 using BlazorSvt.Utils;
 using Dapper;
 using Microsoft.Extensions.Options;
@@ -23,16 +24,10 @@ public class GridDataService<TItem, TDetailItem>(IOptions<DatabaseOptions> optio
         string lang,
         int totalCount)
     {
-        var (sortString, sortDirection) = ExtractSorting(request);
-        var filters = ExtractFilters(request);
+        var query = CreateGridQuery(request, lang, pageNumber: 1, pageSize: totalCount);
 
         var (data, _) = await ExecuteStoredProcedureAsync(
-            filters,
-            pageNumber: 1,
-            pageSize: totalCount,
-            sortString,
-            sortDirection,
-            lang,
+            query,
             request.CancellationToken,
             reportQueryTimeoutSeconds);
 
@@ -44,15 +39,14 @@ public class GridDataService<TItem, TDetailItem>(IOptions<DatabaseOptions> optio
         string lang,
         int totalCount)
     {
-        var (sortString, sortDirection) = ExtractSorting(request);
-        var filters = ExtractFilters(request);
+        var query = CreateGridQuery(request, lang, pageNumber: 1, pageSize: totalCount);
 
 #pragma warning disable CS0618 // Type or member is obsolete
         await using var connection = new SqlConnection(connectionString);
 #pragma warning restore CS0618 // Type or member is obsolete
         await connection.OpenAsync(request.CancellationToken);
 
-        var parameters = BuildExportParameters(filters, totalCount, sortString, sortDirection, lang);
+        var parameters = BuildExportParameters(query);
 
         var loggingConnection = new DbConnectionLogDecorator(connection, logger, reportQueryTimeoutSeconds);
 
@@ -88,17 +82,10 @@ public class GridDataService<TItem, TDetailItem>(IOptions<DatabaseOptions> optio
 
     public async Task<GridDataProviderResult<TItem>> GetDataAsync(GridDataProviderRequest<TItem> request, string lang)
     {
-        var (sortString, sortDirection) = ExtractSorting(request);
-
-        var filters = ExtractFilters(request);
+        var query = CreateGridQuery(request, lang);
 
         var (data, totalCount) = await ExecuteStoredProcedureAsync(
-            filters,
-            request.PageNumber,
-            request.PageSize,
-            sortString,
-            sortDirection,
-            lang,
+            query,
             request.CancellationToken,
             defaultQueryTimeoutSeconds);
 
@@ -109,20 +96,32 @@ public class GridDataService<TItem, TDetailItem>(IOptions<DatabaseOptions> optio
         };
     }
 
-    private static (string? sortString, SortDirection sortDirection) ExtractSorting(GridDataProviderRequest<TItem> request)
+    private static GridQuery CreateGridQuery(
+        GridDataProviderRequest<TItem> request,
+        string lang,
+        int? pageNumber = null,
+        int? pageSize = null) =>
+        new(
+            pageNumber ?? request.PageNumber,
+            pageSize ?? request.PageSize,
+            lang,
+            ExtractSorting(request),
+            ExtractFilters(request));
+
+    private static GridSort ExtractSorting(GridDataProviderRequest<TItem> request)
     {
         // Бывает что request.Sorting пустой из-за того что компонент не успел инициализироваться
         // ReSharper disable once ConditionIsAlwaysTrueOrFalseAccordingToNullableAPIContract
         if (request.Sorting is not null && request.Sorting.Any())
         {
             var sort = request.Sorting.First();
-            return (sort.SortString, sort.SortDirection);
+            return new GridSort(sort.SortString, ToSqlSortDirection(sort.SortDirection));
         }
 
-        return (null, SortDirection.None);
+        return new GridSort(null, "ASC");
     }
 
-    private List<FilterItem> ExtractFilters(GridDataProviderRequest<TItem> request)
+    private static List<GridFilter> ExtractFilters(GridDataProviderRequest<TItem> request)
     {
         // Бывает что request.Filters пустой из-за того что компонент не успел инициализироваться
         // ReSharper disable once ConditionIsAlwaysTrueOrFalseAccordingToNullableAPIContract
@@ -131,43 +130,59 @@ public class GridDataService<TItem, TDetailItem>(IOptions<DatabaseOptions> optio
 
         return
         [
-            new FilterItem(
+            new GridFilter(
                 IsArchiveFieldName,
                 "False",
-                FilterOperator.Equals,
-                StringComparison.InvariantCultureIgnoreCase)
+                GridFilterOperators.EqualsOperator)
         ];
     }
 
-    private static FilterItem ExtractEnumFilter(FilterItem filter)
+    private static GridFilter ExtractEnumFilter(FilterItem filter)
     {
+        var value = filter.Value;
         DtoProperties.TryGetValue(filter.PropertyName, out var propInfo);
         if (propInfo != null)
         {
             // Проверяем, является ли тип перечислением (учитываем Nullable<Enum>)
             var propType = Nullable.GetUnderlyingType(propInfo.PropertyType) ?? propInfo.PropertyType;
             // ReSharper disable once ConditionIsAlwaysTrueOrFalseAccordingToNullableAPIContract
-            if (propType.IsEnum && filter.Value != null)
+            if (propType.IsEnum && value != null)
             {
-                if (Enum.TryParse(propType, filter.Value, out var enumValue))
+                if (Enum.TryParse(propType, value, out var enumValue))
                 {
-                    var value = ((int)enumValue).ToString();
-                    return new FilterItem(filter.PropertyName, value, filter.Operator, filter.StringComparison);
+                    value = ((int)enumValue).ToString();
                 }
             }
         }
-        return filter;
+
+        return new GridFilter(
+            filter.PropertyName,
+            value,
+            ToGridFilterOperator(filter.Operator));
     }
 
+    private static string ToGridFilterOperator(FilterOperator filterOperator) =>
+        filterOperator switch
+        {
+            FilterOperator.Contains => GridFilterOperators.ContainsOperator,
+            FilterOperator.DoesNotContain => GridFilterOperators.DoesNotContainOperator,
+            FilterOperator.StartsWith => GridFilterOperators.StartsWithOperator,
+            FilterOperator.EndsWith => GridFilterOperators.EndsWithOperator,
+            FilterOperator.Equals => GridFilterOperators.EqualsOperator,
+            FilterOperator.NotEquals => GridFilterOperators.NotEqualsOperator,
+            FilterOperator.LessThan => GridFilterOperators.LessThanOperator,
+            FilterOperator.LessThanOrEquals => GridFilterOperators.LessThanOrEqualsOperator,
+            FilterOperator.GreaterThan => GridFilterOperators.GreaterThanOperator,
+            FilterOperator.GreaterThanOrEquals => GridFilterOperators.GreaterThanOrEqualsOperator,
+            FilterOperator.Clear => GridFilterOperators.ClearOperator,
+            _ => GridFilterOperators.EqualsOperator
+        };
 
+    private static string ToSqlSortDirection(SortDirection sortDirection) =>
+        sortDirection == SortDirection.Descending ? "DESC" : "ASC";
 
     private async Task<(IEnumerable<TItem>, int)> ExecuteStoredProcedureAsync(
-        IEnumerable<FilterItem> filters,
-        int pageNumber,
-        int pageSize,
-        string? sortKey,
-        SortDirection sortDirection,
-        string lang,
+        GridQuery query,
         CancellationToken cancellationToken,
         int commandTimeoutSeconds)
     {
@@ -176,7 +191,7 @@ public class GridDataService<TItem, TDetailItem>(IOptions<DatabaseOptions> optio
 #pragma warning restore CS0618 // Type or member is obsolete
         await connection.OpenAsync(cancellationToken);
 
-        var parameters = BuildParameters(filters, pageNumber, pageSize, sortKey, sortDirection, lang);
+        var parameters = BuildParameters(query);
 
         var loggingConnection = new DbConnectionLogDecorator(connection, logger, commandTimeoutSeconds);
 
@@ -191,43 +206,33 @@ public class GridDataService<TItem, TDetailItem>(IOptions<DatabaseOptions> optio
         return (data, count);
     }
 
-    private static DynamicParameters BuildExportParameters(
-        IEnumerable<FilterItem> filters,
-        int pageSize,
-        string? sortKey,
-        SortDirection sortDirection,
-        string lang)
+    private static DynamicParameters BuildExportParameters(GridQuery query)
     {
         var parameters = new DynamicParameters();
 
-        parameters.Add("PageSize", pageSize);
-        parameters.Add("Lang", lang);
-        parameters.Add("SortKey", sortKey);
-        parameters.Add("SortDirection", sortDirection == SortDirection.Descending ? "DESC" : "ASC");
+        parameters.Add("PageSize", query.PageSize);
+        parameters.Add("Lang", query.Lang);
+        parameters.Add("SortKey", query.Sort.PropertyName);
+        parameters.Add("SortDirection", query.Sort.Direction);
 
-        var serializedFilter = JsonConvert.SerializeObject(filters);
+        var serializedFilter = JsonConvert.SerializeObject(query.Filters);
         parameters.Add("FilterJson", serializedFilter);
 
         return parameters;
     }
 
-    private static DynamicParameters BuildParameters(
-        IEnumerable<FilterItem> filters,
-        int pageNumber,
-        int pageSize,
-        string? sortKey,
-        SortDirection sortDirection, string lang)
+    private static DynamicParameters BuildParameters(GridQuery query)
     {
         var parameters = new DynamicParameters();
 
-        parameters.Add("PageNumber", pageNumber);
-        parameters.Add("PageSize", pageSize);
-        parameters.Add("Lang", lang);
+        parameters.Add("PageNumber", query.PageNumber);
+        parameters.Add("PageSize", query.PageSize);
+        parameters.Add("Lang", query.Lang);
 
-        parameters.Add("SortKey", sortKey);
-        parameters.Add("SortDirection", sortDirection == SortDirection.Descending ? "DESC" : "ASC");
+        parameters.Add("SortKey", query.Sort.PropertyName);
+        parameters.Add("SortDirection", query.Sort.Direction);
 
-        var serializedFilter = JsonConvert.SerializeObject(filters);
+        var serializedFilter = JsonConvert.SerializeObject(query.Filters);
         parameters.Add("FilterJson", serializedFilter);
 
 

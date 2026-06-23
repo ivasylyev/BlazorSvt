@@ -89,10 +89,10 @@ EXEC v2.GetBlazorGridData
     @SortKey=N'NodeToNameRu',
     @SortDirection=N'ASC',
     @FilterJson=N'[
-        {"PropertType":null,"PropertyName":"RateTypeIdRu","Value":"543746","Operator":1,"StringComparison":5},
-        {"PropertType":null,"PropertyName":"NodeFromNameRu","Value":"казань","Operator":7,"StringComparison":5},
-        {"PropertType":null,"PropertyName":"ProxyNodeNameRu","Value":"находка","Operator":7,"StringComparison":5},
-        {"PropertType":null,"PropertyName":"IsArchive","Value":"False","Operator":1,"StringComparison":5}
+        {"PropertyName":"RateTypeIdRu","Value":"543746","Operator":"Equals"},
+        {"PropertyName":"NodeFromNameRu","Value":"казань","Operator":"Contains"},
+        {"PropertyName":"ProxyNodeNameRu","Value":"находка","Operator":"Contains"},
+        {"PropertyName":"IsArchive","Value":"False","Operator":"Equals"}
         ]'
 
 */
@@ -125,7 +125,7 @@ BEGIN
         SqlColumnName NVARCHAR(258) NOT NULL,
         ColumnType    NVARCHAR(20) NOT NULL,
         ColumnValue   NVARCHAR(4000) NULL,
-        Operator      INT NULL,
+        Operator      NVARCHAR(50) NULL,
         SqlOperator   NVARCHAR(2) NULL,
         SqlValue      NVARCHAR(4000) NULL,
         FtsValue      NVARCHAR(4000) NULL,
@@ -238,14 +238,12 @@ BEGIN
         QUOTENAME(AC.ColumnName),
         AC.ColumnType,
         ISNULL(LTRIM(RTRIM(JS.[Value])), N'') AS ColumnValue,
-        TRY_CONVERT(INT, JS.Operator)
+        JS.Operator
     FROM OPENJSON(@FilterJson)
     WITH (
-        PropertType      INT            '$.PropertType',
         PropertyName     NVARCHAR(100)  '$.PropertyName',
         [Value]          NVARCHAR(MAX)  '$.Value',
-        Operator         INT            '$.Operator',
-        StringComparison INT            '$.StringComparison'
+        Operator         NVARCHAR(50)   '$.Operator'
     ) JS
     JOIN @AllowedColumns AC
         ON JS.PropertyName = AC.ColumnName -- AND AC.ColumnType <> 'ID'

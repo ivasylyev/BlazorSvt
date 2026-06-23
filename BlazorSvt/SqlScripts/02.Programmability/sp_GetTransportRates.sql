@@ -16,10 +16,10 @@ exec v2.GetTransportRates
     @SortKey=NULL,
     @SortDirection=NULL,
     @FilterJson=N'[
-        {"PropertType":null,"PropertyName":"RateTypeIdRu","Value":"543746","Operator":1,"StringComparison":5},
-        {"PropertType":null,"PropertyName":"NodeFromNameRu","Value":"казань","Operator":7,"StringComparison":5},
-        {"PropertType":null,"PropertyName":"ProxyNodeNameRu","Value":"находка","Operator":7,"StringComparison":5},
-        {"PropertType":null,"PropertyName":"IsArchive","Value":"False","Operator":1,"StringComparison":5}
+        {"PropertyName":"RateTypeIdRu","Value":"543746","Operator":"Equals"},
+        {"PropertyName":"NodeFromNameRu","Value":"казань","Operator":"Contains"},
+        {"PropertyName":"ProxyNodeNameRu","Value":"находка","Operator":"Contains"},
+        {"PropertyName":"IsArchive","Value":"False","Operator":"Equals"}
         ]'
 
 
@@ -31,13 +31,13 @@ exec v2.GetTransportRates
     @Lang=N'ru',
     @SortKey=N'StartDate',
     @SortDirection=N'ASC',
-    @FilterJson=N'[{"PropertType":null,"PropertyName":"RateTypeIdRu","Value":"543746","Operator":1,"StringComparison":5},
-        {"PropertType":null,"PropertyName":"TransportKindIdRu","Value":"543763","Operator":1,"StringComparison":5},
-        {"PropertType":null,"PropertyName":"TransportTypeIdRu","Value":"9687420","Operator":1,"StringComparison":5},
-        {"PropertType":null,"PropertyName":"NodeFromNameRu","Value":"нижн","Operator":7,"StringComparison":5},
-        {"PropertType":null,"PropertyName":"ProxyNodeNameRu","Value":"нах","Operator":7,"StringComparison":5},
-        {"PropertType":null,"PropertyName":"ProductGroupNameRu","Value":"кау","Operator":7,"StringComparison":5},
-        {"PropertType":null,"PropertyName":"IsArchive","Value":"False","Operator":1,"StringComparison":5}]'
+    @FilterJson=N'[{"PropertyName":"RateTypeIdRu","Value":"543746","Operator":"Equals"},
+        {"PropertyName":"TransportKindIdRu","Value":"543763","Operator":"Equals"},
+        {"PropertyName":"TransportTypeIdRu","Value":"9687420","Operator":"Equals"},
+        {"PropertyName":"NodeFromNameRu","Value":"нижн","Operator":"Contains"},
+        {"PropertyName":"ProxyNodeNameRu","Value":"нах","Operator":"Contains"},
+        {"PropertyName":"ProductGroupNameRu","Value":"кау","Operator":"Contains"},
+        {"PropertyName":"IsArchive","Value":"False","Operator":"Equals"}]'
 
 */
 CREATE OR ALTER PROCEDURE v2.GetTransportRates

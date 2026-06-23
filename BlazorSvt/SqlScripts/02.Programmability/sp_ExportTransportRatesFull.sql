@@ -13,7 +13,7 @@ EXEC v2.ExportTransportRatesFull
     @SortKey = N'StartDate',
     @SortDirection = N'ASC',
     @FilterJson = N'[
-        {"PropertType":null,"PropertyName":"IsArchive","Value":"False","Operator":1,"StringComparison":5}
+        {"PropertyName":"IsArchive","Value":"False","Operator":"Equals"}
     ]'
 
 */
