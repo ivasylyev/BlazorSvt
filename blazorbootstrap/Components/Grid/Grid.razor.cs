@@ -290,55 +290,60 @@ public partial class Grid<TItem> : BlazorBootstrapComponentBase
         if (requestInProgress)
             return;
 
-        requestInProgress = true;
-
-        // TODO: validate the below two lines - `Save and Load Grid Settings` functionality impacted
-        //await InvokeAsync(StateHasChanged); // trigger the state changed to show the loading
-        //await Task.Delay(300);
-
-        if (firstRender)
-            await LoadGridSettingsAsync();
-
-        var request = new GridDataProviderRequest<TItem>
+        try
         {
-            PageNumber = AllowPaging ? gridCurrentState.PageIndex : 0,
-            PageSize = AllowPaging ? pageSize : 0,
-            Sorting = AllowSorting ? gridCurrentState.Sorting ?? GetDefaultSorting()! : null!,
-            Filters = AllowFiltering ? GetFilters()! : null!,
-            CancellationToken = cancellationToken
-        };
+            requestInProgress = true;
 
-        GridDataProviderResult<TItem> result = default!;
+            // TODO: validate the below two lines - `Save and Load Grid Settings` functionality impacted
+            //await InvokeAsync(StateHasChanged); // trigger the state changed to show the loading
+            //await Task.Delay(300);
 
-        if (DataProvider is not null)
-            result = await DataProvider.Invoke(request);
-        else if (Data is not null)
-            result = request.ApplyTo(Data);
+            if (firstRender)
+                await LoadGridSettingsAsync();
 
-        if (result is not null)
-        {
-            items = result.Data!.ToList();
-            totalCount = result.TotalCount ?? result.Data!.Count();
-            if (result.PageNumber.HasValue)
+            var request = new GridDataProviderRequest<TItem>
             {
-                gridCurrentState = new GridState<TItem>(result.PageNumber.Value, gridCurrentState.Sorting);
+                PageNumber = AllowPaging ? gridCurrentState.PageIndex : 0,
+                PageSize = AllowPaging ? pageSize : 0,
+                Sorting = AllowSorting ? gridCurrentState.Sorting ?? GetDefaultSorting()! : null!,
+                Filters = AllowFiltering ? GetFilters()! : null!,
+                CancellationToken = cancellationToken
+            };
+
+            GridDataProviderResult<TItem> result = default!;
+
+            if (DataProvider is not null)
+                result = await DataProvider.Invoke(request);
+            else if (Data is not null)
+                result = request.ApplyTo(Data);
+
+            if (result is not null)
+            {
+                items = result.Data!.ToList();
+                totalCount = result.TotalCount ?? result.Data!.Count();
+                if (result.PageNumber.HasValue)
+                {
+                    gridCurrentState = new GridState<TItem>(result.PageNumber.Value, gridCurrentState.Sorting);
+                }
+            }
+            else
+            {
+                items = new List<TItem>();
+                totalCount = 0;
+            }
+
+            UpdateLastAppliedFilters(request.Filters);
+
+            if (AllowSelection)
+            {
+                PrepareCheckboxIds();
+                await RefreshSelectionAsync();
             }
         }
-        else
+        finally
         {
-            items = new List<TItem>();
-            totalCount = 0;
+            requestInProgress = false;
         }
-
-        UpdateLastAppliedFilters(request.Filters);
-
-        if (AllowSelection)
-        {
-            PrepareCheckboxIds();
-            await RefreshSelectionAsync();
-        }
-
-        requestInProgress = false;
 
         await InvokeAsync(StateHasChanged);
     }
