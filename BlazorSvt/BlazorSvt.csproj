@@ -4,6 +4,7 @@
     <TargetFramework>net9.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
+    <RootNamespace>BlazorSvt</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>
@@ -25,13 +26,12 @@
   </ItemGroup>
 
   <ItemGroup>
-    <EmbeddedResource Update="Resources\Svt.resx">
+    <EmbeddedResource Update="Host\Resources\Svt.resx">
       <Generator></Generator>
     </EmbeddedResource>
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Controllers\" />
     <Folder Include="logs\" />
   </ItemGroup>
 

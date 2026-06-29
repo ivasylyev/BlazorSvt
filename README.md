@@ -1,0 +1,166 @@
+# BlazorSVT
+
+Веб-приложение **Системы Ведения Тарифов (СВТ)** — замещающий контур legacy-системы.  
+Проект реализован как **модульный монолит** на Blazor Server с read-моделью в MS SQL.
+
+На текущем этапе доступны:
+- просмотр справочников (режим только чтения);
+- фильтрация, сортировка, пагинация;
+- детальный просмотр записи;
+- выгрузка краткого и полного отчёта в Excel.
+
+Редактирование данных, массовая загрузка и интеграции находятся в разработке.
+
+---
+
+## Стек
+
+| Компонент | Технология |
+|-----------|------------|
+| UI | Blazor Server (.NET 9), [Blazor Bootstrap](blazorbootstrap/) |
+| Доступ к данным | Dapper |
+| БД | Microsoft SQL Server |
+| Логирование | Serilog |
+| Локализация | ru-RU, en-US |
+| Экспорт | ClosedXML |
+
+---
+
+## Структура репозитория
+
+```
+BlazorSvt/                  # Основное приложение
+├── Host/                    # Точка входа, layout, общие страницы
+├── Platform/                # Общий фреймворк (grid, отчёты, инфраструктура)
+├── Modules/                 # Доменные модули (вертикальные срезы)
+│   ├── Rates/               # Справочник тарифов
+│   └── Legs/                # Справочник транспортных плеч
+├── Import/                  # Контур загрузки данных (в разработке)
+└── SqlScripts/              # DDL и хранимые процедуры (схема v2)
+
+blazorbootstrap/             # Локальная сборка UI-компонентов
+docs/                        # Документация Blazor Bootstrap (сторонняя)
+```
+
+### Слои приложения
+
+**Host** — `Program.cs`, маршрутизация, layout, локализация, контроллеры.
+
+**Platform** — переиспользуемый код, не зависящий от конкретного справочника:
+- `Grid` — `GenericGrid`, `GridDataService`, настройки колонок;
+- `Reporting` — экспорт в Excel, подтверждение больших выгрузок;
+- `Infrastructure` — конфигурация, логирование, работа с SQL;
+- `UI` — базовые компоненты (`SvtComponentBase`, меню, ошибки).
+
+**Modules** — изолированные доменные модули. Каждый модуль содержит:
+- `List/` — DTO списка, страница grid, настройки колонок;
+- `Detail/` — DTO детализации, настройки detail view;
+- `{Module}Module.cs` — регистрация сервисов в DI.
+
+**Import** — загрузка данных из Excel (отдельный контур, не смешивается с read-модулями).
+
+---
+
+## Реализованные справочники
+
+| Маршрут | Модуль | Описание |
+|---------|--------|----------|
+| `/rates` | Rates | Транспортные тарифы |
+| `/legs` | Legs | Транспортные плечи |
+
+---
+
+## Архитектурные принципы
+
+- **Модульный монолит** — один deployable, чёткие границы между модулями.
+- **Типизированная read-модель** — snapshot-таблицы (`v2.*Snapshot`) вместо метамодели.
+- **CQRS (read-сторона)** — snapshot-таблицы и представления для чтения; write-контур планируется отдельно.
+- **SQL как единственный источник** — фильтрация, сортировка, полнотекстовый поиск через `v2.GetBlazorGridData`.
+- **Strangler Fig** — переходный период с общей БД `mdm`, детальные view могут ссылаться на legacy-объекты `dbo.vw_*`.
+
+---
+
+## Требования
+
+- [.NET 9 SDK](https://dotnet.microsoft.com/download/dotnet/9.0)
+- MS SQL Server с БД `mdm` и развёрнутыми скриптами из `BlazorSvt/SqlScripts/`
+
+---
+
+## Запуск
+
+```powershell
+# из корня репозитория
+dotnet restore
+dotnet run --project BlazorSvt/BlazorSvt.csproj
+```
+
+Приложение по умолчанию: `http://localhost:5126` (профиль `http` в `launchSettings.json`).
+
+### Конфигурация
+
+Основные параметры — в `BlazorSvt/appsettings.json`:
+
+| Секция | Назначение |
+|--------|------------|
+| `PathBase` | Базовый путь приложения (например `/v2`) |
+| `Database:MdmDb` | Строка подключения к БД |
+| `Database:DefaultQueryTimeoutSeconds` | Таймаут запросов grid |
+| `Database:ReportQueryTimeoutSeconds` | Таймаут запросов отчётов |
+| `Reports:*ReportConfirmationThreshold` | Порог подтверждения перед выгрузкой |
+| `Serilog` | Настройки логирования (файл `logs/SVT_Blazor-*.txt`) |
+
+> Для локальной разработки рекомендуется хранить строку подключения в User Secrets, а не в репозитории.
+
+---
+
+## SQL-скрипты
+
+Скрипты расположены в `BlazorSvt/SqlScripts/` и выполняются в порядке:
+
+1. `01.Structure/` — схема `v2`, snapshot-таблицы, индексы, full-text catalog
+2. `02.Programmability/` — `GetBlazorGridData`, обёртки для справочников, export-процедуры
+
+Ключевая процедура `v2.GetBlazorGridData` — универсальный query engine для grid: whitelist колонок, фильтры, FTS, пагинация.
+
+---
+
+## Добавление нового справочника
+
+1. Создать модуль `Modules/{Name}/` со структурой `List/` и `Detail/`.
+2. Определить DTO с атрибутами:
+   - `[StoredProcedure("v2.Get...")]` на list-DTO;
+   - `[DetailSource(...)]`, `[FullReportExport(...)]` на detail-DTO.
+3. Реализовать `*GridSettingsService` и `*DetailSettingsService`.
+4. Добавить Razor-страницу, наследующую `BaseGridPage<TItem, TDetailItem>`.
+5. Создать `{Name}Module.cs` и зарегистрировать в `Host/Program.cs`:
+
+```csharp
+builder.Services.Add{Name}Module();
+```
+
+6. Добавить SQL: snapshot-таблица, индексы, обёртка над `GetBlazorGridData`, view и export-процедура.
+
+Образец — модуль `Modules/Rates/`.
+
+---
+
+## Сборка
+
+```powershell
+dotnet build BlazorSvt/BlazorSvt.csproj
+```
+
+---
+
+## Статус разработки
+
+| Область | Статус |
+|---------|--------|
+| Фреймворк grid (read-only) | Готово |
+| Отчёты Excel | Готово |
+| Справочники Rates, Legs | Готово (read) |
+| Редактирование записей | Не реализовано |
+| Массовая загрузка | В разработке (`Import/`) |
+| Интеграции | Не реализовано |
+| Write-модель / CQRS (command side) | Не реализовано |

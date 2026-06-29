@@ -1,0 +1,69 @@
+﻿
+using Blazored.LocalStorage;
+using BlazorSvt.Host.Components;
+using BlazorSvt.Import;
+using BlazorSvt.Modules.Legs;
+using BlazorSvt.Modules.Rates;
+using BlazorSvt.Platform;
+using BlazorSvt.Platform.Infrastructure.Data;
+using BlazorSvt.Platform.Infrastructure.Logging;
+using Dapper;
+using Serilog;
+
+SqlMapper.AddTypeHandler(new SqlDateOnlyTypeHandler());
+
+var builder = WebApplication.CreateBuilder(args);
+
+Log.Logger = new LoggerConfiguration()
+    .ReadFrom.Configuration(builder.Configuration)
+    .CreateLogger();
+
+builder.Host.UseSerilog();
+builder.Services.AddHttpContextAccessor();
+
+builder.Services.AddRazorComponents()
+    .AddInteractiveServerComponents();
+
+builder.Services.AddHttpClient();
+builder.Services.AddBlazorBootstrap();
+builder.Services.AddBlazoredLocalStorage();
+builder.Services.AddControllers();
+builder.Services.AddLocalization();
+
+builder.Services.AddPlatform(builder.Configuration);
+builder.Services.AddImportModule();
+builder.Services.AddRatesModule();
+builder.Services.AddLegsModule();
+
+var supportedCultures = new[] { "ru-RU", "en-US" };
+var localizationOptions = new RequestLocalizationOptions()
+    .SetDefaultCulture(supportedCultures[0])
+    .AddSupportedCultures(supportedCultures)
+    .AddSupportedUICultures(supportedCultures);
+
+var pathBase = builder.Configuration["PathBase"];
+
+var app = builder.Build();
+
+if (!string.IsNullOrEmpty(pathBase) && pathBase != "/")
+{
+    app.UsePathBase(pathBase);
+}
+
+app.UseRequestLocalization(localizationOptions);
+app.MapControllers();
+
+if (!app.Environment.IsDevelopment())
+{
+    app.UseExceptionHandler("/Error", createScopeForErrors: true);
+    app.UseHsts();
+}
+
+app.UseHttpsRedirection();
+app.UseAntiforgery();
+app.Use(MiddlewareDecorator.MiddlewareShortCorrelationId);
+app.MapStaticAssets();
+app.MapRazorComponents<App>()
+    .AddInteractiveServerRenderMode();
+
+app.Run();

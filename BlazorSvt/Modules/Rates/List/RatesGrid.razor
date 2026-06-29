@@ -1,0 +1,22 @@
+﻿@page "/rates"
+@using BlazorSvt.Modules.Rates.List
+@using BlazorSvt.Modules.Rates.Detail
+@using BlazorSvt.Platform.Grid.Components
+@inherits BaseGridPage<RateDto, RateDetailDto>
+
+<GenericGrid TItem="RateDto"
+             TDetailItem="RateDetailDto"
+             PageTitle="@L["RatesGrid.Title"]"
+             AllowDetailView="true"
+             DataProvider="DataProvider"
+             DetailDataProvider="DetailDataProvider"
+             DetailKeySelector="DetailKeySelector">
+
+    <DetailViewTemplate Context="detail">
+        <div class="mb-3">
+            @GetCustomMessage(detail);
+        </div>
+    </DetailViewTemplate>
+
+</GenericGrid>
+

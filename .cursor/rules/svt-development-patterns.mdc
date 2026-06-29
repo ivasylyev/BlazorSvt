@@ -1,0 +1,44 @@
+---
+description: Паттерны разработки BlazorSVT — модули, grid, import, SQL
+globs: BlazorSvt/**/*
+alwaysApply: false
+---
+
+# Паттерны разработки BlazorSVT
+
+## Добавление справочника (read-only grid)
+
+1. `Modules/{Name}/List/{Name}Dto.cs` — DTO с атрибутами колонок
+2. `Modules/{Name}/Detail/{Name}DetailDto.cs` — детальная форма
+3. `{Name}GridSettingsService` / `{Name}DetailSettingsService` — наследники `BaseGridSettingsService`
+4. `{Name}Grid.razor` — наследник `BaseGridPage<TDto, TDetailDto>`
+5. `{Name}Module.cs` → `Add{Name}Module()` в `Host/Program.cs`
+6. SQL: snapshot-таблица + индексы в `SqlScripts/01.Structure/`, read SP/fn в `02.Programmability/`
+
+## Модульная регистрация
+
+Каждый модуль — `public static class *Module` с `Add*Module(IServiceCollection)`. Зависимости только через Platform-интерфейсы, не через другие Modules напрямую.
+
+## Grid-фреймворк
+
+- `GenericGrid` / `GenericDetailView` — переиспользуемые компоненты
+- `IGridDataService<TDto,TQuery>` + `GridQueryFactory` — запросы к read-модели
+- Настройки колонок/деталей — через `IGridSettingsService` / `IDetailSettingsService`
+
+## Import / batch (целевой паттерн)
+
+- FluentValidation-валидаторы в `Import/Validators/`
+- Staging через `IStagingRepository<T>` → единый pipeline с будущими редакторами
+- Не дублировать валидацию в Razor-компонентах
+
+## SQL
+
+- **Read**: snapshot-таблицы, `sp_Get*`, `fn_Get*Detail` — только выборка
+- **Write** (будущее): отдельные команды в C#, не бизнес-логика в SP
+- Dapper + `SqlDateOnlyTypeHandler`; логирование через `DapperLogExtensions`
+
+## Blazor best practices
+
+- Interactive Server; `SvtComponentBase` для общего поведения
+- Локализация через `Svt.resx` / `Svt.ru-RU.resx`
+- Минимальный scope изменений; следовать существующим соглашениям модуля
