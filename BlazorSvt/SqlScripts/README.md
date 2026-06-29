@@ -36,9 +36,9 @@ SqlScripts/
 
 | # | Скрипт |
 |---|--------|
-| 1 | `Modules/Rates/Structure/01.CreateTable_TransportRateSnapshot.sql` |
-| 2 | `Modules/Rates/Structure/02.CreateIndexes_TransportRateSnapshot.sql` |
-| 3 | `Modules/Rates/Structure/03.Insert_TransportRateSnapshot.sql` |
+| 1 | `Modules/Rates/Structure/01.TransportRates_CreateTable.sql` |
+| 2 | `Modules/Rates/Structure/02.TransportRates_Insert.sql` |
+| 3 | `Modules/Rates/Structure/03.TransportRates_CreateIndexes.sql` |
 | 4 | `Modules/Rates/Programmability/vw_TransportRates_Detail.sql` |
 | 5 | `Modules/Rates/Programmability/TransportRates_Get.sql` |
 | 6 | `Modules/Rates/Programmability/TransportRates_ExportFull.sql` |
@@ -47,9 +47,9 @@ SqlScripts/
 
 | # | Скрипт |
 |---|--------|
-| 1 | `Modules/Legs/Structure/01.CreateTable_TransportLegSnapshot.sql` |
-| 2 | `Modules/Legs/Structure/02.CreateIndexes_TransportLegSnapshot.sql` |
-| 3 | `Modules/Legs/Structure/03.Insert_TransportLegSnapshot.sql` |
+| 1 | `Modules/Legs/Structure/01.TransportLegs_CreateTable.sql` |
+| 2 | `Modules/Legs/Structure/02.TransportLegs_Insert.sql` |
+| 3 | `Modules/Legs/Structure/03.TransportLegs_CreateIndexes.sql` |
 | 4 | `Modules/Legs/Programmability/vw_TransportLegs_Detail.sql` |
 | 5 | `Modules/Legs/Programmability/TransportLegs_Get.sql` |
 | 6 | `Modules/Legs/Programmability/TransportLegs_ExportFull.sql` |
@@ -58,7 +58,7 @@ SqlScripts/
 
 | # | Скрипт |
 |---|--------|
-| 1 | `Modules/LocationNodes/Structure/01.CreateTable_LocationNodesSnapshot.sql` |
+| 1 | `Modules/LocationNodes/Structure/01.LocationNodes_CreateTable.sql` |
 
 ## Добавление нового справочника
 
@@ -66,3 +66,12 @@ SqlScripts/
 Параллельно — C#-модуль в `BlazorSvt/Modules/{Name}/`.
 
 Ключевая процедура `v2.GetBlazorGridData` (Platform) — универсальный query engine: whitelist колонок, фильтры, FTS, пагинация.
+
+## Накат Programmability (dev)
+
+```powershell
+.\BlazorSvt\SqlScripts\Create-Programmability.ps1
+```
+
+Скрипт читает строку подключения из `appsettings.json`, выполняет Platform и все модули; при ошибке останавливается.
+В Cursor: `/create_programmability`.

@@ -1,4 +1,4 @@
-USE mdm
+﻿USE mdm
 GO
 
 /*
@@ -26,31 +26,31 @@ AS
     ,CASE WHEN ISNULL(r.PrimitiveEntityDataStateId, 2) = 2 THEN 1 ELSE 0 END 
                                     AS IsArchive
     ,ISNULL(r.IsDefRate, 0)         AS IsDefRate
-    ,r.CreationDate 	            AS CreationDate
-    ,r.LastChangeDate 	            AS LastChangeDate
+    ,r.CreationDate 	            AS CreationDate
+    ,r.LastChangeDate 	            AS LastChangeDate
     ,ar.Code		                AS AverageRateCode
-    ,ar.RateLevel3 		            AS AverageRateLevel3TotalCostTon
-    ,r.TotalCostTon 	            AS TotalCostTon
-    ,r.TotalCostTransport 	        AS TotalCostTransport
-    ,rct.Code 		                AS CalcType
-    ,curSt.Code 		            AS CurrencyStandard
+    ,ar.RateLevel3 		            AS AverageRateLevel3TotalCostTon
+    ,r.TotalCostTon 	            AS TotalCostTon
+    ,r.TotalCostTransport 	        AS TotalCostTransport
+    ,rct.Code 		                AS CalcType
+    ,curSt.Code 		            AS CurrencyStandard
     ,CAST(r.CurrencyRateMonth AS DATE)	        AS CurrencyRateMonth
-    ,r.EffectiveLoadOfTransportType AS EffectiveLoadOfTransportType
+    ,r.EffectiveLoadOfTransportType AS EffectiveLoadOfTransportType
     ,CAST(r.StartDate AS DATE) 	    AS StartDate
     ,CAST(r.EndDate  AS DATE)	    AS EndDate
     ,rtp.Code		                AS TypeCode
     ,rtp.[Name]		                AS TypeName
-    ,r.TotalCostTonRUB 	            AS TotalCostTonRUB
-    ,r.TotalCostTonEUR 	            AS TotalCostTonEUR
-    ,r.TotalCostTonCNY 	            AS TotalCostTonCNY
-    ,r.TotalCostTonUSD 	            AS TotalCostTonUSD
-    ,r.TotalCostTransportRUB 	    AS TotalCostTransportRUB
-    ,r.TotalCostTransportEUR 	    AS TotalCostTransportEUR
-    ,r.TotalCostTransportCNY 	    AS TotalCostTransportCNY
-    ,r.TotalCostTransportUSD 	    AS TotalCostTransportUSD
-    ,r.EmptyRFSize 	                AS EmptyRFSize
-    ,curEmptyRF.Code 		        AS EmptyRFCurrency
-    ,r.EmptyCISSize  	            AS EmptyCISSize
+    ,r.TotalCostTonRUB 	            AS TotalCostTonRUB
+    ,r.TotalCostTonEUR 	            AS TotalCostTonEUR
+    ,r.TotalCostTonCNY 	            AS TotalCostTonCNY
+    ,r.TotalCostTonUSD 	            AS TotalCostTonUSD
+    ,r.TotalCostTransportRUB 	    AS TotalCostTransportRUB
+    ,r.TotalCostTransportEUR 	    AS TotalCostTransportEUR
+    ,r.TotalCostTransportCNY 	    AS TotalCostTransportCNY
+    ,r.TotalCostTransportUSD 	    AS TotalCostTransportUSD
+    ,r.EmptyRFSize 	                AS EmptyRFSize
+    ,curEmptyRF.Code 		        AS EmptyRFCurrency
+    ,r.EmptyCISSize  	            AS EmptyCISSize
     ,curEmptyCIS.Code		        AS EmptyCISCurrency
     ,r.ProvisionTransportSize	    AS ProvisionTransportSize
     ,curProvisionTransport.Code	    AS ProvisionTransportCurrency
@@ -108,11 +108,11 @@ AS
     ,tt.[Name]		                AS TransportTypeNameRu
     ,tt.NameEnRu		            AS TransportTypeNameRuEn
     ,pg.Code		                AS ProductGroupCode
-    ,pg.NameEnRu 		            AS ProductGroupNameEnRu
-    ,p.Code 		                AS ProductCode
+    ,pg.NameEnRu 		            AS ProductGroupNameEnRu
+    ,p.Code 		                AS ProductCode
     ,p.NameFull_ru		            AS ProductNameRu
-    ,p.NameFull_en 		            AS ProductNameEn
-    ,p.DPOCode 		                AS ProductDPOCOde
+    ,p.NameFull_en 		            AS ProductNameEn
+    ,p.DPOCode 		                AS ProductDPOCOde
     ,con.Code		                AS ContractorCode
     ,con.NameSearch		            AS ContractorNameSearch
     ,con.ShortNameEGRUL		        AS ContractorEGRUL
@@ -149,7 +149,7 @@ AS
     ,r.Leg1_TotalCostTransportUSD	AS Leg1_TotalCostTransportUSD
     ,r.Leg1_TotalCostTransportEUR	AS Leg1_TotalCostTransportEUR
     ,r.Leg1_TotalCostTransportCNY	AS Leg1_TotalCostTransportCNY
-    ,lt.Leg1_SearchTime 		    AS LeadTimeLeg1_SearchTime
+    ,lt.Leg1_SearchTime 		    AS LeadTimeLeg1_SearchTime
     ,lt.Leg1_LoadTime 		        AS LeadTimeLeg1_LoadTime
     ,lt.Leg1_TravelTime 		    AS LeadTimeLeg1_TravelTime
     ,lt.Leg1_DaysWaiting 		    AS LeadTimeLeg1_DaysWaiting
@@ -170,7 +170,7 @@ AS
     ,r.Leg2_TotalCostTransportUSD	AS Leg2_TotalCostTransportUSD
     ,r.Leg2_TotalCostTransportEUR	AS Leg2_TotalCostTransportEUR
     ,r.Leg2_TotalCostTransportCNY	AS Leg2_TotalCostTransportCNY
-    ,lt.Leg1_TravelTime 		    AS LeadTimeLeg2_TravelTime
+    ,lt.Leg1_TravelTime 		    AS LeadTimeLeg2_TravelTime
     ,lt.Leg2_DaysWaiting 		    AS LeadTimeLeg2_DaysWaiting
     ,lt.Leg2_UploadTime 		    AS LeadTimeLeg2_UploadTime
     ,lt.Leg2_TransportationTime 	AS LeadTimeLeg2_TransportationTime
@@ -231,7 +231,7 @@ AS
     LEFT JOIN mdm.dbo.vw_Currency curTEFrom_fix 
         ON curTEFrom_fix.Id=	r.TEFromCurrency_fix		
     LEFT JOIN mdm.dbo.vw_Currency curTETo_fix 
-        ON curTETo_fix .Id=	r.TEToCurrency_fix		
+        ON curTETo_fix.Id=	r.TEToCurrency_fix		
 
  			
     JOIN mdm.dbo.vw_LocationsNodes nf 
