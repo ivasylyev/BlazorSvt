@@ -187,7 +187,9 @@ BlazorSvt/
 ├── Platform/       — cross-cutting: Grid, Reporting, UI, Infrastructure
 ├── Modules/        — vertical slices (Legs, Rates, …)
 ├── Import/         — batch Excel import, validators, staging
-└── SqlScripts/     — DDL, indexes, read SP/fn (CQRS read side)
+├── SqlScripts/
+│   ├── Platform/   — schema, full-text, GetBlazorGridData
+│   └── Modules/    — per-module DDL and read SP/fn
 ```
 
-Принцип: новый справочник = новый модуль в `Modules/`, регистрация в `Host/Program.cs`, SQL snapshot в `SqlScripts/`.
+Принцип: новый справочник = модуль в `Modules/{Name}/` + `SqlScripts/Modules/{Name}/`, регистрация в `Host/Program.cs`.

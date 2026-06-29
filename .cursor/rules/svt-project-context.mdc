@@ -37,6 +37,7 @@ MDM-система логистических маршрутов, тарифов
 | `Platform/` | Общий фреймворк: Grid, Reporting, UI, Infrastructure |
 | `Modules/{Name}/` | Вертикальный срез справочника (List, Detail, Module) |
 | `Import/` | Массовая загрузка Excel, валидаторы, staging |
-| `SqlScripts/` | DDL, индексы, SP/fn для чтения (CQRS read-модель) |
+| `SqlScripts/Platform/` | Схема v2, full-text, `GetBlazorGridData` |
+| `SqlScripts/Modules/{Name}/` | DDL и SP конкретного справочника |
 
 Подробная архитектура — в skill `svt-architecture` и правиле `svt-architecture-principles`.

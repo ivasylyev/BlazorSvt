@@ -13,7 +13,7 @@ alwaysApply: false
 3. `{Name}GridSettingsService` / `{Name}DetailSettingsService` — наследники `BaseGridSettingsService`
 4. `{Name}Grid.razor` — наследник `BaseGridPage<TDto, TDetailDto>`
 5. `{Name}Module.cs` → `Add{Name}Module()` в `Host/Program.cs`
-6. SQL: snapshot-таблица + индексы в `SqlScripts/01.Structure/`, read SP/fn в `02.Programmability/`
+6. SQL: `SqlScripts/Modules/{Name}/Structure/` (таблица, индексы) + `Programmability/` (read SP/fn)
 
 ## Модульная регистрация
 

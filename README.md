@@ -36,7 +36,9 @@ BlazorSvt/                  # Основное приложение
 │   ├── Rates/               # Справочник тарифов
 │   └── Legs/                # Справочник транспортных плеч
 ├── Import/                  # Контур загрузки данных (в разработке)
-└── SqlScripts/              # DDL и хранимые процедуры (схема v2)
+└── SqlScripts/              # DDL и SP (Platform + Modules, схема v2)
+    ├── Platform/            # Схема, full-text, GetBlazorGridData
+    └── Modules/             # Rates, Legs, …
 
 blazorbootstrap/             # Локальная сборка UI-компонентов
 docs/                        # Документация Blazor Bootstrap (сторонняя)
@@ -116,12 +118,12 @@ dotnet run --project BlazorSvt/BlazorSvt.csproj
 
 ## SQL-скрипты
 
-Скрипты расположены в `BlazorSvt/SqlScripts/` и выполняются в порядке:
+Структура `BlazorSvt/SqlScripts/` повторяет модульный монолит:
 
-1. `01.Structure/` — схема `v2`, snapshot-таблицы, индексы, full-text catalog
-2. `02.Programmability/` — `GetBlazorGridData`, обёртки для справочников, export-процедуры
+1. `Platform/` — схема `v2`, full-text catalog, `GetBlazorGridData`
+2. `Modules/{Name}/` — snapshot-таблицы, индексы и SP конкретного справочника
 
-Ключевая процедура `v2.GetBlazorGridData` — универсальный query engine для grid: whitelist колонок, фильтры, FTS, пагинация.
+Порядок выполнения — в [`BlazorSvt/SqlScripts/README.md`](BlazorSvt/SqlScripts/README.md).
 
 ---
 
@@ -139,9 +141,9 @@ dotnet run --project BlazorSvt/BlazorSvt.csproj
 builder.Services.Add{Name}Module();
 ```
 
-6. Добавить SQL: snapshot-таблица, индексы, обёртка над `GetBlazorGridData`, view и export-процедура.
+6. Добавить SQL в `SqlScripts/Modules/{Name}/`: snapshot-таблица, индексы, обёртка над `GetBlazorGridData`, export-процедура.
 
-Образец — модуль `Modules/Rates/`.
+Образец — `Modules/Rates/` (C#) и `SqlScripts/Modules/Rates/` (SQL).
 
 ---
 
