@@ -6,6 +6,7 @@ GO
 
 CREATE TABLE v2.LocationNodesSnapshot (
     Id              BIGINT IDENTITY(1,1) NOT NULL,
+    NodeId          BIGINT NOT NULL,
     IsArchive       BIT NOT NULL,
     NodeTypeId      BIGINT NULL,
     LocationTypeId  BIGINT NULL,
