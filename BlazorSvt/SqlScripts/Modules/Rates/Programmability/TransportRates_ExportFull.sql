@@ -7,17 +7,20 @@ Example:
 USE mdm
 GO
 
-EXEC v2.ExportTransportLegsFull
+EXEC v2.TransportRates_ExportFull
     @PageSize = 100,
     @Lang = N'ru',
-    @SortKey = N'CreationDate',
+    @SortKey = N'StartDate',
     @SortDirection = N'ASC',
     @FilterJson = N'[
         {"PropertyName":"IsArchive","Value":"False","Operator":"Equals"}
     ]'
 
 */
-CREATE OR ALTER PROCEDURE v2.ExportTransportLegsFull
+DROP PROCEDURE IF EXISTS v2.ExportTransportRatesFull;
+GO
+
+CREATE OR ALTER PROCEDURE v2.TransportRates_ExportFull
     @PageSize       INT,
     @Lang           NVARCHAR(2),
     @SortKey        NVARCHAR(50) = NULL,
@@ -28,13 +31,13 @@ BEGIN
     SET NOCOUNT ON;
 
     CREATE TABLE #Filtered (
-        RowNum INT IDENTITY(1,1) NOT NULL,
-        LegId  INT NOT NULL,
-        PRIMARY KEY (LegId)
+        RowNum  INT IDENTITY(1,1) NOT NULL,
+        RateId  INT NOT NULL,
+        PRIMARY KEY (RateId)
     );
 
-    INSERT INTO #Filtered (LegId)
-    EXEC v2.GetTransportLegs
+    INSERT INTO #Filtered (RateId)
+    EXEC v2.TransportRates_Get
         @PageNumber    = 1,
         @PageSize      = @PageSize,
         @Lang          = @Lang,
@@ -44,8 +47,8 @@ BEGIN
         @KeysOnly      = 1;
 
     SELECT d.*
-    FROM v2.vw_TransportLegDetail d
-    WHERE d.LegId IN (SELECT LegId FROM #Filtered)
-    ORDER BY (SELECT f.RowNum FROM #Filtered f WHERE f.LegId = d.LegId);
+    FROM v2.vw_TransportRates_Detail d
+    WHERE d.RateId IN (SELECT RateId FROM #Filtered)
+    ORDER BY (SELECT f.RowNum FROM #Filtered f WHERE f.RateId = d.RateId);
 END
 GO

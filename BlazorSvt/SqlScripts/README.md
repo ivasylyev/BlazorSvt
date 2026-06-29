@@ -39,9 +39,9 @@ SqlScripts/
 | 1 | `Modules/Rates/Structure/01.CreateTable_TransportRateSnapshot.sql` |
 | 2 | `Modules/Rates/Structure/02.CreateIndexes_TransportRateSnapshot.sql` |
 | 3 | `Modules/Rates/Structure/03.Insert_TransportRateSnapshot.sql` |
-| 4 | `Modules/Rates/Programmability/fn_GetTransportRateDetail.sql` |
-| 5 | `Modules/Rates/Programmability/sp_GetTransportRates.sql` |
-| 6 | `Modules/Rates/Programmability/sp_ExportTransportRatesFull.sql` |
+| 4 | `Modules/Rates/Programmability/vw_TransportRates_Detail.sql` |
+| 5 | `Modules/Rates/Programmability/TransportRates_Get.sql` |
+| 6 | `Modules/Rates/Programmability/TransportRates_ExportFull.sql` |
 
 **Legs**
 
@@ -50,9 +50,9 @@ SqlScripts/
 | 1 | `Modules/Legs/Structure/01.CreateTable_TransportLegSnapshot.sql` |
 | 2 | `Modules/Legs/Structure/02.CreateIndexes_TransportLegSnapshot.sql` |
 | 3 | `Modules/Legs/Structure/03.Insert_TransportLegSnapshot.sql` |
-| 4 | `Modules/Legs/Programmability/fn_GetTransportLegDetail.sql` |
-| 5 | `Modules/Legs/Programmability/sp_GetTransportLegs.sql` |
-| 6 | `Modules/Legs/Programmability/sp_ExportTransportLegsFull.sql` |
+| 4 | `Modules/Legs/Programmability/vw_TransportLegs_Detail.sql` |
+| 5 | `Modules/Legs/Programmability/TransportLegs_Get.sql` |
+| 6 | `Modules/Legs/Programmability/TransportLegs_ExportFull.sql` |
 
 **LocationNodes** (опционально)
 

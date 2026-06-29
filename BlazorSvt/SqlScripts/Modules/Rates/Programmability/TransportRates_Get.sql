@@ -1,4 +1,4 @@
-﻿USE mdm
+USE mdm
 GO
 
 /*
@@ -9,7 +9,7 @@ go
 
 -- простой поиск (это когда или нет сортировки, или менее 2х полнотекстовых фильтров)
 
-exec v2.GetTransportRates 
+exec v2.TransportRates_Get 
     @PageNumber=1,
     @PageSize=10,
     @Lang=N'ru',
@@ -25,7 +25,7 @@ exec v2.GetTransportRates
 
 -- сложный поиск (это когда сортировка с двумя и более полнотекстовыми фильтрами)
 
-exec v2.GetTransportRates 
+exec v2.TransportRates_Get 
     @PageNumber=2,
     @PageSize=10,
     @Lang=N'ru',
@@ -40,7 +40,10 @@ exec v2.GetTransportRates
         {"PropertyName":"IsArchive","Value":"False","Operator":"Equals"}]'
 
 */
-CREATE OR ALTER PROCEDURE v2.GetTransportRates
+DROP PROCEDURE IF EXISTS v2.GetTransportRates;
+GO
+
+CREATE OR ALTER PROCEDURE v2.TransportRates_Get
     @PageNumber     INT = 1,
     @PageSize       INT = 20,
     @Lang           NVARCHAR(2),

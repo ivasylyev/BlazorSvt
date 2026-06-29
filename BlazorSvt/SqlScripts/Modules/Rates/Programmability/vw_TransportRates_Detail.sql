@@ -8,14 +8,17 @@ use mdm
 go
 
 SELECT *
-FROM v2.vw_TransportRateDetail
+FROM v2.vw_TransportRates_Detail
 WHERE RateId = 34041206
 
 */
+DROP VIEW IF EXISTS v2.vw_TransportRateDetail;
+GO
+
 DROP FUNCTION IF EXISTS v2.fn_GetTransportRateDetail;
 GO
 
-CREATE OR ALTER VIEW v2.vw_TransportRateDetail
+CREATE OR ALTER VIEW v2.vw_TransportRates_Detail
 AS
     SELECT
      CAST(r.Id AS INT)              AS RateId

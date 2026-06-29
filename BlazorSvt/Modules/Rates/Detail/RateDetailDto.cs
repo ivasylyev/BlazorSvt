@@ -3,8 +3,8 @@ using BlazorSvt.Platform.Infrastructure.Config;
 
 namespace BlazorSvt.Modules.Rates.Detail;
 
-[DetailSource("v2.vw_TransportRateDetail", "RateId")]
-[FullReportExport("v2.ExportTransportRatesFull")]
+[DetailSource("v2.vw_TransportRates_Detail", "RateId")]
+[FullReportExport("v2.TransportRates_ExportFull")]
 public class RateDetailDto
 {
     public long RateId { get; set; }

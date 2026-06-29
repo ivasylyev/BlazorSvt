@@ -5,8 +5,8 @@ using BlazorSvt.Platform.Domain.IdsEnum;
 
 namespace BlazorSvt.Modules.Legs.Detail;
 
-[DetailSource("v2.vw_TransportLegDetail", "LegId")]
-[FullReportExport("v2.ExportTransportLegsFull")]
+[DetailSource("v2.vw_TransportLegs_Detail", "LegId")]
+[FullReportExport("v2.TransportLegs_ExportFull")]
 public class LegDetailDto
 {
     public long Id { get; set; }

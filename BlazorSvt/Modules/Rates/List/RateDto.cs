@@ -6,7 +6,7 @@ using BlazorSvt.Platform.Domain.IdsEnum;
 namespace BlazorSvt.Modules.Rates.List;
 
 
-[StoredProcedure("v2.GetTransportRates")]
+[StoredProcedure("v2.TransportRates_Get")]
 public class RateDto
 {
     public long Id { get; set; }

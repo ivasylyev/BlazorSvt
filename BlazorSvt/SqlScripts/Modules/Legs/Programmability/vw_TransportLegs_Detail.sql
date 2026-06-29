@@ -8,14 +8,17 @@ use mdm
 go
 
 SELECT *
-FROM v2.vw_TransportLegDetail
+FROM v2.vw_TransportLegs_Detail
 WHERE LegId = 2845464
 
 */
+DROP VIEW IF EXISTS v2.vw_TransportLegDetail;
+GO
+
 DROP FUNCTION IF EXISTS v2.fn_GetTransportLegDetail;
 GO
 
-CREATE OR ALTER VIEW v2.vw_TransportLegDetail
+CREATE OR ALTER VIEW v2.vw_TransportLegs_Detail
 AS
     SELECT 
         CAST(l.Id AS INT)      AS LegId,

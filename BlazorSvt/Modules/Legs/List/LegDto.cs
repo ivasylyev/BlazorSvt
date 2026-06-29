@@ -5,7 +5,7 @@ using BlazorSvt.Platform.Domain.IdsEnum;
 
 namespace BlazorSvt.Modules.Legs.List;
 
-[StoredProcedure("v2.GetTransportLegs")]
+[StoredProcedure("v2.TransportLegs_Get")]
 public class LegDto
 {
     public long Id { get; set; }

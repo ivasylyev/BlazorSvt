@@ -1,4 +1,4 @@
-﻿USE mdm
+USE mdm
 GO
 
 /*
@@ -9,7 +9,7 @@ go
 
 -- простой поиск (это когда или нет сортировки, или менее 2х полнотекстовых фильтров)
 
-exec v2.GetTransportLegs 
+exec v2.TransportLegs_Get 
     @PageNumber=1,
     @PageSize=10,
     @Lang=N'ru',
@@ -24,7 +24,7 @@ exec v2.GetTransportLegs
 
 -- сложный поиск (это когда сортировка с двумя и более полнотекстовыми фильтрами)
 
-exec v2.GetTransportLegs 
+exec v2.TransportLegs_Get 
     @PageNumber=2,
     @PageSize=10,
     @Lang=N'ru',
@@ -38,7 +38,10 @@ exec v2.GetTransportLegs
         ]'
 
 */
-CREATE OR ALTER PROCEDURE v2.GetTransportLegs
+DROP PROCEDURE IF EXISTS v2.GetTransportLegs;
+GO
+
+CREATE OR ALTER PROCEDURE v2.TransportLegs_Get
     @PageNumber     INT = 1,
     @PageSize       INT = 20,
     @Lang           NVARCHAR(2),
