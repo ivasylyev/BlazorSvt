@@ -1,0 +1,437 @@
+---
+name: add-reference-book
+description: >-
+  Добавление read-only справочника BlazorSVT из легаси MDM: discovery атрибутов,
+  snapshot SQL, programmability, C#-модуль, grid и меню. Используй когда пользователь
+  просит добавить справочник, создать новый модуль справочника или перенести
+  PrimitiveEntityInfo из старой системы.
+---
+
+# Добавление справочника (read-only)
+
+Полный вертикальный срез: MDM discovery → SQL (Structure + Programmability) → деплой и верификация БД → C#-модуль.
+
+**Эталоны реализации:** `Modules/Legs`, `Modules/Rates` (паттерны кода и SQL).  
+**Именование:** для **новых** справочников — соглашения ниже. Существующие `Legs`/`Rates` (`LegId`, `RateId`, папки `Legs`/`Rates`) **не трогать** — отдельный рефакторинг.
+
+## Когда применять
+
+- Команда «добавить справочник», «создать модуль для {PrimitiveEntityInfo}»
+- Перенос сущности из легаси MDM в BlazorSVT (read-only grid + detail + export)
+
+## Шаг 0 — имя справочника
+
+1. Если пользователь не указал имя — **уточни** системное имя (`PrimitiveEntityInfo.Name`).
+2. Без имени дальнейшие шаги **не выполнять**.
+3. Имя всегда **системное** (например `TransportLeg`, не «Транспортные плечи»).
+
+Обозначение в навыке: `{Entity}` = `PrimitiveEntityInfo.Name`.
+
+---
+
+## Соглашения об именовании (новые справочники)
+
+| Объект | Шаблон | Пример |
+|--------|--------|--------|
+| Папка C# и SQL | `Modules/{Entity}/` | `Modules/TransportLeg/` |
+| Snapshot-таблица | `v2.{Entity}_Snapshot` | `v2.TransportLeg_Snapshot` |
+| Detail view | `v2.vw_{Entity}_Detail` | `v2.vw_TransportLeg_Detail` |
+| Get / Export | `v2.{Entity}_Get`, `v2.{Entity}_ExportFull` | `v2.TransportLeg_Get` |
+| SEQUENCE | `v2.seq_{Entity}Id` | `v2.seq_TransportLegId` |
+| Partition function | `v2_pf_{Entity}_IsArchive` | |
+| Partition scheme | `v2_ps_{Entity}` | |
+| DTO | `{Entity}Dto`, `{Entity}DetailDto` | `TransportLegDto` |
+| Бизнес-ключ | `{Entity}Id` | `TransportLegId` |
+| Маршрут / URL меню | `/{entity}` lowercase | `/transportleg` |
+| Grid | `{Entity}Grid.razor` | `@page "/transportleg"` |
+| Module | `{Entity}Module.cs` → `Add{Entity}Module()` | |
+
+Все объекты — в схеме **v2**.
+
+### Системные поля snapshot (всегда)
+
+Добавлять **вне зависимости** от короткого списка атрибутов:
+
+- `Id` (SEQUENCE + DEFAULT)
+- `{Entity}Id` (бизнес-ключ, `CAST(Id AS …)` из `vw_{Entity}`)
+- `Code`
+- `IsArchive` (`CASE WHEN ISNULL(PrimitiveEntityDataStateId, 2) = 2 THEN 1 ELSE 0 END`)
+- `CreationDate`, `LastChangeDate`
+
+**Бизнес-флаги** (например `CanBeUsed`) — только если есть в коротком списке (п. Discovery §1).
+
+### Партиционирование (по умолчанию)
+
+Как `Legs`/`Rates`: partition function/scheme по `IsArchive`, PK `(IsArchive, Id)`, SEQUENCE для `Id`.
+
+---
+
+## Фаза 1 — Discovery (MDM + legacy)
+
+Connection string: `Database:MdmDb` из `BlazorSvt/appsettings.json`.  
+Legacy DDL/views: `C:\Work\SVT\DB\SVT.DB.MDM\dbo\Views` и `dbo\Tables`.  
+**Нет доступа** — спросить пользователя путь к репозиторию.
+
+### 1. Короткий список атрибутов (snapshot / грид)
+
+```sql
+;WITH SnapshotCTE AS (
+    SELECT
+        ai.[Name]  AS AttributeSystemName,
+        ai.[Description] AS AttributeNameRu,
+        s.MainRank AS AttributeRank
+    FROM AttributeInfo ai
+    JOIN AttributeSettings s ON ai.Id = s.AttributeInfoId
+    WHERE ai.PrimitiveEntityInfoId = (
+        SELECT TOP 1 Id FROM PrimitiveEntityInfo WHERE [name] = '{Entity}'
+    )
+    AND s.IsMain = 1
+)
+SELECT * FROM SnapshotCTE
+ORDER BY AttributeRank;
+```
+
+**Порядок колонок грида** — как в этом списке (после фильтрации п.3).
+
+### 2. Типы атрибутов
+
+Сопоставить короткий список с `vw_{Entity}` (скрипт создания во legacy `dbo\Views`).  
+Колонки view, которых нет в коротком списке — **игнорировать**.  
+Длины `NVARCHAR` — из `dbo\Tables` legacy + `LEFT(..., N)` в Insert.
+
+### 3. Фильтр неиспользуемых атрибутов
+
+Для **каждого** атрибута короткого списка:
+
+```sql
+SELECT COUNT(*) FROM vw_{Entity}
+WHERE [{AttributeSystemName}] IS NOT NULL
+  AND [{AttributeSystemName}] <> ''
+  AND PrimitiveEntityDataStateId = 1;
+```
+
+- Результат `0` — исключить атрибут.
+- Учитывать только **неархивные** записи (`PrimitiveEntityDataStateId = 1`).
+- Если значение есть **только** у архивных — исключить.
+
+Повторить для длинного списка (п.4) тем же алгоритмом.
+
+### 4. Длинный список (detail view / группы)
+
+```sql
+;WITH DetailCTE AS (
+    SELECT
+        ai.[Name] AS AttributeSystemName,
+        ai.[Description] AS AttributeNameRu,
+        ISNULL(ag.[Rank], 0) AS GroupRank,
+        s.[Rank] AS AttributeRank,
+        ISNULL(xx.ValueEn, 'Default') AS GroupNameEn,
+        ISNULL(xx.ValueRu, 'По умолчанию') AS GroupNameRu
+    FROM AttributeInfo ai
+    JOIN AttributeSettings s ON ai.Id = s.AttributeInfoId
+    LEFT JOIN AttributesGroup ag ON ag.Id = s.GroupId
+    OUTER APPLY (
+        SELECT
+            LOWER([Key]) AS [Key],
+            MAX(CASE WHEN LocaleId = 1 THEN Value END) AS ValueEn,
+            MAX(CASE WHEN LocaleId = 2 THEN Value END) AS ValueRu
+        FROM Dictionary d
+        WHERE LOWER(d.[Key]) = LOWER(ag.[Name]) AND ContextId = 258
+        GROUP BY LOWER([Key])
+    ) xx
+    WHERE ai.PrimitiveEntityInfoId = (
+        SELECT TOP 1 Id FROM PrimitiveEntityInfo WHERE [name] = '{Entity}'
+    )
+)
+SELECT * FROM DetailCTE
+ORDER BY GroupRank, AttributeRank;
+```
+
+**Порядок полей деталей** — как здесь (после фильтрации п.3).
+
+### 5. Переводы заголовков колонок (resx)
+
+Приоритет — **Dictionary**, fallback — `AttributeInfo.Description`:
+
+```sql
+DECLARE
+    @PrimitiveEntityInfoName NVARCHAR(100) = '{Entity}',
+    @AttributeSystemName NVARCHAR(100) = '{AttributeSystemName}',
+    @AttributeNameTranslationRu NVARCHAR(100),
+    @AttributeNameTranslationEn NVARCHAR(100),
+    @ContextID INT;
+
+SELECT @ContextID = [Id]
+FROM [dbo].[Context]
+WHERE [Name] = 'pei/' + @PrimitiveEntityInfoName + '/ai';
+
+SELECT @AttributeNameTranslationRu = [Value] FROM Dictionary
+WHERE [key] = @AttributeSystemName AND ContextId = @ContextID AND LocaleId = 1;
+
+SELECT @AttributeNameTranslationEn = [Value] FROM Dictionary
+WHERE [key] = @AttributeSystemName AND ContextId = @ContextID AND LocaleId = 2;
+```
+
+> Для контекста `pei/{Entity}/ai`: `LocaleId` 1 = RU, 2 = EN. В скрипте групп (ContextId 258) — как в п.4 (`1` → ValueEn, `2` → ValueRu).
+
+### 6. Ссылочные атрибуты
+
+**Признак ссылки:** FK-колонка в legacy table/view **или** целочисленный тип (`int`/`bigint`) и имя совпадает с другой сущностью / есть в [таблице алиасов](#таблица-алиасов-сущностей).
+
+**Поля для ссылки** (snapshot и detail):
+
+- `{Xxx}IdRu`, `{Xxx}IdEn` (detail и Get; в snapshot одно `{Xxx}Id`)
+- `{Xxx}Code`
+- `{Xxx}NameEn`, `{Xxx}NameRu`
+
+**JOIN:** приоритет по **Id**; если нет — по **Code** (как `ShipmentTypeCodeT` → `vw_ShipmentType.Code`).
+
+**Эвристика без явного FK:**
+
+- `bigint NULL` (или `int`) + имя совпадает с `PrimitiveEntityInfo` / `vw_{Name}` → ссылка.
+- Иначе — **спросить пользователя**: число или ссылка? Если ссылка — на какой справочник?
+
+**Snapshot vs Detail:** обычно одинаковый набор полей из п.1 и п.4. Дополнительные вычисляемые поля (как `Leg1_*` у `TransportLeg`) — **только по явному запросу** после каркаса.
+
+### 7. IdsEnum (маленькие словари)
+
+Создавать enum только если в `vw_{Dictionary}` **< 100** неархивных записей.
+
+**Исключение:** `vw_Currency` — использовать только `RUB`, `EUR`, `USD`, `CNY` (как в `Rates`).
+
+Если enum уже есть в другом модуле — **перенести в** `Platform/Domain/IdsEnum/`.
+
+Два файла: `{Dictionary}Ru.cs`, `{Dictionary}En.cs` в `Modules/{Entity}/List/IdsEnum/`.
+
+Имена для enum-полей:
+
+- Взять `NameEn`/`NameRu`; иначе `ShortName*`; иначе `FullName*`; иначе — спросить пользователя.
+- Если **все** английские имена — одно слово → использовать как имя поля enum.
+- Если хотя бы одно многословное → использовать `Code` справочника.
+- Ru enum: `[Display(Name = "...")]` с русским именем; En enum — с английским.
+
+В grid settings: `typeof(XxxRu).GetDisplayName(...)` / `XxxEn` по языку.
+
+---
+
+## Таблица алиасов сущностей
+
+Пополнять по мере выявления. Перед JOIN проверять эту таблицу, если имя поля ≠ имени `vw_*`.
+
+| Поле во `vw_{Entity}` | Целевой справочник / view |
+|-----------------------|---------------------------|
+| `NodeFrom` | `vw_LocationsNodes` |
+| `NodeTo` | `vw_LocationsNodes` |
+| `ProxyNode` | `vw_LocationsNodes` |
+
+---
+
+## Фаза 2 — SQL-артефакты
+
+Папки:
+
+```
+BlazorSvt/SqlScripts/Modules/{Entity}/
+├── Structure/
+│   ├── 01.{Entity}_CreateTable.sql
+│   ├── 02.{Entity}_Insert.sql
+│   └── 03.{Entity}_CreateIndexes.sql
+└── Programmability/
+    ├── vw_{Entity}_Detail.sql
+    ├── {Entity}_Get.sql
+    └── {Entity}_ExportFull.sql
+```
+
+### Structure
+
+**01 — CreateTable:** системные поля + атрибуты короткого списка (порядок п.1); партиционирование; SEQUENCE; DEFAULT на `Id`, `CreationDate`.  
+Образец: `SqlScripts/Modules/Legs/Structure/01.TransportLegs_CreateTable.sql` (с новыми именами).
+
+**02 — Insert:** `INSERT INTO v2.{Entity}_Snapshot … SELECT … FROM vw_{Entity}` + JOIN по ссылкам.  
+Образец: `Legs/Structure/02.TransportLegs_Insert.sql`.
+
+**03 — Indexes:**
+
+- `UX_{Entity}_Snapshot_Id` на `[PRIMARY]` (для FTS при партициях)
+- FULLTEXT на `Code`, `*NameEn`, `*NameRu` (языки 1033 / 1049)
+- `ALTER FULLTEXT … SET STOPLIST = OFF`
+- Фильтрованные индексы на `Code` и ID-ссылки (`WHERE IsArchive = 0/1`)
+- `UPDATE STATISTICS … WITH FULLSCAN`
+
+### Programmability
+
+**vw_{Entity}_Detail** — поля длинного списка (п.4) + системные; ссылки: `IdRu`/`IdEn`, `Code`, `Name_en`/`Name_ru` из joined views.  
+Образцы: `vw_TransportLegs_Detail.sql`, `vw_TransportRates_Detail.sql`.
+
+**{Entity}_Get** — только поля snapshot; вызов `v2.GetBlazorGridData`; `@AllowedColumnsJson` + `@SelectList`.  
+Id в SELECT: `XxxId AS XxxIdRu, XxxId AS XxxIdEn`.  
+**Два примера** в комментарии: простой поиск и сложный (сортировка + ≥2 FTS-фильтра), если FTS-полей > 2.
+
+`ColumnType` в `@AllowedColumnsJson`:
+
+| SQL-тип | ColumnType |
+|---------|------------|
+| `BIT` | `BIT` |
+| FK / `INT` | `ID` |
+| `NVARCHAR` | `NVARCHAR` |
+| `DATETIME` | `DATE` |
+
+**{Entity}_ExportFull** — `@KeysOnly = 1` через `{Entity}_Get`, затем `SELECT d.* FROM v2.vw_{Entity}_Detail d JOIN #Filtered …`.
+
+Обновить `BlazorSvt/SqlScripts/README.md` (секция нового модуля).
+
+---
+
+## Фаза 3 — Деплой и верификация БД (до C#)
+
+### Порядок деплоя
+
+1. **Structure** — `sqlcmd` по файлам `01 → 02 → 03`
+2. **Programmability** — всегда полный прогон:
+
+```powershell
+& ".\BlazorSvt\SqlScripts\Create-Programmability.ps1"
+```
+
+Из корня `c:\Work\BlazorSVT`.
+
+### Structure: когда прогонять
+
+| Ситуация | Действие |
+|----------|----------|
+| **Новый** справочник | Всегда `01`, `02`, `03` |
+| **Существующий** | Спросить пользователя: нужен ли sqlcmd и **какие именно** файлы |
+
+Пример sqlcmd (подставить connection string из `appsettings.json`):
+
+```powershell
+$sql = "<connection string из Database:MdmDb>"
+sqlcmd -S ... -d mdm -i "BlazorSvt\SqlScripts\Modules\{Entity}\Structure\01.{Entity}_CreateTable.sql" -b
+# повторить для 02, 03
+```
+
+### Верификация SQL (обязательна)
+
+1. `EXEC` примеры из `{Entity}_Get` (оба, если применимо)
+2. `SELECT TOP 1 * FROM v2.{Entity}_Snapshot`
+3. `SELECT TOP 1 * FROM v2.vw_{Entity}_Detail`
+
+**При ошибке деплоя или верификации — остановиться, C# не писать, спросить пользователя.**
+
+---
+
+## Фаза 4 — C#-модуль
+
+```
+BlazorSvt/Modules/{Entity}/
+├── {Entity}Module.cs
+├── List/
+│   ├── {Entity}Dto.cs
+│   ├── {Entity}Grid.razor
+│   ├── {Entity}Grid.razor.cs
+│   ├── {Entity}GridSettingsService.cs
+│   └── IdsEnum/          # при необходимости
+└── Detail/
+    ├── {Entity}DetailDto.cs
+    └── {Entity}DetailSettingsService.cs
+```
+
+### DTO-атрибуты (обязательно)
+
+```csharp
+[StoredProcedure("v2.{Entity}_Get")]
+public class {Entity}Dto { ... }
+
+[DetailSource("v2.vw_{Entity}_Detail", "{Entity}Id")]
+[FullReportExport("v2.{Entity}_ExportFull")]
+public class {Entity}DetailDto { ... }
+```
+
+`{Entity}Dto` — поля snapshot + типы под процедуру `_Get`.  
+`{Entity}DetailDto` — поля `vw_{Entity}_Detail` и `_ExportFull`.
+
+### GridSettingsService
+
+- Наследник `BaseGridSettingsService<{Entity}Dto>`
+- `StorageKey` → `"{Entity}GridColumnSettings"`
+- `GetDefaultSettings`: порядок как **короткий список (п.1)**
+- **Все колонки видимы**, кроме `IsArchive`
+- `IsArchive`: `Visible = false`, `FilterValue = "False"` **всегда**
+- Ссылки: отдельные колонки Ru/En (`XxxIdRu` / `XxxIdEn`)
+- `Filterable = true` для текстовых и ID; `false` для вычисляемых числовых полей
+- Коды ссылок (`XxxCode`) — часто `Visible = false` (как в Legs)
+
+### DetailSettingsService
+
+- `IDetailSettingsService<{Entity}DetailDto>`
+- Порядок и группы как **длинный список (п.4)**
+- `GroupHeader` из resx: ключ `{Entity}DetailDto.Group.{GroupRank}.{SanitizedGroupNameEn}`
+- `SanitizedGroupNameEn`: PascalCase, только буквы/цифры (пробелы и спецсимволы удалить)
+
+### Grid.razor
+
+```razor
+@page "/{entity}"   @* lowercase *@
+@inherits BaseGridPage<{Entity}Dto, {Entity}DetailDto>
+```
+
+- `GenericGrid` + заглушка `DetailViewTemplate` (как `LegsGrid.razor`)
+- `DetailKeySelector` → `{Entity}Id`
+
+### Локализация
+
+Файлы: `Host/Resources/Svt.resx`, `Host/Resources/Svt.ru-RU.resx`
+
+Ключи:
+
+- `{Entity}Dto.{Field}`, `{Entity}DetailDto.{Field}`
+- `{Entity}Grid.Title`
+- `HeaderMenu.{Entity}`
+- `{Entity}DetailDto.Group.{GroupRank}.{SanitizedGroupNameEn}`
+
+### DI и меню
+
+**`{Entity}Module.cs`:**
+
+```csharp
+services.AddScoped<IGridSettingsService<{Entity}Dto>, {Entity}GridSettingsService>();
+services.AddScoped<IDetailSettingsService<{Entity}DetailDto>, {Entity}DetailSettingsService>();
+```
+
+**`Host/Program.cs`:** `builder.Services.Add{Entity}Module();`
+
+**`HeaderMenu.razor.cs`:** пункт с `Url = "{entity}"` (lowercase), текст `L["HeaderMenu.{Entity}"]`, иконка — произвольно по аналогии.
+
+URL меню **должен совпадать** с `@page` в `.razor`.
+
+---
+
+## Фаза 5 — Финальная верификация
+
+1. `dotnet build` (проект `BlazorSvt`)
+2. Страница `/{entity}` открывается, грид загружает данные
+3. Детальный просмотр и экспорт не падают
+
+При ошибке — сообщить и спросить дальнейшие действия.
+
+---
+
+## Чеклист
+
+- [ ] Имя `{Entity}` получено
+- [ ] Короткий и длинный списки + фильтрация неиспользуемых
+- [ ] Переводы из Dictionary в resx
+- [ ] SQL Structure 01–03 + Programmability
+- [ ] README обновлён
+- [ ] Structure задеплоен (01–03 или по согласованию)
+- [ ] Programmability задеплоен
+- [ ] SQL-верификация пройдена
+- [ ] C# модуль, DI, меню, resx
+- [ ] `dotnet build` OK
+
+---
+
+## Связанные навыки
+
+- **create-programmability** — накат Programmability на dev БД
+- **svt-architecture** — архитектурный контекст и антипаттерны

@@ -8,12 +8,18 @@ alwaysApply: false
 
 ## Добавление справочника (read-only grid)
 
-1. `Modules/{Name}/List/{Name}Dto.cs` — DTO с атрибутами колонок
-2. `Modules/{Name}/Detail/{Name}DetailDto.cs` — детальная форма
-3. `{Name}GridSettingsService` / `{Name}DetailSettingsService` — наследники `BaseGridSettingsService`
-4. `{Name}Grid.razor` — наследник `BaseGridPage<TDto, TDetailDto>`
-5. `{Name}Module.cs` → `Add{Name}Module()` в `Host/Program.cs`
-6. SQL: `SqlScripts/Modules/{Name}/Structure/` (таблица, индексы) + `Programmability/` (read SP/fn)
+**Полный алгоритм** — skill `add-reference-book` (`.cursor/skills/add-reference-book/SKILL.md`).
+
+Именование для **новых** справочников: `{Entity}` = `PrimitiveEntityInfo.Name`, папка `Modules/{Entity}/`, ключ `{Entity}Id`, snapshot `v2.{Entity}_Snapshot`. Существующие `Legs`/`Rates` — legacy до отдельного рефакторинга.
+
+Краткая структура модуля:
+
+1. `Modules/{Entity}/List/{Entity}Dto.cs` — `[StoredProcedure("v2.{Entity}_Get")]`
+2. `Modules/{Entity}/Detail/{Entity}DetailDto.cs` — `[DetailSource]`, `[FullReportExport]`
+3. `{Entity}GridSettingsService` / `{Entity}DetailSettingsService`
+4. `{Entity}Grid.razor` — `@page "/{entity}"`, `BaseGridPage<…>`
+5. `{Entity}Module.cs` → `Add{Entity}Module()` в `Host/Program.cs`
+6. SQL: `SqlScripts/Modules/{Entity}/Structure/` + `Programmability/`
 
 ## Модульная регистрация
 
