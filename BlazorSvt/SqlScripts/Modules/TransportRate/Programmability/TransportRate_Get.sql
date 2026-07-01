@@ -128,8 +128,6 @@ BEGIN
             CurrencyId,
 
             Code,
-            CurrencyCode,
-            RateTypeCode,
             NodeFromCode,
             NodeFromNameRu,
             NodeFromNameEn,

@@ -420,7 +420,7 @@ public class TransportRateGridSettingsService(ILocalStorageService localStorage,
                     DisplaySelector = dto => dto.TotalCostTransport,
                     SortSelector = dto => dto.TotalCostTransport,
                     Filterable = false,
-                    Visible = false
+                    Visible = true
                 }
             }
         );

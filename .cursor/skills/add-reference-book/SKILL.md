@@ -386,6 +386,7 @@ public class {Entity}DetailDto { ... }
 Ключи:
 
 - `{Entity}Dto.{Field}`, `{Entity}DetailDto.{Field}`
+- Для пар колонок Ru/En допустим **один** ключ заголовка без суффикса языка (например `NodeFromName` вместо `NodeFromNameRu`/`NodeFromNameEn`) — один заголовок на Ru/En колонку в `GridSettingsService`
 - `{Entity}Grid.Title`
 - `HeaderMenu.{Entity}`
 - `{Entity}DetailDto.Group.{GroupRank}.{SanitizedGroupNameEn}`
