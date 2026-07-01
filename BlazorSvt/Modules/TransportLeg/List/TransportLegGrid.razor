@@ -1,12 +1,12 @@
-﻿@page "/legs"
-@using BlazorSvt.Modules.Legs.List
-@using BlazorSvt.Modules.Legs.Detail
+﻿@page "/transportleg"
+@using BlazorSvt.Modules.TransportLeg.List
+@using BlazorSvt.Modules.TransportLeg.Detail
 @using BlazorSvt.Platform.Grid.Components
-@inherits BaseGridPage<LegDto, LegDetailDto>
+@inherits BaseGridPage<TransportLegDto, TransportLegDetailDto>
 
-<GenericGrid TItem="LegDto"
-             TDetailItem="LegDetailDto"
-             PageTitle="@L["LegsGrid.Title"]"
+<GenericGrid TItem="TransportLegDto"
+             TDetailItem="TransportLegDetailDto"
+             PageTitle="@L["TransportLegGrid.Title"]"
              AllowDetailView = "true"
              DataProvider="DataProvider"
              DetailDataProvider="DetailDataProvider"

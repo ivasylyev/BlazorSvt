@@ -11,7 +11,7 @@ public partial class HeaderMenu : SvtComponentBase
     [
         new() { Url = "", Text = L["HeaderMenu.Home"] , Icon = IconName.HouseDoorFill },
         new() { Url = "rates", Text = L["HeaderMenu.Rates"], Icon = IconName.Calculator },
-        new() { Url = "legs", Text = L["HeaderMenu.Legs"], Icon = IconName.SignpostSplit },
+        new() { Url = "transportleg", Text = L["HeaderMenu.TransportLeg"], Icon = IconName.SignpostSplit },
         new() { Url = "load", Text = L["HeaderMenu.Load"], Icon = IconName.Upload }
     ];
 

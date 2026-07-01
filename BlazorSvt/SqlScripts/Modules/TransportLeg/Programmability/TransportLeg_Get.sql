@@ -9,7 +9,7 @@ go
 
 -- простой поиск (это когда или нет сортировки, или менее 2х полнотекстовых фильтров)
 
-exec v2.TransportLegs_Get 
+exec v2.TransportLeg_Get
     @PageNumber=1,
     @PageSize=10,
     @Lang=N'ru',
@@ -24,7 +24,7 @@ exec v2.TransportLegs_Get
 
 -- сложный поиск (это когда сортировка с двумя и более полнотекстовыми фильтрами)
 
-exec v2.TransportLegs_Get 
+exec v2.TransportLeg_Get
     @PageNumber=2,
     @PageSize=10,
     @Lang=N'ru',
@@ -41,7 +41,10 @@ exec v2.TransportLegs_Get
 DROP PROCEDURE IF EXISTS v2.GetTransportLegs;
 GO
 
-CREATE OR ALTER PROCEDURE v2.TransportLegs_Get
+DROP PROCEDURE IF EXISTS v2.TransportLegs_Get;
+GO
+
+CREATE OR ALTER PROCEDURE v2.TransportLeg_Get
     @PageNumber     INT = 1,
     @PageSize       INT = 20,
     @Lang           NVARCHAR(2),
@@ -102,12 +105,12 @@ BEGIN
     SET @SelectList = CASE WHEN @KeysOnly = 1 THEN
         N'
         SELECT
-            LegId
+            TransportLegId
   '
     ELSE N'
         SELECT
             Id,
-            LegId,
+            TransportLegId,
             Code,
 
             IsArchive,
@@ -164,7 +167,7 @@ BEGIN
         @SortDirection = @SortDirection,
         @FilterJson = @FilterJson,
 
-        @TableName = N'mdm.v2.TransportLegSnapshot',
+        @TableName = N'mdm.v2.TransportLeg_Snapshot',
         @AllowedColumnsJson = @AllowedColumnsJson,
         @SelectList = @SelectList
         

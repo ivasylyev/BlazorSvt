@@ -2,7 +2,7 @@
 using Blazored.LocalStorage;
 using BlazorSvt.Host.Components;
 using BlazorSvt.Import;
-using BlazorSvt.Modules.Legs;
+using BlazorSvt.Modules.TransportLeg;
 using BlazorSvt.Modules.Rates;
 using BlazorSvt.Platform;
 using BlazorSvt.Platform.Infrastructure.Data;
@@ -33,7 +33,7 @@ builder.Services.AddLocalization();
 builder.Services.AddPlatform(builder.Configuration);
 builder.Services.AddImportModule();
 builder.Services.AddRatesModule();
-builder.Services.AddLegsModule();
+builder.Services.AddTransportLegModule();
 
 var supportedCultures = new[] { "ru-RU", "en-US" };
 var localizationOptions = new RequestLocalizationOptions()
@@ -67,3 +67,4 @@ app.MapRazorComponents<App>()
     .AddInteractiveServerRenderMode();
 
 app.Run();
+

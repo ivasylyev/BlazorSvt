@@ -1,16 +1,16 @@
 ﻿
 using BlazorSvt.Platform.Infrastructure.Config;
-using BlazorSvt.Modules.Legs.List.IdsEnum;
+using BlazorSvt.Modules.TransportLeg.List.IdsEnum;
 using BlazorSvt.Platform.Domain.IdsEnum;
 
-namespace BlazorSvt.Modules.Legs.Detail;
+namespace BlazorSvt.Modules.TransportLeg.Detail;
 
-[DetailSource("v2.vw_TransportLegs_Detail", "LegId")]
-[FullReportExport("v2.TransportLegs_ExportFull")]
-public class LegDetailDto
+[DetailSource("v2.vw_TransportLeg_Detail", "TransportLegId")]
+[FullReportExport("v2.TransportLeg_ExportFull")]
+public class TransportLegDetailDto
 {
     public long Id { get; set; }
-    public long LegId { get; set; }
+    public long TransportLegId { get; set; }
     public required string Code { get; set; }
 
     public bool IsArchive { get; set; }

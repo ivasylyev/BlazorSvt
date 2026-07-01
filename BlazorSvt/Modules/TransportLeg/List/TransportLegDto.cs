@@ -1,15 +1,15 @@
 ﻿
 using BlazorSvt.Platform.Infrastructure.Config;
-using BlazorSvt.Modules.Legs.List.IdsEnum;
+using BlazorSvt.Modules.TransportLeg.List.IdsEnum;
 using BlazorSvt.Platform.Domain.IdsEnum;
 
-namespace BlazorSvt.Modules.Legs.List;
+namespace BlazorSvt.Modules.TransportLeg.List;
 
-[StoredProcedure("v2.TransportLegs_Get")]
-public class LegDto
+[StoredProcedure("v2.TransportLeg_Get")]
+public class TransportLegDto
 {
     public long Id { get; set; }
-    public long LegId { get; set; }
+    public long TransportLegId { get; set; }
     public required string Code { get; set; }
 
     public bool IsArchive { get; set; }

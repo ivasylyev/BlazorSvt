@@ -7,7 +7,7 @@ Example:
 USE mdm
 GO
 
-EXEC v2.TransportLegs_ExportFull
+EXEC v2.TransportLeg_ExportFull
     @PageSize = 100,
     @Lang = N'ru',
     @SortKey = N'CreationDate',
@@ -20,7 +20,10 @@ EXEC v2.TransportLegs_ExportFull
 DROP PROCEDURE IF EXISTS v2.ExportTransportLegsFull;
 GO
 
-CREATE OR ALTER PROCEDURE v2.TransportLegs_ExportFull
+DROP PROCEDURE IF EXISTS v2.TransportLegs_ExportFull;
+GO
+
+CREATE OR ALTER PROCEDURE v2.TransportLeg_ExportFull
     @PageSize       INT,
     @Lang           NVARCHAR(2),
     @SortKey        NVARCHAR(50) = NULL,
@@ -32,12 +35,12 @@ BEGIN
 
     CREATE TABLE #Filtered (
         RowNum INT IDENTITY(1,1) NOT NULL,
-        LegId  INT NOT NULL,
-        PRIMARY KEY (LegId)
+        TransportLegId  INT NOT NULL,
+        PRIMARY KEY (TransportLegId)
     );
 
-    INSERT INTO #Filtered (LegId)
-    EXEC v2.TransportLegs_Get
+    INSERT INTO #Filtered (TransportLegId)
+    EXEC v2.TransportLeg_Get
         @PageNumber    = 1,
         @PageSize      = @PageSize,
         @Lang          = @Lang,
@@ -47,8 +50,8 @@ BEGIN
         @KeysOnly      = 1;
 
     SELECT d.*
-    FROM v2.vw_TransportLegs_Detail d
-    WHERE d.LegId IN (SELECT LegId FROM #Filtered)
-    ORDER BY (SELECT f.RowNum FROM #Filtered f WHERE f.LegId = d.LegId);
+    FROM v2.vw_TransportLeg_Detail d
+    WHERE d.TransportLegId IN (SELECT TransportLegId FROM #Filtered)
+    ORDER BY (SELECT f.RowNum FROM #Filtered f WHERE f.TransportLegId = d.TransportLegId);
 END
 GO

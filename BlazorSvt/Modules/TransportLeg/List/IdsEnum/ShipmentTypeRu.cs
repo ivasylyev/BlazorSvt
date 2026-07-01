@@ -1,22 +1,22 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace BlazorSvt.Modules.Legs.List.IdsEnum;
+namespace BlazorSvt.Modules.TransportLeg.List.IdsEnum;
 
-public enum ShipmentTypeEn
+public enum ShipmentTypeRu
 {
-    [Display(Name = "Tverdaya")]
+    [Display(Name = "Твердая")]
     TVD = 27584768, //  Твердая	 | 	Tverdaya
 
-    [Display(Name = "Povagonnaya")]
+    [Display(Name = "Повагонная")]
     PVG = 27584769, //  Повагонная	 | 	Povagonnaya
 
-    [Display(Name = "Gruppovaya")]
+    [Display(Name = "Групповая")]
     GPP = 27584770, //  Групповая	 | 	Gruppovaya
 
-    [Display(Name = "Marshrutnaya")]
+    [Display(Name = "Маршрутная")]
     MRT = 27584771, //  Маршрутная	 | 	Marshrutnaya
 
-    [Display(Name = "Zhestkaya nitka")]
+    [Display(Name = "Жесткая нитка")]
     ZHN = 27584772, //  Жесткая нитка	 | 	Zhestkaya nitka
 }
 

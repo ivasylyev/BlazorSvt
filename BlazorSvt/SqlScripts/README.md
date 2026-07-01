@@ -1,4 +1,4 @@
-# SQL-скрипты BlazorSVT
+﻿# SQL-скрипты BlazorSVT
 
 Структура повторяет модульный монолит C#: общие объекты в `Platform/`, объекты справочников — в `Modules/{Name}/`.
 
@@ -11,7 +11,7 @@ SqlScripts/
 │   ├── Rates/
 │   │   ├── Structure/      # Snapshot-таблица, индексы, seed
 │   │   └── Programmability/ # Grid-обёртки, detail, export
-│   ├── Legs/
+│   ├── TransportLeg/
 │   │   ├── Structure/
 │   │   └── Programmability/
 │   └── LocationNodes/      # SQL-only (C#-модуль в разработке)
@@ -43,16 +43,16 @@ SqlScripts/
 | 5 | `Modules/Rates/Programmability/TransportRates_Get.sql` |
 | 6 | `Modules/Rates/Programmability/TransportRates_ExportFull.sql` |
 
-**Legs**
+**TransportLeg**
 
 | # | Скрипт |
 |---|--------|
-| 1 | `Modules/Legs/Structure/01.TransportLegs_CreateTable.sql` |
-| 2 | `Modules/Legs/Structure/02.TransportLegs_Insert.sql` |
-| 3 | `Modules/Legs/Structure/03.TransportLegs_CreateIndexes.sql` |
-| 4 | `Modules/Legs/Programmability/vw_TransportLegs_Detail.sql` |
-| 5 | `Modules/Legs/Programmability/TransportLegs_Get.sql` |
-| 6 | `Modules/Legs/Programmability/TransportLegs_ExportFull.sql` |
+| 1 | `Modules/TransportLeg/Structure/01.TransportLeg_CreateTable.sql` |
+| 2 | `Modules/TransportLeg/Structure/02.TransportLeg_Insert.sql` |
+| 3 | `Modules/TransportLeg/Structure/03.TransportLeg_CreateIndexes.sql` |
+| 4 | `Modules/TransportLeg/Programmability/vw_TransportLeg_Detail.sql` |
+| 5 | `Modules/TransportLeg/Programmability/TransportLeg_Get.sql` |
+| 6 | `Modules/TransportLeg/Programmability/TransportLeg_ExportFull.sql` |
 
 **LocationNodes** (опционально)
 
@@ -62,7 +62,7 @@ SqlScripts/
 
 ## Добавление нового справочника
 
-Создать `Modules/{Name}/Structure/` и `Modules/{Name}/Programmability/` по образцу `Rates/` или `Legs/`.
+Создать `Modules/{Name}/Structure/` и `Modules/{Name}/Programmability/` по образцу `Rates/` или `TransportLeg/`.
 Параллельно — C#-модуль в `BlazorSvt/Modules/{Name}/`.
 
 Ключевая процедура `v2.GetBlazorGridData` (Platform) — универсальный query engine: whitelist колонок, фильтры, FTS, пагинация.

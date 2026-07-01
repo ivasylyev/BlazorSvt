@@ -8,8 +8,8 @@ use mdm
 go
 
 SELECT *
-FROM v2.vw_TransportLegs_Detail
-WHERE LegId = 2845464
+FROM v2.vw_TransportLeg_Detail
+WHERE TransportLegId = 2845464
 
 */
 DROP VIEW IF EXISTS v2.vw_TransportLegDetail;
@@ -18,10 +18,13 @@ GO
 DROP FUNCTION IF EXISTS v2.fn_GetTransportLegDetail;
 GO
 
-CREATE OR ALTER VIEW v2.vw_TransportLegs_Detail
+DROP VIEW IF EXISTS v2.vw_TransportLegs_Detail;
+GO
+
+CREATE OR ALTER VIEW v2.vw_TransportLeg_Detail
 AS
     SELECT 
-        CAST(l.Id AS INT)      AS LegId,
+        CAST(l.Id AS INT)      AS TransportLegId,
         l.Code                 AS Code,
 
         CASE WHEN ISNULL(l.PrimitiveEntityDataStateId, 2) = 2 THEN 1 ELSE 0 END AS IsArchive,

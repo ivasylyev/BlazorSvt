@@ -1,8 +1,8 @@
 ﻿USE [mdm];
 GO
 
-INSERT INTO v2.TransportLegSnapshot (
-     LegId             
+INSERT INTO v2.TransportLeg_Snapshot (
+     TransportLegId
     ,Code               
     
     ,IsArchive          
@@ -45,7 +45,7 @@ INSERT INTO v2.TransportLegSnapshot (
     ,LastChangeDate     
 )
 SELECT 
-        CAST(l.Id AS INT)      AS LegId,
+        CAST(l.Id AS INT)      AS TransportLegId,
         l.Code                 AS Code,
 
         CASE WHEN ISNULL(l.PrimitiveEntityDataStateId, 2) = 2 THEN 1 ELSE 0 END AS IsArchive,

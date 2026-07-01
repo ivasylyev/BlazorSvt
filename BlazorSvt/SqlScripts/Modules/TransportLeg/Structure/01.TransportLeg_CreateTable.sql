@@ -8,6 +8,13 @@ BEGIN
 END
 GO
 
+-- Удаляем полнотекстовый индекс
+IF EXISTS (SELECT * FROM sys.fulltext_indexes WHERE object_id = OBJECT_ID('v2.TransportLeg_Snapshot'))
+BEGIN
+    DROP FULLTEXT INDEX ON v2.TransportLeg_Snapshot;
+END
+GO
+
 -- Удаляем индексы (если существуют)
 DECLARE @sql NVARCHAR(MAX) = '';
 SELECT @sql = @sql + 'DROP INDEX IF EXISTS [' + name + '] ON v2.TransportLegSnapshot; '
@@ -18,8 +25,22 @@ WHERE object_id = OBJECT_ID('v2.TransportLegSnapshot')
 EXEC sp_executesql @sql;
 GO
 
+-- Удаляем индексы (если существуют)
+DECLARE @sql_new NVARCHAR(MAX) = '';
+SELECT @sql_new = @sql_new + 'DROP INDEX IF EXISTS [' + name + '] ON v2.TransportLeg_Snapshot; '
+FROM sys.indexes
+WHERE object_id = OBJECT_ID('v2.TransportLeg_Snapshot')
+  AND name IS NOT NULL
+  AND name NOT LIKE 'PK_%';  -- Не удаляем PRIMARY KEY
+EXEC sp_executesql @sql_new;
+GO
+
 -- 2. Удаляем таблицу
 DROP TABLE IF EXISTS v2.TransportLegSnapshot;
+GO
+
+-- 2. Удаляем таблицу
+DROP TABLE IF EXISTS v2.TransportLeg_Snapshot;
 GO
 
 -- 3. Удаляем SEQUENCE
@@ -61,9 +82,9 @@ INCREMENT BY 1;
 GO
 
 -- 9. Создаем таблицу с партиционированием
-CREATE TABLE v2.TransportLegSnapshot (
+CREATE TABLE v2.TransportLeg_Snapshot (
     Id                  INT NOT NULL,
-    LegId               INT NOT NULL,
+    TransportLegId      INT NOT NULL,
     Code                NVARCHAR(50) NOT NULL,
 
     IsArchive           BIT NOT NULL,
@@ -105,17 +126,17 @@ CREATE TABLE v2.TransportLegSnapshot (
     CreationDate        DATETIME NOT NULL,
     LastChangeDate      DATETIME NOT NULL
     
-    CONSTRAINT PK_TransportLegSnapshot PRIMARY KEY CLUSTERED (IsArchive, Id)
+    CONSTRAINT PK_TransportLeg_Snapshot PRIMARY KEY CLUSTERED (IsArchive, Id)
 ) ON v2_ps_TransportLeg(IsArchive);
 GO
 
 -- 10. Добавляем DEFAULT constraints
-ALTER TABLE v2.TransportLegSnapshot 
-ADD CONSTRAINT DF_TransportLegSnapshot_Id 
+ALTER TABLE v2.TransportLeg_Snapshot
+ADD CONSTRAINT DF_TransportLeg_Snapshot_Id
 DEFAULT (NEXT VALUE FOR v2.seq_TransportLegId) FOR Id;
 GO
 
-ALTER TABLE v2.TransportLegSnapshot 
-ADD CONSTRAINT DF_TransportLegSnapshot_CreationDate 
+ALTER TABLE v2.TransportLeg_Snapshot
+ADD CONSTRAINT DF_TransportLeg_Snapshot_CreationDate
 DEFAULT (GETDATE()) FOR CreationDate;
 GO

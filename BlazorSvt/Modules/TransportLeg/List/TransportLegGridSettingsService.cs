@@ -1,26 +1,26 @@
 ﻿using BlazorBootstrap;
 using Blazored.LocalStorage;
-using BlazorSvt.Modules.Legs.List.IdsEnum;
+using BlazorSvt.Modules.TransportLeg.List.IdsEnum;
 using BlazorSvt.Platform.Domain.IdsEnum;
 using BlazorSvt.Platform.Grid.Models;
 using BlazorSvt.Host.Resources;
 using BlazorSvt.Platform.Grid.Services;
 using Microsoft.Extensions.Localization;
 
-namespace BlazorSvt.Modules.Legs.List;
+namespace BlazorSvt.Modules.TransportLeg.List;
 
 // ReSharper disable once InconsistentNaming
-public class LegsGridSettingsService(ILocalStorageService localStorage, IStringLocalizer<Svt> L, ILogger<LegsGridSettingsService> logger)
-    : BaseGridSettingsService<LegDto>(localStorage, logger)
+public class TransportLegGridSettingsService(ILocalStorageService localStorage, IStringLocalizer<Svt> L, ILogger<TransportLegGridSettingsService> logger)
+    : BaseGridSettingsService<TransportLegDto>(localStorage, logger)
 {
-    protected override string StorageKey => "LegsGridColumnSettings";
+    protected override string StorageKey => "TransportLegGridColumnSettings";
 
 
-    protected override List<GridColumnSetting<LegDto>> GetDefaultSettings(string lang)
+    protected override List<GridColumnSetting<TransportLegDto>> GetDefaultSettings(string lang)
     {
         var isRu = lang == "ru";
 
-        var results = new List<GridColumnSetting<LegDto>>();
+        var results = new List<GridColumnSetting<TransportLegDto>>();
         AddCodeSettings(results);
         AddCanBeUsedSettings(results);
 
@@ -45,12 +45,12 @@ public class LegsGridSettingsService(ILocalStorageService localStorage, IStringL
     }
 
 
-    private void AddCodeSettings(List<GridColumnSetting<LegDto>> results)
+    private void AddCodeSettings(List<GridColumnSetting<TransportLegDto>> results)
     {
-        results.Add(new GridColumnSetting<LegDto>
+        results.Add(new GridColumnSetting<TransportLegDto>
             {
-                Name = nameof(LegDto.Code),
-                Header = L["LegDto.Code"],
+                Name = nameof(TransportLegDto.Code),
+                Header = L["TransportLegDto.Code"],
                 DisplaySelector = dto => dto.Code,
                 SortSelector = dto => dto.Code,
                 Filterable = true,
@@ -59,15 +59,15 @@ public class LegsGridSettingsService(ILocalStorageService localStorage, IStringL
         );
     }
 
-    private void AddCanBeUsedSettings(List<GridColumnSetting<LegDto>> results)
+    private void AddCanBeUsedSettings(List<GridColumnSetting<TransportLegDto>> results)
     {
-        results.Add(new GridColumnSetting<LegDto>
+        results.Add(new GridColumnSetting<TransportLegDto>
             {
-                Name = nameof(LegDto.CanBeUsed),
-                Header = L["LegDto.CanBeUsed"],
+                Name = nameof(TransportLegDto.CanBeUsed),
+                Header = L["TransportLegDto.CanBeUsed"],
                 DisplaySelector = dto => dto.CanBeUsed
-                    ? L["LegDto.Yes"]
-                    : L["LegDto.No"],
+                    ? L["TransportLegDto.Yes"]
+                    : L["TransportLegDto.No"],
                 SortSelector = dto => dto.CanBeUsed,
                 Filterable = true,
                 Visible = true
@@ -75,13 +75,13 @@ public class LegsGridSettingsService(ILocalStorageService localStorage, IStringL
         );
     }
 
-    private void AddLegTypeSettings(bool isRu, List<GridColumnSetting<LegDto>> results)
+    private void AddLegTypeSettings(bool isRu, List<GridColumnSetting<TransportLegDto>> results)
     {
         if (isRu)
-            results.Add(new GridColumnSetting<LegDto>
+            results.Add(new GridColumnSetting<TransportLegDto>
                 {
-                    Name = nameof(LegDto.ShipmentTypeIdRu),
-                    Header = L["LegDto.ShipmentTypeName"],
+                    Name = nameof(TransportLegDto.ShipmentTypeIdRu),
+                    Header = L["TransportLegDto.ShipmentTypeName"],
                     DisplaySelector = dto => typeof(ShipmentTypeRu).GetDisplayName(dto.ShipmentTypeIdRu.ToString()) ?? string.Empty,
                     SortSelector = dto => dto.ShipmentTypeIdRu,
                     Filterable = true,
@@ -89,10 +89,10 @@ public class LegsGridSettingsService(ILocalStorageService localStorage, IStringL
                 }
             );
         else
-            results.Add(new GridColumnSetting<LegDto>
+            results.Add(new GridColumnSetting<TransportLegDto>
                 {
-                    Name = nameof(LegDto.ShipmentTypeIdEn),
-                    Header = L["LegDto.ShipmentTypeName"],
+                    Name = nameof(TransportLegDto.ShipmentTypeIdEn),
+                    Header = L["TransportLegDto.ShipmentTypeName"],
                     DisplaySelector = dto => typeof(ShipmentTypeEn).GetDisplayName(dto.ShipmentTypeIdEn.ToString()) ?? string.Empty,
                     SortSelector = dto => dto.ShipmentTypeIdEn,
                     Filterable = true,
@@ -101,13 +101,13 @@ public class LegsGridSettingsService(ILocalStorageService localStorage, IStringL
             );
     }
 
-    private void AddTransportKindSettings(List<GridColumnSetting<LegDto>> results, bool isRu)
+    private void AddTransportKindSettings(List<GridColumnSetting<TransportLegDto>> results, bool isRu)
     {
         results.Add(
-            new GridColumnSetting<LegDto>
+            new GridColumnSetting<TransportLegDto>
             {
-                Name = nameof(LegDto.TransportKindCode),
-                Header = L["LegDto.TransportKindCode"],
+                Name = nameof(TransportLegDto.TransportKindCode),
+                Header = L["TransportLegDto.TransportKindCode"],
                 DisplaySelector = dto => dto.TransportKindCode,
                 SortSelector = dto => dto.TransportKindCode,
                 Filterable = false,
@@ -117,10 +117,10 @@ public class LegsGridSettingsService(ILocalStorageService localStorage, IStringL
 
         //TransportKind
         if (isRu)
-            results.Add(new GridColumnSetting<LegDto>
+            results.Add(new GridColumnSetting<TransportLegDto>
                 {
-                    Name = nameof(LegDto.TransportKindIdRu),
-                    Header = L["LegDto.TransportKindName"],
+                    Name = nameof(TransportLegDto.TransportKindIdRu),
+                    Header = L["TransportLegDto.TransportKindName"],
                     DisplaySelector = dto => typeof(TransportKindRu).GetDisplayName(dto.TransportKindIdRu.ToString()) ?? string.Empty,
                     SortSelector = dto => dto.TransportKindIdRu,
                     Filterable = true,
@@ -128,10 +128,10 @@ public class LegsGridSettingsService(ILocalStorageService localStorage, IStringL
                 }
             );
         else
-            results.Add(new GridColumnSetting<LegDto>
+            results.Add(new GridColumnSetting<TransportLegDto>
                 {
-                    Name = nameof(LegDto.TransportKindIdEn),
-                    Header = L["LegDto.TransportKindName"],
+                    Name = nameof(TransportLegDto.TransportKindIdEn),
+                    Header = L["TransportLegDto.TransportKindName"],
                     DisplaySelector = dto => typeof(TransportKindEn).GetDisplayName(dto.TransportKindIdEn.ToString()) ?? string.Empty,
                     SortSelector = dto => dto.TransportKindIdEn,
                     Filterable = true,
@@ -140,14 +140,14 @@ public class LegsGridSettingsService(ILocalStorageService localStorage, IStringL
             );
     }
 
-    private void AddNodeFromSettings(List<GridColumnSetting<LegDto>> results, bool isRu)
+    private void AddNodeFromSettings(List<GridColumnSetting<TransportLegDto>> results, bool isRu)
     {
         // NodeFromCode
         results.Add(
-            new GridColumnSetting<LegDto>
+            new GridColumnSetting<TransportLegDto>
             {
-                Name = nameof(LegDto.NodeFromCode),
-                Header = L["LegDto.NodeFromCode"],
+                Name = nameof(TransportLegDto.NodeFromCode),
+                Header = L["TransportLegDto.NodeFromCode"],
                 DisplaySelector = dto => dto.NodeFromCode,
                 SortSelector = dto => dto.NodeFromCode,
                 Filterable = true,
@@ -157,10 +157,10 @@ public class LegsGridSettingsService(ILocalStorageService localStorage, IStringL
 
         // NodeFromName
         if (isRu)
-            results.Add(new GridColumnSetting<LegDto>
+            results.Add(new GridColumnSetting<TransportLegDto>
                 {
-                    Name = nameof(LegDto.NodeFromNameRu),
-                    Header = L["LegDto.NodeFromName"],
+                    Name = nameof(TransportLegDto.NodeFromNameRu),
+                    Header = L["TransportLegDto.NodeFromName"],
                     DisplaySelector = dto => dto.NodeFromNameRu,
                     SortSelector = dto => dto.NodeFromNameRu,
                     Filterable = true,
@@ -168,10 +168,10 @@ public class LegsGridSettingsService(ILocalStorageService localStorage, IStringL
                 }
             );
         else
-            results.Add(new GridColumnSetting<LegDto>
+            results.Add(new GridColumnSetting<TransportLegDto>
                 {
-                    Name = nameof(LegDto.NodeFromNameEn),
-                    Header = L["LegDto.NodeFromName"],
+                    Name = nameof(TransportLegDto.NodeFromNameEn),
+                    Header = L["TransportLegDto.NodeFromName"],
                     DisplaySelector = dto => dto.NodeFromNameEn,
                     SortSelector = dto => dto.NodeFromNameEn,
                     Filterable = true,
@@ -180,14 +180,14 @@ public class LegsGridSettingsService(ILocalStorageService localStorage, IStringL
             );
     }
 
-    private void AddRegionFromSettings(List<GridColumnSetting<LegDto>> results, bool isRu)
+    private void AddRegionFromSettings(List<GridColumnSetting<TransportLegDto>> results, bool isRu)
     {
         // RegionFromCode
         results.Add(
-            new GridColumnSetting<LegDto>
+            new GridColumnSetting<TransportLegDto>
             {
-                Name = nameof(LegDto.RegionFromCode),
-                Header = L["LegDto.RegionFromCode"],
+                Name = nameof(TransportLegDto.RegionFromCode),
+                Header = L["TransportLegDto.RegionFromCode"],
                 DisplaySelector = dto => dto.RegionFromCode,
                 SortSelector = dto => dto.RegionFromCode,
                 Filterable = true,
@@ -197,10 +197,10 @@ public class LegsGridSettingsService(ILocalStorageService localStorage, IStringL
 
         // RegionFromName
         if (isRu)
-            results.Add(new GridColumnSetting<LegDto>
+            results.Add(new GridColumnSetting<TransportLegDto>
                 {
-                    Name = nameof(LegDto.RegionFromNameRu),
-                    Header = L["LegDto.RegionFromName"],
+                    Name = nameof(TransportLegDto.RegionFromNameRu),
+                    Header = L["TransportLegDto.RegionFromName"],
                     DisplaySelector = dto => dto.RegionFromNameRu,
                     SortSelector = dto => dto.RegionFromNameRu,
                     Filterable = true,
@@ -208,10 +208,10 @@ public class LegsGridSettingsService(ILocalStorageService localStorage, IStringL
                 }
             );
         else
-            results.Add(new GridColumnSetting<LegDto>
+            results.Add(new GridColumnSetting<TransportLegDto>
                 {
-                    Name = nameof(LegDto.RegionFromNameEn),
-                    Header = L["LegDto.RegionFromName"],
+                    Name = nameof(TransportLegDto.RegionFromNameEn),
+                    Header = L["TransportLegDto.RegionFromName"],
                     DisplaySelector = dto => dto.RegionFromNameEn,
                     SortSelector = dto => dto.RegionFromNameEn,
                     Filterable = true,
@@ -220,13 +220,13 @@ public class LegsGridSettingsService(ILocalStorageService localStorage, IStringL
             );
     }
 
-    private void AddProxyNodeSettings(List<GridColumnSetting<LegDto>> results, bool isRu)
+    private void AddProxyNodeSettings(List<GridColumnSetting<TransportLegDto>> results, bool isRu)
     {
         results.Add(
-            new GridColumnSetting<LegDto>
+            new GridColumnSetting<TransportLegDto>
             {
-                Name = nameof(LegDto.ProxyNodeCode),
-                Header = L["LegDto.ProxyNodeCode"],
+                Name = nameof(TransportLegDto.ProxyNodeCode),
+                Header = L["TransportLegDto.ProxyNodeCode"],
                 DisplaySelector = dto => dto.ProxyNodeCode!,
                 SortSelector = dto => dto.ProxyNodeCode!,
                 Filterable = true,
@@ -236,10 +236,10 @@ public class LegsGridSettingsService(ILocalStorageService localStorage, IStringL
 
         // ProxyNodeName
         if (isRu)
-            results.Add(new GridColumnSetting<LegDto>
+            results.Add(new GridColumnSetting<TransportLegDto>
                 {
-                    Name = nameof(LegDto.ProxyNodeNameRu),
-                    Header = L["LegDto.ProxyNodeName"],
+                    Name = nameof(TransportLegDto.ProxyNodeNameRu),
+                    Header = L["TransportLegDto.ProxyNodeName"],
                     DisplaySelector = dto => dto.ProxyNodeNameRu!,
                     SortSelector = dto => dto.ProxyNodeNameRu!,
                     Filterable = true,
@@ -247,10 +247,10 @@ public class LegsGridSettingsService(ILocalStorageService localStorage, IStringL
                 }
             );
         else
-            results.Add(new GridColumnSetting<LegDto>
+            results.Add(new GridColumnSetting<TransportLegDto>
                 {
-                    Name = nameof(LegDto.ProxyNodeNameEn),
-                    Header = L["LegDto.ProxyNodeName"],
+                    Name = nameof(TransportLegDto.ProxyNodeNameEn),
+                    Header = L["TransportLegDto.ProxyNodeName"],
                     DisplaySelector = dto => dto.ProxyNodeNameEn!,
                     SortSelector = dto => dto.ProxyNodeNameEn!,
                     Filterable = true,
@@ -259,13 +259,13 @@ public class LegsGridSettingsService(ILocalStorageService localStorage, IStringL
             );
     }
 
-    private void AddProxyRegionSettings(List<GridColumnSetting<LegDto>> results, bool isRu)
+    private void AddProxyRegionSettings(List<GridColumnSetting<TransportLegDto>> results, bool isRu)
     {
         results.Add(
-            new GridColumnSetting<LegDto>
+            new GridColumnSetting<TransportLegDto>
             {
-                Name = nameof(LegDto.ProxyRegionCode),
-                Header = L["LegDto.ProxyRegionCode"],
+                Name = nameof(TransportLegDto.ProxyRegionCode),
+                Header = L["TransportLegDto.ProxyRegionCode"],
                 DisplaySelector = dto => dto.ProxyRegionCode!,
                 SortSelector = dto => dto.ProxyRegionCode!,
                 Filterable = true,
@@ -275,10 +275,10 @@ public class LegsGridSettingsService(ILocalStorageService localStorage, IStringL
 
         // ProxyRegionName
         if (isRu)
-            results.Add(new GridColumnSetting<LegDto>
+            results.Add(new GridColumnSetting<TransportLegDto>
                 {
-                    Name = nameof(LegDto.ProxyRegionNameRu),
-                    Header = L["LegDto.ProxyRegionName"],
+                    Name = nameof(TransportLegDto.ProxyRegionNameRu),
+                    Header = L["TransportLegDto.ProxyRegionName"],
                     DisplaySelector = dto => dto.ProxyRegionNameRu!,
                     SortSelector = dto => dto.ProxyRegionNameRu!,
                     Filterable = true,
@@ -286,10 +286,10 @@ public class LegsGridSettingsService(ILocalStorageService localStorage, IStringL
                 }
             );
         else
-            results.Add(new GridColumnSetting<LegDto>
+            results.Add(new GridColumnSetting<TransportLegDto>
                 {
-                    Name = nameof(LegDto.ProxyRegionNameEn),
-                    Header = L["LegDto.ProxyRegionName"],
+                    Name = nameof(TransportLegDto.ProxyRegionNameEn),
+                    Header = L["TransportLegDto.ProxyRegionName"],
                     DisplaySelector = dto => dto.ProxyRegionNameEn!,
                     SortSelector = dto => dto.ProxyRegionNameEn!,
                     Filterable = true,
@@ -298,13 +298,13 @@ public class LegsGridSettingsService(ILocalStorageService localStorage, IStringL
             );
     }
 
-    private void AddNodeToSettings(List<GridColumnSetting<LegDto>> results, bool isRu)
+    private void AddNodeToSettings(List<GridColumnSetting<TransportLegDto>> results, bool isRu)
     {
         results.Add(
-            new GridColumnSetting<LegDto>
+            new GridColumnSetting<TransportLegDto>
             {
-                Name = nameof(LegDto.NodeToCode),
-                Header = L["LegDto.NodeToCode"],
+                Name = nameof(TransportLegDto.NodeToCode),
+                Header = L["TransportLegDto.NodeToCode"],
                 DisplaySelector = dto => dto.NodeToCode,
                 SortSelector = dto => dto.NodeToCode,
                 Filterable = true,
@@ -315,10 +315,10 @@ public class LegsGridSettingsService(ILocalStorageService localStorage, IStringL
 
         // NodeToName
         if (isRu)
-            results.Add(new GridColumnSetting<LegDto>
+            results.Add(new GridColumnSetting<TransportLegDto>
                 {
-                    Name = nameof(LegDto.NodeToNameRu),
-                    Header = L["LegDto.NodeToName"],
+                    Name = nameof(TransportLegDto.NodeToNameRu),
+                    Header = L["TransportLegDto.NodeToName"],
                     DisplaySelector = dto => dto.NodeToNameRu,
                     SortSelector = dto => dto.NodeToNameRu,
                     Filterable = true,
@@ -326,10 +326,10 @@ public class LegsGridSettingsService(ILocalStorageService localStorage, IStringL
                 }
             );
         else
-            results.Add(new GridColumnSetting<LegDto>
+            results.Add(new GridColumnSetting<TransportLegDto>
                 {
-                    Name = nameof(LegDto.NodeToNameEn),
-                    Header = L["LegDto.NodeToName"],
+                    Name = nameof(TransportLegDto.NodeToNameEn),
+                    Header = L["TransportLegDto.NodeToName"],
                     DisplaySelector = dto => dto.NodeToNameEn,
                     SortSelector = dto => dto.NodeToNameEn,
                     Filterable = true,
@@ -338,13 +338,13 @@ public class LegsGridSettingsService(ILocalStorageService localStorage, IStringL
             );
     }
 
-    private void AddRegionToSettings(List<GridColumnSetting<LegDto>> results, bool isRu)
+    private void AddRegionToSettings(List<GridColumnSetting<TransportLegDto>> results, bool isRu)
     {
         results.Add(
-            new GridColumnSetting<LegDto>
+            new GridColumnSetting<TransportLegDto>
             {
-                Name = nameof(LegDto.RegionToCode),
-                Header = L["LegDto.RegionToCode"],
+                Name = nameof(TransportLegDto.RegionToCode),
+                Header = L["TransportLegDto.RegionToCode"],
                 DisplaySelector = dto => dto.RegionToCode,
                 SortSelector = dto => dto.RegionToCode,
                 Filterable = true,
@@ -355,10 +355,10 @@ public class LegsGridSettingsService(ILocalStorageService localStorage, IStringL
 
         // RegionToName
         if (isRu)
-            results.Add(new GridColumnSetting<LegDto>
+            results.Add(new GridColumnSetting<TransportLegDto>
                 {
-                    Name = nameof(LegDto.RegionToNameRu),
-                    Header = L["LegDto.RegionToName"],
+                    Name = nameof(TransportLegDto.RegionToNameRu),
+                    Header = L["TransportLegDto.RegionToName"],
                     DisplaySelector = dto => dto.RegionToNameRu,
                     SortSelector = dto => dto.RegionToNameRu,
                     Filterable = true,
@@ -366,10 +366,10 @@ public class LegsGridSettingsService(ILocalStorageService localStorage, IStringL
                 }
             );
         else
-            results.Add(new GridColumnSetting<LegDto>
+            results.Add(new GridColumnSetting<TransportLegDto>
                 {
-                    Name = nameof(LegDto.RegionToNameEn),
-                    Header = L["LegDto.RegionToName"],
+                    Name = nameof(TransportLegDto.RegionToNameEn),
+                    Header = L["TransportLegDto.RegionToName"],
                     DisplaySelector = dto => dto.RegionToNameEn,
                     SortSelector = dto => dto.RegionToNameEn,
                     Filterable = true,
@@ -378,59 +378,59 @@ public class LegsGridSettingsService(ILocalStorageService localStorage, IStringL
             );
     }
 
-    private void AddLeadtimeSettings(List<GridColumnSetting<LegDto>> results)
+    private void AddLeadtimeSettings(List<GridColumnSetting<TransportLegDto>> results)
     {
         results.AddRange(
             [
-                new GridColumnSetting<LegDto>
+                new GridColumnSetting<TransportLegDto>
                 {
-                    Name = nameof(LegDto.SearchTimeT),
-                    Header = L["LegDto.SearchTime"],
+                    Name = nameof(TransportLegDto.SearchTimeT),
+                    Header = L["TransportLegDto.SearchTime"],
                     DisplaySelector = dto => dto.SearchTimeT,
                     SortSelector = dto => dto.SearchTimeT,
                     Filterable = false,
                     Visible = false
                 },
-                new GridColumnSetting<LegDto>
+                new GridColumnSetting<TransportLegDto>
                 {
-                    Name = nameof(LegDto.LoadTimeT),
-                    Header = L["LegDto.LoadTime"],
+                    Name = nameof(TransportLegDto.LoadTimeT),
+                    Header = L["TransportLegDto.LoadTime"],
                     DisplaySelector = dto => dto.LoadTimeT,
                     SortSelector = dto => dto.LoadTimeT,
                     Filterable = false,
                     Visible = false
                 },
-                new GridColumnSetting<LegDto>
+                new GridColumnSetting<TransportLegDto>
                 {
-                    Name = nameof(LegDto.DaysWaitingT),
-                    Header = L["LegDto.DaysWaiting"],
+                    Name = nameof(TransportLegDto.DaysWaitingT),
+                    Header = L["TransportLegDto.DaysWaiting"],
                     DisplaySelector = dto => dto.DaysWaitingT,
                     SortSelector = dto => dto.DaysWaitingT,
                     Filterable = false,
                     Visible = false
                 },
-                new GridColumnSetting<LegDto>
+                new GridColumnSetting<TransportLegDto>
                 {
-                    Name = nameof(LegDto.TravelTimeT),
-                    Header = L["LegDto.TravelTime"],
+                    Name = nameof(TransportLegDto.TravelTimeT),
+                    Header = L["TransportLegDto.TravelTime"],
                     DisplaySelector = dto => dto.TravelTimeT,
                     SortSelector = dto => dto.TravelTimeT,
                     Filterable = false,
                     Visible = false
                 },
-                new GridColumnSetting<LegDto>
+                new GridColumnSetting<TransportLegDto>
                 {
-                    Name = nameof(LegDto.UnLoadTimeT),
-                    Header = L["LegDto.UnLoadTime"],
+                    Name = nameof(TransportLegDto.UnLoadTimeT),
+                    Header = L["TransportLegDto.UnLoadTime"],
                     DisplaySelector = dto => dto.UnLoadTimeT,
                     SortSelector = dto => dto.UnLoadTimeT,
                     Filterable = false,
                     Visible = false
                 },
-                new GridColumnSetting<LegDto>
+                new GridColumnSetting<TransportLegDto>
                 {
-                    Name = nameof(LegDto.TransportationTimeT),
-                    Header = L["LegDto.TransportationTime"],
+                    Name = nameof(TransportLegDto.TransportationTimeT),
+                    Header = L["TransportLegDto.TransportationTime"],
                     DisplaySelector = dto => dto.TransportationTimeT,
                     SortSelector = dto => dto.TransportationTimeT,
                     Filterable = false,
@@ -440,23 +440,23 @@ public class LegsGridSettingsService(ILocalStorageService localStorage, IStringL
         );
     }
 
-    private void AddCreationChangeDateSettings(List<GridColumnSetting<LegDto>> results)
+    private void AddCreationChangeDateSettings(List<GridColumnSetting<TransportLegDto>> results)
     {
         results.AddRange(
             [
-                new GridColumnSetting<LegDto>
+                new GridColumnSetting<TransportLegDto>
                 {
-                    Name = nameof(LegDto.CreationDate),
-                    Header = L["LegDto.CreationDate"],
+                    Name = nameof(TransportLegDto.CreationDate),
+                    Header = L["TransportLegDto.CreationDate"],
                     DisplaySelector = dto => dto.CreationDate,
                     SortSelector = dto => dto.CreationDate,
                     Filterable = true,
                     Visible = false
                 },
-                new GridColumnSetting<LegDto>
+                new GridColumnSetting<TransportLegDto>
                 {
-                    Name = nameof(LegDto.LastChangeDate),
-                    Header = L["LegDto.LastChangeDate"],
+                    Name = nameof(TransportLegDto.LastChangeDate),
+                    Header = L["TransportLegDto.LastChangeDate"],
                     DisplaySelector = dto => dto.LastChangeDate,
                     SortSelector = dto => dto.LastChangeDate,
                     Filterable = true,
@@ -467,16 +467,16 @@ public class LegsGridSettingsService(ILocalStorageService localStorage, IStringL
     }
 
 
-    private void AddIsArchiveSettings(List<GridColumnSetting<LegDto>> results)
+    private void AddIsArchiveSettings(List<GridColumnSetting<TransportLegDto>> results)
     {
         results.Add(
-            new GridColumnSetting<LegDto>
+            new GridColumnSetting<TransportLegDto>
             {
-                Name = nameof(LegDto.IsArchive),
-                Header = L["LegDto.IsArchive"],
+                Name = nameof(TransportLegDto.IsArchive),
+                Header = L["TransportLegDto.IsArchive"],
                 DisplaySelector = dto => dto.IsArchive
-                    ? L["LegDto.Archive"]
-                    : L["LegDto.Active"],
+                    ? L["TransportLegDto.Archive"]
+                    : L["TransportLegDto.Active"],
                 SortSelector = dto => dto.IsArchive,
                 Filterable = true,
                 Visible = false,
