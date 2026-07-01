@@ -60,7 +60,7 @@ public class TransportRateDetailSettingsService(IStringLocalizer<Svt> L, ILogger
         {
             Name = nameof(TransportRateDetailDto.Code),
             Header = L["TransportRateDetailDto.Code"],
-            GroupHeader = L["TransportRateDetailDto.Group1Parameters"],
+            GroupHeader = L["TransportRateDetailDto.Group.1.RateParameters"],
             DisplaySelector = dto => dto.Code,
             VisibleSelector = _ => true
         });
@@ -71,7 +71,7 @@ public class TransportRateDetailSettingsService(IStringLocalizer<Svt> L, ILogger
         {
             Name = nameof(TransportRateDetailDto.AverageRateCode),
             Header = L["TransportRateDetailDto.AverageRateCode"],
-            GroupHeader = L["TransportRateDetailDto.Group1Parameters"],
+            GroupHeader = L["TransportRateDetailDto.Group.1.RateParameters"],
             DisplaySelector = dto => dto.AverageRateCode,
             VisibleSelector = _ => true
         });
@@ -85,7 +85,7 @@ public class TransportRateDetailSettingsService(IStringLocalizer<Svt> L, ILogger
             {
                 Name = nameof(TransportRateDetailDto.TypeName),
                 Header = L["TransportRateDetailDto.RateTypeName"],
-                GroupHeader = L["TransportRateDetailDto.Group1Parameters"],
+                GroupHeader = L["TransportRateDetailDto.Group.1.RateParameters"],
                 DisplaySelector = dto => dto.TypeName,
                 VisibleSelector = _ => true
             },
@@ -93,7 +93,7 @@ public class TransportRateDetailSettingsService(IStringLocalizer<Svt> L, ILogger
             {
                 Name = nameof(TransportRateDetailDto.TypeCode),
                 Header = L["TransportRateDetailDto.RateTypeCode"],
-                GroupHeader = L["TransportRateDetailDto.Group1Parameters"],
+                GroupHeader = L["TransportRateDetailDto.Group.1.RateParameters"],
                 DisplaySelector = dto => dto.TypeCode,
                 VisibleSelector = _ => true
             }
@@ -108,7 +108,7 @@ public class TransportRateDetailSettingsService(IStringLocalizer<Svt> L, ILogger
             {
                 Name = nameof(TransportRateDetailDto.Nomination),
                 Header = L["TransportRateDetailDto.Nomination"],
-                GroupHeader = L["TransportRateDetailDto.Group1Parameters"],
+                GroupHeader = L["TransportRateDetailDto.Group.1.RateParameters"],
                 DisplaySelector = dto => dto.Nomination!,
                 VisibleSelector = dto => dto.Nomination is not null,
                 HasMargin = true
@@ -117,7 +117,7 @@ public class TransportRateDetailSettingsService(IStringLocalizer<Svt> L, ILogger
             {
                 Name = nameof(TransportRateDetailDto.ContractorNameSearch),
                 Header = L["TransportRateDetailDto.ContractorNameSearch"],
-                GroupHeader = L["TransportRateDetailDto.Group1Parameters"],
+                GroupHeader = L["TransportRateDetailDto.Group.1.RateParameters"],
                 DisplaySelector = dto => dto.ContractorNameSearch!,
                 VisibleSelector = dto => dto.ContractorCode is not null
             },
@@ -125,7 +125,7 @@ public class TransportRateDetailSettingsService(IStringLocalizer<Svt> L, ILogger
             {
                 Name = nameof(TransportRateDetailDto.TenderNumber),
                 Header = L["TransportRateDetailDto.TenderNumber"],
-                GroupHeader = L["TransportRateDetailDto.Group1Parameters"],
+                GroupHeader = L["TransportRateDetailDto.Group.1.RateParameters"],
                 DisplaySelector = dto => dto.TenderNumber!,
                 VisibleSelector = dto => dto.TenderNumber is not null
             },
@@ -133,7 +133,7 @@ public class TransportRateDetailSettingsService(IStringLocalizer<Svt> L, ILogger
             {
                 Name = nameof(TransportRateDetailDto.AdditionalAgreementNumber),
                 Header = L["TransportRateDetailDto.AdditionalAgreementNumber"],
-                GroupHeader = L["TransportRateDetailDto.Group1Parameters"],
+                GroupHeader = L["TransportRateDetailDto.Group.1.RateParameters"],
                 DisplaySelector = dto => dto.AdditionalAgreementNumber!,
                 VisibleSelector = dto => dto.AdditionalAgreementNumber is not null
             }
@@ -146,7 +146,7 @@ public class TransportRateDetailSettingsService(IStringLocalizer<Svt> L, ILogger
         {
             Name = nameof(TransportRateDetailDto.IsDefRate),
             Header = L["TransportRateDetailDto.IsDefRate"],
-            GroupHeader = L["TransportRateDetailDto.Group1Parameters"],
+            GroupHeader = L["TransportRateDetailDto.Group.1.RateParameters"],
             DisplaySelector = dto => dto.IsDefRate
                 ? L["TransportRateDetailDto.Yes"]
                 : L["TransportRateDetailDto.No"],
@@ -162,7 +162,7 @@ public class TransportRateDetailSettingsService(IStringLocalizer<Svt> L, ILogger
             {
                 Name = nameof(TransportRateDetailDto.CreationDate),
                 Header = L["TransportRateDetailDto.CreationDate"],
-                GroupHeader = L["TransportRateDetailDto.Group1Parameters"],
+                GroupHeader = L["TransportRateDetailDto.Group.1.RateParameters"],
                 DisplaySelector = dto => dto.CreationDate,
                 VisibleSelector = _ => true,
                 HasMargin = true
@@ -171,7 +171,7 @@ public class TransportRateDetailSettingsService(IStringLocalizer<Svt> L, ILogger
             {
                 Name = nameof(TransportRateDetailDto.LastChangeDate),
                 Header = L["TransportRateDetailDto.LastChangeDate"],
-                GroupHeader = L["TransportRateDetailDto.Group1Parameters"],
+                GroupHeader = L["TransportRateDetailDto.Group.1.RateParameters"],
                 DisplaySelector = dto => dto.LastChangeDate,
                 VisibleSelector = _ => true
             }
@@ -184,7 +184,7 @@ public class TransportRateDetailSettingsService(IStringLocalizer<Svt> L, ILogger
         {
             Name = nameof(TransportRateDetailDto.IsArchive),
             Header = L["TransportRateDetailDto.IsArchive"],
-            GroupHeader = L["TransportRateDetailDto.Group1Parameters"],
+            GroupHeader = L["TransportRateDetailDto.Group.1.RateParameters"],
             DisplaySelector = dto => dto.IsArchive
                 ? L["TransportRateDetailDto.Archive"]
                 : L["TransportRateDetailDto.Active"],
@@ -202,7 +202,7 @@ public class TransportRateDetailSettingsService(IStringLocalizer<Svt> L, ILogger
             {
                 Name = nameof(TransportRateDetailDto.StartDate),
                 Header = L["TransportRateDetailDto.StartDate"],
-                GroupHeader = L["TransportRateDetailDto.Group2Parameters"],
+                GroupHeader = L["TransportRateDetailDto.Group.2.RateDates"],
                 DisplaySelector = dto => dto.StartDate,
                 VisibleSelector = _ => true
             },
@@ -210,7 +210,7 @@ public class TransportRateDetailSettingsService(IStringLocalizer<Svt> L, ILogger
             {
                 Name = nameof(TransportRateDetailDto.EndDate),
                 Header = L["TransportRateDetailDto.EndDate"],
-                GroupHeader = L["TransportRateDetailDto.Group2Parameters"],
+                GroupHeader = L["TransportRateDetailDto.Group.2.RateDates"],
                 DisplaySelector = dto => dto.EndDate,
                 VisibleSelector = _ => true
             }
@@ -219,7 +219,7 @@ public class TransportRateDetailSettingsService(IStringLocalizer<Svt> L, ILogger
 
     private void AddGroup3Settings(List<DetailSetting<TransportRateDetailDto>> results, bool isRu)
     {
-        var group = L["TransportRateDetailDto.Group3Parameters"];
+        var group = L["TransportRateDetailDto.Group.3.OriginDestination"];
 
         if (isRu)
             results.Add(new DetailSetting<TransportRateDetailDto>
@@ -424,7 +424,7 @@ public class TransportRateDetailSettingsService(IStringLocalizer<Svt> L, ILogger
 
     private void AddGroup4Settings(List<DetailSetting<TransportRateDetailDto>> results, bool isRu)
     {
-        var group = L["TransportRateDetailDto.Group4Parameters"];
+        var group = L["TransportRateDetailDto.Group.4.Transport"];
 
         if (isRu)
             results.Add(new DetailSetting<TransportRateDetailDto>
@@ -489,7 +489,7 @@ public class TransportRateDetailSettingsService(IStringLocalizer<Svt> L, ILogger
         {
             Name = nameof(TransportRateDetailDto.TenderServicePack),
             Header = L["TransportRateDetailDto.TenderServicePack"],
-            GroupHeader = L["TransportRateDetailDto.Group5Parameters"],
+            GroupHeader = L["TransportRateDetailDto.Group.5.MultimodalTransportation"],
             DisplaySelector = dto => dto.TenderServicePack!,
             VisibleSelector = dto => dto.TenderServicePack is not null
         });
@@ -497,7 +497,7 @@ public class TransportRateDetailSettingsService(IStringLocalizer<Svt> L, ILogger
 
     private void AddGroup6Settings(List<DetailSetting<TransportRateDetailDto>> results, bool isRu)
     {
-        var group = L["TransportRateDetailDto.Group6Parameters"];
+        var group = L["TransportRateDetailDto.Group.6.Cargo"];
 
         results.Add(new DetailSetting<TransportRateDetailDto>
         {
@@ -590,7 +590,7 @@ public class TransportRateDetailSettingsService(IStringLocalizer<Svt> L, ILogger
             {
                 Name = nameof(TransportRateDetailDto.CalcType),
                 Header = L["TransportRateDetailDto.CalcType"],
-                GroupHeader = L["TransportRateDetailDto.Group7Parameters"],
+                GroupHeader = L["TransportRateDetailDto.Group.7.RateAmountExcludingVAT"],
                 DisplaySelector = dto => dto.CalcType,
                 VisibleSelector = _ => true
             },
@@ -598,7 +598,7 @@ public class TransportRateDetailSettingsService(IStringLocalizer<Svt> L, ILogger
             {
                 Name = nameof(TransportRateDetailDto.TotalCostTransport),
                 Header = L["TransportRateDetailDto.TotalCostTransport"],
-                GroupHeader = L["TransportRateDetailDto.Group7Parameters"],
+                GroupHeader = L["TransportRateDetailDto.Group.7.RateAmountExcludingVAT"],
                 DisplaySelector = dto => dto.TotalCostTransport,
                 VisibleSelector = _ => true
             },
@@ -606,7 +606,7 @@ public class TransportRateDetailSettingsService(IStringLocalizer<Svt> L, ILogger
             {
                 Name = nameof(TransportRateDetailDto.TotalCostTon),
                 Header = L["TransportRateDetailDto.TotalCostTon"],
-                GroupHeader = L["TransportRateDetailDto.Group7Parameters"],
+                GroupHeader = L["TransportRateDetailDto.Group.7.RateAmountExcludingVAT"],
                 DisplaySelector = dto => dto.TotalCostTon,
                 VisibleSelector = _ => true
             },
@@ -614,7 +614,7 @@ public class TransportRateDetailSettingsService(IStringLocalizer<Svt> L, ILogger
             {
                 Name = nameof(TransportRateDetailDto.CurrencyStandard),
                 Header = L["TransportRateDetailDto.Currency"],
-                GroupHeader = L["TransportRateDetailDto.Group7Parameters"],
+                GroupHeader = L["TransportRateDetailDto.Group.7.RateAmountExcludingVAT"],
                 DisplaySelector = dto => dto.CurrencyStandard,
                 VisibleSelector = _ => true
             },
@@ -622,7 +622,7 @@ public class TransportRateDetailSettingsService(IStringLocalizer<Svt> L, ILogger
             {
                 Name = nameof(TransportRateDetailDto.CurrencyRateMonth),
                 Header = L["TransportRateDetailDto.CurrencyRateMonth"],
-                GroupHeader = L["TransportRateDetailDto.Group7Parameters"],
+                GroupHeader = L["TransportRateDetailDto.Group.7.RateAmountExcludingVAT"],
                 DisplaySelector = dto => dto.CurrencyRateMonth,
                 VisibleSelector = _ => true
             },
@@ -630,7 +630,7 @@ public class TransportRateDetailSettingsService(IStringLocalizer<Svt> L, ILogger
             {
                 Name = nameof(TransportRateDetailDto.TotalCostTonRUB),
                 Header = L["TransportRateDetailDto.TotalCostTonRUB"],
-                GroupHeader = L["TransportRateDetailDto.Group7Parameters"],
+                GroupHeader = L["TransportRateDetailDto.Group.7.RateAmountExcludingVAT"],
                 DisplaySelector = dto => dto.TotalCostTonRUB,
                 VisibleSelector = _ => true
             }
@@ -642,7 +642,7 @@ public class TransportRateDetailSettingsService(IStringLocalizer<Svt> L, ILogger
     private void AddGroup8Settings(List<DetailSetting<TransportRateDetailDto>> results)
     {
         Func<TransportRateDetailDto, bool> visibleSelector = dto => dto.CalcType != "ТС";
-        var group = L["TransportRateDetailDto.Group8Parameters"].Value;
+        var group = L["TransportRateDetailDto.Group.8.RateComponentsExcludingVATPerTon"].Value;
 
         AddFeePair(results, nameof(TransportRateDetailDto.LoadedRFSize), nameof(TransportRateDetailDto.LoadedRFCurrency),
             dto => dto.LoadedRFSize, dto => dto.LoadedRFCurrency, _=>true, group);
@@ -710,7 +710,7 @@ public class TransportRateDetailSettingsService(IStringLocalizer<Svt> L, ILogger
         {
             Name = nameof(TransportRateDetailDto.Comment),
             Header = L["TransportRateDetailDto.Comment"],
-            GroupHeader = L["TransportRateDetailDto.Group10Parameters"],
+            GroupHeader = L["TransportRateDetailDto.Group.10.Comments"],
             DisplaySelector = dto => dto.Comment!,
             VisibleSelector = dto => dto.Comment is not null
         });
@@ -724,7 +724,7 @@ public class TransportRateDetailSettingsService(IStringLocalizer<Svt> L, ILogger
             {
                 Name = nameof(TransportRateDetailDto.TotalCostTonUSD),
                 Header = L["TransportRateDetailDto.TotalCostTonUSD"],
-                GroupHeader = L["TransportRateDetailDto.Group11Parameters"],
+                GroupHeader = L["TransportRateDetailDto.Group.11.ReferenceCalculatedCostsInCurrencies"],
                 DisplaySelector = dto => dto.TotalCostTonUSD,
                 VisibleSelector = _ => true
             },
@@ -732,7 +732,7 @@ public class TransportRateDetailSettingsService(IStringLocalizer<Svt> L, ILogger
             {
                 Name = nameof(TransportRateDetailDto.TotalCostTonEUR),
                 Header = L["TransportRateDetailDto.TotalCostTonEUR"],
-                GroupHeader = L["TransportRateDetailDto.Group11Parameters"],
+                GroupHeader = L["TransportRateDetailDto.Group.11.ReferenceCalculatedCostsInCurrencies"],
                 DisplaySelector = dto => dto.TotalCostTonEUR,
                 VisibleSelector = _ => true
             },
@@ -740,7 +740,7 @@ public class TransportRateDetailSettingsService(IStringLocalizer<Svt> L, ILogger
             {
                 Name = nameof(TransportRateDetailDto.TotalCostTonCNY),
                 Header = L["TransportRateDetailDto.TotalCostTonCNY"],
-                GroupHeader = L["TransportRateDetailDto.Group11Parameters"],
+                GroupHeader = L["TransportRateDetailDto.Group.11.ReferenceCalculatedCostsInCurrencies"],
                 DisplaySelector = dto => dto.TotalCostTonCNY,
                 VisibleSelector = _ => true
             },
@@ -748,7 +748,7 @@ public class TransportRateDetailSettingsService(IStringLocalizer<Svt> L, ILogger
             {
                 Name = nameof(TransportRateDetailDto.TotalCostTransportRUB),
                 Header = L["TransportRateDetailDto.TotalCostTransportRUB"],
-                GroupHeader = L["TransportRateDetailDto.Group11Parameters"],
+                GroupHeader = L["TransportRateDetailDto.Group.11.ReferenceCalculatedCostsInCurrencies"],
                 DisplaySelector = dto => dto.TotalCostTransportRUB,
                 VisibleSelector = _ => true,
                 HasMargin = true
@@ -757,7 +757,7 @@ public class TransportRateDetailSettingsService(IStringLocalizer<Svt> L, ILogger
             {
                 Name = nameof(TransportRateDetailDto.TotalCostTransportUSD),
                 Header = L["TransportRateDetailDto.TotalCostTransportUSD"],
-                GroupHeader = L["TransportRateDetailDto.Group11Parameters"],
+                GroupHeader = L["TransportRateDetailDto.Group.11.ReferenceCalculatedCostsInCurrencies"],
                 DisplaySelector = dto => dto.TotalCostTransportUSD,
                 VisibleSelector = _ => true
             },
@@ -765,7 +765,7 @@ public class TransportRateDetailSettingsService(IStringLocalizer<Svt> L, ILogger
             {
                 Name = nameof(TransportRateDetailDto.TotalCostTransportEUR),
                 Header = L["TransportRateDetailDto.TotalCostTransportEUR"],
-                GroupHeader = L["TransportRateDetailDto.Group11Parameters"],
+                GroupHeader = L["TransportRateDetailDto.Group.11.ReferenceCalculatedCostsInCurrencies"],
                 DisplaySelector = dto => dto.TotalCostTransportEUR,
                 VisibleSelector = _ => true
             },
@@ -773,7 +773,7 @@ public class TransportRateDetailSettingsService(IStringLocalizer<Svt> L, ILogger
             {
                 Name = nameof(TransportRateDetailDto.TotalCostTransportCNY),
                 Header = L["TransportRateDetailDto.TotalCostTransportCNY"],
-                GroupHeader = L["TransportRateDetailDto.Group11Parameters"],
+                GroupHeader = L["TransportRateDetailDto.Group.11.ReferenceCalculatedCostsInCurrencies"],
                 DisplaySelector = dto => dto.TotalCostTransportCNY,
                 VisibleSelector = _ => true
             }
@@ -788,7 +788,7 @@ public class TransportRateDetailSettingsService(IStringLocalizer<Svt> L, ILogger
             {
                 Name = nameof(TransportRateDetailDto.LegCode),
                 Header = L["TransportRateDetailDto.LegCode"],
-                GroupHeader = L["TransportRateDetailDto.Group12Parameters"],
+                GroupHeader = L["TransportRateDetailDto.Group.12.Leadtimes"],
                 DisplaySelector = dto => dto.LegCode,
                 VisibleSelector = _ => true
             },
@@ -796,7 +796,7 @@ public class TransportRateDetailSettingsService(IStringLocalizer<Svt> L, ILogger
             {
                 Name = nameof(TransportRateDetailDto.LegChangeDate),
                 Header = L["TransportRateDetailDto.LegChangeDate"],
-                GroupHeader = L["TransportRateDetailDto.Group12Parameters"],
+                GroupHeader = L["TransportRateDetailDto.Group.12.Leadtimes"],
                 DisplaySelector = dto => dto.LegChangeDate,
                 VisibleSelector = _ => true
             }
@@ -811,7 +811,7 @@ public class TransportRateDetailSettingsService(IStringLocalizer<Svt> L, ILogger
             {
                 Name = nameof(TransportRateDetailDto.LeadTimeCode),
                 Header = L["TransportRateDetailDto.LeadTimeCode"],
-                GroupHeader = L["TransportRateDetailDto.Group12Parameters"],
+                GroupHeader = L["TransportRateDetailDto.Group.12.Leadtimes"],
                 DisplaySelector = dto => dto.LeadTimeCode!,
                 VisibleSelector = dto => dto.LeadTimeCode is not null,
                 HasMargin = true
@@ -820,7 +820,7 @@ public class TransportRateDetailSettingsService(IStringLocalizer<Svt> L, ILogger
             {
                 Name = nameof(TransportRateDetailDto.LeadTimeStartDate),
                 Header = L["TransportRateDetailDto.LeadTimeStartDate"],
-                GroupHeader = L["TransportRateDetailDto.Group12Parameters"],
+                GroupHeader = L["TransportRateDetailDto.Group.12.Leadtimes"],
                 DisplaySelector = dto => dto.LeadTimeStartDate!,
                 VisibleSelector = dto => dto.LeadTimeCode is not null
             },
@@ -828,7 +828,7 @@ public class TransportRateDetailSettingsService(IStringLocalizer<Svt> L, ILogger
             {
                 Name = nameof(TransportRateDetailDto.LeadTimeEndDate),
                 Header = L["TransportRateDetailDto.LeadTimeEndDate"],
-                GroupHeader = L["TransportRateDetailDto.Group12Parameters"],
+                GroupHeader = L["TransportRateDetailDto.Group.12.Leadtimes"],
                 DisplaySelector = dto => dto.LeadTimeEndDate!,
                 VisibleSelector = dto => dto.LeadTimeCode is not null
             },
@@ -836,7 +836,7 @@ public class TransportRateDetailSettingsService(IStringLocalizer<Svt> L, ILogger
             {
                 Name = nameof(TransportRateDetailDto.LeadTimeChangeDate),
                 Header = L["TransportRateDetailDto.LeadTimeChangeDate"],
-                GroupHeader = L["TransportRateDetailDto.Group12Parameters"],
+                GroupHeader = L["TransportRateDetailDto.Group.12.Leadtimes"],
                 DisplaySelector = dto => dto.LeadTimeChangeDate!,
                 VisibleSelector = dto => dto.LeadTimeCode is not null
             }
@@ -851,7 +851,7 @@ public class TransportRateDetailSettingsService(IStringLocalizer<Svt> L, ILogger
             {
                 Name = nameof(TransportRateDetailDto.LeadTimeSearchTime),
                 Header = L["TransportRateDetailDto.SearchTime"],
-                GroupHeader = L["TransportRateDetailDto.Group12Parameters"],
+                GroupHeader = L["TransportRateDetailDto.Group.12.Leadtimes"],
                 DisplaySelector = dto => dto.LeadTimeSearchTime!,
                 VisibleSelector = dto => dto.LeadTimeCode is not null,
                 HasMargin = true
@@ -860,7 +860,7 @@ public class TransportRateDetailSettingsService(IStringLocalizer<Svt> L, ILogger
             {
                 Name = nameof(TransportRateDetailDto.LeadTimeLoadTime),
                 Header = L["TransportRateDetailDto.LoadTime"],
-                GroupHeader = L["TransportRateDetailDto.Group12Parameters"],
+                GroupHeader = L["TransportRateDetailDto.Group.12.Leadtimes"],
                 DisplaySelector = dto => dto.LeadTimeLoadTime!,
                 VisibleSelector = dto => dto.LeadTimeCode is not null
             },
@@ -868,7 +868,7 @@ public class TransportRateDetailSettingsService(IStringLocalizer<Svt> L, ILogger
             {
                 Name = nameof(TransportRateDetailDto.LeadTimeDaysWaiting),
                 Header = L["TransportRateDetailDto.DaysWaiting"],
-                GroupHeader = L["TransportRateDetailDto.Group12Parameters"],
+                GroupHeader = L["TransportRateDetailDto.Group.12.Leadtimes"],
                 DisplaySelector = dto => dto.LeadTimeDaysWaiting!,
                 VisibleSelector = dto => dto.LeadTimeCode is not null
             },
@@ -876,7 +876,7 @@ public class TransportRateDetailSettingsService(IStringLocalizer<Svt> L, ILogger
             {
                 Name = nameof(TransportRateDetailDto.LeadTimeTravelTime),
                 Header = L["TransportRateDetailDto.TravelTime"],
-                GroupHeader = L["TransportRateDetailDto.Group12Parameters"],
+                GroupHeader = L["TransportRateDetailDto.Group.12.Leadtimes"],
                 DisplaySelector = dto => dto.LeadTimeTravelTime!,
                 VisibleSelector = dto => dto.LeadTimeCode is not null
             },
@@ -884,7 +884,7 @@ public class TransportRateDetailSettingsService(IStringLocalizer<Svt> L, ILogger
             {
                 Name = nameof(TransportRateDetailDto.LeadTimeUnLoadTime),
                 Header = L["TransportRateDetailDto.UnLoadTime"],
-                GroupHeader = L["TransportRateDetailDto.Group12Parameters"],
+                GroupHeader = L["TransportRateDetailDto.Group.12.Leadtimes"],
                 DisplaySelector = dto => dto.LeadTimeUnLoadTime!,
                 VisibleSelector = dto => dto.LeadTimeCode is not null
             },
@@ -892,7 +892,7 @@ public class TransportRateDetailSettingsService(IStringLocalizer<Svt> L, ILogger
             {
                 Name = nameof(TransportRateDetailDto.LeadTimeTransportationTime),
                 Header = L["TransportRateDetailDto.TransportationTime"],
-                GroupHeader = L["TransportRateDetailDto.Group12Parameters"],
+                GroupHeader = L["TransportRateDetailDto.Group.12.Leadtimes"],
                 DisplaySelector = dto => dto.LeadTimeTransportationTime!,
                 VisibleSelector = dto => dto.LeadTimeCode is not null
             },
@@ -900,7 +900,7 @@ public class TransportRateDetailSettingsService(IStringLocalizer<Svt> L, ILogger
             {
                 Name = nameof(TransportRateDetailDto.LeadTimeDistance),
                 Header = L["TransportRateDetailDto.Distance"],
-                GroupHeader = L["TransportRateDetailDto.Group12Parameters"],
+                GroupHeader = L["TransportRateDetailDto.Group.12.Leadtimes"],
                 DisplaySelector = dto => dto.LeadTimeDistance!,
                 VisibleSelector = dto => dto.LeadTimeCode is not null,
                 HasMargin = true
@@ -910,7 +910,7 @@ public class TransportRateDetailSettingsService(IStringLocalizer<Svt> L, ILogger
 
     private void AddGroup13Settings(List<DetailSetting<TransportRateDetailDto>> results, bool isRu)
     {
-        var group = L["TransportRateDetailDto.Group13Parameters"];
+        var group = L["TransportRateDetailDto.Group.13.Leg1"];
 
         results.Add(new DetailSetting<TransportRateDetailDto>
         {
@@ -1052,7 +1052,7 @@ public class TransportRateDetailSettingsService(IStringLocalizer<Svt> L, ILogger
             {
                 Name = nameof(TransportRateDetailDto.LeadTimeLeg1_SearchTime),
                 Header = L["TransportRateDetailDto.Leg1_SearchTime"],
-                GroupHeader = L["TransportRateDetailDto.Group14Parameters"],
+                GroupHeader = L["TransportRateDetailDto.Group.14.LeadtimesRate1"],
                 DisplaySelector = dto => dto.LeadTimeLeg1_SearchTime!,
                 VisibleSelector = dto => dto.ProxyNodeCode is not null
             },
@@ -1060,7 +1060,7 @@ public class TransportRateDetailSettingsService(IStringLocalizer<Svt> L, ILogger
             {
                 Name = nameof(TransportRateDetailDto.LeadTimeLeg1_LoadTime),
                 Header = L["TransportRateDetailDto.Leg1_LoadTime"],
-                GroupHeader = L["TransportRateDetailDto.Group14Parameters"],
+                GroupHeader = L["TransportRateDetailDto.Group.14.LeadtimesRate1"],
                 DisplaySelector = dto => dto.LeadTimeLeg1_LoadTime!,
                 VisibleSelector = dto => dto.ProxyNodeCode is not null
             },
@@ -1068,7 +1068,7 @@ public class TransportRateDetailSettingsService(IStringLocalizer<Svt> L, ILogger
             {
                 Name = nameof(TransportRateDetailDto.LeadTimeLeg1_DaysWaiting),
                 Header = L["TransportRateDetailDto.Leg1_DaysWaiting"],
-                GroupHeader = L["TransportRateDetailDto.Group14Parameters"],
+                GroupHeader = L["TransportRateDetailDto.Group.14.LeadtimesRate1"],
                 DisplaySelector = dto => dto.LeadTimeLeg1_DaysWaiting!,
                 VisibleSelector = dto => dto.ProxyNodeCode is not null
             },
@@ -1076,7 +1076,7 @@ public class TransportRateDetailSettingsService(IStringLocalizer<Svt> L, ILogger
             {
                 Name = nameof(TransportRateDetailDto.LeadTimeLeg1_TravelTime),
                 Header = L["TransportRateDetailDto.Leg1_TravelTime"],
-                GroupHeader = L["TransportRateDetailDto.Group14Parameters"],
+                GroupHeader = L["TransportRateDetailDto.Group.14.LeadtimesRate1"],
                 DisplaySelector = dto => dto.LeadTimeLeg1_TravelTime!,
                 VisibleSelector = dto => dto.ProxyNodeCode is not null
             },
@@ -1084,7 +1084,7 @@ public class TransportRateDetailSettingsService(IStringLocalizer<Svt> L, ILogger
             {
                 Name = nameof(TransportRateDetailDto.LeadTimeLeg1_TransportationTime),
                 Header = L["TransportRateDetailDto.Leg1_TransportationTime"],
-                GroupHeader = L["TransportRateDetailDto.Group14Parameters"],
+                GroupHeader = L["TransportRateDetailDto.Group.14.LeadtimesRate1"],
                 DisplaySelector = dto => dto.LeadTimeLeg1_TransportationTime!,
                 VisibleSelector = dto => dto.ProxyNodeCode is not null
             },
@@ -1092,7 +1092,7 @@ public class TransportRateDetailSettingsService(IStringLocalizer<Svt> L, ILogger
             {
                 Name = nameof(TransportRateDetailDto.LeadTimeLeg1_Distance),
                 Header = L["TransportRateDetailDto.Leg1_Distance"],
-                GroupHeader = L["TransportRateDetailDto.Group14Parameters"],
+                GroupHeader = L["TransportRateDetailDto.Group.14.LeadtimesRate1"],
                 DisplaySelector = dto => dto.LeadTimeLeg1_Distance!,
                 VisibleSelector = dto => dto.ProxyNodeCode is not null,
                 HasMargin = true
@@ -1102,7 +1102,7 @@ public class TransportRateDetailSettingsService(IStringLocalizer<Svt> L, ILogger
 
     private void AddGroup15Settings(List<DetailSetting<TransportRateDetailDto>> results, bool isRu)
     {
-        var group = L["TransportRateDetailDto.Group15Parameters"];
+        var group = L["TransportRateDetailDto.Group.15.Leg2"];
 
         results.Add(new DetailSetting<TransportRateDetailDto>
         {
@@ -1244,7 +1244,7 @@ public class TransportRateDetailSettingsService(IStringLocalizer<Svt> L, ILogger
             {
                 Name = nameof(TransportRateDetailDto.LeadTimeLeg2_TravelTime),
                 Header = L["TransportRateDetailDto.Leg2_TravelTime"],
-                GroupHeader = L["TransportRateDetailDto.Group16Parameters"],
+                GroupHeader = L["TransportRateDetailDto.Group.16.LeadtimesRate2"],
                 DisplaySelector = dto => dto.LeadTimeLeg2_TravelTime!,
                 VisibleSelector = dto => dto.ProxyNodeCode is not null
             },
@@ -1252,7 +1252,7 @@ public class TransportRateDetailSettingsService(IStringLocalizer<Svt> L, ILogger
             {
                 Name = nameof(TransportRateDetailDto.LeadTimeLeg2_DaysWaiting),
                 Header = L["TransportRateDetailDto.Leg2_DaysWaiting"],
-                GroupHeader = L["TransportRateDetailDto.Group16Parameters"],
+                GroupHeader = L["TransportRateDetailDto.Group.16.LeadtimesRate2"],
                 DisplaySelector = dto => dto.LeadTimeLeg2_DaysWaiting!,
                 VisibleSelector = dto => dto.ProxyNodeCode is not null
             },
@@ -1260,7 +1260,7 @@ public class TransportRateDetailSettingsService(IStringLocalizer<Svt> L, ILogger
             {
                 Name = nameof(TransportRateDetailDto.LeadTimeLeg2_UploadTime),
                 Header = L["TransportRateDetailDto.Leg2_UpLoadTime"],
-                GroupHeader = L["TransportRateDetailDto.Group16Parameters"],
+                GroupHeader = L["TransportRateDetailDto.Group.16.LeadtimesRate2"],
                 DisplaySelector = dto => dto.LeadTimeLeg2_UploadTime!,
                 VisibleSelector = dto => dto.ProxyNodeCode is not null
             },
@@ -1268,7 +1268,7 @@ public class TransportRateDetailSettingsService(IStringLocalizer<Svt> L, ILogger
             {
                 Name = nameof(TransportRateDetailDto.LeadTimeLeg2_TransportationTime),
                 Header = L["TransportRateDetailDto.Leg2_TransportationTime"],
-                GroupHeader = L["TransportRateDetailDto.Group16Parameters"],
+                GroupHeader = L["TransportRateDetailDto.Group.16.LeadtimesRate2"],
                 DisplaySelector = dto => dto.LeadTimeLeg2_TransportationTime!,
                 VisibleSelector = dto => dto.ProxyNodeCode is not null
             },
@@ -1276,7 +1276,7 @@ public class TransportRateDetailSettingsService(IStringLocalizer<Svt> L, ILogger
             {
                 Name = nameof(TransportRateDetailDto.LeadTimeLeg2_Distance),
                 Header = L["TransportRateDetailDto.Leg2_Distance"],
-                GroupHeader = L["TransportRateDetailDto.Group16Parameters"],
+                GroupHeader = L["TransportRateDetailDto.Group.16.LeadtimesRate2"],
                 DisplaySelector = dto => dto.LeadTimeLeg2_Distance!,
                 VisibleSelector = dto => dto.ProxyNodeCode is not null,
                 HasMargin = true

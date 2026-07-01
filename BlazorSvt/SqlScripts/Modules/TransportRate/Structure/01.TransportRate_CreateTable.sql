@@ -95,8 +95,6 @@ CREATE TABLE v2.TransportRate_Snapshot (
     TotalCostTransport  DECIMAL(15,2) NOT NULL,
     TransportKindId     INT NOT NULL,
     TransportTypeId     INT NOT NULL,
-    ProductGroupId      INT NULL,
-    ProductId           INT NULL,
     RateTypeId          INT NOT NULL,
     CurrencyId          INT NOT NULL,
     Code                INT NOT NULL,

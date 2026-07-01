@@ -380,6 +380,8 @@ public class TransportLegGridSettingsService(ILocalStorageService localStorage, 
 
     private void AddLeadtimeSettings(List<GridColumnSetting<TransportLegDto>> results)
     {
+        // Колонки leadtime скрыты по требованию бизнеса: они редко нужны,
+        // а при включении всех колонок грид становится слишком широким.
         results.AddRange(
             [
                 new GridColumnSetting<TransportLegDto>

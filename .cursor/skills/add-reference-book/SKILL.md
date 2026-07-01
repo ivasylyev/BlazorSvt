@@ -197,11 +197,11 @@ WHERE [key] = @AttributeSystemName AND ContextId = @ContextID AND LocaleId = 2;
 
 Создавать enum только если в `vw_{Dictionary}` **< 100** неархивных записей.
 
-**Исключение:** `vw_Currency` — использовать только `RUB`, `EUR`, `USD`, `CNY` (как в `Rates`).
+**Исключение:** `vw_Currency` — один enum `Currency` в `Platform/Domain/IdsEnum/` с `[Display(Name = "RUB"|"EUR"|…)]` (коды валют); **без** разделения на Ru/En.
 
 Если enum уже есть в другом модуле — **перенести в** `Platform/Domain/IdsEnum/`.
 
-Два файла: `{Dictionary}Ru.cs`, `{Dictionary}En.cs` в `Modules/{Entity}/List/IdsEnum/`.
+Два файла: `{Dictionary}Ru.cs`, `{Dictionary}En.cs` в `Modules/{Entity}/List/IdsEnum/` (кроме `Currency`).
 
 Имена для enum-полей:
 
@@ -253,7 +253,7 @@ BlazorSvt/SqlScripts/Modules/{Entity}/
 **03 — Indexes:**
 
 - `UX_{Entity}_Snapshot_Id` на `[PRIMARY]` (для FTS при партициях)
-- FULLTEXT на `Code`, `*NameEn`, `*NameRu` (языки 1033 / 1049)
+- FULLTEXT на `Code` (только если `Code` — `NVARCHAR`; для числового `Code` FTS не нужен — достаточно фильтрованных индексов), `*NameEn`, `*NameRu` (языки 1033 / 1049)
 - `ALTER FULLTEXT … SET STOPLIST = OFF`
 - Фильтрованные индексы на `Code` и ID-ссылки (`WHERE IsArchive = 0/1`)
 - `UPDATE STATISTICS … WITH FULLSCAN`
@@ -355,8 +355,9 @@ public class {Entity}DetailDto { ... }
 - Наследник `BaseGridSettingsService<{Entity}Dto>`
 - `StorageKey` → `"{Entity}GridColumnSettings"`
 - `GetDefaultSettings`: порядок как **короткий список (п.1)**
-- **Все колонки видимы**, кроме `IsArchive`
+- **Все колонки видимы**, кроме `IsArchive`, `CreationDate`, `LastChangeDate`
 - `IsArchive`: `Visible = false`, `FilterValue = "False"` **всегда**
+- `CreationDate`, `LastChangeDate`: `Visible = false` **всегда** (без `FilterValue`)
 - Ссылки: отдельные колонки Ru/En (`XxxIdRu` / `XxxIdEn`)
 - `Filterable = true` для текстовых и ID; `false` для вычисляемых числовых полей
 - Коды ссылок (`XxxCode`) — часто `Visible = false` (как в Legs)

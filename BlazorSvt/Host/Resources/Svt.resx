@@ -374,49 +374,49 @@
   <data name="TransportRateDetailDto.ProductName" xml:space="preserve">
 	  <value>Product</value>
   </data>
-  <data name="TransportRateDetailDto.Group1Parameters" xml:space="preserve">
+  <data name="TransportRateDetailDto.Group.1.RateParameters" xml:space="preserve">
 	  <value>1. Rate Parameters</value>
   </data>
-  <data name="TransportRateDetailDto.Group2Parameters" xml:space="preserve">
+  <data name="TransportRateDetailDto.Group.2.RateDates" xml:space="preserve">
 	  <value>2. Rate Dates</value>
   </data>
-  <data name="TransportRateDetailDto.Group3Parameters" xml:space="preserve">
+  <data name="TransportRateDetailDto.Group.3.OriginDestination" xml:space="preserve">
 	  <value>3. Origin - Destination</value>
   </data>
-  <data name="TransportRateDetailDto.Group4Parameters" xml:space="preserve">
+  <data name="TransportRateDetailDto.Group.4.Transport" xml:space="preserve">
 	  <value>4. Transport</value>
   </data>
-  <data name="TransportRateDetailDto.Group5Parameters" xml:space="preserve">
+  <data name="TransportRateDetailDto.Group.5.MultimodalTransportation" xml:space="preserve">
 	  <value>5. Multimodal Transportation</value>
   </data>
-  <data name="TransportRateDetailDto.Group6Parameters" xml:space="preserve">
+  <data name="TransportRateDetailDto.Group.6.Cargo" xml:space="preserve">
 	  <value>6. Cargo</value>
   </data>
-  <data name="TransportRateDetailDto.Group7Parameters" xml:space="preserve">
+  <data name="TransportRateDetailDto.Group.7.RateAmountExcludingVAT" xml:space="preserve">
 	  <value>7. Rate Amount (excluding VAT)</value>
   </data>
-  <data name="TransportRateDetailDto.Group8Parameters" xml:space="preserve">
+  <data name="TransportRateDetailDto.Group.8.RateComponentsExcludingVATPerTon" xml:space="preserve">
 	  <value>8. Rate Components (excluding VAT, per ton)</value>
   </data>
-  <data name="TransportRateDetailDto.Group10Parameters" xml:space="preserve">
+  <data name="TransportRateDetailDto.Group.10.Comments" xml:space="preserve">
 	  <value>10. Comments</value>
   </data>
-  <data name="TransportRateDetailDto.Group11Parameters" xml:space="preserve">
+  <data name="TransportRateDetailDto.Group.11.ReferenceCalculatedCostsInCurrencies" xml:space="preserve">
 	  <value>11. Reference. Calculated Costs in Currencies</value>
   </data>
-  <data name="TransportRateDetailDto.Group12Parameters" xml:space="preserve">
+  <data name="TransportRateDetailDto.Group.12.Leadtimes" xml:space="preserve">
 	  <value>12. Leadtimes</value>
   </data>
-  <data name="TransportRateDetailDto.Group13Parameters" xml:space="preserve">
+  <data name="TransportRateDetailDto.Group.13.Leg1" xml:space="preserve">
 	  <value>13. Leg 1</value>
   </data>
-  <data name="TransportRateDetailDto.Group14Parameters" xml:space="preserve">
+  <data name="TransportRateDetailDto.Group.14.LeadtimesRate1" xml:space="preserve">
 	  <value>14. Leadtimes. Rate 1</value>
   </data>
-  <data name="TransportRateDetailDto.Group15Parameters" xml:space="preserve">
+  <data name="TransportRateDetailDto.Group.15.Leg2" xml:space="preserve">
 	  <value>15. Leg 2</value>
   </data>
-  <data name="TransportRateDetailDto.Group16Parameters" xml:space="preserve">
+  <data name="TransportRateDetailDto.Group.16.LeadtimesRate2" xml:space="preserve">
 	  <value>16. Leadtimes. Rate 2</value>
   </data>
   <data name="TransportRateDetailDto.NodeFromCode" xml:space="preserve">
@@ -1019,22 +1019,22 @@
   <data name="TransportLegDetailDto.Distance" xml:space="preserve">
 	  <value>Distance</value>
   </data>
-	<data name="TransportLegDetailDto.Group1Parameters" xml:space="preserve">
+	<data name="TransportLegDetailDto.Group.1.Parameters" xml:space="preserve">
 	  <value>1. Parameters</value>
   </data>
-  <data name="TransportLegDetailDto.Group2FromTo" xml:space="preserve">
+  <data name="TransportLegDetailDto.Group.2.FromTo" xml:space="preserve">
 	  <value>2. From - To</value>
   </data>
-  <data name="TransportLegDetailDto.Group3Transport" xml:space="preserve">
+  <data name="TransportLegDetailDto.Group.3.Transport" xml:space="preserve">
 	  <value>3. Transport</value>
   </data>
-  <data name="TransportLegDetailDto.Group4Leadtimes" xml:space="preserve">
+  <data name="TransportLegDetailDto.Group.4.Leadtimes" xml:space="preserve">
 	  <value>4. Leadtimes</value>
   </data>
-  <data name="TransportLegDetailDto.Group41LeadtimesLeg1" xml:space="preserve">
+  <data name="TransportLegDetailDto.Group.41.LeadtimesLeg1" xml:space="preserve">
 	  <value>4.1. Leadtimes Leg 1</value>
   </data>
-  <data name="TransportLegDetailDto.Group42LeadtimesLeg2" xml:space="preserve">
+  <data name="TransportLegDetailDto.Group.42.LeadtimesLeg2" xml:space="preserve">
 	  <value>4.2. Leadtimes Leg 2</value>
   </data>
   <data name="TransportLegDetailDto.CustomMessage" xml:space="preserve">

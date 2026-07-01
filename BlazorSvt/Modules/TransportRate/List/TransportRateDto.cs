@@ -21,10 +21,6 @@ public class TransportRateDto
     public decimal TotalCostTon { get; set; }
     public decimal TotalCostTransport { get; set; }
 
-    public long TransportTypeId { get; set; }
-    public long? ProductGroupId { get; set; }
-    public long? ProductId { get; set; }
-
     public required long Code { get; set; }
     public required Currency CurrencyId { get; set; }
     public required RateTypeRu RateTypeIdRu { get; set; }
