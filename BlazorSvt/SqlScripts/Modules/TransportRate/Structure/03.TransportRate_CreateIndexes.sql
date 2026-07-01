@@ -1,6 +1,11 @@
 ﻿USE [mdm]
 GO
 
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+
 -- Удаляем полнотекстовый индекс
 IF EXISTS (SELECT * FROM sys.fulltext_indexes WHERE object_id = OBJECT_ID('v2.TransportRateSnapshot'))
 BEGIN
@@ -8,20 +13,28 @@ BEGIN
 END
 GO
 
+-- Удаляем полнотекстовый индекс
+IF EXISTS (SELECT * FROM sys.fulltext_indexes WHERE object_id = OBJECT_ID('v2.TransportRate_Snapshot'))
+BEGIN
+    DROP FULLTEXT INDEX ON v2.TransportRate_Snapshot;
+END
+GO
+
 
 
 -- Удаляем уникальный индекс для полнтотекстового индекса
 DROP INDEX IF EXISTS UX_TransportRateSnapshot_Id ON [v2].[TransportRateSnapshot];
+DROP INDEX IF EXISTS UX_TransportRate_Snapshot_Id ON [v2].[TransportRate_Snapshot];
 GO
 
 -- Создаем уникальный индекс для полнтотекстового индекса
-CREATE UNIQUE NONCLUSTERED INDEX UX_TransportRateSnapshot_Id
-    ON v2.TransportRateSnapshot (Id)
+CREATE UNIQUE NONCLUSTERED INDEX UX_TransportRate_Snapshot_Id
+    ON v2.TransportRate_Snapshot (Id)
     ON [PRIMARY];  -- важно: НЕ на partition scheme
 GO
 
 -- Создаем полнотекстовый индекс
-CREATE FULLTEXT INDEX ON v2.TransportRateSnapshot 
+CREATE FULLTEXT INDEX ON v2.TransportRate_Snapshot
 ( 
     NodeFromCode       LANGUAGE 1033,      -- English,
     NodeFromNameEn     LANGUAGE 1033,      -- English,
@@ -38,30 +51,32 @@ CREATE FULLTEXT INDEX ON v2.TransportRateSnapshot
     ProductNameRu      LANGUAGE 1049,      -- Russian,
     ProductNameEn      LANGUAGE 1033      -- English
 )
-KEY INDEX UX_TransportRateSnapshot_Id
+KEY INDEX UX_TransportRate_Snapshot_Id
 WITH STOPLIST = SYSTEM, 
      CHANGE_TRACKING = AUTO;
 GO
 
 -- Отключаем стоп-лист для полнотекстового индекса. Если не сделать - слова типа "прочее" не попадут в индекс
-ALTER FULLTEXT INDEX ON mdm.v2.TransportRateSnapshot
+ALTER FULLTEXT INDEX ON mdm.v2.TransportRate_Snapshot
 SET STOPLIST = OFF;
 GO
 
 
 --  индекс для Кода для активного партишена
 DROP INDEX IF EXISTS ix_TransportRateSnapshot_Active_Code ON [v2].[TransportRateSnapshot];
+DROP INDEX IF EXISTS ix_TransportRate_Snapshot_Active_Code ON [v2].[TransportRate_Snapshot];
 GO
-CREATE NONCLUSTERED INDEX ix_TransportRateSnapshot_Active_Code 
-ON v2.TransportRateSnapshot (Code)
+CREATE NONCLUSTERED INDEX ix_TransportRate_Snapshot_Active_Code
+ON v2.TransportRate_Snapshot (Code)
 WHERE IsArchive = 0;
 GO
 
 --  индекс для Кода для архивного партишена
 DROP INDEX IF EXISTS ix_TransportRateSnapshot_Archive_Code ON [v2].[TransportRateSnapshot];
+DROP INDEX IF EXISTS ix_TransportRate_Snapshot_Archive_Code ON [v2].[TransportRate_Snapshot];
 GO
-CREATE NONCLUSTERED INDEX ix_TransportRateSnapshot_Archive_Code 
-ON v2.TransportRateSnapshot (Code)
+CREATE NONCLUSTERED INDEX ix_TransportRate_Snapshot_Archive_Code
+ON v2.TransportRate_Snapshot (Code)
 WHERE IsArchive = 1;
 GO
 
@@ -75,16 +90,18 @@ GO
 --  индекс на Даты 
 
 DROP INDEX IF EXISTS ix_TransportRateSnapshot_Active_Date ON [v2].[TransportRateSnapshot];
+DROP INDEX IF EXISTS ix_TransportRate_Snapshot_Active_Date ON [v2].[TransportRate_Snapshot];
 GO
-CREATE NONCLUSTERED INDEX ix_TransportRateSnapshot_Active_Date 
-ON v2.TransportRateSnapshot (StartDate, EndDate)
+CREATE NONCLUSTERED INDEX ix_TransportRate_Snapshot_Active_Date
+ON v2.TransportRate_Snapshot (StartDate, EndDate)
 WHERE IsArchive = 0;
 GO
 
 DROP INDEX IF EXISTS ix_TransportRateSnapshot_Archive_Date ON [v2].[TransportRateSnapshot];
+DROP INDEX IF EXISTS ix_TransportRate_Snapshot_Archive_Date ON [v2].[TransportRate_Snapshot];
 GO
-CREATE NONCLUSTERED INDEX ix_TransportRateSnapshot_Archive_Date 
-ON v2.TransportRateSnapshot (StartDate, EndDate)
+CREATE NONCLUSTERED INDEX ix_TransportRate_Snapshot_Archive_Date
+ON v2.TransportRate_Snapshot (StartDate, EndDate)
 WHERE IsArchive = 1;
 GO
 
@@ -93,8 +110,9 @@ GO
 --  индекс на Транспорт
 
 DROP INDEX IF EXISTS [ix_TransportRateSnapshot_Active_TransportKindId_TransportTypeId] ON [v2].[TransportRateSnapshot];
+DROP INDEX IF EXISTS [ix_TransportRate_Snapshot_Active_TransportKindId_TransportTypeId] ON [v2].[TransportRate_Snapshot];
 GO
-CREATE NONCLUSTERED INDEX [ix_TransportRateSnapshot_Active_TransportKindId_TransportTypeId] ON [v2].TransportRateSnapshot
+CREATE NONCLUSTERED INDEX [ix_TransportRate_Snapshot_Active_TransportKindId_TransportTypeId] ON [v2].TransportRate_Snapshot
 (
 	[TransportKindId],
     [TransportTypeId]
@@ -103,8 +121,9 @@ WHERE IsArchive = 0;
 GO
 
 DROP INDEX IF EXISTS [ix_TransportRateSnapshot_Archive_TransportKindId_TransportTypeId] ON [v2].[TransportRateSnapshot];
+DROP INDEX IF EXISTS [ix_TransportRate_Snapshot_Archive_TransportKindId_TransportTypeId] ON [v2].[TransportRate_Snapshot];
 GO
-CREATE NONCLUSTERED INDEX [ix_TransportRateSnapshot_Archive_TransportKindId_TransportTypeId] ON [v2].TransportRateSnapshot
+CREATE NONCLUSTERED INDEX [ix_TransportRate_Snapshot_Archive_TransportKindId_TransportTypeId] ON [v2].TransportRate_Snapshot
 (
 	[TransportKindId],
     [TransportTypeId]
@@ -116,8 +135,9 @@ GO
 -- индекс на Тип ставки 
 
 DROP INDEX IF EXISTS [ix_TransportRateSnapshot_Active_RateTypeId] ON [v2].[TransportRateSnapshot];
+DROP INDEX IF EXISTS [ix_TransportRate_Snapshot_Active_RateTypeId] ON [v2].[TransportRate_Snapshot];
 GO
-CREATE NONCLUSTERED INDEX [ix_TransportRateSnapshot_Active_RateTypeId] ON [v2].TransportRateSnapshot
+CREATE NONCLUSTERED INDEX [ix_TransportRate_Snapshot_Active_RateTypeId] ON [v2].TransportRate_Snapshot
 (
 	[RateTypeId]
 )
@@ -125,8 +145,9 @@ WHERE IsArchive = 0;
 GO
 
 DROP INDEX IF EXISTS [ix_TransportRateSnapshot_Archive_RateTypeId] ON [v2].[TransportRateSnapshot];
+DROP INDEX IF EXISTS [ix_TransportRate_Snapshot_Archive_RateTypeId] ON [v2].[TransportRate_Snapshot];
 GO
-CREATE NONCLUSTERED INDEX [ix_TransportRateSnapshot_Archive_RateTypeId] ON [v2].TransportRateSnapshot
+CREATE NONCLUSTERED INDEX [ix_TransportRate_Snapshot_Archive_RateTypeId] ON [v2].TransportRate_Snapshot
 (
 	[RateTypeId]
 )
@@ -134,7 +155,7 @@ WHERE IsArchive = 1;
 GO
 
 
-UPDATE STATISTICS v2.TransportRateSnapshot WITH FULLSCAN;
+UPDATE STATISTICS v2.TransportRate_Snapshot WITH FULLSCAN;
 GO
 
 --  НЕ НАДО создавать индекс на Валюты  - он не селективный и портит планы запроса при использовании полнотекстового индекса 

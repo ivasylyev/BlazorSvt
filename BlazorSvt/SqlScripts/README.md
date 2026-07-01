@@ -8,7 +8,7 @@ SqlScripts/
 │   ├── Structure/          # Схема v2, full-text catalog
 │   └── Programmability/    # Универсальный grid engine
 ├── Modules/
-│   ├── Rates/
+│   ├── TransportRate/
 │   │   ├── Structure/      # Snapshot-таблица, индексы, seed
 │   │   └── Programmability/ # Grid-обёртки, detail, export
 │   ├── TransportLeg/
@@ -32,16 +32,16 @@ SqlScripts/
 
 ### 2. Modules (по одному модулю: Structure → Programmability)
 
-**Rates**
+**TransportRate**
 
 | # | Скрипт |
 |---|--------|
-| 1 | `Modules/Rates/Structure/01.TransportRates_CreateTable.sql` |
-| 2 | `Modules/Rates/Structure/02.TransportRates_Insert.sql` |
-| 3 | `Modules/Rates/Structure/03.TransportRates_CreateIndexes.sql` |
-| 4 | `Modules/Rates/Programmability/vw_TransportRates_Detail.sql` |
-| 5 | `Modules/Rates/Programmability/TransportRates_Get.sql` |
-| 6 | `Modules/Rates/Programmability/TransportRates_ExportFull.sql` |
+| 1 | `Modules/TransportRate/Structure/01.TransportRate_CreateTable.sql` |
+| 2 | `Modules/TransportRate/Structure/02.TransportRate_Insert.sql` |
+| 3 | `Modules/TransportRate/Structure/03.TransportRate_CreateIndexes.sql` |
+| 4 | `Modules/TransportRate/Programmability/vw_TransportRate_Detail.sql` |
+| 5 | `Modules/TransportRate/Programmability/TransportRate_Get.sql` |
+| 6 | `Modules/TransportRate/Programmability/TransportRate_ExportFull.sql` |
 
 **TransportLeg**
 
@@ -62,7 +62,7 @@ SqlScripts/
 
 ## Добавление нового справочника
 
-Создать `Modules/{Name}/Structure/` и `Modules/{Name}/Programmability/` по образцу `Rates/` или `TransportLeg/`.
+Создать `Modules/{Name}/Structure/` и `Modules/{Name}/Programmability/` по образцу `TransportRate/` или `TransportLeg/`.
 Параллельно — C#-модуль в `BlazorSvt/Modules/{Name}/`.
 
 Ключевая процедура `v2.GetBlazorGridData` (Platform) — универсальный query engine: whitelist колонок, фильтры, FTS, пагинация.
@@ -75,3 +75,4 @@ SqlScripts/
 
 Скрипт читает строку подключения из `appsettings.json`, выполняет Platform и все модули; при ошибке останавливается.
 В Cursor: `/create_programmability`.
+

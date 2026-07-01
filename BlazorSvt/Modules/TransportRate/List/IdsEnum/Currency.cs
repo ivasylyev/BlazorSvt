@@ -1,4 +1,4 @@
-﻿namespace BlazorSvt.Modules.Rates.List.IdsEnum;
+﻿namespace BlazorSvt.Modules.TransportRate.List.IdsEnum;
 
 public enum Currency
 {

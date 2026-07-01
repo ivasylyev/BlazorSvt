@@ -1,13 +1,13 @@
 ﻿
 using BlazorSvt.Platform.Infrastructure.Config;
 
-namespace BlazorSvt.Modules.Rates.Detail;
+namespace BlazorSvt.Modules.TransportRate.Detail;
 
-[DetailSource("v2.vw_TransportRates_Detail", "RateId")]
-[FullReportExport("v2.TransportRates_ExportFull")]
-public class RateDetailDto
+[DetailSource("v2.vw_TransportRate_Detail", "TransportRateId")]
+[FullReportExport("v2.TransportRate_ExportFull")]
+public class TransportRateDetailDto
 {
-    public long RateId { get; set; }
+    public long TransportRateId { get; set; }
     public required long Code { get; set; }
 
     public bool IsArchive { get; set; }
@@ -164,3 +164,4 @@ public class RateDetailDto
     public decimal? LeadTimeLeg2_TransportationTime { get; set; }
     public int? LeadTimeLeg2_Distance { get; set; }
 }
+

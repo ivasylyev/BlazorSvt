@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace BlazorSvt.Modules.Rates.List.IdsEnum;
+namespace BlazorSvt.Modules.TransportRate.List.IdsEnum;
 
 public enum RateTypeRu
 {
@@ -19,3 +19,4 @@ public enum RateTypeRu
     [Display(Name = "Фактическая")] 
     Fact = 19434323 // 6 Фактическая
 }
+

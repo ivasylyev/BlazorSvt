@@ -1,12 +1,12 @@
-﻿@page "/rates"
-@using BlazorSvt.Modules.Rates.List
-@using BlazorSvt.Modules.Rates.Detail
+﻿@page "/transportrate"
+@using BlazorSvt.Modules.TransportRate.List
+@using BlazorSvt.Modules.TransportRate.Detail
 @using BlazorSvt.Platform.Grid.Components
-@inherits BaseGridPage<RateDto, RateDetailDto>
+@inherits BaseGridPage<TransportRateDto, TransportRateDetailDto>
 
-<GenericGrid TItem="RateDto"
-             TDetailItem="RateDetailDto"
-             PageTitle="@L["RatesGrid.Title"]"
+<GenericGrid TItem="TransportRateDto"
+             TDetailItem="TransportRateDetailDto"
+             PageTitle="@L["TransportRateGrid.Title"]"
              AllowDetailView="true"
              DataProvider="DataProvider"
              DetailDataProvider="DetailDataProvider"
@@ -19,4 +19,5 @@
     </DetailViewTemplate>
 
 </GenericGrid>
+
 

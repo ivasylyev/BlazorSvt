@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace BlazorSvt.Modules.Rates.List.IdsEnum;
+namespace BlazorSvt.Modules.TransportRate.List.IdsEnum;
 
 public enum RateTypeEn
 {

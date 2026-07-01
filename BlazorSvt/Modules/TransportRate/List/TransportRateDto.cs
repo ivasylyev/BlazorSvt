@@ -1,16 +1,16 @@
 ﻿
 using BlazorSvt.Platform.Infrastructure.Config;
-using BlazorSvt.Modules.Rates.List.IdsEnum;
+using BlazorSvt.Modules.TransportRate.List.IdsEnum;
 using BlazorSvt.Platform.Domain.IdsEnum;
 
-namespace BlazorSvt.Modules.Rates.List;
+namespace BlazorSvt.Modules.TransportRate.List;
 
 
-[StoredProcedure("v2.TransportRates_Get")]
-public class RateDto
+[StoredProcedure("v2.TransportRate_Get")]
+public class TransportRateDto
 {
     public long Id { get; set; }
-    public long RateId { get; set; }
+    public long TransportRateId { get; set; }
     public bool IsArchive { get; set; }
     public bool IsDefRate { get; set; }
     public DateOnly StartDate { get; set; }

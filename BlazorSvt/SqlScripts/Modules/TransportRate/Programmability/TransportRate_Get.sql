@@ -9,7 +9,7 @@ go
 
 -- простой поиск (это когда или нет сортировки, или менее 2х полнотекстовых фильтров)
 
-exec v2.TransportRates_Get 
+exec v2.TransportRate_Get
     @PageNumber=1,
     @PageSize=10,
     @Lang=N'ru',
@@ -25,7 +25,7 @@ exec v2.TransportRates_Get
 
 -- сложный поиск (это когда сортировка с двумя и более полнотекстовыми фильтрами)
 
-exec v2.TransportRates_Get 
+exec v2.TransportRate_Get
     @PageNumber=2,
     @PageSize=10,
     @Lang=N'ru',
@@ -43,7 +43,10 @@ exec v2.TransportRates_Get
 DROP PROCEDURE IF EXISTS v2.GetTransportRates;
 GO
 
-CREATE OR ALTER PROCEDURE v2.TransportRates_Get
+DROP PROCEDURE IF EXISTS v2.TransportRates_Get;
+GO
+
+CREATE OR ALTER PROCEDURE v2.TransportRate_Get
     @PageNumber     INT = 1,
     @PageSize       INT = 20,
     @Lang           NVARCHAR(2),
@@ -103,12 +106,12 @@ BEGIN
     SET @SelectList = CASE WHEN @KeysOnly = 1 THEN
         N'
         SELECT
-            RateId
+            TransportRateId
   '
     ELSE N'
         SELECT
             Id,
-            RateId,
+            TransportRateId,
             IsArchive,
             IsDefRate,
             CAST(StartDate AS DATE)   AS StartDate,
@@ -163,7 +166,7 @@ BEGIN
         @SortDirection = @SortDirection,
         @FilterJson = @FilterJson,
 
-        @TableName = N'mdm.v2.TransportRateSnapshot',
+        @TableName = N'mdm.v2.TransportRate_Snapshot',
         @AllowedColumnsJson = @AllowedColumnsJson,
         @SelectList = @SelectList
         

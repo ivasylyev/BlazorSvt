@@ -1,8 +1,8 @@
 ﻿USE [mdm];
 GO
 
-INSERT INTO v2.TransportRateSnapshot (
-    RateId,
+INSERT INTO v2.TransportRate_Snapshot (
+    TransportRateId,
     IsArchive,
     IsDefRate,
     StartDate,
@@ -43,7 +43,7 @@ INSERT INTO v2.TransportRateSnapshot (
     ProductNameEn
 )
 SELECT 
-        CAST(r.Id AS INT)      AS RateId,
+        CAST(r.Id AS INT)      AS TransportRateId,
         CASE WHEN ISNULL(r.PrimitiveEntityDataStateId, 2) = 2 THEN 1 ELSE 0 END AS IsArchive,
         ISNULL(r.IsDefRate, 0) AS IsDefRate,
         r.StartDate,

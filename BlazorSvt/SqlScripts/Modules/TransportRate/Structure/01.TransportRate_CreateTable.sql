@@ -8,6 +8,13 @@ BEGIN
 END
 GO
 
+-- Удаляем полнотекстовый индекс
+IF EXISTS (SELECT * FROM sys.fulltext_indexes WHERE object_id = OBJECT_ID('v2.TransportRate_Snapshot'))
+BEGIN
+    DROP FULLTEXT INDEX ON v2.TransportRate_Snapshot;
+END
+GO
+
 -- Удаляем индексы (если существуют)
 DECLARE @sql NVARCHAR(MAX) = '';
 SELECT @sql = @sql + 'DROP INDEX IF EXISTS [' + name + '] ON v2.TransportRateSnapshot; '
@@ -18,8 +25,22 @@ WHERE object_id = OBJECT_ID('v2.TransportRateSnapshot')
 EXEC sp_executesql @sql;
 GO
 
+-- Удаляем индексы (если существуют)
+DECLARE @sql_new NVARCHAR(MAX) = '';
+SELECT @sql_new = @sql_new + 'DROP INDEX IF EXISTS [' + name + '] ON v2.TransportRate_Snapshot; '
+FROM sys.indexes
+WHERE object_id = OBJECT_ID('v2.TransportRate_Snapshot')
+  AND name IS NOT NULL
+  AND name NOT LIKE 'PK_%';  -- Не удаляем PRIMARY KEY
+EXEC sp_executesql @sql_new;
+GO
+
 -- 2. Удаляем таблицу
 DROP TABLE IF EXISTS v2.TransportRateSnapshot;
+GO
+
+-- 2. Удаляем таблицу
+DROP TABLE IF EXISTS v2.TransportRate_Snapshot;
 GO
 
 -- 3. Удаляем SEQUENCE
@@ -61,9 +82,9 @@ INCREMENT BY 1;
 GO
 
 -- 9. Создаем таблицу с партиционированием
-CREATE TABLE v2.TransportRateSnapshot (
+CREATE TABLE v2.TransportRate_Snapshot (
     Id                  INT NOT NULL,
-    RateId              INT NOT NULL,
+    TransportRateId     INT NOT NULL,
     IsArchive           BIT NOT NULL,
     IsDefRate           BIT NOT NULL,
     StartDate           DATETIME NOT NULL,
@@ -99,19 +120,19 @@ CREATE TABLE v2.TransportRateSnapshot (
     ProductNameRu       NVARCHAR(100) NULL,
     ProductNameEn       NVARCHAR(100) NULL
     
-    CONSTRAINT PK_TransportRateSnapshot PRIMARY KEY CLUSTERED (IsArchive, Id)
+    CONSTRAINT PK_TransportRate_Snapshot PRIMARY KEY CLUSTERED (IsArchive, Id)
 ) ON v2_ps_TransportRate(IsArchive);
 GO
 
 -- =====================================================
 -- 10. Добавляем DEFAULT constraints
 -- =====================================================
-ALTER TABLE v2.TransportRateSnapshot 
-ADD CONSTRAINT DF_TransportRateSnapshot_Id 
+ALTER TABLE v2.TransportRate_Snapshot
+ADD CONSTRAINT DF_TransportRate_Snapshot_Id
 DEFAULT (NEXT VALUE FOR v2.seq_TransportRateId) FOR Id;
 GO
 
-ALTER TABLE v2.TransportRateSnapshot 
-ADD CONSTRAINT DF_TransportRateSnapshot_CreationDate 
+ALTER TABLE v2.TransportRate_Snapshot
+ADD CONSTRAINT DF_TransportRate_Snapshot_CreationDate
 DEFAULT (GETDATE()) FOR CreationDate;
 GO

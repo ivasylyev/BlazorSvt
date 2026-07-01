@@ -10,7 +10,7 @@ public partial class HeaderMenu : SvtComponentBase
     private List<MenuItem> GetMenuItems() =>
     [
         new() { Url = "", Text = L["HeaderMenu.Home"] , Icon = IconName.HouseDoorFill },
-        new() { Url = "rates", Text = L["HeaderMenu.Rates"], Icon = IconName.Calculator },
+        new() { Url = "transportrate", Text = L["HeaderMenu.TransportRate"], Icon = IconName.Calculator },
         new() { Url = "transportleg", Text = L["HeaderMenu.TransportLeg"], Icon = IconName.SignpostSplit },
         new() { Url = "load", Text = L["HeaderMenu.Load"], Icon = IconName.Upload }
     ];
@@ -41,3 +41,4 @@ public partial class HeaderMenu : SvtComponentBase
         Nav.LocationChanged -= OnLocationChanged;
     }
 }
+

@@ -117,7 +117,7 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="RatesGrid.Title" xml:space="preserve">
+  <data name="TransportRateGrid.Title" xml:space="preserve">
     <value>Rates</value>
   </data>
   <data name="Test" xml:space="preserve">
@@ -127,7 +127,7 @@
   <data name="HeaderMenu.Home" xml:space="preserve">
 	  <value>Home</value>
   </data>
-  <data name="HeaderMenu.Rates" xml:space="preserve">
+  <data name="HeaderMenu.TransportRate" xml:space="preserve">
 	  <value>Transport Rates</value>
   </data>
   <data name="HeaderMenu.TransportLeg" xml:space="preserve">
@@ -211,575 +211,575 @@
 	<data name="Home.Message" xml:space="preserve">
 	  <value>Demo project SVT using Blazor Bootstrap Web App (.NET 9) + MS SQL Full Text Search.</value>
   </data>
-  <data name="RateDto.Code" xml:space="preserve">
+  <data name="TransportRateDto.Code" xml:space="preserve">
 	  <value>Code</value>
   </data>
-  <data name="RateDto.IsDefRate" xml:space="preserve">
+  <data name="TransportRateDto.IsDefRate" xml:space="preserve">
 	  <value>Deflated</value>
   </data>
-  <data name="RateDto.RateTypeName" xml:space="preserve">
+  <data name="TransportRateDto.RateTypeName" xml:space="preserve">
 	  <value>Rate Type</value>
   </data>
-  <data name="RateDto.NodeFromCode" xml:space="preserve">
+  <data name="TransportRateDto.NodeFromCode" xml:space="preserve">
 	  <value>Node From Code</value>
   </data>	
-  <data name="RateDto.NodeFromName" xml:space="preserve">
+  <data name="TransportRateDto.NodeFromName" xml:space="preserve">
 	  <value>Node From</value>
   </data>
-  <data name="RateDto.NodeToCode" xml:space="preserve">
+  <data name="TransportRateDto.NodeToCode" xml:space="preserve">
 	  <value>Node To Code</value>
   </data>	
-  <data name="RateDto.NodeToName" xml:space="preserve">
+  <data name="TransportRateDto.NodeToName" xml:space="preserve">
 	  <value>Node To</value>
   </data>
-  <data name="RateDto.ProxyNodeName" xml:space="preserve">
+  <data name="TransportRateDto.ProxyNodeName" xml:space="preserve">
 	  <value>Proxy Node</value>
   </data>
-  <data name="RateDto.ProxyNodeCode" xml:space="preserve">
+  <data name="TransportRateDto.ProxyNodeCode" xml:space="preserve">
 	  <value>Proxy Node Code</value>
   </data>
-  <data name="RateDto.ProductGroupCode" xml:space="preserve">
+  <data name="TransportRateDto.ProductGroupCode" xml:space="preserve">
 	  <value>Product Group Code</value>
   </data>
-	<data name="RateDto.ProductGroupName" xml:space="preserve">
+	<data name="TransportRateDto.ProductGroupName" xml:space="preserve">
 	  <value>Product Group</value>
   </data>
 
-	<data name="RateDto.ProductCode" xml:space="preserve">
+	<data name="TransportRateDto.ProductCode" xml:space="preserve">
 	  <value>Product Code</value>
   </data>
-  <data name="RateDto.ProductName" xml:space="preserve">
+  <data name="TransportRateDto.ProductName" xml:space="preserve">
 	  <value>Product</value>
   </data>
-  <data name="RateDto.StartDate" xml:space="preserve">
+  <data name="TransportRateDto.StartDate" xml:space="preserve">
 	  <value>Start Date</value>
   </data>
-  <data name="RateDto.EndDate" xml:space="preserve">
+  <data name="TransportRateDto.EndDate" xml:space="preserve">
 	  <value>End Date</value>
   </data>
-  <data name="RateDto.CurrencyCode" xml:space="preserve">
+  <data name="TransportRateDto.CurrencyCode" xml:space="preserve">
 	  <value>Currency</value>
   </data>
-  <data name="RateDto.Currency" xml:space="preserve">
+  <data name="TransportRateDto.Currency" xml:space="preserve">
 	  <value>Currency</value>
   </data>
-  <data name="RateDto.TotalCostTon" xml:space="preserve">
+  <data name="TransportRateDto.TotalCostTon" xml:space="preserve">
 	  <value>Total Cost Ton</value>
   </data>
-  <data name="RateDto.TotalCostTransport" xml:space="preserve">
+  <data name="TransportRateDto.TotalCostTransport" xml:space="preserve">
 	  <value>Total Cost Transport</value>
   </data>
-  <data name="RateDto.CreationDate" xml:space="preserve">
+  <data name="TransportRateDto.CreationDate" xml:space="preserve">
 	  <value>Created</value>
   </data>
-  <data name="RateDto.LastChangeDate" xml:space="preserve">
+  <data name="TransportRateDto.LastChangeDate" xml:space="preserve">
 	  <value>Changed</value>
   </data>
-  <data name="RateDto.IsArchive" xml:space="preserve">
+  <data name="TransportRateDto.IsArchive" xml:space="preserve">
 	  <value>Is Archive</value>
   </data>
-  <data name="RateDto.Archive" xml:space="preserve">
+  <data name="TransportRateDto.Archive" xml:space="preserve">
 	  <value>Archive</value>
   </data>
-  <data name="RateDto.Active" xml:space="preserve">
+  <data name="TransportRateDto.Active" xml:space="preserve">
 	  <value>Active</value>
   </data>	
-  <data name="RateDto.RateTypeCode" xml:space="preserve">
+  <data name="TransportRateDto.RateTypeCode" xml:space="preserve">
 	  <value>Rate Type Code</value>
   </data>
-  <data name="RateDto.TransportKindCode" xml:space="preserve">
+  <data name="TransportRateDto.TransportKindCode" xml:space="preserve">
 	  <value>Transport Kind Code</value>
   </data>
-  <data name="RateDto.TransportKindName" xml:space="preserve">
+  <data name="TransportRateDto.TransportKindName" xml:space="preserve">
 	  <value>Transport Kind Name</value>
   </data>
-  <data name="RateDto.TransportTypeCode" xml:space="preserve">
+  <data name="TransportRateDto.TransportTypeCode" xml:space="preserve">
 	  <value>Transport Type Code</value>
   </data>
-  <data name="RateDto.TransportTypeName" xml:space="preserve">
+  <data name="TransportRateDto.TransportTypeName" xml:space="preserve">
 	  <value>Transport Type Name</value>
   </data>
-  <data name="RateDto.Yes" xml:space="preserve">
+  <data name="TransportRateDto.Yes" xml:space="preserve">
 	  <value>Yes</value>
   </data>
-  <data name="RateDto.No" xml:space="preserve">
+  <data name="TransportRateDto.No" xml:space="preserve">
 	  <value>No</value>
   </data>
-  <data name="RateDetailDto.Code" xml:space="preserve">
+  <data name="TransportRateDetailDto.Code" xml:space="preserve">
 	  <value>Code</value>
   </data>
-  <data name="RateDetailDto.IsDefRate" xml:space="preserve">
+  <data name="TransportRateDetailDto.IsDefRate" xml:space="preserve">
 	  <value>Deflated</value>
   </data>
-  <data name="RateDetailDto.Yes" xml:space="preserve">
+  <data name="TransportRateDetailDto.Yes" xml:space="preserve">
 	  <value>Yes</value>
   </data>
-  <data name="RateDetailDto.No" xml:space="preserve">
+  <data name="TransportRateDetailDto.No" xml:space="preserve">
 	  <value>No</value>
   </data>
-  <data name="RateDetailDto.CreationDate" xml:space="preserve">
+  <data name="TransportRateDetailDto.CreationDate" xml:space="preserve">
 	  <value>Created</value>
   </data>
-  <data name="RateDetailDto.LastChangeDate" xml:space="preserve">
+  <data name="TransportRateDetailDto.LastChangeDate" xml:space="preserve">
 	  <value>Changed</value>
   </data>
-  <data name="RateDetailDto.IsArchive" xml:space="preserve">
+  <data name="TransportRateDetailDto.IsArchive" xml:space="preserve">
 	  <value>Is Archive</value>
   </data>
-  <data name="RateDetailDto.Archive" xml:space="preserve">
+  <data name="TransportRateDetailDto.Archive" xml:space="preserve">
 	  <value>Archive</value>
   </data>
-  <data name="RateDetailDto.Active" xml:space="preserve">
+  <data name="TransportRateDetailDto.Active" xml:space="preserve">
 	  <value>Active</value>
   </data>
-  <data name="RateDetailDto.StartDate" xml:space="preserve">
+  <data name="TransportRateDetailDto.StartDate" xml:space="preserve">
 	  <value>Start Date</value>
   </data>
-  <data name="RateDetailDto.EndDate" xml:space="preserve">
+  <data name="TransportRateDetailDto.EndDate" xml:space="preserve">
 	  <value>End Date</value>
   </data>
-  <data name="RateDetailDto.TotalCostTon" xml:space="preserve">
+  <data name="TransportRateDetailDto.TotalCostTon" xml:space="preserve">
 	  <value>Total Cost Ton</value>
   </data>
-  <data name="RateDetailDto.TotalCostTransport" xml:space="preserve">
+  <data name="TransportRateDetailDto.TotalCostTransport" xml:space="preserve">
 	  <value>Total Cost Transport</value>
   </data>
-  <data name="RateDetailDto.Currency" xml:space="preserve">
+  <data name="TransportRateDetailDto.Currency" xml:space="preserve">
 	  <value>Currency</value>
   </data>
-  <data name="RateDetailDto.RateTypeCode" xml:space="preserve">
+  <data name="TransportRateDetailDto.RateTypeCode" xml:space="preserve">
 	  <value>Rate Type Code</value>
   </data>
-  <data name="RateDetailDto.RateTypeName" xml:space="preserve">
+  <data name="TransportRateDetailDto.RateTypeName" xml:space="preserve">
 	  <value>Rate Type</value>
   </data>
-  <data name="RateDetailDto.TransportKindCode" xml:space="preserve">
+  <data name="TransportRateDetailDto.TransportKindCode" xml:space="preserve">
 	  <value>Transport Kind Code</value>
   </data>
-  <data name="RateDetailDto.TransportKindName" xml:space="preserve">
+  <data name="TransportRateDetailDto.TransportKindName" xml:space="preserve">
 	  <value>Transport Kind Name</value>
   </data>
-  <data name="RateDetailDto.TransportTypeCode" xml:space="preserve">
+  <data name="TransportRateDetailDto.TransportTypeCode" xml:space="preserve">
 	  <value>Transport Type Code</value>
   </data>
-  <data name="RateDetailDto.TransportTypeName" xml:space="preserve">
+  <data name="TransportRateDetailDto.TransportTypeName" xml:space="preserve">
 	  <value>Transport Type Name</value>
   </data>
-  <data name="RateDetailDto.ProductGroupCode" xml:space="preserve">
+  <data name="TransportRateDetailDto.ProductGroupCode" xml:space="preserve">
 	  <value>Product Group Code</value>
   </data>
-  <data name="RateDetailDto.ProductCode" xml:space="preserve">
+  <data name="TransportRateDetailDto.ProductCode" xml:space="preserve">
 	  <value>Product Code</value>
   </data>
-  <data name="RateDetailDto.ProductName" xml:space="preserve">
+  <data name="TransportRateDetailDto.ProductName" xml:space="preserve">
 	  <value>Product</value>
   </data>
-  <data name="RateDetailDto.Group1Parameters" xml:space="preserve">
+  <data name="TransportRateDetailDto.Group1Parameters" xml:space="preserve">
 	  <value>1. Rate Parameters</value>
   </data>
-  <data name="RateDetailDto.Group2Parameters" xml:space="preserve">
+  <data name="TransportRateDetailDto.Group2Parameters" xml:space="preserve">
 	  <value>2. Rate Dates</value>
   </data>
-  <data name="RateDetailDto.Group3Parameters" xml:space="preserve">
+  <data name="TransportRateDetailDto.Group3Parameters" xml:space="preserve">
 	  <value>3. Origin - Destination</value>
   </data>
-  <data name="RateDetailDto.Group4Parameters" xml:space="preserve">
+  <data name="TransportRateDetailDto.Group4Parameters" xml:space="preserve">
 	  <value>4. Transport</value>
   </data>
-  <data name="RateDetailDto.Group5Parameters" xml:space="preserve">
+  <data name="TransportRateDetailDto.Group5Parameters" xml:space="preserve">
 	  <value>5. Multimodal Transportation</value>
   </data>
-  <data name="RateDetailDto.Group6Parameters" xml:space="preserve">
+  <data name="TransportRateDetailDto.Group6Parameters" xml:space="preserve">
 	  <value>6. Cargo</value>
   </data>
-  <data name="RateDetailDto.Group7Parameters" xml:space="preserve">
+  <data name="TransportRateDetailDto.Group7Parameters" xml:space="preserve">
 	  <value>7. Rate Amount (excluding VAT)</value>
   </data>
-  <data name="RateDetailDto.Group8Parameters" xml:space="preserve">
+  <data name="TransportRateDetailDto.Group8Parameters" xml:space="preserve">
 	  <value>8. Rate Components (excluding VAT, per ton)</value>
   </data>
-  <data name="RateDetailDto.Group10Parameters" xml:space="preserve">
+  <data name="TransportRateDetailDto.Group10Parameters" xml:space="preserve">
 	  <value>10. Comments</value>
   </data>
-  <data name="RateDetailDto.Group11Parameters" xml:space="preserve">
+  <data name="TransportRateDetailDto.Group11Parameters" xml:space="preserve">
 	  <value>11. Reference. Calculated Costs in Currencies</value>
   </data>
-  <data name="RateDetailDto.Group12Parameters" xml:space="preserve">
+  <data name="TransportRateDetailDto.Group12Parameters" xml:space="preserve">
 	  <value>12. Leadtimes</value>
   </data>
-  <data name="RateDetailDto.Group13Parameters" xml:space="preserve">
+  <data name="TransportRateDetailDto.Group13Parameters" xml:space="preserve">
 	  <value>13. Leg 1</value>
   </data>
-  <data name="RateDetailDto.Group14Parameters" xml:space="preserve">
+  <data name="TransportRateDetailDto.Group14Parameters" xml:space="preserve">
 	  <value>14. Leadtimes. Rate 1</value>
   </data>
-  <data name="RateDetailDto.Group15Parameters" xml:space="preserve">
+  <data name="TransportRateDetailDto.Group15Parameters" xml:space="preserve">
 	  <value>15. Leg 2</value>
   </data>
-  <data name="RateDetailDto.Group16Parameters" xml:space="preserve">
+  <data name="TransportRateDetailDto.Group16Parameters" xml:space="preserve">
 	  <value>16. Leadtimes. Rate 2</value>
   </data>
-  <data name="RateDetailDto.NodeFromCode" xml:space="preserve">
+  <data name="TransportRateDetailDto.NodeFromCode" xml:space="preserve">
 	  <value>Node From Code</value>
   </data>
-  <data name="RateDetailDto.NodeFromName" xml:space="preserve">
+  <data name="TransportRateDetailDto.NodeFromName" xml:space="preserve">
 	  <value>Node From Name</value>
   </data>
-  <data name="RateDetailDto.RegionFromCode" xml:space="preserve">
+  <data name="TransportRateDetailDto.RegionFromCode" xml:space="preserve">
 	  <value>Region From Code</value>
   </data>
-  <data name="RateDetailDto.RegionFromName" xml:space="preserve">
+  <data name="TransportRateDetailDto.RegionFromName" xml:space="preserve">
 	  <value>Region From Name</value>
   </data>
-  <data name="RateDetailDto.ProxyNodeCode" xml:space="preserve">
+  <data name="TransportRateDetailDto.ProxyNodeCode" xml:space="preserve">
 	  <value>Proxy Node Code</value>
   </data>
-  <data name="RateDetailDto.ProxyNodeName" xml:space="preserve">
+  <data name="TransportRateDetailDto.ProxyNodeName" xml:space="preserve">
 	  <value>Proxy Node Name</value>
   </data>
-  <data name="RateDetailDto.ProxyRegionCode" xml:space="preserve">
+  <data name="TransportRateDetailDto.ProxyRegionCode" xml:space="preserve">
 	  <value>Proxy Region Code</value>
   </data>
-  <data name="RateDetailDto.ProxyRegionName" xml:space="preserve">
+  <data name="TransportRateDetailDto.ProxyRegionName" xml:space="preserve">
 	  <value>Proxy Region Name</value>
   </data>
-  <data name="RateDetailDto.NodeToCode" xml:space="preserve">
+  <data name="TransportRateDetailDto.NodeToCode" xml:space="preserve">
 	  <value>Node To Code</value>
   </data>
-  <data name="RateDetailDto.NodeToName" xml:space="preserve">
+  <data name="TransportRateDetailDto.NodeToName" xml:space="preserve">
 	  <value>Node To Name</value>
   </data>
-  <data name="RateDetailDto.RegionToCode" xml:space="preserve">
+  <data name="TransportRateDetailDto.RegionToCode" xml:space="preserve">
 	  <value>Region To Code</value>
   </data>
-  <data name="RateDetailDto.RegionToName" xml:space="preserve">
+  <data name="TransportRateDetailDto.RegionToName" xml:space="preserve">
 	  <value>Region To Name</value>
   </data>
-  <data name="RateDetailDto.SearchTime" xml:space="preserve">
+  <data name="TransportRateDetailDto.SearchTime" xml:space="preserve">
 	  <value>Search Time, days</value>
   </data>
-  <data name="RateDetailDto.LoadTime" xml:space="preserve">
+  <data name="TransportRateDetailDto.LoadTime" xml:space="preserve">
 	  <value>Load Time, days</value>
   </data>
-  <data name="RateDetailDto.DaysWaiting" xml:space="preserve">
+  <data name="TransportRateDetailDto.DaysWaiting" xml:space="preserve">
 	  <value>Days Waiting, days</value>
   </data>
-  <data name="RateDetailDto.TravelTime" xml:space="preserve">
+  <data name="TransportRateDetailDto.TravelTime" xml:space="preserve">
 	  <value>Travel Time, days</value>
   </data>
-  <data name="RateDetailDto.UnLoadTime" xml:space="preserve">
+  <data name="TransportRateDetailDto.UnLoadTime" xml:space="preserve">
 	  <value>UnLoad Time, days</value>
   </data>
-  <data name="RateDetailDto.TransportationTime" xml:space="preserve">
+  <data name="TransportRateDetailDto.TransportationTime" xml:space="preserve">
 	  <value>Transportation Time, days</value>
   </data>
-  <data name="RateDetailDto.Distance" xml:space="preserve">
+  <data name="TransportRateDetailDto.Distance" xml:space="preserve">
 	  <value>Distance</value>
   </data>
-  <data name="RateDetailDto.Leg1_SearchTime" xml:space="preserve">
+  <data name="TransportRateDetailDto.Leg1_SearchTime" xml:space="preserve">
 	  <value>Leg 1. Search Time, days</value>
   </data>
-  <data name="RateDetailDto.Leg1_LoadTime" xml:space="preserve">
+  <data name="TransportRateDetailDto.Leg1_LoadTime" xml:space="preserve">
 	  <value>Leg 1. Load Time, days</value>
   </data>
-  <data name="RateDetailDto.Leg1_DaysWaiting" xml:space="preserve">
+  <data name="TransportRateDetailDto.Leg1_DaysWaiting" xml:space="preserve">
 	  <value>Leg 1. Days Waiting, days</value>
   </data>
-  <data name="RateDetailDto.Leg1_TravelTime" xml:space="preserve">
+  <data name="TransportRateDetailDto.Leg1_TravelTime" xml:space="preserve">
 	  <value>Leg 1. Travel Time, days</value>
   </data>
-  <data name="RateDetailDto.Leg1_TransportationTime" xml:space="preserve">
+  <data name="TransportRateDetailDto.Leg1_TransportationTime" xml:space="preserve">
 	  <value>Leg 1. Transportation Time, days</value>
   </data>
-  <data name="RateDetailDto.Leg1_Distance" xml:space="preserve">
+  <data name="TransportRateDetailDto.Leg1_Distance" xml:space="preserve">
 	  <value>Leg 1. Distance</value>
   </data>
-  <data name="RateDetailDto.Leg2_UpLoadTime" xml:space="preserve">
+  <data name="TransportRateDetailDto.Leg2_UpLoadTime" xml:space="preserve">
 	  <value>Leg 2. UnLoad Time, days</value>
   </data>
-  <data name="RateDetailDto.Leg2_DaysWaiting" xml:space="preserve">
+  <data name="TransportRateDetailDto.Leg2_DaysWaiting" xml:space="preserve">
 	  <value>Leg 2. Days Waiting, days</value>
   </data>
-  <data name="RateDetailDto.Leg2_TravelTime" xml:space="preserve">
+  <data name="TransportRateDetailDto.Leg2_TravelTime" xml:space="preserve">
 	  <value>Leg 2. Travel Time, days</value>
   </data>
-  <data name="RateDetailDto.Leg2_TransportationTime" xml:space="preserve">
+  <data name="TransportRateDetailDto.Leg2_TransportationTime" xml:space="preserve">
 	  <value>Leg 2. Transportation Time, days</value>
   </data>
-  <data name="RateDetailDto.Leg2_Distance" xml:space="preserve">
+  <data name="TransportRateDetailDto.Leg2_Distance" xml:space="preserve">
 	  <value>Leg 2. Distance</value>
   </data>
-  <data name="RateDetailDto.AverageRateCode" xml:space="preserve">
+  <data name="TransportRateDetailDto.AverageRateCode" xml:space="preserve">
 	  <value>Average Rate Code</value>
   </data>
-  <data name="RateDetailDto.AverageRateLevel3TotalCostTon" xml:space="preserve">
+  <data name="TransportRateDetailDto.AverageRateLevel3TotalCostTon" xml:space="preserve">
 	  <value>Average Rate Level 3, per ton</value>
   </data>
-  <data name="RateDetailDto.CalcType" xml:space="preserve">
+  <data name="TransportRateDetailDto.CalcType" xml:space="preserve">
 	  <value>Calculation Type</value>
   </data>
-  <data name="RateDetailDto.CurrencyRateMonth" xml:space="preserve">
+  <data name="TransportRateDetailDto.CurrencyRateMonth" xml:space="preserve">
 	  <value>Currency Rate Month</value>
   </data>
-  <data name="RateDetailDto.EffectiveLoadOfTransportType" xml:space="preserve">
+  <data name="TransportRateDetailDto.EffectiveLoadOfTransportType" xml:space="preserve">
 	  <value>Effective Load</value>
   </data>
-  <data name="RateDetailDto.TotalCostTonRUB" xml:space="preserve">
+  <data name="TransportRateDetailDto.TotalCostTonRUB" xml:space="preserve">
 	  <value>Total Cost Ton, RUB</value>
   </data>
-  <data name="RateDetailDto.TotalCostTonEUR" xml:space="preserve">
+  <data name="TransportRateDetailDto.TotalCostTonEUR" xml:space="preserve">
 	  <value>Total Cost Ton, EUR</value>
   </data>
-  <data name="RateDetailDto.TotalCostTonCNY" xml:space="preserve">
+  <data name="TransportRateDetailDto.TotalCostTonCNY" xml:space="preserve">
 	  <value>Total Cost Ton, CNY</value>
   </data>
-  <data name="RateDetailDto.TotalCostTonUSD" xml:space="preserve">
+  <data name="TransportRateDetailDto.TotalCostTonUSD" xml:space="preserve">
 	  <value>Total Cost Ton, USD</value>
   </data>
-  <data name="RateDetailDto.TotalCostTransportRUB" xml:space="preserve">
+  <data name="TransportRateDetailDto.TotalCostTransportRUB" xml:space="preserve">
 	  <value>Total Cost Transport, RUB</value>
   </data>
-  <data name="RateDetailDto.TotalCostTransportEUR" xml:space="preserve">
+  <data name="TransportRateDetailDto.TotalCostTransportEUR" xml:space="preserve">
 	  <value>Total Cost Transport, EUR</value>
   </data>
-  <data name="RateDetailDto.TotalCostTransportCNY" xml:space="preserve">
+  <data name="TransportRateDetailDto.TotalCostTransportCNY" xml:space="preserve">
 	  <value>Total Cost Transport, CNY</value>
   </data>
-  <data name="RateDetailDto.TotalCostTransportUSD" xml:space="preserve">
+  <data name="TransportRateDetailDto.TotalCostTransportUSD" xml:space="preserve">
 	  <value>Total Cost Transport, USD</value>
   </data>
-  <data name="RateDetailDto.EmptyRFSize" xml:space="preserve">
+  <data name="TransportRateDetailDto.EmptyRFSize" xml:space="preserve">
 	  <value>Empty RF</value>
   </data>
-  <data name="RateDetailDto.EmptyRFCurrency" xml:space="preserve">
+  <data name="TransportRateDetailDto.EmptyRFCurrency" xml:space="preserve">
 	  <value>Empty RF Currency</value>
   </data>
-  <data name="RateDetailDto.EmptyCISSize" xml:space="preserve">
+  <data name="TransportRateDetailDto.EmptyCISSize" xml:space="preserve">
 	  <value>Empty CIS</value>
   </data>
-  <data name="RateDetailDto.EmptyCISCurrency" xml:space="preserve">
+  <data name="TransportRateDetailDto.EmptyCISCurrency" xml:space="preserve">
 	  <value>Empty CIS Currency</value>
   </data>
-  <data name="RateDetailDto.ProvisionTransportSize" xml:space="preserve">
+  <data name="TransportRateDetailDto.ProvisionTransportSize" xml:space="preserve">
 	  <value>Provision Transport</value>
   </data>
-  <data name="RateDetailDto.ProvisionTransportCurrency" xml:space="preserve">
+  <data name="TransportRateDetailDto.ProvisionTransportCurrency" xml:space="preserve">
 	  <value>Provision Transport Currency</value>
   </data>
-  <data name="RateDetailDto.FerryboatSize" xml:space="preserve">
+  <data name="TransportRateDetailDto.FerryboatSize" xml:space="preserve">
 	  <value>Ferryboat</value>
   </data>
-  <data name="RateDetailDto.FerryboatCurrency" xml:space="preserve">
+  <data name="TransportRateDetailDto.FerryboatCurrency" xml:space="preserve">
 	  <value>Ferryboat Currency</value>
   </data>
-  <data name="RateDetailDto.TEFromSize" xml:space="preserve">
+  <data name="TransportRateDetailDto.TEFromSize" xml:space="preserve">
 	  <value>TE From</value>
   </data>
-  <data name="RateDetailDto.TEFromCurrency" xml:space="preserve">
+  <data name="TransportRateDetailDto.TEFromCurrency" xml:space="preserve">
 	  <value>TE From Currency</value>
   </data>
-  <data name="RateDetailDto.RatePNPFromSize" xml:space="preserve">
+  <data name="TransportRateDetailDto.RatePNPFromSize" xml:space="preserve">
 	  <value>PNP From</value>
   </data>
-  <data name="RateDetailDto.PNPFromCurrency" xml:space="preserve">
+  <data name="TransportRateDetailDto.PNPFromCurrency" xml:space="preserve">
 	  <value>PNP From Currency</value>
   </data>
-  <data name="RateDetailDto.TEToSize" xml:space="preserve">
+  <data name="TransportRateDetailDto.TEToSize" xml:space="preserve">
 	  <value>TE To</value>
   </data>
-  <data name="RateDetailDto.TEToCurrency" xml:space="preserve">
+  <data name="TransportRateDetailDto.TEToCurrency" xml:space="preserve">
 	  <value>TE To Currency</value>
   </data>
-  <data name="RateDetailDto.PNPToSize" xml:space="preserve">
+  <data name="TransportRateDetailDto.PNPToSize" xml:space="preserve">
 	  <value>PNP To</value>
   </data>
-  <data name="RateDetailDto.PNPToCurrency" xml:space="preserve">
+  <data name="TransportRateDetailDto.PNPToCurrency" xml:space="preserve">
 	  <value>PNP To Currency</value>
   </data>
-  <data name="RateDetailDto.DrainLoadingSize" xml:space="preserve">
+  <data name="TransportRateDetailDto.DrainLoadingSize" xml:space="preserve">
 	  <value>Drain Loading</value>
   </data>
-  <data name="RateDetailDto.DrainLoadingCurrency" xml:space="preserve">
+  <data name="TransportRateDetailDto.DrainLoadingCurrency" xml:space="preserve">
 	  <value>Drain Loading Currency</value>
   </data>
-  <data name="RateDetailDto.TransshipmentSize" xml:space="preserve">
+  <data name="TransportRateDetailDto.TransshipmentSize" xml:space="preserve">
 	  <value>Transshipment</value>
   </data>
-  <data name="RateDetailDto.TransshipmentCurrency" xml:space="preserve">
+  <data name="TransportRateDetailDto.TransshipmentCurrency" xml:space="preserve">
 	  <value>Transshipment Currency</value>
   </data>
-  <data name="RateDetailDto.FreightSize" xml:space="preserve">
+  <data name="TransportRateDetailDto.FreightSize" xml:space="preserve">
 	  <value>Freight</value>
   </data>
-  <data name="RateDetailDto.FreightCurrency" xml:space="preserve">
+  <data name="TransportRateDetailDto.FreightCurrency" xml:space="preserve">
 	  <value>Freight Currency</value>
   </data>
-  <data name="RateDetailDto.AdditionalFeesCISSize" xml:space="preserve">
+  <data name="TransportRateDetailDto.AdditionalFeesCISSize" xml:space="preserve">
 	  <value>Additional Fees CIS</value>
   </data>
-  <data name="RateDetailDto.AdditionalFeesCISCurrency" xml:space="preserve">
+  <data name="TransportRateDetailDto.AdditionalFeesCISCurrency" xml:space="preserve">
 	  <value>Additional Fees CIS Currency</value>
   </data>
-  <data name="RateDetailDto.LoadedCISSize" xml:space="preserve">
+  <data name="TransportRateDetailDto.LoadedCISSize" xml:space="preserve">
 	  <value>Loaded CIS</value>
   </data>
-  <data name="RateDetailDto.LoadedCISCurrency" xml:space="preserve">
+  <data name="TransportRateDetailDto.LoadedCISCurrency" xml:space="preserve">
 	  <value>Loaded CIS Currency</value>
   </data>
-  <data name="RateDetailDto.LoadedRFSize" xml:space="preserve">
+  <data name="TransportRateDetailDto.LoadedRFSize" xml:space="preserve">
 	  <value>Loaded RF</value>
   </data>
-  <data name="RateDetailDto.LoadedRFCurrency" xml:space="preserve">
+  <data name="TransportRateDetailDto.LoadedRFCurrency" xml:space="preserve">
 	  <value>Loaded RF Currency</value>
   </data>
-  <data name="RateDetailDto.TEFromSize_fix" xml:space="preserve">
+  <data name="TransportRateDetailDto.TEFromSize_fix" xml:space="preserve">
 	  <value>TE From (fix)</value>
   </data>
-  <data name="RateDetailDto.TEFromCurrency_fix" xml:space="preserve">
+  <data name="TransportRateDetailDto.TEFromCurrency_fix" xml:space="preserve">
 	  <value>TE From Currency (fix)</value>
   </data>
-  <data name="RateDetailDto.TEToSize_fix" xml:space="preserve">
+  <data name="TransportRateDetailDto.TEToSize_fix" xml:space="preserve">
 	  <value>TE To (fix)</value>
   </data>
-  <data name="RateDetailDto.TEToCurrency_fix" xml:space="preserve">
+  <data name="TransportRateDetailDto.TEToCurrency_fix" xml:space="preserve">
 	  <value>TE To Currency (fix)</value>
   </data>
-  <data name="RateDetailDto.Basis" xml:space="preserve">
+  <data name="TransportRateDetailDto.Basis" xml:space="preserve">
 	  <value>Basis</value>
   </data>
-  <data name="RateDetailDto.BasisNodeCode" xml:space="preserve">
+  <data name="TransportRateDetailDto.BasisNodeCode" xml:space="preserve">
 	  <value>Basis Node Code</value>
   </data>
-  <data name="RateDetailDto.BasisNodeNameRu" xml:space="preserve">
+  <data name="TransportRateDetailDto.BasisNodeNameRu" xml:space="preserve">
 	  <value>Basis Node</value>
   </data>
-  <data name="RateDetailDto.ProductGroupNameEnRu" xml:space="preserve">
+  <data name="TransportRateDetailDto.ProductGroupNameEnRu" xml:space="preserve">
 	  <value>Product Group</value>
   </data>
-  <data name="RateDetailDto.ProductDPOCOde" xml:space="preserve">
+  <data name="TransportRateDetailDto.ProductDPOCOde" xml:space="preserve">
 	  <value>Product DPO Code</value>
   </data>
-  <data name="RateDetailDto.ContractorCode" xml:space="preserve">
+  <data name="TransportRateDetailDto.ContractorCode" xml:space="preserve">
 	  <value>Contractor Code</value>
   </data>
-  <data name="RateDetailDto.ContractorNameSearch" xml:space="preserve">
+  <data name="TransportRateDetailDto.ContractorNameSearch" xml:space="preserve">
 	  <value>Contractor</value>
   </data>
-  <data name="RateDetailDto.ContractorEGRUL" xml:space="preserve">
+  <data name="TransportRateDetailDto.ContractorEGRUL" xml:space="preserve">
 	  <value>Contractor EGRUL</value>
   </data>
-  <data name="RateDetailDto.Nomination" xml:space="preserve">
+  <data name="TransportRateDetailDto.Nomination" xml:space="preserve">
 	  <value>Nomination</value>
   </data>
-  <data name="RateDetailDto.TenderServicePack" xml:space="preserve">
+  <data name="TransportRateDetailDto.TenderServicePack" xml:space="preserve">
 	  <value>Tender Service Pack</value>
   </data>
-  <data name="RateDetailDto.TenderNumber" xml:space="preserve">
+  <data name="TransportRateDetailDto.TenderNumber" xml:space="preserve">
 	  <value>Tender Number</value>
   </data>
-  <data name="RateDetailDto.AdditionalAgreementNumber" xml:space="preserve">
+  <data name="TransportRateDetailDto.AdditionalAgreementNumber" xml:space="preserve">
 	  <value>Additional Agreement Number</value>
   </data>
-  <data name="RateDetailDto.Comment" xml:space="preserve">
+  <data name="TransportRateDetailDto.Comment" xml:space="preserve">
 	  <value>Comment</value>
   </data>
-  <data name="RateDetailDto.LegCode" xml:space="preserve">
+  <data name="TransportRateDetailDto.LegCode" xml:space="preserve">
 	  <value>Leg Code</value>
   </data>
-  <data name="RateDetailDto.LegChangeDate" xml:space="preserve">
+  <data name="TransportRateDetailDto.LegChangeDate" xml:space="preserve">
 	  <value>Leg Changed</value>
   </data>
-  <data name="RateDetailDto.LeadTimeChangeDate" xml:space="preserve">
+  <data name="TransportRateDetailDto.LeadTimeChangeDate" xml:space="preserve">
 	  <value>Lead Time Changed</value>
   </data>
-  <data name="RateDetailDto.LeadTimeStartDate" xml:space="preserve">
+  <data name="TransportRateDetailDto.LeadTimeStartDate" xml:space="preserve">
 	  <value>Lead Time Start</value>
   </data>
-  <data name="RateDetailDto.LeadTimeEndDate" xml:space="preserve">
+  <data name="TransportRateDetailDto.LeadTimeEndDate" xml:space="preserve">
 	  <value>Lead Time End</value>
   </data>
-  <data name="RateDetailDto.LeadTimeCode" xml:space="preserve">
+  <data name="TransportRateDetailDto.LeadTimeCode" xml:space="preserve">
 	  <value>Lead Time Code</value>
   </data>
-  <data name="RateDetailDto.Leg1_EffectiveLoad" xml:space="preserve">
+  <data name="TransportRateDetailDto.Leg1_EffectiveLoad" xml:space="preserve">
 	  <value>Leg 1. Effective Load</value>
   </data>
-  <data name="RateDetailDto.Leg1_TotalCostTon" xml:space="preserve">
+  <data name="TransportRateDetailDto.Leg1_TotalCostTon" xml:space="preserve">
 	  <value>Leg 1. Total Cost Ton</value>
   </data>
-  <data name="RateDetailDto.Leg1_TotalCostTransport" xml:space="preserve">
+  <data name="TransportRateDetailDto.Leg1_TotalCostTransport" xml:space="preserve">
 	  <value>Leg 1. Total Cost Transport</value>
   </data>
-  <data name="RateDetailDto.Leg1_BaseCurrency" xml:space="preserve">
+  <data name="TransportRateDetailDto.Leg1_BaseCurrency" xml:space="preserve">
 	  <value>Leg 1. Base Currency</value>
   </data>
-  <data name="RateDetailDto.Leg1_TotalCostTonRUB" xml:space="preserve">
+  <data name="TransportRateDetailDto.Leg1_TotalCostTonRUB" xml:space="preserve">
 	  <value>Leg 1. Total Cost Ton, RUB</value>
   </data>
-  <data name="RateDetailDto.Leg1_TotalCostTonUSD" xml:space="preserve">
+  <data name="TransportRateDetailDto.Leg1_TotalCostTonUSD" xml:space="preserve">
 	  <value>Leg 1. Total Cost Ton, USD</value>
   </data>
-  <data name="RateDetailDto.Leg1_TotalCostTonEUR" xml:space="preserve">
+  <data name="TransportRateDetailDto.Leg1_TotalCostTonEUR" xml:space="preserve">
 	  <value>Leg 1. Total Cost Ton, EUR</value>
   </data>
-  <data name="RateDetailDto.Leg1_TotalCostTonCNY" xml:space="preserve">
+  <data name="TransportRateDetailDto.Leg1_TotalCostTonCNY" xml:space="preserve">
 	  <value>Leg 1. Total Cost Ton, CNY</value>
   </data>
-  <data name="RateDetailDto.Leg1_TotalCostTransportRUB" xml:space="preserve">
+  <data name="TransportRateDetailDto.Leg1_TotalCostTransportRUB" xml:space="preserve">
 	  <value>Leg 1. Total Cost Transport, RUB</value>
   </data>
-  <data name="RateDetailDto.Leg1_TotalCostTransportUSD" xml:space="preserve">
+  <data name="TransportRateDetailDto.Leg1_TotalCostTransportUSD" xml:space="preserve">
 	  <value>Leg 1. Total Cost Transport, USD</value>
   </data>
-  <data name="RateDetailDto.Leg1_TotalCostTransportEUR" xml:space="preserve">
+  <data name="TransportRateDetailDto.Leg1_TotalCostTransportEUR" xml:space="preserve">
 	  <value>Leg 1. Total Cost Transport, EUR</value>
   </data>
-  <data name="RateDetailDto.Leg1_TotalCostTransportCNY" xml:space="preserve">
+  <data name="TransportRateDetailDto.Leg1_TotalCostTransportCNY" xml:space="preserve">
 	  <value>Leg 1. Total Cost Transport, CNY</value>
   </data>
-  <data name="RateDetailDto.Leg2_EffectiveLoad" xml:space="preserve">
+  <data name="TransportRateDetailDto.Leg2_EffectiveLoad" xml:space="preserve">
 	  <value>Leg 2. Effective Load</value>
   </data>
-  <data name="RateDetailDto.Leg2_TotalCostTon" xml:space="preserve">
+  <data name="TransportRateDetailDto.Leg2_TotalCostTon" xml:space="preserve">
 	  <value>Leg 2. Total Cost Ton</value>
   </data>
-  <data name="RateDetailDto.Leg2_TotalCostTransport" xml:space="preserve">
+  <data name="TransportRateDetailDto.Leg2_TotalCostTransport" xml:space="preserve">
 	  <value>Leg 2. Total Cost Transport</value>
   </data>
-  <data name="RateDetailDto.Leg2_BaseCurrency" xml:space="preserve">
+  <data name="TransportRateDetailDto.Leg2_BaseCurrency" xml:space="preserve">
 	  <value>Leg 2. Base Currency</value>
   </data>
-  <data name="RateDetailDto.Leg2_TotalCostTonRUB" xml:space="preserve">
+  <data name="TransportRateDetailDto.Leg2_TotalCostTonRUB" xml:space="preserve">
 	  <value>Leg 2. Total Cost Ton, RUB</value>
   </data>
-  <data name="RateDetailDto.Leg2_TotalCostTonUSD" xml:space="preserve">
+  <data name="TransportRateDetailDto.Leg2_TotalCostTonUSD" xml:space="preserve">
 	  <value>Leg 2. Total Cost Ton, USD</value>
   </data>
-  <data name="RateDetailDto.Leg2_TotalCostTonEUR" xml:space="preserve">
+  <data name="TransportRateDetailDto.Leg2_TotalCostTonEUR" xml:space="preserve">
 	  <value>Leg 2. Total Cost Ton, EUR</value>
   </data>
-  <data name="RateDetailDto.Leg2_TotalCostTonCNY" xml:space="preserve">
+  <data name="TransportRateDetailDto.Leg2_TotalCostTonCNY" xml:space="preserve">
 	  <value>Leg 2. Total Cost Ton, CNY</value>
   </data>
-  <data name="RateDetailDto.Leg2_TotalCostTransportRUB" xml:space="preserve">
+  <data name="TransportRateDetailDto.Leg2_TotalCostTransportRUB" xml:space="preserve">
 	  <value>Leg 2. Total Cost Transport, RUB</value>
   </data>
-  <data name="RateDetailDto.Leg2_TotalCostTransportUSD" xml:space="preserve">
+  <data name="TransportRateDetailDto.Leg2_TotalCostTransportUSD" xml:space="preserve">
 	  <value>Leg 2. Total Cost Transport, USD</value>
   </data>
-  <data name="RateDetailDto.Leg2_TotalCostTransportEUR" xml:space="preserve">
+  <data name="TransportRateDetailDto.Leg2_TotalCostTransportEUR" xml:space="preserve">
 	  <value>Leg 2. Total Cost Transport, EUR</value>
   </data>
-  <data name="RateDetailDto.Leg2_TotalCostTransportCNY" xml:space="preserve">
+  <data name="TransportRateDetailDto.Leg2_TotalCostTransportCNY" xml:space="preserve">
 	  <value>Leg 2. Total Cost Transport, CNY</value>
   </data>
-  <data name="RateDetailDto.CustomMessage" xml:space="preserve">
+  <data name="TransportRateDetailDto.CustomMessage" xml:space="preserve">
 	  <value>Custom Message From Transport Rate Details: </value>
   </data>
-  <data name="RateDetailDto.CustomMessageWithoutProxy" xml:space="preserve">
+  <data name="TransportRateDetailDto.CustomMessageWithoutProxy" xml:space="preserve">
 	  <value>Transport Rate Without Proxy</value>
   </data>
-  <data name="RateDetailDto.CustomMessageWithProxy" xml:space="preserve">
+  <data name="TransportRateDetailDto.CustomMessageWithProxy" xml:space="preserve">
 	  <value>Transport Rate With Proxy</value>
   </data>
   <data name="TransportLegGrid.Title" xml:space="preserve">
@@ -1102,3 +1102,5 @@
 	  <value>Download file with errors</value>
   </data>
 </root>
+
+

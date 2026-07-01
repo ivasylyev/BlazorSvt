@@ -7,7 +7,7 @@ Example:
 USE mdm
 GO
 
-EXEC v2.TransportRates_ExportFull
+EXEC v2.TransportRate_ExportFull
     @PageSize = 100,
     @Lang = N'ru',
     @SortKey = N'StartDate',
@@ -20,7 +20,10 @@ EXEC v2.TransportRates_ExportFull
 DROP PROCEDURE IF EXISTS v2.ExportTransportRatesFull;
 GO
 
-CREATE OR ALTER PROCEDURE v2.TransportRates_ExportFull
+DROP PROCEDURE IF EXISTS v2.TransportRates_ExportFull;
+GO
+
+CREATE OR ALTER PROCEDURE v2.TransportRate_ExportFull
     @PageSize       INT,
     @Lang           NVARCHAR(2),
     @SortKey        NVARCHAR(50) = NULL,
@@ -32,12 +35,12 @@ BEGIN
 
     CREATE TABLE #Filtered (
         RowNum  INT IDENTITY(1,1) NOT NULL,
-        RateId  INT NOT NULL,
-        PRIMARY KEY (RateId)
+        TransportRateId  INT NOT NULL,
+        PRIMARY KEY (TransportRateId)
     );
 
-    INSERT INTO #Filtered (RateId)
-    EXEC v2.TransportRates_Get
+    INSERT INTO #Filtered (TransportRateId)
+    EXEC v2.TransportRate_Get
         @PageNumber    = 1,
         @PageSize      = @PageSize,
         @Lang          = @Lang,
@@ -47,8 +50,8 @@ BEGIN
         @KeysOnly      = 1;
 
     SELECT d.*
-    FROM v2.vw_TransportRates_Detail d
-    WHERE d.RateId IN (SELECT RateId FROM #Filtered)
-    ORDER BY (SELECT f.RowNum FROM #Filtered f WHERE f.RateId = d.RateId);
+    FROM v2.vw_TransportRate_Detail d
+    WHERE d.TransportRateId IN (SELECT TransportRateId FROM #Filtered)
+    ORDER BY (SELECT f.RowNum FROM #Filtered f WHERE f.TransportRateId = d.TransportRateId);
 END
 GO
