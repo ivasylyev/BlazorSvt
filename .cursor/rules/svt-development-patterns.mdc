@@ -46,5 +46,5 @@ alwaysApply: false
 ## Blazor best practices
 
 - Interactive Server; `SvtComponentBase` для общего поведения
-- Локализация через `Svt.resx` / `Svt.ru-RU.resx`
+- Локализация: `Platform/Resources/Platform.resx` (общий UI) + `Modules/{Entity}/Resources/{Entity}.resx` (справочник); `IStringLocalizer<PlatformResources>` / `IStringLocalizer<Resources.{Entity}>`
 - Минимальный scope изменений; следовать существующим соглашениям модуля

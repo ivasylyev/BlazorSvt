@@ -1,12 +1,11 @@
 ﻿using BlazorSvt.Platform.Grid.Models;
-using BlazorSvt.Host.Resources;
 using BlazorSvt.Platform.Grid.Services;
 using Microsoft.Extensions.Localization;
 
 namespace BlazorSvt.Modules.TransportRate.Detail;
 
 // ReSharper disable once InconsistentNaming
-public class TransportRateDetailSettingsService(IStringLocalizer<Svt> L, ILogger<TransportRateDetailSettingsService> logger) : IDetailSettingsService<TransportRateDetailDto>
+public class TransportRateDetailSettingsService(IStringLocalizer<Resources.TransportRate> L, ILogger<TransportRateDetailSettingsService> logger) : IDetailSettingsService<TransportRateDetailDto>
 {
     public DetailSettingsCollection<TransportRateDetailDto> GetGridDetailSettings(string lang)
     {

@@ -3,14 +3,13 @@ using Blazored.LocalStorage;
 using BlazorSvt.Modules.TransportLeg.List.IdsEnum;
 using BlazorSvt.Platform.Domain.IdsEnum;
 using BlazorSvt.Platform.Grid.Models;
-using BlazorSvt.Host.Resources;
 using BlazorSvt.Platform.Grid.Services;
 using Microsoft.Extensions.Localization;
 
 namespace BlazorSvt.Modules.TransportLeg.List;
 
 // ReSharper disable once InconsistentNaming
-public class TransportLegGridSettingsService(ILocalStorageService localStorage, IStringLocalizer<Svt> L, ILogger<TransportLegGridSettingsService> logger)
+public class TransportLegGridSettingsService(ILocalStorageService localStorage, IStringLocalizer<Resources.TransportLeg> L, ILogger<TransportLegGridSettingsService> logger)
     : BaseGridSettingsService<TransportLegDto>(localStorage, logger)
 {
     protected override string StorageKey => "TransportLegGridColumnSettings";

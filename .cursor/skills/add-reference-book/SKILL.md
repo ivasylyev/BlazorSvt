@@ -381,15 +381,25 @@ public class {Entity}DetailDto { ... }
 
 ### Локализация
 
-Файлы: `Host/Resources/Svt.resx`, `Host/Resources/Svt.ru-RU.resx`
+**Platform** (общие UI-компоненты): `Platform/Resources/Platform.resx`, `Platform.ru-RU.resx`  
+Маркер: `BlazorSvt.Platform.Resources.Platform`, в коде — `IStringLocalizer<PlatformResources>` (alias в `GlobalUsings.cs`).
 
-Ключи:
+**Модуль** (строки справочника): `Modules/{Entity}/Resources/{Entity}.resx`, `{Entity}.ru-RU.resx`  
+Маркер: `BlazorSvt.Modules.{Entity}.Resources.{Entity}`, в сервисах — `IStringLocalizer<Resources.{Entity}>`.
+
+Ключи в **модульном** resx:
 
 - `{Entity}Dto.{Field}`, `{Entity}DetailDto.{Field}`
 - Для пар колонок Ru/En допустим **один** ключ заголовка без суффикса языка (например `NodeFromName` вместо `NodeFromNameRu`/`NodeFromNameEn`) — один заголовок на Ru/En колонку в `GridSettingsService`
 - `{Entity}Grid.Title`
-- `HeaderMenu.{Entity}`
 - `{Entity}DetailDto.Group.{GroupRank}.{SanitizedGroupNameEn}`
+
+Ключи в **Platform** resx:
+
+- `HeaderMenu.{Entity}` (пункт меню)
+- Прочие cross-cutting строки не добавлять в модульный resx
+
+В `{Entity}Grid.razor.cs` — `IStringLocalizer<Resources.{Entity}> EL` для `PageTitle` и специфичных сообщений; `SvtComponentBase.L` — только platform-строки.
 
 ### DI и меню
 
@@ -431,13 +441,13 @@ URL меню **должен совпадать** с `@page` в `.razor`.
 
 - [ ] Имя `{Entity}` получено
 - [ ] Короткий и длинный списки + фильтрация неиспользуемых
-- [ ] Переводы из Dictionary в resx
+- [ ] Переводы из Dictionary в `Modules/{Entity}/Resources/{Entity}.resx` + `HeaderMenu.{Entity}` в Platform.resx
 - [ ] SQL Structure 01–03 + Programmability
 - [ ] README обновлён
 - [ ] Structure задеплоен (01–03 или по согласованию)
 - [ ] Programmability задеплоен
 - [ ] SQL-верификация пройдена
-- [ ] C# модуль, DI, меню, resx
+- [ ] C# модуль, DI, меню, модульный resx + Platform.resx (меню)
 - [ ] `dotnet build` OK
 
 ---

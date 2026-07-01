@@ -2,13 +2,13 @@
 using System.Globalization;
 using System.Reflection;
 using BlazorSvt.Import.Models;
-using BlazorSvt.Host.Resources;
+using BlazorSvt.Platform.Resources;
 using ClosedXML.Excel;
 using Microsoft.Extensions.Localization;
 
 namespace BlazorSvt.Import.Services;
 
-public class ExcelParser(IStringLocalizer<Svt> localizer) : IExcelParser
+public class ExcelParser(IStringLocalizer<PlatformResources> localizer) : IExcelParser
 {
     private const int HeaderRowNumber = 3;
     private const int DataStartRowNumber = 4;

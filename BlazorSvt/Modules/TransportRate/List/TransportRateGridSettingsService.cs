@@ -7,7 +7,7 @@ using Microsoft.Extensions.Localization;
 namespace BlazorSvt.Modules.TransportRate.List;
 
 // ReSharper disable once InconsistentNaming
-public class TransportRateGridSettingsService(ILocalStorageService localStorage, IStringLocalizer<Svt> L, ILogger<TransportRateGridSettingsService> logger)
+public class TransportRateGridSettingsService(ILocalStorageService localStorage, IStringLocalizer<Resources.TransportRate> L, ILogger<TransportRateGridSettingsService> logger)
     : BaseGridSettingsService<TransportRateDto>(localStorage, logger)
 {
     protected override string StorageKey => "TransportRateGridColumnSettings";

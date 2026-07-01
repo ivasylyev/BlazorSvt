@@ -1,0 +1,272 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader><data name="Test" xml:space="preserve">
+    <value>Тест</value>
+  </data>
+  <data name="HeaderMenu.Home" xml:space="preserve">
+	  <value>Домашняя</value>
+  </data>
+  <data name="HeaderMenu.TransportRate" xml:space="preserve">
+	  <value>Ставки</value>
+  </data>
+  <data name="HeaderMenu.TransportLeg" xml:space="preserve">
+	  <value>Транспортные плечи</value>
+  </data>
+  <data name="HeaderMenu.Load" xml:space="preserve">
+	  <value>Загрузка</value>
+  </data>
+  <data name="Load.Title" xml:space="preserve">
+	  <value>Загрузка</value>
+  </data>
+  <data name="Load.WithoutProxy" xml:space="preserve">
+	  <value>Плечи без прокси</value>
+  </data>
+  <data name="Load.Proxy" xml:space="preserve">
+	  <value>Плечи с прокси</value>
+  </data>
+	<data name="LoadTimePanel.LoadTimeFormat" xml:space="preserve">
+	  <value>Время загрузки {0:F3} сек.</value>
+  </data>
+  <data name="GenericGrid.Settings" xml:space="preserve">
+	  <value>Настройки</value>
+  </data>
+  <data name="GenericGrid.ResetFilters" xml:space="preserve">
+	  <value>Сбросить фильтры</value>
+  </data>
+  <data name="GenericGrid.EnumFilterSelectText" xml:space="preserve">
+	  <value>Выберите</value>
+  </data>
+  <data name="GenericGrid.PaginationItemsTextFormat" xml:space="preserve">
+	  <value>{0} - {1} из {2} элементов</value>
+  </data>
+  <data name="GenericGrid.Reports" xml:space="preserve">
+	  <value>Отчеты</value>
+  </data>
+  <data name="GenericGrid.ShortReport" xml:space="preserve">
+	  <value>Краткий отчет</value>
+  </data>
+  <data name="GenericGrid.FullReport" xml:space="preserve">
+	  <value>Полный отчет</value>
+  </data>
+  <data name="GenericGrid.ReportConfirm.Title" xml:space="preserve">
+	  <value>Подтверждение отчёта</value>
+  </data>
+  <data name="GenericGrid.ReportConfirm.Message" xml:space="preserve">
+	  <value>Отчёт имеет {0} строчек. Формирование может занять несколько минут. Продолжить?</value>
+  </data>
+  <data name="GenericGrid.ReportConfirm.Yes" xml:space="preserve">
+	  <value>Да</value>
+  </data>
+  <data name="GenericGrid.ReportConfirm.No" xml:space="preserve">
+	  <value>Нет</value>
+  </data>
+  <data name="GenericGrid.ReportGenerating" xml:space="preserve">
+	  <value>Отчет формируется...</value>
+  </data>
+  <data name="LoadTimePanel.NotLoaded" xml:space="preserve">
+	  <value>Данные еще не загружены</value>
+  </data>
+  <data name="ExcelLoader.Load" xml:space="preserve">
+	  <value>Загрузить</value>
+  </data>
+  <data name="Settings.Title" xml:space="preserve">
+	  <value>Настройки</value>
+  </data>
+	<data name="Settings.Ok" xml:space="preserve">
+	  <value>ОК</value>
+  </data>
+  <data name="Settings.Reset" xml:space="preserve">
+	  <value>Сбросить</value>
+  </data>
+  <data name="Settings.Cancel" xml:space="preserve">
+	  <value>Отмена</value>
+  </data>
+  <data name="Home.Home" xml:space="preserve">
+	  <value>Домашняя</value>
+  </data>
+	<data name="Home.Message" xml:space="preserve">
+	  <value>Демо проект СВТ с использованием Blazor Bootstrap Web App (.NET 9) + MS SQL Full Text Search.</value>
+  </data>
+  <data name="ErrorDisplay.Message" xml:space="preserve">
+	  <value>Сообщение:</value>
+  </data>
+  <data name="ErrorDisplay.Type" xml:space="preserve">
+	  <value>Тип:</value>
+  </data>
+  <data name="ErrorDisplay.StackTrace" xml:space="preserve">
+	  <value>StackTrace:</value>
+  </data>
+  <data name="ErrorDisplay.Title" xml:space="preserve">
+	  <value>При выполнении программы возникла ошибка. Нажмите для просмотра деталей.</value>
+  </data>
+  <data name="FilterOperator.Contains" xml:space="preserve">
+	  <value>Содержит</value>
+  </data>
+  <data name="FilterOperator.DoesNotContain" xml:space="preserve">
+	  <value>Не содержит</value>
+  </data>
+  <data name="FilterOperator.StartsWith" xml:space="preserve">
+	  <value>Начинается с</value>
+  </data>
+  <data name="FilterOperator.EndsWith" xml:space="preserve">
+	  <value>Заканчивается на</value>
+  </data>
+  <data name="FilterOperator.Equals" xml:space="preserve">
+	  <value>Равно</value>
+  </data>
+  <data name="FilterOperator.NotEquals" xml:space="preserve">
+	  <value>Не равно</value>
+  </data>
+  <data name="FilterOperator.LessThan" xml:space="preserve">
+	  <value>Меньше</value>
+  </data>
+  <data name="FilterOperator.LessThanOrEquals" xml:space="preserve">
+	  <value>Меньше или равно</value>
+  </data>
+  <data name="FilterOperator.GreaterThan" xml:space="preserve">
+	  <value>Больше</value>
+  </data>
+  <data name="FilterOperator.GreaterThanOrEquals" xml:space="preserve">
+	  <value>Больше или равно</value>
+  </data>
+  <data name="FilterOperator.Clear" xml:space="preserve">
+	  <value>Очистить</value>
+  </data>
+  <data name="Validation.ParseError" xml:space="preserve">
+	  <value>Не удалось преобразовать значение '{0}' для поля '{1}'</value>
+  </data>
+  <data name="Validation.Required" xml:space="preserve">
+	  <value>Обязательное поле</value>
+  </data>
+  <data name="Validation.GreaterThanZero" xml:space="preserve">
+	  <value>Значение должно быть больше нуля</value>
+  </data>
+  <data name="Excel.ErrorsColumnHeader" xml:space="preserve">
+	  <value>Ошибки</value>
+  </data>
+  <data name="Load.ImportSuccess" xml:space="preserve">
+	  <value>Загружено строк: {0}</value>
+  </data>
+  <data name="Load.ImportHasErrors" xml:space="preserve">
+	  <value>Найдены ошибки в строках: {0}</value>
+  </data>
+  <data name="Load.DownloadErrors" xml:space="preserve">
+	  <value>Скачать файл с ошибками</value>
+  </data>
+</root>

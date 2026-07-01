@@ -1,5 +1,5 @@
 ﻿using BlazorSvt.Import.Models;
-using BlazorSvt.Host.Resources;
+using BlazorSvt.Platform.Resources;
 using FluentValidation;
 using Microsoft.Extensions.Localization;
 
@@ -7,7 +7,7 @@ namespace BlazorSvt.Import.Validators;
 
 public class LegStgWithoutProxyDtoValidator : AbstractValidator<LegStgWithoutProxyDto>
 {
-    public LegStgWithoutProxyDtoValidator(IStringLocalizer<Svt> localizer)
+    public LegStgWithoutProxyDtoValidator(IStringLocalizer<PlatformResources> localizer)
     {
         RuleFor(x => x.Code)
             .NotEmpty()

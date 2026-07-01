@@ -1,4 +1,5 @@
-global using BlazorSvt.Host.Resources;
+global using BlazorSvt.Platform.Resources;
+global using PlatformResources = BlazorSvt.Platform.Resources.Platform;
 global using BlazorSvt.Platform.Grid.Components;
 global using BlazorSvt.Platform.Grid.Models;
 global using BlazorSvt.Platform.Grid.Services;

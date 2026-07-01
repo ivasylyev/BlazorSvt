@@ -2,11 +2,15 @@
 using BlazorSvt.Modules.TransportRate.Detail;
 using BlazorSvt.Platform.Grid.Services;
 using Microsoft.AspNetCore.Components;
+using Microsoft.Extensions.Localization;
 
 namespace BlazorSvt.Modules.TransportRate.List;
 
 public partial class TransportRateGrid : BaseGridPage<TransportRateDto, TransportRateDetailDto>
 {
+    [Inject]
+    protected IStringLocalizer<Resources.TransportRate> EL { get; set; } = default!;
+
     [Inject] 
     public IGridDataService<TransportRateDto, TransportRateDetailDto> TransportRateDataService { get; set; } = default!;
 
@@ -23,10 +27,10 @@ public partial class TransportRateGrid : BaseGridPage<TransportRateDto, Transpor
     }
     private string GetCustomMessage(TransportRateDetailDto detail)
     {
-        var message = L["TransportRateDetailDto.CustomMessage"].Value;
+        var message = EL["TransportRateDetailDto.CustomMessage"].Value;
         message += detail.ProxyNodeCode is null
-            ? L["TransportRateDetailDto.CustomMessageWithoutProxy"].Value 
-            : L["TransportRateDetailDto.CustomMessageWithProxy"].Value; 
+            ? EL["TransportRateDetailDto.CustomMessageWithoutProxy"].Value 
+            : EL["TransportRateDetailDto.CustomMessageWithProxy"].Value; 
         return message;
     }
 }

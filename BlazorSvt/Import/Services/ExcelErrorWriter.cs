@@ -1,11 +1,11 @@
 ﻿using BlazorSvt.Import.Models;
-using BlazorSvt.Host.Resources;
+using BlazorSvt.Platform.Resources;
 using ClosedXML.Excel;
 using Microsoft.Extensions.Localization;
 
 namespace BlazorSvt.Import.Services;
 
-public class ExcelErrorWriter(IStringLocalizer<Svt> localizer) : IExcelErrorWriter
+public class ExcelErrorWriter(IStringLocalizer<PlatformResources> localizer) : IExcelErrorWriter
 {
     private const int HeaderRowNumber = 3;
 

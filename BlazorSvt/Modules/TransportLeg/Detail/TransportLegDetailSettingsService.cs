@@ -6,7 +6,7 @@ using Microsoft.Extensions.Localization;
 namespace BlazorSvt.Modules.TransportLeg.Detail;
 
 // ReSharper disable once InconsistentNaming
-public class TransportLegDetailSettingsService(IStringLocalizer<Svt> L, ILogger<TransportLegDetailSettingsService> logger) : IDetailSettingsService<TransportLegDetailDto>
+public class TransportLegDetailSettingsService(IStringLocalizer<Resources.TransportLeg> L, ILogger<TransportLegDetailSettingsService> logger) : IDetailSettingsService<TransportLegDetailDto>
 {
     public DetailSettingsCollection<TransportLegDetailDto> GetGridDetailSettings(string lang)
     {
