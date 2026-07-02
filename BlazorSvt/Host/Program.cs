@@ -2,6 +2,7 @@
 using Blazored.LocalStorage;
 using BlazorSvt.Host.Components;
 using BlazorSvt.Import;
+using BlazorSvt.Modules.LocationsNodes;
 using BlazorSvt.Modules.TransportLeg;
 using BlazorSvt.Modules.TransportRate;
 using BlazorSvt.Platform;
@@ -34,6 +35,7 @@ builder.Services.AddPlatform(builder.Configuration);
 builder.Services.AddImportModule();
 builder.Services.AddTransportRateModule();
 builder.Services.AddTransportLegModule();
+builder.Services.AddLocationsNodesModule();
 
 var supportedCultures = new[] { "ru-RU", "en-US" };
 var localizationOptions = new RequestLocalizationOptions()

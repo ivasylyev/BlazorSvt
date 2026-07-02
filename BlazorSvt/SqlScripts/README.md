@@ -14,8 +14,9 @@ SqlScripts/
 │   ├── TransportLeg/
 │   │   ├── Structure/
 │   │   └── Programmability/
-│   └── LocationNodes/      # SQL-only (C#-модуль в разработке)
-│       └── Structure/
+│   └── LocationsNodes/
+│       ├── Structure/
+│       └── Programmability/
 └── Translations_info.txt   # Справочник переводов полей (не для деплоя)
 ```
 
@@ -54,11 +55,16 @@ SqlScripts/
 | 5 | `Modules/TransportLeg/Programmability/TransportLeg_Get.sql` |
 | 6 | `Modules/TransportLeg/Programmability/TransportLeg_ExportFull.sql` |
 
-**LocationNodes** (опционально)
+**LocationsNodes**
 
 | # | Скрипт |
 |---|--------|
-| 1 | `Modules/LocationNodes/Structure/01.LocationNodes_CreateTable.sql` |
+| 1 | `Modules/LocationsNodes/Structure/01.LocationsNodes_CreateTable.sql` |
+| 2 | `Modules/LocationsNodes/Structure/02.LocationsNodes_Insert.sql` |
+| 3 | `Modules/LocationsNodes/Structure/03.LocationsNodes_CreateIndexes.sql` |
+| 4 | `Modules/LocationsNodes/Programmability/vw_LocationsNodes_Detail.sql` |
+| 5 | `Modules/LocationsNodes/Programmability/LocationsNodes_Get.sql` |
+| 6 | `Modules/LocationsNodes/Programmability/LocationsNodes_ExportFull.sql` |
 
 ## Добавление нового справочника
 

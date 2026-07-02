@@ -151,28 +151,74 @@ ORDER BY GroupRank, AttributeRank;
 
 ### 5. Переводы заголовков колонок (resx)
 
-Приоритет — **Dictionary**, fallback — `AttributeInfo.Description`:
+Приоритет — **Dictionary** (`Context.Name = 'pei/' + {Entity} + '/ai'`).  
+В таблице `Locale`: **Id 1 = en**, **Id 2 = ru** (проверено по `dbo.Locale`).
+
+| Файл | Источник |
+|------|----------|
+| `Modules/{Entity}/Resources/{Entity}.resx` | Dictionary `LocaleId = 1` (en) |
+| `Modules/{Entity}/Resources/{Entity}.ru-RU.resx` | Dictionary `LocaleId = 2` (ru) |
+
+Fallback для **ru-RU** — `AttributeInfo.Description` (обычно русский).  
+Для **default resx** fallback на `Description` **не использовать** (там русский текст) — только `LocaleId = 1`, иначе имя атрибута.
+
+Проверка одного атрибута:
 
 ```sql
 DECLARE
     @PrimitiveEntityInfoName NVARCHAR(100) = '{Entity}',
     @AttributeSystemName NVARCHAR(100) = '{AttributeSystemName}',
-    @AttributeNameTranslationRu NVARCHAR(100),
     @AttributeNameTranslationEn NVARCHAR(100),
+    @AttributeNameTranslationRu NVARCHAR(100),
     @ContextID INT;
 
 SELECT @ContextID = [Id]
 FROM [dbo].[Context]
 WHERE [Name] = 'pei/' + @PrimitiveEntityInfoName + '/ai';
 
-SELECT @AttributeNameTranslationRu = [Value] FROM Dictionary
+SELECT @AttributeNameTranslationEn = [Value] FROM Dictionary
 WHERE [key] = @AttributeSystemName AND ContextId = @ContextID AND LocaleId = 1;
 
-SELECT @AttributeNameTranslationEn = [Value] FROM Dictionary
+SELECT @AttributeNameTranslationRu = [Value] FROM Dictionary
 WHERE [key] = @AttributeSystemName AND ContextId = @ContextID AND LocaleId = 2;
+
+SELECT @AttributeNameTranslationRu, @AttributeNameTranslationEn;
+-- 1-я колонка → ru-RU.resx, 2-я → .resx
 ```
 
-> Для контекста `pei/{Entity}/ai`: `LocaleId` 1 = RU, 2 = EN. В скрипте групп (ContextId 258) — как в п.4 (`1` → ValueEn, `2` → ValueRu).
+Пакетная выборка всех атрибутов:
+
+```sql
+DECLARE @ContextID INT;
+SELECT @ContextID = [Id] FROM [dbo].[Context] WHERE [Name] = 'pei/{Entity}/ai';
+
+SELECT
+    ai.[Name] AS AttributeSystemName,
+    dEn.[Value] AS TranslationEn,
+    dRu.[Value] AS TranslationRu,
+    ai.[Description] AS DescriptionRu
+FROM AttributeInfo ai
+LEFT JOIN Dictionary dEn ON dEn.[key] = ai.[Name] AND dEn.ContextId = @ContextID AND dEn.LocaleId = 1
+LEFT JOIN Dictionary dRu ON dRu.[key] = ai.[Name] AND dRu.ContextId = @ContextID AND dRu.LocaleId = 2
+WHERE ai.PrimitiveEntityInfoId = (SELECT TOP 1 Id FROM PrimitiveEntityInfo WHERE [name] = '{Entity}')
+ORDER BY ai.[Name];
+```
+
+**Генерация resx:** скрипт `.cursor/skills/add-reference-book/scripts/generate-module-resx.py`
+
+```powershell
+python .cursor/skills/add-reference-book/scripts/generate-module-resx.py `
+  --entity LocationsNodes `
+  --output-dir BlazorSvt/Modules/LocationsNodes/Resources
+```
+
+Требования к генерации:
+- `sqlcmd -f o:65001`, вывод в файл (не stdout) — иначе ломается кодировка на Windows
+- **Не путать** колонки En/Ru при записи в resx
+- Ключи resx — имена свойств DTO (`{Entity}DetailDto.{Field}`), для переименованных полей — маппинг в скрипте
+- После генерации spot-check: `Pobox` → en=`Pobox`, ru=`Адрес: Индекс`
+
+> В скрипте групп detail (ContextId 258) маппинг LocaleId **другой**: `1` → ValueEn, `2` → ValueRu — не смешивать с `pei/{Entity}/ai`.
 
 ### 6. Ссылочные атрибуты
 

@@ -1,0 +1,400 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <resheader name="resmimetype"><value>text/microsoft-resx</value></resheader>
+  <resheader name="version"><value>2.0</value></resheader>
+  <resheader name="reader"><value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value></resheader>
+  <resheader name="writer"><value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value></resheader>
+  <data name="LocationsNodesDetailDto.4_level_City" xml:space="preserve">
+    <value>4 ур. Город</value>
+  </data>
+  <data name="LocationsNodesDetailDto.4_level_City_codeN" xml:space="preserve">
+    <value>4 ур. Город</value>
+  </data>
+  <data name="LocationsNodesDetailDto.Active" xml:space="preserve">
+    <value>Активный</value>
+  </data>
+  <data name="LocationsNodesDetailDto.AddressCountryCodeDPO" xml:space="preserve">
+    <value>Адрес: Страна (DPO)</value>
+  </data>
+  <data name="LocationsNodesDetailDto.AddressCountryISO2" xml:space="preserve">
+    <value>Адрес: Страна (ISO2)</value>
+  </data>
+  <data name="LocationsNodesDetailDto.AddressCountryISO3" xml:space="preserve">
+    <value>Адрес: Страна (ISO3)</value>
+  </data>
+  <data name="LocationsNodesDetailDto.AddressLanguage" xml:space="preserve">
+    <value>Язык заполнения адреса</value>
+  </data>
+  <data name="LocationsNodesDetailDto.AddressNameCountryEN" xml:space="preserve">
+    <value>Адрес: Страна (EN)</value>
+  </data>
+  <data name="LocationsNodesDetailDto.AddressNameCountryRU" xml:space="preserve">
+    <value>Адрес: Страна (RU)</value>
+  </data>
+  <data name="LocationsNodesDetailDto.AddressRegionISO" xml:space="preserve">
+    <value>Код региона ISO</value>
+  </data>
+  <data name="LocationsNodesDetailDto.Archive" xml:space="preserve">
+    <value>Архив</value>
+  </data>
+  <data name="LocationsNodesDetailDto.AutoNode" xml:space="preserve">
+    <value>Авто узел</value>
+  </data>
+  <data name="LocationsNodesDetailDto.BorderCountryCodeDPO" xml:space="preserve">
+    <value>Граничащая страна (код DPO)</value>
+  </data>
+  <data name="LocationsNodesDetailDto.BorderCountryISO2" xml:space="preserve">
+    <value>Граничащая страна (ISO2)</value>
+  </data>
+  <data name="LocationsNodesDetailDto.BorderCountryISO3" xml:space="preserve">
+    <value>Граничащая страна (ISO3)</value>
+  </data>
+  <data name="LocationsNodesDetailDto.BorderCrossing" xml:space="preserve">
+    <value>Пересечение границы</value>
+  </data>
+  <data name="LocationsNodesDetailDto.BorderNameCountryEN" xml:space="preserve">
+    <value>Граничащая страна (EN)</value>
+  </data>
+  <data name="LocationsNodesDetailDto.BorderNameCountryRU" xml:space="preserve">
+    <value>Граничащая страна (RU)</value>
+  </data>
+  <data name="LocationsNodesDetailDto.CannotDeliver" xml:space="preserve">
+    <value>Невозможность поставки</value>
+  </data>
+  <data name="LocationsNodesDetailDto.City" xml:space="preserve">
+    <value>Город/населенный пункт</value>
+  </data>
+  <data name="LocationsNodesDetailDto.Code" xml:space="preserve">
+    <value>Code</value>
+  </data>
+  <data name="LocationsNodesDetailDto.CodeZDroad" xml:space="preserve">
+    <value>Код железной дороги</value>
+  </data>
+  <data name="LocationsNodesDetailDto.Code_NSI" xml:space="preserve">
+    <value>Код НСИ</value>
+  </data>
+  <data name="LocationsNodesDetailDto.CoordinateL" xml:space="preserve">
+    <value>Географическая долгота</value>
+  </data>
+  <data name="LocationsNodesDetailDto.CoordinateW" xml:space="preserve">
+    <value>Географическая широта</value>
+  </data>
+  <data name="LocationsNodesDetailDto.CountryCodeDPO" xml:space="preserve">
+    <value>Код страны DPO</value>
+  </data>
+  <data name="LocationsNodesDetailDto.CountryEN" xml:space="preserve">
+    <value>Страна (EN)</value>
+  </data>
+  <data name="LocationsNodesDetailDto.CountryISO2" xml:space="preserve">
+    <value>Страна (ISO2)</value>
+  </data>
+  <data name="LocationsNodesDetailDto.CountryISO3" xml:space="preserve">
+    <value>Код страны (ISO 3)</value>
+  </data>
+  <data name="LocationsNodesDetailDto.CountryName" xml:space="preserve">
+    <value>Страна</value>
+  </data>
+  <data name="LocationsNodesDetailDto.CountryRU" xml:space="preserve">
+    <value>Страна (RU)</value>
+  </data>
+  <data name="LocationsNodesDetailDto.CreationDate" xml:space="preserve">
+    <value>Дата создания</value>
+  </data>
+  <data name="LocationsNodesDetailDto.CustomID" xml:space="preserve">
+    <value>Код таможенного пункта</value>
+  </data>
+  <data name="LocationsNodesDetailDto.FIASCity" xml:space="preserve">
+    <value>Код города ФИАС</value>
+  </data>
+  <data name="LocationsNodesDetailDto.FIASCodeAddress" xml:space="preserve">
+    <value>ФИАС/ГАР адреса</value>
+  </data>
+  <data name="LocationsNodesDetailDto.FIASCodeCity" xml:space="preserve">
+    <value>Код города ФИАС</value>
+  </data>
+  <data name="LocationsNodesDetailDto.FIASDistrict" xml:space="preserve">
+    <value>Код района ФИАС</value>
+  </data>
+  <data name="LocationsNodesDetailDto.FIASHouse" xml:space="preserve">
+    <value>Код дома ФИАС</value>
+  </data>
+  <data name="LocationsNodesDetailDto.FIASOfficeApart" xml:space="preserve">
+    <value>Код офиса/квартиры ФИАС</value>
+  </data>
+  <data name="LocationsNodesDetailDto.FIASRegion" xml:space="preserve">
+    <value>Код региона ФИАС</value>
+  </data>
+  <data name="LocationsNodesDetailDto.FIASStreet" xml:space="preserve">
+    <value>Код улицы ФИАС</value>
+  </data>
+  <data name="LocationsNodesDetailDto.FullAddress" xml:space="preserve">
+    <value>Полный адрес</value>
+  </data>
+  <data name="LocationsNodesDetailDto.GeonameId" xml:space="preserve">
+    <value>ИД GeoNames</value>
+  </data>
+  <data name="LocationsNodesDetailDto.Group.0.Default" xml:space="preserve">
+    <value>По умолчанию</value>
+  </data>
+  <data name="LocationsNodesDetailDto.House" xml:space="preserve">
+    <value>Дом</value>
+  </data>
+  <data name="LocationsNodesDetailDto.IsArchive" xml:space="preserve">
+    <value>Архив</value>
+  </data>
+  <data name="LocationsNodesDetailDto.IsDadata" xml:space="preserve">
+    <value>Из Дадаты</value>
+  </data>
+  <data name="LocationsNodesDetailDto.IsFactory" xml:space="preserve">
+    <value>Предприятие</value>
+  </data>
+  <data name="LocationsNodesDetailDto.IsKladr" xml:space="preserve">
+    <value>Заполнено по КЛАДР</value>
+  </data>
+  <data name="LocationsNodesDetailDto.IsPlan" xml:space="preserve">
+    <value>Для эконом планирования</value>
+  </data>
+  <data name="LocationsNodesDetailDto.IsPlanning" xml:space="preserve">
+    <value>Используется в планировании</value>
+  </data>
+  <data name="LocationsNodesDetailDto.IsPortShip" xml:space="preserve">
+    <value>Порт-корабль</value>
+  </data>
+  <data name="LocationsNodesDetailDto.IsPortStore" xml:space="preserve">
+    <value>Порт-склад</value>
+  </data>
+  <data name="LocationsNodesDetailDto.IsStore" xml:space="preserve">
+    <value>Склад/МОХ</value>
+  </data>
+  <data name="LocationsNodesDetailDto.LastChangeDate" xml:space="preserve">
+    <value>Дата изменения</value>
+  </data>
+  <data name="LocationsNodesDetailDto.Level4CityEN" xml:space="preserve">
+    <value>4 ур. Город (en)</value>
+  </data>
+  <data name="LocationsNodesDetailDto.Level4CityFias" xml:space="preserve">
+    <value>Код 4-й ур. - Город ФИАС</value>
+  </data>
+  <data name="LocationsNodesDetailDto.Level4CityRU" xml:space="preserve">
+    <value>4 ур. Город (ru)</value>
+  </data>
+  <data name="LocationsNodesDetailDto.LocationTypeCodeNSI" xml:space="preserve">
+    <value>Тип местоположения код НСИ</value>
+  </data>
+  <data name="LocationsNodesDetailDto.LocationTypeName" xml:space="preserve">
+    <value>Тип местоположения</value>
+  </data>
+  <data name="LocationsNodesDetailDto.MarketCode" xml:space="preserve">
+    <value>Код рынка</value>
+  </data>
+  <data name="LocationsNodesDetailDto.MarketCodeDPO" xml:space="preserve">
+    <value>Код рынка DPO</value>
+  </data>
+  <data name="LocationsNodesDetailDto.MarketNameEN" xml:space="preserve">
+    <value>Рынок (EN)</value>
+  </data>
+  <data name="LocationsNodesDetailDto.MarketNameRU" xml:space="preserve">
+    <value>Рынок (RU)</value>
+  </data>
+  <data name="LocationsNodesDetailDto.NameCityDistrictRU" xml:space="preserve">
+    <value>Район города</value>
+  </data>
+  <data name="LocationsNodesDetailDto.NameCityRU" xml:space="preserve">
+    <value>Город</value>
+  </data>
+  <data name="LocationsNodesDetailDto.NameCountryEN" xml:space="preserve">
+    <value>Страна НСИ (EN)</value>
+  </data>
+  <data name="LocationsNodesDetailDto.NameCustom" xml:space="preserve">
+    <value>Таможенный пункт</value>
+  </data>
+  <data name="LocationsNodesDetailDto.NameDistrictRU" xml:space="preserve">
+    <value>Адрес: Район</value>
+  </data>
+  <data name="LocationsNodesDetailDto.NameEn" xml:space="preserve">
+    <value>Наименование EN</value>
+  </data>
+  <data name="LocationsNodesDetailDto.NameFederalDistrictRU" xml:space="preserve">
+    <value>Федеральный округ</value>
+  </data>
+  <data name="LocationsNodesDetailDto.NameRu" xml:space="preserve">
+    <value>Наименование RU</value>
+  </data>
+  <data name="LocationsNodesDetailDto.NameStoreEN" xml:space="preserve">
+    <value>Наименование склада (EN)</value>
+  </data>
+  <data name="LocationsNodesDetailDto.NameStoreRU" xml:space="preserve">
+    <value>Наименование склада (RU)</value>
+  </data>
+  <data name="LocationsNodesDetailDto.NameStore_en" xml:space="preserve">
+    <value>Склад (EN)</value>
+  </data>
+  <data name="LocationsNodesDetailDto.NameStore_ru" xml:space="preserve">
+    <value>Склад (RU)</value>
+  </data>
+  <data name="LocationsNodesDetailDto.NameZD" xml:space="preserve">
+    <value>ЖД станция</value>
+  </data>
+  <data name="LocationsNodesDetailDto.NameZDEN" xml:space="preserve">
+    <value>ЖД станция (EN)</value>
+  </data>
+  <data name="LocationsNodesDetailDto.NameZDroadEN" xml:space="preserve">
+    <value>Наименование железной дороги (EN)</value>
+  </data>
+  <data name="LocationsNodesDetailDto.NameZDroadRU" xml:space="preserve">
+    <value>Наименование железной дороги (RU)</value>
+  </data>
+  <data name="LocationsNodesDetailDto.No" xml:space="preserve">
+    <value>Нет</value>
+  </data>
+  <data name="LocationsNodesDetailDto.NodesCode" xml:space="preserve">
+    <value>Код местоположения/узла</value>
+  </data>
+  <data name="LocationsNodesDetailDto.OKTMOCode" xml:space="preserve">
+    <value>Код ОКТМО адреса местоположения</value>
+  </data>
+  <data name="LocationsNodesDetailDto.OfficeApart" xml:space="preserve">
+    <value>Офис/Квартира</value>
+  </data>
+  <data name="LocationsNodesDetailDto.OpenStreetMap" xml:space="preserve">
+    <value>Код OpenStreetMap</value>
+  </data>
+  <data name="LocationsNodesDetailDto.Pobox" xml:space="preserve">
+    <value>Адрес: Индекс</value>
+  </data>
+  <data name="LocationsNodesDetailDto.PointTube" xml:space="preserve">
+    <value>Точка врезки трубы</value>
+  </data>
+  <data name="LocationsNodesDetailDto.RegionCodeDPO" xml:space="preserve">
+    <value>Код региона DPO</value>
+  </data>
+  <data name="LocationsNodesDetailDto.RegionCodeNSI" xml:space="preserve">
+    <value>Регион код НСИ</value>
+  </data>
+  <data name="LocationsNodesDetailDto.RegionCodeRF" xml:space="preserve">
+    <value>Код региона РФ</value>
+  </data>
+  <data name="LocationsNodesDetailDto.RegionCountryMarketType" xml:space="preserve">
+    <value>Рынок/страна/регион</value>
+  </data>
+  <data name="LocationsNodesDetailDto.RegionEN" xml:space="preserve">
+    <value>Регион (EN)</value>
+  </data>
+  <data name="LocationsNodesDetailDto.RegionNSIEN" xml:space="preserve">
+    <value>Регион НСИ (EN)</value>
+  </data>
+  <data name="LocationsNodesDetailDto.RegionName" xml:space="preserve">
+    <value>Регион</value>
+  </data>
+  <data name="LocationsNodesDetailDto.RegionRU" xml:space="preserve">
+    <value>Регион (RU)</value>
+  </data>
+  <data name="LocationsNodesDetailDto.Seaport" xml:space="preserve">
+    <value>Порт</value>
+  </data>
+  <data name="LocationsNodesDetailDto.ShipmentPoint" xml:space="preserve">
+    <value>Пункт отгрузки</value>
+  </data>
+  <data name="LocationsNodesDetailDto.ShipmentPointOEBSCode" xml:space="preserve">
+    <value>Пункт отгрузки (код OEBS)</value>
+  </data>
+  <data name="LocationsNodesDetailDto.ShipmentPointSAPCode" xml:space="preserve">
+    <value>Пункт отгрузки (код SAP)</value>
+  </data>
+  <data name="LocationsNodesDetailDto.ShipmentPoint_en" xml:space="preserve">
+    <value>Пункт отгрузки (EN)</value>
+  </data>
+  <data name="LocationsNodesDetailDto.Status" xml:space="preserve">
+    <value>Статус записи</value>
+  </data>
+  <data name="LocationsNodesDetailDto.StatusNSI" xml:space="preserve">
+    <value>Статус записи НСИ</value>
+  </data>
+  <data name="LocationsNodesDetailDto.StoreID" xml:space="preserve">
+    <value>ID Код АСВ НСИ склада</value>
+  </data>
+  <data name="LocationsNodesDetailDto.Street" xml:space="preserve">
+    <value>Улица</value>
+  </data>
+  <data name="LocationsNodesDetailDto.Terminal" xml:space="preserve">
+    <value>Терминал</value>
+  </data>
+  <data name="LocationsNodesDetailDto.TransportArea" xml:space="preserve">
+    <value>Транспортная зона</value>
+  </data>
+  <data name="LocationsNodesDetailDto.TypeNodeCodeNSI" xml:space="preserve">
+    <value>Тип узла код НСИ</value>
+  </data>
+  <data name="LocationsNodesDetailDto.TypeNodeName" xml:space="preserve">
+    <value>Тип узла</value>
+  </data>
+  <data name="LocationsNodesDetailDto.Virtual" xml:space="preserve">
+    <value>Виртуальное МП</value>
+  </data>
+  <data name="LocationsNodesDetailDto.Yes" xml:space="preserve">
+    <value>Да</value>
+  </data>
+  <data name="LocationsNodesDetailDto.ZDCode" xml:space="preserve">
+    <value>Код жд станции</value>
+  </data>
+  <data name="LocationsNodesDetailDto.ZDCodeN" xml:space="preserve">
+    <value>Код жд станции</value>
+  </data>
+  <data name="LocationsNodesDto.Active" xml:space="preserve">
+    <value>Активный</value>
+  </data>
+  <data name="LocationsNodesDto.Archive" xml:space="preserve">
+    <value>Архив</value>
+  </data>
+  <data name="LocationsNodesDto.Code" xml:space="preserve">
+    <value>Code</value>
+  </data>
+  <data name="LocationsNodesDto.CountryCode" xml:space="preserve">
+    <value>Код страны</value>
+  </data>
+  <data name="LocationsNodesDto.CountryName" xml:space="preserve">
+    <value>Страна</value>
+  </data>
+  <data name="LocationsNodesDto.CreationDate" xml:space="preserve">
+    <value>Дата создания</value>
+  </data>
+  <data name="LocationsNodesDto.IsArchive" xml:space="preserve">
+    <value>Архив</value>
+  </data>
+  <data name="LocationsNodesDto.LastChangeDate" xml:space="preserve">
+    <value>Дата изменения</value>
+  </data>
+  <data name="LocationsNodesDto.LocationTypeCode" xml:space="preserve">
+    <value>Код типа местоположения</value>
+  </data>
+  <data name="LocationsNodesDto.LocationTypeName" xml:space="preserve">
+    <value>Тип местоположения</value>
+  </data>
+  <data name="LocationsNodesDto.Name" xml:space="preserve">
+    <value>Наименование EN</value>
+  </data>
+  <data name="LocationsNodesDto.No" xml:space="preserve">
+    <value>Нет</value>
+  </data>
+  <data name="LocationsNodesDto.RegionCode" xml:space="preserve">
+    <value>Код региона</value>
+  </data>
+  <data name="LocationsNodesDto.RegionName" xml:space="preserve">
+    <value>Регион</value>
+  </data>
+  <data name="LocationsNodesDto.RegionRU" xml:space="preserve">
+    <value>Регион (RU)</value>
+  </data>
+  <data name="LocationsNodesDto.TypeNodeCode" xml:space="preserve">
+    <value>Код типа узла</value>
+  </data>
+  <data name="LocationsNodesDto.TypeNodeName" xml:space="preserve">
+    <value>Тип узла</value>
+  </data>
+  <data name="LocationsNodesDto.Yes" xml:space="preserve">
+    <value>Да</value>
+  </data>
+  <data name="LocationsNodesGrid.Title" xml:space="preserve">
+    <value>Узлы местоположений</value>
+  </data>
+</root>

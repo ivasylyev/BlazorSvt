@@ -129,6 +129,9 @@
   <data name="HeaderMenu.TransportLeg" xml:space="preserve">
 	  <value>Transport Legs</value>
   </data>
+  <data name="HeaderMenu.LocationsNodes" xml:space="preserve">
+	  <value>Location Nodes</value>
+  </data>
   <data name="HeaderMenu.Load" xml:space="preserve">
 	  <value>Load</value>
   </data>
