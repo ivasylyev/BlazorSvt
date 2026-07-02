@@ -77,7 +77,6 @@ BEGIN
             {"ColumnName": "RegionCode", "ColumnType": "NVARCHAR"},
             {"ColumnName": "RegionNameRu", "ColumnType": "NVARCHAR"},
             {"ColumnName": "RegionNameEn", "ColumnType": "NVARCHAR"},
-            {"ColumnName": "RegionRU", "ColumnType": "NVARCHAR"},
 
             {"ColumnName": "CountryNameRu", "ColumnType": "NVARCHAR"},
             {"ColumnName": "CountryNameEn", "ColumnType": "NVARCHAR"},
@@ -111,7 +110,6 @@ BEGIN
             RegionCode,
             RegionNameRu,
             RegionNameEn,
-            RegionRU,
 
             CountryNameRu,
             CountryNameEn,

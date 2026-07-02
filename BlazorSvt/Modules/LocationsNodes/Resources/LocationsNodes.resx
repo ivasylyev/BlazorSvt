@@ -371,7 +371,7 @@
     <value>Location type</value>
   </data>
   <data name="LocationsNodesDto.Name" xml:space="preserve">
-    <value>Name EN</value>
+    <value>Name</value>
   </data>
   <data name="LocationsNodesDto.No" xml:space="preserve">
     <value>No</value>

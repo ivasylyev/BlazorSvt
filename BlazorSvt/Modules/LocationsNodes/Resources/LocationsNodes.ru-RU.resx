@@ -371,7 +371,7 @@
     <value>Тип местоположения</value>
   </data>
   <data name="LocationsNodesDto.Name" xml:space="preserve">
-    <value>Наименование EN</value>
+    <value>Наименование</value>
   </data>
   <data name="LocationsNodesDto.No" xml:space="preserve">
     <value>Нет</value>

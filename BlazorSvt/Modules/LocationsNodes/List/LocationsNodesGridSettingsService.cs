@@ -124,16 +124,6 @@ public class LocationsNodesGridSettingsService(
                 Visible = true
             });
 
-        results.Add(new GridColumnSetting<LocationsNodesDto>
-        {
-            Name = nameof(LocationsNodesDto.RegionRU),
-            Header = L["LocationsNodesDto.RegionRU"],
-            DisplaySelector = dto => dto.RegionRU ?? string.Empty,
-            SortSelector = dto => dto.RegionRU ?? string.Empty,
-            Filterable = true,
-            Visible = true
-        });
-
         if (isRu)
             results.Add(new GridColumnSetting<LocationsNodesDto>
             {

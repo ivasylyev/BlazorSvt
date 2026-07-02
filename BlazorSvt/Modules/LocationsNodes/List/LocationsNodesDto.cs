@@ -24,7 +24,6 @@ public class LocationsNodesDto
     public string? RegionCode { get; set; }
     public string? RegionNameRu { get; set; }
     public string? RegionNameEn { get; set; }
-    public string? RegionRU { get; set; }
 
     public string? CountryNameRu { get; set; }
     public string? CountryNameEn { get; set; }
