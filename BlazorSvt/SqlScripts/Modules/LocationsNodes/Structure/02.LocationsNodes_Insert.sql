@@ -26,7 +26,6 @@ INSERT INTO v2.LocationsNodes_Snapshot (
     ,RegionRU
 
     ,CountryId
-    ,CountryCode
     ,CountryNameRu
     ,CountryNameEn
 
@@ -58,7 +57,6 @@ SELECT
         LEFT(n.RegionRU, 100) AS RegionRU,
 
         CAST(n.Country AS BIGINT) AS CountryId,
-        LEFT(c.Code, 50) AS CountryCode,
         LEFT(c.Name_ru, 100) AS CountryNameRu,
         LEFT(c.Name_en, 100) AS CountryNameEn,
 

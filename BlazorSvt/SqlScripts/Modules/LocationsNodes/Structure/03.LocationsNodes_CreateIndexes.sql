@@ -38,6 +38,7 @@ CREATE FULLTEXT INDEX ON v2.LocationsNodes_Snapshot
     TypeNodeNameEn         LANGUAGE 1033,
     RegionNameRu           LANGUAGE 1049,
     RegionNameEn           LANGUAGE 1033,
+    RegionCode             LANGUAGE 1033,
     RegionRU               LANGUAGE 1049,
     CountryNameRu          LANGUAGE 1049,
     CountryNameEn          LANGUAGE 1033
@@ -103,46 +104,6 @@ GO
 CREATE NONCLUSTERED INDEX ix_LocationsNodes_Snapshot_Archive_TypeNodeId ON v2.LocationsNodes_Snapshot
 (
     TypeNodeId
-)
-WHERE IsArchive = 1;
-GO
-
-DROP INDEX IF EXISTS ix_LocationNodesSnapshot_Active_RegionId ON [v2].[LocationNodesSnapshot];
-DROP INDEX IF EXISTS ix_LocationsNodes_Snapshot_Active_RegionId ON [v2].[LocationsNodes_Snapshot];
-GO
-CREATE NONCLUSTERED INDEX ix_LocationsNodes_Snapshot_Active_RegionId ON v2.LocationsNodes_Snapshot
-(
-    RegionId
-)
-WHERE IsArchive = 0;
-GO
-
-DROP INDEX IF EXISTS ix_LocationNodesSnapshot_Archive_RegionId ON [v2].[LocationNodesSnapshot];
-DROP INDEX IF EXISTS ix_LocationsNodes_Snapshot_Archive_RegionId ON [v2].[LocationsNodes_Snapshot];
-GO
-CREATE NONCLUSTERED INDEX ix_LocationsNodes_Snapshot_Archive_RegionId ON v2.LocationsNodes_Snapshot
-(
-    RegionId
-)
-WHERE IsArchive = 1;
-GO
-
-DROP INDEX IF EXISTS ix_LocationNodesSnapshot_Active_CountryId ON [v2].[LocationNodesSnapshot];
-DROP INDEX IF EXISTS ix_LocationsNodes_Snapshot_Active_CountryId ON [v2].[LocationsNodes_Snapshot];
-GO
-CREATE NONCLUSTERED INDEX ix_LocationsNodes_Snapshot_Active_CountryId ON v2.LocationsNodes_Snapshot
-(
-    CountryId
-)
-WHERE IsArchive = 0;
-GO
-
-DROP INDEX IF EXISTS ix_LocationNodesSnapshot_Archive_CountryId ON [v2].[LocationNodesSnapshot];
-DROP INDEX IF EXISTS ix_LocationsNodes_Snapshot_Archive_CountryId ON [v2].[LocationsNodes_Snapshot];
-GO
-CREATE NONCLUSTERED INDEX ix_LocationsNodes_Snapshot_Archive_CountryId ON v2.LocationsNodes_Snapshot
-(
-    CountryId
 )
 WHERE IsArchive = 1;
 GO

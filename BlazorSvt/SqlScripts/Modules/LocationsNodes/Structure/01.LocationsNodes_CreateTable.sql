@@ -93,7 +93,6 @@ CREATE TABLE v2.LocationsNodes_Snapshot (
     RegionRU                NVARCHAR(100) NULL,
 
     CountryId               BIGINT NULL,
-    CountryCode             NVARCHAR(50) NULL,
     CountryNameRu           NVARCHAR(100) NULL,
     CountryNameEn           NVARCHAR(100) NULL,
 

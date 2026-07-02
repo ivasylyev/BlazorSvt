@@ -29,6 +29,7 @@ exec v2.LocationsNodes_Get
         {"PropertyName":"LocationTypeIdRu","Value":"42854","Operator":"Equals"},
         {"PropertyName":"NameRu","Value":"нижн","Operator":"Contains"},
         {"PropertyName":"RegionNameRu","Value":"моск","Operator":"Contains"},
+        {"PropertyName":"RegionCode","Value":"MOS","Operator":"Contains"},
         {"PropertyName":"IsArchive","Value":"False","Operator":"Equals"}
         ]'
 
@@ -70,23 +71,14 @@ BEGIN
             {"ColumnName": "NameEn", "ColumnType": "NVARCHAR"},
 
             {"ColumnName": "LocationTypeId", "ColumnType": "ID"},
-            {"ColumnName": "LocationTypeCode", "ColumnType": "NVARCHAR"},
-            {"ColumnName": "LocationTypeNameRu", "ColumnType": "NVARCHAR"},
-            {"ColumnName": "LocationTypeNameEn", "ColumnType": "NVARCHAR"},
 
             {"ColumnName": "TypeNodeId", "ColumnType": "ID"},
-            {"ColumnName": "TypeNodeCode", "ColumnType": "NVARCHAR"},
-            {"ColumnName": "TypeNodeNameRu", "ColumnType": "NVARCHAR"},
-            {"ColumnName": "TypeNodeNameEn", "ColumnType": "NVARCHAR"},
 
-            {"ColumnName": "RegionId", "ColumnType": "ID"},
             {"ColumnName": "RegionCode", "ColumnType": "NVARCHAR"},
             {"ColumnName": "RegionNameRu", "ColumnType": "NVARCHAR"},
             {"ColumnName": "RegionNameEn", "ColumnType": "NVARCHAR"},
             {"ColumnName": "RegionRU", "ColumnType": "NVARCHAR"},
 
-            {"ColumnName": "CountryId", "ColumnType": "ID"},
-            {"ColumnName": "CountryCode", "ColumnType": "NVARCHAR"},
             {"ColumnName": "CountryNameRu", "ColumnType": "NVARCHAR"},
             {"ColumnName": "CountryNameEn", "ColumnType": "NVARCHAR"},
 
@@ -112,26 +104,15 @@ BEGIN
 
             LocationTypeId AS LocationTypeIdRu,
             LocationTypeId AS LocationTypeIdEn,
-            LocationTypeCode,
-            LocationTypeNameRu,
-            LocationTypeNameEn,
 
             TypeNodeId AS TypeNodeIdRu,
             TypeNodeId AS TypeNodeIdEn,
-            TypeNodeCode,
-            TypeNodeNameRu,
-            TypeNodeNameEn,
 
-            RegionId AS RegionIdRu,
-            RegionId AS RegionIdEn,
             RegionCode,
             RegionNameRu,
             RegionNameEn,
             RegionRU,
 
-            CountryId AS CountryIdRu,
-            CountryId AS CountryIdEn,
-            CountryCode,
             CountryNameRu,
             CountryNameEn,
 

@@ -261,12 +261,6 @@ WHERE DRu.[Value] = (
 
 **Признак ссылки:** FK-колонка в legacy table/view **или** целочисленный тип (`int`/`bigint`) и имя совпадает с другой сущностью / есть в [таблице алиасов](#таблица-алиасов-сущностей).
 
-**Поля для ссылки** (snapshot и detail):
-
-- `{Xxx}IdRu`, `{Xxx}IdEn` (detail и Get; в snapshot одно `{Xxx}Id`)
-- `{Xxx}Code`
-- `{Xxx}NameEn`, `{Xxx}NameRu`
-
 **JOIN:** приоритет по **Id**; если нет — по **Code** (как `ShipmentTypeCodeT` → `vw_ShipmentType.Code`).
 
 **Эвристика без явного FK:**
@@ -274,7 +268,39 @@ WHERE DRu.[Value] = (
 - `bigint NULL` (или `int`) + имя совпадает с `PrimitiveEntityInfo` / `vw_{Name}` → ссылка.
 - Иначе — **спросить пользователя**: число или ссылка? Если ссылка — на какой справочник?
 
-**Snapshot vs Detail:** обычно одинаковый набор полей из п.1 и п.4. Дополнительные вычисляемые поля (как `Leg1_*` у `TransportLeg`) — **только по явному запросу** после каркаса.
+#### Короткий словарь (<100, enum)
+
+- **Snapshot:** `{X}Id` + денорм. `Code`/`Name*` (INSERT через JOIN).
+- **Get / grid DTO:** только `{X}IdRu`, `{X}IdEn` (enum, `required`).
+- **Grid:** одна видимая колонка по enum (`GetDisplayName`); **без** `Code`, **без** `Name*`.
+- **Detail:** IdRu/IdEn допустимы (+ поля из `vw_*_Detail`).
+
+#### Длинный словарь (общий случай: Country и т.п.)
+
+- **Snapshot:** `{X}Id` для ETL (не отдавать в Get); `{X}NameRu`, `{X}NameEn`.
+- **Get / grid DTO:** только `{X}NameRu`, `{X}NameEn` (NVARCHAR, FTS).
+- **Grid:** одна видимая колонка `NameRu`/`NameEn`; **без Id**, **без Code**.
+- **Detail:** IdRu/IdEn допустимы.
+
+#### Whitelist «Code» (скрытый по умолчанию, FTS, пользователь может сделать видимым)
+
+`NodeFrom`, `NodeTo`, `ProxyNode`, `ProductGroup`, `Product`, `TransportKind`, `TransportType`, **`RegionCode`** (при ссылке на Region).
+
+- Строковые осмысленные сокращения (англ.).
+- `{X}Code` + `{X}NameRu/En` в Get/grid DTO; **без Id**.
+- Для `TransportKind`/`TransportType` (короткие из whitelist): enum + скрытый `{X}Code`.
+
+**Не whitelist:** `CountryCode` и прочие legacy-числовые коды — **не включать** в Get/DTO/snapshot.
+
+#### Индексы (snapshot)
+
+- NCIX по Id **длинных** ссылок (Region, Country, …) **не создавать**.
+- NCIX по Id **коротких** enum-ссылок (`LocationTypeId`, `TypeNodeId`, …) — **оставлять** (фильтр `Equals` по enum).
+- FTS по `Name*` существующий **не трогать**; для whitelist добавлять `{X}Code` в FTS.
+
+**Snapshot vs Detail:** detail может содержать IdRu/IdEn и полный набор полей из joined views. Get/grid — по правилам выше.
+
+**Эталон grid:** `TransportRate` (узлы, ProductGroup); `LocationsNodes` (Region с `RegionCode`, Country только Name).
 
 ### 7. IdsEnum (маленькие словари)
 
@@ -354,7 +380,7 @@ BlazorSvt/SqlScripts/Modules/{Entity}/
 - `UX_{Entity}_Snapshot_Id` на `[PRIMARY]` (для FTS при партициях)
 - FULLTEXT на `Code` (только если `Code` — `NVARCHAR`; для числового `Code` FTS не нужен — достаточно фильтрованных индексов), `*NameEn`, `*NameRu` (языки 1033 / 1049)
 - `ALTER FULLTEXT … SET STOPLIST = OFF`
-- Фильтрованные индексы на `Code` и ID-ссылки (`WHERE IsArchive = 0/1`)
+- Фильтрованные индексы на `Code` сущности и ID **коротких** enum-ссылок (`LocationTypeId`, …); **не** создавать NCIX по Id длинных ссылок (Region, Country)
 - `UPDATE STATISTICS … WITH FULLSCAN`
 
 ### Programmability
@@ -362,8 +388,9 @@ BlazorSvt/SqlScripts/Modules/{Entity}/
 **vw_{Entity}_Detail** — поля длинного списка (п.4) + системные; ссылки: `IdRu`/`IdEn`, `Code`, `Name_en`/`Name_ru` из joined views.  
 Образцы: `vw_TransportLegs_Detail.sql`, `vw_TransportRates_Detail.sql`.
 
-**{Entity}_Get** — только поля snapshot; вызов `v2.GetBlazorGridData`; `@AllowedColumnsJson` + `@SelectList`.  
-Id в SELECT: `XxxId AS XxxIdRu, XxxId AS XxxIdEn`.  
+**{Entity}_Get** — только поля snapshot для grid; вызов `v2.GetBlazorGridData`; `@AllowedColumnsJson` + `@SelectList`.  
+Длинные ссылки: только `NameRu`/`NameEn` (+ whitelist `Code`); Id **не** в SELECT.  
+Короткие enum: `{X}Id AS {X}IdRu, {X}Id AS {X}IdEn` — **без** `Code`/`Name*` в SELECT.  
 **Два примера** в комментарии: простой поиск и сложный (сортировка + ≥2 FTS-фильтра), если FTS-полей > 2.
 
 `ColumnType` в `@AllowedColumnsJson`:
@@ -456,7 +483,7 @@ public required RateTypeRu RateTypeIdRu { get; set; }
 public required RateTypeEn RateTypeIdEn { get; set; }
 ```
 
-Обычные FK без enum (`long? RegionIdRu`), строки и опциональные ссылки остаются nullable. Эталон: `TransportRateDto`, `TransportLegDto`.
+Обычные FK **длинных** словарей в grid DTO — только `NameRu`/`NameEn` (+ `RegionCode` из whitelist); Id **не** включать. Эталон: `TransportRateDto` (узлы), `LocationsNodesDto` (Region/Country).
 
 ### GridSettingsService
 
@@ -466,9 +493,10 @@ public required RateTypeEn RateTypeIdEn { get; set; }
 - **Все колонки видимы**, кроме `IsArchive`, `CreationDate`, `LastChangeDate`
 - `IsArchive`: `Visible = false`, `FilterValue = "False"` **всегда**
 - `CreationDate`, `LastChangeDate`: `Visible = false` **всегда** (без `FilterValue`)
-- Ссылки: отдельные колонки Ru/En (`XxxIdRu` / `XxxIdEn`)
-- `Filterable = true` для текстовых и ID; `false` для вычисляемых числовых полей
-- Коды ссылок (`XxxCode`) — часто `Visible = false` (как в Legs)
+- **Короткий словарь (enum):** видимая колонка `{X}IdRu`/`{X}IdEn` с `GetDisplayName`; без `Code`/`Name*`.
+- **Длинный словарь:** видимая `{X}NameRu`/`{X}NameEn`; **без Id**, без дублирующей скрытой Name-колонки.
+- **Whitelist Code** (`NodeToCode`, `RegionCode`, …): `{X}Code` — `Visible = false`, `Filterable = true` (пользователь может включить в настройках).
+- `Filterable = true` для текстовых и enum; `false` для вычисляемых числовых полей
 
 ### DetailSettingsService
 

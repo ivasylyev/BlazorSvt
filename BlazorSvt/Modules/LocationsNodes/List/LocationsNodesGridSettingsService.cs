@@ -51,16 +51,6 @@ public class LocationsNodesGridSettingsService(
                 Visible = true
             });
 
-        results.Add(new GridColumnSetting<LocationsNodesDto>
-        {
-            Name = nameof(LocationsNodesDto.LocationTypeCode),
-            Header = L["LocationsNodesDto.LocationTypeCode"],
-            DisplaySelector = dto => dto.LocationTypeCode ?? string.Empty,
-            SortSelector = dto => dto.LocationTypeCode ?? string.Empty,
-            Filterable = true,
-            Visible = false
-        });
-
         if (isRu)
             results.Add(new GridColumnSetting<LocationsNodesDto>
             {
@@ -81,16 +71,6 @@ public class LocationsNodesGridSettingsService(
                 Filterable = true,
                 Visible = true
             });
-
-        results.Add(new GridColumnSetting<LocationsNodesDto>
-        {
-            Name = nameof(LocationsNodesDto.TypeNodeCode),
-            Header = L["LocationsNodesDto.TypeNodeCode"],
-            DisplaySelector = dto => dto.TypeNodeCode ?? string.Empty,
-            SortSelector = dto => dto.TypeNodeCode ?? string.Empty,
-            Filterable = true,
-            Visible = false
-        });
 
         if (isRu)
             results.Add(new GridColumnSetting<LocationsNodesDto>
@@ -124,16 +104,6 @@ public class LocationsNodesGridSettingsService(
         });
 
         if (isRu)
-        {
-            results.Add(new GridColumnSetting<LocationsNodesDto>
-            {
-                Name = nameof(LocationsNodesDto.RegionIdRu),
-                Header = L["LocationsNodesDto.RegionName"],
-                DisplaySelector = dto => dto.RegionNameRu ?? string.Empty,
-                SortSelector = dto => dto.RegionIdRu,
-                Filterable = true,
-                Visible = true
-            });
             results.Add(new GridColumnSetting<LocationsNodesDto>
             {
                 Name = nameof(LocationsNodesDto.RegionNameRu),
@@ -141,20 +111,9 @@ public class LocationsNodesGridSettingsService(
                 DisplaySelector = dto => dto.RegionNameRu ?? string.Empty,
                 SortSelector = dto => dto.RegionNameRu ?? string.Empty,
                 Filterable = true,
-                Visible = false
-            });
-        }
-        else
-        {
-            results.Add(new GridColumnSetting<LocationsNodesDto>
-            {
-                Name = nameof(LocationsNodesDto.RegionIdEn),
-                Header = L["LocationsNodesDto.RegionName"],
-                DisplaySelector = dto => dto.RegionNameEn ?? string.Empty,
-                SortSelector = dto => dto.RegionIdEn,
-                Filterable = true,
                 Visible = true
             });
+        else
             results.Add(new GridColumnSetting<LocationsNodesDto>
             {
                 Name = nameof(LocationsNodesDto.RegionNameEn),
@@ -162,9 +121,8 @@ public class LocationsNodesGridSettingsService(
                 DisplaySelector = dto => dto.RegionNameEn ?? string.Empty,
                 SortSelector = dto => dto.RegionNameEn ?? string.Empty,
                 Filterable = true,
-                Visible = false
+                Visible = true
             });
-        }
 
         results.Add(new GridColumnSetting<LocationsNodesDto>
         {
@@ -176,27 +134,7 @@ public class LocationsNodesGridSettingsService(
             Visible = true
         });
 
-        results.Add(new GridColumnSetting<LocationsNodesDto>
-        {
-            Name = nameof(LocationsNodesDto.CountryCode),
-            Header = L["LocationsNodesDto.CountryCode"],
-            DisplaySelector = dto => dto.CountryCode ?? string.Empty,
-            SortSelector = dto => dto.CountryCode ?? string.Empty,
-            Filterable = true,
-            Visible = false
-        });
-
         if (isRu)
-        {
-            results.Add(new GridColumnSetting<LocationsNodesDto>
-            {
-                Name = nameof(LocationsNodesDto.CountryIdRu),
-                Header = L["LocationsNodesDto.CountryName"],
-                DisplaySelector = dto => dto.CountryNameRu ?? string.Empty,
-                SortSelector = dto => dto.CountryIdRu,
-                Filterable = true,
-                Visible = true
-            });
             results.Add(new GridColumnSetting<LocationsNodesDto>
             {
                 Name = nameof(LocationsNodesDto.CountryNameRu),
@@ -204,20 +142,9 @@ public class LocationsNodesGridSettingsService(
                 DisplaySelector = dto => dto.CountryNameRu ?? string.Empty,
                 SortSelector = dto => dto.CountryNameRu ?? string.Empty,
                 Filterable = true,
-                Visible = false
-            });
-        }
-        else
-        {
-            results.Add(new GridColumnSetting<LocationsNodesDto>
-            {
-                Name = nameof(LocationsNodesDto.CountryIdEn),
-                Header = L["LocationsNodesDto.CountryName"],
-                DisplaySelector = dto => dto.CountryNameEn ?? string.Empty,
-                SortSelector = dto => dto.CountryIdEn,
-                Filterable = true,
                 Visible = true
             });
+        else
             results.Add(new GridColumnSetting<LocationsNodesDto>
             {
                 Name = nameof(LocationsNodesDto.CountryNameEn),
@@ -225,9 +152,8 @@ public class LocationsNodesGridSettingsService(
                 DisplaySelector = dto => dto.CountryNameEn ?? string.Empty,
                 SortSelector = dto => dto.CountryNameEn ?? string.Empty,
                 Filterable = true,
-                Visible = false
+                Visible = true
             });
-        }
 
         results.AddRange(
         [
