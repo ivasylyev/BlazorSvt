@@ -37,13 +37,13 @@ public class LocationsNodesDetailDto
     public string? NodesCode { get; set; }
     public string? NameRu { get; set; }
     public string? NameEn { get; set; }
-    public LocationTypeRu? LocationTypeIdRu { get; set; }
-    public LocationTypeEn? LocationTypeIdEn { get; set; }
+    public required LocationTypeRu LocationTypeIdRu { get; set; }
+    public required LocationTypeEn LocationTypeIdEn { get; set; }
     public string? LocationTypeCode { get; set; }
     public string? LocationTypeNameRu { get; set; }
     public string? LocationTypeNameEn { get; set; }
-    public TypeNodeRu? TypeNodeIdRu { get; set; }
-    public TypeNodeEn? TypeNodeIdEn { get; set; }
+    public required TypeNodeRu TypeNodeIdRu { get; set; }
+    public required TypeNodeEn TypeNodeIdEn { get; set; }
     public string? TypeNodeCode { get; set; }
     public string? TypeNodeNameRu { get; set; }
     public string? TypeNodeNameEn { get; set; }

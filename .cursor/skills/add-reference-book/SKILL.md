@@ -241,22 +241,38 @@ python .cursor/skills/add-reference-book/scripts/generate-module-resx.py `
 
 ### 7. IdsEnum (маленькие словари)
 
-Создавать enum только если в `vw_{Dictionary}` **< 100** неархивных записей.
+Создавать enum только если в `vw_{Dictionary}` **< 100** неархивных записей (`PrimitiveEntityDataStateId = 1`; архивные исключить).
 
-**Исключение:** `vw_Currency` — один enum `Currency` в `Platform/Domain/IdsEnum/` с `[Display(Name = "RUB"|"EUR"|…)]` (коды валют); **без** разделения на Ru/En.
+**Исключения:**
+
+- `vw_Currency` — один enum `Currency` в `Platform/Domain/IdsEnum/` с `[Display(Name = "RUB"|"EUR"|…)]` (коды валют); **без** разделения на Ru/En.
+- `vw_ShipmentType` — имена полей **всегда** из `Code` (`TVD`, `PVG`, …), даже если общие правила иначе.
 
 Если enum уже есть в другом модуле — **перенести в** `Platform/Domain/IdsEnum/`.
 
 Два файла: `{Dictionary}Ru.cs`, `{Dictionary}En.cs` в `Modules/{Entity}/List/IdsEnum/` (кроме `Currency`).
 
-Имена для enum-полей:
+**Значение каждого члена enum** = `Id` из `vw_{Dictionary}`.
 
-- Взять `NameEn`/`NameRu`; иначе `ShortName*`; иначе `FullName*`; иначе — спросить пользователя.
-- Если **все** английские имена — одно слово → использовать как имя поля enum.
-- Если хотя бы одно многословное → использовать `Code` справочника.
-- Ru enum: `[Display(Name = "...")]` с русским именем; En enum — с английским.
+**Имена полей** (одинаковые в `{Dictionary}En.cs` и `{Dictionary}Ru.cs`):
 
-В grid settings: `typeof(XxxRu).GetDisplayName(...)` / `XxxEn` по языку.
+1. **Ветка Code** — если **каждое** значение `Code` валидно как идентификатор C#: ASCII, не начинается с цифры, не ключевое слово C#, символы только `[A-Za-z0-9_]`. Тогда имя поля = `Code`.
+2. Если **хотя бы одно** значение `Code` невалидно — `Code` **не используем для всего словаря**.
+3. **Ветка Name** — цепочка источников (первое непустое):
+   `NameEn` → `Name_en` → `NameEnRu` (legacy: без кириллицы — как `NameEn`; иначе — как `NameRuEn`) → `NameRuEn` (часть без кириллицы, разделитель `/`) → `NameRu` → `Name_ru` → `ShortNameEn` → `ShortNameRu` → `FullNameEn` → `FullNameRu`.
+4. Многословные имена: разделители (пробел, `/`, `-`, `|`, …) → `_`; первая буква заглавная (`Railway_station`, `Auto_10`).
+5. Запрещённые в C# символы → `_`.
+6. Кириллица в источнике (после исчерпания en-полей) → транслит **ГОСТ 7.79** (`Ж/Д` → `ZhD`).
+7. **Коллизии** имён после санитизации → **стоп, спросить пользователя**.
+8. Пустая цепочка fallback → **стоп, спросить пользователя**.
+9. Невалидный `Code` при ожидании ASCII → **стоп, спросить пользователя**.
+10. Автогенерация **всех** неархивных записей; лишнее убирается на ревью.
+
+**`[Display(Name = "...")]`:** En enum — английское имя; Ru enum — русское (из `NameRu` / `Name` / `Name_ru`).
+
+В grid settings: `typeof(XxxRu).GetDisplayName(dto.XxxIdRu.ToString())` / `XxxEn` по языку (без null-check для enum-полей).
+
+**Scope правил:** новые справочники. Существующие enum не перегенерировать, кроме явного одноразового запроса в задаче.
 
 ---
 
@@ -395,6 +411,15 @@ public class {Entity}DetailDto { ... }
 
 `{Entity}Dto` — поля snapshot + типы под процедуру `_Get`.  
 `{Entity}DetailDto` — поля `vw_{Entity}_Detail` и `_ExportFull`.
+
+**Enum-ссылки (IdsEnum):** поля, типизированные enum маленького словаря, объявлять **обязательными non-nullable** (`required`), как в `TransportRateDto`:
+
+```csharp
+public required RateTypeRu RateTypeIdRu { get; set; }
+public required RateTypeEn RateTypeIdEn { get; set; }
+```
+
+Обычные FK без enum (`long? RegionIdRu`), строки и опциональные ссылки остаются nullable. Эталон: `TransportRateDto`, `TransportLegDto`.
 
 ### GridSettingsService
 

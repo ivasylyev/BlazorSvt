@@ -4,27 +4,27 @@ namespace BlazorSvt.Modules.LocationsNodes.List.IdsEnum;
 
 public enum LocationTypeRu
 {
-    [Display(Name = "Ж/Д станция")]
-    C1 = 42854,
+    [Display(Name = "ЖД станция")]
+    Railway_station = 42854,
 
     [Display(Name = "Точка врезки трубы")]
-    C2 = 42855,
+    Tie_in_point = 42855,
 
     [Display(Name = "Морской порт")]
-    C3 = 42856,
+    Sea_port = 42856,
 
     [Display(Name = "Авто узел")]
-    C4 = 42857,
+    Truck_hub = 42857,
 
     [Display(Name = "Регион")]
-    C5 = 42858,
+    Region = 42858,
 
     [Display(Name = "Аэропорт")]
-    C6 = 8017951,
+    Airport = 8017951,
 
     [Display(Name = "Внутренний порт")]
-    C7 = 8017952,
+    Internal_port = 8017952,
 
     [Display(Name = "Город")]
-    C201 = 9572740,
+    City = 9572740,
 }

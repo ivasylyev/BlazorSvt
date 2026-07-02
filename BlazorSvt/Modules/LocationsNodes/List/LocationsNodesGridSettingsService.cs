@@ -66,9 +66,7 @@ public class LocationsNodesGridSettingsService(
             {
                 Name = nameof(LocationsNodesDto.LocationTypeIdRu),
                 Header = L["LocationsNodesDto.LocationTypeName"],
-                DisplaySelector = dto => dto.LocationTypeIdRu is null
-                    ? string.Empty
-                    : typeof(LocationTypeRu).GetDisplayName(dto.LocationTypeIdRu.ToString()!) ?? string.Empty,
+                DisplaySelector = dto => typeof(LocationTypeRu).GetDisplayName(dto.LocationTypeIdRu.ToString()) ?? string.Empty,
                 SortSelector = dto => dto.LocationTypeIdRu,
                 Filterable = true,
                 Visible = true
@@ -78,9 +76,7 @@ public class LocationsNodesGridSettingsService(
             {
                 Name = nameof(LocationsNodesDto.LocationTypeIdEn),
                 Header = L["LocationsNodesDto.LocationTypeName"],
-                DisplaySelector = dto => dto.LocationTypeIdEn is null
-                    ? string.Empty
-                    : typeof(LocationTypeEn).GetDisplayName(dto.LocationTypeIdEn.ToString()!) ?? string.Empty,
+                DisplaySelector = dto => typeof(LocationTypeEn).GetDisplayName(dto.LocationTypeIdEn.ToString()) ?? string.Empty,
                 SortSelector = dto => dto.LocationTypeIdEn,
                 Filterable = true,
                 Visible = true
@@ -101,9 +97,7 @@ public class LocationsNodesGridSettingsService(
             {
                 Name = nameof(LocationsNodesDto.TypeNodeIdRu),
                 Header = L["LocationsNodesDto.TypeNodeName"],
-                DisplaySelector = dto => dto.TypeNodeIdRu is null
-                    ? string.Empty
-                    : typeof(TypeNodeRu).GetDisplayName(dto.TypeNodeIdRu.ToString()!) ?? string.Empty,
+                DisplaySelector = dto => typeof(TypeNodeRu).GetDisplayName(dto.TypeNodeIdRu.ToString()) ?? string.Empty,
                 SortSelector = dto => dto.TypeNodeIdRu,
                 Filterable = true,
                 Visible = true
@@ -113,9 +107,7 @@ public class LocationsNodesGridSettingsService(
             {
                 Name = nameof(LocationsNodesDto.TypeNodeIdEn),
                 Header = L["LocationsNodesDto.TypeNodeName"],
-                DisplaySelector = dto => dto.TypeNodeIdEn is null
-                    ? string.Empty
-                    : typeof(TypeNodeEn).GetDisplayName(dto.TypeNodeIdEn.ToString()!) ?? string.Empty,
+                DisplaySelector = dto => typeof(TypeNodeEn).GetDisplayName(dto.TypeNodeIdEn.ToString()) ?? string.Empty,
                 SortSelector = dto => dto.TypeNodeIdEn,
                 Filterable = true,
                 Visible = true

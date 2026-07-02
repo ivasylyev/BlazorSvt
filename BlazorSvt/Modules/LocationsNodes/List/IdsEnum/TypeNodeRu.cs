@@ -5,32 +5,32 @@ namespace BlazorSvt.Modules.LocationsNodes.List.IdsEnum;
 public enum TypeNodeRu
 {
     [Display(Name = "Страна")]
-    N10 = 24730972,
+    Country = 24730972,
 
     [Display(Name = "Округ")]
-    N20 = 24730973,
+    Federal_district = 24730973,
 
     [Display(Name = "Регион")]
-    N30 = 24730974,
+    Region = 24730974,
 
     [Display(Name = "Авто")]
-    N40 = 24730975,
+    Auto = 24730975,
 
-    [Display(Name = "Транзит")]
-    N43 = 24730976,
+    [Display(Name = "Погранпереход")]
+    Border = 24730976,
 
     [Display(Name = "ЖД")]
-    N44 = 24730977,
+    Rail = 24730977,
 
-    [Display(Name = "Море")]
-    N45 = 24730978,
+    [Display(Name = "Порт")]
+    Port = 24730978,
 
     [Display(Name = "Точка врезки трубы")]
-    N46 = 24730979,
+    Pipe = 24730979,
 
     [Display(Name = "Склад")]
-    N47 = 24730980,
+    Warehouse = 24730980,
 
     [Display(Name = "Аэропорт")]
-    N48 = 25073271,
+    Airport = 25073271,
 }
