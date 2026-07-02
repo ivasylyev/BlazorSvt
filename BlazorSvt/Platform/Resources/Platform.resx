@@ -130,7 +130,7 @@
 	  <value>Transport Legs</value>
   </data>
   <data name="HeaderMenu.LocationsNodes" xml:space="preserve">
-	  <value>Location Nodes</value>
+	  <value>Locations-Nodes</value>
   </data>
   <data name="HeaderMenu.Load" xml:space="preserve">
 	  <value>Load</value>

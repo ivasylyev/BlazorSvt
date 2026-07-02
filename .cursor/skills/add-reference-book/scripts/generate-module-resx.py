@@ -60,6 +60,129 @@ WHERE ai.PrimitiveEntityInfoId = (
 ORDER BY ai.[Name];
 """
 
+TITLE_RU_SQL = """
+SELECT TOP 1 [Description]
+FROM PrimitiveEntityInfo
+WHERE [Name] = '{entity}';
+"""
+
+TITLE_EN_SQL = """
+SELECT TOP 1 DEn.[Value]
+FROM Dictionary DEn
+INNER JOIN Dictionary DRu
+    ON DEn.ContextId = DRu.ContextId AND DEn.[Key] = DRu.[Key]
+WHERE DRu.[Value] = (
+    SELECT TOP 1 [Description]
+    FROM PrimitiveEntityInfo
+    WHERE [Name] = '{entity}'
+)
+  AND DEn.LocaleId = 1
+  AND DRu.LocaleId = 2;
+"""
+
+
+def run_scalar_sql(
+    sql: str,
+    server: str,
+    database: str,
+    user: str,
+    password: str,
+) -> str | None:
+    import tempfile
+
+    with tempfile.NamedTemporaryFile(mode="w", suffix=".txt", delete=False, encoding="utf-8") as tmp:
+        out_path = tmp.name
+
+    subprocess.run(
+        [
+            "sqlcmd",
+            "-S", server,
+            "-d", database,
+            "-U", user,
+            "-P", password,
+            "-C",
+            "-f", "o:65001",
+            "-Q", sql,
+            "-W",
+            "-h", "-1",
+            "-o", out_path,
+        ],
+        check=True,
+    )
+
+    raw = Path(out_path).read_text(encoding="utf-8", errors="replace")
+    Path(out_path).unlink(missing_ok=True)
+
+    for line in raw.splitlines():
+        line = line.strip().lstrip("\ufeff")
+        if not line or line.startswith("-") or line.endswith("rows affected)"):
+            continue
+        if line.startswith("("):
+            continue
+        return line
+    return None
+
+
+def fetch_entity_titles(
+    entity: str,
+    server: str,
+    database: str,
+    user: str,
+    password: str,
+    title_en_fallback: str | None,
+) -> tuple[str, str]:
+    title_ru = run_scalar_sql(
+        TITLE_RU_SQL.format(entity=entity),
+        server,
+        database,
+        user,
+        password,
+    )
+    if not title_ru:
+        raise SystemExit(
+            f"PrimitiveEntityInfo.Description is empty for '{entity}'. "
+            "Stop and ask the user for the Russian title."
+        )
+
+    title_en = run_scalar_sql(
+        TITLE_EN_SQL.format(entity=entity),
+        server,
+        database,
+        user,
+        password,
+    )
+    if not title_en:
+        if title_en_fallback:
+            title_en = title_en_fallback
+        else:
+            raise SystemExit(
+                f"No English Dictionary translation for Description={title_ru!r}. "
+                f"Provide --title-en with agent translation."
+            )
+
+    return title_ru, title_en
+
+
+def set_resx_data_value(path: Path, key: str, value: str) -> None:
+    text = path.read_text(encoding="utf-8")
+    escaped = xml.escape(value)
+    pattern = rf'(<data name="{re.escape(key)}" xml:space="preserve">\s*<value>).*?(</value>)'
+    new_text, count = re.subn(pattern, rf"\1{escaped}\2", text, count=1, flags=re.DOTALL)
+    if count == 0:
+        raise SystemExit(f"Key {key!r} not found in {path}")
+    path.write_text(new_text, encoding="utf-8")
+
+
+def update_platform_menu_titles(
+    platform_dir: Path,
+    entity: str,
+    title_ru: str,
+    title_en: str,
+) -> None:
+    menu_key = f"HeaderMenu.{entity}"
+    set_resx_data_value(platform_dir / "Platform.ru-RU.resx", menu_key, title_ru)
+    set_resx_data_value(platform_dir / "Platform.resx", menu_key, title_en)
+
 
 def has_cyrillic(text: str) -> bool:
     return bool(re.search(r"[\u0400-\u04FF]", text))
@@ -144,7 +267,12 @@ def write_resx(path: Path, values: dict[str, str]) -> None:
     path.write_text("\n".join(lines) + "\n", encoding="utf-8")
 
 
-def build_values(entity: str, rows: list[tuple[str, str | None, str | None, str | None]]) -> tuple[dict[str, str], dict[str, str]]:
+def build_values(
+    entity: str,
+    rows: list[tuple[str, str | None, str | None, str | None]],
+    title_ru: str,
+    title_en: str,
+) -> tuple[dict[str, str], dict[str, str]]:
     en: dict[str, str] = {}
     ru: dict[str, str] = {}
 
@@ -164,7 +292,7 @@ def build_values(entity: str, rows: list[tuple[str, str | None, str | None, str 
 
     # UI / grid helpers (not in AttributeInfo)
     ui_en = {
-        f"{entity}Grid.Title": f"Location Nodes" if entity == "LocationsNodes" else entity,
+        f"{entity}Grid.Title": title_en,
         f"{dto_prefix}LocationTypeCode": "Location type code",
         f"{dto_prefix}TypeNodeCode": "Node type code",
         f"{dto_prefix}RegionCode": "Region code",
@@ -189,7 +317,7 @@ def build_values(entity: str, rows: list[tuple[str, str | None, str | None, str 
         f"{detail_prefix}Group.0.Default": "Default",
     }
     ui_ru = {
-        f"{entity}Grid.Title": "Узлы местоположений" if entity == "LocationsNodes" else entity,
+        f"{entity}Grid.Title": title_ru,
         f"{dto_prefix}LocationTypeCode": "Код типа местоположения",
         f"{dto_prefix}TypeNodeCode": "Код типа узла",
         f"{dto_prefix}RegionCode": "Код региона",
@@ -236,16 +364,32 @@ def main() -> int:
     parser.add_argument("--database", default="mdm")
     parser.add_argument("--user", default="SVT")
     parser.add_argument("--password", default="SVTsrv1!")
+    parser.add_argument("--title-en", dest="title_en", default=None, help="Agent translation when Dictionary has no EN title")
+    parser.add_argument("--platform-resources-dir", type=Path, default=None)
     args = parser.parse_args()
 
+    title_ru, title_en = fetch_entity_titles(
+        args.entity,
+        args.server,
+        args.database,
+        args.user,
+        args.password,
+        args.title_en,
+    )
+
     rows = run_sql(args.entity, args.server, args.database, args.user, args.password)
-    en, ru = build_values(args.entity, rows)
+    en, ru = build_values(args.entity, rows, title_ru, title_en)
 
     args.output_dir.mkdir(parents=True, exist_ok=True)
     write_resx(args.output_dir / f"{args.entity}.resx", en)
     write_resx(args.output_dir / f"{args.entity}.ru-RU.resx", ru)
 
+    if args.platform_resources_dir:
+        update_platform_menu_titles(args.platform_resources_dir, args.entity, title_ru, title_en)
+
     print(f"Generated {len(en)} keys -> {args.output_dir}")
+    print(f"  Title RU: {title_ru!r}")
+    print(f"  Title EN: {title_en!r}")
     # Spot-check
     detail = f"{args.entity}DetailDto."
     for sample in ("Pobox", "City", "AddressCountryISO2"):

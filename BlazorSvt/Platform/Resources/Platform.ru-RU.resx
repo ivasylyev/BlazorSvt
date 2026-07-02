@@ -129,7 +129,7 @@
 	  <value>Транспортные плечи</value>
   </data>
   <data name="HeaderMenu.LocationsNodes" xml:space="preserve">
-	  <value>Узлы местоположений</value>
+	  <value>Местоположения-Узлы</value>
   </data>
   <data name="HeaderMenu.Load" xml:space="preserve">
 	  <value>Загрузка</value>

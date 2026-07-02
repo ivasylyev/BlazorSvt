@@ -209,7 +209,8 @@ ORDER BY ai.[Name];
 ```powershell
 python .cursor/skills/add-reference-book/scripts/generate-module-resx.py `
   --entity LocationsNodes `
-  --output-dir BlazorSvt/Modules/LocationsNodes/Resources
+  --output-dir BlazorSvt/Modules/LocationsNodes/Resources `
+  --platform-resources-dir BlazorSvt/Platform/Resources
 ```
 
 Требования к генерации:
@@ -219,6 +220,42 @@ python .cursor/skills/add-reference-book/scripts/generate-module-resx.py `
 - После генерации spot-check: `Pobox` → en=`Pobox`, ru=`Адрес: Индекс`
 
 > В скрипте групп detail (ContextId 258) маппинг LocaleId **другой**: `1` → ValueEn, `2` → ValueRu — не смешивать с `pei/{Entity}/ai`.
+
+**Заголовок справочника** (`{Entity}Grid.Title` + `HeaderMenu.{Entity}`):
+
+Русский — из MDM (`PrimitiveEntityInfo.Name` = системное имя `{Entity}`):
+
+```sql
+SELECT TOP 1 [Description]
+FROM PrimitiveEntityInfo
+WHERE [Name] = '{Entity}';
+```
+
+→ `{Entity}.ru-RU.resx` (`{Entity}Grid.Title`) и `Platform.ru-RU.resx` (`HeaderMenu.{Entity}`).
+
+Пустой `Description` → **стоп, спросить пользователя**.
+
+Английский — из `Dictionary` (при исторических дубликатах достаточно `TOP 1`, не спрашивать):
+
+```sql
+SELECT TOP 1 DEn.[Value]
+FROM Dictionary DEn
+INNER JOIN Dictionary DRu
+    ON DEn.ContextId = DRu.ContextId AND DEn.[Key] = DRu.[Key]
+WHERE DRu.[Value] = (
+    SELECT TOP 1 [Description]
+    FROM PrimitiveEntityInfo
+    WHERE [Name] = '{Entity}'
+)
+  AND DEn.LocaleId = 1
+  AND DRu.LocaleId = 2;
+```
+
+→ `{Entity}.resx` (`{Entity}Grid.Title`) и `Platform.resx` (`HeaderMenu.{Entity}`).
+
+Если запрос не вернул строку — перевод `Description` **агентом** при генерации; передать в скрипт `--title-en "..."`.
+
+Скрипт: `--platform-resources-dir BlazorSvt/Platform/Resources` — обновляет `HeaderMenu.{Entity}` в Platform resx.
 
 ### 6. Ссылочные атрибуты
 
@@ -467,7 +504,7 @@ public required RateTypeEn RateTypeIdEn { get; set; }
 
 Ключи в **Platform** resx:
 
-- `HeaderMenu.{Entity}` (пункт меню)
+- `HeaderMenu.{Entity}` (пункт меню; **те же значения**, что `{Entity}Grid.Title` — см. п.5)
 - Прочие cross-cutting строки не добавлять в модульный resx
 
 В `{Entity}Grid.razor.cs` — `IStringLocalizer<Resources.{Entity}> EL` для `PageTitle` и специфичных сообщений; `SvtComponentBase.L` — только platform-строки.
