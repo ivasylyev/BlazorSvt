@@ -1,22 +1,30 @@
 ﻿using BlazorSvt.Platform.Grid.Models;
-using ClosedXML.Excel;
+using LargeXlsx;
 
 namespace BlazorSvt.Platform.Reporting.Services;
 
 public class GridExcelExporter : IGridExcelExporter
 {
+    private const double DefaultColumnWidth = 18;
+    private const string WorksheetName = "Report";
+
+    private static readonly XlsxStyle HeaderStyle = XlsxStyle.Default.With(XlsxFont.Default.WithBold());
+    private static readonly XlsxStyle DateStyle = XlsxStyle.Default.With(XlsxNumberFormat.ShortDate);
+
     private sealed record ExportColumn<T>(string Header, Func<T, object?> GetValue);
 
-    public byte[] ExportShortReport<T>(IReadOnlyList<T> items, IEnumerable<GridColumnSetting<T>> columns) =>
+    public void ExportShortReport<T>(Stream output, IReadOnlyList<T> items, IEnumerable<GridColumnSetting<T>> columns) =>
         ExportCore(
+            output,
             items,
             columns
                 .Where(c => c.Visible)
                 .Select(c => new ExportColumn<T>(c.Header, item => c.DisplaySelector(item)))
                 .ToList());
 
-    public byte[] ExportFullReport<T>(IReadOnlyList<T> items, IEnumerable<DetailSetting<T>> columns) =>
+    public void ExportFullReport<T>(Stream output, IReadOnlyList<T> items, IEnumerable<DetailSetting<T>> columns) =>
         ExportCore(
+            output,
             items,
             columns
                 .Select(c => new ExportColumn<T>(
@@ -24,62 +32,65 @@ public class GridExcelExporter : IGridExcelExporter
                     item => c.VisibleSelector(item) ? c.DisplaySelector(item) : null))
                 .ToList());
 
-    private static byte[] ExportCore<T>(IReadOnlyList<T> items, IReadOnlyList<ExportColumn<T>> columns)
+    private static void ExportCore<T>(Stream output, IReadOnlyList<T> items, IReadOnlyList<ExportColumn<T>> columns)
     {
-        using var workbook = new XLWorkbook();
-        var worksheet = workbook.Worksheets.Add("Report");
+        if (columns.Count == 0)
+            throw new InvalidOperationException("Report must have at least one column.");
 
-        for (var col = 0; col < columns.Count; col++)
+        using var writer = new XlsxWriter(output, requireCellReferences: false);
+
+        writer.BeginWorksheet(
+            WorksheetName,
+            splitRow: 1,
+            columns: [XlsxColumn.Formatted(DefaultColumnWidth, count: columns.Count)]);
+
+        writer.BeginRow();
+        foreach (var column in columns)
+            writer.WriteSharedString(column.Header, HeaderStyle);
+
+        foreach (var item in items)
         {
-            var headerCell = worksheet.Cell(1, col + 1);
-            headerCell.Value = columns[col].Header;
-            headerCell.Style.Font.Bold = true;
+            writer.BeginRow();
+            foreach (var column in columns)
+                WriteCellValue(writer, column.GetValue(item));
         }
 
-        for (var row = 0; row < items.Count; row++)
-        {
-            var item = items[row];
-            for (var col = 0; col < columns.Count; col++)
-                SetCellValue(worksheet.Cell(row + 2, col + 1), columns[col].GetValue(item));
-        }
-
-        worksheet.Columns().AdjustToContents();
-
-        using var output = new MemoryStream();
-        workbook.SaveAs(output);
-        return output.ToArray();
+        writer.SetAutoFilter(1, 1, items.Count + 1, columns.Count);
     }
 
-    private static void SetCellValue(IXLCell cell, object? value)
+    private static void WriteCellValue(XlsxWriter writer, object? value)
     {
         switch (value)
         {
             case null:
-                cell.Value = Blank.Value;
+                writer.Write();
                 break;
             case DateOnly dateOnly:
-                cell.Value = dateOnly.ToDateTime(TimeOnly.MinValue);
+                writer.Write(dateOnly.ToDateTime(TimeOnly.MinValue), DateStyle);
                 break;
             case DateTime dateTime:
-                cell.Value = dateTime;
+                writer.Write(dateTime, DateStyle);
                 break;
             case bool boolean:
-                cell.Value = boolean;
+                writer.Write(boolean);
                 break;
             case int intValue:
-                cell.Value = intValue;
+                writer.Write(intValue);
                 break;
             case long longValue:
-                cell.Value = longValue;
+                writer.Write((double)longValue);
                 break;
             case decimal decimalValue:
-                cell.Value = decimalValue;
+                writer.Write(decimalValue);
                 break;
             case double doubleValue:
-                cell.Value = doubleValue;
+                writer.Write(doubleValue);
+                break;
+            case string stringValue:
+                writer.WriteSharedString(stringValue);
                 break;
             default:
-                cell.Value = value.ToString() ?? string.Empty;
+                writer.WriteSharedString(value.ToString() ?? string.Empty);
                 break;
         }
     }

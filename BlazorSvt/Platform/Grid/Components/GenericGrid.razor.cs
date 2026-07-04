@@ -208,8 +208,10 @@ public partial class GenericGrid<TItem, TDetailItem> : SvtComponentBase
     {
         var request = grid.CreateDataProviderRequest(pageNumber: 1, pageSizeOverride: totalCount);
         var items = await GridDataService.GetShortReportDataAsync(request, Lang, totalCount);
-        var workbook = GridExcelExporter.ExportShortReport(items, gridSettings!.ColumnSettings);
-        await DownloadFileAsync(workbook, BuildReportFileName("short"));
+        await using var stream = new MemoryStream();
+        GridExcelExporter.ExportShortReport(stream, items, gridSettings!.ColumnSettings);
+        stream.Position = 0;
+        await FileDownloadService.DownloadFromStreamAsync(stream, BuildReportFileName("short"));
         Logger.LogInformation("Short report: exported {Count} items", items.Count);
     }
 
@@ -219,13 +221,12 @@ public partial class GenericGrid<TItem, TDetailItem> : SvtComponentBase
         var items = await GridDataService.GetFullReportDataAsync(request, Lang, totalCount);
         var detailSettings = DetailSettingsService.GetGridDetailSettings(Lang);
         var columns = detailSettings.GroupSettings.Values.SelectMany(settings => settings);
-        var workbook = GridExcelExporter.ExportFullReport(items, columns);
-        await DownloadFileAsync(workbook, BuildReportFileName("full"));
+        await using var stream = new MemoryStream();
+        GridExcelExporter.ExportFullReport(stream, items, columns);
+        stream.Position = 0;
+        await FileDownloadService.DownloadFromStreamAsync(stream, BuildReportFileName("full"));
         Logger.LogInformation("Full report: exported {Count} items", items.Count);
     }
-
-    private Task DownloadFileAsync(byte[] content, string fileName) =>
-        FileDownloadService.DownloadFromBytesAsync(content, fileName);
 
     private string BuildReportFileName(string reportKind)
     {
