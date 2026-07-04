@@ -21,7 +21,7 @@ description: >-
 
 **Целевой стек**: Blazor Server + MS SQL. **Стиль**: модульный монолит. **Миграция**: Strangler Fig с общей БД на переходный период.
 
-**Текущий статус**: фреймворк read-only справочников и отчётов (Legs, Rates); зачаток Import. Дорожная карта: (1) ~50 справочников → (2) синхронизация → (3) batch → (4) редакторы = batch pipeline → (5) интеграции.
+**Текущий статус**: фреймворк read-only справочников и отчётов (TransportLeg, TransportRate, LocationsNodes; legacy: Legs, Rates); зачаток Import; каркас unit + integration тестов в `tests/`. Дорожная карта: (1) ~50 справочников → (2) синхронизация → (3) batch → (4) редакторы = batch pipeline → (5) интеграции.
 
 ## Чеклист перед реализацией
 
@@ -31,7 +31,7 @@ description: >-
 4. Типизированная таблица + constraints, не мета-описание?
 5. Read через snapshot/CQRS; write отделён?
 6. Без Elastic/RabbitMQ/распределённого монолита?
-7. Покрыта ли бизнес-логика unit-тестами?
+7. Покрыты ли изменения тестами? Unit — C#-логика (`GridQueryFactory`, валидаторы, contract DTO); integration — read-only smoke SP/view для нового справочника (см. `svt-development-patterns`, секция «Тестирование»)
 8. Есть аудит/логирование для изменений данных?
 
 ## Ключевые антипаттерны легаси (не повторять)

@@ -15,7 +15,7 @@ MDM-система логистических маршрутов, тарифов
 
 ## Текущее состояние
 
-Реализован **фреймворк справочников (read-only) и отчётов**. Примеры: Legs, Rates. Есть зачаток Import (Excel → staging). Значительная часть функционала отсутствует.
+Реализован **фреймворк справочников (read-only) и отчётов**. Примеры: TransportLeg, TransportRate, LocationsNodes (legacy: Legs, Rates). Есть зачаток Import (Excel → staging). Каркас **unit + integration** тестов в `tests/`. Значительная часть функционала отсутствует.
 
 ## Дорожная карта
 
@@ -39,5 +39,7 @@ MDM-система логистических маршрутов, тарифов
 | `Import/` | Массовая загрузка Excel, валидаторы, staging |
 | `SqlScripts/Platform/` | Схема v2, full-text, `GetBlazorGridData` |
 | `SqlScripts/Modules/{Name}/` | DDL и SP конкретного справочника |
+| `tests/BlazorSvt.UnitTests/` | Unit-тесты Platform, `GridQueryFactory`, contract DTO |
+| `tests/BlazorSvt.IntegrationTests/` | Read-only integration-тесты SP/view на dev-БД |
 
 Подробная архитектура — в skill `svt-architecture` и правиле `svt-architecture-principles`.

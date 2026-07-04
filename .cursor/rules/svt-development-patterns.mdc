@@ -1,5 +1,5 @@
 ---
-description: Паттерны разработки BlazorSVT — модули, grid, import, SQL
+description: Паттерны разработки BlazorSVT — модули, grid, import, SQL, тестирование
 globs: BlazorSvt/**/*
 alwaysApply: false
 ---
@@ -49,3 +49,38 @@ alwaysApply: false
 - Interactive Server; `SvtComponentBase` для общего поведения
 - Локализация: `Platform/Resources/Platform.resx` (общий UI) + `Modules/{Entity}/Resources/{Entity}.resx` (справочник); `IStringLocalizer<PlatformResources>` / `IStringLocalizer<Resources.{Entity}>`
 - Минимальный scope изменений; следовать существующим соглашениям модуля
+
+## Тестирование
+
+### Проекты и стек
+
+| Проект | Назначение |
+|--------|------------|
+| `tests/BlazorSvt.UnitTests/` | Unit-тесты Platform и contract DTO |
+| `tests/BlazorSvt.IntegrationTests/` | Read-only тесты SP/view на dev-БД |
+
+Стек: **xUnit**, **NSubstitute**, **FluentAssertions**. Integration: **Xunit.SkippableFact** (skip при недоступной БД).
+
+### Unit-тесты (без БД)
+
+- `GridQueryFactory` — маппинг фильтров, сортировки, enum → int, дефолтный `IsArchive=False`
+- `GridColumnMetadataBuilder` — contract list-DTO: table name, entity key, `@AllowedColumnsJson`, `@SelectList`
+- Новый справочник → unit contract-тест для `{Entity}Dto` (см. `GridColumnMetadataBuilderTests`)
+
+**Import** (`Validators`, `ExcelParser`) — пока без тестов (прототип).
+
+### Integration-тесты (read-only, dev-БД)
+
+- `v2.GetBlazorGridData` — пагинация, фильтры, сортировка на существующих данных
+- `vw_{Entity}_Detail` — detail view по ключу из grid
+- **Без** синтетических INSERT и Docker/Testcontainers
+- Строка подключения: env `BLAZORSVT_TEST_CONNECTION` → fallback `Database:MdmDb` из `appsettings.json`
+- Эталон: `tests/BlazorSvt.IntegrationTests/Modules/ModuleGridIntegrationTests.cs`
+
+### Запуск
+
+```powershell
+dotnet test                                          # все
+dotnet test --filter "Category=Unit"                 # без БД
+dotnet test --filter "Category=Integration"          # только SQL
+```

@@ -574,11 +574,41 @@ URL меню **должен совпадать** с `@page` в `.razor`.
 
 ---
 
-## Фаза 5 — Финальная верификация
+## Фаза 5 — Тесты
+
+Эталоны: `tests/BlazorSvt.UnitTests/Platform/Grid/`, `tests/BlazorSvt.IntegrationTests/Modules/ModuleGridIntegrationTests.cs`.
+
+### Unit (обязательно)
+
+1. Добавить `{Entity}Dto` в `[Theory]` contract-тест `GridColumnMetadataBuilderTests`:
+   - `TableName` = `v2.{Entity}_Snapshot`
+   - `EntityKeyPropertyName` = `{Entity}Id`
+2. При изменении Platform-логики — тесты в `GridQueryFactoryTests` / `GridColumnMetadataBuilderTests`
+
+### Integration (обязательно, read-only)
+
+Добавить в `ModuleGridIntegrationTests.cs` (или отдельный файл `Modules/{Entity}/`):
+
+1. **Grid smoke** — `GetBlazorGridData` возвращает строки и `TotalCount > 0`
+2. **Detail view** — `vw_{Entity}_Detail` возвращает строку по `{Entity}Id` из grid
+
+Только read-only на существующих данных dev-БД. **Без** INSERT/ROLLBACK. Пометить `[Trait("Category", "Integration")]` + `[SkippableFact]`.
+
+### Запуск
+
+```powershell
+dotnet test --filter "Category=Unit"
+dotnet test --filter "Category=Integration"
+```
+
+---
+
+## Фаза 6 — Финальная верификация
 
 1. `dotnet build` (проект `BlazorSvt`)
-2. Страница `/{entity}` открывается, грид загружает данные
-3. Детальный просмотр и экспорт не падают
+2. `dotnet test`
+3. Страница `/{entity}` открывается, грид загружает данные
+4. Детальный просмотр и экспорт не падают
 
 При ошибке — сообщить и спросить дальнейшие действия.
 
@@ -604,7 +634,10 @@ URL меню **должен совпадать** с `@page` в `.razor`.
 - [ ] Programmability задеплоен
 - [ ] SQL-верификация пройдена
 - [ ] C# модуль, DI, меню, модульный resx + Platform.resx (меню)
+- [ ] Unit contract-тест `{Entity}Dto` в `GridColumnMetadataBuilderTests`
+- [ ] Integration smoke: grid + detail view для `{Entity}`
 - [ ] `dotnet build` OK
+- [ ] `dotnet test` OK
 
 ---
 
