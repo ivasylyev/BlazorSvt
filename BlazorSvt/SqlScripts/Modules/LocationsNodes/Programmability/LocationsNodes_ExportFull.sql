@@ -9,7 +9,12 @@ GO
 
 EXEC v2.LocationsNodes_ExportFull
     @PageSize = 100,
-    @Lang = N'ru',
+    @TableName = N'mdm.v2.LocationsNodes_Snapshot',
+    @AllowedColumnsJson = N'[{"ColumnName":"IsArchive","SqlColumnName":"IsArchive","ColumnType":"BIT"}]',
+    @SelectList = N'
+        SELECT
+            LocationsNodesId
+  ',
     @SortKey = N'CreationDate',
     @SortDirection = N'ASC',
     @FilterJson = N'[
@@ -24,11 +29,13 @@ DROP PROCEDURE IF EXISTS v2.LocationNodes_ExportFull;
 GO
 
 CREATE OR ALTER PROCEDURE v2.LocationsNodes_ExportFull
-    @PageSize       INT,
-    @Lang           NVARCHAR(2),
-    @SortKey        NVARCHAR(50) = NULL,
-    @SortDirection  NVARCHAR(5) = NULL,
-    @FilterJson     NVARCHAR(MAX) = NULL
+    @PageSize               INT,
+    @TableName              NVARCHAR(300),
+    @AllowedColumnsJson     NVARCHAR(MAX),
+    @SelectList             NVARCHAR(MAX),
+    @SortKey                NVARCHAR(50) = NULL,
+    @SortDirection          NVARCHAR(5) = NULL,
+    @FilterJson             NVARCHAR(MAX) = NULL
 AS
 BEGIN
     SET NOCOUNT ON;
@@ -40,14 +47,15 @@ BEGIN
     );
 
     INSERT INTO #Filtered (LocationsNodesId)
-    EXEC v2.LocationsNodes_Get
-        @PageNumber    = 1,
-        @PageSize      = @PageSize,
-        @Lang          = @Lang,
-        @SortKey       = @SortKey,
-        @SortDirection = @SortDirection,
-        @FilterJson    = @FilterJson,
-        @KeysOnly      = 1;
+    EXEC v2.GetBlazorGridData
+        @PageNumber         = 1,
+        @PageSize           = @PageSize,
+        @TableName          = @TableName,
+        @AllowedColumnsJson = @AllowedColumnsJson,
+        @SelectList         = @SelectList,
+        @SortKey            = @SortKey,
+        @SortDirection      = @SortDirection,
+        @FilterJson         = @FilterJson;
 
     SELECT d.*
     FROM v2.vw_LocationsNodes_Detail d

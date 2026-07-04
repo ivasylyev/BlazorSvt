@@ -9,7 +9,12 @@ GO
 
 EXEC v2.TransportLeg_ExportFull
     @PageSize = 100,
-    @Lang = N'ru',
+    @TableName = N'mdm.v2.TransportLeg_Snapshot',
+    @AllowedColumnsJson = N'[{"ColumnName":"IsArchive","SqlColumnName":"IsArchive","ColumnType":"BIT"}]',
+    @SelectList = N'
+        SELECT
+            TransportLegId
+  ',
     @SortKey = N'CreationDate',
     @SortDirection = N'ASC',
     @FilterJson = N'[
@@ -24,30 +29,33 @@ DROP PROCEDURE IF EXISTS v2.TransportLegs_ExportFull;
 GO
 
 CREATE OR ALTER PROCEDURE v2.TransportLeg_ExportFull
-    @PageSize       INT,
-    @Lang           NVARCHAR(2),
-    @SortKey        NVARCHAR(50) = NULL,
-    @SortDirection  NVARCHAR(5) = NULL,
-    @FilterJson     NVARCHAR(MAX) = NULL
+    @PageSize               INT,
+    @TableName              NVARCHAR(300),
+    @AllowedColumnsJson     NVARCHAR(MAX),
+    @SelectList             NVARCHAR(MAX),
+    @SortKey                NVARCHAR(50) = NULL,
+    @SortDirection          NVARCHAR(5) = NULL,
+    @FilterJson             NVARCHAR(MAX) = NULL
 AS
 BEGIN
     SET NOCOUNT ON;
 
     CREATE TABLE #Filtered (
-        RowNum INT IDENTITY(1,1) NOT NULL,
+        RowNum  INT IDENTITY(1,1) NOT NULL,
         TransportLegId  INT NOT NULL,
         PRIMARY KEY (TransportLegId)
     );
 
     INSERT INTO #Filtered (TransportLegId)
-    EXEC v2.TransportLeg_Get
-        @PageNumber    = 1,
-        @PageSize      = @PageSize,
-        @Lang          = @Lang,
-        @SortKey       = @SortKey,
-        @SortDirection = @SortDirection,
-        @FilterJson    = @FilterJson,
-        @KeysOnly      = 1;
+    EXEC v2.GetBlazorGridData
+        @PageNumber         = 1,
+        @PageSize           = @PageSize,
+        @TableName          = @TableName,
+        @AllowedColumnsJson = @AllowedColumnsJson,
+        @SelectList         = @SelectList,
+        @SortKey            = @SortKey,
+        @SortDirection      = @SortDirection,
+        @FilterJson         = @FilterJson;
 
     SELECT d.*
     FROM v2.vw_TransportLeg_Detail d

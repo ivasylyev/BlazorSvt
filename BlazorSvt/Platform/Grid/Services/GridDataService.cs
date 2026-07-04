@@ -48,7 +48,7 @@ public class GridDataService<TItem, TDetailItem>(
 #pragma warning restore CS0618 // Type or member is obsolete
         await connection.OpenAsync(request.CancellationToken);
 
-        var parameters = BuildExportParameters(query);
+        var parameters = BuildExportParameters(typeof(TItem), query);
 
         var loggingConnection = new DbConnectionLogDecorator(connection, logger, reportQueryTimeoutSeconds);
 
@@ -108,12 +108,12 @@ public class GridDataService<TItem, TDetailItem>(
 #pragma warning restore CS0618 // Type or member is obsolete
         await connection.OpenAsync(cancellationToken);
 
-        var parameters = BuildParameters(query);
+        var parameters = BuildGridParameters(typeof(TItem), query);
 
         var loggingConnection = new DbConnectionLogDecorator(connection, logger, commandTimeoutSeconds);
 
         await using var multi = await loggingConnection.QueryMultipleAsync(
-            StoredProcedureName,
+            GridStoredProcedureName,
             parameters,
             CommandType.StoredProcedure);
 
@@ -123,12 +123,15 @@ public class GridDataService<TItem, TDetailItem>(
         return (data, count);
     }
 
-    private static DynamicParameters BuildExportParameters(GridQuery query)
+    private static DynamicParameters BuildExportParameters(Type dtoType, GridQuery query)
     {
+        var snapshotQuery = GridSnapshotQuery.For(dtoType);
         var parameters = new DynamicParameters();
 
         parameters.Add("PageSize", query.PageSize);
-        parameters.Add("Lang", query.Lang);
+        parameters.Add("TableName", snapshotQuery.TableName);
+        parameters.Add("AllowedColumnsJson", snapshotQuery.AllowedColumnsJson);
+        parameters.Add("SelectList", snapshotQuery.KeysOnlySelectList);
         parameters.Add("SortKey", query.Sort.PropertyName);
         parameters.Add("SortDirection", query.Sort.Direction);
 
@@ -138,27 +141,26 @@ public class GridDataService<TItem, TDetailItem>(
         return parameters;
     }
 
-    private static DynamicParameters BuildParameters(GridQuery query)
+    private static DynamicParameters BuildGridParameters(Type dtoType, GridQuery query)
     {
+        var snapshotQuery = GridSnapshotQuery.For(dtoType);
         var parameters = new DynamicParameters();
 
         parameters.Add("PageNumber", query.PageNumber);
         parameters.Add("PageSize", query.PageSize);
-        parameters.Add("Lang", query.Lang);
-
+        parameters.Add("TableName", snapshotQuery.TableName);
+        parameters.Add("AllowedColumnsJson", snapshotQuery.AllowedColumnsJson);
+        parameters.Add("SelectList", snapshotQuery.SelectList);
         parameters.Add("SortKey", query.Sort.PropertyName);
         parameters.Add("SortDirection", query.Sort.Direction);
 
         var serializedFilter = JsonConvert.SerializeObject(query.Filters);
         parameters.Add("FilterJson", serializedFilter);
 
-
         return parameters;
     }
-    private static readonly string StoredProcedureName =
-        typeof(TItem).GetCustomAttribute<StoredProcedureAttribute>()?.Name
-        ?? throw new InvalidOperationException(
-            $"DTO {typeof(TItem).Name} does not have StoredProcedureAttribute");
+
+    private const string GridStoredProcedureName = "v2.GetBlazorGridData";
 
     private static readonly string FullReportExportProcedureName =
         typeof(TDetailItem).GetCustomAttribute<FullReportExportAttribute>()?.Name

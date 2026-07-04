@@ -10,7 +10,7 @@ SqlScripts/
 ├── Modules/
 │   ├── TransportRate/
 │   │   ├── Structure/      # Snapshot-таблица, индексы, seed
-│   │   └── Programmability/ # Grid-обёртки, detail, export
+│   │   └── Programmability/ # Detail view, export
 │   ├── TransportLeg/
 │   │   ├── Structure/
 │   │   └── Programmability/
@@ -41,8 +41,7 @@ SqlScripts/
 | 2 | `Modules/TransportRate/Structure/02.TransportRate_Insert.sql` |
 | 3 | `Modules/TransportRate/Structure/03.TransportRate_CreateIndexes.sql` |
 | 4 | `Modules/TransportRate/Programmability/vw_TransportRate_Detail.sql` |
-| 5 | `Modules/TransportRate/Programmability/TransportRate_Get.sql` |
-| 6 | `Modules/TransportRate/Programmability/TransportRate_ExportFull.sql` |
+| 5 | `Modules/TransportRate/Programmability/TransportRate_ExportFull.sql` |
 
 **TransportLeg**
 
@@ -52,8 +51,7 @@ SqlScripts/
 | 2 | `Modules/TransportLeg/Structure/02.TransportLeg_Insert.sql` |
 | 3 | `Modules/TransportLeg/Structure/03.TransportLeg_CreateIndexes.sql` |
 | 4 | `Modules/TransportLeg/Programmability/vw_TransportLeg_Detail.sql` |
-| 5 | `Modules/TransportLeg/Programmability/TransportLeg_Get.sql` |
-| 6 | `Modules/TransportLeg/Programmability/TransportLeg_ExportFull.sql` |
+| 5 | `Modules/TransportLeg/Programmability/TransportLeg_ExportFull.sql` |
 
 **LocationsNodes**
 
@@ -63,13 +61,19 @@ SqlScripts/
 | 2 | `Modules/LocationsNodes/Structure/02.LocationsNodes_Insert.sql` |
 | 3 | `Modules/LocationsNodes/Structure/03.LocationsNodes_CreateIndexes.sql` |
 | 4 | `Modules/LocationsNodes/Programmability/vw_LocationsNodes_Detail.sql` |
-| 5 | `Modules/LocationsNodes/Programmability/LocationsNodes_Get.sql` |
-| 6 | `Modules/LocationsNodes/Programmability/LocationsNodes_ExportFull.sql` |
+| 5 | `Modules/LocationsNodes/Programmability/LocationsNodes_ExportFull.sql` |
+
+## Grid read-модель
+
+Список колонок для grid (`@AllowedColumnsJson`, `@SelectList`) формируется в C# из атрибутов `[GridSnapshot]` и `[GridColumn]` на `{Entity}Dto`.  
+`GridDataService` вызывает `v2.GetBlazorGridData` напрямую; процедур-прослоек `{Entity}_Get` нет.
+
+`{Entity}_ExportFull` принимает `@TableName`, `@AllowedColumnsJson`, `@SelectList` (keys-only) из C# и внутри вызывает `v2.GetBlazorGridData`.
 
 ## Добавление нового справочника
 
 Создать `Modules/{Name}/Structure/` и `Modules/{Name}/Programmability/` по образцу `TransportRate/` или `TransportLeg/`.
-Параллельно — C#-модуль в `BlazorSvt/Modules/{Name}/`.
+Параллельно — C#-модуль в `BlazorSvt/Modules/{Name}/` с атрибутами на list-DTO.
 
 Ключевая процедура `v2.GetBlazorGridData` (Platform) — универсальный query engine: whitelist колонок, фильтры, FTS, пагинация.
 
@@ -81,4 +85,3 @@ SqlScripts/
 
 Скрипт читает строку подключения из `appsettings.json`, выполняет Platform и все модули; при ошибке останавливается.
 В Cursor: `/create_programmability`.
-

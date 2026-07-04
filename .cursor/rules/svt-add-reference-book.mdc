@@ -12,10 +12,10 @@ alwaysApply: false
 
 1. Уточнить `{Entity}` = `PrimitiveEntityInfo.Name`
 2. Discovery в MDM → SQL → деплой БД → верификация SQL → C#
-3. **Новые** имена: `v2.{Entity}_Snapshot`, `v2.{Entity}_Get`, `{Entity}Id`, папка `Modules/{Entity}/`
+3. **Новые** имена: `v2.{Entity}_Snapshot`, `{Entity}Id`, папка `Modules/{Entity}/`; grid через `v2.GetBlazorGridData` + атрибуты DTO
 4. **Legs/Rates** — legacy-исключения (`LegId`, `RateId`); не рефакторить без отдельной команды
 5. C# писать **только после** успешного деплоя и верификации SQL
 
 ## Эталоны
 
-`Modules/Legs`, `Modules/Rates` — паттерны grid/detail/SQL; именование — по skill.
+`Modules/TransportRate`, `Modules/TransportLeg`, `Modules/LocationsNodes` — паттерны grid/detail/SQL; именование — по skill.

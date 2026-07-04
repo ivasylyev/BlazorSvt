@@ -99,25 +99,23 @@ EXEC v2.GetBlazorGridData
 CREATE OR ALTER PROCEDURE v2.GetBlazorGridData
     @PageNumber         INT = 1,
     @PageSize           INT = 20,
-    @LangSuffix         NVARCHAR(2),
-    @TableName          NVARCHAR(300),           -- Полное имя таблицы, например 'mdm.v2.TransportRateSnapshot'
-    @AllowedColumnsJson NVARCHAR(MAX), 
-    @SelectList         NVARCHAR(MAX),          -- Список колонок для SELECT, например 'Id, Code, StartDate'
+    @TableName          NVARCHAR(300),
+    @AllowedColumnsJson NVARCHAR(MAX),
+    @SelectList         NVARCHAR(MAX),
 
-    @SortKey            NVARCHAR(50) = NULL,      -- Колонка для сортировки
-    @SortDirection      NVARCHAR(5) = NULL,-- ASC или DESC
+    @SortKey            NVARCHAR(50) = NULL,
+    @SortDirection      NVARCHAR(5) = NULL,
 
     @FilterJson         NVARCHAR(MAX) = NULL
 AS
 BEGIN
     SET NOCOUNT ON;
 
-    --waitfor delay '00:00:20' -- debug
-
     DECLARE @AllowedColumns TABLE
     (
-        ColumnName SYSNAME NOT NULL,
-        ColumnType NVARCHAR(20) NOT NULL
+        ColumnName    SYSNAME NOT NULL,
+        SqlColumnName SYSNAME NOT NULL,
+        ColumnType    NVARCHAR(20) NOT NULL
     )
     DECLARE @FilteredColumns TABLE
     (
@@ -155,7 +153,6 @@ BEGIN
 
     SET @PageNumber = IIF(@PageNumber < 1, 1, @PageNumber);
     SET @PageSize = IIF(@PageSize < 1, 20, @PageSize);
-    SET @LangSuffix = CASE WHEN @LangSuffix = N'Ru' THEN N'Ru' ELSE N'En' END;
 
     SET @DatabaseName = PARSENAME(@TableName, 3);
     SET @SchemaName = PARSENAME(@TableName, 2);
@@ -177,12 +174,16 @@ BEGIN
     IF @TableObjectId IS NULL
         THROW 50000, 'Table does not exist.', 1;
 
-    INSERT INTO @AllowedColumns (ColumnName, ColumnType)
-    SELECT ColumnName, UPPER(ColumnType)
+    INSERT INTO @AllowedColumns (ColumnName, SqlColumnName, ColumnType)
+    SELECT
+        ColumnName,
+        ISNULL(SqlColumnName, ColumnName),
+        UPPER(ColumnType)
     FROM OPENJSON(@AllowedColumnsJson)
     WITH (
-        ColumnName SYSNAME '$.ColumnName',
-        ColumnType NVARCHAR(20) '$.ColumnType'
+        ColumnName    SYSNAME      '$.ColumnName',
+        SqlColumnName SYSNAME      '$.SqlColumnName',
+        ColumnType    NVARCHAR(20) '$.ColumnType'
     )
     WHERE ColumnName IS NOT NULL
       AND UPPER(ColumnType) IN (N'NVARCHAR', N'ID', N'DATE', N'BIT');
@@ -198,13 +199,9 @@ BEGIN
             THROW 50000, 'Invalid sort direction.', 1;
 
         SELECT TOP (1)
-            @SortColumn = CASE
-                WHEN AC.ColumnType = N'ID' AND @SortKey = AC.ColumnName + @LangSuffix THEN AC.ColumnName
-                ELSE @SortKey
-            END
+            @SortColumn = AC.SqlColumnName
         FROM @AllowedColumns AC
-        WHERE AC.ColumnName = @SortKey
-           OR (AC.ColumnType = N'ID' AND @SortKey = AC.ColumnName + @LangSuffix);
+        WHERE AC.ColumnName = @SortKey;
 
         IF @SortColumn IS NULL
            AND EXISTS (
@@ -233,9 +230,9 @@ BEGIN
 
     
     INSERT INTO @FilteredColumns (ColumnName, SqlColumnName, ColumnType, ColumnValue, Operator)
-    SELECT 
+    SELECT
         AC.ColumnName,
-        QUOTENAME(AC.ColumnName),
+        QUOTENAME(AC.SqlColumnName),
         AC.ColumnType,
         ISNULL(LTRIM(RTRIM(JS.[Value])), N'') AS ColumnValue,
         JS.Operator
@@ -246,8 +243,7 @@ BEGIN
         Operator         NVARCHAR(50)   '$.Operator'
     ) JS
     JOIN @AllowedColumns AC
-        ON JS.PropertyName = AC.ColumnName -- AND AC.ColumnType <> 'ID'
-        OR (JS.PropertyName = AC.ColumnName + @LangSuffix AND AC.ColumnType = 'ID')
+        ON JS.PropertyName = AC.ColumnName
 
     UPDATE @FilteredColumns
     SET SqlOperator = v2.fn_GetDateSqlOperator(Operator),

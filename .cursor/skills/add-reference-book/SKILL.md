@@ -388,21 +388,30 @@ BlazorSvt/SqlScripts/Modules/{Entity}/
 **vw_{Entity}_Detail** — поля длинного списка (п.4) + системные; ссылки: `IdRu`/`IdEn`, `Code`, `Name_en`/`Name_ru` из joined views.  
 Образцы: `vw_TransportLegs_Detail.sql`, `vw_TransportRates_Detail.sql`.
 
-**{Entity}_Get** — только поля snapshot для grid; вызов `v2.GetBlazorGridData`; `@AllowedColumnsJson` + `@SelectList`.  
-Длинные ссылки: только `NameRu`/`NameEn` (+ whitelist `Code`); Id **не** в SELECT.  
-Короткие enum: `{X}Id AS {X}IdRu, {X}Id AS {X}IdEn` — **без** `Code`/`Name*` в SELECT.  
-**Два примера** в комментарии: простой поиск и сложный (сортировка + ≥2 FTS-фильтра), если FTS-полей > 2.
+**Grid read** — без `{Entity}_Get`. Метаданные колонок на `{Entity}Dto`: `[GridSnapshot("mdm.v2.{Entity}_Snapshot")]` + `[GridColumn]` на свойствах.  
+`GridDataService` вызывает `v2.GetBlazorGridData` с `@TableName`, `@AllowedColumnsJson`, `@SelectList`, сформированными в C# (`GridColumnMetadataBuilder`).
 
-`ColumnType` в `@AllowedColumnsJson`:
+Правила `[GridColumn]`:
 
-| SQL-тип | ColumnType |
-|---------|------------|
-| `BIT` | `BIT` |
-| FK / `INT` | `ID` |
-| `NVARCHAR` | `NVARCHAR` |
-| `DATETIME` | `DATE` |
+| Ситуация | Атрибут |
+|----------|---------|
+| 1:1 со snapshot | `[GridColumn(GridColumnType.Nvarchar)]` и т.п. |
+| Enum Ru/En → одна snapshot-колонка | `[GridColumn(GridColumnType.Id, SqlColumn = "{X}Id")]` на `{X}IdRu` и `{X}IdEn` |
+| `DateOnly` в DTO, `DATETIME` в snapshot | `[GridColumn(GridColumnType.Date)]` — auto `CAST` в SELECT |
+| `DateTime` в DTO | `[GridColumn(GridColumnType.Date)]` — без CAST |
+| Бизнес-ключ | `IsEntityKey = true` на `{Entity}Id` |
+| Только отображение / сортировка | `Filterable = false` (не попадает в whitelist) |
 
-**{Entity}_ExportFull** — `@KeysOnly = 1` через `{Entity}_Get`, затем `SELECT d.* FROM v2.vw_{Entity}_Detail d JOIN #Filtered …`.
+`GridColumnType` для whitelist:
+
+| SQL-тип | GridColumnType |
+|---------|----------------|
+| `BIT` | `Bit` |
+| FK / `INT` | `Id` |
+| `NVARCHAR` | `Nvarchar` |
+| `DATETIME` | `Date` |
+
+**{Entity}_ExportFull** — принимает `@TableName`, `@AllowedColumnsJson`, `@SelectList` (keys-only) из C#; внутри `INSERT … EXEC v2.GetBlazorGridData`, затем `SELECT d.* FROM v2.vw_{Entity}_Detail d JOIN #Filtered …`.
 
 Обновить `BlazorSvt/SqlScripts/README.md` (секция нового модуля).
 
@@ -438,9 +447,10 @@ sqlcmd -S ... -d mdm -i "BlazorSvt\SqlScripts\Modules\{Entity}\Structure\01.{Ent
 
 ### Верификация SQL (обязательна)
 
-1. `EXEC` примеры из `{Entity}_Get` (оба, если применимо)
-2. `SELECT TOP 1 * FROM v2.{Entity}_Snapshot`
-3. `SELECT TOP 1 * FROM v2.vw_{Entity}_Detail`
+1. `EXEC v2.GetBlazorGridData` с примерами `@TableName`, `@AllowedColumnsJson`, `@SelectList` из атрибутов DTO (простой и сложный FTS, если применимо)
+2. `EXEC v2.{Entity}_ExportFull` с keys-only `@SelectList`
+3. `SELECT TOP 1 * FROM v2.{Entity}_Snapshot`
+4. `SELECT TOP 1 * FROM v2.vw_{Entity}_Detail`
 
 **При ошибке деплоя или верификации — остановиться, C# не писать, спросить пользователя.**
 
@@ -465,15 +475,26 @@ BlazorSvt/Modules/{Entity}/
 ### DTO-атрибуты (обязательно)
 
 ```csharp
-[StoredProcedure("v2.{Entity}_Get")]
-public class {Entity}Dto { ... }
+[GridSnapshot("mdm.v2.{Entity}_Snapshot")]
+public class {Entity}Dto
+{
+    [GridColumn(GridColumnType.Id, Order = 10)]
+    public long Id { get; set; }
+
+    [GridColumn(GridColumnType.Id, IsEntityKey = true, Order = 20)]
+    public long {Entity}Id { get; set; }
+
+    [GridColumn(GridColumnType.Id, SqlColumn = "RateTypeId", Order = 30)]
+    public required RateTypeRu RateTypeIdRu { get; set; }
+    // ...
+}
 
 [DetailSource("v2.vw_{Entity}_Detail", "{Entity}Id")]
 [FullReportExport("v2.{Entity}_ExportFull")]
 public class {Entity}DetailDto { ... }
 ```
 
-`{Entity}Dto` — поля snapshot + типы под процедуру `_Get`.  
+`{Entity}Dto` — поля snapshot + `[GridColumn]` на каждое поле grid/фильтра.  
 `{Entity}DetailDto` — поля `vw_{Entity}_Detail` и `_ExportFull`.
 
 **Enum-ссылки (IdsEnum):** поля, типизированные enum маленького словаря, объявлять **обязательными non-nullable** (`required`), как в `TransportRateDto`:

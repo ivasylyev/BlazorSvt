@@ -14,12 +14,12 @@ alwaysApply: false
 
 Краткая структура модуля:
 
-1. `Modules/{Entity}/List/{Entity}Dto.cs` — `[StoredProcedure("v2.{Entity}_Get")]`
+1. `Modules/{Entity}/List/{Entity}Dto.cs` — `[GridSnapshot]`, `[GridColumn]` на свойствах snapshot
 2. `Modules/{Entity}/Detail/{Entity}DetailDto.cs` — `[DetailSource]`, `[FullReportExport]`
 3. `{Entity}GridSettingsService` / `{Entity}DetailSettingsService`
 4. `{Entity}Grid.razor` — `@page "/{entity}"`, `BaseGridPage<…>`
 5. `{Entity}Module.cs` → `Add{Entity}Module()` в `Host/Program.cs`
-6. SQL: `SqlScripts/Modules/{Entity}/Structure/` + `Programmability/`
+6. SQL: `SqlScripts/Modules/{Entity}/Structure/` + `Programmability/` (`vw_*_Detail`, `*_ExportFull`)
 
 ## Модульная регистрация
 
@@ -28,8 +28,9 @@ alwaysApply: false
 ## Grid-фреймворк
 
 - `GenericGrid` / `GenericDetailView` — переиспользуемые компоненты
-- `IGridDataService<TDto,TQuery>` + `GridQueryFactory` — запросы к read-модели
-- Настройки колонок/деталей — через `IGridSettingsService` / `IDetailSettingsService`
+- `IGridDataService<TDto,TDetail>` + `GridQueryFactory` — запросы к read-модели через `v2.GetBlazorGridData`
+- `[GridSnapshot]` + `[GridColumn]` на list-DTO → `GridColumnMetadataBuilder` собирает `@AllowedColumnsJson` и `@SelectList`
+- Настройки колонок/деталей — через `IGridSettingsService` / `IDetailSettingsService` (UI-слой, отдельно от SQL-метаданных)
 
 ## Import / batch (целевой паттерн)
 
@@ -39,7 +40,7 @@ alwaysApply: false
 
 ## SQL
 
-- **Read**: snapshot-таблицы, `sp_Get*`, `fn_Get*Detail` — только выборка
+- **Read**: snapshot-таблицы, `v2.GetBlazorGridData`, `vw_*_Detail`, `*_ExportFull` — только выборка
 - **Write** (будущее): отдельные команды в C#, не бизнес-логика в SP
 - Dapper + `SqlDateOnlyTypeHandler`; логирование через `DapperLogExtensions`
 
