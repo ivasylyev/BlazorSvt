@@ -9,7 +9,7 @@ GO
 
 EXEC v2.LocationsNodes_ExportFull
     @PageSize = 100,
-    @TableName = N'mdm.v2.LocationsNodes_Snapshot',
+    @TableName = N'v2.LocationsNodes_Snapshot',
     @AllowedColumnsJson = N'[{"ColumnName":"IsArchive","SqlColumnName":"IsArchive","ColumnType":"BIT"}]',
     @SelectList = N'
         SELECT

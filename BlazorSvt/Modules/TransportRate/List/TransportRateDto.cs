@@ -1,116 +1,115 @@
 ﻿
 using BlazorSvt.Modules.TransportRate.List.IdsEnum;
 using BlazorSvt.Platform.Domain.IdsEnum;
-using BlazorSvt.Platform.Grid.Models;
 using BlazorSvt.Platform.Infrastructure.Config;
 
 namespace BlazorSvt.Modules.TransportRate.List;
 
-[GridSnapshot("mdm.v2.TransportRate_Snapshot")]
+[GridSnapshot("v2.TransportRate_Snapshot")]
 public class TransportRateDto
 {
-    [GridColumn(GridColumnType.Id, Order = 10)]
+    [GridColumn]
     public long Id { get; set; }
 
-    [GridColumn(GridColumnType.Id, IsEntityKey = true, Order = 20)]
+    [GridColumn(IsEntityKey = true)]
     public long TransportRateId { get; set; }
 
-    [GridColumn(GridColumnType.Bit, Order = 30)]
+    [GridColumn]
     public bool IsArchive { get; set; }
 
-    [GridColumn(GridColumnType.Bit, Order = 40)]
+    [GridColumn]
     public bool IsDefRate { get; set; }
 
-    [GridColumn(GridColumnType.Date, Order = 50)]
+    [GridColumn]
     public DateOnly StartDate { get; set; }
 
-    [GridColumn(GridColumnType.Date, Order = 60)]
+    [GridColumn]
     public DateOnly EndDate { get; set; }
 
-    [GridColumn(GridColumnType.Date, Order = 70)]
+    [GridColumn]
     public DateTime CreationDate { get; set; }
 
-    [GridColumn(GridColumnType.Date, Order = 80)]
+    [GridColumn]
     public DateTime LastChangeDate { get; set; }
 
-    [GridColumn(GridColumnType.Id, Filterable = false, Order = 90)]
+    [GridColumn(Filterable = false)]
     public decimal TotalCostTon { get; set; }
 
-    [GridColumn(GridColumnType.Id, Filterable = false, Order = 100)]
+    [GridColumn(Filterable = false)]
     public decimal TotalCostTransport { get; set; }
 
-    [GridColumn(GridColumnType.Id, Order = 110)]
+    [GridColumn]
     public required long Code { get; set; }
 
-    [GridColumn(GridColumnType.Id, Order = 120)]
+    [GridColumn]
     public required Currency CurrencyId { get; set; }
 
-    [GridColumn(GridColumnType.Id, SqlColumn = "RateTypeId", Order = 130)]
+    [GridColumn(SqlColumn = "RateTypeId")]
     public required RateTypeRu RateTypeIdRu { get; set; }
 
-    [GridColumn(GridColumnType.Id, SqlColumn = "RateTypeId", Order = 140)]
+    [GridColumn(SqlColumn = "RateTypeId")]
     public required RateTypeEn RateTypeIdEn { get; set; }
 
-    [GridColumn(GridColumnType.Nvarchar, Order = 150)]
+    [GridColumn]
     public required string NodeFromCode { get; set; }
 
-    [GridColumn(GridColumnType.Nvarchar, Order = 160)]
+    [GridColumn]
     public required string NodeFromNameRu { get; set; }
 
-    [GridColumn(GridColumnType.Nvarchar, Order = 170)]
+    [GridColumn]
     public required string NodeFromNameEn { get; set; }
 
-    [GridColumn(GridColumnType.Nvarchar, Order = 180)]
+    [GridColumn]
     public string? ProxyNodeCode { get; set; }
 
-    [GridColumn(GridColumnType.Nvarchar, Order = 190)]
+    [GridColumn]
     public string? ProxyNodeNameRu { get; set; }
 
-    [GridColumn(GridColumnType.Nvarchar, Order = 200)]
+    [GridColumn]
     public string? ProxyNodeNameEn { get; set; }
 
-    [GridColumn(GridColumnType.Nvarchar, Order = 210)]
+    [GridColumn]
     public required string NodeToCode { get; set; }
 
-    [GridColumn(GridColumnType.Nvarchar, Order = 220)]
+    [GridColumn]
     public required string NodeToNameRu { get; set; }
 
-    [GridColumn(GridColumnType.Nvarchar, Order = 230)]
+    [GridColumn]
     public required string NodeToNameEn { get; set; }
 
-    [GridColumn(GridColumnType.Id, SqlColumn = "TransportKindId", Order = 240)]
+    [GridColumn(SqlColumn = "TransportKindId")]
     public required TransportKindRu TransportKindIdRu { get; set; }
 
-    [GridColumn(GridColumnType.Id, SqlColumn = "TransportKindId", Order = 250)]
+    [GridColumn(SqlColumn = "TransportKindId")]
     public required TransportKindEn TransportKindIdEn { get; set; }
 
-    [GridColumn(GridColumnType.Nvarchar, Filterable = false, Order = 260)]
+    [GridColumn(Filterable = false)]
     public required string TransportKindCode { get; set; }
 
-    [GridColumn(GridColumnType.Nvarchar, Filterable = false, Order = 270)]
+    [GridColumn(Filterable = false)]
     public required string TransportTypeCode { get; set; }
 
-    [GridColumn(GridColumnType.Id, SqlColumn = "TransportTypeId", Order = 280)]
+    [GridColumn(SqlColumn = "TransportTypeId")]
     public required TransportTypeLevel3Ru TransportTypeIdRu { get; set; }
 
-    [GridColumn(GridColumnType.Id, SqlColumn = "TransportTypeId", Order = 290)]
+    [GridColumn(SqlColumn = "TransportTypeId")]
     public required TransportTypeLevel3En TransportTypeIdEn { get; set; }
 
-    [GridColumn(GridColumnType.Nvarchar, Order = 300)]
+    [GridColumn]
     public string? ProductGroupCode { get; set; }
 
-    [GridColumn(GridColumnType.Nvarchar, Order = 310)]
+    [GridColumn]
     public string? ProductGroupNameRu { get; set; }
 
-    [GridColumn(GridColumnType.Nvarchar, Order = 320)]
+    [GridColumn]
     public string? ProductGroupNameEn { get; set; }
 
-    [GridColumn(GridColumnType.Id, Order = 330)]
+    [GridColumn]
     public long? ProductCode { get; set; }
 
-    [GridColumn(GridColumnType.Nvarchar, Order = 340)]
+    [GridColumn]
     public string? ProductNameRu { get; set; }
 
-    [GridColumn(GridColumnType.Nvarchar, Order = 350)]
+    [GridColumn]
     public string? ProductNameEn { get; set; }
 }

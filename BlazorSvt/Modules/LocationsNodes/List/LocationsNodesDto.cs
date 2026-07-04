@@ -1,60 +1,59 @@
 using BlazorSvt.Modules.LocationsNodes.List.IdsEnum;
-using BlazorSvt.Platform.Grid.Models;
 using BlazorSvt.Platform.Infrastructure.Config;
 
 namespace BlazorSvt.Modules.LocationsNodes.List;
 
-[GridSnapshot("mdm.v2.LocationsNodes_Snapshot")]
+[GridSnapshot("v2.LocationsNodes_Snapshot")]
 public class LocationsNodesDto
 {
-    [GridColumn(GridColumnType.Id, Order = 10)]
+    [GridColumn]
     public long Id { get; set; }
 
-    [GridColumn(GridColumnType.Id, IsEntityKey = true, Order = 20)]
+    [GridColumn(IsEntityKey = true)]
     public long LocationsNodesId { get; set; }
 
-    [GridColumn(GridColumnType.Nvarchar, Order = 30)]
+    [GridColumn]
     public required string Code { get; set; }
 
-    [GridColumn(GridColumnType.Bit, Order = 40)]
+    [GridColumn]
     public bool IsArchive { get; set; }
 
-    [GridColumn(GridColumnType.Nvarchar, Order = 50)]
+    [GridColumn]
     public string? NameRu { get; set; }
 
-    [GridColumn(GridColumnType.Nvarchar, Order = 60)]
+    [GridColumn]
     public string? NameEn { get; set; }
 
-    [GridColumn(GridColumnType.Id, SqlColumn = "LocationTypeId", Order = 70)]
+    [GridColumn(SqlColumn = "LocationTypeId")]
     public required LocationTypeRu LocationTypeIdRu { get; set; }
 
-    [GridColumn(GridColumnType.Id, SqlColumn = "LocationTypeId", Order = 80)]
+    [GridColumn(SqlColumn = "LocationTypeId")]
     public required LocationTypeEn LocationTypeIdEn { get; set; }
 
-    [GridColumn(GridColumnType.Id, SqlColumn = "TypeNodeId", Order = 90)]
+    [GridColumn(SqlColumn = "TypeNodeId")]
     public required TypeNodeRu TypeNodeIdRu { get; set; }
 
-    [GridColumn(GridColumnType.Id, SqlColumn = "TypeNodeId", Order = 100)]
+    [GridColumn(SqlColumn = "TypeNodeId")]
     public required TypeNodeEn TypeNodeIdEn { get; set; }
 
-    [GridColumn(GridColumnType.Nvarchar, Order = 110)]
+    [GridColumn]
     public string? RegionCode { get; set; }
 
-    [GridColumn(GridColumnType.Nvarchar, Order = 120)]
+    [GridColumn]
     public string? RegionNameRu { get; set; }
 
-    [GridColumn(GridColumnType.Nvarchar, Order = 130)]
+    [GridColumn]
     public string? RegionNameEn { get; set; }
 
-    [GridColumn(GridColumnType.Nvarchar, Order = 140)]
+    [GridColumn]
     public string? CountryNameRu { get; set; }
 
-    [GridColumn(GridColumnType.Nvarchar, Order = 150)]
+    [GridColumn]
     public string? CountryNameEn { get; set; }
 
-    [GridColumn(GridColumnType.Date, Order = 160)]
+    [GridColumn]
     public DateTime CreationDate { get; set; }
 
-    [GridColumn(GridColumnType.Date, Order = 170)]
+    [GridColumn]
     public DateTime LastChangeDate { get; set; }
 }

@@ -1,119 +1,118 @@
 ﻿
 using BlazorSvt.Modules.TransportLeg.List.IdsEnum;
 using BlazorSvt.Platform.Domain.IdsEnum;
-using BlazorSvt.Platform.Grid.Models;
 using BlazorSvt.Platform.Infrastructure.Config;
 
 namespace BlazorSvt.Modules.TransportLeg.List;
 
-[GridSnapshot("mdm.v2.TransportLeg_Snapshot")]
+[GridSnapshot("v2.TransportLeg_Snapshot")]
 public class TransportLegDto
 {
-    [GridColumn(GridColumnType.Id, Order = 10)]
+    [GridColumn]
     public long Id { get; set; }
 
-    [GridColumn(GridColumnType.Id, IsEntityKey = true, Order = 20)]
+    [GridColumn(IsEntityKey = true)]
     public long TransportLegId { get; set; }
 
-    [GridColumn(GridColumnType.Nvarchar, Order = 30)]
+    [GridColumn]
     public required string Code { get; set; }
 
-    [GridColumn(GridColumnType.Bit, Order = 40)]
+    [GridColumn]
     public bool IsArchive { get; set; }
 
-    [GridColumn(GridColumnType.Bit, Order = 50)]
+    [GridColumn]
     public bool CanBeUsed { get; set; }
 
-    [GridColumn(GridColumnType.Id, SqlColumn = "ShipmentTypeId", Order = 60)]
+    [GridColumn(SqlColumn = "ShipmentTypeId")]
     public required ShipmentTypeRu ShipmentTypeIdRu { get; set; }
 
-    [GridColumn(GridColumnType.Id, SqlColumn = "ShipmentTypeId", Order = 70)]
+    [GridColumn(SqlColumn = "ShipmentTypeId")]
     public required ShipmentTypeEn ShipmentTypeIdEn { get; set; }
 
-    [GridColumn(GridColumnType.Id, SqlColumn = "TransportKindId", Order = 80)]
+    [GridColumn(SqlColumn = "TransportKindId")]
     public required TransportKindRu TransportKindIdRu { get; set; }
 
-    [GridColumn(GridColumnType.Id, SqlColumn = "TransportKindId", Order = 90)]
+    [GridColumn(SqlColumn = "TransportKindId")]
     public required TransportKindEn TransportKindIdEn { get; set; }
 
-    [GridColumn(GridColumnType.Nvarchar, Filterable = false, Order = 100)]
+    [GridColumn(Filterable = false)]
     public required string TransportKindCode { get; set; }
 
-    [GridColumn(GridColumnType.Nvarchar, Filterable = false, Order = 110)]
+    [GridColumn(Filterable = false)]
     public required string SearchTimeT { get; set; }
 
-    [GridColumn(GridColumnType.Nvarchar, Filterable = false, Order = 120)]
+    [GridColumn(Filterable = false)]
     public required string LoadTimeT { get; set; }
 
-    [GridColumn(GridColumnType.Nvarchar, Filterable = false, Order = 130)]
+    [GridColumn(Filterable = false)]
     public required string TravelTimeT { get; set; }
 
-    [GridColumn(GridColumnType.Nvarchar, Filterable = false, Order = 140)]
+    [GridColumn(Filterable = false)]
     public required string DaysWaitingT { get; set; }
 
-    [GridColumn(GridColumnType.Nvarchar, Filterable = false, Order = 150)]
+    [GridColumn(Filterable = false)]
     public required string UnLoadTimeT { get; set; }
 
-    [GridColumn(GridColumnType.Nvarchar, Filterable = false, Order = 160)]
+    [GridColumn(Filterable = false)]
     public required string TransportationTimeT { get; set; }
 
-    [GridColumn(GridColumnType.Nvarchar, Order = 170)]
+    [GridColumn]
     public required string NodeFromCode { get; set; }
 
-    [GridColumn(GridColumnType.Nvarchar, Order = 180)]
+    [GridColumn]
     public required string NodeFromNameRu { get; set; }
 
-    [GridColumn(GridColumnType.Nvarchar, Order = 190)]
+    [GridColumn]
     public required string NodeFromNameEn { get; set; }
 
-    [GridColumn(GridColumnType.Nvarchar, Order = 200)]
+    [GridColumn]
     public required string RegionFromCode { get; set; }
 
-    [GridColumn(GridColumnType.Nvarchar, Order = 210)]
+    [GridColumn]
     public required string RegionFromNameRu { get; set; }
 
-    [GridColumn(GridColumnType.Nvarchar, Order = 220)]
+    [GridColumn]
     public required string RegionFromNameEn { get; set; }
 
-    [GridColumn(GridColumnType.Nvarchar, Order = 230)]
+    [GridColumn]
     public string? ProxyNodeCode { get; set; }
 
-    [GridColumn(GridColumnType.Nvarchar, Order = 240)]
+    [GridColumn]
     public string? ProxyNodeNameRu { get; set; }
 
-    [GridColumn(GridColumnType.Nvarchar, Order = 250)]
+    [GridColumn]
     public string? ProxyNodeNameEn { get; set; }
 
-    [GridColumn(GridColumnType.Nvarchar, Order = 260)]
+    [GridColumn]
     public string? ProxyRegionCode { get; set; }
 
-    [GridColumn(GridColumnType.Nvarchar, Order = 270)]
+    [GridColumn]
     public string? ProxyRegionNameRu { get; set; }
 
-    [GridColumn(GridColumnType.Nvarchar, Order = 280)]
+    [GridColumn]
     public string? ProxyRegionNameEn { get; set; }
 
-    [GridColumn(GridColumnType.Nvarchar, Order = 290)]
+    [GridColumn]
     public required string NodeToCode { get; set; }
 
-    [GridColumn(GridColumnType.Nvarchar, Order = 300)]
+    [GridColumn]
     public required string NodeToNameRu { get; set; }
 
-    [GridColumn(GridColumnType.Nvarchar, Order = 310)]
+    [GridColumn]
     public required string NodeToNameEn { get; set; }
 
-    [GridColumn(GridColumnType.Nvarchar, Order = 320)]
+    [GridColumn]
     public required string RegionToCode { get; set; }
 
-    [GridColumn(GridColumnType.Nvarchar, Order = 330)]
+    [GridColumn]
     public required string RegionToNameRu { get; set; }
 
-    [GridColumn(GridColumnType.Nvarchar, Order = 340)]
+    [GridColumn]
     public required string RegionToNameEn { get; set; }
 
-    [GridColumn(GridColumnType.Date, Order = 350)]
+    [GridColumn]
     public DateTime CreationDate { get; set; }
 
-    [GridColumn(GridColumnType.Date, Order = 360)]
+    [GridColumn]
     public DateTime LastChangeDate { get; set; }
 }

@@ -388,19 +388,19 @@ BlazorSvt/SqlScripts/Modules/{Entity}/
 **vw_{Entity}_Detail** — поля длинного списка (п.4) + системные; ссылки: `IdRu`/`IdEn`, `Code`, `Name_en`/`Name_ru` из joined views.  
 Образцы: `vw_TransportLegs_Detail.sql`, `vw_TransportRates_Detail.sql`.
 
-**Grid read** — без `{Entity}_Get`. Метаданные колонок на `{Entity}Dto`: `[GridSnapshot("mdm.v2.{Entity}_Snapshot")]` + `[GridColumn]` на свойствах.  
+**Grid read** — без `{Entity}_Get`. Метаданные колонок на `{Entity}Dto`: `[GridSnapshot("v2.{Entity}_Snapshot")]` + `[GridColumn]` на свойствах.  
 `GridDataService` вызывает `v2.GetBlazorGridData` с `@TableName`, `@AllowedColumnsJson`, `@SelectList`, сформированными в C# (`GridColumnMetadataBuilder`).
 
 Правила `[GridColumn]`:
 
 | Ситуация | Атрибут |
 |----------|---------|
-| 1:1 со snapshot | `[GridColumn(GridColumnType.Nvarchar)]` и т.п. |
-| Enum Ru/En → одна snapshot-колонка | `[GridColumn(GridColumnType.Id, SqlColumn = "{X}Id")]` на `{X}IdRu` и `{X}IdEn` |
-| `DateOnly` в DTO, `DATETIME` в snapshot | `[GridColumn(GridColumnType.Date)]` — auto `CAST` в SELECT |
-| `DateTime` в DTO | `[GridColumn(GridColumnType.Date)]` — без CAST |
+| 1:1 со snapshot (`string`, `bool`, `long`, `DateTime`, …) | `[GridColumn]` — тип выводится из CLR-типа свойства |
+| Enum Ru/En → одна snapshot-колонка | `[GridColumn(SqlColumn = "{X}Id")]` на `{X}IdRu` и `{X}IdEn` |
+| `DateOnly` в DTO, `DATETIME` в snapshot | `[GridColumn]` — auto `CAST` в SELECT |
 | Бизнес-ключ | `IsEntityKey = true` на `{Entity}Id` |
-| Только отображение / сортировка | `Filterable = false` (не попадает в whitelist) |
+| Только отображение / сортировка | `Filterable = false` |
+| Невыводимый CLR-тип + фильтрация | явный `ColumnType = GridColumnType.…` |
 
 `GridColumnType` для whitelist:
 
@@ -475,16 +475,16 @@ BlazorSvt/Modules/{Entity}/
 ### DTO-атрибуты (обязательно)
 
 ```csharp
-[GridSnapshot("mdm.v2.{Entity}_Snapshot")]
+[GridSnapshot("v2.{Entity}_Snapshot")]
 public class {Entity}Dto
 {
-    [GridColumn(GridColumnType.Id, Order = 10)]
+    [GridColumn]
     public long Id { get; set; }
 
-    [GridColumn(GridColumnType.Id, IsEntityKey = true, Order = 20)]
+    [GridColumn(IsEntityKey = true)]
     public long {Entity}Id { get; set; }
 
-    [GridColumn(GridColumnType.Id, SqlColumn = "RateTypeId", Order = 30)]
+    [GridColumn(SqlColumn = "RateTypeId")]
     public required RateTypeRu RateTypeIdRu { get; set; }
     // ...
 }

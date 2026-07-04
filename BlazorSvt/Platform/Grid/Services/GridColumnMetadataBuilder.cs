@@ -44,7 +44,6 @@ public static class GridColumnMetadataBuilder
 
         var selectParts = metadata.Columns
             .Where(c => c.IncludeInSelect)
-            .OrderBy(c => c.Order)
             .Select(c => c.SelectExpression);
 
         return "\n        SELECT\n            " + string.Join(",\n            ", selectParts) + "\n  ";
@@ -58,10 +57,9 @@ public static class GridColumnMetadataBuilder
 
         var columns = dtoType
             .GetProperties(BindingFlags.Public | BindingFlags.Instance)
-            .Select((property, index) => TryBuildColumn(property, index))
+            .Select(TryBuildColumn)
             .Where(column => column is not null)
             .Cast<GridColumnMetadata>()
-            .OrderBy(c => c.Order)
             .ToList();
 
         if (columns.Count == 0)
@@ -85,7 +83,7 @@ public static class GridColumnMetadataBuilder
         };
     }
 
-    private static GridColumnMetadata? TryBuildColumn(PropertyInfo property, int declarationIndex)
+    private static GridColumnMetadata? TryBuildColumn(PropertyInfo property)
     {
         var attr = property.GetCustomAttribute<GridColumnAttribute>();
         if (attr is null)
@@ -95,19 +93,71 @@ public static class GridColumnMetadataBuilder
 
         var propertyName = property.Name;
         var sqlColumn = attr.SqlColumn ?? propertyName;
-        var order = attr.Order != 0 ? attr.Order : declarationIndex;
+        var columnType = ResolveColumnType(property, attr);
 
         return new GridColumnMetadata
         {
             PropertyName = propertyName,
             SqlColumnName = sqlColumn,
-            ColumnType = attr.ColumnType,
+            ColumnType = columnType,
             SelectExpression = BuildSelectExpression(property, attr, propertyName, sqlColumn),
             Filterable = attr.Filterable,
             IncludeInSelect = attr.IncludeInSelect,
-            IsEntityKey = attr.IsEntityKey,
-            Order = order
+            IsEntityKey = attr.IsEntityKey
         };
+    }
+
+    private static GridColumnType ResolveColumnType(PropertyInfo property, GridColumnAttribute attr)
+    {
+        if (attr.ColumnType.HasValue)
+        {
+            return attr.ColumnType.Value;
+        }
+
+        var inferred = TryInferColumnType(property.PropertyType);
+        if (inferred.HasValue)
+        {
+            return inferred.Value;
+        }
+
+        if (!attr.Filterable)
+        {
+            return GridColumnType.Id;
+        }
+
+        throw new InvalidOperationException(
+            $"Property {property.DeclaringType!.Name}.{property.Name} requires explicit GridColumnType");
+    }
+
+    private static GridColumnType? TryInferColumnType(Type propertyType)
+    {
+        var type = Nullable.GetUnderlyingType(propertyType) ?? propertyType;
+
+        if (type == typeof(string))
+        {
+            return GridColumnType.Nvarchar;
+        }
+
+        if (type == typeof(bool))
+        {
+            return GridColumnType.Bit;
+        }
+
+        if (type.IsEnum
+            || type == typeof(long)
+            || type == typeof(int)
+            || type == typeof(short)
+            || type == typeof(byte))
+        {
+            return GridColumnType.Id;
+        }
+
+        if (type == typeof(DateTime) || type == typeof(DateOnly))
+        {
+            return GridColumnType.Date;
+        }
+
+        return null;
     }
 
     private static string BuildSelectExpression(

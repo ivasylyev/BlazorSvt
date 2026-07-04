@@ -9,7 +9,6 @@ public sealed class GridColumnMetadata
     public bool Filterable { get; init; }
     public bool IncludeInSelect { get; init; }
     public bool IsEntityKey { get; init; }
-    public int Order { get; init; }
 }
 
 public sealed class GridSnapshotMetadata
