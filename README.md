@@ -132,7 +132,7 @@ dotnet run --project BlazorSvt/BlazorSvt.csproj
 1. Создать модуль `Modules/{Name}/` со структурой `List/` и `Detail/`.
 2. Определить DTO с атрибутами:
    - `[GridSnapshot]`, `[GridColumn]` на list-DTO (метаданные для `v2.GetBlazorGridData`);
-   - `[DetailSource(...)]`, `[FullReportExport(...)]` на detail-DTO.
+   - `[DetailSource(...)]` на detail-DTO.
 3. Реализовать `*GridSettingsService` и `*DetailSettingsService`.
 4. Добавить Razor-страницу, наследующую `BaseGridPage<TItem, TDetailItem>`.
 5. Создать `{Name}Module.cs` и зарегистрировать в `Host/Program.cs`:
@@ -141,7 +141,7 @@ dotnet run --project BlazorSvt/BlazorSvt.csproj
 builder.Services.Add{Name}Module();
 ```
 
-6. Добавить SQL в `SqlScripts/Modules/{Name}/`: snapshot-таблица, индексы, `vw_*_Detail`, `*_ExportFull`.
+6. Добавить SQL в `SqlScripts/Modules/{Name}/`: snapshot-таблица, индексы, `vw_*_Detail`.
 
 Образец — `Modules/TransportRate/` (C#) и `SqlScripts/Modules/TransportRate/` (SQL).
 

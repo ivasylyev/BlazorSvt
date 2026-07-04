@@ -48,12 +48,12 @@ public class GridDataService<TItem, TDetailItem>(
 #pragma warning restore CS0618 // Type or member is obsolete
         await connection.OpenAsync(request.CancellationToken);
 
-        var parameters = BuildExportParameters(typeof(TItem), query);
+        var parameters = BuildExportParameters(typeof(TItem), typeof(TDetailItem), query);
 
         var loggingConnection = new DbConnectionLogDecorator(connection, logger, reportQueryTimeoutSeconds);
 
         var data = (await loggingConnection.QueryAsync<TDetailItem>(
-            FullReportExportProcedureName,
+            ExportBlazorGridDetailProcedureName,
             parameters,
             CommandType.StoredProcedure)).ToList();
 
@@ -123,15 +123,24 @@ public class GridDataService<TItem, TDetailItem>(
         return (data, count);
     }
 
-    private static DynamicParameters BuildExportParameters(Type dtoType, GridQuery query)
+    private static DynamicParameters BuildExportParameters(
+        Type listDtoType,
+        Type detailDtoType,
+        GridQuery query)
     {
-        var snapshotQuery = GridSnapshotQuery.For(dtoType);
+        var snapshotQuery = GridSnapshotQuery.For(listDtoType);
+        var detailSource = detailDtoType.GetCustomAttribute<DetailSourceAttribute>()
+            ?? throw new InvalidOperationException(
+                $"DTO {detailDtoType.Name} does not have DetailSourceAttribute");
+
         var parameters = new DynamicParameters();
 
         parameters.Add("PageSize", query.PageSize);
         parameters.Add("TableName", snapshotQuery.TableName);
         parameters.Add("AllowedColumnsJson", snapshotQuery.AllowedColumnsJson);
         parameters.Add("SelectList", snapshotQuery.KeysOnlySelectList);
+        parameters.Add("DetailViewName", detailSource.Name);
+        parameters.Add("EntityKeyColumn", detailSource.KeyColumn);
         parameters.Add("SortKey", query.Sort.PropertyName);
         parameters.Add("SortDirection", query.Sort.Direction);
 
@@ -161,11 +170,7 @@ public class GridDataService<TItem, TDetailItem>(
     }
 
     private const string GridStoredProcedureName = "v2.GetBlazorGridData";
-
-    private static readonly string FullReportExportProcedureName =
-        typeof(TDetailItem).GetCustomAttribute<FullReportExportAttribute>()?.Name
-        ?? throw new InvalidOperationException(
-            $"DTO {typeof(TDetailItem).Name} does not have FullReportExportAttribute");
+    private const string ExportBlazorGridDetailProcedureName = "v2.ExportBlazorGridDetail";
 
     private static readonly string DetailSourceName =
         typeof(TDetailItem).GetCustomAttribute<DetailSourceAttribute>()?.Name

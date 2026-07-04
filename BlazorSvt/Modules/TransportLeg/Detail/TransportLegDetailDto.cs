@@ -6,7 +6,6 @@ using BlazorSvt.Platform.Domain.IdsEnum;
 namespace BlazorSvt.Modules.TransportLeg.Detail;
 
 [DetailSource("v2.vw_TransportLeg_Detail", "TransportLegId")]
-[FullReportExport("v2.TransportLeg_ExportFull")]
 public class TransportLegDetailDto
 {
     public long Id { get; set; }

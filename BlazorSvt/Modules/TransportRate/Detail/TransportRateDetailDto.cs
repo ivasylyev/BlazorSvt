@@ -4,7 +4,6 @@ using BlazorSvt.Platform.Infrastructure.Config;
 namespace BlazorSvt.Modules.TransportRate.Detail;
 
 [DetailSource("v2.vw_TransportRate_Detail", "TransportRateId")]
-[FullReportExport("v2.TransportRate_ExportFull")]
 public class TransportRateDetailDto
 {
     public long TransportRateId { get; set; }

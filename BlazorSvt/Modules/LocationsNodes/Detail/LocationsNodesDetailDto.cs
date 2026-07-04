@@ -4,7 +4,6 @@ using BlazorSvt.Modules.LocationsNodes.List.IdsEnum;
 namespace BlazorSvt.Modules.LocationsNodes.Detail;
 
 [DetailSource("v2.vw_LocationsNodes_Detail", "LocationsNodesId")]
-[FullReportExport("v2.LocationsNodes_ExportFull")]
 public class LocationsNodesDetailDto
 {
     public long LocationsNodesId { get; set; }

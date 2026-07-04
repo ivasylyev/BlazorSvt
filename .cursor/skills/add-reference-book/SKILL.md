@@ -36,7 +36,7 @@ description: >-
 | Папка C# и SQL | `Modules/{Entity}/` | `Modules/TransportLeg/` |
 | Snapshot-таблица | `v2.{Entity}_Snapshot` | `v2.TransportLeg_Snapshot` |
 | Detail view | `v2.vw_{Entity}_Detail` | `v2.vw_TransportLeg_Detail` |
-| Get / Export | `v2.{Entity}_Get`, `v2.{Entity}_ExportFull` | `v2.TransportLeg_Get` |
+| Get / Export | `v2.GetBlazorGridData`, `v2.ExportBlazorGridDetail` (Platform) | — |
 | SEQUENCE | `v2.seq_{Entity}Id` | `v2.seq_TransportLegId` |
 | Partition function | `v2_pf_{Entity}_IsArchive` | |
 | Partition scheme | `v2_ps_{Entity}` | |
@@ -364,7 +364,7 @@ BlazorSvt/SqlScripts/Modules/{Entity}/
 └── Programmability/
     ├── vw_{Entity}_Detail.sql
     ├── {Entity}_Get.sql
-    └── {Entity}_ExportFull.sql
+    └── vw_{Entity}_Detail.sql
 ```
 
 ### Structure
@@ -411,7 +411,7 @@ BlazorSvt/SqlScripts/Modules/{Entity}/
 | `NVARCHAR` | `Nvarchar` |
 | `DATETIME` | `Date` |
 
-**{Entity}_ExportFull** — принимает `@TableName`, `@AllowedColumnsJson`, `@SelectList` (keys-only) из C#; внутри `INSERT … EXEC v2.GetBlazorGridData`, затем `SELECT d.* FROM v2.vw_{Entity}_Detail d JOIN #Filtered …`.
+**Full export** — platform-процедура `v2.ExportBlazorGridDetail`: grid-метаданные из list-DTO, `@DetailViewName` и `@EntityKeyColumn` из `[DetailSource]` на detail-DTO. Per-module export-процедура **не нужна**.
 
 Обновить `BlazorSvt/SqlScripts/README.md` (секция нового модуля).
 
@@ -448,7 +448,7 @@ sqlcmd -S ... -d mdm -i "BlazorSvt\SqlScripts\Modules\{Entity}\Structure\01.{Ent
 ### Верификация SQL (обязательна)
 
 1. `EXEC v2.GetBlazorGridData` с примерами `@TableName`, `@AllowedColumnsJson`, `@SelectList` из атрибутов DTO (простой и сложный FTS, если применимо)
-2. `EXEC v2.{Entity}_ExportFull` с keys-only `@SelectList`
+2. `EXEC v2.ExportBlazorGridDetail` с `@DetailViewName` / `@EntityKeyColumn` из detail-DTO
 3. `SELECT TOP 1 * FROM v2.{Entity}_Snapshot`
 4. `SELECT TOP 1 * FROM v2.vw_{Entity}_Detail`
 
@@ -490,12 +490,11 @@ public class {Entity}Dto
 }
 
 [DetailSource("v2.vw_{Entity}_Detail", "{Entity}Id")]
-[FullReportExport("v2.{Entity}_ExportFull")]
 public class {Entity}DetailDto { ... }
 ```
 
 `{Entity}Dto` — поля snapshot + `[GridColumn]` на каждое поле grid/фильтра.  
-`{Entity}DetailDto` — поля `vw_{Entity}_Detail` и `_ExportFull`.
+`{Entity}DetailDto` — поля `vw_{Entity}_Detail`.
 
 **Enum-ссылки (IdsEnum):** поля, типизированные enum маленького словаря, объявлять **обязательными non-nullable** (`required`), как в `TransportRateDto`:
 

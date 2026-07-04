@@ -15,11 +15,11 @@ alwaysApply: false
 Краткая структура модуля:
 
 1. `Modules/{Entity}/List/{Entity}Dto.cs` — `[GridSnapshot]`, `[GridColumn]` на свойствах snapshot
-2. `Modules/{Entity}/Detail/{Entity}DetailDto.cs` — `[DetailSource]`, `[FullReportExport]`
+2. `Modules/{Entity}/Detail/{Entity}DetailDto.cs` — `[DetailSource]`
 3. `{Entity}GridSettingsService` / `{Entity}DetailSettingsService`
 4. `{Entity}Grid.razor` — `@page "/{entity}"`, `BaseGridPage<…>`
 5. `{Entity}Module.cs` → `Add{Entity}Module()` в `Host/Program.cs`
-6. SQL: `SqlScripts/Modules/{Entity}/Structure/` + `Programmability/` (`vw_*_Detail`, `*_ExportFull`)
+6. SQL: `SqlScripts/Modules/{Entity}/Structure/` + `Programmability/` (`vw_*_Detail`)
 
 ## Модульная регистрация
 
@@ -40,7 +40,7 @@ alwaysApply: false
 
 ## SQL
 
-- **Read**: snapshot-таблицы, `v2.GetBlazorGridData`, `vw_*_Detail`, `*_ExportFull` — только выборка
+- **Read**: snapshot-таблицы, `v2.GetBlazorGridData`, `v2.ExportBlazorGridDetail`, `vw_*_Detail` — только выборка
 - **Write** (будущее): отдельные команды в C#, не бизнес-логика в SP
 - Dapper + `SqlDateOnlyTypeHandler`; логирование через `DapperLogExtensions`
 
