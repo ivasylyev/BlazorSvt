@@ -1,7 +1,6 @@
 ﻿
 using BlazorSvt.Modules.TransportRate.List.IdsEnum;
 using BlazorSvt.Platform.Domain.IdsEnum;
-using BlazorSvt.Platform.Infrastructure.Config;
 
 namespace BlazorSvt.Modules.TransportRate.List;
 

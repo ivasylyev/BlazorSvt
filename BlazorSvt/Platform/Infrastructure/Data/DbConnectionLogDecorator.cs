@@ -1,8 +1,6 @@
 ﻿using System.Data;
 using Dapper;
 
-using BlazorSvt.Platform.Infrastructure.Logging;
-
 namespace BlazorSvt.Platform.Infrastructure.Data;
 
 public class DbConnectionLogDecorator(IDbConnection connection, ILogger logger, int commandTimeoutSeconds)

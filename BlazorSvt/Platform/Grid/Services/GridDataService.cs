@@ -1,6 +1,4 @@
 ﻿using BlazorBootstrap;
-using BlazorSvt.Platform.Infrastructure.Config;
-using BlazorSvt.Platform.Grid.Models;
 using BlazorSvt.Platform.Infrastructure.Data;
 using Dapper;
 using Microsoft.Extensions.Options;

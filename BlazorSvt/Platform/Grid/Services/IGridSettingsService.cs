@@ -1,6 +1,4 @@
-﻿using BlazorSvt.Platform.Grid.Models;
-
-namespace BlazorSvt.Platform.Grid.Services;
+﻿namespace BlazorSvt.Platform.Grid.Services;
 
 public interface IGridSettingsService<T>
 {

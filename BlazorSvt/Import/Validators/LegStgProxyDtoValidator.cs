@@ -1,5 +1,4 @@
 ﻿using BlazorSvt.Import.Models;
-using BlazorSvt.Platform.Resources;
 using FluentValidation;
 using Microsoft.Extensions.Localization;
 

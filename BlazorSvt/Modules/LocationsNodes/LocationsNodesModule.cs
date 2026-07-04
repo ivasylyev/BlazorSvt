@@ -1,6 +1,5 @@
 using BlazorSvt.Modules.LocationsNodes.Detail;
 using BlazorSvt.Modules.LocationsNodes.List;
-using BlazorSvt.Platform.Grid.Services;
 
 namespace BlazorSvt.Modules.LocationsNodes;
 

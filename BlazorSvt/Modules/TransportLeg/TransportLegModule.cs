@@ -1,6 +1,5 @@
 ﻿using BlazorSvt.Modules.TransportLeg.Detail;
 using BlazorSvt.Modules.TransportLeg.List;
-using BlazorSvt.Platform.Grid.Services;
 
 namespace BlazorSvt.Modules.TransportLeg;
 

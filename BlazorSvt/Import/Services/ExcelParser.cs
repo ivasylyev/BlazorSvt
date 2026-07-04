@@ -2,7 +2,6 @@
 using System.Globalization;
 using System.Reflection;
 using BlazorSvt.Import.Models;
-using BlazorSvt.Platform.Resources;
 using ClosedXML.Excel;
 using Microsoft.Extensions.Localization;
 

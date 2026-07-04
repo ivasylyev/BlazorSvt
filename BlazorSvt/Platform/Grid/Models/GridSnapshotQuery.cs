@@ -1,5 +1,3 @@
-using BlazorSvt.Platform.Grid.Services;
-
 namespace BlazorSvt.Platform.Grid.Models;
 
 public sealed class GridSnapshotQuery

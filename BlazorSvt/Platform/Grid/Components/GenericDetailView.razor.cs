@@ -1,6 +1,4 @@
-﻿using BlazorSvt.Platform.Grid.Models;
-using BlazorSvt.Platform.Grid.Services;
-using Microsoft.AspNetCore.Components;
+﻿using Microsoft.AspNetCore.Components;
 
 namespace BlazorSvt.Platform.Grid.Components;
 

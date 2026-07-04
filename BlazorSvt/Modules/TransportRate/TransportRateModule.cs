@@ -1,6 +1,5 @@
 ﻿using BlazorSvt.Modules.TransportRate.Detail;
 using BlazorSvt.Modules.TransportRate.List;
-using BlazorSvt.Platform.Grid.Services;
 
 namespace BlazorSvt.Modules.TransportRate;
 

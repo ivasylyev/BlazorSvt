@@ -1,5 +1,4 @@
 using BlazorSvt.Modules.LocationsNodes.List.IdsEnum;
-using BlazorSvt.Platform.Infrastructure.Config;
 
 namespace BlazorSvt.Modules.LocationsNodes.List;
 

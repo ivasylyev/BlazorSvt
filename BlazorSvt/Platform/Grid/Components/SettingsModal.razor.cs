@@ -1,6 +1,5 @@
 ﻿using BlazorBootstrap;
 using Microsoft.AspNetCore.Components;
-using BlazorSvt.Platform.Grid.Models;
 
 namespace BlazorSvt.Platform.Grid.Components;
 

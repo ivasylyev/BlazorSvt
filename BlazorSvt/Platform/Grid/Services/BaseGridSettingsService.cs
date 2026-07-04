@@ -1,5 +1,4 @@
 ﻿using Blazored.LocalStorage;
-using BlazorSvt.Platform.Grid.Models;
 
 namespace BlazorSvt.Platform.Grid.Services;
 

@@ -1,6 +1,5 @@
 using BlazorBootstrap;
 using BlazorSvt.Modules.LocationsNodes.Detail;
-using BlazorSvt.Platform.Grid.Services;
 using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.Localization;
 

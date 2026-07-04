@@ -1,10 +1,5 @@
 ﻿using BlazorBootstrap;
-using BlazorSvt.Platform.Infrastructure.Config;
-using BlazorSvt.Platform.Infrastructure.Logging;
-using BlazorSvt.Platform.Grid.Models;
-using BlazorSvt.Platform.Grid.Services;
 using BlazorSvt.Platform.Reporting.Services;
-using BlazorSvt.Platform.Grid.Components;
 using BlazorSvt.Platform.Reporting.Components;
 using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.Options;

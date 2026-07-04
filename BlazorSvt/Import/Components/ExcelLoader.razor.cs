@@ -2,8 +2,6 @@
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Forms;
 
-using BlazorSvt.Platform.UI.Components;
-
 namespace BlazorSvt.Import.Components;
 
 public partial class ExcelLoader : SvtComponentBase

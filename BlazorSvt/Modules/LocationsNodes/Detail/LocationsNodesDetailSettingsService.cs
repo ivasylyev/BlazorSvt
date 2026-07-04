@@ -1,5 +1,3 @@
-using BlazorBootstrap;
-using BlazorSvt.Modules.LocationsNodes.List.IdsEnum;
 using Microsoft.Extensions.Localization;
 
 namespace BlazorSvt.Modules.LocationsNodes.Detail;

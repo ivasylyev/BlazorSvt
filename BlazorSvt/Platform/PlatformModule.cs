@@ -1,5 +1,3 @@
-using BlazorSvt.Platform.Grid.Services;
-using BlazorSvt.Platform.Infrastructure.Config;
 using BlazorSvt.Platform.Reporting.Services;
 
 namespace BlazorSvt.Platform;

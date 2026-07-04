@@ -1,8 +1,6 @@
 using BlazorBootstrap;
 using Blazored.LocalStorage;
 using BlazorSvt.Modules.LocationsNodes.List.IdsEnum;
-using BlazorSvt.Platform.Grid.Models;
-using BlazorSvt.Platform.Grid.Services;
 using Microsoft.Extensions.Localization;
 
 namespace BlazorSvt.Modules.LocationsNodes.List;

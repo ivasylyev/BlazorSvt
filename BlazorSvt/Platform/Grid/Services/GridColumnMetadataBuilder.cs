@@ -1,7 +1,5 @@
 using System.Collections.Concurrent;
 using System.Reflection;
-using BlazorSvt.Platform.Grid.Models;
-using BlazorSvt.Platform.Infrastructure.Config;
 using Newtonsoft.Json;
 
 namespace BlazorSvt.Platform.Grid.Services;

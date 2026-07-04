@@ -1,7 +1,4 @@
-﻿
-using BlazorSvt.Platform.Infrastructure.Config;
-
-namespace BlazorSvt.Modules.TransportRate.Detail;
+﻿namespace BlazorSvt.Modules.TransportRate.Detail;
 
 [DetailSource("v2.vw_TransportRate_Detail", "TransportRateId")]
 public class TransportRateDetailDto

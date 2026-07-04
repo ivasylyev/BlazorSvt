@@ -1,6 +1,4 @@
-﻿
-using BlazorSvt.Platform.Infrastructure.Config;
-using BlazorSvt.Modules.TransportLeg.List.IdsEnum;
+﻿using BlazorSvt.Modules.TransportLeg.List.IdsEnum;
 using BlazorSvt.Platform.Domain.IdsEnum;
 
 namespace BlazorSvt.Modules.TransportLeg.Detail;

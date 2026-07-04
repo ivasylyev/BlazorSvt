@@ -1,6 +1,4 @@
-﻿using BlazorSvt.Platform.Grid.Models;
-
-namespace BlazorSvt.Platform.Reporting.Services;
+﻿namespace BlazorSvt.Platform.Reporting.Services;
 
 public interface IGridReportSession<T> : IDisposable
 {

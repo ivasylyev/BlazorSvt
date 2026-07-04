@@ -7,7 +7,6 @@ using BlazorSvt.Modules.TransportLeg;
 using BlazorSvt.Modules.TransportRate;
 using BlazorSvt.Platform;
 using BlazorSvt.Platform.Infrastructure.Data;
-using BlazorSvt.Platform.Infrastructure.Logging;
 using Dapper;
 using Serilog;
 

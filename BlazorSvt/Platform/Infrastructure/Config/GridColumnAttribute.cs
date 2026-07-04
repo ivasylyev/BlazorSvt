@@ -1,5 +1,3 @@
-using BlazorSvt.Platform.Grid.Models;
-
 namespace BlazorSvt.Platform.Infrastructure.Config;
 
 [AttributeUsage(AttributeTargets.Property)]

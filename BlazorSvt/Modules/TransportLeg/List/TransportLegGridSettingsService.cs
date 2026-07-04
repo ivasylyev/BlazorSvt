@@ -2,8 +2,6 @@
 using Blazored.LocalStorage;
 using BlazorSvt.Modules.TransportLeg.List.IdsEnum;
 using BlazorSvt.Platform.Domain.IdsEnum;
-using BlazorSvt.Platform.Grid.Models;
-using BlazorSvt.Platform.Grid.Services;
 using Microsoft.Extensions.Localization;
 
 namespace BlazorSvt.Modules.TransportLeg.List;

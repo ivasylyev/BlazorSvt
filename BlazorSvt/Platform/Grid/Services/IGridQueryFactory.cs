@@ -1,5 +1,4 @@
 ﻿using BlazorBootstrap;
-using BlazorSvt.Platform.Grid.Models;
 
 namespace BlazorSvt.Platform.Grid.Services;
 

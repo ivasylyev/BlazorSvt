@@ -1,6 +1,4 @@
 ﻿using BlazorBootstrap;
-using BlazorSvt.Platform.Grid.Services;
-using BlazorSvt.Platform.UI.Components;
 using Microsoft.AspNetCore.Components;
 
 namespace BlazorSvt.Platform.Grid.Components;

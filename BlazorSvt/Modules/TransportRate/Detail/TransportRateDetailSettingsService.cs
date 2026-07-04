@@ -1,6 +1,4 @@
-﻿using BlazorSvt.Platform.Grid.Models;
-using BlazorSvt.Platform.Grid.Services;
-using Microsoft.Extensions.Localization;
+﻿using Microsoft.Extensions.Localization;
 
 namespace BlazorSvt.Modules.TransportRate.Detail;
 
