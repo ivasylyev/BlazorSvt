@@ -8,6 +8,7 @@ USE mdm
 GO
 
 EXEC v2.ExportBlazorGridDetail
+    @PageNumber = 1,
     @PageSize = 100,
     @TableName = N'v2.TransportRate_Snapshot',
     @AllowedColumnsJson = N'[{"ColumnName":"IsArchive","SqlColumnName":"IsArchive","ColumnType":"BIT"}]',
@@ -25,6 +26,7 @@ EXEC v2.ExportBlazorGridDetail
 
 */
 CREATE OR ALTER PROCEDURE v2.ExportBlazorGridDetail
+    @PageNumber             INT = 1,
     @PageSize               INT,
     @TableName              NVARCHAR(300),
     @AllowedColumnsJson     NVARCHAR(MAX),
@@ -90,7 +92,7 @@ BEGIN
 
     INSERT INTO #Filtered (EntityId)
     EXEC v2.GetBlazorGridData
-        @PageNumber         = 1,
+        @PageNumber         = @PageNumber,
         @PageSize           = @PageSize,
         @TableName          = @TableName,
         @AllowedColumnsJson = @AllowedColumnsJson,
@@ -98,7 +100,8 @@ BEGIN
         @SortKey            = @SortKey,
         @SortDirection      = @SortDirection,
         @FilterJson         = @FilterJson;
-
+-- мекэгъ лемърэ ондгюопня бмрспх "ORDER BY" мю "INNER JOIN #Filtered"
+-- еякх онлемърэ - бяе ондбхямер мю НРВЕРЕ ЯРЮБНЙ
     SET @DetailSQL = N'
         SELECT d.*
         FROM ' + @SafeViewName + N' d

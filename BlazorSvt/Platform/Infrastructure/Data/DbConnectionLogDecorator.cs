@@ -10,16 +10,19 @@ public class DbConnectionLogDecorator(IDbConnection connection, ILogger logger, 
     public Task<SqlMapper.GridReader> QueryMultipleAsync(
         string sql,
         DynamicParameters parameters,
-        CommandType commandType)
+        CommandType commandType,
+        CancellationToken cancellationToken = default)
     {
         return LoggedOperation.ExecuteAsync(
             logger,
             sql,
             () => connection.QueryMultipleAsync(
-                sql,
-                parameters,
-                commandType: commandType,
-                commandTimeout: commandTimeoutSeconds));
+                new CommandDefinition(
+                    sql,
+                    parameters,
+                    commandType: commandType,
+                    commandTimeout: commandTimeoutSeconds,
+                    cancellationToken: cancellationToken)));
     }
 
     public Task<TDetailItem?> QuerySingleOrDefaultAsync<TDetailItem>(
@@ -40,15 +43,18 @@ public class DbConnectionLogDecorator(IDbConnection connection, ILogger logger, 
     public Task<IEnumerable<T>> QueryAsync<T>(
         string sql,
         DynamicParameters parameters,
-        CommandType commandType)
+        CommandType commandType,
+        CancellationToken cancellationToken = default)
     {
         return LoggedOperation.ExecuteAsync(
             logger,
             sql,
             () => connection.QueryAsync<T>(
-                sql,
-                parameters,
-                commandType: commandType,
-                commandTimeout: commandTimeoutSeconds));
+                new CommandDefinition(
+                    sql,
+                    parameters,
+                    commandType: commandType,
+                    commandTimeout: commandTimeoutSeconds,
+                    cancellationToken: cancellationToken)));
     }
 }

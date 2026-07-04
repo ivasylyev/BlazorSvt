@@ -1,5 +1,6 @@
 ﻿using BlazorBootstrap;
 using BlazorSvt.Platform.Infrastructure.Config;
+using BlazorSvt.Platform.Infrastructure.Logging;
 using BlazorSvt.Platform.Grid.Models;
 using BlazorSvt.Platform.Grid.Services;
 using BlazorSvt.Platform.Reporting.Services;
@@ -10,7 +11,7 @@ using Microsoft.Extensions.Options;
 
 namespace BlazorSvt.Platform.Grid.Components;
 
-public partial class GenericGrid<TItem, TDetailItem> : SvtComponentBase
+public partial class GenericGrid<TItem, TDetailItem> : SvtComponentBase, IDisposable
 {
     #region Fields
 
@@ -18,6 +19,7 @@ public partial class GenericGrid<TItem, TDetailItem> : SvtComponentBase
     private SettingsModal settingsModal = default!;
     private ReportConfirmModal reportConfirmModal = default!;
     private GridColumnSettingsCollection<TItem>? gridSettings;
+    private CancellationTokenSource? reportCancellationTokenSource;
 
     #endregion
 
@@ -157,6 +159,17 @@ public partial class GenericGrid<TItem, TDetailItem> : SvtComponentBase
 
     #endregion
 
+    #region IDisposable
+
+    public void Dispose()
+    {
+        reportCancellationTokenSource?.Cancel();
+        reportCancellationTokenSource?.Dispose();
+        reportCancellationTokenSource = null;
+    }
+
+    #endregion
+
     #region Reports
 
     private Task OnShortReportAsync() =>
@@ -174,7 +187,7 @@ public partial class GenericGrid<TItem, TDetailItem> : SvtComponentBase
     private async Task RunReportAsync(
         string reportName,
         int confirmationThreshold,
-        Func<int, Task> generateReport)
+        Func<int, CancellationToken, Task> generateReport)
     {
         if (gridSettings is null)
         {
@@ -193,39 +206,111 @@ public partial class GenericGrid<TItem, TDetailItem> : SvtComponentBase
                 return;
         }
 
+        reportCancellationTokenSource?.Cancel();
+        reportCancellationTokenSource?.Dispose();
+        reportCancellationTokenSource = new CancellationTokenSource();
+        var cancellationToken = reportCancellationTokenSource.Token;
+
         PreloadService.Show(SpinnerColor.Light, L["GenericGrid.ReportGenerating"]);
         try
         {
-            await LoggedOperation.ExecuteAsync(Logger, $"{reportName} report", () => generateReport(totalCount));
+            await LoggedOperation.ExecuteAsync(
+                Logger,
+                $"{reportName} report",
+                () => generateReport(totalCount, cancellationToken));
         }
         finally
         {
             PreloadService.Hide();
+            reportCancellationTokenSource.Dispose();
+            reportCancellationTokenSource = null;
         }
     }
 
-    private async Task ExportShortReportAsync(int totalCount)
+    private async Task ExportShortReportAsync(int totalCount, CancellationToken cancellationToken)
     {
-        var request = grid.CreateDataProviderRequest(pageNumber: 1, pageSizeOverride: totalCount);
-        var items = await GridDataService.GetShortReportDataAsync(request, Lang, totalCount);
+        var batchSize = ReportOptions.Value.ReportBatchSize;
+        var baseRequest = grid.CreateDataProviderRequest(pageNumber: 1, pageSizeOverride: batchSize);
+
         await using var stream = new MemoryStream();
-        GridExcelExporter.ExportShortReport(stream, items, gridSettings!.ColumnSettings);
+        var session = GridExcelExporter.BeginShortReport(stream, gridSettings!.ColumnSettings);
+
+        try
+        {
+            for (var pageNumber = 1; ; pageNumber++)
+            {
+                cancellationToken.ThrowIfCancellationRequested();
+
+                var batch = await GridDataService.GetShortReportBatchAsync(
+                    baseRequest,
+                    Lang,
+                    pageNumber,
+                    batchSize,
+                    cancellationToken);
+
+                if (batch.Count == 0)
+                    break;
+
+                session.WriteBatch(batch, cancellationToken);
+
+                if (batch.Count < batchSize)
+                    break;
+            }
+
+            session.Complete(totalCount);
+        }
+        finally
+        {
+            session.Dispose();
+        }
+
         stream.Position = 0;
-        await FileDownloadService.DownloadFromStreamAsync(stream, BuildReportFileName("short"));
-        Logger.LogInformation("Short report: exported {Count} items", items.Count);
+        await FileDownloadService.DownloadFromStreamAsync(stream, BuildReportFileName("short"), cancellationToken);
+        Logger.LogInformation("Short report: exported {Count} items", totalCount);
     }
 
-    private async Task ExportFullReportAsync(int totalCount)
+    private async Task ExportFullReportAsync(int totalCount, CancellationToken cancellationToken)
     {
-        var request = grid.CreateDataProviderRequest(pageNumber: 1, pageSizeOverride: totalCount);
-        var items = await GridDataService.GetFullReportDataAsync(request, Lang, totalCount);
+        var batchSize = ReportOptions.Value.ReportBatchSize;
+        var baseRequest = grid.CreateDataProviderRequest(pageNumber: 1, pageSizeOverride: batchSize);
         var detailSettings = DetailSettingsService.GetGridDetailSettings(Lang);
         var columns = detailSettings.GroupSettings.Values.SelectMany(settings => settings);
+
         await using var stream = new MemoryStream();
-        GridExcelExporter.ExportFullReport(stream, items, columns);
+        var session = GridExcelExporter.BeginFullReport(stream, columns);
+
+        try
+        {
+            for (var pageNumber = 1; ; pageNumber++)
+            {
+                cancellationToken.ThrowIfCancellationRequested();
+
+                var batch = await GridDataService.GetFullReportBatchAsync(
+                    baseRequest,
+                    Lang,
+                    pageNumber,
+                    batchSize,
+                    cancellationToken);
+
+                if (batch.Count == 0)
+                    break;
+
+                session.WriteBatch(batch, cancellationToken);
+
+                if (batch.Count < batchSize)
+                    break;
+            }
+
+            session.Complete(totalCount);
+        }
+        finally
+        {
+            session.Dispose();
+        }
+
         stream.Position = 0;
-        await FileDownloadService.DownloadFromStreamAsync(stream, BuildReportFileName("full"));
-        Logger.LogInformation("Full report: exported {Count} items", items.Count);
+        await FileDownloadService.DownloadFromStreamAsync(stream, BuildReportFileName("full"), cancellationToken);
+        Logger.LogInformation("Full report: exported {Count} items", totalCount);
     }
 
     private string BuildReportFileName(string reportKind)

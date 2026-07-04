@@ -13,49 +13,77 @@ public class GridExcelExporter : IGridExcelExporter
 
     private sealed record ExportColumn<T>(string Header, Func<T, object?> GetValue);
 
-    public void ExportShortReport<T>(Stream output, IReadOnlyList<T> items, IEnumerable<GridColumnSetting<T>> columns) =>
-        ExportCore(
+    public IGridReportSession<T> BeginShortReport<T>(Stream output, IEnumerable<GridColumnSetting<T>> columns) =>
+        BeginReport(
             output,
-            items,
             columns
                 .Where(c => c.Visible)
                 .Select(c => new ExportColumn<T>(c.Header, item => c.DisplaySelector(item)))
                 .ToList());
 
-    public void ExportFullReport<T>(Stream output, IReadOnlyList<T> items, IEnumerable<DetailSetting<T>> columns) =>
-        ExportCore(
+    public IGridReportSession<T> BeginFullReport<T>(Stream output, IEnumerable<DetailSetting<T>> columns) =>
+        BeginReport(
             output,
-            items,
             columns
                 .Select(c => new ExportColumn<T>(
                     c.Header,
                     item => c.VisibleSelector(item) ? c.DisplaySelector(item) : null))
                 .ToList());
 
-    private static void ExportCore<T>(Stream output, IReadOnlyList<T> items, IReadOnlyList<ExportColumn<T>> columns)
+    private static IGridReportSession<T> BeginReport<T>(Stream output, IReadOnlyList<ExportColumn<T>> columns)
     {
         if (columns.Count == 0)
             throw new InvalidOperationException("Report must have at least one column.");
 
-        using var writer = new XlsxWriter(output, requireCellReferences: false);
+        return new GridReportSession<T>(output, columns);
+    }
 
-        writer.BeginWorksheet(
-            WorksheetName,
-            splitRow: 1,
-            columns: [XlsxColumn.Formatted(DefaultColumnWidth, count: columns.Count)]);
+    private sealed class GridReportSession<T> : IGridReportSession<T>
+    {
+        private readonly XlsxWriter writer;
+        private readonly IReadOnlyList<ExportColumn<T>> columns;
+        private bool completed;
 
-        writer.BeginRow();
-        foreach (var column in columns)
-            writer.WriteSharedString(column.Header, HeaderStyle);
-
-        foreach (var item in items)
+        public GridReportSession(Stream output, IReadOnlyList<ExportColumn<T>> columns)
         {
+            this.columns = columns;
+            writer = new XlsxWriter(output, requireCellReferences: false);
+
+            writer.BeginWorksheet(
+                WorksheetName,
+                splitRow: 1,
+                columns: [XlsxColumn.Formatted(DefaultColumnWidth, count: columns.Count)]);
+
             writer.BeginRow();
             foreach (var column in columns)
-                WriteCellValue(writer, column.GetValue(item));
+                writer.WriteSharedString(column.Header, HeaderStyle);
         }
 
-        writer.SetAutoFilter(1, 1, items.Count + 1, columns.Count);
+        public void WriteBatch(IReadOnlyList<T> items, CancellationToken cancellationToken = default)
+        {
+            ObjectDisposedException.ThrowIf(completed, this);
+
+            foreach (var item in items)
+            {
+                cancellationToken.ThrowIfCancellationRequested();
+                writer.BeginRow();
+                foreach (var column in columns)
+                    WriteCellValue(writer, column.GetValue(item));
+            }
+        }
+
+        public void Complete(int totalRowCount)
+        {
+            ObjectDisposedException.ThrowIf(completed, this);
+
+            writer.SetAutoFilter(1, 1, totalRowCount + 1, columns.Count);
+            completed = true;
+        }
+
+        public void Dispose()
+        {
+            writer.Dispose();
+        }
     }
 
     private static void WriteCellValue(XlsxWriter writer, object? value)

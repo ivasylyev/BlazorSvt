@@ -12,7 +12,7 @@ public class FileDownloadService(IJSRuntime js) : IFileDownloadService
 
     public async Task DownloadFromStreamAsync(Stream content, string fileName, CancellationToken cancellationToken = default)
     {
-        using var streamRef = new DotNetStreamReference(content);
+        using var streamRef = new DotNetStreamReference(content, leaveOpen: true);
         await js.InvokeVoidAsync("downloadFileFromStream", cancellationToken, fileName, streamRef);
     }
 }

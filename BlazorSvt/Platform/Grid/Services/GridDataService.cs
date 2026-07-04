@@ -21,32 +21,36 @@ public class GridDataService<TItem, TDetailItem>(
     private readonly int defaultQueryTimeoutSeconds = options.Value.DefaultQueryTimeoutSeconds;
     private readonly int reportQueryTimeoutSeconds = options.Value.ReportQueryTimeoutSeconds;
 
-    public async Task<IReadOnlyList<TItem>> GetShortReportDataAsync(
+    public async Task<IReadOnlyList<TItem>> GetShortReportBatchAsync(
         GridDataProviderRequest<TItem> request,
         string lang,
-        int totalCount)
+        int pageNumber,
+        int pageSize,
+        CancellationToken cancellationToken)
     {
-        var query = gridQueryFactory.Create(request, lang, pageNumber: 1, pageSize: totalCount);
+        var query = gridQueryFactory.Create(request, lang, pageNumber, pageSize);
 
         var (data, _) = await ExecuteStoredProcedureAsync(
             query,
-            request.CancellationToken,
+            cancellationToken,
             reportQueryTimeoutSeconds);
 
         return data.ToList();
     }
 
-    public async Task<IReadOnlyList<TDetailItem>> GetFullReportDataAsync(
+    public async Task<IReadOnlyList<TDetailItem>> GetFullReportBatchAsync(
         GridDataProviderRequest<TItem> request,
         string lang,
-        int totalCount)
+        int pageNumber,
+        int pageSize,
+        CancellationToken cancellationToken)
     {
-        var query = gridQueryFactory.Create(request, lang, pageNumber: 1, pageSize: totalCount);
+        var query = gridQueryFactory.Create(request, lang, pageNumber, pageSize);
 
 #pragma warning disable CS0618 // Type or member is obsolete
         await using var connection = new SqlConnection(connectionString);
 #pragma warning restore CS0618 // Type or member is obsolete
-        await connection.OpenAsync(request.CancellationToken);
+        await connection.OpenAsync(cancellationToken);
 
         var parameters = BuildExportParameters(typeof(TItem), typeof(TDetailItem), query);
 
@@ -55,7 +59,8 @@ public class GridDataService<TItem, TDetailItem>(
         var data = (await loggingConnection.QueryAsync<TDetailItem>(
             ExportBlazorGridDetailProcedureName,
             parameters,
-            CommandType.StoredProcedure)).ToList();
+            CommandType.StoredProcedure,
+            cancellationToken)).ToList();
 
         return data;
     }
@@ -115,7 +120,8 @@ public class GridDataService<TItem, TDetailItem>(
         await using var multi = await loggingConnection.QueryMultipleAsync(
             GridStoredProcedureName,
             parameters,
-            CommandType.StoredProcedure);
+            CommandType.StoredProcedure,
+            cancellationToken);
 
         var data = (await multi.ReadAsync<TItem>()).ToList();
         var count = await ReadCountAsync(multi);
@@ -135,6 +141,7 @@ public class GridDataService<TItem, TDetailItem>(
 
         var parameters = new DynamicParameters();
 
+        parameters.Add("PageNumber", query.PageNumber);
         parameters.Add("PageSize", query.PageSize);
         parameters.Add("TableName", snapshotQuery.TableName);
         parameters.Add("AllowedColumnsJson", snapshotQuery.AllowedColumnsJson);
