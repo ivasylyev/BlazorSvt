@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics;
+using BlazorSvt.Platform.Infrastructure;
 
 namespace BlazorSvt.Platform.Infrastructure.Logging;
 
@@ -40,6 +41,10 @@ public static class LoggedOperation
                 "{OperationName} completed in {ElapsedMs} ms",
                 operationName,
                 stopwatch.ElapsedMilliseconds);
+        }
+        catch (Exception ex) when (OperationCancellation.IsCancellation(ex))
+        {
+            throw;
         }
         catch (Exception ex)
         {

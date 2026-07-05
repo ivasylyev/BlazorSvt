@@ -277,12 +277,20 @@ public partial class Grid<TItem> : BlazorBootstrapComponentBase
         cancellationTokenSource = new CancellationTokenSource();
 
         var token = cancellationTokenSource.Token;
-        await Task.Delay(300, token); // 300ms timeout for the debouncing
 
-        await SaveGridSettingsAsync();
+        try
+        {
+            await Task.Delay(300, token); // 300ms timeout for the debouncing
 
-        if (!HasSameEffectiveFiltersAsLastQuery())
-            await RefreshDataAsync(false, token);
+            await SaveGridSettingsAsync();
+
+            if (!HasSameEffectiveFiltersAsLastQuery())
+                await RefreshDataAsync(false, token);
+        }
+        catch (OperationCanceledException)
+        {
+            // Superseded by a newer filter change.
+        }
     }
 
     internal async Task RefreshDataAsync(bool firstRender = false, CancellationToken cancellationToken = default)
@@ -339,6 +347,10 @@ public partial class Grid<TItem> : BlazorBootstrapComponentBase
                 PrepareCheckboxIds();
                 await RefreshSelectionAsync();
             }
+        }
+        catch (OperationCanceledException) when (cancellationToken.IsCancellationRequested)
+        {
+            return;
         }
         finally
         {

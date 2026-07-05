@@ -1,4 +1,5 @@
 ﻿using BlazorBootstrap;
+using BlazorSvt.Platform.Infrastructure;
 using BlazorSvt.Platform.Infrastructure.Data;
 using Dapper;
 using Microsoft.Extensions.Options;
@@ -106,25 +107,32 @@ public class GridDataService<TItem, TDetailItem>(
         CancellationToken cancellationToken,
         int commandTimeoutSeconds)
     {
+        try
+        {
 #pragma warning disable CS0618 // Type or member is obsolete
-        await using var connection = new SqlConnection(connectionString);
+            await using var connection = new SqlConnection(connectionString);
 #pragma warning restore CS0618 // Type or member is obsolete
-        await connection.OpenAsync(cancellationToken);
+            await connection.OpenAsync(cancellationToken);
 
-        var parameters = BuildGridParameters(typeof(TItem), query);
+            var parameters = BuildGridParameters(typeof(TItem), query);
 
-        var loggingConnection = new DbConnectionLogDecorator(connection, logger, commandTimeoutSeconds);
+            var loggingConnection = new DbConnectionLogDecorator(connection, logger, commandTimeoutSeconds);
 
-        await using var multi = await loggingConnection.QueryMultipleAsync(
-            GridStoredProcedureName,
-            parameters,
-            CommandType.StoredProcedure,
-            cancellationToken);
+            await using var multi = await loggingConnection.QueryMultipleAsync(
+                GridStoredProcedureName,
+                parameters,
+                CommandType.StoredProcedure,
+                cancellationToken);
 
-        var data = (await multi.ReadAsync<TItem>()).ToList();
-        var count = await ReadCountAsync(multi);
+            var data = (await multi.ReadAsync<TItem>()).ToList();
+            var count = await ReadCountAsync(multi);
 
-        return (data, count);
+            return (data, count);
+        }
+        catch (Exception ex) when (OperationCancellation.IsCancellation(ex, cancellationToken))
+        {
+            throw new OperationCanceledException(cancellationToken);
+        }
     }
 
     private static DynamicParameters BuildExportParameters(
