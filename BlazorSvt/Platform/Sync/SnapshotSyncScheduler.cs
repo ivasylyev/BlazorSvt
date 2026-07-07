@@ -9,7 +9,7 @@ namespace BlazorSvt.Platform.Sync;
 /// синхронизацию по каждому <see cref="ISnapshotSyncJob"/>, а один раз в сутки в
 /// <see cref="SnapshotSyncOptions.ReconcileAtTime"/> — reconciliation.
 ///
-/// Инкремент не запускается в blackout-окнах (<see cref="SnapshotSyncOptions.Blackout"/>);
+/// Инкремент не запускается в blackout-окнах (<see cref="SnapshotSyncOptions.BlackoutIntervals"/>);
 /// reconciliation в них выполняется — окна как раз задуманы под тяжёлые операции.
 /// Все времена трактуются в поясе <see cref="SnapshotSyncOptions.TimeZone"/>.
 /// Ошибка одного справочника не останавливает остальные и следующий цикл.
@@ -37,10 +37,10 @@ public sealed class SnapshotSyncScheduler : BackgroundService
         this.logger = logger;
 
         timeZone = ResolveTimeZone(this.options.TimeZone, logger);
-        reconcileAt = ParseTime(this.options.ReconcileAtTime)
+        reconcileAt = BlackoutScheduleBuilder.ParseTime(this.options.ReconcileAtTime)
                       ?? throw new InvalidOperationException(
                           $"Sync:ReconcileAtTime '{this.options.ReconcileAtTime}' не является временем в формате HH:mm.");
-        blackout = BuildBlackout(this.options.Blackout, logger);
+        blackout = BlackoutScheduleBuilder.Build(this.options.BlackoutIntervals, logger);
     }
 
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
@@ -77,8 +77,8 @@ public sealed class SnapshotSyncScheduler : BackgroundService
 
     private async Task RunCycleAsync(DateTime previousLocal, DateTime nowLocal, CancellationToken stoppingToken)
     {
-        var inBlackout = IsInBlackout(nowLocal);
-        var shouldReconcile = CrossedReconcileBoundary(previousLocal, nowLocal);
+        var inBlackout = BlackoutScheduleBuilder.IsInBlackout(nowLocal, blackout);
+        var shouldReconcile = CrossedReconcileBoundary(previousLocal, nowLocal, reconcileAt);
 
         if (inBlackout)
         {
@@ -121,33 +121,17 @@ public sealed class SnapshotSyncScheduler : BackgroundService
     }
 
     /// <summary>
-    /// True, если между предыдущим и текущим тиком пересекли ежедневную отметку
-    /// reconcile. Без catch-up: если приложение было выключено во время отметки,
-    /// пересечение не наблюдается — reconcile ждёт следующих суток.
+    /// True, если между предыдущим и текущим тиком пересекли ежедневную отметку reconcile.
+    /// Без catch-up: если приложение было выключено во время отметки, пересечение
+    /// не наблюдается — reconcile ждёт следующих суток.
     /// </summary>
-    private bool CrossedReconcileBoundary(DateTime previousLocal, DateTime nowLocal)
+    internal static bool CrossedReconcileBoundary(
+        DateTime previousLocal,
+        DateTime nowLocal,
+        TimeSpan reconcileAt)
     {
         var scheduled = nowLocal.Date + reconcileAt;
         return previousLocal < scheduled && scheduled <= nowLocal;
-    }
-
-    private bool IsInBlackout(DateTime nowLocal)
-    {
-        if (!blackout.TryGetValue(nowLocal.DayOfWeek, out var windows))
-        {
-            return false;
-        }
-
-        var time = nowLocal.TimeOfDay;
-        foreach (var (from, to) in windows)
-        {
-            if (time >= from && time < to)
-            {
-                return true;
-            }
-        }
-
-        return false;
     }
 
     private DateTime NowLocal() => TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, timeZone);
@@ -183,43 +167,4 @@ public sealed class SnapshotSyncScheduler : BackgroundService
             return TimeZoneInfo.Local;
         }
     }
-
-    private static IReadOnlyDictionary<DayOfWeek, IReadOnlyList<(TimeSpan From, TimeSpan To)>> BuildBlackout(
-        BlackoutSchedule schedule, ILogger logger)
-    {
-        var result = new Dictionary<DayOfWeek, IReadOnlyList<(TimeSpan, TimeSpan)>>();
-
-        foreach (DayOfWeek day in Enum.GetValues<DayOfWeek>())
-        {
-            var windows = new List<(TimeSpan, TimeSpan)>();
-
-            foreach (var window in schedule.ForDay(day))
-            {
-                var from = ParseTime(window.From);
-                var to = ParseTime(window.To);
-
-                if (from is null || to is null || from >= to)
-                {
-                    logger.LogWarning(
-                        "SnapshotSync: некорректное blackout-окно '{From}'-'{To}' ({Day}) пропущено.",
-                        window.From, window.To, day);
-                    continue;
-                }
-
-                windows.Add((from.Value, to.Value));
-            }
-
-            if (windows.Count > 0)
-            {
-                result[day] = windows;
-            }
-        }
-
-        return result;
-    }
-
-    private static TimeSpan? ParseTime(string value) =>
-        TimeSpan.TryParse(value, System.Globalization.CultureInfo.InvariantCulture, out var parsed)
-            ? parsed
-            : null;
 }
