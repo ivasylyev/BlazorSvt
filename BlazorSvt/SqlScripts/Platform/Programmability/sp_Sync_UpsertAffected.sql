@@ -1,6 +1,12 @@
 USE [mdm];
 GO
 
+SET QUOTED_IDENTIFIER ON;
+GO
+
+SET ANSI_NULLS ON;
+GO
+
 /*
     Партиционно-безопасный upsert затронутых ключей из проекции в snapshot.
     Generic: набор колонок читается из sys.columns целевой таблицы (кроме
@@ -74,6 +80,8 @@ BEGIN
         FOR XML PATH(N''), TYPE).value(N'.', N'NVARCHAR(MAX)'), 1, 2, N'');
 
     DECLARE @Sql NVARCHAR(MAX) = N'
+SET QUOTED_IDENTIFIER ON;
+SET ANSI_NULLS ON;
 DELETE tgt
 FROM ' + @SafeSnap + N' AS tgt
 WHERE tgt.' + @SafeKey + N' IN (SELECT EntityKey FROM #AffectedKeys)

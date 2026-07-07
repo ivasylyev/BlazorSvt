@@ -45,6 +45,7 @@ public sealed class SnapshotSyncExecutor(
     {
         await using var connection = OpenConnection();
         await connection.OpenAsync(cancellationToken);
+        await EnsureSqlSessionSettingsAsync(connection, cancellationToken);
         var db = new DbConnectionLogDecorator(connection, logger, commandTimeout);
 
         var hi = await GetHighWatermarkAsync(db, cancellationToken);
@@ -129,6 +130,7 @@ public sealed class SnapshotSyncExecutor(
     {
         await using var connection = OpenConnection();
         await connection.OpenAsync(cancellationToken);
+        await EnsureSqlSessionSettingsAsync(connection, cancellationToken);
         var db = new DbConnectionLogDecorator(connection, logger, commandTimeout);
 
         var parameters = new DynamicParameters();
@@ -185,5 +187,18 @@ public sealed class SnapshotSyncExecutor(
 #pragma warning disable CS0618 // System.Data.SqlClient — как в остальном коде проекта
         return new SqlConnection(connectionString);
 #pragma warning restore CS0618
+    }
+
+    /// <summary>
+    /// Проекции snapshot join'ят indexed views legacy — без этих SET MERGE падает.
+    /// </summary>
+    private static async Task EnsureSqlSessionSettingsAsync(
+        SqlConnection connection,
+        CancellationToken cancellationToken)
+    {
+        await connection.ExecuteAsync(
+            new CommandDefinition(
+                "SET QUOTED_IDENTIFIER ON; SET ANSI_NULLS ON; SET ANSI_WARNINGS ON;",
+                cancellationToken: cancellationToken));
     }
 }
