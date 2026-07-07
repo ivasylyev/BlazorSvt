@@ -5,15 +5,16 @@
 ```
 SqlScripts/
 ├── Platform/
-│   ├── Structure/          # Схема v2, full-text catalog
+│   ├── Structure/          # Схема v2, full-text catalog, v2.SyncState
 │   └── Programmability/    # Универсальный grid engine
+├── Sync/                   # Синхронизация legacy → snapshot (rowversion на legacy)
 ├── Modules/
 │   ├── TransportRate/
 │   │   ├── Structure/      # Snapshot-таблица, индексы, seed
 │   │   └── Programmability/ # Detail view, export
 │   ├── TransportLeg/
 │   │   ├── Structure/
-│   │   └── Programmability/
+│   │   └── Programmability/ # Detail view + snapshot-source проекция
 │   └── LocationsNodes/
 │       ├── Structure/
 │       └── Programmability/
@@ -28,38 +29,51 @@ SqlScripts/
 |---|--------|
 | 1 | `Platform/Structure/00.Create_Schema.sql` |
 | 2 | `Platform/Structure/01.Create_Fulltext_Catalog.sql` |
-| 3 | `Platform/Programmability/fn_GetDateSqlOperator.sql` |
-| 4 | `Platform/Programmability/sp_GetBlazorGridData.sql` |
-| 5 | `Platform/Programmability/sp_ExportBlazorGridDetail.sql` |
+| 3 | `Platform/Structure/02.Create_SyncState.sql` |
+| 4 | `Platform/Programmability/fn_GetDateSqlOperator.sql` |
+| 5 | `Platform/Programmability/sp_GetBlazorGridData.sql` |
+| 6 | `Platform/Programmability/sp_ExportBlazorGridDetail.sql` |
+| 7 | `Platform/Programmability/sp_SyncState_Get.sql` |
+| 8 | `Platform/Programmability/sp_SyncState_Upsert.sql` |
+| 9 | `Platform/Programmability/sp_SyncState_MarkReconciled.sql` |
+| 10 | `Platform/Programmability/sp_Sync_GetHighWatermark.sql` |
+| 11 | `Platform/Programmability/sp_Sync_UpsertAffected.sql` |
+| 12 | `Platform/Programmability/sp_Sync_Reconcile.sql` |
 
 ### 2. Modules (по одному модулю: Structure → Programmability)
 
-**TransportRate**
+**TransportRate** (проекция создаётся до Insert — он из неё заливается)
 
 | # | Скрипт |
 |---|--------|
 | 1 | `Modules/TransportRate/Structure/01.TransportRate_CreateTable.sql` |
-| 2 | `Modules/TransportRate/Structure/02.TransportRate_Insert.sql` |
-| 3 | `Modules/TransportRate/Structure/03.TransportRate_CreateIndexes.sql` |
-| 4 | `Modules/TransportRate/Programmability/vw_TransportRate_Detail.sql` |
+| 2 | `Modules/TransportRate/Programmability/vw_TransportRate_SnapshotSource.sql` |
+| 3 | `Modules/TransportRate/Structure/02.TransportRate_Insert.sql` |
+| 4 | `Modules/TransportRate/Structure/03.TransportRate_CreateIndexes.sql` |
+| 5 | `Modules/TransportRate/Programmability/vw_TransportRate_Detail.sql` |
+| 6 | `Modules/TransportRate/Programmability/sp_TransportRate_PopulateAffectedKeys.sql` |
 
-**TransportLeg**
+**TransportLeg** (проекция создаётся до Insert — он из неё заливается)
 
 | # | Скрипт |
 |---|--------|
 | 1 | `Modules/TransportLeg/Structure/01.TransportLeg_CreateTable.sql` |
-| 2 | `Modules/TransportLeg/Structure/02.TransportLeg_Insert.sql` |
-| 3 | `Modules/TransportLeg/Structure/03.TransportLeg_CreateIndexes.sql` |
-| 4 | `Modules/TransportLeg/Programmability/vw_TransportLeg_Detail.sql` |
+| 2 | `Modules/TransportLeg/Programmability/vw_TransportLeg_SnapshotSource.sql` |
+| 3 | `Modules/TransportLeg/Structure/02.TransportLeg_Insert.sql` |
+| 4 | `Modules/TransportLeg/Structure/03.TransportLeg_CreateIndexes.sql` |
+| 5 | `Modules/TransportLeg/Programmability/vw_TransportLeg_Detail.sql` |
+| 6 | `Modules/TransportLeg/Programmability/sp_TransportLeg_PopulateAffectedKeys.sql` |
 
-**LocationsNodes**
+**LocationsNodes** (проекция создаётся до Insert — он из неё заливается)
 
 | # | Скрипт |
 |---|--------|
 | 1 | `Modules/LocationsNodes/Structure/01.LocationsNodes_CreateTable.sql` |
-| 2 | `Modules/LocationsNodes/Structure/02.LocationsNodes_Insert.sql` |
-| 3 | `Modules/LocationsNodes/Structure/03.LocationsNodes_CreateIndexes.sql` |
-| 4 | `Modules/LocationsNodes/Programmability/vw_LocationsNodes_Detail.sql` |
+| 2 | `Modules/LocationsNodes/Programmability/vw_LocationsNodes_SnapshotSource.sql` |
+| 3 | `Modules/LocationsNodes/Structure/02.LocationsNodes_Insert.sql` |
+| 4 | `Modules/LocationsNodes/Structure/03.LocationsNodes_CreateIndexes.sql` |
+| 5 | `Modules/LocationsNodes/Programmability/vw_LocationsNodes_Detail.sql` |
+| 6 | `Modules/LocationsNodes/Programmability/sp_LocationsNodes_PopulateAffectedKeys.sql` |
 
 ## Grid read-модель
 
@@ -67,6 +81,89 @@ SqlScripts/
 `GridDataService` вызывает `v2.GetBlazorGridData` напрямую; процедур-прослоек `{Entity}_Get` нет.
 
 Full export: `v2.ExportBlazorGridDetail` (Platform) — `@DetailViewName` и `@EntityKeyColumn` из `[DetailSource]` на detail-DTO, grid-метаданные из list-DTO.
+
+## Синхронизация legacy → snapshot (одностороннее, eventual consistency)
+
+Инкрементальная синхронизация из legacy в v2 snapshot. В C#
+(`Platform/Sync/`, фоновый `SnapshotSyncScheduler`) — только оркестрация
+(расписание, blackout-окна, продвижение курсоров, изоляция ошибок); вся
+SQL-логика вынесена в процедуры. Все обращения к БД идут через
+`DbConnectionLogDecorator` (единое логирование/тайминги).
+
+**Процедуры (Platform/Programmability):**
+
+| Процедура | Назначение |
+|-----------|------------|
+| `v2.Sync_GetHighWatermark` | Граница цикла `@Hi = MIN_ACTIVE_ROWVERSION() - 1` |
+| `v2.Sync_UpsertAffected` | Generic партиционно-безопасный upsert из проекции по `#AffectedKeys` |
+| `v2.Sync_Reconcile` | Generic anti-join удаление фантомов |
+| `v2.SyncState_Get` / `_Upsert` / `_MarkReconciled` | Курсоры `v2.SyncState` |
+
+**Процедура детекции (per-entity, Modules/{Name}/Programmability):**
+`v2.{Name}_PopulateAffectedKeys @Source, @Lo, @Hi` — по одному источнику за вызов
+наполняет `#AffectedKeys` бизнес-ключами затронутых записей (основная таблица +
+каскад через FK-колонки snapshot). Temp-таблицу создаёт вызывающая C#-сессия.
+
+**Механизм детекции — `rowversion`.** На базовых таблицах legacy
+(`dbo.PrimitiveEntityData_*`) добавляется служебный столбец `RowVer`
+(движок инкрементит его при любом INSERT/UPDATE). Воркер по границе
+`MIN_ACTIVE_ROWVERSION() - 1` выбирает только гарантированно закоммиченные
+изменения — без пропусков и без RCSI. `LastChangeDate` для детекции
+**не** используется: пайплайн legacy местами меняет строки, не обновляя его.
+
+**Каскад.** Snapshot денормализован (имена/коды из Region, LocationsNodes и
+т.д.). Изменение справочника-источника инвалидирует зависимые строки через
+скрытые FK-колонки snapshot (`*_Id`) — курсор ведётся по каждой таблице-источнику.
+
+**Стабильные справочники** (не отслеживаются, без `RowVer` и без каскада):
+`1007` TypePlace, `2132` TypeNode, `2008` TransportKind, `2142` ShipmentType,
+`2048` RateType, `2023` TransportType, `2016` Currency. Колонки `*_Id` в snapshot
+остаются, если нужны grid-DTO. Полный список — `.cursor/rules/svt-development-patterns.mdc`.
+
+**Удаления.** Ловятся не инкрементом, а `reconciliation` (anti-join snapshot ↔
+проекция), который воркер запускает раз в сутки. Допустимо, что физически
+удалённая запись «фантомит» в snapshot до суток.
+
+### Разовый шаг на legacy (в maintenance-окне)
+
+| # | Скрипт | Назначение |
+|---|--------|------------|
+| — | `Sync/01.Legacy_AddRowVersion.sql` | Добавляет `RowVer` в `dbo.PrimitiveEntityData_*` (аддитивно) |
+
+Изменение не ломает пайплайн `stg.Validate/Preload/Load/PostLoad`: он пишет в
+эти таблицы только с явным списком колонок, а все операции legacy идут через
+вью (прямых `SELECT *` из базовых таблиц нет).
+
+### Включение воркера
+
+Секция `Sync` в `appsettings.json`. По умолчанию выключен (`Enabled: false`).
+
+| Параметр | Назначение |
+|----------|------------|
+| `IntervalSeconds` | Период инкрементального цикла (по умолч. 90) |
+| `ReconcileAtTime` | Время суток ежедневного reconcile (`"02:00"`) |
+| `TimeZone` | Пояс для `ReconcileAtTime` и `Blackout` (`"Russian Standard Time"`) |
+| `CommandTimeoutSeconds` | Таймаут SQL-команд (по умолч. 300) |
+| `Blackout` | Окна, когда инкремент не запускается (см. ниже) |
+
+**Blackout.** Список окон `{ "From": "HH:mm", "To": "HH:mm" }` по дням недели.
+`Default` применяется ко всем дням; если для дня задан свой список — он
+**заменяет** `Default` для этого дня (override). В окнах глушится только
+инкремент; reconcile выполняется — окна задуманы под тяжёлые ночные операции.
+Пример (по умолчанию): ежедневно `01:00–02:30`, а в субботу дополнительно
+`04:00–06:00` (для субботы перечислены оба окна, т.к. семантика override).
+
+`ReconcileAtTime` без catch-up: если приложение было выключено в момент отметки,
+reconcile не догоняется, а ждёт следующих суток.
+
+Первичная заливка (`02.*_Insert.sql`) сама инициализирует курсоры
+`v2.SyncState` на текущую границу — воркер подхватит только последующие изменения.
+
+Новый справочник подключается к синхронизации так: создать
+`Modules/{Name}/Programmability/vw_{Name}_SnapshotSource.sql` (проекция) и
+`sp_{Name}_PopulateAffectedKeys.sql` (детекция/каскад), реализовать
+`ISnapshotSyncJob` в `Modules/{Name}/Sync/` и зарегистрировать его
+`services.AddSingleton<ISnapshotSyncJob, {Name}SyncJob>()`.
 
 ## Добавление нового справочника
 
@@ -83,3 +180,15 @@ Full export: `v2.ExportBlazorGridDetail` (Platform) — `@DetailViewName` и `@E
 
 Скрипт читает строку подключения из `appsettings.json`, выполняет Platform и все модули; при ошибке останавливается.
 В Cursor: `/create_programmability`.
+
+## Публикация SQL для деплоя
+
+```powershell
+.\BlazorSvt\SqlScripts\Publish-AllSql.ps1
+```
+
+Копирует все deploy-скрипты (Structure + Programmability) в плоскую папку `C:\publish\v2` с трёхзначными префиксами (`001.`, `002.`, …) в порядке из раздела «Порядок выполнения» выше. Сценарий — полный re-deploy v2; накат вручную, скрипт за скриптом.
+
+В Cursor: `/publish_all_sql`.
+
+При добавлении справочника обновить манифест в `Publish-AllSql.ps1` и таблицы порядка в этом README.

@@ -1,102 +1,144 @@
 ﻿USE [mdm];
 GO
 
+/*
+    Первичная полная заливка snapshot TransportLeg.
+
+    Источник — проекция v2.vw_TransportLeg_SnapshotSource (тот же SELECT, что
+    использует инкрементальная синхронизация), поэтому полная пересборка и
+    инкремент дают идентичный результат.
+
+    Требует предварительно созданной вью:
+        Programmability/vw_TransportLeg_SnapshotSource.sql
+*/
+
 INSERT INTO v2.TransportLeg_Snapshot (
      TransportLegId
-    ,Code               
-    
-    ,IsArchive          
-    ,CanBeUsed          
-    
-    ,ShipmentTypeId     
+    ,Code
 
-    ,TransportKindId    
-    ,TransportKindCode  
+    ,IsArchive
+    ,CanBeUsed
 
-    ,SearchTimeT         
-    ,LoadTimeT           
-    ,TravelTimeT         
-    ,DaysWaitingT        
-    ,UnLoadTimeT         
-    ,TransportationTimeT 
+    ,ShipmentTypeId
 
-    ,NodeFromCode       
-    ,NodeFromNameEn     
-    ,NodeFromNameRu     
-    ,RegionFromCode     
-    ,RegionFromNameEn   
-    ,RegionFromNameRu   
-    
-    ,ProxyNodeCode      
-    ,ProxyNodeNameEn    
-    ,ProxyNodeNameRu    
-    ,ProxyRegionCode    
-    ,ProxyRegionNameEn  
-    ,ProxyRegionNameRu  
-    
-    ,NodeToCode         
-    ,NodeToNameEn       
-    ,NodeToNameRu       
-    ,RegionToCode       
-    ,RegionToNameEn     
-    ,RegionToNameRu     
-    
-    ,CreationDate       
-    ,LastChangeDate     
+    ,TransportKindId
+    ,TransportKindCode
+
+    ,SearchTimeT
+    ,LoadTimeT
+    ,TravelTimeT
+    ,DaysWaitingT
+    ,UnLoadTimeT
+    ,TransportationTimeT
+
+    ,NodeFromCode
+    ,NodeFromNameEn
+    ,NodeFromNameRu
+    ,RegionFromCode
+    ,RegionFromNameEn
+    ,RegionFromNameRu
+
+    ,ProxyNodeCode
+    ,ProxyNodeNameEn
+    ,ProxyNodeNameRu
+    ,ProxyRegionCode
+    ,ProxyRegionNameEn
+    ,ProxyRegionNameRu
+
+    ,NodeToCode
+    ,NodeToNameEn
+    ,NodeToNameRu
+    ,RegionToCode
+    ,RegionToNameEn
+    ,RegionToNameRu
+
+    ,CreationDate
+    ,LastChangeDate
+
+    ,NodeFromId
+    ,NodeToId
+    ,ProxyNodeId
+    ,RegionFromId
+    ,RegionToId
+    ,ProxyRegionId
 )
-SELECT 
-        CAST(l.Id AS INT)      AS TransportLegId,
-        l.Code                 AS Code,
+SELECT
+     TransportLegId
+    ,Code
 
-        CASE WHEN ISNULL(l.PrimitiveEntityDataStateId, 2) = 2 THEN 1 ELSE 0 END AS IsArchive,
-        ISNULL(l.LegIsActive, 0)        AS CanBeUsed,
+    ,IsArchive
+    ,CanBeUsed
 
-        CAST(st.Id AS INT)              AS ShipmentTypeId,     
+    ,ShipmentTypeId
 
-        CAST(l.TransportKind AS INT)    AS TransportKindId,     
-        LEFT(tk.Code, 5)                AS TransportKindCode,
+    ,TransportKindId
+    ,TransportKindCode
 
-        LEFT(l.SearchTimeT, 20)         AS SearchTimeT,
-        LEFT(l.LoadTimeT, 20)           AS LoadTimeT,
-        LEFT(l.TravelTimeT, 20)         AS TravelTimeT,
-        LEFT(l.DaysWaitingT, 20)        AS DaysWaitingT,
-        LEFT(l.UnLoadTimeT, 20)         AS UnLoadTimeT,
-        LEFT(l.TransportationTimeT, 20) AS TransportationTimeT,
-        
-        LEFT(nf.Code, 10)               AS NodeFromCode,   
-        LEFT(nf.Name_en, 30)            AS NodeFromNameEn, 
-        LEFT(nf.Name_ru, 30)            AS NodeFromNameRu, 
-        LEFT(rf.Code, 10)               AS RegionFromCode,   
-        LEFT(rf.Name_en, 60)            AS RegionFromNameEn, 
-        LEFT(rf.Name_ru, 60)            AS RegionFromNameRu, 
+    ,SearchTimeT
+    ,LoadTimeT
+    ,TravelTimeT
+    ,DaysWaitingT
+    ,UnLoadTimeT
+    ,TransportationTimeT
 
-        LEFT(np.Code, 10)               AS ProxyNodeCode,  
-        LEFT(np.Name_en, 30)            AS ProxyNodeNameEn,
-        LEFT(np.Name_ru, 30)            AS ProxyNodeNameRu,
-        LEFT(rp.Code, 10)               AS ProxyRegionCode,  
-        LEFT(rp.Name_en, 30)            AS ProxyRegionNameEn,
-        LEFT(rp.Name_ru, 30)            AS ProxyRegionNameRu,
+    ,NodeFromCode
+    ,NodeFromNameEn
+    ,NodeFromNameRu
+    ,RegionFromCode
+    ,RegionFromNameEn
+    ,RegionFromNameRu
 
-        LEFT(nt.Code, 10)               AS NodeToCode,     
-        LEFT(nt.Name_en, 30)            AS NodeToNameEn,   
-        LEFT(nt.Name_ru, 30)            AS NodeToNameRu,   
-        LEFT(rt.Code, 10)               AS RegionToCode,     
-        LEFT(rt.Name_en, 30)            AS RegionToNameEn,   
-        LEFT(rt.Name_ru, 30)            AS RegionToNameRu,   
+    ,ProxyNodeCode
+    ,ProxyNodeNameEn
+    ,ProxyNodeNameRu
+    ,ProxyRegionCode
+    ,ProxyRegionNameEn
+    ,ProxyRegionNameRu
 
-        l.CreationDate                  AS CreationDate,
-        ISNULL(l.LastChangeDate, l.CreationDate) AS LastChangeDate
+    ,NodeToCode
+    ,NodeToNameEn
+    ,NodeToNameRu
+    ,RegionToCode
+    ,RegionToNameEn
+    ,RegionToNameRu
 
-    
-    FROM vw_TransportLeg l (NOLOCK)
-    JOIN vw_TransportKind tk (NOLOCK) ON l.TransportKind = tk.Id
-    JOIN vw_ShipmentType st (NOLOCK) ON l.ShipmentTypeCodeT = st.Code
+    ,CreationDate
+    ,LastChangeDate
 
-    JOIN vw_LocationsNodes nf (NOLOCK) ON l.NodeFrom = nf.Id
-    JOIN vw_Region rf (NOLOCK) ON rf.Id = nf.Region
-    JOIN vw_LocationsNodes nt (NOLOCK) ON l.NodeTo = nt.Id
-    JOIN vw_Region rt (NOLOCK) ON rt.Id = nt.Region
-    LEFT JOIN vw_LocationsNodes np (NOLOCK) ON l.ProxyNode = np.Id
-    LEFT JOIN vw_Region rp (NOLOCK) ON rp.Id = np.Region
- 
- 
+    ,NodeFromId
+    ,NodeToId
+    ,ProxyNodeId
+    ,RegionFromId
+    ,RegionToId
+    ,ProxyRegionId
+FROM v2.vw_TransportLeg_SnapshotSource;
+GO
+
+/*
+    Инициализация курсоров синхронизации на текущую границу версий.
+    После полной заливки инкремент должен подхватывать только изменения,
+    случившиеся ПОСЛЕ первичной загрузки.
+
+    @Hi = наибольшая гарантированно закоммиченная версия
+        = MIN_ACTIVE_ROWVERSION() - 1.
+*/
+IF OBJECT_ID(N'v2.SyncState', N'U') IS NOT NULL
+BEGIN
+    DECLARE @Hi BINARY(8) =
+        CONVERT(BINARY(8), CONVERT(BIGINT, MIN_ACTIVE_ROWVERSION()) - 1);
+
+    ;WITH Sources (SourceName) AS (
+        SELECT N'dbo.PrimitiveEntityData_2007'   -- TransportLeg (основная)
+        UNION ALL SELECT N'dbo.PrimitiveEntityData_1014'  -- LocationsNodes
+        UNION ALL SELECT N'dbo.PrimitiveEntityData_1008'  -- Region
+    )
+    MERGE v2.SyncState AS tgt
+    USING (SELECT N'TransportLeg' AS Entity, SourceName FROM Sources) AS src
+        ON tgt.Entity = src.Entity AND tgt.SourceName = src.SourceName
+    WHEN MATCHED THEN
+        UPDATE SET LastRowVersion = @Hi, LastRunUtc = SYSUTCDATETIME()
+    WHEN NOT MATCHED THEN
+        INSERT (Entity, SourceName, LastRowVersion, LastRunUtc)
+        VALUES (src.Entity, src.SourceName, @Hi, SYSUTCDATETIME());
+END
+GO

@@ -44,6 +44,35 @@ alwaysApply: false
 - **Write** (будущее): отдельные команды в C#, не бизнес-логика в SP
 - Dapper + `SqlDateOnlyTypeHandler`; логирование через `DapperLogExtensions`
 
+## Синхронизация legacy → snapshot
+
+Инкрементальная односторонняя синхронизация: `Platform/Sync/` (оркестрация) + SQL-процедуры
+(`v2.Sync_*`, `v2.{Entity}_PopulateAffectedKeys`). Детали — `SqlScripts/README.md`.
+
+**Детекция** — `RowVer` (rowversion) на базовых `dbo.PrimitiveEntityData_*`; курсоры в `v2.SyncState`.
+**Каскад** — изменение справочника-источника инвалидирует зависимые строки snapshot через скрытые FK (`*_Id`).
+**Удаления** — только через суточный `v2.Sync_Reconcile` (anti-join).
+
+### Стабильные справочники (не отслеживаются)
+
+Считаются неизменяемыми: **не** входят в `ISnapshotSyncJob.Sources`, **не** имеют веток в
+`PopulateAffectedKeys`, **не** получают `RowVer` в `Sync/01.Legacy_AddRowVersion.sql`.
+Колонки `*_Id` в snapshot **остаются**, если используются в grid-DTO (фильтрация/enum-отображение).
+
+| Справочник | Таблица legacy | Модули |
+|------------|----------------|--------|
+| TypePlace (LocationType) | `dbo.PrimitiveEntityData_1007` | LocationsNodes |
+| TypeNode | `dbo.PrimitiveEntityData_2132` | LocationsNodes |
+| TransportKind | `dbo.PrimitiveEntityData_2008` | TransportLeg, TransportRate |
+| ShipmentType | `dbo.PrimitiveEntityData_2142` | TransportLeg |
+| RateType | `dbo.PrimitiveEntityData_2048` | TransportRate |
+| TransportType | `dbo.PrimitiveEntityData_2023` | TransportRate |
+| Currency | `dbo.PrimitiveEntityData_2016` | TransportRate |
+
+При добавлении нового справочника к синхронизации: `vw_{Entity}_SnapshotSource`,
+`sp_{Entity}_PopulateAffectedKeys`, `{Entity}SyncJob` → `AddSingleton<ISnapshotSyncJob, …>()`.
+Стабильные источники в каскад **не** включать без явного решения.
+
 ## Blazor best practices
 
 - Interactive Server; `SvtComponentBase` для общего поведения

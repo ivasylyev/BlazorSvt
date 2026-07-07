@@ -1,97 +1,137 @@
 ﻿USE [mdm];
 GO
 
+/*
+    Первичная полная заливка snapshot TransportRate.
+
+    Источник — проекция v2.vw_TransportRate_SnapshotSource (тот же SELECT и
+    WHERE-фильтр, что использует инкрементальная синхронизация), поэтому полная
+    пересборка и инкремент дают идентичный результат.
+
+    Требует предварительно созданной вью:
+        Programmability/vw_TransportRate_SnapshotSource.sql
+*/
+
 INSERT INTO v2.TransportRate_Snapshot (
-    TransportRateId,
-    IsArchive,
-    IsDefRate,
-    StartDate,
-    EndDate,
-    CreationDate,
-    LastChangeDate,
+     TransportRateId
+    ,IsArchive
+    ,IsDefRate
+    ,StartDate
+    ,EndDate
+    ,CreationDate
+    ,LastChangeDate
 
-    TotalCostTon,
-    TotalCostTransport,
+    ,TotalCostTon
+    ,TotalCostTransport
 
-    TransportKindId,     
-    TransportTypeId,     
-    RateTypeId,
-    CurrencyId,
+    ,TransportKindId
+    ,TransportTypeId
+    ,RateTypeId
+    ,CurrencyId
 
-    Code,                  
+    ,Code
 
-    CurrencyCode,
-    RateTypeCode,
-    NodeFromCode,
-    NodeFromNameEn,
-    NodeFromNameRu,
-    ProxyNodeCode,
-    ProxyNodeNameEn,
-    ProxyNodeNameRu,
-    NodeToCode,
-    NodeToNameEn,
-    NodeToNameRu,
-    TransportKindCode,
-    TransportTypeCode,
-    ProductGroupCode,
-    ProductGroupNameRu,
-    ProductGroupNameEn,
-    ProductCode,
-    ProductNameRu,
-    ProductNameEn
+    ,RateTypeCode
+    ,ProductCode
+    ,CurrencyCode
+
+    ,NodeFromCode
+    ,NodeFromNameEn
+    ,NodeFromNameRu
+    ,ProxyNodeCode
+    ,ProxyNodeNameEn
+    ,ProxyNodeNameRu
+    ,NodeToCode
+    ,NodeToNameEn
+    ,NodeToNameRu
+    ,TransportKindCode
+    ,TransportTypeCode
+    ,ProductGroupCode
+    ,ProductGroupNameRu
+    ,ProductGroupNameEn
+    ,ProductNameRu
+    ,ProductNameEn
+
+    ,NodeFromId
+    ,NodeToId
+    ,ProxyNodeId
+    ,ProductGroupId
+    ,ProductId
 )
-SELECT 
-        CAST(r.Id AS INT)      AS TransportRateId,
-        CASE WHEN ISNULL(r.PrimitiveEntityDataStateId, 2) = 2 THEN 1 ELSE 0 END AS IsArchive,
-        ISNULL(r.IsDefRate, 0) AS IsDefRate,
-        r.StartDate,
-        r.EndDate,
-        r.CreationDate,
-        ISNULL(r.LastChangeDate, r.CreationDate) AS LastChangeDate,
+SELECT
+     TransportRateId
+    ,IsArchive
+    ,IsDefRate
+    ,StartDate
+    ,EndDate
+    ,CreationDate
+    ,LastChangeDate
 
-        r.TotalCostTon,
-        r.TotalCostTransport,
+    ,TotalCostTon
+    ,TotalCostTransport
 
-        CAST(r.TransportKind AS INT),     
-        CAST(r.TransportType AS INT),       
-        CAST(r.RateType AS INT),  
-        CAST(r.CurrencyStandard AS INT),  
+    ,TransportKindId
+    ,TransportTypeId
+    ,RateTypeId
+    ,CurrencyId
 
-        TRY_CAST(LEFT(r.Code, 10) AS INT),              -- Code (NVARCHAR(10))
+    ,Code
 
-        LEFT(cur.Code, 3),             -- CurrencyCode (NVARCHAR(3))
-        TRY_CAST(LEFT(rt.Code, 2) AS INT),              -- RateTypeCode (NVARCHAR(2)) 
-        LEFT(nf.Code, 10),             -- NodeFromCode (NVARCHAR(10))
-        LEFT(nf.Name_en, 30),          -- NodeFromNameEn (NVARCHAR(30))
-        LEFT(nf.Name_ru, 30),          -- NodeFromNameRu (NVARCHAR(30))
-        LEFT(np.Code, 10),             -- ProxyNodeCode (NVARCHAR(10))
-        LEFT(np.Name_en, 30),          -- ProxyNodeNameEn (NVARCHAR(30))
-        LEFT(np.Name_ru, 30),          -- ProxyNodeNameRu (NVARCHAR(30))
-        LEFT(nt.Code, 10),             -- NodeToCode (NVARCHAR(10))
-        LEFT(nt.Name_en, 30),          -- NodeToNameEn (NVARCHAR(30))
-        LEFT(nt.Name_ru, 30),          -- NodeToNameRu (NVARCHAR(30))
-        LEFT(tk.Code, 5),              -- TransportKindCode (NVARCHAR(5))
-        LEFT(tt.Code, 20),             -- TransportTypeCode (NVARCHAR(20))
-        LEFT(pg.Code, 5),              -- ProductGroupCode (NVARCHAR(5))
-        '(' + LEFT(pg.Code, 3) + ') ' + LEFT(pg.ShortName, 100),       -- ProductGroupNameRu (NVARCHAR(100))
-        '(' + LEFT(pg.Code, 3) + ') ' + LEFT(pg.NameEn, 100),          -- ProductGroupNameEn (NVARCHAR(100))
-        TRY_CAST(LEFT(p.Code, 7) AS INT),               -- ProductCode (NVARCHAR(7))
-        LEFT(p.NameShort_ru, 100),     -- ProductNameRu (NVARCHAR(100))
-        LEFT(p.NameShort_en, 100)     -- ProductNameEn (NVARCHAR(100))
-    
-    FROM vw_TransportRate r (NOLOCK)
-    JOIN vw_LocationsNodes nf (NOLOCK) ON r.NodeFrom = nf.Id
-    JOIN vw_LocationsNodes nt (NOLOCK) ON r.NodeTo = nt.Id
-    LEFT JOIN vw_LocationsNodes np (NOLOCK) ON r.ProxyNode = np.Id
-    LEFT JOIN vw_ProductGroup pg (NOLOCK) ON r.ProductGroup = pg.Id
-    LEFT JOIN vw_MTR p (NOLOCK) ON r.Product = p.Id
-    JOIN vw_RateType rt (NOLOCK) ON r.RateType = rt.Id
-    JOIN vw_TransportKind tk (NOLOCK) ON r.TransportKind = tk.Id
-    JOIN vw_TransportType_level_3 tt (NOLOCK) ON r.TransportType = tt.Id
-    JOIN vw_Currency cur (NOLOCK) ON r.CurrencyStandard = cur.Id
+    ,RateTypeCode
+    ,ProductCode
+    ,CurrencyCode
 
-    where r.TotalCostTon is not null
-    and r.TotalCostTransport is not null
-    and TRY_CAST(LEFT(r.Code, 10) AS INT) IS NOT NULL
-    and TRY_CAST(LEFT(rt.Code, 2) AS INT) IS NOT NULL
-    and (LEFT(p.Code, 7) IS NULL OR TRY_CAST(LEFT(p.Code, 7) AS INT) IS NOT NULL);
+    ,NodeFromCode
+    ,NodeFromNameEn
+    ,NodeFromNameRu
+    ,ProxyNodeCode
+    ,ProxyNodeNameEn
+    ,ProxyNodeNameRu
+    ,NodeToCode
+    ,NodeToNameEn
+    ,NodeToNameRu
+    ,TransportKindCode
+    ,TransportTypeCode
+    ,ProductGroupCode
+    ,ProductGroupNameRu
+    ,ProductGroupNameEn
+    ,ProductNameRu
+    ,ProductNameEn
+
+    ,NodeFromId
+    ,NodeToId
+    ,ProxyNodeId
+    ,ProductGroupId
+    ,ProductId
+FROM v2.vw_TransportRate_SnapshotSource;
+GO
+
+/*
+    Инициализация курсоров синхронизации на текущую границу версий.
+    После полной заливки инкремент должен подхватывать только изменения,
+    случившиеся ПОСЛЕ первичной загрузки.
+
+    @Hi = наибольшая гарантированно закоммиченная версия
+        = MIN_ACTIVE_ROWVERSION() - 1.
+*/
+IF OBJECT_ID(N'v2.SyncState', N'U') IS NOT NULL
+BEGIN
+    DECLARE @Hi BINARY(8) =
+        CONVERT(BINARY(8), CONVERT(BIGINT, MIN_ACTIVE_ROWVERSION()) - 1);
+
+    ;WITH Sources (SourceName) AS (
+        SELECT N'dbo.PrimitiveEntityData_2012'   -- TransportRate (основная)
+        UNION ALL SELECT N'dbo.PrimitiveEntityData_1014'  -- LocationsNodes
+        UNION ALL SELECT N'dbo.PrimitiveEntityData_1013'  -- ProductGroup
+        UNION ALL SELECT N'dbo.PrimitiveEntityData_1015'  -- MTR (Product)
+    )
+    MERGE v2.SyncState AS tgt
+    USING (SELECT N'TransportRate' AS Entity, SourceName FROM Sources) AS src
+        ON tgt.Entity = src.Entity AND tgt.SourceName = src.SourceName
+    WHEN MATCHED THEN
+        UPDATE SET LastRowVersion = @Hi, LastRunUtc = SYSUTCDATETIME()
+    WHEN NOT MATCHED THEN
+        INSERT (Entity, SourceName, LastRowVersion, LastRunUtc)
+        VALUES (src.Entity, src.SourceName, @Hi, SYSUTCDATETIME());
+END
+GO

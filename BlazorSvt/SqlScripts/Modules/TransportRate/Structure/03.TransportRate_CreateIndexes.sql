@@ -155,5 +155,57 @@ WHERE IsArchive = 1;
 GO
 
 
+-- Индекс на бизнес-ключ для синхронизации: upsert (MERGE ON TransportRateId),
+-- pre-delete смены партиции и reconciliation ищут строки по ключу без скана таблицы.
+DROP INDEX IF EXISTS [ix_TransportRate_Snapshot_TransportRateId] ON [v2].[TransportRate_Snapshot];
+GO
+CREATE NONCLUSTERED INDEX [ix_TransportRate_Snapshot_TransportRateId]
+ON v2.TransportRate_Snapshot (TransportRateId);
+GO
+
+-- Индексы на скрытые FK-колонки для каскадной синхронизации.
+-- По ним SnapshotSyncExecutor находит рейты, затронутые изменением
+-- LocationsNodes / ProductGroup / MTR / Currency.
+-- TransportKindId / TransportTypeId / RateTypeId уже проиндексированы выше.
+
+DROP INDEX IF EXISTS [ix_TransportRate_Snapshot_NodeFromId] ON [v2].[TransportRate_Snapshot];
+GO
+CREATE NONCLUSTERED INDEX [ix_TransportRate_Snapshot_NodeFromId]
+ON v2.TransportRate_Snapshot (NodeFromId);
+GO
+
+DROP INDEX IF EXISTS [ix_TransportRate_Snapshot_NodeToId] ON [v2].[TransportRate_Snapshot];
+GO
+CREATE NONCLUSTERED INDEX [ix_TransportRate_Snapshot_NodeToId]
+ON v2.TransportRate_Snapshot (NodeToId);
+GO
+
+DROP INDEX IF EXISTS [ix_TransportRate_Snapshot_ProxyNodeId] ON [v2].[TransportRate_Snapshot];
+GO
+CREATE NONCLUSTERED INDEX [ix_TransportRate_Snapshot_ProxyNodeId]
+ON v2.TransportRate_Snapshot (ProxyNodeId)
+WHERE ProxyNodeId IS NOT NULL;
+GO
+
+DROP INDEX IF EXISTS [ix_TransportRate_Snapshot_ProductGroupId] ON [v2].[TransportRate_Snapshot];
+GO
+CREATE NONCLUSTERED INDEX [ix_TransportRate_Snapshot_ProductGroupId]
+ON v2.TransportRate_Snapshot (ProductGroupId)
+WHERE ProductGroupId IS NOT NULL;
+GO
+
+DROP INDEX IF EXISTS [ix_TransportRate_Snapshot_ProductId] ON [v2].[TransportRate_Snapshot];
+GO
+CREATE NONCLUSTERED INDEX [ix_TransportRate_Snapshot_ProductId]
+ON v2.TransportRate_Snapshot (ProductId)
+WHERE ProductId IS NOT NULL;
+GO
+
+DROP INDEX IF EXISTS [ix_TransportRate_Snapshot_CurrencyId] ON [v2].[TransportRate_Snapshot];
+GO
+CREATE NONCLUSTERED INDEX [ix_TransportRate_Snapshot_CurrencyId]
+ON v2.TransportRate_Snapshot (CurrencyId);
+GO
+
 UPDATE STATISTICS v2.TransportRate_Snapshot WITH FULLSCAN;
 GO

@@ -135,6 +135,57 @@ WHERE IsArchive = 1;
 GO
 
 
+-- Индекс на бизнес-ключ для синхронизации: upsert (MERGE ON TransportLegId),
+-- pre-delete смены партиции и reconciliation ищут строки по ключу без скана таблицы.
+DROP INDEX IF EXISTS [ix_TransportLeg_Snapshot_TransportLegId] ON [v2].[TransportLeg_Snapshot];
+GO
+CREATE NONCLUSTERED INDEX [ix_TransportLeg_Snapshot_TransportLegId]
+ON v2.TransportLeg_Snapshot (TransportLegId);
+GO
+
+-- Индексы на скрытые FK-колонки для каскадной синхронизации.
+-- По ним SnapshotSyncExecutor находит плечи, затронутые изменением
+-- Region / LocationsNodes (эквиджойн изменившихся справочных Id -> snapshot).
+
+DROP INDEX IF EXISTS [ix_TransportLeg_Snapshot_NodeFromId] ON [v2].[TransportLeg_Snapshot];
+GO
+CREATE NONCLUSTERED INDEX [ix_TransportLeg_Snapshot_NodeFromId]
+ON v2.TransportLeg_Snapshot (NodeFromId);
+GO
+
+DROP INDEX IF EXISTS [ix_TransportLeg_Snapshot_NodeToId] ON [v2].[TransportLeg_Snapshot];
+GO
+CREATE NONCLUSTERED INDEX [ix_TransportLeg_Snapshot_NodeToId]
+ON v2.TransportLeg_Snapshot (NodeToId);
+GO
+
+DROP INDEX IF EXISTS [ix_TransportLeg_Snapshot_ProxyNodeId] ON [v2].[TransportLeg_Snapshot];
+GO
+CREATE NONCLUSTERED INDEX [ix_TransportLeg_Snapshot_ProxyNodeId]
+ON v2.TransportLeg_Snapshot (ProxyNodeId)
+WHERE ProxyNodeId IS NOT NULL;
+GO
+
+DROP INDEX IF EXISTS [ix_TransportLeg_Snapshot_RegionFromId] ON [v2].[TransportLeg_Snapshot];
+GO
+CREATE NONCLUSTERED INDEX [ix_TransportLeg_Snapshot_RegionFromId]
+ON v2.TransportLeg_Snapshot (RegionFromId);
+GO
+
+DROP INDEX IF EXISTS [ix_TransportLeg_Snapshot_RegionToId] ON [v2].[TransportLeg_Snapshot];
+GO
+CREATE NONCLUSTERED INDEX [ix_TransportLeg_Snapshot_RegionToId]
+ON v2.TransportLeg_Snapshot (RegionToId);
+GO
+
+DROP INDEX IF EXISTS [ix_TransportLeg_Snapshot_ProxyRegionId] ON [v2].[TransportLeg_Snapshot];
+GO
+CREATE NONCLUSTERED INDEX [ix_TransportLeg_Snapshot_ProxyRegionId]
+ON v2.TransportLeg_Snapshot (ProxyRegionId)
+WHERE ProxyRegionId IS NOT NULL;
+GO
+
+
 UPDATE STATISTICS v2.TransportLeg_Snapshot WITH FULLSCAN;
 GO
 

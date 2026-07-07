@@ -1,6 +1,17 @@
 USE [mdm];
 GO
 
+/*
+    Первичная полная заливка snapshot LocationsNodes.
+
+    Источник — проекция v2.vw_LocationsNodes_SnapshotSource (тот же SELECT, что
+    использует инкрементальная синхронизация), поэтому полная пересборка и
+    инкремент дают идентичный результат.
+
+    Требует предварительно созданной вью:
+        Programmability/vw_LocationsNodes_SnapshotSource.sql
+*/
+
 INSERT INTO v2.LocationsNodes_Snapshot (
      LocationsNodesId
     ,Code
@@ -33,38 +44,63 @@ INSERT INTO v2.LocationsNodes_Snapshot (
     ,LastChangeDate
 )
 SELECT
-        CAST(n.Id AS BIGINT) AS LocationsNodesId,
-        LEFT(n.Code, 50) AS Code,
-        CASE WHEN ISNULL(n.PrimitiveEntityDataStateId, 2) = 2 THEN 1 ELSE 0 END AS IsArchive,
+     LocationsNodesId
+    ,Code
+    ,IsArchive
 
-        LEFT(n.Name_ru, 100) AS NameRu,
-        LEFT(n.Name_en, 100) AS NameEn,
+    ,NameRu
+    ,NameEn
 
-        CAST(n.LocationType AS BIGINT) AS LocationTypeId,
-        LEFT(tp.Code, 50) AS LocationTypeCode,
-        LEFT(tp.Name, 100) AS LocationTypeNameRu,
-        LEFT(tp.NameEnRu, 100) AS LocationTypeNameEn,
+    ,LocationTypeId
+    ,LocationTypeCode
+    ,LocationTypeNameRu
+    ,LocationTypeNameEn
 
-        CAST(n.TypeNode AS BIGINT) AS TypeNodeId,
-        LEFT(tn.Code, 50) AS TypeNodeCode,
-        LEFT(tn.NameRu, 100) AS TypeNodeNameRu,
-        LEFT(tn.NameEn, 100) AS TypeNodeNameEn,
+    ,TypeNodeId
+    ,TypeNodeCode
+    ,TypeNodeNameRu
+    ,TypeNodeNameEn
 
-        CAST(n.Region AS BIGINT) AS RegionId,
-        LEFT(r.Code, 50) AS RegionCode,
-        LEFT(r.Name_ru, 100) AS RegionNameRu,
-        LEFT(r.Name_en, 100) AS RegionNameEn,
-        LEFT(n.RegionRU, 100) AS RegionRU,
+    ,RegionId
+    ,RegionCode
+    ,RegionNameRu
+    ,RegionNameEn
+    ,RegionRU
 
-        CAST(n.Country AS BIGINT) AS CountryId,
-        LEFT(c.Name_ru, 100) AS CountryNameRu,
-        LEFT(c.Name_en, 100) AS CountryNameEn,
+    ,CountryId
+    ,CountryNameRu
+    ,CountryNameEn
 
-        n.CreationDate AS CreationDate,
-        ISNULL(n.LastChangeDate, n.CreationDate) AS LastChangeDate
+    ,CreationDate
+    ,LastChangeDate
+FROM v2.vw_LocationsNodes_SnapshotSource;
+GO
 
-    FROM vw_LocationsNodes n (NOLOCK)
-    LEFT JOIN vw_TypePlace tp (NOLOCK) ON n.LocationType = tp.Id
-    LEFT JOIN vw_TypeNode tn (NOLOCK) ON n.TypeNode = tn.Id
-    LEFT JOIN vw_Region r (NOLOCK) ON n.Region = r.Id
-    LEFT JOIN vw_Country c (NOLOCK) ON n.Country = c.Id;
+/*
+    Инициализация курсоров синхронизации на текущую границу версий.
+    После полной заливки инкремент должен подхватывать только изменения,
+    случившиеся ПОСЛЕ первичной загрузки.
+
+    @Hi = наибольшая гарантированно закоммиченная версия
+        = MIN_ACTIVE_ROWVERSION() - 1.
+*/
+IF OBJECT_ID(N'v2.SyncState', N'U') IS NOT NULL
+BEGIN
+    DECLARE @Hi BINARY(8) =
+        CONVERT(BINARY(8), CONVERT(BIGINT, MIN_ACTIVE_ROWVERSION()) - 1);
+
+    ;WITH Sources (SourceName) AS (
+        SELECT N'dbo.PrimitiveEntityData_1014'   -- LocationsNodes (основная)
+        UNION ALL SELECT N'dbo.PrimitiveEntityData_1008'  -- Region
+        UNION ALL SELECT N'dbo.PrimitiveEntityData_1009'  -- Country
+    )
+    MERGE v2.SyncState AS tgt
+    USING (SELECT N'LocationsNodes' AS Entity, SourceName FROM Sources) AS src
+        ON tgt.Entity = src.Entity AND tgt.SourceName = src.SourceName
+    WHEN MATCHED THEN
+        UPDATE SET LastRowVersion = @Hi, LastRunUtc = SYSUTCDATETIME()
+    WHEN NOT MATCHED THEN
+        INSERT (Entity, SourceName, LastRowVersion, LastRunUtc)
+        VALUES (src.Entity, src.SourceName, @Hi, SYSUTCDATETIME());
+END
+GO

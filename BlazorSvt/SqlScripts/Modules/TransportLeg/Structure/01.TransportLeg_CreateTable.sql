@@ -124,7 +124,17 @@ CREATE TABLE v2.TransportLeg_Snapshot (
     RegionToNameRu      NVARCHAR(60) NOT NULL,
     
     CreationDate        DATETIME NOT NULL,
-    LastChangeDate      DATETIME NOT NULL
+    LastChangeDate      DATETIME NOT NULL,
+
+    -- Скрытые FK для каскадной синхронизации (не участвуют в гриде).
+    -- По ним SnapshotSyncExecutor находит плечи, затронутые изменением
+    -- связанных справочников (Region / LocationsNodes).
+    NodeFromId          INT NOT NULL,
+    NodeToId            INT NOT NULL,
+    ProxyNodeId         INT NULL,
+    RegionFromId        INT NOT NULL,
+    RegionToId          INT NOT NULL,
+    ProxyRegionId       INT NULL
     
     CONSTRAINT PK_TransportLeg_Snapshot PRIMARY KEY CLUSTERED (IsArchive, Id)
 ) ON v2_ps_TransportLeg(IsArchive);

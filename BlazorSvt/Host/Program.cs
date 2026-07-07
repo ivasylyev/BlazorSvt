@@ -7,6 +7,7 @@ using BlazorSvt.Modules.TransportLeg;
 using BlazorSvt.Modules.TransportRate;
 using BlazorSvt.Platform;
 using BlazorSvt.Platform.Infrastructure.Data;
+using BlazorSvt.Platform.Sync;
 using Dapper;
 using Serilog;
 
@@ -31,6 +32,7 @@ builder.Services.AddControllers();
 builder.Services.AddLocalization();
 
 builder.Services.AddPlatform(builder.Configuration);
+builder.Services.AddSnapshotSync(builder.Configuration);
 builder.Services.AddImportModule();
 builder.Services.AddTransportRateModule();
 builder.Services.AddTransportLegModule();

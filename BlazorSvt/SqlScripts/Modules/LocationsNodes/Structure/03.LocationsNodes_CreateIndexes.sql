@@ -108,5 +108,32 @@ CREATE NONCLUSTERED INDEX ix_LocationsNodes_Snapshot_Archive_TypeNodeId ON v2.Lo
 WHERE IsArchive = 1;
 GO
 
+-- Индекс на бизнес-ключ для синхронизации: upsert (MERGE ON LocationsNodesId),
+-- pre-delete смены партиции и reconciliation ищут строки по ключу без скана таблицы.
+DROP INDEX IF EXISTS [ix_LocationsNodes_Snapshot_LocationsNodesId] ON [v2].[LocationsNodes_Snapshot];
+GO
+CREATE NONCLUSTERED INDEX [ix_LocationsNodes_Snapshot_LocationsNodesId]
+ON v2.LocationsNodes_Snapshot (LocationsNodesId);
+GO
+
+-- Индексы на FK-колонки для каскадной синхронизации.
+-- По ним SnapshotSyncExecutor находит узлы, затронутые изменением
+-- Region / Country (эквиджойн изменившихся справочных Id -> snapshot).
+-- LocationTypeId / TypeNodeId уже проиндексированы выше (Active/Archive).
+
+DROP INDEX IF EXISTS [ix_LocationsNodes_Snapshot_RegionId] ON [v2].[LocationsNodes_Snapshot];
+GO
+CREATE NONCLUSTERED INDEX [ix_LocationsNodes_Snapshot_RegionId]
+ON v2.LocationsNodes_Snapshot (RegionId)
+WHERE RegionId IS NOT NULL;
+GO
+
+DROP INDEX IF EXISTS [ix_LocationsNodes_Snapshot_CountryId] ON [v2].[LocationsNodes_Snapshot];
+GO
+CREATE NONCLUSTERED INDEX [ix_LocationsNodes_Snapshot_CountryId]
+ON v2.LocationsNodes_Snapshot (CountryId)
+WHERE CountryId IS NOT NULL;
+GO
+
 UPDATE STATISTICS v2.LocationsNodes_Snapshot WITH FULLSCAN;
 GO

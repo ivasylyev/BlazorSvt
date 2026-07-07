@@ -55,4 +55,40 @@ public class DbConnectionLogDecorator(IDbConnection connection, ILogger logger, 
                     commandTimeout: commandTimeoutSeconds,
                     cancellationToken: cancellationToken)));
     }
+
+    public Task<T> QuerySingleAsync<T>(
+        string sql,
+        DynamicParameters parameters,
+        CommandType commandType,
+        CancellationToken cancellationToken = default)
+    {
+        return LoggedOperation.ExecuteAsync(
+            logger,
+            sql,
+            () => connection.QuerySingleAsync<T>(
+                new CommandDefinition(
+                    sql,
+                    parameters,
+                    commandType: commandType,
+                    commandTimeout: commandTimeoutSeconds,
+                    cancellationToken: cancellationToken)));
+    }
+
+    public Task<int> ExecuteAsync(
+        string sql,
+        DynamicParameters parameters,
+        CommandType commandType,
+        CancellationToken cancellationToken = default)
+    {
+        return LoggedOperation.ExecuteAsync(
+            logger,
+            sql,
+            () => connection.ExecuteAsync(
+                new CommandDefinition(
+                    sql,
+                    parameters,
+                    commandType: commandType,
+                    commandTimeout: commandTimeoutSeconds,
+                    cancellationToken: cancellationToken)));
+    }
 }

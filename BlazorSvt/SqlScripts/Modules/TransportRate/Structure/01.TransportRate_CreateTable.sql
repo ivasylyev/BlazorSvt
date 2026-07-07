@@ -116,8 +116,19 @@ CREATE TABLE v2.TransportRate_Snapshot (
     ProductGroupNameRu  NVARCHAR(110) NULL,
     ProductGroupNameEn  NVARCHAR(110) NULL,
     ProductNameRu       NVARCHAR(100) NULL,
-    ProductNameEn       NVARCHAR(100) NULL
-    
+    ProductNameEn       NVARCHAR(100) NULL,
+
+    -- Скрытые FK для каскадной синхронизации (не участвуют в гриде, не в DTO).
+    -- По ним SnapshotSyncExecutor находит рейты, затронутые изменением
+    -- связанных справочников (LocationsNodes / ProductGroup / MTR).
+    -- NodeFromId/NodeToId — INNER JOIN в проекции (NOT NULL);
+    -- ProxyNodeId/ProductGroupId/ProductId — LEFT JOIN (NULL).
+    NodeFromId          INT NOT NULL,
+    NodeToId            INT NOT NULL,
+    ProxyNodeId         INT NULL,
+    ProductGroupId      INT NULL,
+    ProductId           INT NULL
+
     CONSTRAINT PK_TransportRate_Snapshot PRIMARY KEY CLUSTERED (IsArchive, Id)
 ) ON v2_ps_TransportRate(IsArchive);
 GO
