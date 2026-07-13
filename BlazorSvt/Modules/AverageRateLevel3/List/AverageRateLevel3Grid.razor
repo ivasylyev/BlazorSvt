@@ -1,0 +1,17 @@
+@page "/averageratelevel3"
+@using BlazorSvt.Modules.AverageRateLevel3.Detail
+@inherits BaseGridPage<AverageRateLevel3Dto, AverageRateLevel3DetailDto>
+
+<GenericGrid TItem="AverageRateLevel3Dto"
+             TDetailItem="AverageRateLevel3DetailDto"
+             PageTitle="@EL["AverageRateLevel3Grid.Title"]"
+             AllowDetailView="true"
+             DataProvider="DataProvider"
+             DetailDataProvider="DetailDataProvider"
+             DetailKeySelector="DetailKeySelector">
+
+    <DetailViewTemplate Context="detail">
+        <div></div>
+    </DetailViewTemplate>
+
+</GenericGrid>

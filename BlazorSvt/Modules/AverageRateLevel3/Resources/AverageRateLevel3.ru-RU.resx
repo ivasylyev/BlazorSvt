@@ -1,0 +1,768 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="AverageRateLevel3DetailDto.Active" xml:space="preserve">
+    <value>Активный</value>
+  </data>
+  <data name="AverageRateLevel3DetailDto.AdditionalFeesCISCurrency" xml:space="preserve">
+    <value>Дополнительные сборы по СНГ (вознаграждение экспедитора) (за тонну) (без учета НДС). Валюта</value>
+  </data>
+  <data name="AverageRateLevel3DetailDto.AdditionalFeesCISSize" xml:space="preserve">
+    <value>Дополнительные сборы по СНГ (вознаграждение экспедитора) (за тонну) (без учета НДС). Размер составляющей ставки</value>
+  </data>
+  <data name="AverageRateLevel3DetailDto.Archive" xml:space="preserve">
+    <value>Архив</value>
+  </data>
+  <data name="AverageRateLevel3DetailDto.AverageRateLevel3" xml:space="preserve">
+    <value>Средневзвешенная ставка</value>
+  </data>
+  <data name="AverageRateLevel3DetailDto.Basis" xml:space="preserve">
+    <value>Базис</value>
+  </data>
+  <data name="AverageRateLevel3DetailDto.BasisNode" xml:space="preserve">
+    <value>Базис Узел</value>
+  </data>
+  <data name="AverageRateLevel3DetailDto.CalcDate" xml:space="preserve">
+    <value>Дата расчета</value>
+  </data>
+  <data name="AverageRateLevel3DetailDto.Code" xml:space="preserve">
+    <value>Код</value>
+  </data>
+  <data name="AverageRateLevel3DetailDto.Comment" xml:space="preserve">
+    <value>Комментарии</value>
+  </data>
+  <data name="AverageRateLevel3DetailDto.CoordinateL" xml:space="preserve">
+    <value>Географическая долгота</value>
+  </data>
+  <data name="AverageRateLevel3DetailDto.CoordinateW" xml:space="preserve">
+    <value>Географическая широта</value>
+  </data>
+  <data name="AverageRateLevel3DetailDto.CreationDate" xml:space="preserve">
+    <value>Дата создания</value>
+  </data>
+  <data name="AverageRateLevel3DetailDto.CurrencyRateMonth" xml:space="preserve">
+    <value>Плановый курс валют действителен на</value>
+  </data>
+  <data name="AverageRateLevel3DetailDto.CurrencyStandard" xml:space="preserve">
+    <value>Валюта</value>
+  </data>
+  <data name="AverageRateLevel3DetailDto.Direction" xml:space="preserve">
+    <value>Дирекция</value>
+  </data>
+  <data name="AverageRateLevel3DetailDto.DrainLoadingCurrency" xml:space="preserve">
+    <value>Слив-налив (за тонну) (без учета НДС). Валюта</value>
+  </data>
+  <data name="AverageRateLevel3DetailDto.DrainLoadingSize" xml:space="preserve">
+    <value>Слив-налив (за тонну) (без учета НДС). Размер составляющей ставки</value>
+  </data>
+  <data name="AverageRateLevel3DetailDto.EffectiveLoadOfTransportType" xml:space="preserve">
+    <value>Эффективная загрузка типа транспорта (в тоннах)</value>
+  </data>
+  <data name="AverageRateLevel3DetailDto.EmptyCISCurrency" xml:space="preserve">
+    <value>Порожний рейс по СНГ (за тонну) (без учета НДС). Валюта</value>
+  </data>
+  <data name="AverageRateLevel3DetailDto.EmptyCISSize" xml:space="preserve">
+    <value>Порожний рейс по СНГ (за тонну) (без учета НДС). Размер составляющей ставки</value>
+  </data>
+  <data name="AverageRateLevel3DetailDto.EmptyRFCurrency" xml:space="preserve">
+    <value>Порожний рейс по РФ (за тонну) (без учета НДС). Валюта</value>
+  </data>
+  <data name="AverageRateLevel3DetailDto.EmptyRFSize" xml:space="preserve">
+    <value>Порожний рейс по РФ (за тонну) (без учета НДС). Размер составляющей ставки</value>
+  </data>
+  <data name="AverageRateLevel3DetailDto.EndDate" xml:space="preserve">
+    <value>Период действия по</value>
+  </data>
+  <data name="AverageRateLevel3DetailDto.Export" xml:space="preserve">
+    <value>Экспорт</value>
+  </data>
+  <data name="AverageRateLevel3DetailDto.FIASFrom" xml:space="preserve">
+    <value>ФИАС отправления</value>
+  </data>
+  <data name="AverageRateLevel3DetailDto.FIASTo" xml:space="preserve">
+    <value>ФИАС назначения</value>
+  </data>
+  <data name="AverageRateLevel3DetailDto.FerryboatCurrency" xml:space="preserve">
+    <value>Услуги паромной переправы (за тонну) (без учета НДС). Валюта</value>
+  </data>
+  <data name="AverageRateLevel3DetailDto.FerryboatSize" xml:space="preserve">
+    <value>Услуги паромной переправы (за тонну) (без учета НДС). Размер составляющей ставки</value>
+  </data>
+  <data name="AverageRateLevel3DetailDto.FreightCurrency" xml:space="preserve">
+    <value>Фрахт (за тонну) (без учета НДС). Валюта</value>
+  </data>
+  <data name="AverageRateLevel3DetailDto.FreightSize" xml:space="preserve">
+    <value>Фрахт (за тонну) (без учета НДС). Размер составляющей ставки</value>
+  </data>
+  <data name="AverageRateLevel3DetailDto.Group.0.Default" xml:space="preserve">
+    <value>По умолчанию</value>
+  </data>
+  <data name="AverageRateLevel3DetailDto.IsArchive" xml:space="preserve">
+    <value>Архив</value>
+  </data>
+  <data name="AverageRateLevel3DetailDto.IsDefRate" xml:space="preserve">
+    <value>Дефлятор</value>
+  </data>
+  <data name="AverageRateLevel3DetailDto.IsExportToIntegration" xml:space="preserve">
+    <value>Экспортируется в интеграцию</value>
+  </data>
+  <data name="AverageRateLevel3DetailDto.IsIndicative" xml:space="preserve">
+    <value>Индикативная</value>
+  </data>
+  <data name="AverageRateLevel3DetailDto.IsUsedInCBD" xml:space="preserve">
+    <value>Используется в ЦБД</value>
+  </data>
+  <data name="AverageRateLevel3DetailDto.LastChangeDate" xml:space="preserve">
+    <value>Дата изменения</value>
+  </data>
+  <data name="AverageRateLevel3DetailDto.Leg1_BaseCurrency" xml:space="preserve">
+    <value>Плечо 1.Валюта базовая</value>
+  </data>
+  <data name="AverageRateLevel3DetailDto.Leg1_EffectiveLoad" xml:space="preserve">
+    <value>Плечо 1.Эффективная загрузка, т</value>
+  </data>
+  <data name="AverageRateLevel3DetailDto.Leg1_TotalCostTon" xml:space="preserve">
+    <value>Плечо 1.Ставка ср.взвеш. за тонну</value>
+  </data>
+  <data name="AverageRateLevel3DetailDto.Leg1_TotalCostTonCNY" xml:space="preserve">
+    <value>Плечо 1.Ставка за т, CNY</value>
+  </data>
+  <data name="AverageRateLevel3DetailDto.Leg1_TotalCostTonEUR" xml:space="preserve">
+    <value>Плечо 1.Ставка за т, EUR</value>
+  </data>
+  <data name="AverageRateLevel3DetailDto.Leg1_TotalCostTonRUB" xml:space="preserve">
+    <value>Плечо 1.Ставка за т, RUB</value>
+  </data>
+  <data name="AverageRateLevel3DetailDto.Leg1_TotalCostTonUSD" xml:space="preserve">
+    <value>Плечо 1.Ставка за т, USD</value>
+  </data>
+  <data name="AverageRateLevel3DetailDto.Leg1_TotalCostTransport" xml:space="preserve">
+    <value>Плечо 1.Ставка ср.взвеш. за ТС</value>
+  </data>
+  <data name="AverageRateLevel3DetailDto.Leg1_TotalCostTransportCNY" xml:space="preserve">
+    <value>Плечо 1.Ставка за ТС, CNY</value>
+  </data>
+  <data name="AverageRateLevel3DetailDto.Leg1_TotalCostTransportEUR" xml:space="preserve">
+    <value>Плечо 1.Ставка за ТС, EUR</value>
+  </data>
+  <data name="AverageRateLevel3DetailDto.Leg1_TotalCostTransportRUB" xml:space="preserve">
+    <value>Плечо 1.Ставка за ТС, RUB</value>
+  </data>
+  <data name="AverageRateLevel3DetailDto.Leg1_TotalCostTransportUSD" xml:space="preserve">
+    <value>Плечо 1.Ставка за ТС, USD</value>
+  </data>
+  <data name="AverageRateLevel3DetailDto.Leg1_TransportType" xml:space="preserve">
+    <value>Плечо 1.Тип транспорта</value>
+  </data>
+  <data name="AverageRateLevel3DetailDto.Leg2_BaseCurrency" xml:space="preserve">
+    <value>Плечо 2.Валюта базовая</value>
+  </data>
+  <data name="AverageRateLevel3DetailDto.Leg2_EffectiveLoad" xml:space="preserve">
+    <value>Плечо 2.Эффективная загрузка, т</value>
+  </data>
+  <data name="AverageRateLevel3DetailDto.Leg2_TotalCostTon" xml:space="preserve">
+    <value>Плечо 2.Ставка ср.взвеш. за тонну</value>
+  </data>
+  <data name="AverageRateLevel3DetailDto.Leg2_TotalCostTonCNY" xml:space="preserve">
+    <value>Плечо 2.Ставка за т, CNY</value>
+  </data>
+  <data name="AverageRateLevel3DetailDto.Leg2_TotalCostTonEUR" xml:space="preserve">
+    <value>Плечо 2.Ставка за т, EUR</value>
+  </data>
+  <data name="AverageRateLevel3DetailDto.Leg2_TotalCostTonRUB" xml:space="preserve">
+    <value>Плечо 2.Ставка за т, RUB</value>
+  </data>
+  <data name="AverageRateLevel3DetailDto.Leg2_TotalCostTonUSD" xml:space="preserve">
+    <value>Плечо 2.Ставка за т, USD</value>
+  </data>
+  <data name="AverageRateLevel3DetailDto.Leg2_TotalCostTransport" xml:space="preserve">
+    <value>Плечо 2.Ставка ср.взвеш. за ТС</value>
+  </data>
+  <data name="AverageRateLevel3DetailDto.Leg2_TotalCostTransportCNY" xml:space="preserve">
+    <value>Плечо 2.Ставка за ТС, CNY</value>
+  </data>
+  <data name="AverageRateLevel3DetailDto.Leg2_TotalCostTransportEUR" xml:space="preserve">
+    <value>Плечо 2.Ставка за ТС, EUR</value>
+  </data>
+  <data name="AverageRateLevel3DetailDto.Leg2_TotalCostTransportRUB" xml:space="preserve">
+    <value>Плечо 2.Ставка за ТС, RUB</value>
+  </data>
+  <data name="AverageRateLevel3DetailDto.Leg2_TotalCostTransportUSD" xml:space="preserve">
+    <value>Плечо 2.Ставка за ТС, USD</value>
+  </data>
+  <data name="AverageRateLevel3DetailDto.Leg2_TransportType" xml:space="preserve">
+    <value>Плечо 2.Тип транспорта</value>
+  </data>
+  <data name="AverageRateLevel3DetailDto.LoadedCISCurrency" xml:space="preserve">
+    <value>Груженый рейс по СНГ (за тонну) (без учета НДС). Валюта</value>
+  </data>
+  <data name="AverageRateLevel3DetailDto.LoadedCISSize" xml:space="preserve">
+    <value>Груженый рейс по СНГ (за тонну) (без учета НДС). Размер составляющей ставки</value>
+  </data>
+  <data name="AverageRateLevel3DetailDto.LoadedRFCurrency" xml:space="preserve">
+    <value>Груженый рейс по РФ (за тонну) (без учета НДС). Валюта</value>
+  </data>
+  <data name="AverageRateLevel3DetailDto.LoadedRFSize" xml:space="preserve">
+    <value>Груженый рейс по РФ (за тонну) (без учета НДС). Размер составляющей ставки</value>
+  </data>
+  <data name="AverageRateLevel3DetailDto.MaxDailyTransportation" xml:space="preserve">
+    <value>Максимальный суточный объем транспортировки (т)</value>
+  </data>
+  <data name="AverageRateLevel3DetailDto.MinDailyTransportation" xml:space="preserve">
+    <value>Минимальный суточный объем транспортировки (т)</value>
+  </data>
+  <data name="AverageRateLevel3DetailDto.No" xml:space="preserve">
+    <value>Нет</value>
+  </data>
+  <data name="AverageRateLevel3DetailDto.NodeFrom" xml:space="preserve">
+    <value>Узел отправления</value>
+  </data>
+  <data name="AverageRateLevel3DetailDto.NodeFromEN" xml:space="preserve">
+    <value>Узел отправления (англ)</value>
+  </data>
+  <data name="AverageRateLevel3DetailDto.NodeTo" xml:space="preserve">
+    <value>Узел назначения</value>
+  </data>
+  <data name="AverageRateLevel3DetailDto.NodeToEN" xml:space="preserve">
+    <value>Узел назначения (англ)</value>
+  </data>
+  <data name="AverageRateLevel3DetailDto.OpenStreetMapFROM" xml:space="preserve">
+    <value>Код OpenStreetMap отправления</value>
+  </data>
+  <data name="AverageRateLevel3DetailDto.OpenStreetMapTO" xml:space="preserve">
+    <value>Код OpenStreetMap назначения</value>
+  </data>
+  <data name="AverageRateLevel3DetailDto.PNPFromCurrency" xml:space="preserve">
+    <value>ПНП на станции отправления (за тонну) (без учета НДС). Валюта</value>
+  </data>
+  <data name="AverageRateLevel3DetailDto.PNPFromSize" xml:space="preserve">
+    <value>ПНП на станции отправления (за тонну) (без учета НДС). Размер составляющей ставки</value>
+  </data>
+  <data name="AverageRateLevel3DetailDto.PNPToCurrency" xml:space="preserve">
+    <value>ПНП на станции назначения (за тонну) (без учета НДС). Валюта</value>
+  </data>
+  <data name="AverageRateLevel3DetailDto.PNPToSize" xml:space="preserve">
+    <value>ПНП на станции назначения (за тонну) (без учета НДС). Размер составляющей ставки</value>
+  </data>
+  <data name="AverageRateLevel3DetailDto.Product" xml:space="preserve">
+    <value>Продукт</value>
+  </data>
+  <data name="AverageRateLevel3DetailDto.ProductGroup" xml:space="preserve">
+    <value>Группа продуктов</value>
+  </data>
+  <data name="AverageRateLevel3DetailDto.ProvisionTransportCurrency" xml:space="preserve">
+    <value>Предоставление ТС (за тонну) (без учета НДС). Валюта</value>
+  </data>
+  <data name="AverageRateLevel3DetailDto.ProvisionTransportSize" xml:space="preserve">
+    <value>Предоставление ТС (за тонну) (без учета НДС). Размер составляющей ставки</value>
+  </data>
+  <data name="AverageRateLevel3DetailDto.ProxyNode" xml:space="preserve">
+    <value>Узел промежуточный</value>
+  </data>
+  <data name="AverageRateLevel3DetailDto.ProxyRegion" xml:space="preserve">
+    <value>Регион промежуточный</value>
+  </data>
+  <data name="AverageRateLevel3DetailDto.RateLevel3" xml:space="preserve">
+    <value>Ставка ср.взвеш. (т) в валюте-эталоне</value>
+  </data>
+  <data name="AverageRateLevel3DetailDto.RateType" xml:space="preserve">
+    <value>Тип ставки</value>
+  </data>
+  <data name="AverageRateLevel3DetailDto.RegionFrom" xml:space="preserve">
+    <value>Регион отправления</value>
+  </data>
+  <data name="AverageRateLevel3DetailDto.RegionTo" xml:space="preserve">
+    <value>Регион назначения</value>
+  </data>
+  <data name="AverageRateLevel3DetailDto.SSPRateTypePriority" xml:space="preserve">
+    <value>Приоритет типа ставки в ПБД/ССП</value>
+  </data>
+  <data name="AverageRateLevel3DetailDto.StartDate" xml:space="preserve">
+    <value>Период действия с</value>
+  </data>
+  <data name="AverageRateLevel3DetailDto.TEFromCurrency" xml:space="preserve">
+    <value>ТЭ на станции отправления (переменные затраты) (за тонну) (без учета НДС). Валюта</value>
+  </data>
+  <data name="AverageRateLevel3DetailDto.TEFromCurrency_fix" xml:space="preserve">
+    <value>ТЭ на станции отправления (постоянные затраты) (за тонну) (без учета НДС). Валюта</value>
+  </data>
+  <data name="AverageRateLevel3DetailDto.TEFromSize" xml:space="preserve">
+    <value>ТЭ на станции отправления (переменные затраты) (за тонну) (без учета НДС). Размер составляющей ставки</value>
+  </data>
+  <data name="AverageRateLevel3DetailDto.TEFromSize_fix" xml:space="preserve">
+    <value>ТЭ на станции отправления (постоянные затраты) (за тонну) (без учета НДС). Размер составляющей ставки</value>
+  </data>
+  <data name="AverageRateLevel3DetailDto.TEToCurrency" xml:space="preserve">
+    <value>ТЭ на станции назначения (переменные затраты) (за тонну) (без учета НДС). Валюта</value>
+  </data>
+  <data name="AverageRateLevel3DetailDto.TEToCurrency_fix" xml:space="preserve">
+    <value>ТЭ на станции назначения (постоянные затраты) (за тонну) (без учета НДС). Валюта</value>
+  </data>
+  <data name="AverageRateLevel3DetailDto.TEToSize" xml:space="preserve">
+    <value>ТЭ на станции назначения (переменные затраты) (за тонну) (без учета НДС). Размер составляющей ставки</value>
+  </data>
+  <data name="AverageRateLevel3DetailDto.TEToSize_fix" xml:space="preserve">
+    <value>ТЭ на станции назначения (постоянные затраты) (за тонну) (без учета НДС). Размер составляющей ставки</value>
+  </data>
+  <data name="AverageRateLevel3DetailDto.TotalCostTonCNY" xml:space="preserve">
+    <value>Ставка за т, CNY</value>
+  </data>
+  <data name="AverageRateLevel3DetailDto.TotalCostTonEUR" xml:space="preserve">
+    <value>Ставка за т, EUR</value>
+  </data>
+  <data name="AverageRateLevel3DetailDto.TotalCostTonRUB" xml:space="preserve">
+    <value>Ставка за т, RUR</value>
+  </data>
+  <data name="AverageRateLevel3DetailDto.TotalCostTonUSD" xml:space="preserve">
+    <value>Ставка за т, USD</value>
+  </data>
+  <data name="AverageRateLevel3DetailDto.TotalCostTransportCNY" xml:space="preserve">
+    <value>Ставка за ТС, CNY</value>
+  </data>
+  <data name="AverageRateLevel3DetailDto.TotalCostTransportEUR" xml:space="preserve">
+    <value>Ставка за ТС, EUR</value>
+  </data>
+  <data name="AverageRateLevel3DetailDto.TotalCostTransportRUB" xml:space="preserve">
+    <value>Ставка за ТС, RUR</value>
+  </data>
+  <data name="AverageRateLevel3DetailDto.TotalCostTransportUSD" xml:space="preserve">
+    <value>Ставка за ТС, USD</value>
+  </data>
+  <data name="AverageRateLevel3DetailDto.TransportKind" xml:space="preserve">
+    <value>Вид транспорта</value>
+  </data>
+  <data name="AverageRateLevel3DetailDto.TransportType" xml:space="preserve">
+    <value>Тип транспорта</value>
+  </data>
+  <data name="AverageRateLevel3DetailDto.TransshipmentCurrency" xml:space="preserve">
+    <value>Перевалка (за тонну) (без учета НДС). Валюта</value>
+  </data>
+  <data name="AverageRateLevel3DetailDto.TransshipmentSize" xml:space="preserve">
+    <value>Перевалка (за тонну) (без учета НДС). Размер составляющей ставки</value>
+  </data>
+  <data name="AverageRateLevel3DetailDto.Yes" xml:space="preserve">
+    <value>Да</value>
+  </data>
+  <data name="AverageRateLevel3Dto.Active" xml:space="preserve">
+    <value>Активный</value>
+  </data>
+  <data name="AverageRateLevel3Dto.Archive" xml:space="preserve">
+    <value>Архив</value>
+  </data>
+  <data name="AverageRateLevel3Dto.Code" xml:space="preserve">
+    <value>Код ставки</value>
+  </data>
+  <data name="AverageRateLevel3Dto.CountryCode" xml:space="preserve">
+    <value>Код страны</value>
+  </data>
+  <data name="AverageRateLevel3Dto.CreationDate" xml:space="preserve">
+    <value>Дата создания</value>
+  </data>
+  <data name="AverageRateLevel3Dto.IsArchive" xml:space="preserve">
+    <value>Архив</value>
+  </data>
+  <data name="AverageRateLevel3Dto.LastChangeDate" xml:space="preserve">
+    <value>Дата изменения</value>
+  </data>
+  <data name="AverageRateLevel3Dto.LocationTypeCode" xml:space="preserve">
+    <value>Код типа местоположения</value>
+  </data>
+  <data name="AverageRateLevel3Dto.No" xml:space="preserve">
+    <value>Нет</value>
+  </data>
+  <data name="AverageRateLevel3Dto.RegionCode" xml:space="preserve">
+    <value>Код региона</value>
+  </data>
+  <data name="AverageRateLevel3Dto.TypeNodeCode" xml:space="preserve">
+    <value>Код типа узла</value>
+  </data>
+  <data name="AverageRateLevel3Dto.Yes" xml:space="preserve">
+    <value>Да</value>
+  </data>
+  <data name="AverageRateLevel3Grid.Title" xml:space="preserve">
+    <value>Cредневзвешенные ставки</value>
+  </data>
+  <data name="AverageRateLevel3Dto.IsDefRate" xml:space="preserve">
+    <value>Дефлятор</value>
+  </data>
+  <data name="AverageRateLevel3Dto.RateTypeName" xml:space="preserve">
+    <value>Тип ставки</value>
+  </data>
+  <data name="AverageRateLevel3Dto.NodeFromCode" xml:space="preserve">
+    <value>Код отправления</value>
+  </data>
+  <data name="AverageRateLevel3Dto.NodeFromName" xml:space="preserve">
+    <value>Отправление</value>
+  </data>
+  <data name="AverageRateLevel3Dto.NodeToCode" xml:space="preserve">
+    <value>Код назначения</value>
+  </data>
+  <data name="AverageRateLevel3Dto.NodeToName" xml:space="preserve">
+    <value>Узел назначения</value>
+  </data>
+  <data name="AverageRateLevel3Dto.ProxyNodeCode" xml:space="preserve">
+    <value>Код промежуточного</value>
+  </data>
+  <data name="AverageRateLevel3Dto.ProxyNodeName" xml:space="preserve">
+    <value>Промежуточный</value>
+  </data>
+  <data name="AverageRateLevel3Dto.ProductGroupCode" xml:space="preserve">
+    <value>Код группы продуктов</value>
+  </data>
+  <data name="AverageRateLevel3Dto.ProductGroupName" xml:space="preserve">
+    <value>Группа продуктов</value>
+  </data>
+  <data name="AverageRateLevel3Dto.ProductCode" xml:space="preserve">
+    <value>Код продукта</value>
+  </data>
+  <data name="AverageRateLevel3Dto.ProductName" xml:space="preserve">
+    <value>Продукт</value>
+  </data>
+  <data name="AverageRateLevel3Dto.StartDate" xml:space="preserve">
+    <value>Начало</value>
+  </data>
+  <data name="AverageRateLevel3Dto.EndDate" xml:space="preserve">
+    <value>Окончание</value>
+  </data>
+  <data name="AverageRateLevel3Dto.Currency" xml:space="preserve">
+    <value>Валюта</value>
+  </data>
+  <data name="AverageRateLevel3Dto.RateLevel3" xml:space="preserve">
+    <value>Ставка ср.взвеш. (т)</value>
+  </data>
+  <data name="AverageRateLevel3Dto.EffectiveLoadOfTransportType" xml:space="preserve">
+    <value>Загрузка</value>
+  </data>
+  <data name="AverageRateLevel3Dto.TransportKindCode" xml:space="preserve">
+    <value>Код вида транспорта</value>
+  </data>
+  <data name="AverageRateLevel3Dto.TransportKindName" xml:space="preserve">
+    <value>Вид транспорта</value>
+  </data>
+  <data name="AverageRateLevel3Dto.TransportTypeCode" xml:space="preserve">
+    <value>Код типа транспорта</value>
+  </data>
+  <data name="AverageRateLevel3Dto.TransportTypeName" xml:space="preserve">
+    <value>Тип транспорта</value>
+  </data>
+  <data name="AverageRateLevel3DetailDto.TransportRateCodes" xml:space="preserve">
+    <value>Коды транспортных ставок</value>
+  </data>
+  <data name="AverageRateLevel3DetailDto.RateTypeName" xml:space="preserve">
+    <value>Тип ставки</value>
+  </data>
+  <data name="AverageRateLevel3DetailDto.RateTypeCode" xml:space="preserve">
+    <value>Код типа ставки</value>
+  </data>
+  <data name="AverageRateLevel3DetailDto.Group.1.RateParameters" xml:space="preserve">
+    <value>1. Параметры ставки</value>
+  </data>
+  <data name="AverageRateLevel3DetailDto.Group.2.RateDates" xml:space="preserve">
+    <value>2. Период действия ставки</value>
+  </data>
+  <data name="AverageRateLevel3DetailDto.Group.3.OriginDestination" xml:space="preserve">
+    <value>3. Отправление - Назначение</value>
+  </data>
+  <data name="AverageRateLevel3DetailDto.Group.4.Transport" xml:space="preserve">
+    <value>4. Транспорт</value>
+  </data>
+  <data name="AverageRateLevel3DetailDto.Group.6.Cargo" xml:space="preserve">
+    <value>6. Груз</value>
+  </data>
+  <data name="AverageRateLevel3DetailDto.Group.7.RateAmountExcludingVAT" xml:space="preserve">
+    <value>7. Размер ставки (без учета НДС)</value>
+  </data>
+  <data name="AverageRateLevel3DetailDto.Group.8.RateComponentsExcludingVATPerTon" xml:space="preserve">
+    <value>8. Составляющие ставки (без учета НДС, за тонну)</value>
+  </data>
+  <data name="AverageRateLevel3DetailDto.Group.10.Comments" xml:space="preserve">
+    <value>10. Комментарии</value>
+  </data>
+  <data name="AverageRateLevel3DetailDto.Group.11.ReferenceCalculatedCostsInCurrencies" xml:space="preserve">
+    <value>11. Справочно. Расчетные стоимости в валютах</value>
+  </data>
+  <data name="AverageRateLevel3DetailDto.Group.12.Leadtimes" xml:space="preserve">
+    <value>12. Лидтаймы</value>
+  </data>
+  <data name="AverageRateLevel3DetailDto.Group.13.Leg1" xml:space="preserve">
+    <value>13. Плечо 1</value>
+  </data>
+  <data name="AverageRateLevel3DetailDto.Group.14.LeadtimesRate1" xml:space="preserve">
+    <value>14. Лидтаймы. Ставка 1</value>
+  </data>
+  <data name="AverageRateLevel3DetailDto.Group.15.Leg2" xml:space="preserve">
+    <value>15. Плечо 2</value>
+  </data>
+  <data name="AverageRateLevel3DetailDto.Group.16.LeadtimesRate2" xml:space="preserve">
+    <value>16. Лидтаймы. Ставка 2</value>
+  </data>
+  <data name="AverageRateLevel3DetailDto.NodeFromCode" xml:space="preserve">
+    <value>Код узла отправления</value>
+  </data>
+  <data name="AverageRateLevel3DetailDto.NodeFromName" xml:space="preserve">
+    <value>Узел отправления</value>
+  </data>
+  <data name="AverageRateLevel3DetailDto.RegionFromCode" xml:space="preserve">
+    <value>Код региона отправления</value>
+  </data>
+  <data name="AverageRateLevel3DetailDto.RegionFromName" xml:space="preserve">
+    <value>Регион отправления</value>
+  </data>
+  <data name="AverageRateLevel3DetailDto.ProxyNodeCode" xml:space="preserve">
+    <value>Код промежуточного узла</value>
+  </data>
+  <data name="AverageRateLevel3DetailDto.ProxyNodeName" xml:space="preserve">
+    <value>Узел промежуточный</value>
+  </data>
+  <data name="AverageRateLevel3DetailDto.ProxyRegionCode" xml:space="preserve">
+    <value>Код промежуточного региона</value>
+  </data>
+  <data name="AverageRateLevel3DetailDto.ProxyRegionName" xml:space="preserve">
+    <value>Регион промежуточный</value>
+  </data>
+  <data name="AverageRateLevel3DetailDto.NodeToCode" xml:space="preserve">
+    <value>Код узла назначения</value>
+  </data>
+  <data name="AverageRateLevel3DetailDto.NodeToName" xml:space="preserve">
+    <value>Узел назначения</value>
+  </data>
+  <data name="AverageRateLevel3DetailDto.RegionToCode" xml:space="preserve">
+    <value>Код региона назначения</value>
+  </data>
+  <data name="AverageRateLevel3DetailDto.RegionToName" xml:space="preserve">
+    <value>Регион назначения</value>
+  </data>
+  <data name="AverageRateLevel3DetailDto.BasisNodeNameRu" xml:space="preserve">
+    <value>Базисный узел</value>
+  </data>
+  <data name="AverageRateLevel3DetailDto.BasisNodeCode" xml:space="preserve">
+    <value>Код базисного узла</value>
+  </data>
+  <data name="AverageRateLevel3DetailDto.TransportKindCode" xml:space="preserve">
+    <value>Код вида транспорта</value>
+  </data>
+  <data name="AverageRateLevel3DetailDto.TransportKindName" xml:space="preserve">
+    <value>Вид транспорта</value>
+  </data>
+  <data name="AverageRateLevel3DetailDto.TransportTypeCode" xml:space="preserve">
+    <value>Код типа транспорта</value>
+  </data>
+  <data name="AverageRateLevel3DetailDto.TransportTypeName" xml:space="preserve">
+    <value>Тип транспорта</value>
+  </data>
+  <data name="AverageRateLevel3DetailDto.ProductGroupNameEnRu" xml:space="preserve">
+    <value>Группа продуктов</value>
+  </data>
+  <data name="AverageRateLevel3DetailDto.ProductGroupCode" xml:space="preserve">
+    <value>Код группы продуктов</value>
+  </data>
+  <data name="AverageRateLevel3DetailDto.ProductCode" xml:space="preserve">
+    <value>Код продукта</value>
+  </data>
+  <data name="AverageRateLevel3DetailDto.ProductName" xml:space="preserve">
+    <value>Продукт</value>
+  </data>
+  <data name="AverageRateLevel3DetailDto.ProductDPOCOde" xml:space="preserve">
+    <value>Код продукта DPO</value>
+  </data>
+  <data name="AverageRateLevel3DetailDto.LegCode" xml:space="preserve">
+    <value>Код плеча</value>
+  </data>
+  <data name="AverageRateLevel3DetailDto.LegChangeDate" xml:space="preserve">
+    <value>Дата изменения плеча</value>
+  </data>
+  <data name="AverageRateLevel3DetailDto.LeadTimeCode" xml:space="preserve">
+    <value>Код лидтайма</value>
+  </data>
+  <data name="AverageRateLevel3DetailDto.LeadTimeStartDate" xml:space="preserve">
+    <value>Дата начала лидтайма</value>
+  </data>
+  <data name="AverageRateLevel3DetailDto.LeadTimeEndDate" xml:space="preserve">
+    <value>Дата окончания лидтайма</value>
+  </data>
+  <data name="AverageRateLevel3DetailDto.LeadTimeChangeDate" xml:space="preserve">
+    <value>Дата изменения лидтайма</value>
+  </data>
+  <data name="AverageRateLevel3DetailDto.SearchTime" xml:space="preserve">
+    <value>Время поиска, дней</value>
+  </data>
+  <data name="AverageRateLevel3DetailDto.LoadTime" xml:space="preserve">
+    <value>Время погрузки, дней</value>
+  </data>
+  <data name="AverageRateLevel3DetailDto.DaysWaiting" xml:space="preserve">
+    <value>Дней ожидания, дней</value>
+  </data>
+  <data name="AverageRateLevel3DetailDto.TravelTime" xml:space="preserve">
+    <value>Время в пути, дней</value>
+  </data>
+  <data name="AverageRateLevel3DetailDto.UnLoadTime" xml:space="preserve">
+    <value>Время выгрузки, дней</value>
+  </data>
+  <data name="AverageRateLevel3DetailDto.TransportationTime" xml:space="preserve">
+    <value>Время транспортировки, дней</value>
+  </data>
+  <data name="AverageRateLevel3DetailDto.Distance" xml:space="preserve">
+    <value>Расстояние</value>
+  </data>
+  <data name="AverageRateLevel3DetailDto.Leg1_SearchTime" xml:space="preserve">
+    <value>Плечо 1. Время поиска, дней</value>
+  </data>
+  <data name="AverageRateLevel3DetailDto.Leg1_LoadTime" xml:space="preserve">
+    <value>Плечо 1. Время погрузки, дней</value>
+  </data>
+  <data name="AverageRateLevel3DetailDto.Leg1_DaysWaiting" xml:space="preserve">
+    <value>Плечо 1. Дней ожидания, дней</value>
+  </data>
+  <data name="AverageRateLevel3DetailDto.Leg1_TravelTime" xml:space="preserve">
+    <value>Плечо 1. Время в пути, дней</value>
+  </data>
+  <data name="AverageRateLevel3DetailDto.Leg1_TransportationTime" xml:space="preserve">
+    <value>Плечо 1. Время транспортировки, дней</value>
+  </data>
+  <data name="AverageRateLevel3DetailDto.Leg1_Distance" xml:space="preserve">
+    <value>Плечо 1. Расстояние</value>
+  </data>
+  <data name="AverageRateLevel3DetailDto.Leg2_UpLoadTime" xml:space="preserve">
+    <value>Плечо 2. Время выгрузки, дней</value>
+  </data>
+  <data name="AverageRateLevel3DetailDto.Leg2_DaysWaiting" xml:space="preserve">
+    <value>Плечо 2. Дней ожидания, дней</value>
+  </data>
+  <data name="AverageRateLevel3DetailDto.Leg2_TravelTime" xml:space="preserve">
+    <value>Плечо 2. Время в пути, дней</value>
+  </data>
+  <data name="AverageRateLevel3DetailDto.Leg2_TransportationTime" xml:space="preserve">
+    <value>Плечо 2. Время транспортировки, дней</value>
+  </data>
+  <data name="AverageRateLevel3DetailDto.Leg2_Distance" xml:space="preserve">
+    <value>Плечо 2. Расстояние</value>
+  </data>
+  <data name="AverageRateLevel3DetailDto.Leg1_TransportTypeNameRu" xml:space="preserve">
+    <value>Плечо 1. Тип транспорта</value>
+  </data>
+  <data name="AverageRateLevel3DetailDto.Leg1_TransportTypeNameRuEn" xml:space="preserve">
+    <value>Плечо 1. Тип транспорта</value>
+  </data>
+  <data name="AverageRateLevel3DetailDto.Leg2_TransportTypeNameRu" xml:space="preserve">
+    <value>Плечо 2. Тип транспорта</value>
+  </data>
+  <data name="AverageRateLevel3DetailDto.Leg2_TransportTypeNameRuEn" xml:space="preserve">
+    <value>Плечо 2. Тип транспорта</value>
+  </data>
+</root>

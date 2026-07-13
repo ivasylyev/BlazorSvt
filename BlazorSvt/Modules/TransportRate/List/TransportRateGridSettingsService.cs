@@ -1,6 +1,5 @@
 ﻿using BlazorBootstrap;
 using Blazored.LocalStorage;
-using BlazorSvt.Modules.TransportRate.List.IdsEnum;
 using BlazorSvt.Platform.Domain.IdsEnum;
 using Microsoft.Extensions.Localization;
 

@@ -30,23 +30,23 @@ AS
 BEGIN
     SET NOCOUNT ON;
 
-    -- Основная таблица: изменившиеся PrimitiveEntityItemId и есть бизнес-ключи узлов.
-    IF @Source = N'dbo.PrimitiveEntityData_1014'
+    -- LocationsNodes (основная): изменившиеся PrimitiveEntityItemId и есть бизнес-ключи узлов.
+    IF @Source = N'dbo.PrimitiveEntityData_1014' -- LocationsNodes (основная)
     BEGIN
         INSERT INTO #AffectedKeys (EntityKey)
         SELECT d.PrimitiveEntityItemId
-        FROM dbo.PrimitiveEntityData_1014 d WITH (NOLOCK)
+        FROM dbo.PrimitiveEntityData_1014 d WITH (NOLOCK) -- LocationsNodes (основная)
         WHERE d.RowVer > @Lo AND d.RowVer <= @Hi
           AND NOT EXISTS (SELECT 1 FROM #AffectedKeys a WHERE a.EntityKey = d.PrimitiveEntityItemId);
         RETURN;
     END
 
     -- Region: затронутые узлы через RegionId.
-    IF @Source = N'dbo.PrimitiveEntityData_1008'
+    IF @Source = N'dbo.PrimitiveEntityData_1008' -- Region
     BEGIN
         INSERT INTO #AffectedKeys (EntityKey)
         SELECT DISTINCT s.LocationsNodesId
-        FROM dbo.PrimitiveEntityData_1008 r WITH (NOLOCK)
+        FROM dbo.PrimitiveEntityData_1008 r WITH (NOLOCK) -- Region
         JOIN v2.LocationsNodes_Snapshot s ON s.RegionId = r.PrimitiveEntityItemId
         WHERE r.RowVer > @Lo AND r.RowVer <= @Hi
           AND NOT EXISTS (SELECT 1 FROM #AffectedKeys a WHERE a.EntityKey = s.LocationsNodesId);
@@ -54,11 +54,11 @@ BEGIN
     END
 
     -- Country: затронутые узлы через CountryId.
-    IF @Source = N'dbo.PrimitiveEntityData_1009'
+    IF @Source = N'dbo.PrimitiveEntityData_1009' -- Country
     BEGIN
         INSERT INTO #AffectedKeys (EntityKey)
         SELECT DISTINCT s.LocationsNodesId
-        FROM dbo.PrimitiveEntityData_1009 r WITH (NOLOCK)
+        FROM dbo.PrimitiveEntityData_1009 r WITH (NOLOCK) -- Country
         JOIN v2.LocationsNodes_Snapshot s ON s.CountryId = r.PrimitiveEntityItemId
         WHERE r.RowVer > @Lo AND r.RowVer <= @Hi
           AND NOT EXISTS (SELECT 1 FROM #AffectedKeys a WHERE a.EntityKey = s.LocationsNodesId);

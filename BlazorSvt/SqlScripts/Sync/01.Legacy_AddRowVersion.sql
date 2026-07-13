@@ -39,7 +39,9 @@ VALUES
     -- TransportRate
     (N'dbo.PrimitiveEntityData_2012', N'TransportRate (основная)'),
     (N'dbo.PrimitiveEntityData_1013', N'ProductGroup'),
-    (N'dbo.PrimitiveEntityData_1015', N'MTR (Product)');
+    (N'dbo.PrimitiveEntityData_1015', N'MTR (Product)'),
+    -- AverageRateLevel3
+    (N'dbo.PrimitiveEntityData_2057', N'AverageRateLevel3 (основная)');
 
 DECLARE @tableName SYSNAME, @comment NVARCHAR(100), @sql NVARCHAR(MAX);
 
@@ -89,6 +91,7 @@ DECLARE @idxTables TABLE (TableName SYSNAME, IndexName SYSNAME);
 INSERT INTO @idxTables (TableName, IndexName)
 VALUES
     (N'dbo.PrimitiveEntityData_2012', N'ix_PrimitiveEntityData_2012_RowVer'),  -- TransportRate
+    (N'dbo.PrimitiveEntityData_2057', N'ix_PrimitiveEntityData_2057_RowVer'),  -- AverageRateLevel3
     (N'dbo.PrimitiveEntityData_1015', N'ix_PrimitiveEntityData_1015_RowVer'),  -- MTR (Product)
     (N'dbo.PrimitiveEntityData_1014', N'ix_PrimitiveEntityData_1014_RowVer');  -- LocationsNodes
 

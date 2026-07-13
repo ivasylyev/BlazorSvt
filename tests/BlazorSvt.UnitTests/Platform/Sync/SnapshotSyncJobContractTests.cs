@@ -1,3 +1,5 @@
+using BlazorSvt.Modules.AverageRateLevel3.List;
+using BlazorSvt.Modules.AverageRateLevel3.Sync;
 using BlazorSvt.Modules.LocationsNodes.List;
 using BlazorSvt.Modules.LocationsNodes.Sync;
 using BlazorSvt.Modules.TransportLeg.List;
@@ -54,6 +56,15 @@ public class SnapshotSyncJobContractTests
                 "v2.vw_TransportRate_SnapshotSource",
                 "v2.TransportRate_PopulateAffectedKeys"
             },
+            {
+                new AverageRateLevel3SyncJob(),
+                typeof(AverageRateLevel3Dto),
+                "AverageRateLevel3",
+                "v2.AverageRateLevel3_Snapshot",
+                nameof(AverageRateLevel3Dto.AverageRateLevel3Id),
+                "v2.vw_AverageRateLevel3_SnapshotSource",
+                "v2.AverageRateLevel3_PopulateAffectedKeys"
+            },
         };
 
     public static TheoryData<ISnapshotSyncJob> AllJobs =>
@@ -62,6 +73,7 @@ public class SnapshotSyncJobContractTests
             new LocationsNodesSyncJob(),
             new TransportLegSyncJob(),
             new TransportRateSyncJob(),
+            new AverageRateLevel3SyncJob(),
         };
 
     [Theory]

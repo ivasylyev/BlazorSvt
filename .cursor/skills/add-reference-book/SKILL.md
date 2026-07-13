@@ -9,10 +9,11 @@ description: >-
 
 # Добавление справочника (read-only)
 
-Полный вертикальный срез: MDM discovery → SQL (Structure + Programmability) → деплой и верификация БД → C#-модуль.
+Полный вертикальный срез: MDM discovery → SQL (Structure + Programmability + SnapshotSync) → деплой и верификация БД → C#-модуль.
 
-**Эталоны реализации:** `Modules/Legs`, `Modules/Rates` (паттерны кода и SQL).  
-**Именование:** для **новых** справочников — соглашения ниже. Существующие `Legs`/`Rates` (`LegId`, `RateId`, папки `Legs`/`Rates`) **не трогать** — отдельный рефакторинг.
+**Эталоны реализации:** `Modules/TransportRate`, `Modules/AverageRateLevel3`, `Modules/TransportLeg`, `Modules/LocationsNodes`.  
+Legacy `Legs`/`Rates` — не эталон и **не трогать** без отдельной команды (`LegId`, `RateId`).  
+**Именование:** для **новых** справочников — соглашения ниже.
 
 ## Когда применять
 
@@ -311,9 +312,12 @@ WHERE DRu.[Value] = (
 - `vw_Currency` — один enum `Currency` в `Platform/Domain/IdsEnum/` с `[Display(Name = "RUB"|"EUR"|…)]` (коды валют); **без** разделения на Ru/En.
 - `vw_ShipmentType` — имена полей **всегда** из `Code` (`TVD`, `PVG`, …), даже если общие правила иначе.
 
-Если enum уже есть в другом модуле — **перенести в** `Platform/Domain/IdsEnum/`.
+**Общие короткие словари** (`RateType`, `TransportTypeLevel3`, `TransportKind`, `Currency`, …) — сразу в
+`Platform/Domain/IdsEnum/`. Если enum уже лежит в другом модуле — **перенести в Platform** и поправить
+использующие модули (часть задачи). Модульный `List/IdsEnum/` — только если словарь **уникален** для
+этого справочника и не переиспользуется.
 
-Два файла: `{Dictionary}Ru.cs`, `{Dictionary}En.cs` в `Modules/{Entity}/List/IdsEnum/` (кроме `Currency`).
+Два файла: `{Dictionary}Ru.cs`, `{Dictionary}En.cs` (кроме `Currency`) — в Platform или в модуле по правилу выше.
 
 **Значение каждого члена enum** = `Id` из `vw_{Dictionary}`.
 
@@ -362,31 +366,48 @@ BlazorSvt/SqlScripts/Modules/{Entity}/
 │   ├── 02.{Entity}_Insert.sql
 │   └── 03.{Entity}_CreateIndexes.sql
 └── Programmability/
+    ├── vw_{Entity}_SnapshotSource.sql
     ├── vw_{Entity}_Detail.sql
-    ├── {Entity}_Get.sql
-    └── vw_{Entity}_Detail.sql
+    └── sp_{Entity}_PopulateAffectedKeys.sql
 ```
+
+Обновить также `SqlScripts/Publish-AllSql.ps1` (порядок: CreateTable → SnapshotSource → Insert → Indexes → Detail → PopulateAffectedKeys).
 
 ### Structure
 
-**01 — CreateTable:** системные поля + атрибуты короткого списка (порядок п.1); партиционирование; SEQUENCE; DEFAULT на `Id`, `CreationDate`.  
-Образец: `SqlScripts/Modules/Legs/Structure/01.TransportLegs_CreateTable.sql` (с новыми именами).
+**01 — CreateTable:** системные поля + атрибуты короткого списка (порядок п.1); партиционирование; SEQUENCE; DEFAULT на `Id`, `CreationDate`; скрытые FK (`*_Id`) для каскада sync.  
+Образец: `SqlScripts/Modules/TransportRate/Structure/01.TransportRate_CreateTable.sql`.
 
-**02 — Insert:** `INSERT INTO v2.{Entity}_Snapshot … SELECT … FROM vw_{Entity}` + JOIN по ссылкам.  
-Образец: `Legs/Structure/02.TransportLegs_Insert.sql`.
+**02 — Insert:** `INSERT INTO v2.{Entity}_Snapshot … SELECT … FROM v2.vw_{Entity}_SnapshotSource` (не напрямую из legacy `vw_{Entity}`).  
+После INSERT — инициализация `v2.SyncState` для всех источников job’а. Колонки SyncState: **`LastRowVersion`** (не `LastRowVer`), `LastRunUtc`. Копировать MERGE из эталона (`TransportRate` / `AverageRateLevel3`).  
+На каждой строке `PrimitiveEntityData_*` в CTE Sources — комментарий с именем справочника:
+
+```sql
+SELECT N'dbo.PrimitiveEntityData_2012'   -- TransportRate (основная)
+UNION ALL SELECT N'dbo.PrimitiveEntityData_1014'  -- LocationsNodes
+```
+
+**Внимание:** если Insert успел залить snapshot и упал на SyncState — повторный прогон даст дубликаты. Перед повторным Insert очищать snapshot или дедуплицировать по `{Entity}Id`.
 
 **03 — Indexes:**
 
 - `UX_{Entity}_Snapshot_Id` на `[PRIMARY]` (для FTS при партициях)
-- FULLTEXT на `Code` (только если `Code` — `NVARCHAR`; для числового `Code` FTS не нужен — достаточно фильтрованных индексов), `*NameEn`, `*NameRu` (языки 1033 / 1049)
+- FULLTEXT на `Code` (только если `Code` — `NVARCHAR`; для числового `Code` FTS не нужен — достаточно фильтрованных индексов), `*NameEn`, `*NameRu`, whitelist Codes (языки 1033 / 1049)
 - `ALTER FULLTEXT … SET STOPLIST = OFF`
 - Фильтрованные индексы на `Code` сущности и ID **коротких** enum-ссылок (`LocationTypeId`, …); **не** создавать NCIX по Id длинных ссылок (Region, Country)
+- NCIX на `{Entity}Id` и скрытые FK каскада (`NodeFromId`, …)
 - `UPDATE STATISTICS … WITH FULLSCAN`
 
 ### Programmability
 
-**vw_{Entity}_Detail** — поля длинного списка (п.4) + системные; ссылки: `IdRu`/`IdEn`, `Code`, `Name_en`/`Name_ru` из joined views.  
-Образцы: `vw_TransportLegs_Detail.sql`, `vw_TransportRates_Detail.sql`.
+**vw_{Entity}_SnapshotSource** — единая проекция для первичной заливки и incremental MERGE. WHERE-фильтр членства (NOT NULL ключевые метрики, валидный Code/RateType/Product и т.п.) — как у эталона; при бизнес-правиле «без связанных X — битая запись» — `EXISTS` / отсечение в проекции.
+
+**vw_{Entity}_Detail** — поля длинного списка (п.4) + системные; ссылки: Code/Name из joined views; при необходимости плечи/лидтаймы (эталон: `vw_TransportRate_Detail`, `vw_AverageRateLevel3_Detail`).  
+**Дочерние сущности без sub-grid:** вычисляемое поле через `STRING_AGG` (или аналог) **только в detail / export**, не в snapshot. Эталон: `TransportRateCodes` в `AverageRateLevel3`.
+
+**sp_{Entity}_PopulateAffectedKeys** — детекция по `@Source` / `@Lo` / `@Hi`. В шапке и у каждой ветки `IF` / `FROM` — комментарий «номер таблицы → справочник» (как у TransportRate / AverageRateLevel3).
+
+**RowVer:** расширить `SqlScripts/Sync/01.Legacy_AddRowVersion.sql` для основной `PrimitiveEntityData_*` (+ NC-индекс по RowVer, если таблица крупная). Maintenance-окно (Sch-M).
 
 **Grid read** — без `{Entity}_Get`. Метаданные колонок на `{Entity}Dto`: `[GridSnapshot("v2.{Entity}_Snapshot")]` + `[GridColumn]` на свойствах.  
 `GridDataService` вызывает `v2.GetBlazorGridData` с `@TableName`, `@AllowedColumnsJson`, `@SelectList`, сформированными в C# (`GridColumnMetadataBuilder`).
@@ -421,8 +442,10 @@ BlazorSvt/SqlScripts/Modules/{Entity}/
 
 ### Порядок деплоя
 
-1. **Structure** — `sqlcmd` по файлам `01 → 02 → 03`
-2. **Programmability** — всегда полный прогон:
+1. **RowVer** (если новая основная таблица) — `Sync/01.Legacy_AddRowVersion.sql`
+2. **01 CreateTable** → **SnapshotSource** → **02 Insert** → **03 Indexes** → **Detail** → **PopulateAffectedKeys**  
+   (Insert зависит от SnapshotSource; Indexes — после залитых данных)
+3. Либо Structure 01–03 вручную, затем полный прогон Programmability:
 
 ```powershell
 & ".\BlazorSvt\SqlScripts\Create-Programmability.ps1"
@@ -466,10 +489,15 @@ BlazorSvt/Modules/{Entity}/
 │   ├── {Entity}Grid.razor
 │   ├── {Entity}Grid.razor.cs
 │   ├── {Entity}GridSettingsService.cs
-│   └── IdsEnum/          # при необходимости
-└── Detail/
-    ├── {Entity}DetailDto.cs
-    └── {Entity}DetailSettingsService.cs
+│   └── IdsEnum/          # только уникальные для модуля словари
+├── Detail/
+│   ├── {Entity}DetailDto.cs
+│   └── {Entity}DetailSettingsService.cs
+├── Sync/
+│   └── {Entity}SyncJob.cs
+└── Resources/
+    ├── {Entity}.resx
+    └── {Entity}.ru-RU.resx
 ```
 
 ### DTO-атрибуты (обязательно)
@@ -564,7 +592,10 @@ public required RateTypeEn RateTypeIdEn { get; set; }
 ```csharp
 services.AddScoped<IGridSettingsService<{Entity}Dto>, {Entity}GridSettingsService>();
 services.AddScoped<IDetailSettingsService<{Entity}DetailDto>, {Entity}DetailSettingsService>();
+services.AddSingleton<ISnapshotSyncJob, {Entity}SyncJob>();
 ```
+
+**`{Entity}SyncJob`:** эталон `TransportRateSyncJob` / `AverageRateLevel3SyncJob` — consts `PrimitiveEntityData_*` с комментариями имён справочников; Sources = основная + каскад (узлы / ProductGroup / MTR и т.д. по проекции). Стабильные словари (RateType, Currency, …) **не** включать.
 
 **`Host/Program.cs`:** `builder.Services.Add{Entity}Module();`
 
@@ -576,21 +607,20 @@ URL меню **должен совпадать** с `@page` в `.razor`.
 
 ## Фаза 5 — Тесты
 
-Эталоны: `tests/BlazorSvt.UnitTests/Platform/Grid/`, `tests/BlazorSvt.IntegrationTests/Modules/ModuleGridIntegrationTests.cs`.
+Эталоны: `GridColumnMetadataBuilderTests`, `SnapshotSyncJobContractTests`, `ModuleGridIntegrationTests`, `TransportRateFtsIntegrationTests` / `AverageRateLevel3FtsIntegrationTests`.
 
 ### Unit (обязательно)
 
 1. Добавить `{Entity}Dto` в `[Theory]` contract-тест `GridColumnMetadataBuilderTests`:
    - `TableName` = `v2.{Entity}_Snapshot`
    - `EntityKeyPropertyName` = `{Entity}Id`
-2. При изменении Platform-логики — тесты в `GridQueryFactoryTests` / `GridColumnMetadataBuilderTests`
+2. Добавить `{Entity}SyncJob` в `SnapshotSyncJobContractTests` (`RegisteredJobs` + `AllJobs`)
+3. При изменении Platform-логики — тесты в `GridQueryFactoryTests` / `GridColumnMetadataBuilderTests`
 
 ### Integration (обязательно, read-only)
 
-Добавить в `ModuleGridIntegrationTests.cs` (или отдельный файл `Modules/{Entity}/`):
-
-1. **Grid smoke** — `GetBlazorGridData` возвращает строки и `TotalCount > 0`
-2. **Detail view** — `vw_{Entity}_Detail` возвращает строку по `{Entity}Id` из grid
+1. **Grid smoke** + **Detail view** — в `ModuleGridIntegrationTests.cs` (или `Modules/{Entity}/`)
+2. **FTS** — `Modules/{Entity}/{Entity}FtsIntegrationTests.cs` по образцу TransportRate / AverageRateLevel3 (`FtsFilterTestSupport`: `IsArchive=False` + Contains по Name-полям; при наличии — фильтр enum TransportKind/TypeNode)
 
 Только read-only на существующих данных dev-БД. **Без** INSERT/ROLLBACK. Пометить `[Trait("Category", "Integration")]` + `[SkippableFact]`.
 
@@ -628,20 +658,22 @@ dotnet test --filter "Category=Integration"
 - [ ] Имя `{Entity}` получено
 - [ ] Короткий и длинный списки + фильтрация неиспользуемых
 - [ ] Переводы из Dictionary в `Modules/{Entity}/Resources/{Entity}.resx` + `HeaderMenu.{Entity}` в Platform.resx
-- [ ] SQL Structure 01–03 + Programmability
-- [ ] README обновлён
-- [ ] Structure задеплоен (01–03 или по согласованию)
-- [ ] Programmability задеплоен
-- [ ] SQL-верификация пройдена
-- [ ] C# модуль, DI, меню, модульный resx + Platform.resx (меню)
-- [ ] Unit contract-тест `{Entity}Dto` в `GridColumnMetadataBuilderTests`
-- [ ] Integration smoke: grid + detail view для `{Entity}`
-- [ ] `dotnet build` OK
-- [ ] `dotnet test` OK
+- [ ] SQL Structure 01–03 + SnapshotSource + Detail + PopulateAffectedKeys
+- [ ] Комментарии «PED_* → справочник» в Insert Sources / PopulateAffectedKeys / SyncJob
+- [ ] RowVer (+ индекс) в `Sync/01.Legacy_AddRowVersion.sql` при новой основной таблице
+- [ ] SyncState init с `LastRowVersion` / `LastRunUtc`
+- [ ] README + `Publish-AllSql.ps1` обновлены
+- [ ] Structure / Programmability задеплоены и верифицированы
+- [ ] C# модуль (List/Detail/Sync), DI, меню, resx
+- [ ] Общие enum в `Platform/Domain/IdsEnum` (рефакторинг затронутых модулей)
+- [ ] Unit: `GridColumnMetadataBuilderTests` + `SnapshotSyncJobContractTests`
+- [ ] Integration: grid + detail smoke + FTS
+- [ ] `dotnet build` / `dotnet test` OK
 
 ---
 
 ## Связанные навыки
 
 - **create-programmability** — накат Programmability на dev БД
+- **publish-all-sql** — плоская публикация скриптов в `C:\publish\v2`
 - **svt-architecture** — архитектурный контекст и антипаттерны

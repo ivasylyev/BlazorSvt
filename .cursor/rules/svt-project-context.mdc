@@ -15,7 +15,7 @@ MDM-система логистических маршрутов, тарифов
 
 ## Текущее состояние
 
-Реализован **фреймворк справочников (read-only) и отчётов**. Примеры: TransportLeg, TransportRate, LocationsNodes (legacy: Legs, Rates). Есть зачаток Import (Excel → staging). Каркас **unit + integration** тестов в `tests/`. Значительная часть функционала отсутствует.
+Реализован **фреймворк справочников (read-only) и отчётов**. Примеры: TransportLeg, TransportRate, AverageRateLevel3, LocationsNodes (legacy: Legs, Rates). Есть зачаток Import (Excel → staging). Каркас **unit + integration** тестов в `tests/`. Значительная часть функционала отсутствует.
 
 ## Дорожная карта
 

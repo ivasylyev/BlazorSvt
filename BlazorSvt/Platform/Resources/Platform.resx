@@ -126,6 +126,9 @@
   <data name="HeaderMenu.TransportRate" xml:space="preserve">
 	  <value>Transport Rates</value>
   </data>
+  <data name="HeaderMenu.AverageRateLevel3" xml:space="preserve">
+	  <value>Average Rates</value>
+  </data>
   <data name="HeaderMenu.TransportLeg" xml:space="preserve">
 	  <value>Transport Legs</value>
   </data>

@@ -1,7 +1,7 @@
-﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations;
 // ReSharper disable InconsistentNaming
 
-namespace BlazorSvt.Modules.TransportRate.List.IdsEnum;
+namespace BlazorSvt.Platform.Domain.IdsEnum;
 
 public enum TransportTypeLevel3En
 {

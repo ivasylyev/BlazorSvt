@@ -1,16 +1,15 @@
-﻿
 using BlazorSvt.Platform.Domain.IdsEnum;
 
-namespace BlazorSvt.Modules.TransportRate.List;
+namespace BlazorSvt.Modules.AverageRateLevel3.List;
 
-[GridSnapshot("v2.TransportRate_Snapshot")]
-public class TransportRateDto
+[GridSnapshot("v2.AverageRateLevel3_Snapshot")]
+public class AverageRateLevel3Dto
 {
     [GridColumn]
     public long Id { get; set; }
 
     [GridColumn(IsEntityKey = true)]
-    public long TransportRateId { get; set; }
+    public long AverageRateLevel3Id { get; set; }
 
     [GridColumn]
     public bool IsArchive { get; set; }
@@ -31,10 +30,10 @@ public class TransportRateDto
     public DateTime LastChangeDate { get; set; }
 
     [GridColumn(Filterable = false)]
-    public decimal TotalCostTon { get; set; }
+    public decimal RateLevel3 { get; set; }
 
     [GridColumn(Filterable = false)]
-    public decimal TotalCostTransport { get; set; }
+    public decimal EffectiveLoadOfTransportType { get; set; }
 
     [GridColumn]
     public required long Code { get; set; }

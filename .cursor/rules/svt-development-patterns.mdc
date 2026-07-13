@@ -18,12 +18,13 @@ alwaysApply: false
 2. `Modules/{Entity}/Detail/{Entity}DetailDto.cs` — `[DetailSource]`
 3. `{Entity}GridSettingsService` / `{Entity}DetailSettingsService`
 4. `{Entity}Grid.razor` — `@page "/{entity}"`, `BaseGridPage<…>`
-5. `{Entity}Module.cs` → `Add{Entity}Module()` в `Host/Program.cs`
-6. SQL: `SqlScripts/Modules/{Entity}/Structure/` + `Programmability/` (`vw_*_Detail`)
+5. `{Entity}SyncJob` в `Sync/` → `AddSingleton<ISnapshotSyncJob, …>()`
+6. `{Entity}Module.cs` → `Add{Entity}Module()` в `Host/Program.cs`
+7. SQL: `SqlScripts/Modules/{Entity}/Structure/` + `Programmability/` (`SnapshotSource`, `Detail`, `PopulateAffectedKeys`)
 
 ## Модульная регистрация
 
-Каждый модуль — `public static class *Module` с `Add*Module(IServiceCollection)`. Зависимости только через Platform-интерфейсы, не через другие Modules напрямую.
+Каждый модуль — `public static class *Module` с `Add*Module(IServiceCollection)`. Зависимости только через Platform-интерфейсы, не через другие Modules напрямую. Общие IdsEnum — `Platform/Domain/IdsEnum/`.
 
 ## Grid-фреймворк
 
@@ -49,9 +50,14 @@ alwaysApply: false
 Инкрементальная односторонняя синхронизация: `Platform/Sync/` (оркестрация) + SQL-процедуры
 (`v2.Sync_*`, `v2.{Entity}_PopulateAffectedKeys`). Детали — `SqlScripts/README.md`.
 
-**Детекция** — `RowVer` (rowversion) на базовых `dbo.PrimitiveEntityData_*`; курсоры в `v2.SyncState`.
+**Детекция** — `RowVer` (rowversion) на базовых `dbo.PrimitiveEntityData_*`; курсоры в `v2.SyncState`
+(`LastRowVersion`, `LastRunUtc` — не `LastRowVer`).
 **Каскад** — изменение справочника-источника инвалидирует зависимые строки snapshot через скрытые FK (`*_Id`).
 **Удаления** — только через суточный `v2.Sync_Reconcile` (anti-join).
+
+**Комментарии к таблицам:** у каждого `dbo.PrimitiveEntityData_XXXX` (Insert Sources, `IF`/`FROM`
+в PopulateAffectedKeys, consts в SyncJob) — inline-комментарий с именем справочника
+(`-- AverageRateLevel3 (основная)`, `-- LocationsNodes`, …).
 
 ### Стабильные справочники (не отслеживаются)
 
@@ -63,15 +69,18 @@ alwaysApply: false
 |------------|----------------|--------|
 | TypePlace (LocationType) | `dbo.PrimitiveEntityData_1007` | LocationsNodes |
 | TypeNode | `dbo.PrimitiveEntityData_2132` | LocationsNodes |
-| TransportKind | `dbo.PrimitiveEntityData_2008` | TransportLeg, TransportRate |
+| TransportKind | `dbo.PrimitiveEntityData_2008` | TransportLeg, TransportRate, AverageRateLevel3 |
 | ShipmentType | `dbo.PrimitiveEntityData_2142` | TransportLeg |
-| RateType | `dbo.PrimitiveEntityData_2048` | TransportRate |
-| TransportType | `dbo.PrimitiveEntityData_2023` | TransportRate |
-| Currency | `dbo.PrimitiveEntityData_2016` | TransportRate |
+| RateType | `dbo.PrimitiveEntityData_2048` | TransportRate, AverageRateLevel3 |
+| TransportType | `dbo.PrimitiveEntityData_2023` | TransportRate, AverageRateLevel3 |
+| Currency | `dbo.PrimitiveEntityData_2016` | TransportRate, AverageRateLevel3 |
 
 При добавлении нового справочника к синхронизации: `vw_{Entity}_SnapshotSource`,
-`sp_{Entity}_PopulateAffectedKeys`, `{Entity}SyncJob` → `AddSingleton<ISnapshotSyncJob, …>()`.
-Стабильные источники в каскад **не** включать без явного решения.
+`sp_{Entity}_PopulateAffectedKeys`, `{Entity}SyncJob` → `AddSingleton<ISnapshotSyncJob, …>()`,
+RowVer на основной PED-таблице. Стабильные источники в каскад **не** включать без явного решения.
+
+Дочерние/связанные сущности (типа `RatesOfAverageRate`) — в каскад **только** если пользователь
+явно попросил; часто legacy меняет родителя и детей одновременно.
 
 ## Blazor best practices
 
@@ -94,7 +103,8 @@ alwaysApply: false
 
 - `GridQueryFactory` — маппинг фильтров, сортировки, enum → int, дефолтный `IsArchive=False`
 - `GridColumnMetadataBuilder` — contract list-DTO: table name, entity key, `@AllowedColumnsJson`, `@SelectList`
-- Новый справочник → unit contract-тест для `{Entity}Dto` (см. `GridColumnMetadataBuilderTests`)
+- `SnapshotSyncJobContractTests` — metadata SyncJob + Sources
+- Новый справочник → unit contract-тест для `{Entity}Dto` и SyncJob
 
 **Import** (`Validators`, `ExcelParser`) — пока без тестов (прототип).
 
@@ -102,9 +112,10 @@ alwaysApply: false
 
 - `v2.GetBlazorGridData` — пагинация, фильтры, сортировка на существующих данных
 - `vw_{Entity}_Detail` — detail view по ключу из grid
+- **FTS** — `{Entity}FtsIntegrationTests` + `FtsFilterTestSupport` (эталон: TransportRate / AverageRateLevel3)
 - **Без** синтетических INSERT и Docker/Testcontainers
 - Строка подключения: env `BLAZORSVT_TEST_CONNECTION` → fallback `Database:MdmDb` из `appsettings.json`
-- Эталон: `tests/BlazorSvt.IntegrationTests/Modules/ModuleGridIntegrationTests.cs`
+- Эталоны: `ModuleGridIntegrationTests.cs`, `Modules/*/…FtsIntegrationTests.cs`
 
 ### Запуск
 

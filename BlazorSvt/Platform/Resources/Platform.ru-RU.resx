@@ -125,6 +125,9 @@
   <data name="HeaderMenu.TransportRate" xml:space="preserve">
 	  <value>Ставки</value>
   </data>
+  <data name="HeaderMenu.AverageRateLevel3" xml:space="preserve">
+	  <value>Cредневзвешенные ставки</value>
+  </data>
   <data name="HeaderMenu.TransportLeg" xml:space="preserve">
 	  <value>Транспортные плечи</value>
   </data>

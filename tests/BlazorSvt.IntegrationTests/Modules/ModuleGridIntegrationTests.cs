@@ -1,4 +1,6 @@
 using BlazorSvt.IntegrationTests.Infrastructure;
+using BlazorSvt.Modules.AverageRateLevel3.Detail;
+using BlazorSvt.Modules.AverageRateLevel3.List;
 using BlazorSvt.Modules.LocationsNodes.Detail;
 using BlazorSvt.Modules.LocationsNodes.List;
 using BlazorSvt.Modules.TransportLeg.Detail;
@@ -50,6 +52,20 @@ public class ModuleGridIntegrationTests(DatabaseFixture fixture) : IntegrationTe
         var (rows, totalCount) = await GridSpTestHelper.ExecuteGetBlazorGridDataAsync<LocationsNodesDto>(
             connectionString,
             typeof(LocationsNodesDto),
+            GridSpTestHelper.CreateDefaultQuery());
+
+        rows.Should().NotBeEmpty();
+        totalCount.Should().BeGreaterThan(0);
+    }
+
+    [SkippableFact]
+    public async Task AverageRateLevel3Grid_ReturnsRows()
+    {
+        var connectionString = RequireConnectionString();
+
+        var (rows, totalCount) = await GridSpTestHelper.ExecuteGetBlazorGridDataAsync<AverageRateLevel3Dto>(
+            connectionString,
+            typeof(AverageRateLevel3Dto),
             GridSpTestHelper.CreateDefaultQuery());
 
         rows.Should().NotBeEmpty();
@@ -145,5 +161,27 @@ public class ModuleGridIntegrationTests(DatabaseFixture fixture) : IntegrationTe
         detail.Should().NotBeNull();
         detail!.LocationsNodesId.Should().Be(entityKey);
         detail.Code.Should().NotBeNullOrWhiteSpace();
+    }
+
+    [SkippableFact]
+    public async Task AverageRateLevel3DetailView_ReturnsRowForGridEntityKey()
+    {
+        var connectionString = RequireConnectionString();
+
+        var (rows, _) = await GridSpTestHelper.ExecuteGetBlazorGridDataAsync<AverageRateLevel3Dto>(
+            connectionString,
+            typeof(AverageRateLevel3Dto),
+            GridSpTestHelper.CreateDefaultQuery(pageSize: 1));
+
+        var entityKey = rows[0].AverageRateLevel3Id;
+
+        var detail = await GridSpTestHelper.QueryDetailViewAsync<AverageRateLevel3DetailDto>(
+            connectionString,
+            "v2.vw_AverageRateLevel3_Detail",
+            "AverageRateLevel3Id",
+            entityKey);
+
+        detail.Should().NotBeNull();
+        detail!.AverageRateLevel3Id.Should().Be(entityKey);
     }
 }

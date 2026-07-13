@@ -2,6 +2,7 @@
 using Blazored.LocalStorage;
 using BlazorSvt.Host.Components;
 using BlazorSvt.Import;
+using BlazorSvt.Modules.AverageRateLevel3;
 using BlazorSvt.Modules.LocationsNodes;
 using BlazorSvt.Modules.TransportLeg;
 using BlazorSvt.Modules.TransportRate;
@@ -35,6 +36,7 @@ builder.Services.AddPlatform(builder.Configuration);
 builder.Services.AddSnapshotSync(builder.Configuration);
 builder.Services.AddImportModule();
 builder.Services.AddTransportRateModule();
+builder.Services.AddAverageRateLevel3Module();
 builder.Services.AddTransportLegModule();
 builder.Services.AddLocationsNodesModule();
 

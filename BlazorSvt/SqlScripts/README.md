@@ -12,6 +12,9 @@ SqlScripts/
 │   ├── TransportRate/
 │   │   ├── Structure/      # Snapshot-таблица, индексы, seed
 │   │   └── Programmability/ # Detail view, export
+│   ├── AverageRateLevel3/
+│   │   ├── Structure/
+│   │   └── Programmability/
 │   ├── TransportLeg/
 │   │   ├── Structure/
 │   │   └── Programmability/ # Detail view + snapshot-source проекция
@@ -52,6 +55,17 @@ SqlScripts/
 | 4 | `Modules/TransportRate/Structure/03.TransportRate_CreateIndexes.sql` |
 | 5 | `Modules/TransportRate/Programmability/vw_TransportRate_Detail.sql` |
 | 6 | `Modules/TransportRate/Programmability/sp_TransportRate_PopulateAffectedKeys.sql` |
+
+**AverageRateLevel3** (проекция создаётся до Insert — он из неё заливается)
+
+| # | Скрипт |
+|---|--------|
+| 1 | `Modules/AverageRateLevel3/Structure/01.AverageRateLevel3_CreateTable.sql` |
+| 2 | `Modules/AverageRateLevel3/Programmability/vw_AverageRateLevel3_SnapshotSource.sql` |
+| 3 | `Modules/AverageRateLevel3/Structure/02.AverageRateLevel3_Insert.sql` |
+| 4 | `Modules/AverageRateLevel3/Structure/03.AverageRateLevel3_CreateIndexes.sql` |
+| 5 | `Modules/AverageRateLevel3/Programmability/vw_AverageRateLevel3_Detail.sql` |
+| 6 | `Modules/AverageRateLevel3/Programmability/sp_AverageRateLevel3_PopulateAffectedKeys.sql` |
 
 **TransportLeg** (проекция создаётся до Insert — он из неё заливается)
 
