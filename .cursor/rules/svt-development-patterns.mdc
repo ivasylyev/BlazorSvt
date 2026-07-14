@@ -1,5 +1,5 @@
 ---
-description: Паттерны разработки BlazorSVT — модули, grid, import, SQL, тестирование
+description: Паттерны разработки BlazorSVT — модули, grid, import, SQL, логирование, тестирование
 globs: BlazorSvt/**/*
 alwaysApply: false
 ---
@@ -38,12 +38,24 @@ alwaysApply: false
 - FluentValidation-валидаторы в `Import/Validators/`
 - Staging через `IStagingRepository<T>` → единый pipeline с будущими редакторами
 - Не дублировать валидацию в Razor-компонентах
+- Структурированные логи пайплайна: старт (файл/размер/тип), число строк, validation fail, success, exception
 
 ## SQL
 
 - **Read**: snapshot-таблицы, `v2.GetBlazorGridData`, `v2.ExportBlazorGridDetail`, `vw_*_Detail` — только выборка
 - **Write** (будущее): отдельные команды в C#, не бизнес-логика в SP
-- Dapper + `SqlDateOnlyTypeHandler`; логирование через `DapperLogExtensions`
+- Dapper + `SqlDateOnlyTypeHandler`; доступ к БД через `DbConnectionLogDecorator` → `LoggedOperation` (тайминг, ошибки, параметры в scope). `DapperLogExtensions` — только хелпер `ToDictionary` для параметров
+
+## Логирование
+
+Serilog (`Host/Program.cs`, секция `Serilog` в `appsettings.json`). Принцип — `svt-architecture-principles` (наблюдаемость).
+
+- **DB**: только через `DbConnectionLogDecorator` / `LoggedOperation`; не писать «голый» Dapper в обход обёртки
+- **UI**: не глотать исключения без `LogError` (`ErrorDisplay` / ErrorBoundary, `GenericDetailView`, catch в страницах)
+- **Import/batch**: события пайплайна (см. выше); Warning при несматченных заголовках Excel
+- **Корреляция**: HTTP — `MiddlewareDecorator` (`ShortCorrelationId`); Blazor circuit — `CircuitCorrelationHandler` (`CircuitId` + `ShortCorrelationId`); sync — `SyncCycleId` на цикл в `SnapshotSyncScheduler`
+- **Sync health**: duration, cursor lag / affected в `SnapshotSyncExecutor`; ошибки entity изолированы в scheduler
+- **Аудит изменений данных** (кто/что/когда) — ещё не реализован; при write/batch/редакторах обязателен (чеклист architecture skill)
 
 ## Синхронизация legacy → snapshot
 

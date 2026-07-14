@@ -16,7 +16,8 @@ alwaysApply: false
 4. **Legs/Rates** — legacy-исключения (`LegId`, `RateId`); не рефакторить без отдельной команды
 5. C# писать **только после** успешного деплоя и верификации SQL
 6. У `PrimitiveEntityData_*` — комментарии с именами справочников (Insert / PopulateAffectedKeys / SyncJob)
+7. Resx грида: после генерации из MDM — **пост-обработка коротких имён** по [grid-column-glossary.md](../skills/add-reference-book/grid-column-glossary.md) (skill `add-reference-book`, п.5)
 
 ## Эталоны
 
-`Modules/TransportRate`, `Modules/AverageRateLevel3`, `Modules/TransportLeg`, `Modules/LocationsNodes` — паттерны grid/detail/SQL/Sync; именование — по skill.
+`Modules/TransportRate`, `Modules/AverageRateLevel3`, `Modules/TransportLeg`, `Modules/LocationsNodes` — паттерны grid/detail/SQL/Sync; именование — по skill; короткие колонки грида — по глоссарию.

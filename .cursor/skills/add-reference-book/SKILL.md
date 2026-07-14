@@ -222,6 +222,12 @@ python .cursor/skills/add-reference-book/scripts/generate-module-resx.py `
 
 > В скрипте групп detail (ContextId 258) маппинг LocaleId **другой**: `1` → ValueEn, `2` → ValueRu — не смешивать с `pei/{Entity}/ai`.
 
+**Пост-обработка коротких имён грида (обязательно):** скрипт пишет **длинные** подписи из MDM. Сразу после генерации (и при правках локализации) примени глоссарий:
+
+→ [grid-column-glossary.md](grid-column-glossary.md)
+
+Кратко: `{Entity}Dto.*` ← short; парный `{Entity}DetailDto.*` ← `short (full)` если short ≠ full; full для нового модуля — из только что записанного MDM-значения; Detail-only / Groups / Title / мёртвые ключи — не трогать; неизвестные поля — предложить short на approve и **дописать в глоссарий**.
+
 **Заголовок справочника** (`{Entity}Grid.Title` + `HeaderMenu.{Entity}`):
 
 Русский — из MDM (`PrimitiveEntityInfo.Name` = системное имя `{Entity}`):
@@ -579,6 +585,8 @@ public required RateTypeEn RateTypeIdEn { get; set; }
 - Для пар колонок Ru/En допустим **один** ключ заголовка без суффикса языка (например `NodeFromName` вместо `NodeFromNameRu`/`NodeFromNameEn`) — один заголовок на Ru/En колонку в `GridSettingsService`
 - `{Entity}Grid.Title`
 - `{Entity}DetailDto.Group.{GroupRank}.{SanitizedGroupNameEn}`
+
+**Короткие заголовки грида:** см. [grid-column-glossary.md](grid-column-glossary.md) (пост-обработка после п.5; единообразие с существующими модулями; обогащение словаря при новых общих полях).
 
 Ключи в **Platform** resx:
 
