@@ -205,7 +205,7 @@
     <value>Страна (RU)</value>
   </data>
   <data name="LocationsNodesDetailDto.CreationDate" xml:space="preserve">
-    <value>Дата создания</value>
+    <value>Создано (Дата создания)</value>
   </data>
   <data name="LocationsNodesDetailDto.CustomID" xml:space="preserve">
     <value>Код таможенного пункта</value>
@@ -274,7 +274,7 @@
     <value>Склад/МОХ</value>
   </data>
   <data name="LocationsNodesDetailDto.LastChangeDate" xml:space="preserve">
-    <value>Дата изменения</value>
+    <value>Изменено (Дата изменения)</value>
   </data>
   <data name="LocationsNodesDetailDto.Level4CityEN" xml:space="preserve">
     <value>4 ур. Город (en)</value>
@@ -289,7 +289,7 @@
     <value>Тип местоположения код НСИ</value>
   </data>
   <data name="LocationsNodesDetailDto.LocationTypeName" xml:space="preserve">
-    <value>Тип местоположения</value>
+    <value>Тип места (Тип местоположения)</value>
   </data>
   <data name="LocationsNodesDetailDto.MarketCode" xml:space="preserve">
     <value>Код рынка</value>
@@ -443,7 +443,7 @@
   </data>
 
 <data name="LocationsNodesDto.Code" xml:space="preserve">
-    <value>Code</value>
+    <value>Код</value>
   </data>
   <data name="LocationsNodesDto.CountryCode" xml:space="preserve">
     <value>Код страны</value>
@@ -452,22 +452,22 @@
     <value>Страна</value>
   </data>
   <data name="LocationsNodesDto.CreationDate" xml:space="preserve">
-    <value>Дата создания</value>
+    <value>Создано</value>
   </data>
   <data name="LocationsNodesDto.IsArchive" xml:space="preserve">
     <value>Архив</value>
   </data>
   <data name="LocationsNodesDto.LastChangeDate" xml:space="preserve">
-    <value>Дата изменения</value>
+    <value>Изменено</value>
   </data>
   <data name="LocationsNodesDto.LocationTypeCode" xml:space="preserve">
     <value>Код типа местоположения</value>
   </data>
   <data name="LocationsNodesDto.LocationTypeName" xml:space="preserve">
-    <value>Тип местоположения</value>
+    <value>Тип места</value>
   </data>
   <data name="LocationsNodesDto.Name" xml:space="preserve">
-    <value>Наименование</value>
+    <value>Название</value>
   </data>
 <data name="LocationsNodesDto.RegionCode" xml:space="preserve">
     <value>Код региона</value>

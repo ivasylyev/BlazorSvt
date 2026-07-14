@@ -92,7 +92,7 @@
     <value>CountryRU</value>
   </data>
   <data name="LocationsNodesDetailDto.CreationDate" xml:space="preserve">
-    <value>Creation date</value>
+    <value>Created (Creation date)</value>
   </data>
   <data name="LocationsNodesDetailDto.CustomID" xml:space="preserve">
     <value>CustomID</value>
@@ -161,7 +161,7 @@
     <value>IsStore</value>
   </data>
   <data name="LocationsNodesDetailDto.LastChangeDate" xml:space="preserve">
-    <value>Last change date</value>
+    <value>Changed (Last change date)</value>
   </data>
   <data name="LocationsNodesDetailDto.Level4CityEN" xml:space="preserve">
     <value>4_level_CityEN</value>
@@ -176,7 +176,7 @@
     <value>LocationTypeCodeNSI</value>
   </data>
   <data name="LocationsNodesDetailDto.LocationTypeName" xml:space="preserve">
-    <value>Location type</value>
+    <value>Loc. type (Location type)</value>
   </data>
   <data name="LocationsNodesDetailDto.MarketCode" xml:space="preserve">
     <value>MarketCode</value>
@@ -317,7 +317,7 @@
     <value>TypeNodeCodeNSI</value>
   </data>
   <data name="LocationsNodesDetailDto.TypeNodeName" xml:space="preserve">
-    <value>TypeNode</value>
+    <value>Node type (TypeNode)</value>
   </data>
   <data name="LocationsNodesDetailDto.Virtual" xml:space="preserve">
     <value>Virtual</value>
@@ -339,19 +339,19 @@
     <value>Country</value>
   </data>
   <data name="LocationsNodesDto.CreationDate" xml:space="preserve">
-    <value>Creation date</value>
+    <value>Created</value>
   </data>
   <data name="LocationsNodesDto.IsArchive" xml:space="preserve">
     <value>Archive</value>
   </data>
   <data name="LocationsNodesDto.LastChangeDate" xml:space="preserve">
-    <value>Last change date</value>
+    <value>Changed</value>
   </data>
   <data name="LocationsNodesDto.LocationTypeCode" xml:space="preserve">
     <value>Location type code</value>
   </data>
   <data name="LocationsNodesDto.LocationTypeName" xml:space="preserve">
-    <value>Location type</value>
+    <value>Loc. type</value>
   </data>
   <data name="LocationsNodesDto.Name" xml:space="preserve">
     <value>Name</value>
@@ -369,7 +369,7 @@
     <value>Node type code</value>
   </data>
   <data name="LocationsNodesDto.TypeNodeName" xml:space="preserve">
-    <value>TypeNode</value>
+    <value>Node type</value>
   </data>
 <data name="LocationsNodesGrid.Title" xml:space="preserve">
     <value>Locations-Nodes</value>

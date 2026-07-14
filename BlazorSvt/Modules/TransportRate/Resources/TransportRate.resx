@@ -123,47 +123,47 @@
 	  <value>Code</value>
   </data>
   <data name="TransportRateDto.IsDefRate" xml:space="preserve">
-	  <value>Deflated</value>
+	  <value>Deflator</value>
   </data>
   <data name="TransportRateDto.RateTypeName" xml:space="preserve">
-	  <value>Rate Type</value>
+	  <value>Rate type</value>
   </data>
   <data name="TransportRateDto.NodeFromCode" xml:space="preserve">
-	  <value>Node From Code</value>
+	  <value>From code</value>
   </data>	
   <data name="TransportRateDto.NodeFromName" xml:space="preserve">
-	  <value>Node From</value>
+	  <value>From</value>
   </data>
   <data name="TransportRateDto.NodeToCode" xml:space="preserve">
-	  <value>Node To Code</value>
+	  <value>To code</value>
   </data>	
   <data name="TransportRateDto.NodeToName" xml:space="preserve">
-	  <value>Node To</value>
+	  <value>To</value>
   </data>
   <data name="TransportRateDto.ProxyNodeName" xml:space="preserve">
-	  <value>Proxy Node</value>
+	  <value>Proxy</value>
   </data>
   <data name="TransportRateDto.ProxyNodeCode" xml:space="preserve">
-	  <value>Proxy Node Code</value>
+	  <value>Proxy code</value>
   </data>
   <data name="TransportRateDto.ProductGroupCode" xml:space="preserve">
-	  <value>Product Group Code</value>
+	  <value>Group code</value>
   </data>
 	<data name="TransportRateDto.ProductGroupName" xml:space="preserve">
-	  <value>Product Group</value>
+	  <value>Group</value>
   </data>
 
 	<data name="TransportRateDto.ProductCode" xml:space="preserve">
-	  <value>Product Code</value>
+	  <value>Prod. code</value>
   </data>
   <data name="TransportRateDto.ProductName" xml:space="preserve">
 	  <value>Product</value>
   </data>
   <data name="TransportRateDto.StartDate" xml:space="preserve">
-	  <value>Start Date</value>
+	  <value>Start</value>
   </data>
   <data name="TransportRateDto.EndDate" xml:space="preserve">
-	  <value>End Date</value>
+	  <value>End</value>
   </data>
   <data name="TransportRateDto.CurrencyCode" xml:space="preserve">
 	  <value>Currency</value>
@@ -172,10 +172,10 @@
 	  <value>Currency</value>
   </data>
   <data name="TransportRateDto.TotalCostTon" xml:space="preserve">
-	  <value>Total Cost Ton</value>
+	  <value>Per ton</value>
   </data>
   <data name="TransportRateDto.TotalCostTransport" xml:space="preserve">
-	  <value>Total Cost Transport</value>
+	  <value>Per vehicle</value>
   </data>
   <data name="TransportRateDto.CreationDate" xml:space="preserve">
 	  <value>Created</value>
@@ -184,30 +184,30 @@
 	  <value>Changed</value>
   </data>
   <data name="TransportRateDto.IsArchive" xml:space="preserve">
-	  <value>Is Archive</value>
+	  <value>Archive</value>
   </data>
 
 <data name="TransportRateDto.RateTypeCode" xml:space="preserve">
 	  <value>Rate Type Code</value>
   </data>
   <data name="TransportRateDto.TransportKindCode" xml:space="preserve">
-	  <value>Transport Kind Code</value>
+	  <value>Tr. kind code</value>
   </data>
   <data name="TransportRateDto.TransportKindName" xml:space="preserve">
-	  <value>Transport Kind Name</value>
+	  <value>Transport kind</value>
   </data>
   <data name="TransportRateDto.TransportTypeCode" xml:space="preserve">
-	  <value>Transport Type Code</value>
+	  <value>Tr. type code</value>
   </data>
   <data name="TransportRateDto.TransportTypeName" xml:space="preserve">
-	  <value>Transport Type Name</value>
+	  <value>Transport type</value>
   </data>
 
 <data name="TransportRateDetailDto.Code" xml:space="preserve">
 	  <value>Code</value>
   </data>
   <data name="TransportRateDetailDto.IsDefRate" xml:space="preserve">
-	  <value>Deflated</value>
+	  <value>Deflator (Deflated)</value>
   </data>
 
 <data name="TransportRateDetailDto.CreationDate" xml:space="preserve">
@@ -217,20 +217,20 @@
 	  <value>Changed</value>
   </data>
   <data name="TransportRateDetailDto.IsArchive" xml:space="preserve">
-	  <value>Is Archive</value>
+	  <value>Archive (Is Archive)</value>
   </data>
 
 <data name="TransportRateDetailDto.StartDate" xml:space="preserve">
-	  <value>Start Date</value>
+	  <value>Start (Start Date)</value>
   </data>
   <data name="TransportRateDetailDto.EndDate" xml:space="preserve">
-	  <value>End Date</value>
+	  <value>End (End Date)</value>
   </data>
   <data name="TransportRateDetailDto.TotalCostTon" xml:space="preserve">
-	  <value>Total Cost Ton</value>
+	  <value>Per ton (Total Cost Ton)</value>
   </data>
   <data name="TransportRateDetailDto.TotalCostTransport" xml:space="preserve">
-	  <value>Total Cost Transport</value>
+	  <value>Per vehicle (Total Cost Transport)</value>
   </data>
   <data name="TransportRateDetailDto.Currency" xml:space="preserve">
 	  <value>Currency</value>
@@ -239,25 +239,25 @@
 	  <value>Rate Type Code</value>
   </data>
   <data name="TransportRateDetailDto.RateTypeName" xml:space="preserve">
-	  <value>Rate Type</value>
+	  <value>Rate type</value>
   </data>
   <data name="TransportRateDetailDto.TransportKindCode" xml:space="preserve">
-	  <value>Transport Kind Code</value>
+	  <value>Tr. kind code (Transport Kind Code)</value>
   </data>
   <data name="TransportRateDetailDto.TransportKindName" xml:space="preserve">
-	  <value>Transport Kind Name</value>
+	  <value>Transport kind (Transport Kind Name)</value>
   </data>
   <data name="TransportRateDetailDto.TransportTypeCode" xml:space="preserve">
-	  <value>Transport Type Code</value>
+	  <value>Tr. type code (Transport Type Code)</value>
   </data>
   <data name="TransportRateDetailDto.TransportTypeName" xml:space="preserve">
-	  <value>Transport Type Name</value>
+	  <value>Transport type (Transport Type Name)</value>
   </data>
   <data name="TransportRateDetailDto.ProductGroupCode" xml:space="preserve">
-	  <value>Product Group Code</value>
+	  <value>Group code (Product Group Code)</value>
   </data>
   <data name="TransportRateDetailDto.ProductCode" xml:space="preserve">
-	  <value>Product Code</value>
+	  <value>Prod. code (Product Code)</value>
   </data>
   <data name="TransportRateDetailDto.ProductName" xml:space="preserve">
 	  <value>Product</value>
@@ -308,10 +308,10 @@
 	  <value>16. Leadtimes. Rate 2</value>
   </data>
   <data name="TransportRateDetailDto.NodeFromCode" xml:space="preserve">
-	  <value>Node From Code</value>
+	  <value>From code (Node From Code)</value>
   </data>
   <data name="TransportRateDetailDto.NodeFromName" xml:space="preserve">
-	  <value>Node From Name</value>
+	  <value>From (Node From Name)</value>
   </data>
   <data name="TransportRateDetailDto.RegionFromCode" xml:space="preserve">
 	  <value>Region From Code</value>
@@ -320,10 +320,10 @@
 	  <value>Region From Name</value>
   </data>
   <data name="TransportRateDetailDto.ProxyNodeCode" xml:space="preserve">
-	  <value>Proxy Node Code</value>
+	  <value>Proxy code (Proxy Node Code)</value>
   </data>
   <data name="TransportRateDetailDto.ProxyNodeName" xml:space="preserve">
-	  <value>Proxy Node Name</value>
+	  <value>Proxy (Proxy Node Name)</value>
   </data>
   <data name="TransportRateDetailDto.ProxyRegionCode" xml:space="preserve">
 	  <value>Proxy Region Code</value>
@@ -332,10 +332,10 @@
 	  <value>Proxy Region Name</value>
   </data>
   <data name="TransportRateDetailDto.NodeToCode" xml:space="preserve">
-	  <value>Node To Code</value>
+	  <value>To code (Node To Code)</value>
   </data>
   <data name="TransportRateDetailDto.NodeToName" xml:space="preserve">
-	  <value>Node To Name</value>
+	  <value>To (Node To Name)</value>
   </data>
   <data name="TransportRateDetailDto.RegionToCode" xml:space="preserve">
 	  <value>Region To Code</value>

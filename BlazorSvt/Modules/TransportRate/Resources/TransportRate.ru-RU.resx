@@ -121,7 +121,7 @@
     <value>Ставки</value>
   </data>
   <data name="TransportRateDto.Code" xml:space="preserve">
-    <value>Code</value>
+    <value>Код</value>
   </data>
   <data name="TransportRateDto.IsDefRate" xml:space="preserve">
     <value>Дефлятор</value>
@@ -130,13 +130,13 @@
     <value>Тип ставки</value>
   </data>
   <data name="TransportRateDto.NodeFromCode" xml:space="preserve">
-    <value>Код отправления</value>
+    <value>Код отпр.</value>
   </data>
   <data name="TransportRateDto.NodeFromName" xml:space="preserve">
     <value>Отправление</value>
   </data>
   <data name="TransportRateDto.NodeToCode" xml:space="preserve">
-    <value>Код назначения</value>
+    <value>Код назн.</value>
   </data>
   <data name="TransportRateDto.NodeToName" xml:space="preserve">
     <value>Назначение</value>
@@ -145,16 +145,16 @@
     <value>Промежуточный</value>
   </data>
   <data name="TransportRateDto.ProxyNodeCode" xml:space="preserve">
-    <value>Код промежуточного</value>
+    <value>Код пром.</value>
   </data>
   <data name="TransportRateDto.ProductGroupCode" xml:space="preserve">
-    <value>Код группы продуктов</value>
+    <value>Код гр. пр.</value>
   </data>
   <data name="TransportRateDto.ProductGroupName" xml:space="preserve">
-    <value>Группа продуктов</value>
+    <value>Группа прод.</value>
   </data>
   <data name="TransportRateDto.ProductCode" xml:space="preserve">
-    <value>Код продукта</value>
+    <value>Код прод.</value>
   </data>
   <data name="TransportRateDto.ProductName" xml:space="preserve">
     <value>Продукт</value>
@@ -184,56 +184,56 @@
     <value>Изменено</value>
   </data>
   <data name="TransportRateDto.IsArchive" xml:space="preserve">
-    <value>В Архиве</value>
+    <value>Архив</value>
   </data>
 
 <data name="TransportRateDto.RateTypeCode" xml:space="preserve">
     <value>Код типа ставки</value>
   </data>
   <data name="TransportRateDto.TransportKindCode" xml:space="preserve">
-    <value>Код вида транспорта</value>
+    <value>Код вида ТС</value>
   </data>
   <data name="TransportRateDto.TransportKindName" xml:space="preserve">
-    <value>Вид транспорта</value>
+    <value>Вид ТС</value>
   </data>
   <data name="TransportRateDto.TransportTypeCode" xml:space="preserve">
-    <value>Код типа транспорта</value>
+    <value>Код типа ТС</value>
   </data>
   <data name="TransportRateDto.TransportTypeName" xml:space="preserve">
-    <value>Тип танспота</value>
+    <value>Тип ТС</value>
   </data>
 
 <data name="TransportRateDetailDto.Code" xml:space="preserve">
     <value>Код</value>
   </data>
   <data name="TransportRateDetailDto.IsDefRate" xml:space="preserve">
-    <value>Ставка является результатом дефлятора</value>
+    <value>Дефлятор (Ставка является результатом дефлятора)</value>
   </data>
 
 <data name="TransportRateDetailDto.CreationDate" xml:space="preserve">
-    <value>Дата создания</value>
+    <value>Создано (Дата создания)</value>
   </data>
   <data name="TransportRateDetailDto.LastChangeDate" xml:space="preserve">
-    <value>Дата изменения</value>
+    <value>Изменено (Дата изменения)</value>
   </data>
   <data name="TransportRateDetailDto.IsArchive" xml:space="preserve">
-    <value>В Архиве</value>
+    <value>Архив (В Архиве)</value>
   </data>
 
 <data name="TransportRateDetailDto.StartDate" xml:space="preserve">
-    <value>Период действия с</value>
+    <value>Начало (Период действия с)</value>
   </data>
   <data name="TransportRateDetailDto.EndDate" xml:space="preserve">
-    <value>Период действия по</value>
+    <value>Окончание (Период действия по)</value>
   </data>
   <data name="TransportRateDetailDto.TotalCostTon" xml:space="preserve">
-    <value>Общая стоимость за тонну</value>
+    <value>За тонну (Общая стоимость за тонну)</value>
   </data>
   <data name="TransportRateDetailDto.TotalCostTransport" xml:space="preserve">
-    <value>Общая стоимость за транспортное средство</value>
+    <value>За ТС (Общая стоимость за транспортное средство)</value>
   </data>
   <data name="TransportRateDetailDto.Currency" xml:space="preserve">
-    <value>Валюта-эталон</value>
+    <value>Валюта (Валюта-эталон)</value>
   </data>
   <data name="TransportRateDetailDto.RateTypeCode" xml:space="preserve">
     <value>Код типа ставки</value>
@@ -242,22 +242,22 @@
     <value>Тип ставки</value>
   </data>
   <data name="TransportRateDetailDto.TransportKindCode" xml:space="preserve">
-    <value>Код вида транспорта</value>
+    <value>Код вида ТС (Код вида транспорта)</value>
   </data>
   <data name="TransportRateDetailDto.TransportKindName" xml:space="preserve">
-    <value>Вид транспорта</value>
+    <value>Вид ТС (Вид транспорта)</value>
   </data>
   <data name="TransportRateDetailDto.TransportTypeCode" xml:space="preserve">
-    <value>Код типа транспорта</value>
+    <value>Код типа ТС (Код типа транспорта)</value>
   </data>
   <data name="TransportRateDetailDto.TransportTypeName" xml:space="preserve">
-    <value>Тип транспорта</value>
+    <value>Тип ТС (Тип транспорта)</value>
   </data>
   <data name="TransportRateDetailDto.ProductGroupCode" xml:space="preserve">
-    <value>Группа продуктов</value>
+    <value>Код гр. пр. (Группа продуктов)</value>
   </data>
   <data name="TransportRateDetailDto.ProductCode" xml:space="preserve">
-    <value>Продукт</value>
+    <value>Код прод. (Продукт)</value>
   </data>
   <data name="TransportRateDetailDto.ProductName" xml:space="preserve">
     <value>Продукт</value>
@@ -308,10 +308,10 @@
     <value>16. Плечо 2. Лидтаймы</value>
   </data>
   <data name="TransportRateDetailDto.NodeFromCode" xml:space="preserve">
-    <value>Код узла отправления</value>
+    <value>Код отпр. (Код узла отправления)</value>
   </data>
   <data name="TransportRateDetailDto.NodeFromName" xml:space="preserve">
-    <value>Узел отправления</value>
+    <value>Отправление (Узел отправления)</value>
   </data>
   <data name="TransportRateDetailDto.RegionFromCode" xml:space="preserve">
     <value>Код региона отправления</value>
@@ -320,10 +320,10 @@
     <value>Регион отправления</value>
   </data>
   <data name="TransportRateDetailDto.ProxyNodeCode" xml:space="preserve">
-    <value>Код промежуточного узла</value>
+    <value>Код пром. (Код промежуточного узла)</value>
   </data>
   <data name="TransportRateDetailDto.ProxyNodeName" xml:space="preserve">
-    <value>Узел промежуточный</value>
+    <value>Промежуточный (Узел промежуточный)</value>
   </data>
   <data name="TransportRateDetailDto.ProxyRegionCode" xml:space="preserve">
     <value>Код промежуточного региона</value>
@@ -332,10 +332,10 @@
     <value>Регион промежуточный</value>
   </data>
   <data name="TransportRateDetailDto.NodeToCode" xml:space="preserve">
-    <value>Код узла назначения</value>
+    <value>Код назн. (Код узла назначения)</value>
   </data>
   <data name="TransportRateDetailDto.NodeToName" xml:space="preserve">
-    <value>Узел назначения</value>
+    <value>Назначение (Узел назначения)</value>
   </data>
   <data name="TransportRateDetailDto.RegionToCode" xml:space="preserve">
     <value>Код региона назначения</value>

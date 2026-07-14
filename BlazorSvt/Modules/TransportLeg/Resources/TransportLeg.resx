@@ -123,41 +123,41 @@
   <value>Code</value>
  </data>
   <data name="TransportLegDto.NodeFromCode" xml:space="preserve">
-  <value>Node From Code</value>
+  <value>From code</value>
  </data>
   <data name="TransportLegDto.NodeFromName" xml:space="preserve">
-  <value>Node From</value>
+  <value>From</value>
  </data>
   <data name="TransportLegDto.NodeToCode" xml:space="preserve">
-  <value>Node To Code</value>
+  <value>To code</value>
  </data>
   <data name="TransportLegDto.NodeToName" xml:space="preserve">
-  <value>Node To</value>
+  <value>To</value>
  </data>
   <data name="TransportLegDto.ProxyNodeName" xml:space="preserve">
-  <value>Proxy Node</value>
+  <value>Proxy</value>
  </data>
   <data name="TransportLegDto.ProxyNodeCode" xml:space="preserve">
-  <value>Proxy Node Code</value>
+  <value>Proxy code</value>
  </data>
 
 	<data name="TransportLegDto.RegionFromCode" xml:space="preserve">
-  <value>Region From Code</value>
+  <value>Reg. from</value>
  </data>
   <data name="TransportLegDto.RegionFromName" xml:space="preserve">
-  <value>Region From</value>
+  <value>Region from</value>
  </data>
   <data name="TransportLegDto.RegionToCode" xml:space="preserve">
-  <value>Region To Code</value>
+  <value>Reg. to</value>
  </data>
   <data name="TransportLegDto.RegionToName" xml:space="preserve">
-  <value>Region To</value>
+  <value>Region to</value>
  </data>
   <data name="TransportLegDto.ProxyRegionName" xml:space="preserve">
-  <value>Proxy Region</value>
+  <value>Proxy region</value>
  </data>
   <data name="TransportLegDto.ProxyRegionCode" xml:space="preserve">
-  <value>Proxy Region Code</value>
+  <value>Proxy reg.</value>
  </data>
 
   <data name="TransportLegDto.CreationDate" xml:space="preserve">
@@ -167,124 +167,124 @@
   <value>Changed</value>
  </data>
   <data name="TransportLegDto.IsArchive" xml:space="preserve">
-  <value>Is Archive</value>
+  <value>Archive</value>
  </data>
   <data name="TransportLegDto.CanBeUsed" xml:space="preserve">
   <value>Active</value>
  </data>
   <data name="TransportLegDto.TransportKindCode" xml:space="preserve">
-  <value>Transport Kind Code</value>
+  <value>Tr. kind code</value>
  </data>
   <data name="TransportLegDto.TransportKindName" xml:space="preserve">
-  <value>Transport Kind Name</value>
+  <value>Transport kind</value>
  </data>
 
 
 
 <data name="TransportLegDto.ShipmentTypeName" xml:space="preserve">
-	  <value>Shipment Type</value>
+	  <value>Shipment</value>
   </data>
   <data name="TransportLegDto.SearchTime" xml:space="preserve">
-	  <value>Search Time</value>
+	  <value>Search</value>
   </data>
   <data name="TransportLegDto.LoadTime" xml:space="preserve">
-	  <value>Load Time</value>
+	  <value>Load</value>
   </data>
   <data name="TransportLegDto.DaysWaiting" xml:space="preserve">
-	  <value>Days Waiting</value>
+	  <value>Waiting</value>
   </data>
   <data name="TransportLegDto.TravelTime" xml:space="preserve">
-	  <value>Travel Time</value>
+	  <value>Travel</value>
   </data>
   <data name="TransportLegDto.UnLoadTime" xml:space="preserve">
-	  <value>UnLoad Time</value>
+	  <value>Unload</value>
   </data>
   <data name="TransportLegDto.TransportationTime" xml:space="preserve">
-	  <value>Transportation Time</value>
+	  <value>Transportation</value>
   </data>
 
 	<data name="TransportLegDetailDto.Code" xml:space="preserve">
   <value>Code</value>
  </data>
 	<data name="TransportLegDetailDto.NodeFromCode" xml:space="preserve">
-  <value>Node From Code</value>
+  <value>From code (Node From Code)</value>
  </data>
 	<data name="TransportLegDetailDto.NodeFromName" xml:space="preserve">
-  <value>Node From Name</value>
+  <value>From (Node From Name)</value>
  </data>
 	<data name="TransportLegDetailDto.NodeToCode" xml:space="preserve">
-  <value>Node To Code</value>
+  <value>To code (Node To Code)</value>
  </data>
 	<data name="TransportLegDetailDto.NodeToName" xml:space="preserve">
-  <value>Node To Name</value>
+  <value>To (Node To Name)</value>
  </data>
 	<data name="TransportLegDetailDto.ProxyNodeName" xml:space="preserve">
-  <value>Proxy Node Name</value>
+  <value>Proxy (Proxy Node Name)</value>
  </data>
 	<data name="TransportLegDetailDto.ProxyNodeCode" xml:space="preserve">
-  <value>Proxy Node Code</value>
+  <value>Proxy code (Proxy Node Code)</value>
  </data>
 
 	<data name="TransportLegDetailDto.RegionFromCode" xml:space="preserve">
-  <value>Region From Code</value>
+  <value>Reg. from (Region From Code)</value>
  </data>
 	<data name="TransportLegDetailDto.RegionFromName" xml:space="preserve">
-  <value>Region From Name</value>
+  <value>Region from (Region From Name)</value>
  </data>
 	<data name="TransportLegDetailDto.RegionToCode" xml:space="preserve">
-  <value>Region To Code</value>
+  <value>Reg. to (Region To Code)</value>
  </data>
 	<data name="TransportLegDetailDto.RegionToName" xml:space="preserve">
-  <value>Region To Name</value>
+  <value>Region to (Region To Name)</value>
  </data>
 	<data name="TransportLegDetailDto.ProxyRegionName" xml:space="preserve">
-  <value>Proxy Region Name</value>
+  <value>Proxy region (Proxy Region Name)</value>
  </data>
 	<data name="TransportLegDetailDto.ProxyRegionCode" xml:space="preserve">
-  <value>Proxy Region Code</value>
+  <value>Proxy reg. (Proxy Region Code)</value>
  </data>
 
 	<data name="TransportLegDetailDto.CreationDate" xml:space="preserve">
-  <value>Date Created</value>
+  <value>Created (Date Created)</value>
  </data>
 	<data name="TransportLegDetailDto.LastChangeDate" xml:space="preserve">
-  <value>Date Changed</value>
+  <value>Changed (Date Changed)</value>
  </data>
 	<data name="TransportLegDetailDto.IsArchive" xml:space="preserve">
-  <value>Is Archive</value>
+  <value>Archive (Is Archive)</value>
  </data>
 	<data name="TransportLegDetailDto.CanBeUsed" xml:space="preserve">
   <value>Active</value>
  </data>
 	<data name="TransportLegDetailDto.TransportKindCode" xml:space="preserve">
-  <value>Transport Kind Code</value>
+  <value>Tr. kind code (Transport Kind Code)</value>
  </data>
 	<data name="TransportLegDetailDto.TransportKindName" xml:space="preserve">
-  <value>Transport Kind Name</value>
+  <value>Transport kind (Transport Kind Name)</value>
  </data>
 
 
 
 <data name="TransportLegDetailDto.ShipmentTypeName" xml:space="preserve">
-	  <value>Shipment Type Name</value>
+	  <value>Shipment (Shipment Type Name)</value>
   </data>
 	<data name="TransportLegDetailDto.SearchTime" xml:space="preserve">
-	  <value>Search Time, days</value>
+	  <value>Search (Search Time, days)</value>
   </data>
 	<data name="TransportLegDetailDto.LoadTime" xml:space="preserve">
-	  <value>Load Time, days</value>
+	  <value>Load (Load Time, days)</value>
   </data>
 	<data name="TransportLegDetailDto.DaysWaiting" xml:space="preserve">
-	  <value>Days Waiting, days</value>
+	  <value>Waiting (Days Waiting, days)</value>
   </data>
 	<data name="TransportLegDetailDto.TravelTime" xml:space="preserve">
-	  <value>Travel Time, days</value>
+	  <value>Travel (Travel Time, days)</value>
   </data>
 	<data name="TransportLegDetailDto.UnLoadTime" xml:space="preserve">
-	  <value>UnLoad Time, days</value>
+	  <value>Unload (UnLoad Time, days)</value>
   </data>
 	<data name="TransportLegDetailDto.TransportationTime" xml:space="preserve">
-	  <value>Transportation Time, days</value>
+	  <value>Transportation (Transportation Time, days)</value>
   </data>
   <data name="TransportLegDetailDto.Distance" xml:space="preserve">
 	  <value>Distance</value>

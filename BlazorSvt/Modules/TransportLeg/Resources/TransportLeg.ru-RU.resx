@@ -121,16 +121,16 @@
     <value>Транспортные плечи</value>
   </data>
   <data name="TransportLegDto.Code" xml:space="preserve">
-    <value>Code</value>
+    <value>Код</value>
   </data>
   <data name="TransportLegDto.NodeFromCode" xml:space="preserve">
-    <value>Код отправления</value>
+    <value>Код отпр.</value>
   </data>
   <data name="TransportLegDto.NodeFromName" xml:space="preserve">
     <value>Отправление</value>
   </data>
   <data name="TransportLegDto.NodeToCode" xml:space="preserve">
-    <value>Код назначения</value>
+    <value>Код назн.</value>
   </data>
   <data name="TransportLegDto.NodeToName" xml:space="preserve">
     <value>Назначение</value>
@@ -139,25 +139,25 @@
     <value>Промежуточный</value>
   </data>
   <data name="TransportLegDto.ProxyNodeCode" xml:space="preserve">
-    <value>Код промежуточного</value>
+    <value>Код пром.</value>
   </data>
   <data name="TransportLegDto.RegionFromCode" xml:space="preserve">
-    <value>Код региона от</value>
+    <value>Код рег. отпр.</value>
   </data>
   <data name="TransportLegDto.RegionFromName" xml:space="preserve">
-    <value>Регион от</value>
+    <value>Рег. отпр.</value>
   </data>
   <data name="TransportLegDto.RegionToCode" xml:space="preserve">
-    <value>Код региона наз</value>
+    <value>Код рег. назн.</value>
   </data>
   <data name="TransportLegDto.RegionToName" xml:space="preserve">
-    <value>Регион наз</value>
+    <value>Рег. назн.</value>
   </data>
   <data name="TransportLegDto.ProxyRegionName" xml:space="preserve">
-    <value>Пр. регион</value>
+    <value>Пром. рег.</value>
   </data>
   <data name="TransportLegDto.ProxyRegionCode" xml:space="preserve">
-    <value>Код пр. региона</value>
+    <value>Код Пр. рег.</value>
   </data>
   <data name="TransportLegDto.CreationDate" xml:space="preserve">
     <value>Создано</value>
@@ -166,16 +166,16 @@
     <value>Изменено</value>
   </data>
   <data name="TransportLegDto.IsArchive" xml:space="preserve">
-    <value>В Архиве</value>
+    <value>Архив</value>
   </data>
   <data name="TransportLegDto.CanBeUsed" xml:space="preserve">
     <value>Действует</value>
   </data>
   <data name="TransportLegDto.TransportKindCode" xml:space="preserve">
-    <value>Код вида транспорта</value>
+    <value>Код вида ТС</value>
   </data>
   <data name="TransportLegDto.TransportKindName" xml:space="preserve">
-    <value>Вид транспорта</value>
+    <value>Вид ТС</value>
   </data>
 
 
@@ -205,58 +205,58 @@
     <value>Код</value>
   </data>
   <data name="TransportLegDetailDto.NodeFromCode" xml:space="preserve">
-    <value>Код узла отправления</value>
+    <value>Код отпр. (Код узла отправления)</value>
   </data>
   <data name="TransportLegDetailDto.NodeFromName" xml:space="preserve">
-    <value>Узел отправления</value>
+    <value>Отправление (Узел отправления)</value>
   </data>
   <data name="TransportLegDetailDto.NodeToCode" xml:space="preserve">
-    <value>Код узла назначения</value>
+    <value>Код назн. (Код узла назначения)</value>
   </data>
   <data name="TransportLegDetailDto.NodeToName" xml:space="preserve">
-    <value>Узел назначения</value>
+    <value>Назначение (Узел назначения)</value>
   </data>
   <data name="TransportLegDetailDto.ProxyNodeName" xml:space="preserve">
-    <value>Промежуточный узел</value>
+    <value>Промежуточный (Промежуточный узел)</value>
   </data>
   <data name="TransportLegDetailDto.ProxyNodeCode" xml:space="preserve">
-    <value>Код промежуточного узла</value>
+    <value>Код пром. (Код промежуточного узла)</value>
   </data>
   <data name="TransportLegDetailDto.RegionFromCode" xml:space="preserve">
-    <value>Код региона отправления</value>
+    <value>Код рег. отпр. (Код региона отправления)</value>
   </data>
   <data name="TransportLegDetailDto.RegionFromName" xml:space="preserve">
-    <value>Регион отправления</value>
+    <value>Рег. отпр. (Регион отправления)</value>
   </data>
   <data name="TransportLegDetailDto.RegionToCode" xml:space="preserve">
-    <value>Код региона назначения</value>
+    <value>Код рег. назн. (Код региона назначения)</value>
   </data>
   <data name="TransportLegDetailDto.RegionToName" xml:space="preserve">
-    <value>Регион назначения</value>
+    <value>Рег. назн. (Регион назначения)</value>
   </data>
   <data name="TransportLegDetailDto.ProxyRegionName" xml:space="preserve">
-    <value>Промежуточный регион</value>
+    <value>Пром. рег. (Промежуточный регион)</value>
   </data>
   <data name="TransportLegDetailDto.ProxyRegionCode" xml:space="preserve">
-    <value>Код промежуточного региона</value>
+    <value>Код Пр. рег. (Код промежуточного региона)</value>
   </data>
   <data name="TransportLegDetailDto.CreationDate" xml:space="preserve">
-    <value>Дата создания</value>
+    <value>Создано (Дата создания)</value>
   </data>
   <data name="TransportLegDetailDto.LastChangeDate" xml:space="preserve">
-    <value>Дата изменения</value>
+    <value>Изменено (Дата изменения)</value>
   </data>
   <data name="TransportLegDetailDto.IsArchive" xml:space="preserve">
-    <value>В Архиве</value>
+    <value>Архив (В Архиве)</value>
   </data>
   <data name="TransportLegDetailDto.CanBeUsed" xml:space="preserve">
-    <value>Плечо действует</value>
+    <value>Действует (Плечо действует)</value>
   </data>
   <data name="TransportLegDetailDto.TransportKindCode" xml:space="preserve">
-    <value>Код вида транспорта</value>
+    <value>Код вида ТС (Код вида транспорта)</value>
   </data>
   <data name="TransportLegDetailDto.TransportKindName" xml:space="preserve">
-    <value>Вид транспорта</value>
+    <value>Вид ТС (Вид транспорта)</value>
   </data>
 
 
@@ -265,22 +265,22 @@
     <value>Тип отправки</value>
   </data>
   <data name="TransportLegDetailDto.SearchTime" xml:space="preserve">
-    <value>Поиск, сут.</value>
+    <value>Поиск (Поиск, сут.)</value>
   </data>
   <data name="TransportLegDetailDto.LoadTime" xml:space="preserve">
-    <value>Зарузка, сут.</value>
+    <value>Зарузка (Зарузка, сут.)</value>
   </data>
   <data name="TransportLegDetailDto.DaysWaiting" xml:space="preserve">
-    <value>Ожидание, сут.</value>
+    <value>Ожидание (Ожидание, сут.)</value>
   </data>
   <data name="TransportLegDetailDto.TravelTime" xml:space="preserve">
-    <value>В пути, сут.</value>
+    <value>В пути (В пути, сут.)</value>
   </data>
   <data name="TransportLegDetailDto.UnLoadTime" xml:space="preserve">
-    <value>Разгрузка, сут.</value>
+    <value>Разгрузка (Разгрузка, сут.)</value>
   </data>
   <data name="TransportLegDetailDto.TransportationTime" xml:space="preserve">
-    <value>Транспортировка, сут.</value>
+    <value>Транспортировка (Транспортировка, сут.)</value>
   </data>
   <data name="TransportLegDetailDto.Distance" xml:space="preserve">
     <value>Расстояние, км </value>
