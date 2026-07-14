@@ -1,4 +1,6 @@
+using BlazorSvt.Platform.Infrastructure.Logging;
 using BlazorSvt.Platform.Reporting.Services;
+using Microsoft.AspNetCore.Components.Server.Circuits;
 
 namespace BlazorSvt.Platform;
 
@@ -13,6 +15,7 @@ public static class PlatformModule
         services.AddScoped(typeof(IGridDataService<,>), typeof(GridDataService<,>));
         services.AddScoped<IGridExcelExporter, GridExcelExporter>();
         services.AddScoped<IFileDownloadService, FileDownloadService>();
+        services.AddScoped<CircuitHandler, CircuitCorrelationHandler>();
 
         return services;
     }

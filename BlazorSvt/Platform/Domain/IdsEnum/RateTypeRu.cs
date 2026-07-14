@@ -2,21 +2,25 @@ using System.ComponentModel.DataAnnotations;
 
 namespace BlazorSvt.Platform.Domain.IdsEnum;
 
+/// <summary>
+/// РўРёРї С‚Р°СЂРёС„Р° (ru). Р—РЅР°С‡РµРЅРёСЏ = ItemId РёР· legacy <c>dbo.vw_RateType (dbo.PrimitiveEntityData_2048)</c>.
+/// РЎС‚Р°Р±РёР»СЊРЅС‹Р№ СЃРїСЂР°РІРѕС‡РЅРёРє: РЅРµ РІС…РѕРґРёС‚ РІ sync-cascade.
+/// </summary>
 public enum RateTypeRu
 {
-    [Display(Name = "Тендерная")] 
-    Tender = 543746, // 2 Тендерная
+    [Display(Name = "РўРµРЅРґРµСЂРЅР°СЏ")] 
+    Tender = 543746, // 2 РўРµРЅРґРµСЂРЅР°СЏ
 
-    [Display(Name = "Спотовая")] 
-    Spot = 543748, //3 Спотовая
+    [Display(Name = "РЎРїРѕС‚РѕРІР°СЏ")] 
+    Spot = 543748, //3 РЎРїРѕС‚РѕРІР°СЏ
 
-    [Display(Name = "Индикативная")] 
-    Indicative = 543749, // 4 Индикативная
+    [Display(Name = "РРЅРґРёРєР°С‚РёРІРЅР°СЏ")] 
+    Indicative = 543749, // 4 РРЅРґРёРєР°С‚РёРІРЅР°СЏ
 
-    [Display(Name = "Договорная")] 
-    Agreement = 19434322, //5 Договорная
+    [Display(Name = "Р”РѕРіРѕРІРѕСЂРЅР°СЏ")] 
+    Agreement = 19434322, //5 Р”РѕРіРѕРІРѕСЂРЅР°СЏ
 
-    [Display(Name = "Фактическая")] 
-    Fact = 19434323 // 6 Фактическая
+    [Display(Name = "Р¤Р°РєС‚РёС‡РµСЃРєР°СЏ")] 
+    Fact = 19434323 // 6 Р¤Р°РєС‚РёС‡РµСЃРєР°СЏ
 }
 

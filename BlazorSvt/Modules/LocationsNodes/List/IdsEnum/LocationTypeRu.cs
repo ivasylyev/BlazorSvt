@@ -2,6 +2,10 @@ using System.ComponentModel.DataAnnotations;
 
 namespace BlazorSvt.Modules.LocationsNodes.List.IdsEnum;
 
+/// <summary>
+/// Тип места / TypePlace (ru). Значения = ItemId из legacy <c>dbo.vw_TypePlace (dbo.PrimitiveEntityData_1007)</c>.
+/// Стабильный справочник: не входит в sync-cascade.
+/// </summary>
 public enum LocationTypeRu
 {
     [Display(Name = "ЖД станция")]

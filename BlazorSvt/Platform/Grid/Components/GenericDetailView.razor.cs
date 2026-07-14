@@ -10,12 +10,15 @@ public partial class GenericDetailView<TItem, TDetailItem> : SvtComponentBase
     [Inject]
     public IDetailSettingsService<TDetailItem> DetailSettingsService { get; set; } = default!;
 
-    [Parameter] 
+    [Inject]
+    public ILogger<GenericDetailView<TItem, TDetailItem>> Logger { get; set; } = default!;
+
+    [Parameter]
     public TItem Item { get; set; } = default!;
-    [Parameter] 
+    [Parameter]
     public Func<TItem, Task<TDetailItem>> DetailDataProvider { get; set; } = default!;
 
-    [Parameter] 
+    [Parameter]
     public RenderFragment<TDetailItem>? Template { get; set; }
 
     private TDetailItem? detail;
@@ -36,6 +39,7 @@ public partial class GenericDetailView<TItem, TDetailItem> : SvtComponentBase
         }
         catch (Exception ex)
         {
+            Logger.LogError(ex, "Failed to load detail for {ItemType}", typeof(TItem).Name);
             errorMessage = ex.Message;
         }
         finally

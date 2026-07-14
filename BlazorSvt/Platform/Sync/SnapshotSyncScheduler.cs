@@ -1,5 +1,7 @@
+using System.Diagnostics;
 using BlazorSvt.Platform.Infrastructure;
 using Microsoft.Extensions.Options;
+using Serilog.Context;
 
 namespace BlazorSvt.Platform.Sync;
 
@@ -77,46 +79,61 @@ public sealed class SnapshotSyncScheduler : BackgroundService
 
     private async Task RunCycleAsync(DateTime previousLocal, DateTime nowLocal, CancellationToken stoppingToken)
     {
-        var inBlackout = BlackoutScheduleBuilder.IsInBlackout(nowLocal, blackout);
-        var shouldReconcile = CrossedReconcileBoundary(previousLocal, nowLocal, reconcileAt);
+        var cycleId = Guid.NewGuid().ToString("N")[..8];
+        var stopwatch = Stopwatch.StartNew();
 
-        if (inBlackout)
+        using (LogContext.PushProperty("ShortCorrelationId", cycleId))
+        using (LogContext.PushProperty("SyncCycleId", cycleId))
         {
-            logger.LogDebug("SnapshotSync: инкремент пропущен (blackout-окно, {Now:HH:mm}).", nowLocal);
-        }
+            var inBlackout = BlackoutScheduleBuilder.IsInBlackout(nowLocal, blackout);
+            var shouldReconcile = CrossedReconcileBoundary(previousLocal, nowLocal, reconcileAt);
 
-        foreach (var job in jobs)
-        {
-            if (stoppingToken.IsCancellationRequested)
+            logger.LogDebug(
+                "SnapshotSync cycle {SyncCycleId} started (blackout={InBlackout}, reconcile={ShouldReconcile}).",
+                cycleId, inBlackout, shouldReconcile);
+
+            if (inBlackout)
             {
-                return;
+                logger.LogDebug("SnapshotSync: инкремент пропущен (blackout-окно, {Now:HH:mm}).", nowLocal);
             }
 
-            if (!inBlackout)
+            foreach (var job in jobs)
             {
+                if (stoppingToken.IsCancellationRequested)
+                {
+                    return;
+                }
+
+                if (!inBlackout)
+                {
+                    try
+                    {
+                        await executor.RunIncrementalAsync(job, stoppingToken);
+                    }
+                    catch (Exception ex) when (!OperationCancellation.IsCancellation(ex, stoppingToken))
+                    {
+                        logger.LogError(ex, "SnapshotSync: ошибка инкремента справочника {Entity}.", job.Entity);
+                    }
+                }
+
+                if (!shouldReconcile)
+                {
+                    continue;
+                }
+
                 try
                 {
-                    await executor.RunIncrementalAsync(job, stoppingToken);
+                    await executor.RunReconcileAsync(job, stoppingToken);
                 }
                 catch (Exception ex) when (!OperationCancellation.IsCancellation(ex, stoppingToken))
                 {
-                    logger.LogError(ex, "SnapshotSync: ошибка инкремента справочника {Entity}.", job.Entity);
+                    logger.LogError(ex, "SnapshotSync: ошибка reconciliation справочника {Entity}.", job.Entity);
                 }
             }
 
-            if (!shouldReconcile)
-            {
-                continue;
-            }
-
-            try
-            {
-                await executor.RunReconcileAsync(job, stoppingToken);
-            }
-            catch (Exception ex) when (!OperationCancellation.IsCancellation(ex, stoppingToken))
-            {
-                logger.LogError(ex, "SnapshotSync: ошибка reconciliation справочника {Entity}.", job.Entity);
-            }
+            logger.LogDebug(
+                "SnapshotSync cycle {SyncCycleId} finished in {ElapsedMs} ms.",
+                cycleId, stopwatch.ElapsedMilliseconds);
         }
     }
 

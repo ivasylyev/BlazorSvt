@@ -5,6 +5,8 @@ namespace BlazorSvt.Platform.Infrastructure.Data;
 
 public class DbConnectionLogDecorator(IDbConnection connection, ILogger logger, int commandTimeoutSeconds)
 {
+    private const int MaxPropertyLength = 500;
+
     public Task<SqlMapper.GridReader> QueryMultipleAsync(
         string sql,
         DynamicParameters parameters,
@@ -20,7 +22,8 @@ public class DbConnectionLogDecorator(IDbConnection connection, ILogger logger, 
                     parameters,
                     commandType: commandType,
                     commandTimeout: commandTimeoutSeconds,
-                    cancellationToken: cancellationToken)));
+                    cancellationToken: cancellationToken)),
+            BuildProperties(sql, commandType, parameters));
     }
 
     public Task<TDetailItem?> QuerySingleOrDefaultAsync<TDetailItem>(
@@ -35,7 +38,8 @@ public class DbConnectionLogDecorator(IDbConnection connection, ILogger logger, 
                 sql,
                 parameters,
                 commandType: commandType,
-                commandTimeout: commandTimeoutSeconds));
+                commandTimeout: commandTimeoutSeconds),
+            BuildProperties(sql, commandType, parameters));
     }
 
     public Task<IEnumerable<T>> QueryAsync<T>(
@@ -53,7 +57,8 @@ public class DbConnectionLogDecorator(IDbConnection connection, ILogger logger, 
                     parameters,
                     commandType: commandType,
                     commandTimeout: commandTimeoutSeconds,
-                    cancellationToken: cancellationToken)));
+                    cancellationToken: cancellationToken)),
+            BuildProperties(sql, commandType, parameters));
     }
 
     public Task<T> QuerySingleAsync<T>(
@@ -71,7 +76,8 @@ public class DbConnectionLogDecorator(IDbConnection connection, ILogger logger, 
                     parameters,
                     commandType: commandType,
                     commandTimeout: commandTimeoutSeconds,
-                    cancellationToken: cancellationToken)));
+                    cancellationToken: cancellationToken)),
+            BuildProperties(sql, commandType, parameters));
     }
 
     public Task<int> ExecuteAsync(
@@ -89,6 +95,54 @@ public class DbConnectionLogDecorator(IDbConnection connection, ILogger logger, 
                     parameters,
                     commandType: commandType,
                     commandTimeout: commandTimeoutSeconds,
-                    cancellationToken: cancellationToken)));
+                    cancellationToken: cancellationToken)),
+            BuildProperties(sql, commandType, parameters));
+    }
+
+    private Dictionary<string, object?> BuildProperties(
+        string sql,
+        CommandType commandType,
+        DynamicParameters parameters)
+    {
+        var properties = new Dictionary<string, object?>
+        {
+            ["DbCommand"] = Truncate(sql),
+            ["CommandType"] = commandType.ToString(),
+            ["CommandTimeoutSeconds"] = commandTimeoutSeconds
+        };
+
+        foreach (var (name, value) in parameters.ToDictionary())
+        {
+            // Крупные JSON-метаданные колонок засоряют scope; ключевые параметры фильтра/страницы оставляем.
+            if (name is "AllowedColumnsJson" or "SelectList")
+            {
+                continue;
+            }
+
+            properties[$"DbParam_{name}"] = TruncateValue(value);
+        }
+
+        return properties;
+    }
+
+    private static object? TruncateValue(object? value) =>
+        value switch
+        {
+            null => null,
+            string s => Truncate(s),
+            byte[] bytes => Convert.ToHexString(bytes),
+            _ => Truncate(value.ToString())
+        };
+
+    private static string? Truncate(string? value)
+    {
+        if (value is null)
+        {
+            return null;
+        }
+
+        return value.Length <= MaxPropertyLength
+            ? value
+            : value[..MaxPropertyLength] + "…";
     }
 }

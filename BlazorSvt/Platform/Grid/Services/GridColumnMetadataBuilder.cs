@@ -4,6 +4,22 @@ using Newtonsoft.Json;
 
 namespace BlazorSvt.Platform.Grid.Services;
 
+/// <summary>
+/// Контракт list-DTO → параметры <c>v2.GetBlazorGridData</c> / export.
+/// Читает <see cref="GridSnapshotAttribute"/> и <see cref="GridColumnAttribute"/>,
+/// кэширует метаданные по типу DTO.
+/// </summary>
+/// <remarks>
+/// <list type="bullet">
+/// <item><see cref="BuildAllowedColumnsJson"/> — whitelist фильтруемых колонок
+/// (<c>ColumnName</c> = свойство DTO, <c>SqlColumnName</c> = колонка snapshot).</item>
+/// <item><see cref="BuildSelectList"/> — фрагмент SELECT; при <c>keysOnly</c>
+/// только entity key (для <c>v2.ExportBlazorGridDetail</c>).</item>
+/// <item>Инвариант: ровно одно свойство с <c>IsEntityKey = true</c>.</item>
+/// <item>Несколько свойств могут ссылаться на одну <c>SqlColumn</c>
+/// (локализованные enum Ru/En → один ID в snapshot).</item>
+/// </list>
+/// </remarks>
 public static class GridColumnMetadataBuilder
 {
     private static readonly ConcurrentDictionary<Type, GridSnapshotMetadata> Cache = new();
@@ -13,6 +29,7 @@ public static class GridColumnMetadataBuilder
         return Cache.GetOrAdd(dtoType, BuildMetadata);
     }
 
+    /// <summary>JSON whitelist для <c>@AllowedColumnsJson</c>.</summary>
     public static string BuildAllowedColumnsJson(Type dtoType)
     {
         var metadata = GetMetadata(dtoType);
@@ -29,6 +46,10 @@ public static class GridColumnMetadataBuilder
         return JsonConvert.SerializeObject(entries);
     }
 
+    /// <summary>
+    /// Фрагмент <c>@SelectList</c>.
+    /// <paramref name="keysOnly"/> — только entity key (полный отчёт: сначала ключи из snapshot).
+    /// </summary>
     public static string BuildSelectList(Type dtoType, bool keysOnly = false)
     {
         var metadata = GetMetadata(dtoType);

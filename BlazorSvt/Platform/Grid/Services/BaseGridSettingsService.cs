@@ -24,7 +24,7 @@ public abstract class BaseGridSettingsService<T>(
         }
         catch (Exception e)
         {
-            logger.LogError(e, "Could not load from settings from LocalStorage");
+            logger.LogError(e, "Could not load grid settings from LocalStorage ({StorageKey})", StorageKey);
             loaded = new Dictionary<string, bool>();
         }
 
@@ -44,12 +44,28 @@ public abstract class BaseGridSettingsService<T>(
         var visibility = columnSettingsCollection.ColumnSettings
             .ToDictionary(x => x.Name, x => x.Visible);
 
-        await LocalStorage.SetItemAsync($"{StorageKey}_{lang}", visibility);
+        try
+        {
+            await LocalStorage.SetItemAsync($"{StorageKey}_{lang}", visibility);
+        }
+        catch (Exception e)
+        {
+            logger.LogError(e, "Could not save grid settings to LocalStorage ({StorageKey})", StorageKey);
+            throw;
+        }
     }
 
     public async Task ResetGridSettingsAsync(string lang)
     {
-        await LocalStorage.RemoveItemAsync($"{StorageKey}_{lang}");
+        try
+        {
+            await LocalStorage.RemoveItemAsync($"{StorageKey}_{lang}");
+        }
+        catch (Exception e)
+        {
+            logger.LogError(e, "Could not reset grid settings in LocalStorage ({StorageKey})", StorageKey);
+            throw;
+        }
     }
 
 

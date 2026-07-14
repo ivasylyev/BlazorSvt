@@ -3,6 +3,14 @@ using BlazorBootstrap;
 
 namespace BlazorSvt.Platform.Grid.Services;
 
+/// <summary>
+/// Преобразует запрос BlazorBootstrap Grid в <see cref="GridQuery"/> для SP.
+/// </summary>
+/// <remarks>
+/// Если фильтры ещё не инициализированы компонентом — подставляется
+/// <c>IsArchive = False</c> (дефолт UI: только активные записи).
+/// Enum-фильтры сериализуются в числовой ItemId для SQL.
+/// </remarks>
 public class GridQueryFactory<TItem> : IGridQueryFactory<TItem>
 {
     private const string IsArchiveFieldName = "IsArchive";

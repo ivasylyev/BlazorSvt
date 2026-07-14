@@ -2,6 +2,10 @@
 
 namespace BlazorSvt.Platform.Domain.IdsEnum;
 
+/// <summary>
+/// Вид транспорта (ru). Значения = ItemId из legacy <c>dbo.vw_TransportKind (dbo.PrimitiveEntityData_2008)</c>.
+/// Стабильный справочник: не входит в sync-cascade.
+/// </summary>
 public enum TransportKindRu
 {
     [Display(Name = "Автомобильный")]

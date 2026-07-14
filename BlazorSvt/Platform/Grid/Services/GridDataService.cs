@@ -10,6 +10,15 @@ using System.Reflection;
 
 namespace BlazorSvt.Platform.Grid.Services;
 
+/// <summary>
+/// Реализация <see cref="IGridDataService{TItem,TDetailItem}"/>.
+/// Метаданные list/detail берутся из атрибутов DTO через <see cref="GridColumnMetadataBuilder"/>.
+/// </summary>
+/// <remarks>
+/// Таймауты: <c>DefaultQueryTimeoutSeconds</c> — grid/detail;
+/// <c>ReportQueryTimeoutSeconds</c> — Excel-батчи (могут быть тяжелее).
+/// Detail — raw SQL к view из <see cref="DetailSourceAttribute"/> (не snapshot).
+/// </remarks>
 public class GridDataService<TItem, TDetailItem>(
     IOptions<DatabaseOptions> options,
     ILogger<GridDataService<TItem, TDetailItem>> logger,
@@ -83,7 +92,17 @@ public class GridDataService<TItem, TDetailItem>(
             parameters,
             CommandType.Text);
 
-        return result ?? throw new Exception($"{DetailSourceName} with {key} returns no data");
+        if (result is not null)
+        {
+            return result;
+        }
+
+        logger.LogWarning(
+            "Detail {DetailSource} not found for key {Key}",
+            DetailSourceName,
+            key);
+
+        throw new Exception($"{DetailSourceName} with {key} returns no data");
     }
 
     public async Task<GridDataProviderResult<TItem>> GetDataAsync(GridDataProviderRequest<TItem> request, string lang)

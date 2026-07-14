@@ -2,6 +2,10 @@
 
 namespace BlazorSvt.Modules.TransportLeg.List.IdsEnum;
 
+/// <summary>
+/// Тип отправки (en). Значения = ItemId из legacy <c>dbo.vw_ShipmentType (dbo.PrimitiveEntityData_2142)</c>.
+/// Стабильный справочник: не входит в sync-cascade.
+/// </summary>
 public enum ShipmentTypeEn
 {
     [Display(Name = "Tverdaya")]

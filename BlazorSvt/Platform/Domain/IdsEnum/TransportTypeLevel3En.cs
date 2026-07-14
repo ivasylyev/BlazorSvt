@@ -3,6 +3,10 @@ using System.ComponentModel.DataAnnotations;
 
 namespace BlazorSvt.Platform.Domain.IdsEnum;
 
+/// <summary>
+/// Тип транспорта L3 (en). Значения = ItemId из legacy <c>dbo.vw_TransportType_level_3 (dbo.PrimitiveEntityData_2023)</c>.
+/// Стабильный справочник: не входит в sync-cascade.
+/// </summary>
 public enum TransportTypeLevel3En
 {
     // [Display(Name = "Auto FTL 1 ton")]

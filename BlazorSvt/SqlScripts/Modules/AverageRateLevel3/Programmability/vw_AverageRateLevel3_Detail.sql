@@ -2,6 +2,11 @@
 GO
 
 /*
+Purpose:
+  Detail-проекция для UI/full Excel (не snapshot grid).
+  Strangler Fig: может присоединять legacy dbo.vw_* / ped.a_* — богаче, чем v2.*_Snapshot.
+  Grid list → snapshot; detail/export → этот view ([DetailSource] на detail-DTO).
+
 Example:
 
 use mdm

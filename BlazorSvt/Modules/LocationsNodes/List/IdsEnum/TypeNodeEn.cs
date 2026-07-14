@@ -2,6 +2,10 @@ using System.ComponentModel.DataAnnotations;
 
 namespace BlazorSvt.Modules.LocationsNodes.List.IdsEnum;
 
+/// <summary>
+/// Тип узла (en). Значения = ItemId из legacy <c>dbo.vw_TypeNode (dbo.PrimitiveEntityData_2132)</c>.
+/// Стабильный справочник: не входит в sync-cascade.
+/// </summary>
 public enum TypeNodeEn
 {
     [Display(Name = "Country")]

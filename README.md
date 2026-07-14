@@ -31,17 +31,20 @@
 ```
 BlazorSvt/                  # Основное приложение
 ├── Host/                    # Точка входа, layout, общие страницы
-├── Platform/                # Общий фреймворк (grid, отчёты, инфраструктура)
+├── Platform/                # Общий фреймворк (grid, sync, отчёты, инфраструктура)
 ├── Modules/                 # Доменные модули (вертикальные срезы)
-│   ├── Rates/               # Справочник тарифов
-│   └── Legs/                # Справочник транспортных плеч
-├── Import/                  # Контур загрузки данных (в разработке)
+│   ├── TransportRate/       # Транспортные тарифы
+│   ├── TransportLeg/        # Транспортные плечи
+│   ├── AverageRateLevel3/   # Средние тарифы L3
+│   └── LocationsNodes/      # Локации / узлы
+├── Import/                  # Контур загрузки данных (прототип)
 └── SqlScripts/              # DDL и SP (Platform + Modules, схема v2)
-    ├── Platform/            # Схема, full-text, GetBlazorGridData
-    └── Modules/             # Rates, Legs, …
+    ├── Platform/            # Схема, full-text, GetBlazorGridData, Sync_*
+    └── Modules/             # Structure + Programmability по справочникам
 
 blazorbootstrap/             # Локальная сборка UI-компонентов
-docs/                        # Документация Blazor Bootstrap (сторонняя)
+docs/                        # Документация Blazor Bootstrap (сторонняя, не СВТ)
+tests/                       # Unit + integration (read-only SQL)
 ```
 
 ### Слои приложения
@@ -49,14 +52,17 @@ docs/                        # Документация Blazor Bootstrap (сто
 **Host** — `Program.cs`, маршрутизация, layout, локализация, контроллеры.
 
 **Platform** — переиспользуемый код, не зависящий от конкретного справочника:
-- `Grid` — `GenericGrid`, `GridDataService`, настройки колонок;
+- `Grid` — `GenericGrid`, `GridDataService`, атрибуты list/detail DTO;
+- `Sync` — оркестрация legacy → snapshot (`ISnapshotSyncJob`, scheduler);
 - `Reporting` — экспорт в Excel, подтверждение больших выгрузок;
 - `Infrastructure` — конфигурация, логирование, работа с SQL;
+- `Domain/IdsEnum` — стабильные legacy ItemId (не sync-cascade);
 - `UI` — базовые компоненты (`SvtComponentBase`, меню, ошибки).
 
 **Modules** — изолированные доменные модули. Каждый модуль содержит:
 - `List/` — DTO списка, страница grid, настройки колонок;
 - `Detail/` — DTO детализации, настройки detail view;
+- `Sync/` — `{Entity}SyncJob` (декларация источников RowVer);
 - `{Module}Module.cs` — регистрация сервисов в DI.
 
 **Import** — загрузка данных из Excel (отдельный контур, не смешивается с read-модулями).
@@ -67,18 +73,25 @@ docs/                        # Документация Blazor Bootstrap (сто
 
 | Маршрут | Модуль | Описание |
 |---------|--------|----------|
-| `/rates` | Rates | Транспортные тарифы |
-| `/legs` | Legs | Транспортные плечи |
+| `/transportrate` | TransportRate | Транспортные тарифы |
+| `/transportleg` | TransportLeg | Транспортные плечи |
+| `/averageratelevel3` | AverageRateLevel3 | Средние тарифы L3 |
+| `/locationsnodes` | LocationsNodes | Локации / узлы |
+
+Имена `Rates` / `Legs` в старых материалах относятся к тем же сущностям до переименования в `Transport*`.
 
 ---
 
 ## Архитектурные принципы
 
 - **Модульный монолит** — один deployable, чёткие границы между модулями.
-- **Типизированная read-модель** — snapshot-таблицы (`v2.*Snapshot`) вместо метамодели.
+- **Типизированная read-модель** — snapshot-таблицы (`v2.*_Snapshot`) вместо метамодели.
 - **CQRS (read-сторона)** — snapshot-таблицы и представления для чтения; write-контур планируется отдельно.
 - **SQL как единственный источник** — фильтрация, сортировка, полнотекстовый поиск через `v2.GetBlazorGridData`.
 - **Strangler Fig** — переходный период с общей БД `mdm`, детальные view могут ссылаться на legacy-объекты `dbo.vw_*`.
+- **Инкрементальный sync** — RowVer → `PopulateAffectedKeys` → upsert snapshot; детали в `SqlScripts/README.md`.
+
+Подробнее: `.cursor/skills/svt-architecture/`, правило `svt-development-patterns`.
 
 ---
 
@@ -110,6 +123,7 @@ dotnet run --project BlazorSvt/BlazorSvt.csproj
 | `Database:DefaultQueryTimeoutSeconds` | Таймаут запросов grid |
 | `Database:ReportQueryTimeoutSeconds` | Таймаут запросов отчётов |
 | `Reports:*ReportConfirmationThreshold` | Порог подтверждения перед выгрузкой |
+| `Sync` | Интервал / blackout / reconcile для snapshot sync jobs |
 | `Serilog` | Настройки логирования (файл `logs/SVT_Blazor-*.txt`) |
 
 > Для локальной разработки рекомендуется хранить строку подключения в User Secrets, а не в репозитории.
@@ -120,28 +134,31 @@ dotnet run --project BlazorSvt/BlazorSvt.csproj
 
 Структура `BlazorSvt/SqlScripts/` повторяет модульный монолит:
 
-1. `Platform/` — схема `v2`, full-text catalog, `GetBlazorGridData`
-2. `Modules/{Name}/` — snapshot-таблицы, индексы и SP конкретного справочника
+1. `Platform/` — схема `v2`, full-text catalog, `GetBlazorGridData`, generic Sync
+2. `Modules/{Name}/` — snapshot-таблицы, индексы, SnapshotSource / PopulateAffectedKeys / Detail
 
-Порядок выполнения — в [`BlazorSvt/SqlScripts/README.md`](BlazorSvt/SqlScripts/README.md).
+Порядок выполнения и модель sync — в [`BlazorSvt/SqlScripts/README.md`](BlazorSvt/SqlScripts/README.md).
 
 ---
 
 ## Добавление нового справочника
 
-1. Создать модуль `Modules/{Name}/` со структурой `List/` и `Detail/`.
+Алгоритм целиком — skill `.cursor/skills/add-reference-book/`. Кратко:
+
+1. Создать модуль `Modules/{Name}/` со структурой `List/`, `Detail/`, `Sync/`.
 2. Определить DTO с атрибутами:
    - `[GridSnapshot]`, `[GridColumn]` на list-DTO (метаданные для `v2.GetBlazorGridData`);
    - `[DetailSource(...)]` на detail-DTO.
 3. Реализовать `*GridSettingsService` и `*DetailSettingsService`.
 4. Добавить Razor-страницу, наследующую `BaseGridPage<TItem, TDetailItem>`.
-5. Создать `{Name}Module.cs` и зарегистрировать в `Host/Program.cs`:
+5. `{Name}SyncJob` → `AddSingleton<ISnapshotSyncJob, …>()` внутри модуля.
+6. Создать `{Name}Module.cs` и зарегистрировать в `Host/Program.cs`:
 
 ```csharp
 builder.Services.Add{Name}Module();
 ```
 
-6. Добавить SQL в `SqlScripts/Modules/{Name}/`: snapshot-таблица, индексы, `vw_*_Detail`.
+7. Добавить SQL в `SqlScripts/Modules/{Name}/`: Structure + Programmability (SnapshotSource, PopulateAffectedKeys, Detail).
 
 Образец — `Modules/TransportRate/` (C#) и `SqlScripts/Modules/TransportRate/` (SQL).
 
@@ -153,6 +170,10 @@ builder.Services.Add{Name}Module();
 dotnet build BlazorSvt/BlazorSvt.csproj
 ```
 
+```powershell
+dotnet test --filter "Category=Unit"   # без БД
+```
+
 ---
 
 ## Статус разработки
@@ -161,7 +182,8 @@ dotnet build BlazorSvt/BlazorSvt.csproj
 |---------|--------|
 | Фреймворк grid (read-only) | Готово |
 | Отчёты Excel | Готово |
-| Справочники Rates, Legs | Готово (read) |
+| Справочники TransportRate, TransportLeg, AverageRateLevel3, LocationsNodes | Готово (read) |
+| Sync legacy → snapshot | Готово (инкремент + reconcile) |
 | Редактирование записей | Не реализовано |
 | Массовая загрузка | В разработке (`Import/`) |
 | Интеграции | Не реализовано |

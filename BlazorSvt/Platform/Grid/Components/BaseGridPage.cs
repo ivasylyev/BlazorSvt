@@ -1,8 +1,13 @@
-﻿using BlazorBootstrap;
+﻿using System.Diagnostics;
+using BlazorBootstrap;
 using Microsoft.AspNetCore.Components;
 
 namespace BlazorSvt.Platform.Grid.Components;
 
+/// <summary>
+/// Базовая страница справочника: grid + detail через <see cref="IGridDataService{TItem,TDetailItem}"/>,
+/// замер времени через <see cref="PageTimingService"/>.
+/// </summary>
 public abstract class BaseGridPage<TItem, TDetailItem> : SvtComponentBase
 {
     [Inject]
@@ -11,11 +16,26 @@ public abstract class BaseGridPage<TItem, TDetailItem> : SvtComponentBase
     [Inject]
     protected IGridDataService<TItem, TDetailItem> DataService { get; set; } = default!;
 
+    [Inject]
+    protected ILogger<BaseGridPage<TItem, TDetailItem>> Logger { get; set; } = default!;
+
     protected async Task<GridDataProviderResult<TItem>> DataProvider(GridDataProviderRequest<TItem> request)
     {
         using (new StopwatchTransaction(TimingService))
         {
-            return await GetDataAsync(request, Lang);
+            var stopwatch = Stopwatch.StartNew();
+            var result = await GetDataAsync(request, Lang);
+
+            Logger.LogDebug(
+                "Grid {ItemType} page {PageNumber}/{PageSize} loaded {Count}/{TotalCount} in {ElapsedMs} ms",
+                typeof(TItem).Name,
+                request.PageNumber,
+                request.PageSize,
+                result.Data?.Count() ?? 0,
+                result.TotalCount,
+                stopwatch.ElapsedMilliseconds);
+
+            return result;
         }
     }
 
@@ -23,7 +43,16 @@ public abstract class BaseGridPage<TItem, TDetailItem> : SvtComponentBase
     {
         using (new StopwatchTransaction(TimingService))
         {
-            return await GetDetailDataAsync(request, Lang);
+            var stopwatch = Stopwatch.StartNew();
+            var detail = await GetDetailDataAsync(request, Lang);
+
+            Logger.LogDebug(
+                "Detail {DetailType} for {ItemType} loaded in {ElapsedMs} ms",
+                typeof(TDetailItem).Name,
+                typeof(TItem).Name,
+                stopwatch.ElapsedMilliseconds);
+
+            return detail;
         }
     }
 

@@ -2,20 +2,24 @@ using System.ComponentModel.DataAnnotations;
 
 namespace BlazorSvt.Platform.Domain.IdsEnum;
 
+/// <summary>
+/// РўРёРї С‚Р°СЂРёС„Р° (en). Р—РЅР°С‡РµРЅРёСЏ = ItemId РёР· legacy <c>dbo.vw_RateType (dbo.PrimitiveEntityData_2048)</c>.
+/// РЎС‚Р°Р±РёР»СЊРЅС‹Р№ СЃРїСЂР°РІРѕС‡РЅРёРє: РЅРµ РІС…РѕРґРёС‚ РІ sync-cascade.
+/// </summary>
 public enum RateTypeEn
 {
     [Display(Name = "Tender")] 
-    Tender = 543746, //2 Тендерная
+    Tender = 543746, //2 РўРµРЅРґРµСЂРЅР°СЏ
 
     [Display(Name = "Spot")] 
-    Spot = 543748, //3 Спотовая
+    Spot = 543748, //3 РЎРїРѕС‚РѕРІР°СЏ
 
     [Display(Name = "Indicative")] 
-    Indicative = 543749, // 4 Индикативная
+    Indicative = 543749, // 4 РРЅРґРёРєР°С‚РёРІРЅР°СЏ
 
     [Display(Name = "Agreement")] 
-    Agreement = 19434322, // 5 Договорная
+    Agreement = 19434322, // 5 Р”РѕРіРѕРІРѕСЂРЅР°СЏ
 
     [Display(Name = "Fact")] 
-    Fact = 19434323 // 6 Фактическая
+    Fact = 19434323 // 6 Р¤Р°РєС‚РёС‡РµСЃРєР°СЏ
 }

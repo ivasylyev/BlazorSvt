@@ -2,6 +2,10 @@ using System.ComponentModel.DataAnnotations;
 
 namespace BlazorSvt.Platform.Domain.IdsEnum;
 
+/// <summary>
+/// Валюта. Значения = ItemId из legacy <c>dbo.vw_Currency (dbo.PrimitiveEntityData_2016)</c>.
+/// Стабильный справочник: не входит в sync-cascade (см. svt-development-patterns).
+/// </summary>
 public enum Currency
 {
     [Display(Name = "CNY")]

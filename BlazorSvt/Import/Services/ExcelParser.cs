@@ -7,7 +7,9 @@ using Microsoft.Extensions.Localization;
 
 namespace BlazorSvt.Import.Services;
 
-public class ExcelParser(IStringLocalizer<PlatformResources> localizer) : IExcelParser
+public class ExcelParser(
+    IStringLocalizer<PlatformResources> localizer,
+    ILogger<ExcelParser> logger) : IExcelParser
 {
     private const int HeaderRowNumber = 3;
     private const int DataStartRowNumber = 4;
@@ -25,6 +27,10 @@ public class ExcelParser(IStringLocalizer<PlatformResources> localizer) : IExcel
         var columnMap = BuildColumnMap(worksheet, properties);
         if (columnMap.Count == 0)
         {
+            logger.LogWarning(
+                "Excel parse: no headers matched DTO properties for {ItemType}. Expected names: {PropertyNames}",
+                typeof(TItem).Name,
+                string.Join(", ", properties.Keys.OrderBy(x => x, StringComparer.OrdinalIgnoreCase)));
             return [];
         }
 

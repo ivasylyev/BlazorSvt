@@ -1,5 +1,6 @@
 using System.Data;
 using System.Data.SqlClient;
+using System.Diagnostics;
 using BlazorSvt.Platform.Infrastructure.Config;
 using BlazorSvt.Platform.Infrastructure.Data;
 using Dapper;
@@ -43,14 +44,17 @@ public sealed class SnapshotSyncExecutor(
     /// <summary>Один инкрементальный цикл для справочника.</summary>
     public async Task RunIncrementalAsync(ISnapshotSyncJob job, CancellationToken cancellationToken)
     {
+        var stopwatch = Stopwatch.StartNew();
+
         await using var connection = OpenConnection();
         await connection.OpenAsync(cancellationToken);
         await EnsureSqlSessionSettingsAsync(connection, cancellationToken);
         var db = new DbConnectionLogDecorator(connection, logger, commandTimeout);
 
         var hi = await GetHighWatermarkAsync(db, cancellationToken);
+        var hiValue = RowVersionToUInt64(hi);
 
-        var sourcesToProcess = new List<SnapshotSyncSource>();
+        var sourcesToProcess = new List<(SnapshotSyncSource Source, byte[] Cursor)>();
 
         foreach (var source in job.Sources)
         {
@@ -71,11 +75,22 @@ public sealed class SnapshotSyncExecutor(
                 continue;
             }
 
-            sourcesToProcess.Add(source);
+            var lag = hiValue - RowVersionToUInt64(cursor);
+            if (lag > 0)
+            {
+                logger.LogDebug(
+                    "Sync {Entity}/{Source}: cursor lag {CursorLag} (Lo={Lo:X16}, Hi={Hi:X16}).",
+                    job.Entity, source.Name, lag, RowVersionToUInt64(cursor), hiValue);
+            }
+
+            sourcesToProcess.Add((source, cursor));
         }
 
         if (sourcesToProcess.Count == 0)
         {
+            logger.LogDebug(
+                "Sync {Entity}: incremental skipped (no sources to process) in {ElapsedMs} ms.",
+                job.Entity, stopwatch.ElapsedMilliseconds);
             return;
         }
 
@@ -83,10 +98,11 @@ public sealed class SnapshotSyncExecutor(
 
         try
         {
-            foreach (var source in sourcesToProcess)
+            ulong maxLag = 0;
+
+            foreach (var (source, cursor) in sourcesToProcess)
             {
-                var cursor = await stateStore.GetCursorAsync(db, job.Entity, source.Name)
-                             ?? SyncStateStore.ZeroCursor;
+                maxLag = Math.Max(maxLag, hiValue - RowVersionToUInt64(cursor));
 
                 var parameters = new DynamicParameters();
                 parameters.Add("Source", source.Name);
@@ -102,7 +118,7 @@ public sealed class SnapshotSyncExecutor(
 
             var affected = await UpsertAffectedAsync(db, job, cancellationToken);
 
-            foreach (var source in sourcesToProcess)
+            foreach (var (source, _) in sourcesToProcess)
             {
                 await stateStore.UpsertCursorAsync(
                     db, job.Entity, source.Name, hi, affected, cancellationToken);
@@ -111,8 +127,14 @@ public sealed class SnapshotSyncExecutor(
             if (affected > 0)
             {
                 logger.LogInformation(
-                    "Sync {Entity}: обновлено {Affected} строк snapshot.",
-                    job.Entity, affected);
+                    "Sync {Entity}: обновлено {Affected} строк snapshot, maxCursorLag {CursorLag}, {ElapsedMs} ms.",
+                    job.Entity, affected, maxLag, stopwatch.ElapsedMilliseconds);
+            }
+            else
+            {
+                logger.LogDebug(
+                    "Sync {Entity}: incremental idle (0 rows), maxCursorLag {CursorLag}, {ElapsedMs} ms.",
+                    job.Entity, maxLag, stopwatch.ElapsedMilliseconds);
             }
         }
         finally
@@ -128,6 +150,8 @@ public sealed class SnapshotSyncExecutor(
     /// </summary>
     public async Task RunReconcileAsync(ISnapshotSyncJob job, CancellationToken cancellationToken)
     {
+        var stopwatch = Stopwatch.StartNew();
+
         await using var connection = OpenConnection();
         await connection.OpenAsync(cancellationToken);
         await EnsureSqlSessionSettingsAsync(connection, cancellationToken);
@@ -144,8 +168,8 @@ public sealed class SnapshotSyncExecutor(
         await stateStore.MarkReconciledAsync(db, job.Entity, cancellationToken);
 
         logger.LogInformation(
-            "Reconcile {Entity}: удалено фантомов {Deleted}.",
-            job.Entity, deleted);
+            "Reconcile {Entity}: удалено фантомов {Deleted} за {ElapsedMs} ms.",
+            job.Entity, deleted, stopwatch.ElapsedMilliseconds);
     }
 
     private Task<byte[]> GetHighWatermarkAsync(
@@ -200,5 +224,22 @@ public sealed class SnapshotSyncExecutor(
             new CommandDefinition(
                 "SET QUOTED_IDENTIFIER ON; SET ANSI_NULLS ON; SET ANSI_WARNINGS ON;",
                 cancellationToken: cancellationToken));
+    }
+
+    /// <summary>SQL rowversion — big-endian 8 байт.</summary>
+    internal static ulong RowVersionToUInt64(byte[] value)
+    {
+        if (value.Length == 0)
+        {
+            return 0;
+        }
+
+        ulong result = 0;
+        foreach (var b in value)
+        {
+            result = (result << 8) | b;
+        }
+
+        return result;
     }
 }
