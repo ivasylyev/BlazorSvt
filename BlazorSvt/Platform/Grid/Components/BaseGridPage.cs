@@ -5,8 +5,11 @@ namespace BlazorSvt.Platform.Grid.Components;
 
 public abstract class BaseGridPage<TItem, TDetailItem> : SvtComponentBase
 {
-    [Inject] 
+    [Inject]
     protected PageTimingService TimingService { get; set; } = default!;
+
+    [Inject]
+    protected IGridDataService<TItem, TDetailItem> DataService { get; set; } = default!;
 
     protected async Task<GridDataProviderResult<TItem>> DataProvider(GridDataProviderRequest<TItem> request)
     {
@@ -24,9 +27,17 @@ public abstract class BaseGridPage<TItem, TDetailItem> : SvtComponentBase
         }
     }
 
-    protected abstract Task<GridDataProviderResult<TItem>> GetDataAsync(GridDataProviderRequest<TItem> request, string lang);
-
-    protected abstract Task<TDetailItem> GetDetailDataAsync(TItem request, string lang);
-
+    /// <summary>Бизнес-ключ строки для detail/export (обычно {Entity}Id).</summary>
     protected abstract object DetailKeySelector(TItem request);
+
+    protected virtual Task<GridDataProviderResult<TItem>> GetDataAsync(
+        GridDataProviderRequest<TItem> request,
+        string lang) =>
+        DataService.GetDataAsync(request, lang);
+
+    protected virtual Task<TDetailItem> GetDetailDataAsync(TItem request, string lang)
+    {
+        var key = DetailKeySelector(request);
+        return DataService.GetDetailDataAsync(key);
+    }
 }

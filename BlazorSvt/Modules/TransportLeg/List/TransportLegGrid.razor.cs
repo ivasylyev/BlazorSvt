@@ -1,5 +1,4 @@
-﻿using BlazorBootstrap;
-using BlazorSvt.Modules.TransportLeg.Detail;
+﻿using BlazorSvt.Modules.TransportLeg.Detail;
 using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.Localization;
 
@@ -10,24 +9,8 @@ public partial class TransportLegGrid : BaseGridPage<TransportLegDto, TransportL
     [Inject]
     protected IStringLocalizer<Resources.TransportLeg> EL { get; set; } = default!;
 
-    [Inject] 
-    public IGridDataService<TransportLegDto, TransportLegDetailDto> TransportLegDataService { get; set; } = default!;
-
     protected override object DetailKeySelector(TransportLegDto request)
-    {
-        return request.TransportLegId;
-    }
-
-    protected override async Task<GridDataProviderResult<TransportLegDto>> GetDataAsync(GridDataProviderRequest<TransportLegDto> request, string lang)
-    {
-        return await TransportLegDataService.GetDataAsync(request, lang);
-    }
-
-    protected override async Task<TransportLegDetailDto> GetDetailDataAsync(TransportLegDto request, string lang)
-    {
-        var key = DetailKeySelector(request);
-        return await TransportLegDataService.GetDetailDataAsync(key);
-    }
+        => request.TransportLegId;
 
     private string GetCustomMessage(TransportLegDetailDto detail)
     {

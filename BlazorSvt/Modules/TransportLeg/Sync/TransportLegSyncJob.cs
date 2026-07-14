@@ -12,28 +12,10 @@ namespace BlazorSvt.Modules.TransportLeg.Sync;
 /// stg.LoadTransportLeg. RowVer на каждой из них добавляется скриптом
 /// SqlScripts/Sync/01.Legacy_AddRowVersion.sql.
 /// </summary>
-public sealed class TransportLegSyncJob : ISnapshotSyncJob
+public sealed class TransportLegSyncJob() : SnapshotSyncJob(
+    "TransportLeg",
+    "dbo.PrimitiveEntityData_2007", // TransportLeg (основная)
+    "dbo.PrimitiveEntityData_1008", // Region
+    "dbo.PrimitiveEntityData_1014") // LocationsNodes
 {
-    // Базовые таблицы legacy для каждого справочника-источника
-    // (имя = ключ v2.SyncState.SourceName и значение @Source процедуры детекции).
-    private const string LegTable = "dbo.PrimitiveEntityData_2007";    // TransportLeg (основная)
-    private const string NodeTable = "dbo.PrimitiveEntityData_1014";   // LocationsNodes
-    private const string RegionTable = "dbo.PrimitiveEntityData_1008"; // Region
-
-    public string Entity => "TransportLeg";
-
-    public string SnapshotTable => "v2.TransportLeg_Snapshot";
-
-    public string EntityKeyColumn => "TransportLegId";
-
-    public string SourceProjectionView => "v2.vw_TransportLeg_SnapshotSource";
-
-    public string PopulateAffectedKeysProc => "v2.TransportLeg_PopulateAffectedKeys";
-
-    public IReadOnlyList<SnapshotSyncSource> Sources { get; } = new List<SnapshotSyncSource>
-    {
-        new(LegTable),    // основная: изменившиеся плечи
-        new(RegionTable), // каскад: RegionFrom/To/Proxy
-        new(NodeTable),   // каскад: NodeFrom/To/Proxy
-    };
 }

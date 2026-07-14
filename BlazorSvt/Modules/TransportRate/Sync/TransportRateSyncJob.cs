@@ -17,30 +17,11 @@ namespace BlazorSvt.Modules.TransportRate.Sync;
 /// иначе вход/выход строки отследит только reconcile.
 /// RateType (2048) стабилен и не отслеживается.
 /// </summary>
-public sealed class TransportRateSyncJob : ISnapshotSyncJob
+public sealed class TransportRateSyncJob() : SnapshotSyncJob(
+    "TransportRate",
+    "dbo.PrimitiveEntityData_2012", // TransportRate (основная)
+    "dbo.PrimitiveEntityData_1014", // LocationsNodes
+    "dbo.PrimitiveEntityData_1013", // ProductGroup
+    "dbo.PrimitiveEntityData_1015") // MTR (Product)
 {
-    // Базовые таблицы legacy для каждого справочника-источника
-    // (имя = ключ v2.SyncState.SourceName и значение @Source процедуры детекции).
-    private const string RateTable = "dbo.PrimitiveEntityData_2012";         // TransportRate (основная)
-    private const string NodeTable = "dbo.PrimitiveEntityData_1014";       // LocationsNodes
-    private const string ProductGroupTable = "dbo.PrimitiveEntityData_1013"; // ProductGroup
-    private const string ProductTable = "dbo.PrimitiveEntityData_1015";    // MTR (Product)
-
-    public string Entity => "TransportRate";
-
-    public string SnapshotTable => "v2.TransportRate_Snapshot";
-
-    public string EntityKeyColumn => "TransportRateId";
-
-    public string SourceProjectionView => "v2.vw_TransportRate_SnapshotSource";
-
-    public string PopulateAffectedKeysProc => "v2.TransportRate_PopulateAffectedKeys";
-
-    public IReadOnlyList<SnapshotSyncSource> Sources { get; } = new List<SnapshotSyncSource>
-    {
-        new(RateTable),         // основная: изменившиеся рейты
-        new(NodeTable),         // каскад: NodeFrom/To/Proxy
-        new(ProductGroupTable), // каскад: ProductGroupId
-        new(ProductTable),      // каскад: ProductId (важно для WHERE-членства)
-    };
 }

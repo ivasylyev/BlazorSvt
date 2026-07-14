@@ -122,4 +122,34 @@ public class SnapshotSyncJobContractTests
         sources.Should().Contain("dbo.PrimitiveEntityData_1015");
         sources.Should().NotContain("dbo.PrimitiveEntityData_2048");
     }
+
+    [Fact]
+    public void SnapshotSyncJob_DerivesObjectNamesFromEntity()
+    {
+        ISnapshotSyncJob job = new NamingConventionJob();
+
+        job.Entity.Should().Be("FooBar");
+        job.SnapshotTable.Should().Be("v2.FooBar_Snapshot");
+        job.EntityKeyColumn.Should().Be("FooBarId");
+        job.SourceProjectionView.Should().Be("v2.vw_FooBar_SnapshotSource");
+        job.PopulateAffectedKeysProc.Should().Be("v2.FooBar_PopulateAffectedKeys");
+        job.Sources.Select(s => s.Name).Should().Equal(
+            "dbo.PrimitiveEntityData_1",
+            "dbo.PrimitiveEntityData_2");
+    }
+
+    [Fact]
+    public void SnapshotSyncJob_RequiresAtLeastOneSource()
+    {
+        var act = () => new EmptySourcesJob();
+
+        act.Should().Throw<ArgumentException>();
+    }
+
+    private sealed class NamingConventionJob() : SnapshotSyncJob(
+        "FooBar",
+        "dbo.PrimitiveEntityData_1",
+        "dbo.PrimitiveEntityData_2");
+
+    private sealed class EmptySourcesJob() : SnapshotSyncJob("FooBar");
 }

@@ -357,6 +357,8 @@ WHERE DRu.[Value] = (
 
 ## Фаза 2 — SQL-артефакты
 
+**Кодировка (обязательно):** все файлы `BlazorSvt/SqlScripts/**/*.sql` — **UTF-8 with BOM** (`EF BB BF`). Без исключений: Structure, Programmability, Platform, Sync. Иначе Visual Studio на русской Windows открывает кириллические комментарии как «кракозябры». При создании/правке сохранять с BOM (не UTF-8 без BOM).
+
 Папки:
 
 ```
@@ -659,6 +661,7 @@ dotnet test --filter "Category=Integration"
 - [ ] Короткий и длинный списки + фильтрация неиспользуемых
 - [ ] Переводы из Dictionary в `Modules/{Entity}/Resources/{Entity}.resx` + `HeaderMenu.{Entity}` в Platform.resx
 - [ ] SQL Structure 01–03 + SnapshotSource + Detail + PopulateAffectedKeys
+- [ ] Все новые/изменённые `.sql` в SqlScripts — UTF-8 with BOM
 - [ ] Комментарии «PED_* → справочник» в Insert Sources / PopulateAffectedKeys / SyncJob
 - [ ] RowVer (+ индекс) в `Sync/01.Legacy_AddRowVersion.sql` при новой основной таблице
 - [ ] SyncState init с `LastRowVersion` / `LastRunUtc`
