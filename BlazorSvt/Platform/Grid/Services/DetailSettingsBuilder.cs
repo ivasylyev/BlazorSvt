@@ -9,9 +9,9 @@ namespace BlazorSvt.Platform.Grid.Services;
 /// </summary>
 public sealed class DetailSettingsBuilder<T>(IStringLocalizer<PlatformResources> platform)
 {
-    private readonly List<DetailSetting<T>> _fields = [];
+    private readonly List<DetailSetting<T>> fields = [];
 
-    public DetailSettingsCollection<T> Build() => new(_fields);
+    public DetailSettingsCollection<T> Build() => new(fields);
 
     public DetailSettingsBuilder<T> Add<TProp>(
         string groupHeader,
@@ -22,7 +22,7 @@ public sealed class DetailSettingsBuilder<T>(IStringLocalizer<PlatformResources>
         Func<T, object>? display = null)
     {
         var compiled = property.Compile();
-        _fields.Add(new DetailSetting<T>
+        fields.Add(new DetailSetting<T>
         {
             Name = MemberName(property),
             Header = header,

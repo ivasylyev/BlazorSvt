@@ -8,8 +8,6 @@ public static class GridColumnMetadataBuilder
 {
     private static readonly ConcurrentDictionary<Type, GridSnapshotMetadata> Cache = new();
 
-    public static GridSnapshotMetadata GetMetadata<T>() => GetMetadata(typeof(T));
-
     public static GridSnapshotMetadata GetMetadata(Type dtoType)
     {
         return Cache.GetOrAdd(dtoType, BuildMetadata);
@@ -23,6 +21,7 @@ public static class GridColumnMetadataBuilder
             .Select(c => new
             {
                 ColumnName = c.PropertyName,
+                // ReSharper disable once RedundantAnonymousTypePropertyName
                 SqlColumnName = c.SqlColumnName,
                 ColumnType = ToSqlColumnType(c.ColumnType)
             });

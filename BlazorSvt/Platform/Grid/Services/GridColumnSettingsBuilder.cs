@@ -9,9 +9,9 @@ namespace BlazorSvt.Platform.Grid.Services;
 /// </summary>
 public sealed class GridColumnSettingsBuilder<T>(IStringLocalizer<PlatformResources> platform)
 {
-    private readonly List<GridColumnSetting<T>> _columns = [];
+    private readonly List<GridColumnSetting<T>> columns = [];
 
-    public List<GridColumnSetting<T>> Build() => _columns;
+    public List<GridColumnSetting<T>> Build() => columns;
 
     public GridColumnSettingsBuilder<T> Add<TProp>(
         Expression<Func<T, TProp>> property,
@@ -21,7 +21,7 @@ public sealed class GridColumnSettingsBuilder<T>(IStringLocalizer<PlatformResour
         Func<T, object>? display = null)
     {
         var compiled = property.Compile();
-        _columns.Add(new GridColumnSetting<T>
+        columns.Add(new GridColumnSetting<T>
         {
             Name = MemberName(property),
             Header = header,
@@ -144,7 +144,7 @@ public sealed class GridColumnSettingsBuilder<T>(IStringLocalizer<PlatformResour
             Filterable = true,
             FilterValue = "False"
         };
-        _columns.Add(archive);
+        columns.Add(archive);
         return this;
     }
 
@@ -153,7 +153,7 @@ public sealed class GridColumnSettingsBuilder<T>(IStringLocalizer<PlatformResour
         {
             MemberExpression member => member.Member.Name,
             UnaryExpression { Operand: MemberExpression member } => member.Member.Name,
-            _ => throw new ArgumentException($"Expression must be a property access: {property}", nameof(property))
+            _ => throw new ArgumentException($@"Expression must be a property access: {property}", nameof(property))
         };
 
     private static Expression<Func<T, IComparable>> ToSort<TProp>(Expression<Func<T, TProp>> property)
@@ -163,5 +163,5 @@ public sealed class GridColumnSettingsBuilder<T>(IStringLocalizer<PlatformResour
     }
 
     private static IComparable ToComparable<TProp>(TProp value) =>
-        value is IComparable comparable ? comparable : string.Empty;
+        value as IComparable ?? string.Empty;
 }
