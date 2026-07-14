@@ -1,4 +1,4 @@
-USE [mdm];
+﻿USE [mdm];
 GO
 
 IF NOT EXISTS (SELECT 1 FROM sys.schemas WHERE name = N'v2')

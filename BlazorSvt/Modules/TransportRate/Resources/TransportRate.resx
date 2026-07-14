@@ -186,13 +186,8 @@
   <data name="TransportRateDto.IsArchive" xml:space="preserve">
 	  <value>Is Archive</value>
   </data>
-  <data name="TransportRateDto.Archive" xml:space="preserve">
-	  <value>Archive</value>
-  </data>
-  <data name="TransportRateDto.Active" xml:space="preserve">
-	  <value>Active</value>
-  </data>	
-  <data name="TransportRateDto.RateTypeCode" xml:space="preserve">
+
+<data name="TransportRateDto.RateTypeCode" xml:space="preserve">
 	  <value>Rate Type Code</value>
   </data>
   <data name="TransportRateDto.TransportKindCode" xml:space="preserve">
@@ -207,25 +202,15 @@
   <data name="TransportRateDto.TransportTypeName" xml:space="preserve">
 	  <value>Transport Type Name</value>
   </data>
-  <data name="TransportRateDto.Yes" xml:space="preserve">
-	  <value>Yes</value>
-  </data>
-  <data name="TransportRateDto.No" xml:space="preserve">
-	  <value>No</value>
-  </data>
-  <data name="TransportRateDetailDto.Code" xml:space="preserve">
+
+<data name="TransportRateDetailDto.Code" xml:space="preserve">
 	  <value>Code</value>
   </data>
   <data name="TransportRateDetailDto.IsDefRate" xml:space="preserve">
 	  <value>Deflated</value>
   </data>
-  <data name="TransportRateDetailDto.Yes" xml:space="preserve">
-	  <value>Yes</value>
-  </data>
-  <data name="TransportRateDetailDto.No" xml:space="preserve">
-	  <value>No</value>
-  </data>
-  <data name="TransportRateDetailDto.CreationDate" xml:space="preserve">
+
+<data name="TransportRateDetailDto.CreationDate" xml:space="preserve">
 	  <value>Created</value>
   </data>
   <data name="TransportRateDetailDto.LastChangeDate" xml:space="preserve">
@@ -234,13 +219,8 @@
   <data name="TransportRateDetailDto.IsArchive" xml:space="preserve">
 	  <value>Is Archive</value>
   </data>
-  <data name="TransportRateDetailDto.Archive" xml:space="preserve">
-	  <value>Archive</value>
-  </data>
-  <data name="TransportRateDetailDto.Active" xml:space="preserve">
-	  <value>Active</value>
-  </data>
-  <data name="TransportRateDetailDto.StartDate" xml:space="preserve">
+
+<data name="TransportRateDetailDto.StartDate" xml:space="preserve">
 	  <value>Start Date</value>
   </data>
   <data name="TransportRateDetailDto.EndDate" xml:space="preserve">

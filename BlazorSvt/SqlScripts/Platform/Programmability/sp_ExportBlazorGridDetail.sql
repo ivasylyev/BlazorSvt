@@ -1,4 +1,4 @@
-USE mdm
+О╩©USE mdm
 GO
 
 /*
@@ -100,8 +100,8 @@ BEGIN
         @SortKey            = @SortKey,
         @SortDirection      = @SortDirection,
         @FilterJson         = @FilterJson;
--- мекэгъ лемърэ ондгюопня бмрспх "ORDER BY" мю "INNER JOIN #Filtered"
--- еякх онлемърэ - бяе ондбхямер мю НРВЕРЕ ЯРЮБНЙ
+-- О©╫О©╫О©╫О©╫О©╫О©╫ О©╫О©╫О©╫О©╫О©╫О©╫ О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫ О©╫О©╫О©╫О©╫О©╫О©╫ "ORDER BY" О©╫О©╫ "INNER JOIN #Filtered"
+-- О©╫О©╫О©╫О©╫ О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫ - О©╫О©╫О©╫ О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫ О©╫О©╫ О©╫О©╫О©╫О©╫О©╫О©╫ О©╫О©╫О©╫О©╫О©╫О©╫
     SET @DetailSQL = N'
         SELECT d.*
         FROM ' + @SafeViewName + N' d

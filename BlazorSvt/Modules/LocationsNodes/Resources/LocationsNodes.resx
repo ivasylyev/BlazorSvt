@@ -10,10 +10,7 @@
   <data name="LocationsNodesDetailDto.4_level_City_codeN" xml:space="preserve">
     <value>4_level_City_codeN</value>
   </data>
-  <data name="LocationsNodesDetailDto.Active" xml:space="preserve">
-    <value>Active</value>
-  </data>
-  <data name="LocationsNodesDetailDto.AddressCountryCodeDPO" xml:space="preserve">
+<data name="LocationsNodesDetailDto.AddressCountryCodeDPO" xml:space="preserve">
     <value>AddressCountryCodeDPO</value>
   </data>
   <data name="LocationsNodesDetailDto.AddressCountryISO2" xml:space="preserve">
@@ -34,10 +31,7 @@
   <data name="LocationsNodesDetailDto.AddressRegionISO" xml:space="preserve">
     <value>AddressRegionISO</value>
   </data>
-  <data name="LocationsNodesDetailDto.Archive" xml:space="preserve">
-    <value>Archive</value>
-  </data>
-  <data name="LocationsNodesDetailDto.AutoNode" xml:space="preserve">
+<data name="LocationsNodesDetailDto.AutoNode" xml:space="preserve">
     <value>Transport node</value>
   </data>
   <data name="LocationsNodesDetailDto.BorderCountryCodeDPO" xml:space="preserve">
@@ -244,10 +238,7 @@
   <data name="LocationsNodesDetailDto.NameZDroadRU" xml:space="preserve">
     <value>NameZDroadRU</value>
   </data>
-  <data name="LocationsNodesDetailDto.No" xml:space="preserve">
-    <value>No</value>
-  </data>
-  <data name="LocationsNodesDetailDto.NodesCode" xml:space="preserve">
+<data name="LocationsNodesDetailDto.NodesCode" xml:space="preserve">
     <value>Location/node code</value>
   </data>
   <data name="LocationsNodesDetailDto.OKTMOCode" xml:space="preserve">
@@ -331,22 +322,14 @@
   <data name="LocationsNodesDetailDto.Virtual" xml:space="preserve">
     <value>Virtual</value>
   </data>
-  <data name="LocationsNodesDetailDto.Yes" xml:space="preserve">
-    <value>Yes</value>
-  </data>
-  <data name="LocationsNodesDetailDto.ZDCode" xml:space="preserve">
+<data name="LocationsNodesDetailDto.ZDCode" xml:space="preserve">
     <value>Railway station code</value>
   </data>
   <data name="LocationsNodesDetailDto.ZDCodeN" xml:space="preserve">
     <value>ZDCodeN</value>
   </data>
-  <data name="LocationsNodesDto.Active" xml:space="preserve">
-    <value>Active</value>
-  </data>
-  <data name="LocationsNodesDto.Archive" xml:space="preserve">
-    <value>Archive</value>
-  </data>
-  <data name="LocationsNodesDto.Code" xml:space="preserve">
+
+<data name="LocationsNodesDto.Code" xml:space="preserve">
     <value>Code</value>
   </data>
   <data name="LocationsNodesDto.CountryCode" xml:space="preserve">
@@ -373,10 +356,7 @@
   <data name="LocationsNodesDto.Name" xml:space="preserve">
     <value>Name</value>
   </data>
-  <data name="LocationsNodesDto.No" xml:space="preserve">
-    <value>No</value>
-  </data>
-  <data name="LocationsNodesDto.RegionCode" xml:space="preserve">
+<data name="LocationsNodesDto.RegionCode" xml:space="preserve">
     <value>Region code</value>
   </data>
   <data name="LocationsNodesDto.RegionName" xml:space="preserve">
@@ -391,10 +371,7 @@
   <data name="LocationsNodesDto.TypeNodeName" xml:space="preserve">
     <value>TypeNode</value>
   </data>
-  <data name="LocationsNodesDto.Yes" xml:space="preserve">
-    <value>Yes</value>
-  </data>
-  <data name="LocationsNodesGrid.Title" xml:space="preserve">
+<data name="LocationsNodesGrid.Title" xml:space="preserve">
     <value>Locations-Nodes</value>
   </data>
 </root>

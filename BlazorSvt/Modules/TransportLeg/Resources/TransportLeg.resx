@@ -178,19 +178,10 @@
   <data name="TransportLegDto.TransportKindName" xml:space="preserve">
   <value>Transport Kind Name</value>
  </data>
-  <data name="TransportLegDto.Yes" xml:space="preserve">
-  <value>Yes</value>
- </data>
-  <data name="TransportLegDto.No" xml:space="preserve">
-  <value>No</value>
- </data>
-  <data name="TransportLegDto.Archive" xml:space="preserve">
-	  <value>Archive</value>
-  </data>
-  <data name="TransportLegDto.Active" xml:space="preserve">
-	  <value>Active</value>
-  </data>
-  <data name="TransportLegDto.ShipmentTypeName" xml:space="preserve">
+
+
+
+<data name="TransportLegDto.ShipmentTypeName" xml:space="preserve">
 	  <value>Shipment Type</value>
   </data>
   <data name="TransportLegDto.SearchTime" xml:space="preserve">
@@ -271,19 +262,10 @@
 	<data name="TransportLegDetailDto.TransportKindName" xml:space="preserve">
   <value>Transport Kind Name</value>
  </data>
-	<data name="TransportLegDetailDto.Yes" xml:space="preserve">
-  <value>Yes</value>
- </data>
-	<data name="TransportLegDetailDto.No" xml:space="preserve">
-  <value>No</value>
- </data>
-	<data name="TransportLegDetailDto.Archive" xml:space="preserve">
-	  <value>Archive</value>
-  </data>
-	<data name="TransportLegDetailDto.Active" xml:space="preserve">
-	  <value>Active</value>
-  </data>
-	<data name="TransportLegDetailDto.ShipmentTypeName" xml:space="preserve">
+
+
+
+<data name="TransportLegDetailDto.ShipmentTypeName" xml:space="preserve">
 	  <value>Shipment Type Name</value>
   </data>
 	<data name="TransportLegDetailDto.SearchTime" xml:space="preserve">

@@ -3,1283 +3,192 @@
 namespace BlazorSvt.Modules.TransportRate.Detail;
 
 // ReSharper disable once InconsistentNaming
-public class TransportRateDetailSettingsService(IStringLocalizer<Resources.TransportRate> L, ILogger<TransportRateDetailSettingsService> logger) : IDetailSettingsService<TransportRateDetailDto>
+public class TransportRateDetailSettingsService(
+    IStringLocalizer<Resources.TransportRate> L,
+    IStringLocalizer<PlatformResources> platform)
+    : IDetailSettingsService<TransportRateDetailDto>
 {
     public DetailSettingsCollection<TransportRateDetailDto> GetGridDetailSettings(string lang)
     {
         var isRu = lang == "ru";
+        var b = new DetailSettingsBuilder<TransportRateDetailDto>(platform);
 
-        var results = new List<DetailSetting<TransportRateDetailDto>>();
+        var g1 = L["TransportRateDetailDto.Group.1.RateParameters"];
+        var g2 = L["TransportRateDetailDto.Group.2.RateDates"];
+        var g3 = L["TransportRateDetailDto.Group.3.OriginDestination"];
+        var g4 = L["TransportRateDetailDto.Group.4.Transport"];
+        var g5 = L["TransportRateDetailDto.Group.5.MultimodalTransportation"];
+        var g6 = L["TransportRateDetailDto.Group.6.Cargo"];
+        var g7 = L["TransportRateDetailDto.Group.7.RateAmountExcludingVAT"];
+        var g8 = L["TransportRateDetailDto.Group.8.RateComponentsExcludingVATPerTon"];
+        var g10 = L["TransportRateDetailDto.Group.10.Comments"];
+        var g11 = L["TransportRateDetailDto.Group.11.ReferenceCalculatedCostsInCurrencies"];
+        var g12 = L["TransportRateDetailDto.Group.12.Leadtimes"];
+        var g13 = L["TransportRateDetailDto.Group.13.Leg1"];
+        var g14 = L["TransportRateDetailDto.Group.14.LeadtimesRate1"];
+        var g15 = L["TransportRateDetailDto.Group.15.Leg2"];
+        var g16 = L["TransportRateDetailDto.Group.16.LeadtimesRate2"];
 
-        AddGroup1CodeSettings(results);
-        AddGroup1AverageRateCodeSettings(results);
-        AddGroup1TypeSettings(results);
-        AddGroup1TenderAndContractorSettings(results);
-        AddGroup1DeflatorSettings(results);
-        AddGroup1CreationChangeDateSettings(results);
-        AddGroup1IsArchiveSettings(results);
+        Func<TransportRateDetailDto, bool> hasProxy = dto => dto.ProxyNodeCode is not null;
+        Func<TransportRateDetailDto, bool> hasLeadTime = dto => dto.LeadTimeCode is not null;
+        Func<TransportRateDetailDto, bool> notTc = dto => dto.CalcType != "ТС";
 
+        b.Add(g1, x => x.Code, L["TransportRateDetailDto.Code"]);
+        b.Add(g1, x => x.AverageRateCode, L["TransportRateDetailDto.AverageRateCode"]);
+        b.Add(g1, x => x.TypeName, L["TransportRateDetailDto.RateTypeName"]);
+        b.Add(g1, x => x.TypeCode, L["TransportRateDetailDto.RateTypeCode"]);
+        b.Add(g1, x => x.Nomination, L["TransportRateDetailDto.Nomination"], visible: dto => dto.Nomination is not null, hasMargin: true);
+        b.Add(g1, x => x.ContractorNameSearch, L["TransportRateDetailDto.ContractorNameSearch"], visible: dto => dto.ContractorCode is not null);
+        b.Add(g1, x => x.TenderNumber, L["TransportRateDetailDto.TenderNumber"], visible: dto => dto.TenderNumber is not null);
+        b.Add(g1, x => x.AdditionalAgreementNumber, L["TransportRateDetailDto.AdditionalAgreementNumber"], visible: dto => dto.AdditionalAgreementNumber is not null);
+        b.AddYesNo(g1, x => x.IsDefRate, L["TransportRateDetailDto.IsDefRate"]);
+        b.Add(g1, x => x.CreationDate, L["TransportRateDetailDto.CreationDate"], hasMargin: true);
+        b.Add(g1, x => x.LastChangeDate, L["TransportRateDetailDto.LastChangeDate"]);
+        b.AddArchiveStatus(g1, x => x.IsArchive, L["TransportRateDetailDto.IsArchive"]);
 
-        AddGroup2Settings(results);
+        b.Add(g2, x => x.StartDate, L["TransportRateDetailDto.StartDate"]);
+        b.Add(g2, x => x.EndDate, L["TransportRateDetailDto.EndDate"]);
 
-        AddGroup3Settings(results, isRu);
-
-        AddGroup4Settings(results, isRu);
-
-        AddGroup5Settings(results);
-
-        AddGroup6Settings(results, isRu);
-
-        AddGroup7Settings(results);
-
-        AddGroup8Settings(results);
-
-        AddGroup10Settings(results);
-
-        AddGroup11Settings(results);
-
-        AddGroup12LegReferenceSettings(results);
-        AddGroup12LeadtimeMetaSettings(results);
-        AddGroup12LeadtimeSettings(results);
-
-        AddGroup13Settings(results, isRu);
-        AddGroup14Settings(results);
-
-        AddGroup15Settings(results, isRu);
-        AddGroup16Settings(results);
-
-        return new DetailSettingsCollection<TransportRateDetailDto>(results);
-    }
-
-    private void AddGroup1CodeSettings(List<DetailSetting<TransportRateDetailDto>> results)
-    {
-        results.Add(new DetailSetting<TransportRateDetailDto>
-        {
-            Name = nameof(TransportRateDetailDto.Code),
-            Header = L["TransportRateDetailDto.Code"],
-            GroupHeader = L["TransportRateDetailDto.Group.1.RateParameters"],
-            DisplaySelector = dto => dto.Code,
-            VisibleSelector = _ => true
-        });
-    }
-    private void AddGroup1AverageRateCodeSettings(List<DetailSetting<TransportRateDetailDto>> results)
-    {
-        results.Add(new DetailSetting<TransportRateDetailDto>
-        {
-            Name = nameof(TransportRateDetailDto.AverageRateCode),
-            Header = L["TransportRateDetailDto.AverageRateCode"],
-            GroupHeader = L["TransportRateDetailDto.Group.1.RateParameters"],
-            DisplaySelector = dto => dto.AverageRateCode,
-            VisibleSelector = _ => true
-        });
-    }
-
-    private void AddGroup1TypeSettings(List<DetailSetting<TransportRateDetailDto>> results)
-    {
-        results.AddRange(
-        [
-            new DetailSetting<TransportRateDetailDto>
-            {
-                Name = nameof(TransportRateDetailDto.TypeName),
-                Header = L["TransportRateDetailDto.RateTypeName"],
-                GroupHeader = L["TransportRateDetailDto.Group.1.RateParameters"],
-                DisplaySelector = dto => dto.TypeName,
-                VisibleSelector = _ => true
-            },
-            new DetailSetting<TransportRateDetailDto>
-            {
-                Name = nameof(TransportRateDetailDto.TypeCode),
-                Header = L["TransportRateDetailDto.RateTypeCode"],
-                GroupHeader = L["TransportRateDetailDto.Group.1.RateParameters"],
-                DisplaySelector = dto => dto.TypeCode,
-                VisibleSelector = _ => true
-            }
-        ]);
-    }
-
-    private void AddGroup1TenderAndContractorSettings(List<DetailSetting<TransportRateDetailDto>> results)
-    {
-        results.AddRange(
-        [
-            new DetailSetting<TransportRateDetailDto>
-            {
-                Name = nameof(TransportRateDetailDto.Nomination),
-                Header = L["TransportRateDetailDto.Nomination"],
-                GroupHeader = L["TransportRateDetailDto.Group.1.RateParameters"],
-                DisplaySelector = dto => dto.Nomination!,
-                VisibleSelector = dto => dto.Nomination is not null,
-                HasMargin = true
-            },
-            new DetailSetting<TransportRateDetailDto>
-            {
-                Name = nameof(TransportRateDetailDto.ContractorNameSearch),
-                Header = L["TransportRateDetailDto.ContractorNameSearch"],
-                GroupHeader = L["TransportRateDetailDto.Group.1.RateParameters"],
-                DisplaySelector = dto => dto.ContractorNameSearch!,
-                VisibleSelector = dto => dto.ContractorCode is not null
-            },
-            new DetailSetting<TransportRateDetailDto>
-            {
-                Name = nameof(TransportRateDetailDto.TenderNumber),
-                Header = L["TransportRateDetailDto.TenderNumber"],
-                GroupHeader = L["TransportRateDetailDto.Group.1.RateParameters"],
-                DisplaySelector = dto => dto.TenderNumber!,
-                VisibleSelector = dto => dto.TenderNumber is not null
-            },
-            new DetailSetting<TransportRateDetailDto>
-            {
-                Name = nameof(TransportRateDetailDto.AdditionalAgreementNumber),
-                Header = L["TransportRateDetailDto.AdditionalAgreementNumber"],
-                GroupHeader = L["TransportRateDetailDto.Group.1.RateParameters"],
-                DisplaySelector = dto => dto.AdditionalAgreementNumber!,
-                VisibleSelector = dto => dto.AdditionalAgreementNumber is not null
-            }
-        ]);
-    }
-
-    private void AddGroup1DeflatorSettings(List<DetailSetting<TransportRateDetailDto>> results)
-    {
-        results.Add(new DetailSetting<TransportRateDetailDto>
-        {
-            Name = nameof(TransportRateDetailDto.IsDefRate),
-            Header = L["TransportRateDetailDto.IsDefRate"],
-            GroupHeader = L["TransportRateDetailDto.Group.1.RateParameters"],
-            DisplaySelector = dto => dto.IsDefRate
-                ? L["TransportRateDetailDto.Yes"]
-                : L["TransportRateDetailDto.No"],
-            VisibleSelector = _ => true
-        });
-    }
-
-    private void AddGroup1CreationChangeDateSettings(List<DetailSetting<TransportRateDetailDto>> results)
-    {
-        results.AddRange(
-        [
-            new DetailSetting<TransportRateDetailDto>
-            {
-                Name = nameof(TransportRateDetailDto.CreationDate),
-                Header = L["TransportRateDetailDto.CreationDate"],
-                GroupHeader = L["TransportRateDetailDto.Group.1.RateParameters"],
-                DisplaySelector = dto => dto.CreationDate,
-                VisibleSelector = _ => true,
-                HasMargin = true
-            },
-            new DetailSetting<TransportRateDetailDto>
-            {
-                Name = nameof(TransportRateDetailDto.LastChangeDate),
-                Header = L["TransportRateDetailDto.LastChangeDate"],
-                GroupHeader = L["TransportRateDetailDto.Group.1.RateParameters"],
-                DisplaySelector = dto => dto.LastChangeDate,
-                VisibleSelector = _ => true
-            }
-        ]);
-    }
-
-    private void AddGroup1IsArchiveSettings(List<DetailSetting<TransportRateDetailDto>> results)
-    {
-        results.Add(new DetailSetting<TransportRateDetailDto>
-        {
-            Name = nameof(TransportRateDetailDto.IsArchive),
-            Header = L["TransportRateDetailDto.IsArchive"],
-            GroupHeader = L["TransportRateDetailDto.Group.1.RateParameters"],
-            DisplaySelector = dto => dto.IsArchive
-                ? L["TransportRateDetailDto.Archive"]
-                : L["TransportRateDetailDto.Active"],
-            VisibleSelector = _ => true
-        });
-    }
-
-   
-
-    private void AddGroup2Settings(List<DetailSetting<TransportRateDetailDto>> results)
-    {
-        results.AddRange(
-        [
-            new DetailSetting<TransportRateDetailDto>
-            {
-                Name = nameof(TransportRateDetailDto.StartDate),
-                Header = L["TransportRateDetailDto.StartDate"],
-                GroupHeader = L["TransportRateDetailDto.Group.2.RateDates"],
-                DisplaySelector = dto => dto.StartDate,
-                VisibleSelector = _ => true
-            },
-            new DetailSetting<TransportRateDetailDto>
-            {
-                Name = nameof(TransportRateDetailDto.EndDate),
-                Header = L["TransportRateDetailDto.EndDate"],
-                GroupHeader = L["TransportRateDetailDto.Group.2.RateDates"],
-                DisplaySelector = dto => dto.EndDate,
-                VisibleSelector = _ => true
-            }
-        ]);
-    }
-
-    private void AddGroup3Settings(List<DetailSetting<TransportRateDetailDto>> results, bool isRu)
-    {
-        var group = L["TransportRateDetailDto.Group.3.OriginDestination"];
-
+        b.AddLocalized(isRu, g3, x => x.NodeFromNameRu, x => x.NodeFromNameEn, L["TransportRateDetailDto.NodeFromName"]);
+        b.Add(g3, x => x.NodeFromCode, L["TransportRateDetailDto.NodeFromCode"]);
+        b.AddLocalized(isRu, g3, x => x.RegionFromNameRu, x => x.RegionFromNameEn, L["TransportRateDetailDto.RegionFromName"]);
+        b.Add(g3, x => x.RegionFromCode, L["TransportRateDetailDto.RegionFromCode"]);
+        b.AddLocalized(isRu, g3, x => x.ProxyNodeNameRu, x => x.ProxyNodeNameEn, L["TransportRateDetailDto.ProxyNodeName"], visible: hasProxy, hasMargin: true);
+        b.Add(g3, x => x.ProxyNodeCode, L["TransportRateDetailDto.ProxyNodeCode"], visible: hasProxy);
+        b.AddLocalized(isRu, g3, x => x.ProxyRegionNameRu, x => x.ProxyRegionNameEn, L["TransportRateDetailDto.ProxyRegionName"], visible: hasProxy);
+        b.Add(g3, x => x.ProxyRegionCode, L["TransportRateDetailDto.ProxyRegionCode"], visible: hasProxy);
+        b.AddLocalized(isRu, g3, x => x.NodeToNameRu, x => x.NodeToNameEn, L["TransportRateDetailDto.NodeToName"], hasMargin: true);
+        b.Add(g3, x => x.NodeToCode, L["TransportRateDetailDto.NodeToCode"]);
+        b.AddLocalized(isRu, g3, x => x.RegionToNameRu, x => x.RegionToNameEn, L["TransportRateDetailDto.RegionToName"]);
+        b.Add(g3, x => x.RegionToCode, L["TransportRateDetailDto.RegionToCode"]);
+        b.Add(g3, x => x.Basis, L["TransportRateDetailDto.Basis"], visible: dto => dto.Basis is not null);
         if (isRu)
-            results.Add(new DetailSetting<TransportRateDetailDto>
-            {
-                Name = nameof(TransportRateDetailDto.NodeFromNameRu),
-                Header = L["TransportRateDetailDto.NodeFromName"],
-                GroupHeader = group,
-                DisplaySelector = dto => dto.NodeFromNameRu,
-                VisibleSelector = _ => true
-            });
-        else
-            results.Add(new DetailSetting<TransportRateDetailDto>
-            {
-                Name = nameof(TransportRateDetailDto.NodeFromNameEn),
-                Header = L["TransportRateDetailDto.NodeFromName"],
-                GroupHeader = group,
-                DisplaySelector = dto => dto.NodeFromNameEn,
-                VisibleSelector = _ => true
-            });
+            b.Add(g3, x => x.BasisNodeNameRu, L["TransportRateDetailDto.BasisNodeNameRu"], visible: dto => dto.BasisNodeCode is not null);
+        b.Add(g3, x => x.BasisNodeCode, L["TransportRateDetailDto.BasisNodeCode"], visible: dto => dto.BasisNodeCode is not null);
 
-        results.Add(new DetailSetting<TransportRateDetailDto>
-        {
-            Name = nameof(TransportRateDetailDto.NodeFromCode),
-            Header = L["TransportRateDetailDto.NodeFromCode"],
-            GroupHeader = group,
-            DisplaySelector = dto => dto.NodeFromCode,
-            VisibleSelector = _ => true
-        });
+        b.AddLocalized(isRu, g4, x => x.TransportKindNameRu, x => x.TransportKindNameRuEn, L["TransportRateDetailDto.TransportKindName"]);
+        b.Add(g4, x => x.TransportKindCode, L["TransportRateDetailDto.TransportKindCode"]);
+        b.AddLocalized(isRu, g4, x => x.TransportTypeNameRu, x => x.TransportTypeNameRuEn, L["TransportRateDetailDto.TransportTypeName"]);
+        b.Add(g4, x => x.TransportTypeCode, L["TransportRateDetailDto.TransportTypeCode"]);
 
-        if (isRu)
-            results.Add(new DetailSetting<TransportRateDetailDto>
-            {
-                Name = nameof(TransportRateDetailDto.RegionFromNameRu),
-                Header = L["TransportRateDetailDto.RegionFromName"],
-                GroupHeader = group,
-                DisplaySelector = dto => dto.RegionFromNameRu!,
-                VisibleSelector = _ => true
-            });
-        else
-            results.Add(new DetailSetting<TransportRateDetailDto>
-            {
-                Name = nameof(TransportRateDetailDto.RegionFromNameEn),
-                Header = L["TransportRateDetailDto.RegionFromName"],
-                GroupHeader = group,
-                DisplaySelector = dto => dto.RegionFromNameEn!,
-                VisibleSelector = _ => true
-            });
+        b.Add(g5, x => x.TenderServicePack, L["TransportRateDetailDto.TenderServicePack"], visible: dto => dto.TenderServicePack is not null);
 
-        results.Add(new DetailSetting<TransportRateDetailDto>
-        {
-            Name = nameof(TransportRateDetailDto.RegionFromCode),
-            Header = L["TransportRateDetailDto.RegionFromCode"],
-            GroupHeader = group,
-            DisplaySelector = dto => dto.RegionFromCode!,
-            VisibleSelector = _ => true
-        });
+        b.Add(g6, x => x.ProductGroupNameEnRu, L["TransportRateDetailDto.ProductGroupNameEnRu"], visible: dto => dto.ProductGroupCode is not null);
+        b.AddLocalized(isRu, g6, x => x.ProductNameRu, x => x.ProductNameEn, L["TransportRateDetailDto.ProductName"], visible: dto => dto.ProductCode is not null, hasMargin: true);
+        b.Add(g6, x => x.EffectiveLoadOfTransportType, L["TransportRateDetailDto.EffectiveLoadOfTransportType"]);
+        b.Add(g6, x => x.ProductGroupCode, L["TransportRateDetailDto.ProductGroupCode"], visible: dto => dto.ProductGroupCode is not null);
+        b.Add(g6, x => x.ProductCode, L["TransportRateDetailDto.ProductCode"], visible: dto => dto.ProductCode is not null, hasMargin: true);
+        b.Add(g6, x => x.ProductDPOCOde, L["TransportRateDetailDto.ProductDPOCOde"], visible: dto => dto.ProductDPOCOde is not null);
+        b.Add(g6, x => x.ContractorCode, L["TransportRateDetailDto.ContractorCode"], visible: dto => dto.ContractorCode is not null, hasMargin: true);
+        b.Add(g6, x => x.ContractorEGRUL, L["TransportRateDetailDto.ContractorEGRUL"], visible: dto => dto.ContractorCode is not null);
 
-        if (isRu)
-            results.Add(new DetailSetting<TransportRateDetailDto>
-            {
-                Name = nameof(TransportRateDetailDto.ProxyNodeNameRu),
-                Header = L["TransportRateDetailDto.ProxyNodeName"],
-                GroupHeader = group,
-                DisplaySelector = dto => dto.ProxyNodeNameRu!,
-                VisibleSelector = dto => dto.ProxyNodeCode is not null,
-                HasMargin = true
-            });
-        else
-            results.Add(new DetailSetting<TransportRateDetailDto>
-            {
-                Name = nameof(TransportRateDetailDto.ProxyNodeNameEn),
-                Header = L["TransportRateDetailDto.ProxyNodeName"],
-                GroupHeader = group,
-                DisplaySelector = dto => dto.ProxyNodeNameEn!,
-                VisibleSelector = dto => dto.ProxyNodeCode is not null,
-                HasMargin = true
-            });
+        b.Add(g7, x => x.CalcType, L["TransportRateDetailDto.CalcType"]);
+        b.Add(g7, x => x.TotalCostTransport, L["TransportRateDetailDto.TotalCostTransport"]);
+        b.Add(g7, x => x.TotalCostTon, L["TransportRateDetailDto.TotalCostTon"]);
+        b.Add(g7, x => x.CurrencyStandard, L["TransportRateDetailDto.Currency"]);
+        b.Add(g7, x => x.CurrencyRateMonth, L["TransportRateDetailDto.CurrencyRateMonth"]);
+        b.Add(g7, x => x.TotalCostTonRUB, L["TransportRateDetailDto.TotalCostTonRUB"]);
 
-        results.Add(new DetailSetting<TransportRateDetailDto>
-        {
-            Name = nameof(TransportRateDetailDto.ProxyNodeCode),
-            Header = L["TransportRateDetailDto.ProxyNodeCode"],
-            GroupHeader = group,
-            DisplaySelector = dto => dto.ProxyNodeCode!,
-            VisibleSelector = dto => dto.ProxyNodeCode is not null
-        });
+        b.Add(g8, x => x.LoadedRFSize, L["TransportRateDetailDto.LoadedRFSize"], display: dto => dto.LoadedRFSize != 0 ? dto.LoadedRFSize : string.Empty);
+        b.Add(g8, x => x.LoadedRFCurrency, L["TransportRateDetailDto.LoadedRFCurrency"]);
+        b.Add(g8, x => x.LoadedCISSize, L["TransportRateDetailDto.LoadedCISSize"], visible: notTc, display: dto => dto.LoadedCISSize != 0 ? dto.LoadedCISSize : string.Empty);
+        b.Add(g8, x => x.LoadedCISCurrency, L["TransportRateDetailDto.LoadedCISCurrency"], visible: notTc);
+        b.Add(g8, x => x.EmptyRFSize, L["TransportRateDetailDto.EmptyRFSize"], visible: notTc, display: dto => dto.EmptyRFSize != 0 ? dto.EmptyRFSize : string.Empty);
+        b.Add(g8, x => x.EmptyRFCurrency, L["TransportRateDetailDto.EmptyRFCurrency"], visible: notTc);
+        b.Add(g8, x => x.EmptyCISSize, L["TransportRateDetailDto.EmptyCISSize"], visible: notTc, display: dto => dto.EmptyCISSize != 0 ? dto.EmptyCISSize : string.Empty);
+        b.Add(g8, x => x.EmptyCISCurrency, L["TransportRateDetailDto.EmptyCISCurrency"], visible: notTc);
+        b.Add(g8, x => x.ProvisionTransportSize, L["TransportRateDetailDto.ProvisionTransportSize"], visible: notTc, display: dto => dto.ProvisionTransportSize != 0 ? dto.ProvisionTransportSize : string.Empty);
+        b.Add(g8, x => x.ProvisionTransportCurrency, L["TransportRateDetailDto.ProvisionTransportCurrency"], visible: notTc);
+        b.Add(g8, x => x.TEFromSize, L["TransportRateDetailDto.TEFromSize"], visible: notTc, display: dto => dto.TEFromSize != 0 ? dto.TEFromSize : string.Empty);
+        b.Add(g8, x => x.TEFromCurrency, L["TransportRateDetailDto.TEFromCurrency"], visible: notTc);
+        b.Add(g8, x => x.RatePNPFromSize, L["TransportRateDetailDto.RatePNPFromSize"], visible: notTc, display: dto => dto.RatePNPFromSize != 0 ? dto.RatePNPFromSize : string.Empty);
+        b.Add(g8, x => x.PNPFromCurrency, L["TransportRateDetailDto.PNPFromCurrency"], visible: notTc);
+        b.Add(g8, x => x.TEFromSize_fix, L["TransportRateDetailDto.TEFromSize_fix"], visible: notTc, display: dto => dto.TEFromSize_fix != 0 ? dto.TEFromSize_fix : string.Empty);
+        b.Add(g8, x => x.TEFromCurrency_fix, L["TransportRateDetailDto.TEFromCurrency_fix"], visible: notTc);
+        b.Add(g8, x => x.TEToSize, L["TransportRateDetailDto.TEToSize"], visible: notTc, display: dto => dto.TEToSize != 0 ? dto.TEToSize : string.Empty);
+        b.Add(g8, x => x.TEToCurrency, L["TransportRateDetailDto.TEToCurrency"], visible: notTc);
+        b.Add(g8, x => x.PNPToSize, L["TransportRateDetailDto.PNPToSize"], visible: notTc, display: dto => dto.PNPToSize != 0 ? dto.PNPToSize : string.Empty);
+        b.Add(g8, x => x.PNPToCurrency, L["TransportRateDetailDto.PNPToCurrency"], visible: notTc);
+        b.Add(g8, x => x.TEToSize_fix, L["TransportRateDetailDto.TEToSize_fix"], visible: notTc, display: dto => dto.TEToSize_fix != 0 ? dto.TEToSize_fix : string.Empty);
+        b.Add(g8, x => x.TEToCurrency_fix, L["TransportRateDetailDto.TEToCurrency_fix"], visible: notTc);
+        b.Add(g8, x => x.DrainLoadingSize, L["TransportRateDetailDto.DrainLoadingSize"], visible: notTc, display: dto => dto.DrainLoadingSize != 0 ? dto.DrainLoadingSize : string.Empty);
+        b.Add(g8, x => x.DrainLoadingCurrency, L["TransportRateDetailDto.DrainLoadingCurrency"], visible: notTc);
+        b.Add(g8, x => x.TransshipmentSize, L["TransportRateDetailDto.TransshipmentSize"], visible: notTc, display: dto => dto.TransshipmentSize != 0 ? dto.TransshipmentSize : string.Empty);
+        b.Add(g8, x => x.TransshipmentCurrency, L["TransportRateDetailDto.TransshipmentCurrency"], visible: notTc);
+        b.Add(g8, x => x.FreightSize, L["TransportRateDetailDto.FreightSize"], visible: notTc, display: dto => dto.FreightSize != 0 ? dto.FreightSize : string.Empty);
+        b.Add(g8, x => x.FreightCurrency, L["TransportRateDetailDto.FreightCurrency"], visible: notTc);
+        b.Add(g8, x => x.AdditionalFeesCISSize, L["TransportRateDetailDto.AdditionalFeesCISSize"], visible: notTc, display: dto => dto.AdditionalFeesCISSize != 0 ? dto.AdditionalFeesCISSize : string.Empty);
+        b.Add(g8, x => x.AdditionalFeesCISCurrency, L["TransportRateDetailDto.AdditionalFeesCISCurrency"], visible: notTc);
+        b.Add(g8, x => x.FerryboatSize, L["TransportRateDetailDto.FerryboatSize"], visible: notTc, display: dto => dto.FerryboatSize != 0 ? dto.FerryboatSize : string.Empty);
+        b.Add(g8, x => x.FerryboatCurrency, L["TransportRateDetailDto.FerryboatCurrency"], visible: notTc);
 
-        if (isRu)
-            results.Add(new DetailSetting<TransportRateDetailDto>
-            {
-                Name = nameof(TransportRateDetailDto.ProxyRegionNameRu),
-                Header = L["TransportRateDetailDto.ProxyRegionName"],
-                GroupHeader = group,
-                DisplaySelector = dto => dto.ProxyRegionNameRu!,
-                VisibleSelector = dto => dto.ProxyNodeCode is not null
-            });
-        else
-            results.Add(new DetailSetting<TransportRateDetailDto>
-            {
-                Name = nameof(TransportRateDetailDto.ProxyRegionNameEn),
-                Header = L["TransportRateDetailDto.ProxyRegionName"],
-                GroupHeader = group,
-                DisplaySelector = dto => dto.ProxyRegionNameEn!,
-                VisibleSelector = dto => dto.ProxyNodeCode is not null
-            });
+        b.Add(g10, x => x.Comment, L["TransportRateDetailDto.Comment"], visible: dto => dto.Comment is not null);
 
-        results.Add(new DetailSetting<TransportRateDetailDto>
-        {
-            Name = nameof(TransportRateDetailDto.ProxyRegionCode),
-            Header = L["TransportRateDetailDto.ProxyRegionCode"],
-            GroupHeader = group,
-            DisplaySelector = dto => dto.ProxyRegionCode!,
-            VisibleSelector = dto => dto.ProxyNodeCode is not null
-        });
+        b.Add(g11, x => x.TotalCostTonUSD, L["TransportRateDetailDto.TotalCostTonUSD"]);
+        b.Add(g11, x => x.TotalCostTonEUR, L["TransportRateDetailDto.TotalCostTonEUR"]);
+        b.Add(g11, x => x.TotalCostTonCNY, L["TransportRateDetailDto.TotalCostTonCNY"]);
+        b.Add(g11, x => x.TotalCostTransportRUB, L["TransportRateDetailDto.TotalCostTransportRUB"], hasMargin: true);
+        b.Add(g11, x => x.TotalCostTransportUSD, L["TransportRateDetailDto.TotalCostTransportUSD"]);
+        b.Add(g11, x => x.TotalCostTransportEUR, L["TransportRateDetailDto.TotalCostTransportEUR"]);
+        b.Add(g11, x => x.TotalCostTransportCNY, L["TransportRateDetailDto.TotalCostTransportCNY"]);
 
-        if (isRu)
-            results.Add(new DetailSetting<TransportRateDetailDto>
-            {
-                Name = nameof(TransportRateDetailDto.NodeToNameRu),
-                Header = L["TransportRateDetailDto.NodeToName"],
-                GroupHeader = group,
-                DisplaySelector = dto => dto.NodeToNameRu,
-                VisibleSelector = _ => true,
-                HasMargin = true
-            });
-        else
-            results.Add(new DetailSetting<TransportRateDetailDto>
-            {
-                Name = nameof(TransportRateDetailDto.NodeToNameEn),
-                Header = L["TransportRateDetailDto.NodeToName"],
-                GroupHeader = group,
-                DisplaySelector = dto => dto.NodeToNameEn,
-                VisibleSelector = _ => true,
-                HasMargin = true
-            });
+        b.Add(g12, x => x.LegCode, L["TransportRateDetailDto.LegCode"]);
+        b.Add(g12, x => x.LegChangeDate, L["TransportRateDetailDto.LegChangeDate"]);
+        b.Add(g12, x => x.LeadTimeCode, L["TransportRateDetailDto.LeadTimeCode"], visible: hasLeadTime, hasMargin: true);
+        b.Add(g12, x => x.LeadTimeStartDate, L["TransportRateDetailDto.LeadTimeStartDate"], visible: hasLeadTime);
+        b.Add(g12, x => x.LeadTimeEndDate, L["TransportRateDetailDto.LeadTimeEndDate"], visible: hasLeadTime);
+        b.Add(g12, x => x.LeadTimeChangeDate, L["TransportRateDetailDto.LeadTimeChangeDate"], visible: hasLeadTime);
+        b.Add(g12, x => x.LeadTimeSearchTime, L["TransportRateDetailDto.SearchTime"], visible: hasLeadTime, hasMargin: true);
+        b.Add(g12, x => x.LeadTimeLoadTime, L["TransportRateDetailDto.LoadTime"], visible: hasLeadTime);
+        b.Add(g12, x => x.LeadTimeDaysWaiting, L["TransportRateDetailDto.DaysWaiting"], visible: hasLeadTime);
+        b.Add(g12, x => x.LeadTimeTravelTime, L["TransportRateDetailDto.TravelTime"], visible: hasLeadTime);
+        b.Add(g12, x => x.LeadTimeUnLoadTime, L["TransportRateDetailDto.UnLoadTime"], visible: hasLeadTime);
+        b.Add(g12, x => x.LeadTimeTransportationTime, L["TransportRateDetailDto.TransportationTime"], visible: hasLeadTime);
+        b.Add(g12, x => x.LeadTimeDistance, L["TransportRateDetailDto.Distance"], visible: hasLeadTime, hasMargin: true);
 
-        results.Add(new DetailSetting<TransportRateDetailDto>
-        {
-            Name = nameof(TransportRateDetailDto.NodeToCode),
-            Header = L["TransportRateDetailDto.NodeToCode"],
-            GroupHeader = group,
-            DisplaySelector = dto => dto.NodeToCode,
-            VisibleSelector = _ => true
-        });
+        b.Add(g13, x => x.Leg1_TransportTypeCode, L["TransportRateDetailDto.TransportTypeCode"], visible: hasProxy);
+        b.AddLocalized(isRu, g13, x => x.Leg1_TransportTypeNameRu, x => x.Leg1_TransportTypeNameRuEn, L["TransportRateDetailDto.TransportTypeName"], visible: hasProxy);
+        b.Add(g13, x => x.Leg1_EffectiveLoad, L["TransportRateDetailDto.Leg1_EffectiveLoad"], visible: hasProxy, hasMargin: true);
+        b.Add(g13, x => x.Leg1_TotalCostTon, L["TransportRateDetailDto.Leg1_TotalCostTon"], visible: hasProxy);
+        b.Add(g13, x => x.Leg1_TotalCostTransport, L["TransportRateDetailDto.Leg1_TotalCostTransport"], visible: hasProxy);
+        b.Add(g13, x => x.Leg1_BaseCurrency, L["TransportRateDetailDto.Leg1_BaseCurrency"], visible: hasProxy);
+        b.Add(g13, x => x.Leg1_TotalCostTonRUB, L["TransportRateDetailDto.Leg1_TotalCostTonRUB"], visible: hasProxy, hasMargin: true);
+        b.Add(g13, x => x.Leg1_TotalCostTonUSD, L["TransportRateDetailDto.Leg1_TotalCostTonUSD"], visible: hasProxy);
+        b.Add(g13, x => x.Leg1_TotalCostTonEUR, L["TransportRateDetailDto.Leg1_TotalCostTonEUR"], visible: hasProxy);
+        b.Add(g13, x => x.Leg1_TotalCostTonCNY, L["TransportRateDetailDto.Leg1_TotalCostTonCNY"], visible: hasProxy);
+        b.Add(g13, x => x.Leg1_TotalCostTransportRUB, L["TransportRateDetailDto.Leg1_TotalCostTransportRUB"], visible: hasProxy, hasMargin: true);
+        b.Add(g13, x => x.Leg1_TotalCostTransportUSD, L["TransportRateDetailDto.Leg1_TotalCostTransportUSD"], visible: hasProxy);
+        b.Add(g13, x => x.Leg1_TotalCostTransportEUR, L["TransportRateDetailDto.Leg1_TotalCostTransportEUR"], visible: hasProxy);
+        b.Add(g13, x => x.Leg1_TotalCostTransportCNY, L["TransportRateDetailDto.Leg1_TotalCostTransportCNY"], visible: hasProxy);
 
-        if (isRu)
-            results.Add(new DetailSetting<TransportRateDetailDto>
-            {
-                Name = nameof(TransportRateDetailDto.RegionToNameRu),
-                Header = L["TransportRateDetailDto.RegionToName"],
-                GroupHeader = group,
-                DisplaySelector = dto => dto.RegionToNameRu!,
-                VisibleSelector = _ => true
-            });
-        else
-            results.Add(new DetailSetting<TransportRateDetailDto>
-            {
-                Name = nameof(TransportRateDetailDto.RegionToNameEn),
-                Header = L["TransportRateDetailDto.RegionToName"],
-                GroupHeader = group,
-                DisplaySelector = dto => dto.RegionToNameEn!,
-                VisibleSelector = _ => true
-            });
+        b.Add(g14, x => x.LeadTimeLeg1_SearchTime, L["TransportRateDetailDto.Leg1_SearchTime"], visible: hasProxy);
+        b.Add(g14, x => x.LeadTimeLeg1_LoadTime, L["TransportRateDetailDto.Leg1_LoadTime"], visible: hasProxy);
+        b.Add(g14, x => x.LeadTimeLeg1_DaysWaiting, L["TransportRateDetailDto.Leg1_DaysWaiting"], visible: hasProxy);
+        b.Add(g14, x => x.LeadTimeLeg1_TravelTime, L["TransportRateDetailDto.Leg1_TravelTime"], visible: hasProxy);
+        b.Add(g14, x => x.LeadTimeLeg1_TransportationTime, L["TransportRateDetailDto.Leg1_TransportationTime"], visible: hasProxy);
+        b.Add(g14, x => x.LeadTimeLeg1_Distance, L["TransportRateDetailDto.Leg1_Distance"], visible: hasProxy, hasMargin: true);
 
-        results.Add(new DetailSetting<TransportRateDetailDto>
-        {
-            Name = nameof(TransportRateDetailDto.RegionToCode),
-            Header = L["TransportRateDetailDto.RegionToCode"],
-            GroupHeader = group,
-            DisplaySelector = dto => dto.RegionToCode!,
-            VisibleSelector = _ => true
-        });
+        b.Add(g15, x => x.Leg2_TransportTypeCode, L["TransportRateDetailDto.TransportTypeCode"], visible: hasProxy);
+        b.AddLocalized(isRu, g15, x => x.Leg2_TransportTypeNameRu, x => x.Leg2_TransportTypeNameRuEn, L["TransportRateDetailDto.TransportTypeName"], visible: hasProxy);
+        b.Add(g15, x => x.Leg2_EffectiveLoad, L["TransportRateDetailDto.Leg2_EffectiveLoad"], visible: hasProxy, hasMargin: true);
+        b.Add(g15, x => x.Leg2_TotalCostTon, L["TransportRateDetailDto.Leg2_TotalCostTon"], visible: hasProxy);
+        b.Add(g15, x => x.Leg2_TotalCostTransport, L["TransportRateDetailDto.Leg2_TotalCostTransport"], visible: hasProxy);
+        b.Add(g15, x => x.Leg2_BaseCurrency, L["TransportRateDetailDto.Leg2_BaseCurrency"], visible: hasProxy);
+        b.Add(g15, x => x.Leg2_TotalCostTonRUB, L["TransportRateDetailDto.Leg2_TotalCostTonRUB"], visible: hasProxy, hasMargin: true);
+        b.Add(g15, x => x.Leg2_TotalCostTonUSD, L["TransportRateDetailDto.Leg2_TotalCostTonUSD"], visible: hasProxy);
+        b.Add(g15, x => x.Leg2_TotalCostTonEUR, L["TransportRateDetailDto.Leg2_TotalCostTonEUR"], visible: hasProxy);
+        b.Add(g15, x => x.Leg2_TotalCostTonCNY, L["TransportRateDetailDto.Leg2_TotalCostTonCNY"], visible: hasProxy);
+        b.Add(g15, x => x.Leg2_TotalCostTransportRUB, L["TransportRateDetailDto.Leg2_TotalCostTransportRUB"], visible: hasProxy, hasMargin: true);
+        b.Add(g15, x => x.Leg2_TotalCostTransportUSD, L["TransportRateDetailDto.Leg2_TotalCostTransportUSD"], visible: hasProxy);
+        b.Add(g15, x => x.Leg2_TotalCostTransportEUR, L["TransportRateDetailDto.Leg2_TotalCostTransportEUR"], visible: hasProxy);
+        b.Add(g15, x => x.Leg2_TotalCostTransportCNY, L["TransportRateDetailDto.Leg2_TotalCostTransportCNY"], visible: hasProxy);
 
-        results.Add(new DetailSetting<TransportRateDetailDto>
-        {
-            Name = nameof(TransportRateDetailDto.Basis),
-            Header = L["TransportRateDetailDto.Basis"],
-            GroupHeader = group,
-            DisplaySelector = dto => dto.Basis!,
-            VisibleSelector = dto => dto.Basis is not null
-        });
+        b.Add(g16, x => x.LeadTimeLeg2_TravelTime, L["TransportRateDetailDto.Leg2_TravelTime"], visible: hasProxy);
+        b.Add(g16, x => x.LeadTimeLeg2_DaysWaiting, L["TransportRateDetailDto.Leg2_DaysWaiting"], visible: hasProxy);
+        b.Add(g16, x => x.LeadTimeLeg2_UploadTime, L["TransportRateDetailDto.Leg2_UpLoadTime"], visible: hasProxy);
+        b.Add(g16, x => x.LeadTimeLeg2_TransportationTime, L["TransportRateDetailDto.Leg2_TransportationTime"], visible: hasProxy);
+        b.Add(g16, x => x.LeadTimeLeg2_Distance, L["TransportRateDetailDto.Leg2_Distance"], visible: hasProxy, hasMargin: true);
 
-        if (isRu)
-            results.Add(new DetailSetting<TransportRateDetailDto>
-            {
-                Name = nameof(TransportRateDetailDto.BasisNodeNameRu),
-                Header = L["TransportRateDetailDto.BasisNodeNameRu"],
-                GroupHeader = group,
-                DisplaySelector = dto => dto.BasisNodeNameRu!,
-                VisibleSelector = dto => dto.BasisNodeCode is not null
-            });
-
-        results.Add(new DetailSetting<TransportRateDetailDto>
-        {
-            Name = nameof(TransportRateDetailDto.BasisNodeCode),
-            Header = L["TransportRateDetailDto.BasisNodeCode"],
-            GroupHeader = group,
-            DisplaySelector = dto => dto.BasisNodeCode!,
-            VisibleSelector = dto => dto.BasisNodeCode is not null
-        });
-    }
-
-    private void AddGroup4Settings(List<DetailSetting<TransportRateDetailDto>> results, bool isRu)
-    {
-        var group = L["TransportRateDetailDto.Group.4.Transport"];
-
-        if (isRu)
-            results.Add(new DetailSetting<TransportRateDetailDto>
-            {
-                Name = nameof(TransportRateDetailDto.TransportKindNameRu),
-                Header = L["TransportRateDetailDto.TransportKindName"],
-                GroupHeader = group,
-                DisplaySelector = dto => dto.TransportKindNameRu,
-                VisibleSelector = _ => true
-            });
-        else
-            results.Add(new DetailSetting<TransportRateDetailDto>
-            {
-                Name = nameof(TransportRateDetailDto.TransportKindNameRuEn),
-                Header = L["TransportRateDetailDto.TransportKindName"],
-                GroupHeader = group,
-                DisplaySelector = dto => dto.TransportKindNameRuEn,
-                VisibleSelector = _ => true
-            });
-
-        results.Add(new DetailSetting<TransportRateDetailDto>
-        {
-            Name = nameof(TransportRateDetailDto.TransportKindCode),
-            Header = L["TransportRateDetailDto.TransportKindCode"],
-            GroupHeader = group,
-            DisplaySelector = dto => dto.TransportKindCode,
-            VisibleSelector = _ => true
-        });
-
-        if (isRu)
-            results.Add(new DetailSetting<TransportRateDetailDto>
-            {
-                Name = nameof(TransportRateDetailDto.TransportTypeNameRu),
-                Header = L["TransportRateDetailDto.TransportTypeName"],
-                GroupHeader = group,
-                DisplaySelector = dto => dto.TransportTypeNameRu,
-                VisibleSelector = _ => true
-            });
-        else
-            results.Add(new DetailSetting<TransportRateDetailDto>
-            {
-                Name = nameof(TransportRateDetailDto.TransportTypeNameRuEn),
-                Header = L["TransportRateDetailDto.TransportTypeName"],
-                GroupHeader = group,
-                DisplaySelector = dto => dto.TransportTypeNameRuEn,
-                VisibleSelector = _ => true
-            });
-
-        results.Add(new DetailSetting<TransportRateDetailDto>
-        {
-            Name = nameof(TransportRateDetailDto.TransportTypeCode),
-            Header = L["TransportRateDetailDto.TransportTypeCode"],
-            GroupHeader = group,
-            DisplaySelector = dto => dto.TransportTypeCode,
-            VisibleSelector = _ => true
-        });
-    }
-
-    private void AddGroup5Settings(List<DetailSetting<TransportRateDetailDto>> results)
-    {
-        results.Add(new DetailSetting<TransportRateDetailDto>
-        {
-            Name = nameof(TransportRateDetailDto.TenderServicePack),
-            Header = L["TransportRateDetailDto.TenderServicePack"],
-            GroupHeader = L["TransportRateDetailDto.Group.5.MultimodalTransportation"],
-            DisplaySelector = dto => dto.TenderServicePack!,
-            VisibleSelector = dto => dto.TenderServicePack is not null
-        });
-    }
-
-    private void AddGroup6Settings(List<DetailSetting<TransportRateDetailDto>> results, bool isRu)
-    {
-        var group = L["TransportRateDetailDto.Group.6.Cargo"];
-
-        results.Add(new DetailSetting<TransportRateDetailDto>
-        {
-            Name = nameof(TransportRateDetailDto.ProductGroupNameEnRu),
-            Header = L["TransportRateDetailDto.ProductGroupNameEnRu"],
-            GroupHeader = group,
-            DisplaySelector = dto => dto.ProductGroupNameEnRu!,
-            VisibleSelector = dto => dto.ProductGroupCode is not null
-        });
-
-        if (isRu)
-            results.Add(new DetailSetting<TransportRateDetailDto>
-            {
-                Name = nameof(TransportRateDetailDto.ProductNameRu),
-                Header = L["TransportRateDetailDto.ProductName"],
-                GroupHeader = group,
-                DisplaySelector = dto => dto.ProductNameRu!,
-                VisibleSelector = dto => dto.ProductCode is not null,
-                HasMargin = true
-            });
-        else
-            results.Add(new DetailSetting<TransportRateDetailDto>
-            {
-                Name = nameof(TransportRateDetailDto.ProductNameEn),
-                Header = L["TransportRateDetailDto.ProductName"],
-                GroupHeader = group,
-                DisplaySelector = dto => dto.ProductNameEn!,
-                VisibleSelector = dto => dto.ProductCode is not null,
-                HasMargin = true
-            });
-
-        results.Add(new DetailSetting<TransportRateDetailDto>
-        {
-            Name = nameof(TransportRateDetailDto.EffectiveLoadOfTransportType),
-            Header = L["TransportRateDetailDto.EffectiveLoadOfTransportType"],
-            GroupHeader = group,
-            DisplaySelector = dto => dto.EffectiveLoadOfTransportType,
-            VisibleSelector = _ => true
-        });
-
-        results.Add(new DetailSetting<TransportRateDetailDto>
-        {
-            Name = nameof(TransportRateDetailDto.ProductGroupCode),
-            Header = L["TransportRateDetailDto.ProductGroupCode"],
-            GroupHeader = group,
-            DisplaySelector = dto => dto.ProductGroupCode!,
-            VisibleSelector = dto => dto.ProductGroupCode is not null
-        });
-        results.Add(new DetailSetting<TransportRateDetailDto>
-        {
-            Name = nameof(TransportRateDetailDto.ProductCode),
-            Header = L["TransportRateDetailDto.ProductCode"],
-            GroupHeader = group,
-            DisplaySelector = dto => dto.ProductCode!,
-            VisibleSelector = dto => dto.ProductCode is not null,
-            HasMargin = true
-        });
-        results.Add(new DetailSetting<TransportRateDetailDto>
-        {
-            Name = nameof(TransportRateDetailDto.ProductDPOCOde),
-            Header = L["TransportRateDetailDto.ProductDPOCOde"],
-            GroupHeader = group,
-            DisplaySelector = dto => dto.ProductDPOCOde!,
-            VisibleSelector = dto => dto.ProductDPOCOde is not null
-        });
-        results.Add(new DetailSetting<TransportRateDetailDto>
-        {
-            Name = nameof(TransportRateDetailDto.ContractorCode),
-            Header = L["TransportRateDetailDto.ContractorCode"],
-            GroupHeader = group,
-            DisplaySelector = dto => dto.ContractorCode!,
-            VisibleSelector = dto => dto.ContractorCode is not null,
-            HasMargin = true
-        });
-        results.Add(new DetailSetting<TransportRateDetailDto>
-        {
-            Name = nameof(TransportRateDetailDto.ContractorEGRUL),
-            Header = L["TransportRateDetailDto.ContractorEGRUL"],
-            GroupHeader = group,
-            DisplaySelector = dto => dto.ContractorEGRUL!,
-            VisibleSelector = dto => dto.ContractorCode is not null
-        });
-    }
-
-    private void AddGroup7Settings(List<DetailSetting<TransportRateDetailDto>> results)
-    {
-        results.AddRange(
-        [
-            new DetailSetting<TransportRateDetailDto>
-            {
-                Name = nameof(TransportRateDetailDto.CalcType),
-                Header = L["TransportRateDetailDto.CalcType"],
-                GroupHeader = L["TransportRateDetailDto.Group.7.RateAmountExcludingVAT"],
-                DisplaySelector = dto => dto.CalcType,
-                VisibleSelector = _ => true
-            },
-            new DetailSetting<TransportRateDetailDto>
-            {
-                Name = nameof(TransportRateDetailDto.TotalCostTransport),
-                Header = L["TransportRateDetailDto.TotalCostTransport"],
-                GroupHeader = L["TransportRateDetailDto.Group.7.RateAmountExcludingVAT"],
-                DisplaySelector = dto => dto.TotalCostTransport,
-                VisibleSelector = _ => true
-            },
-            new DetailSetting<TransportRateDetailDto>
-            {
-                Name = nameof(TransportRateDetailDto.TotalCostTon),
-                Header = L["TransportRateDetailDto.TotalCostTon"],
-                GroupHeader = L["TransportRateDetailDto.Group.7.RateAmountExcludingVAT"],
-                DisplaySelector = dto => dto.TotalCostTon,
-                VisibleSelector = _ => true
-            },
-            new DetailSetting<TransportRateDetailDto>
-            {
-                Name = nameof(TransportRateDetailDto.CurrencyStandard),
-                Header = L["TransportRateDetailDto.Currency"],
-                GroupHeader = L["TransportRateDetailDto.Group.7.RateAmountExcludingVAT"],
-                DisplaySelector = dto => dto.CurrencyStandard,
-                VisibleSelector = _ => true
-            },
-            new DetailSetting<TransportRateDetailDto>
-            {
-                Name = nameof(TransportRateDetailDto.CurrencyRateMonth),
-                Header = L["TransportRateDetailDto.CurrencyRateMonth"],
-                GroupHeader = L["TransportRateDetailDto.Group.7.RateAmountExcludingVAT"],
-                DisplaySelector = dto => dto.CurrencyRateMonth,
-                VisibleSelector = _ => true
-            },
-            new DetailSetting<TransportRateDetailDto>
-            {
-                Name = nameof(TransportRateDetailDto.TotalCostTonRUB),
-                Header = L["TransportRateDetailDto.TotalCostTonRUB"],
-                GroupHeader = L["TransportRateDetailDto.Group.7.RateAmountExcludingVAT"],
-                DisplaySelector = dto => dto.TotalCostTonRUB,
-                VisibleSelector = _ => true
-            }
-        ]);
-    }
-
-   
-
-    private void AddGroup8Settings(List<DetailSetting<TransportRateDetailDto>> results)
-    {
-        Func<TransportRateDetailDto, bool> visibleSelector = dto => dto.CalcType != "ТС";
-        var group = L["TransportRateDetailDto.Group.8.RateComponentsExcludingVATPerTon"].Value;
-
-        AddFeePair(results, nameof(TransportRateDetailDto.LoadedRFSize), nameof(TransportRateDetailDto.LoadedRFCurrency),
-            dto => dto.LoadedRFSize, dto => dto.LoadedRFCurrency, _=>true, group);
-        AddFeePair(results, nameof(TransportRateDetailDto.LoadedCISSize), nameof(TransportRateDetailDto.LoadedCISCurrency),
-            dto => dto.LoadedCISSize, dto => dto.LoadedCISCurrency, visibleSelector, group);
-        AddFeePair(results, nameof(TransportRateDetailDto.EmptyRFSize), nameof(TransportRateDetailDto.EmptyRFCurrency),
-            dto => dto.EmptyRFSize, dto => dto.EmptyRFCurrency, visibleSelector, group);
-        AddFeePair(results, nameof(TransportRateDetailDto.EmptyCISSize), nameof(TransportRateDetailDto.EmptyCISCurrency),
-            dto => dto.EmptyCISSize, dto => dto.EmptyCISCurrency, visibleSelector, group);
-        AddFeePair(results, nameof(TransportRateDetailDto.ProvisionTransportSize), nameof(TransportRateDetailDto.ProvisionTransportCurrency),
-            dto => dto.ProvisionTransportSize, dto => dto.ProvisionTransportCurrency, visibleSelector, group);
-        AddFeePair(results, nameof(TransportRateDetailDto.TEFromSize), nameof(TransportRateDetailDto.TEFromCurrency),
-            dto => dto.TEFromSize, dto => dto.TEFromCurrency, visibleSelector, group);
-        AddFeePair(results, nameof(TransportRateDetailDto.RatePNPFromSize), nameof(TransportRateDetailDto.PNPFromCurrency),
-            dto => dto.RatePNPFromSize, dto => dto.PNPFromCurrency, visibleSelector, group);
-        AddFeePair(results, nameof(TransportRateDetailDto.TEFromSize_fix), nameof(TransportRateDetailDto.TEFromCurrency_fix),
-            dto => dto.TEFromSize_fix, dto => dto.TEFromCurrency_fix, visibleSelector, group);
-        AddFeePair(results, nameof(TransportRateDetailDto.TEToSize), nameof(TransportRateDetailDto.TEToCurrency),
-            dto => dto.TEToSize, dto => dto.TEToCurrency, visibleSelector, group);
-        AddFeePair(results, nameof(TransportRateDetailDto.PNPToSize), nameof(TransportRateDetailDto.PNPToCurrency),
-            dto => dto.PNPToSize, dto => dto.PNPToCurrency, visibleSelector, group);
-        AddFeePair(results, nameof(TransportRateDetailDto.TEToSize_fix), nameof(TransportRateDetailDto.TEToCurrency_fix),
-            dto => dto.TEToSize_fix, dto => dto.TEToCurrency_fix, visibleSelector, group);
-        AddFeePair(results, nameof(TransportRateDetailDto.DrainLoadingSize), nameof(TransportRateDetailDto.DrainLoadingCurrency),
-            dto => dto.DrainLoadingSize, dto => dto.DrainLoadingCurrency, visibleSelector, group);
-        AddFeePair(results, nameof(TransportRateDetailDto.TransshipmentSize), nameof(TransportRateDetailDto.TransshipmentCurrency),
-            dto => dto.TransshipmentSize, dto => dto.TransshipmentCurrency, visibleSelector, group);
-        AddFeePair(results, nameof(TransportRateDetailDto.FreightSize), nameof(TransportRateDetailDto.FreightCurrency),
-            dto => dto.FreightSize, dto => dto.FreightCurrency, visibleSelector, group);
-        AddFeePair(results, nameof(TransportRateDetailDto.AdditionalFeesCISSize), nameof(TransportRateDetailDto.AdditionalFeesCISCurrency),
-            dto => dto.AdditionalFeesCISSize, dto => dto.AdditionalFeesCISCurrency, visibleSelector, group);
-        AddFeePair(results, nameof(TransportRateDetailDto.FerryboatSize), nameof(TransportRateDetailDto.FerryboatCurrency),
-            dto => dto.FerryboatSize, dto => dto.FerryboatCurrency, visibleSelector, group);
-    }
-    private void AddFeePair(
-        List<DetailSetting<TransportRateDetailDto>> results,
-        string sizeName,
-        string currencyName,
-        Func<TransportRateDetailDto, decimal> sizeSelector,
-        Func<TransportRateDetailDto, string?> currencySelector,
-        Func<TransportRateDetailDto, bool> visibleSelector,
-        string group)
-    {
-        results.Add(new DetailSetting<TransportRateDetailDto>
-        {
-            Name = sizeName,
-            Header = L[$"TransportRateDetailDto.{sizeName}"],
-            GroupHeader = group,
-            DisplaySelector = dto => sizeSelector(dto) != 0 ? sizeSelector(dto):string.Empty,
-            VisibleSelector = visibleSelector
-        });
-        results.Add(new DetailSetting<TransportRateDetailDto>
-        {
-            Name = currencyName,
-            Header = L[$"TransportRateDetailDto.{currencyName}"],
-            GroupHeader = group,
-            DisplaySelector = dto => currencySelector(dto)!,
-            VisibleSelector = visibleSelector
-        });
-    }
-
-    private void AddGroup10Settings(List<DetailSetting<TransportRateDetailDto>> results)
-    {
-        results.Add(new DetailSetting<TransportRateDetailDto>
-        {
-            Name = nameof(TransportRateDetailDto.Comment),
-            Header = L["TransportRateDetailDto.Comment"],
-            GroupHeader = L["TransportRateDetailDto.Group.10.Comments"],
-            DisplaySelector = dto => dto.Comment!,
-            VisibleSelector = dto => dto.Comment is not null
-        });
-    }
-
-    private void AddGroup11Settings(List<DetailSetting<TransportRateDetailDto>> results)
-    {
-        results.AddRange(
-        [
-            new DetailSetting<TransportRateDetailDto>
-            {
-                Name = nameof(TransportRateDetailDto.TotalCostTonUSD),
-                Header = L["TransportRateDetailDto.TotalCostTonUSD"],
-                GroupHeader = L["TransportRateDetailDto.Group.11.ReferenceCalculatedCostsInCurrencies"],
-                DisplaySelector = dto => dto.TotalCostTonUSD,
-                VisibleSelector = _ => true
-            },
-            new DetailSetting<TransportRateDetailDto>
-            {
-                Name = nameof(TransportRateDetailDto.TotalCostTonEUR),
-                Header = L["TransportRateDetailDto.TotalCostTonEUR"],
-                GroupHeader = L["TransportRateDetailDto.Group.11.ReferenceCalculatedCostsInCurrencies"],
-                DisplaySelector = dto => dto.TotalCostTonEUR,
-                VisibleSelector = _ => true
-            },
-            new DetailSetting<TransportRateDetailDto>
-            {
-                Name = nameof(TransportRateDetailDto.TotalCostTonCNY),
-                Header = L["TransportRateDetailDto.TotalCostTonCNY"],
-                GroupHeader = L["TransportRateDetailDto.Group.11.ReferenceCalculatedCostsInCurrencies"],
-                DisplaySelector = dto => dto.TotalCostTonCNY,
-                VisibleSelector = _ => true
-            },
-            new DetailSetting<TransportRateDetailDto>
-            {
-                Name = nameof(TransportRateDetailDto.TotalCostTransportRUB),
-                Header = L["TransportRateDetailDto.TotalCostTransportRUB"],
-                GroupHeader = L["TransportRateDetailDto.Group.11.ReferenceCalculatedCostsInCurrencies"],
-                DisplaySelector = dto => dto.TotalCostTransportRUB,
-                VisibleSelector = _ => true,
-                HasMargin = true
-            },
-            new DetailSetting<TransportRateDetailDto>
-            {
-                Name = nameof(TransportRateDetailDto.TotalCostTransportUSD),
-                Header = L["TransportRateDetailDto.TotalCostTransportUSD"],
-                GroupHeader = L["TransportRateDetailDto.Group.11.ReferenceCalculatedCostsInCurrencies"],
-                DisplaySelector = dto => dto.TotalCostTransportUSD,
-                VisibleSelector = _ => true
-            },
-            new DetailSetting<TransportRateDetailDto>
-            {
-                Name = nameof(TransportRateDetailDto.TotalCostTransportEUR),
-                Header = L["TransportRateDetailDto.TotalCostTransportEUR"],
-                GroupHeader = L["TransportRateDetailDto.Group.11.ReferenceCalculatedCostsInCurrencies"],
-                DisplaySelector = dto => dto.TotalCostTransportEUR,
-                VisibleSelector = _ => true
-            },
-            new DetailSetting<TransportRateDetailDto>
-            {
-                Name = nameof(TransportRateDetailDto.TotalCostTransportCNY),
-                Header = L["TransportRateDetailDto.TotalCostTransportCNY"],
-                GroupHeader = L["TransportRateDetailDto.Group.11.ReferenceCalculatedCostsInCurrencies"],
-                DisplaySelector = dto => dto.TotalCostTransportCNY,
-                VisibleSelector = _ => true
-            }
-        ]);
-    }
-
-    private void AddGroup12LegReferenceSettings(List<DetailSetting<TransportRateDetailDto>> results)
-    {
-        results.AddRange(
-        [
-            new DetailSetting<TransportRateDetailDto>
-            {
-                Name = nameof(TransportRateDetailDto.LegCode),
-                Header = L["TransportRateDetailDto.LegCode"],
-                GroupHeader = L["TransportRateDetailDto.Group.12.Leadtimes"],
-                DisplaySelector = dto => dto.LegCode,
-                VisibleSelector = _ => true
-            },
-            new DetailSetting<TransportRateDetailDto>
-            {
-                Name = nameof(TransportRateDetailDto.LegChangeDate),
-                Header = L["TransportRateDetailDto.LegChangeDate"],
-                GroupHeader = L["TransportRateDetailDto.Group.12.Leadtimes"],
-                DisplaySelector = dto => dto.LegChangeDate,
-                VisibleSelector = _ => true
-            }
-        ]);
-    }
-
-    private void AddGroup12LeadtimeMetaSettings(List<DetailSetting<TransportRateDetailDto>> results)
-    {
-        results.AddRange(
-        [
-            new DetailSetting<TransportRateDetailDto>
-            {
-                Name = nameof(TransportRateDetailDto.LeadTimeCode),
-                Header = L["TransportRateDetailDto.LeadTimeCode"],
-                GroupHeader = L["TransportRateDetailDto.Group.12.Leadtimes"],
-                DisplaySelector = dto => dto.LeadTimeCode!,
-                VisibleSelector = dto => dto.LeadTimeCode is not null,
-                HasMargin = true
-            },
-            new DetailSetting<TransportRateDetailDto>
-            {
-                Name = nameof(TransportRateDetailDto.LeadTimeStartDate),
-                Header = L["TransportRateDetailDto.LeadTimeStartDate"],
-                GroupHeader = L["TransportRateDetailDto.Group.12.Leadtimes"],
-                DisplaySelector = dto => dto.LeadTimeStartDate!,
-                VisibleSelector = dto => dto.LeadTimeCode is not null
-            },
-            new DetailSetting<TransportRateDetailDto>
-            {
-                Name = nameof(TransportRateDetailDto.LeadTimeEndDate),
-                Header = L["TransportRateDetailDto.LeadTimeEndDate"],
-                GroupHeader = L["TransportRateDetailDto.Group.12.Leadtimes"],
-                DisplaySelector = dto => dto.LeadTimeEndDate!,
-                VisibleSelector = dto => dto.LeadTimeCode is not null
-            },
-            new DetailSetting<TransportRateDetailDto>
-            {
-                Name = nameof(TransportRateDetailDto.LeadTimeChangeDate),
-                Header = L["TransportRateDetailDto.LeadTimeChangeDate"],
-                GroupHeader = L["TransportRateDetailDto.Group.12.Leadtimes"],
-                DisplaySelector = dto => dto.LeadTimeChangeDate!,
-                VisibleSelector = dto => dto.LeadTimeCode is not null
-            }
-        ]);
-    }
-
-    private void AddGroup12LeadtimeSettings(List<DetailSetting<TransportRateDetailDto>> results)
-    {
-        results.AddRange(
-        [
-            new DetailSetting<TransportRateDetailDto>
-            {
-                Name = nameof(TransportRateDetailDto.LeadTimeSearchTime),
-                Header = L["TransportRateDetailDto.SearchTime"],
-                GroupHeader = L["TransportRateDetailDto.Group.12.Leadtimes"],
-                DisplaySelector = dto => dto.LeadTimeSearchTime!,
-                VisibleSelector = dto => dto.LeadTimeCode is not null,
-                HasMargin = true
-            },
-            new DetailSetting<TransportRateDetailDto>
-            {
-                Name = nameof(TransportRateDetailDto.LeadTimeLoadTime),
-                Header = L["TransportRateDetailDto.LoadTime"],
-                GroupHeader = L["TransportRateDetailDto.Group.12.Leadtimes"],
-                DisplaySelector = dto => dto.LeadTimeLoadTime!,
-                VisibleSelector = dto => dto.LeadTimeCode is not null
-            },
-            new DetailSetting<TransportRateDetailDto>
-            {
-                Name = nameof(TransportRateDetailDto.LeadTimeDaysWaiting),
-                Header = L["TransportRateDetailDto.DaysWaiting"],
-                GroupHeader = L["TransportRateDetailDto.Group.12.Leadtimes"],
-                DisplaySelector = dto => dto.LeadTimeDaysWaiting!,
-                VisibleSelector = dto => dto.LeadTimeCode is not null
-            },
-            new DetailSetting<TransportRateDetailDto>
-            {
-                Name = nameof(TransportRateDetailDto.LeadTimeTravelTime),
-                Header = L["TransportRateDetailDto.TravelTime"],
-                GroupHeader = L["TransportRateDetailDto.Group.12.Leadtimes"],
-                DisplaySelector = dto => dto.LeadTimeTravelTime!,
-                VisibleSelector = dto => dto.LeadTimeCode is not null
-            },
-            new DetailSetting<TransportRateDetailDto>
-            {
-                Name = nameof(TransportRateDetailDto.LeadTimeUnLoadTime),
-                Header = L["TransportRateDetailDto.UnLoadTime"],
-                GroupHeader = L["TransportRateDetailDto.Group.12.Leadtimes"],
-                DisplaySelector = dto => dto.LeadTimeUnLoadTime!,
-                VisibleSelector = dto => dto.LeadTimeCode is not null
-            },
-            new DetailSetting<TransportRateDetailDto>
-            {
-                Name = nameof(TransportRateDetailDto.LeadTimeTransportationTime),
-                Header = L["TransportRateDetailDto.TransportationTime"],
-                GroupHeader = L["TransportRateDetailDto.Group.12.Leadtimes"],
-                DisplaySelector = dto => dto.LeadTimeTransportationTime!,
-                VisibleSelector = dto => dto.LeadTimeCode is not null
-            },
-            new DetailSetting<TransportRateDetailDto>
-            {
-                Name = nameof(TransportRateDetailDto.LeadTimeDistance),
-                Header = L["TransportRateDetailDto.Distance"],
-                GroupHeader = L["TransportRateDetailDto.Group.12.Leadtimes"],
-                DisplaySelector = dto => dto.LeadTimeDistance!,
-                VisibleSelector = dto => dto.LeadTimeCode is not null,
-                HasMargin = true
-            }
-        ]);
-    }
-
-    private void AddGroup13Settings(List<DetailSetting<TransportRateDetailDto>> results, bool isRu)
-    {
-        var group = L["TransportRateDetailDto.Group.13.Leg1"];
-
-        results.Add(new DetailSetting<TransportRateDetailDto>
-        {
-            Name = nameof(TransportRateDetailDto.Leg1_TransportTypeCode),
-            Header = L["TransportRateDetailDto.TransportTypeCode"],
-            GroupHeader = group,
-            DisplaySelector = dto => dto.Leg1_TransportTypeCode!,
-            VisibleSelector = dto => dto.ProxyNodeCode is not null
-        });
-
-        if (isRu)
-            results.Add(new DetailSetting<TransportRateDetailDto>
-            {
-                Name = nameof(TransportRateDetailDto.Leg1_TransportTypeNameRu),
-                Header = L["TransportRateDetailDto.TransportTypeName"],
-                GroupHeader = group,
-                DisplaySelector = dto => dto.Leg1_TransportTypeNameRu!,
-                VisibleSelector = dto => dto.ProxyNodeCode is not null
-            });
-        else
-            results.Add(new DetailSetting<TransportRateDetailDto>
-            {
-                Name = nameof(TransportRateDetailDto.Leg1_TransportTypeNameRuEn),
-                Header = L["TransportRateDetailDto.TransportTypeName"],
-                GroupHeader = group,
-                DisplaySelector = dto => dto.Leg1_TransportTypeNameRuEn!,
-                VisibleSelector = dto => dto.ProxyNodeCode is not null
-            });
-
-        results.AddRange(
-        [
-            new DetailSetting<TransportRateDetailDto>
-            {
-                Name = nameof(TransportRateDetailDto.Leg1_EffectiveLoad),
-                Header = L["TransportRateDetailDto.Leg1_EffectiveLoad"],
-                GroupHeader = group,
-                DisplaySelector = dto => dto.Leg1_EffectiveLoad,
-                VisibleSelector = dto => dto.ProxyNodeCode is not null,
-                HasMargin = true
-            },
-            new DetailSetting<TransportRateDetailDto>
-            {
-                Name = nameof(TransportRateDetailDto.Leg1_TotalCostTon),
-                Header = L["TransportRateDetailDto.Leg1_TotalCostTon"],
-                GroupHeader = group,
-                DisplaySelector = dto => dto.Leg1_TotalCostTon,
-                VisibleSelector = dto => dto.ProxyNodeCode is not null
-            },
-            new DetailSetting<TransportRateDetailDto>
-            {
-                Name = nameof(TransportRateDetailDto.Leg1_TotalCostTransport),
-                Header = L["TransportRateDetailDto.Leg1_TotalCostTransport"],
-                GroupHeader = group,
-                DisplaySelector = dto => dto.Leg1_TotalCostTransport,
-                VisibleSelector = dto => dto.ProxyNodeCode is not null
-            },
-            new DetailSetting<TransportRateDetailDto>
-            {
-                Name = nameof(TransportRateDetailDto.Leg1_BaseCurrency),
-                Header = L["TransportRateDetailDto.Leg1_BaseCurrency"],
-                GroupHeader = group,
-                DisplaySelector = dto => dto.Leg1_BaseCurrency!,
-                VisibleSelector = dto => dto.ProxyNodeCode is not null
-            },
-            new DetailSetting<TransportRateDetailDto>
-            {
-                Name = nameof(TransportRateDetailDto.Leg1_TotalCostTonRUB),
-                Header = L["TransportRateDetailDto.Leg1_TotalCostTonRUB"],
-                GroupHeader = group,
-                DisplaySelector = dto => dto.Leg1_TotalCostTonRUB,
-                VisibleSelector = dto => dto.ProxyNodeCode is not null,
-                HasMargin = true
-            },
-            new DetailSetting<TransportRateDetailDto>
-            {
-                Name = nameof(TransportRateDetailDto.Leg1_TotalCostTonUSD),
-                Header = L["TransportRateDetailDto.Leg1_TotalCostTonUSD"],
-                GroupHeader = group,
-                DisplaySelector = dto => dto.Leg1_TotalCostTonUSD,
-                VisibleSelector = dto => dto.ProxyNodeCode is not null
-            },
-            new DetailSetting<TransportRateDetailDto>
-            {
-                Name = nameof(TransportRateDetailDto.Leg1_TotalCostTonEUR),
-                Header = L["TransportRateDetailDto.Leg1_TotalCostTonEUR"],
-                GroupHeader = group,
-                DisplaySelector = dto => dto.Leg1_TotalCostTonEUR,
-                VisibleSelector = dto => dto.ProxyNodeCode is not null
-            },
-            new DetailSetting<TransportRateDetailDto>
-            {
-                Name = nameof(TransportRateDetailDto.Leg1_TotalCostTonCNY),
-                Header = L["TransportRateDetailDto.Leg1_TotalCostTonCNY"],
-                GroupHeader = group,
-                DisplaySelector = dto => dto.Leg1_TotalCostTonCNY,
-                VisibleSelector = dto => dto.ProxyNodeCode is not null
-            },
-            new DetailSetting<TransportRateDetailDto>
-            {
-                Name = nameof(TransportRateDetailDto.Leg1_TotalCostTransportRUB),
-                Header = L["TransportRateDetailDto.Leg1_TotalCostTransportRUB"],
-                GroupHeader = group,
-                DisplaySelector = dto => dto.Leg1_TotalCostTransportRUB,
-                VisibleSelector = dto => dto.ProxyNodeCode is not null,
-                HasMargin = true
-            },
-            new DetailSetting<TransportRateDetailDto>
-            {
-                Name = nameof(TransportRateDetailDto.Leg1_TotalCostTransportUSD),
-                Header = L["TransportRateDetailDto.Leg1_TotalCostTransportUSD"],
-                GroupHeader = group,
-                DisplaySelector = dto => dto.Leg1_TotalCostTransportUSD,
-                VisibleSelector = dto => dto.ProxyNodeCode is not null
-            },
-            new DetailSetting<TransportRateDetailDto>
-            {
-                Name = nameof(TransportRateDetailDto.Leg1_TotalCostTransportEUR),
-                Header = L["TransportRateDetailDto.Leg1_TotalCostTransportEUR"],
-                GroupHeader = group,
-                DisplaySelector = dto => dto.Leg1_TotalCostTransportEUR,
-                VisibleSelector = dto => dto.ProxyNodeCode is not null
-            },
-            new DetailSetting<TransportRateDetailDto>
-            {
-                Name = nameof(TransportRateDetailDto.Leg1_TotalCostTransportCNY),
-                Header = L["TransportRateDetailDto.Leg1_TotalCostTransportCNY"],
-                GroupHeader = group,
-                DisplaySelector = dto => dto.Leg1_TotalCostTransportCNY,
-                VisibleSelector = dto => dto.ProxyNodeCode is not null
-            }
-        ]);
-    }
-
-    private void AddGroup14Settings(List<DetailSetting<TransportRateDetailDto>> results)
-    {
-        results.AddRange(
-        [
-            new DetailSetting<TransportRateDetailDto>
-            {
-                Name = nameof(TransportRateDetailDto.LeadTimeLeg1_SearchTime),
-                Header = L["TransportRateDetailDto.Leg1_SearchTime"],
-                GroupHeader = L["TransportRateDetailDto.Group.14.LeadtimesRate1"],
-                DisplaySelector = dto => dto.LeadTimeLeg1_SearchTime!,
-                VisibleSelector = dto => dto.ProxyNodeCode is not null
-            },
-            new DetailSetting<TransportRateDetailDto>
-            {
-                Name = nameof(TransportRateDetailDto.LeadTimeLeg1_LoadTime),
-                Header = L["TransportRateDetailDto.Leg1_LoadTime"],
-                GroupHeader = L["TransportRateDetailDto.Group.14.LeadtimesRate1"],
-                DisplaySelector = dto => dto.LeadTimeLeg1_LoadTime!,
-                VisibleSelector = dto => dto.ProxyNodeCode is not null
-            },
-            new DetailSetting<TransportRateDetailDto>
-            {
-                Name = nameof(TransportRateDetailDto.LeadTimeLeg1_DaysWaiting),
-                Header = L["TransportRateDetailDto.Leg1_DaysWaiting"],
-                GroupHeader = L["TransportRateDetailDto.Group.14.LeadtimesRate1"],
-                DisplaySelector = dto => dto.LeadTimeLeg1_DaysWaiting!,
-                VisibleSelector = dto => dto.ProxyNodeCode is not null
-            },
-            new DetailSetting<TransportRateDetailDto>
-            {
-                Name = nameof(TransportRateDetailDto.LeadTimeLeg1_TravelTime),
-                Header = L["TransportRateDetailDto.Leg1_TravelTime"],
-                GroupHeader = L["TransportRateDetailDto.Group.14.LeadtimesRate1"],
-                DisplaySelector = dto => dto.LeadTimeLeg1_TravelTime!,
-                VisibleSelector = dto => dto.ProxyNodeCode is not null
-            },
-            new DetailSetting<TransportRateDetailDto>
-            {
-                Name = nameof(TransportRateDetailDto.LeadTimeLeg1_TransportationTime),
-                Header = L["TransportRateDetailDto.Leg1_TransportationTime"],
-                GroupHeader = L["TransportRateDetailDto.Group.14.LeadtimesRate1"],
-                DisplaySelector = dto => dto.LeadTimeLeg1_TransportationTime!,
-                VisibleSelector = dto => dto.ProxyNodeCode is not null
-            },
-            new DetailSetting<TransportRateDetailDto>
-            {
-                Name = nameof(TransportRateDetailDto.LeadTimeLeg1_Distance),
-                Header = L["TransportRateDetailDto.Leg1_Distance"],
-                GroupHeader = L["TransportRateDetailDto.Group.14.LeadtimesRate1"],
-                DisplaySelector = dto => dto.LeadTimeLeg1_Distance!,
-                VisibleSelector = dto => dto.ProxyNodeCode is not null,
-                HasMargin = true
-            }
-        ]);
-    }
-
-    private void AddGroup15Settings(List<DetailSetting<TransportRateDetailDto>> results, bool isRu)
-    {
-        var group = L["TransportRateDetailDto.Group.15.Leg2"];
-
-        results.Add(new DetailSetting<TransportRateDetailDto>
-        {
-            Name = nameof(TransportRateDetailDto.Leg2_TransportTypeCode),
-            Header = L["TransportRateDetailDto.TransportTypeCode"],
-            GroupHeader = group,
-            DisplaySelector = dto => dto.Leg2_TransportTypeCode!,
-            VisibleSelector = dto => dto.ProxyNodeCode is not null
-        });
-
-        if (isRu)
-            results.Add(new DetailSetting<TransportRateDetailDto>
-            {
-                Name = nameof(TransportRateDetailDto.Leg2_TransportTypeNameRu),
-                Header = L["TransportRateDetailDto.TransportTypeName"],
-                GroupHeader = group,
-                DisplaySelector = dto => dto.Leg2_TransportTypeNameRu!,
-                VisibleSelector = dto => dto.ProxyNodeCode is not null
-            });
-        else
-            results.Add(new DetailSetting<TransportRateDetailDto>
-            {
-                Name = nameof(TransportRateDetailDto.Leg2_TransportTypeNameRuEn),
-                Header = L["TransportRateDetailDto.TransportTypeName"],
-                GroupHeader = group,
-                DisplaySelector = dto => dto.Leg2_TransportTypeNameRuEn!,
-                VisibleSelector = dto => dto.ProxyNodeCode is not null
-            });
-
-        results.AddRange(
-        [
-            new DetailSetting<TransportRateDetailDto>
-            {
-                Name = nameof(TransportRateDetailDto.Leg2_EffectiveLoad),
-                Header = L["TransportRateDetailDto.Leg2_EffectiveLoad"],
-                GroupHeader = group,
-                DisplaySelector = dto => dto.Leg2_EffectiveLoad,
-                VisibleSelector = dto => dto.ProxyNodeCode is not null,
-                HasMargin = true
-            },
-            new DetailSetting<TransportRateDetailDto>
-            {
-                Name = nameof(TransportRateDetailDto.Leg2_TotalCostTon),
-                Header = L["TransportRateDetailDto.Leg2_TotalCostTon"],
-                GroupHeader = group,
-                DisplaySelector = dto => dto.Leg2_TotalCostTon,
-                VisibleSelector = dto => dto.ProxyNodeCode is not null
-            },
-            new DetailSetting<TransportRateDetailDto>
-            {
-                Name = nameof(TransportRateDetailDto.Leg2_TotalCostTransport),
-                Header = L["TransportRateDetailDto.Leg2_TotalCostTransport"],
-                GroupHeader = group,
-                DisplaySelector = dto => dto.Leg2_TotalCostTransport,
-                VisibleSelector = dto => dto.ProxyNodeCode is not null
-            },
-            new DetailSetting<TransportRateDetailDto>
-            {
-                Name = nameof(TransportRateDetailDto.Leg2_BaseCurrency),
-                Header = L["TransportRateDetailDto.Leg2_BaseCurrency"],
-                GroupHeader = group,
-                DisplaySelector = dto => dto.Leg2_BaseCurrency!,
-                VisibleSelector = dto => dto.ProxyNodeCode is not null
-            },
-            new DetailSetting<TransportRateDetailDto>
-            {
-                Name = nameof(TransportRateDetailDto.Leg2_TotalCostTonRUB),
-                Header = L["TransportRateDetailDto.Leg2_TotalCostTonRUB"],
-                GroupHeader = group,
-                DisplaySelector = dto => dto.Leg2_TotalCostTonRUB,
-                VisibleSelector = dto => dto.ProxyNodeCode is not null,
-                HasMargin = true
-            },
-            new DetailSetting<TransportRateDetailDto>
-            {
-                Name = nameof(TransportRateDetailDto.Leg2_TotalCostTonUSD),
-                Header = L["TransportRateDetailDto.Leg2_TotalCostTonUSD"],
-                GroupHeader = group,
-                DisplaySelector = dto => dto.Leg2_TotalCostTonUSD,
-                VisibleSelector = dto => dto.ProxyNodeCode is not null
-            },
-            new DetailSetting<TransportRateDetailDto>
-            {
-                Name = nameof(TransportRateDetailDto.Leg2_TotalCostTonEUR),
-                Header = L["TransportRateDetailDto.Leg2_TotalCostTonEUR"],
-                GroupHeader = group,
-                DisplaySelector = dto => dto.Leg2_TotalCostTonEUR,
-                VisibleSelector = dto => dto.ProxyNodeCode is not null
-            },
-            new DetailSetting<TransportRateDetailDto>
-            {
-                Name = nameof(TransportRateDetailDto.Leg2_TotalCostTonCNY),
-                Header = L["TransportRateDetailDto.Leg2_TotalCostTonCNY"],
-                GroupHeader = group,
-                DisplaySelector = dto => dto.Leg2_TotalCostTonCNY,
-                VisibleSelector = dto => dto.ProxyNodeCode is not null
-            },
-            new DetailSetting<TransportRateDetailDto>
-            {
-                Name = nameof(TransportRateDetailDto.Leg2_TotalCostTransportRUB),
-                Header = L["TransportRateDetailDto.Leg2_TotalCostTransportRUB"],
-                GroupHeader = group,
-                DisplaySelector = dto => dto.Leg2_TotalCostTransportRUB,
-                VisibleSelector = dto => dto.ProxyNodeCode is not null,
-                HasMargin = true
-            },
-            new DetailSetting<TransportRateDetailDto>
-            {
-                Name = nameof(TransportRateDetailDto.Leg2_TotalCostTransportUSD),
-                Header = L["TransportRateDetailDto.Leg2_TotalCostTransportUSD"],
-                GroupHeader = group,
-                DisplaySelector = dto => dto.Leg2_TotalCostTransportUSD,
-                VisibleSelector = dto => dto.ProxyNodeCode is not null
-            },
-            new DetailSetting<TransportRateDetailDto>
-            {
-                Name = nameof(TransportRateDetailDto.Leg2_TotalCostTransportEUR),
-                Header = L["TransportRateDetailDto.Leg2_TotalCostTransportEUR"],
-                GroupHeader = group,
-                DisplaySelector = dto => dto.Leg2_TotalCostTransportEUR,
-                VisibleSelector = dto => dto.ProxyNodeCode is not null
-            },
-            new DetailSetting<TransportRateDetailDto>
-            {
-                Name = nameof(TransportRateDetailDto.Leg2_TotalCostTransportCNY),
-                Header = L["TransportRateDetailDto.Leg2_TotalCostTransportCNY"],
-                GroupHeader = group,
-                DisplaySelector = dto => dto.Leg2_TotalCostTransportCNY,
-                VisibleSelector = dto => dto.ProxyNodeCode is not null
-            }
-        ]);
-    }
-
-    private void AddGroup16Settings(List<DetailSetting<TransportRateDetailDto>> results)
-    {
-        results.AddRange(
-        [
-            new DetailSetting<TransportRateDetailDto>
-            {
-                Name = nameof(TransportRateDetailDto.LeadTimeLeg2_TravelTime),
-                Header = L["TransportRateDetailDto.Leg2_TravelTime"],
-                GroupHeader = L["TransportRateDetailDto.Group.16.LeadtimesRate2"],
-                DisplaySelector = dto => dto.LeadTimeLeg2_TravelTime!,
-                VisibleSelector = dto => dto.ProxyNodeCode is not null
-            },
-            new DetailSetting<TransportRateDetailDto>
-            {
-                Name = nameof(TransportRateDetailDto.LeadTimeLeg2_DaysWaiting),
-                Header = L["TransportRateDetailDto.Leg2_DaysWaiting"],
-                GroupHeader = L["TransportRateDetailDto.Group.16.LeadtimesRate2"],
-                DisplaySelector = dto => dto.LeadTimeLeg2_DaysWaiting!,
-                VisibleSelector = dto => dto.ProxyNodeCode is not null
-            },
-            new DetailSetting<TransportRateDetailDto>
-            {
-                Name = nameof(TransportRateDetailDto.LeadTimeLeg2_UploadTime),
-                Header = L["TransportRateDetailDto.Leg2_UpLoadTime"],
-                GroupHeader = L["TransportRateDetailDto.Group.16.LeadtimesRate2"],
-                DisplaySelector = dto => dto.LeadTimeLeg2_UploadTime!,
-                VisibleSelector = dto => dto.ProxyNodeCode is not null
-            },
-            new DetailSetting<TransportRateDetailDto>
-            {
-                Name = nameof(TransportRateDetailDto.LeadTimeLeg2_TransportationTime),
-                Header = L["TransportRateDetailDto.Leg2_TransportationTime"],
-                GroupHeader = L["TransportRateDetailDto.Group.16.LeadtimesRate2"],
-                DisplaySelector = dto => dto.LeadTimeLeg2_TransportationTime!,
-                VisibleSelector = dto => dto.ProxyNodeCode is not null
-            },
-            new DetailSetting<TransportRateDetailDto>
-            {
-                Name = nameof(TransportRateDetailDto.LeadTimeLeg2_Distance),
-                Header = L["TransportRateDetailDto.Leg2_Distance"],
-                GroupHeader = L["TransportRateDetailDto.Group.16.LeadtimesRate2"],
-                DisplaySelector = dto => dto.LeadTimeLeg2_Distance!,
-                VisibleSelector = dto => dto.ProxyNodeCode is not null,
-                HasMargin = true
-            }
-        ]);
+        return b.Build();
     }
 }
-
-

@@ -1,4 +1,4 @@
-USE [mdm];
+﻿USE [mdm];
 GO
 
 SET ANSI_NULLS ON

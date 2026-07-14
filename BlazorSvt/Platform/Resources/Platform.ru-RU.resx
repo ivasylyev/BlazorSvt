@@ -275,4 +275,16 @@
   <data name="Load.DownloadErrors" xml:space="preserve">
 	  <value>Скачать файл с ошибками</value>
   </data>
+  <data name="Common.Yes" xml:space="preserve">
+	  <value>Да</value>
+  </data>
+  <data name="Common.No" xml:space="preserve">
+	  <value>Нет</value>
+  </data>
+  <data name="Common.Archive" xml:space="preserve">
+	  <value>Архив</value>
+  </data>
+  <data name="Common.Active" xml:space="preserve">
+	  <value>Актив</value>
+  </data>
 </root>

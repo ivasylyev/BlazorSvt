@@ -117,19 +117,13 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="AverageRateLevel3DetailDto.Active" xml:space="preserve">
-    <value>Активный</value>
-  </data>
-  <data name="AverageRateLevel3DetailDto.AdditionalFeesCISCurrency" xml:space="preserve">
+<data name="AverageRateLevel3DetailDto.AdditionalFeesCISCurrency" xml:space="preserve">
     <value>Дополнительные сборы по СНГ (вознаграждение экспедитора) (за тонну) (без учета НДС). Валюта</value>
   </data>
   <data name="AverageRateLevel3DetailDto.AdditionalFeesCISSize" xml:space="preserve">
     <value>Дополнительные сборы по СНГ (вознаграждение экспедитора) (за тонну) (без учета НДС). Размер составляющей ставки</value>
   </data>
-  <data name="AverageRateLevel3DetailDto.Archive" xml:space="preserve">
-    <value>Архив</value>
-  </data>
-  <data name="AverageRateLevel3DetailDto.AverageRateLevel3" xml:space="preserve">
+<data name="AverageRateLevel3DetailDto.AverageRateLevel3" xml:space="preserve">
     <value>Средневзвешенная ставка</value>
   </data>
   <data name="AverageRateLevel3DetailDto.Basis" xml:space="preserve">
@@ -327,10 +321,7 @@
   <data name="AverageRateLevel3DetailDto.MinDailyTransportation" xml:space="preserve">
     <value>Минимальный суточный объем транспортировки (т)</value>
   </data>
-  <data name="AverageRateLevel3DetailDto.No" xml:space="preserve">
-    <value>Нет</value>
-  </data>
-  <data name="AverageRateLevel3DetailDto.NodeFrom" xml:space="preserve">
+<data name="AverageRateLevel3DetailDto.NodeFrom" xml:space="preserve">
     <value>Узел отправления</value>
   </data>
   <data name="AverageRateLevel3DetailDto.NodeFromEN" xml:space="preserve">
@@ -456,16 +447,9 @@
   <data name="AverageRateLevel3DetailDto.TransshipmentSize" xml:space="preserve">
     <value>Перевалка (за тонну) (без учета НДС). Размер составляющей ставки</value>
   </data>
-  <data name="AverageRateLevel3DetailDto.Yes" xml:space="preserve">
-    <value>Да</value>
-  </data>
-  <data name="AverageRateLevel3Dto.Active" xml:space="preserve">
-    <value>Активный</value>
-  </data>
-  <data name="AverageRateLevel3Dto.Archive" xml:space="preserve">
-    <value>Архив</value>
-  </data>
-  <data name="AverageRateLevel3Dto.Code" xml:space="preserve">
+
+
+<data name="AverageRateLevel3Dto.Code" xml:space="preserve">
     <value>Код ставки</value>
   </data>
   <data name="AverageRateLevel3Dto.CountryCode" xml:space="preserve">
@@ -483,19 +467,13 @@
   <data name="AverageRateLevel3Dto.LocationTypeCode" xml:space="preserve">
     <value>Код типа местоположения</value>
   </data>
-  <data name="AverageRateLevel3Dto.No" xml:space="preserve">
-    <value>Нет</value>
-  </data>
-  <data name="AverageRateLevel3Dto.RegionCode" xml:space="preserve">
+<data name="AverageRateLevel3Dto.RegionCode" xml:space="preserve">
     <value>Код региона</value>
   </data>
   <data name="AverageRateLevel3Dto.TypeNodeCode" xml:space="preserve">
     <value>Код типа узла</value>
   </data>
-  <data name="AverageRateLevel3Dto.Yes" xml:space="preserve">
-    <value>Да</value>
-  </data>
-  <data name="AverageRateLevel3Grid.Title" xml:space="preserve">
+<data name="AverageRateLevel3Grid.Title" xml:space="preserve">
     <value>Cредневзвешенные ставки</value>
   </data>
   <data name="AverageRateLevel3Dto.IsDefRate" xml:space="preserve">

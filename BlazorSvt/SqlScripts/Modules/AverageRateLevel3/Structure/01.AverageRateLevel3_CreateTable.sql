@@ -1,4 +1,4 @@
-USE [mdm];
+﻿USE [mdm];
 GO
 
 IF EXISTS (SELECT * FROM sys.fulltext_indexes WHERE object_id = OBJECT_ID('v2.AverageRateLevel3_Snapshot'))

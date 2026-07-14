@@ -178,11 +178,11 @@ AS
     ,lt.Leg2_UploadTime 		    AS LeadTimeLeg2_UploadTime
     ,lt.Leg2_TransportationTime 	AS LeadTimeLeg2_TransportationTime
     ,lt.Leg2_Distance 		        AS LeadTimeLeg2_Distance
-    FROM mdm.dbo.vw_TransportRate AS r 
+    FROM vw_TransportRate AS r 
     CROSS APPLY (
         SELECT TOP 1
             rar.AverageRateLevel3Id
-        FROM mdm.dbo.vw_RatesOfAverageRate rar
+        FROM vw_RatesOfAverageRate rar
         WHERE rar.Rate = r.Id
         ORDER BY rar.Id DESC
     ) rar -- чтобы избежать дублирования 
@@ -191,91 +191,91 @@ AS
         SELECT TOP 1
             ar.Code,
             ar.RateLevel3
-        FROM mdm.dbo.vw_AverageRateLevel3 ar
+        FROM vw_AverageRateLevel3 ar
         WHERE ar.Id = rar.AverageRateLevel3Id
         ORDER BY ar.Id DESC
     ) ar -- чтобы избежать дублирования 
     
-    JOIN mdm.dbo.vw_RateType rtp 
+    JOIN vw_RateType rtp 
         ON r.RateType = rtp.Id			
 			
-    JOIN mdm.dbo.vw_RateCalcType rct 
+    JOIN vw_RateCalcType rct 
         ON rct.Id = r.RateCalcType			
-    JOIN mdm.dbo.vw_Currency curSt 
+    JOIN vw_Currency curSt 
         ON curSt.Id = 	r.CurrencyStandard		
-    LEFT JOIN mdm.dbo.vw_Currency curEmptyRF 
+    LEFT JOIN vw_Currency curEmptyRF 
         ON curEmptyRF.Id = 	r.EmptyRFCurrency		
-    LEFT JOIN mdm.dbo.vw_Currency curEmptyCIS 
+    LEFT JOIN vw_Currency curEmptyCIS 
         ON curEmptyCIS.Id =	r.EmptyCISCurrency		
-    LEFT JOIN mdm.dbo.vw_Currency curProvisionTransport 
+    LEFT JOIN vw_Currency curProvisionTransport 
         ON curProvisionTransport.Id=	r.ProvisionTransportCurrency		
-    LEFT JOIN mdm.dbo.vw_Currency curFerryboat 
+    LEFT JOIN vw_Currency curFerryboat 
         ON curFerryboat.Id=	r.FerryboatCurrency		
-    LEFT JOIN mdm.dbo.vw_Currency curTEFrom 
+    LEFT JOIN vw_Currency curTEFrom 
         ON curTEFrom.Id=	r.TEFromCurrency		
-    LEFT JOIN mdm.dbo.vw_Currency curPNPFrom 
+    LEFT JOIN vw_Currency curPNPFrom 
         ON curPNPFrom.Id=	r.PNPFromCurrency		
-    LEFT JOIN mdm.dbo.vw_Currency curTETo 
+    LEFT JOIN vw_Currency curTETo 
         ON curTETo.Id=	r.TEToCurrency		
-    LEFT JOIN mdm.dbo.vw_Currency curPNPTo 
+    LEFT JOIN vw_Currency curPNPTo 
         ON curPNPTo.Id=	r.PNPToCurrency	
-    LEFT JOIN mdm.dbo.vw_Currency curDrainLoading 
+    LEFT JOIN vw_Currency curDrainLoading 
         ON curDrainLoading.Id=	r.DrainLoadingCurrency		
-    LEFT JOIN mdm.dbo.vw_Currency curTransshipment 
+    LEFT JOIN vw_Currency curTransshipment 
         ON curTransshipment.Id=	r.TransshipmentCurrency		
-    LEFT JOIN mdm.dbo.vw_Currency curFreight  
+    LEFT JOIN vw_Currency curFreight  
         ON curFreight.Id=	r.FreightCurrency		
-    LEFT JOIN mdm.dbo.vw_Currency curAdditionalFeesCIS  
+    LEFT JOIN vw_Currency curAdditionalFeesCIS  
         ON curAdditionalFeesCIS.Id=	r.AdditionalFeesCISCurrency		
-    LEFT JOIN mdm.dbo.vw_Currency curLoadedCIS 
+    LEFT JOIN vw_Currency curLoadedCIS 
         ON curLoadedCIS.Id=	r.LoadedCISCurrency		
-    LEFT JOIN mdm.dbo.vw_Currency curLoadedRF  
+    LEFT JOIN vw_Currency curLoadedRF  
         ON curLoadedRF.Id=	r.LoadedRFCurrency		
-    LEFT JOIN mdm.dbo.vw_Currency curTEFrom_fix 
+    LEFT JOIN vw_Currency curTEFrom_fix 
         ON curTEFrom_fix.Id=	r.TEFromCurrency_fix		
-    LEFT JOIN mdm.dbo.vw_Currency curTETo_fix 
+    LEFT JOIN vw_Currency curTETo_fix 
         ON curTETo_fix.Id=	r.TEToCurrency_fix		
 
  			
-    JOIN mdm.dbo.vw_LocationsNodes nf 
+    JOIN vw_LocationsNodes nf 
         ON nf.Id = r.NodeFrom			
-    LEFT JOIN mdm.dbo.vw_Region rf 
+    LEFT JOIN vw_Region rf 
         ON rf.Id = nf.Region	
 
-    LEFT JOIN mdm.dbo.vw_LocationsNodes np 
+    LEFT JOIN vw_LocationsNodes np 
         ON np.Id = r.ProxyNode			
-    LEFT JOIN mdm.dbo.vw_Region rp 
+    LEFT JOIN vw_Region rp 
         ON rp.Id = np.Region			
 
-    JOIN mdm.dbo.vw_LocationsNodes nt 
+    JOIN vw_LocationsNodes nt 
         ON nt.Id = r.NodeTo			
-    LEFT JOIN mdm.dbo.vw_Region rt 
+    LEFT JOIN vw_Region rt 
         ON rt.Id = nt.Region			
 			
-    LEFT JOIN mdm.dbo.vw_Basis bas 
+    LEFT JOIN vw_Basis bas 
         ON bas.Id=r.basis			
-    LEFT JOIN mdm.dbo.vw_LocationsNodes nb 
+    LEFT JOIN vw_LocationsNodes nb 
         ON nb.Id = r.BasisNode			
 			
-    JOIN mdm.dbo.vw_TransportKind tk 
+    JOIN vw_TransportKind tk 
         ON tk.Id = r.TransportKind			
 			
-    JOIN mdm.dbo.vw_TransportType_level_3 tt 
+    JOIN vw_TransportType_level_3 tt 
         ON tt.Id = r.TransportType			
 			
-    LEFT JOIN mdm.dbo.vw_ProductGroup pg 
+    LEFT JOIN vw_ProductGroup pg 
         ON pg.Id = r.ProductGroup			
-    LEFT JOIN mdm.dbo.vw_MTR p  
+    LEFT JOIN vw_MTR p  
         ON p.Id = r.Product			
 			
 			
-    LEFT JOIN mdm.dbo.vw_Contractor con 
+    LEFT JOIN vw_Contractor con 
         ON con.Id=r.Counterparty			
 
     CROSS APPLY (
         SELECT TOP 1
             lr.TransportLegId
-        FROM mdm.dbo.vw_LegRate lr
+        FROM vw_LegRate lr
         WHERE lr.Rate = r.Id
         ORDER BY lr.Id DESC
     ) lr -- чтобы избежать дублирования 
@@ -285,7 +285,7 @@ AS
             lg.Id,
             lg.Code,
             lg.LastChangeDate
-        FROM mdm.dbo.vw_TransportLeg lg
+        FROM vw_TransportLeg lg
         WHERE lg.Id = lr.TransportLegId
         ORDER BY lg.Id DESC
     ) lg -- чтобы избежать дублирования 
@@ -293,8 +293,8 @@ AS
     OUTER APPLY (
         SELECT TOP (1)
             lit.*
-        FROM mdm.dbo.vw_Leadtime AS lit
-        INNER JOIN mdm.dbo.vw_ShipmentType AS st
+        FROM vw_Leadtime AS lit
+        INNER JOIN vw_ShipmentType AS st
             ON st.Id = lit.ShipmentType AND st.IsMain = 1
         WHERE lit.TransportLegId = lg.Id
           AND CAST(r.EndDate AS DATE) >= CAST(lit.StartDate AS DATE)
@@ -304,16 +304,16 @@ AS
                  lit.LastChangeDate DESC
     ) AS lt
 			
-    LEFT JOIN mdm.dbo.vw_TransportType_level_3 tt1 
+    LEFT JOIN vw_TransportType_level_3 tt1 
         ON tt1.Id = r.Leg1_TransportType			
-    LEFT JOIN mdm.dbo.vw_TransportType_level_3 tt2 
+    LEFT JOIN vw_TransportType_level_3 tt2 
         ON tt2.Id = r.Leg2_TransportType			
 			
-    LEFT JOIN mdm.dbo.vw_Currency leg1_cur 
+    LEFT JOIN vw_Currency leg1_cur 
         ON leg1_cur.Id=	r.Leg1_BaseCurrency		
-    LEFT JOIN mdm.dbo.vw_Currency leg2_cur 
+    LEFT JOIN vw_Currency leg2_cur 
         ON leg2_cur.Id=	r.Leg2_BaseCurrency		
 
-    LEFT JOIN mdm.dbo.vw_TransportRateTenderServicePack tsp 
+    LEFT JOIN vw_TransportRateTenderServicePack tsp 
         ON r.Id = tsp.TransportRateId
 GO

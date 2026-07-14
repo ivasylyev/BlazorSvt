@@ -1,4 +1,4 @@
-USE [mdm];
+﻿USE [mdm];
 GO
 
 INSERT INTO v2.AverageRateLevel3_Snapshot (
