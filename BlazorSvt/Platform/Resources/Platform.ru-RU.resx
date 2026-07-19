@@ -211,10 +211,10 @@
     <value>Отмена</value>
   </data>
   <data name="Home.Home" xml:space="preserve">
-    <value>Домашняя</value>
+    <value>СВТ 2.0</value>
   </data>
   <data name="Home.Message" xml:space="preserve">
-    <value>Демо проект СВТ с использованием Blazor Bootstrap Web App (.NET 9) + MS SQL Full Text Search.</value>
+    <value>Проект стабилизации СВТ. Используемые технологии: Blazor Bootstrap Web App (.NET 9) + MS SQL Full Text Search.</value>
   </data>
   <data name="ErrorDisplay.Message" xml:space="preserve">
     <value>Сообщение:</value>

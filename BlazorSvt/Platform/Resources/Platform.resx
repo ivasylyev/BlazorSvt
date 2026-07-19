@@ -213,11 +213,11 @@
 	  <value>Cancel</value>
   </data>
   <data name="Home.Home" xml:space="preserve">
-	  <value>Home</value>
+	  <value>SVT 2.0</value>
   </data>
 
 	<data name="Home.Message" xml:space="preserve">
-	  <value>Demo project SVT using Blazor Bootstrap Web App (.NET 9) + MS SQL Full Text Search.</value>
+	  <value>SVT stabilization project. Technologies used: Blazor Bootstrap Web App (.NET 9) + MS SQL Full Text Search.</value>
   </data>
   <data name="ErrorDisplay.Message" xml:space="preserve">
 	  <value>Message:</value>
