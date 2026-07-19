@@ -240,3 +240,27 @@ h1:focus {
     background-color: rgba(0, 240, 255, 0.03) !important;
     border: 1px solid rgba(0, 240, 255, 0.1);
 }
+
+/* Layout: content fills viewport between header and footer */
+main {
+    display: flex;
+    flex-direction: column;
+}
+
+main > article {
+    flex: 1 1 auto;
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+}
+
+/* Home page card stretches to full content height */
+.home-page {
+    flex: 1 1 auto;
+    display: flex;
+    flex-direction: column;
+}
+
+.home-page-card {
+    flex: 1 1 auto;
+}
