@@ -67,7 +67,10 @@ if (!app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 app.UseAntiforgery();
 app.Use(MiddlewareDecorator.MiddlewareShortCorrelationId);
-app.UseSerilogRequestLogging();
+app.UseSerilogRequestLogging(options =>
+{
+    options.GetLevel = SerilogRequestLogLevel.GetLevel;
+});
 app.MapStaticAssets();
 app.MapRazorComponents<App>()
     .AddInteractiveServerRenderMode();
