@@ -661,13 +661,4 @@
   <data name="TransportRateDetailDto.Leg2_TotalCostTransportCNY" xml:space="preserve">
     <value>Плечо 2.Ставка за ТС, CNY</value>
   </data>
-  <data name="TransportRateDetailDto.CustomMessage" xml:space="preserve">
-    <value>Кастомное сообщение от ставок: </value>
-  </data>
-  <data name="TransportRateDetailDto.CustomMessageWithoutProxy" xml:space="preserve">
-    <value>Ставка без промежуточного узла</value>
-  </data>
-  <data name="TransportRateDetailDto.CustomMessageWithProxy" xml:space="preserve">
-    <value>Ставка с промежуточным узлом</value>
-  </data>
 </root>

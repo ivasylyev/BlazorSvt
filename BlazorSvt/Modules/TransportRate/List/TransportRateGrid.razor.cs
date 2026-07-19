@@ -11,13 +11,4 @@ public partial class TransportRateGrid : BaseGridPage<TransportRateDto, Transpor
 
     protected override object DetailKeySelector(TransportRateDto request)
         => request.TransportRateId;
-
-    private string GetCustomMessage(TransportRateDetailDto detail)
-    {
-        var message = EL["TransportRateDetailDto.CustomMessage"].Value;
-        message += detail.ProxyNodeCode is null
-            ? EL["TransportRateDetailDto.CustomMessageWithoutProxy"].Value
-            : EL["TransportRateDetailDto.CustomMessageWithProxy"].Value;
-        return message;
-    }
 }

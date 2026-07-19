@@ -13,7 +13,17 @@ else if (detail is not null)
 {
     @Template?.Invoke(detail)
 
-    <Accordion AlwaysOpen="true">
+    @if (GetVisibleGroupCount() >= 2)
+    {
+        <button type="button"
+                class="accordion-button sibur-grid-detail-toggle-all"
+                @onclick="ToggleAllAccordionItemsAsync">
+            <Icon Name="@(allExpanded ? IconName.ArrowsCollapse : IconName.ArrowsExpand)" Class="me-2" />
+            @(allExpanded ? L["GenericDetailView.CollapseAll"] : L["GenericDetailView.ExpandAll"])
+        </button>
+    }
+
+    <Accordion @ref="accordion" AlwaysOpen="true">
         @foreach (var groupPair in detailSettings.GroupSettings)
         {
             if (groupPair.Value.Any(s => s.VisibleSelector(detail)))

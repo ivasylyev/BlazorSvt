@@ -21,15 +21,15 @@ h1:focus {
 .sibur-header-wrapper {
     /*background-color: #008c95;*/
     background-color: rgba(0, 140, 149, 0.2) !important;
-    /* Компенсируем родительский px-4 (1.5rem) */
+    /*   px-4 (1.5rem) */
     margin-left: -1.5rem;
     margin-right: -1.5rem;
     padding-left: 1.5rem;
     padding-right: 1.5rem;
-    /* Растягиваем на всю ширину с учетом выступов */
+    /*        */
     width: calc(100% + 3rem);
     height: 100%;
-    /* Центрируем содержимое */
+    /*   */
     display: flex;
     align-items: center;
 }
@@ -89,36 +89,36 @@ h1:focus {
 }
 
 /* Switch  */
-/* цвет фона включенного трека */
+/*     */
 .sibur-switch-color .form-check-input:checked {
     background-color: #008c95;
     border-color: #008c95;
 }
 
-/* цвет "ползунка" (кружка) */
+/*  "" () */
 .sibur-switch-color .form-check-input:checked:focus {
-        /* Оставляем свечение такого же цвета, либо убираем box-shadow */
+        /*     ,   box-shadow */
         box-shadow: 0 0 0 0.25rem rgba(0, 140, 149, 0.25);
     }
 
-/* цвет "ползунка" при наведении */
+/*  ""   */
 .sibur-switch-color .form-check-input:checked:hover {
-        background-color: #007a82; /* чуть темнее для эффекта наведения */
+        background-color: #007a82; /*      */
     }
 
 
 /* Grid  */
 
 
-/* Убираем анимацию и перекрашиваение ячеек во время загрузки - это лишний визукальный шум  */
+/*         -      */
 .sibur-grid .placeholder-glow .placeholder {
     animation: none !important;
     background-color: transparent !important;
 }
 
-/* Переводим выбор фильтра на следующую строку  */
+/*        */
 .sibur-grid  .bb-grid-filter {
-    /*display: none !important;*/ /*Если надо скрыть выбор фильтра*/
+    /*display: none !important;*/ /*    */
     flex-basis: 100% !important;
     width: max-content !important;
 }
@@ -147,46 +147,46 @@ h1:focus {
 }
 
 
-/* Нечетные строки (полосатая раскраска)  */
+/*   ( )  */
 .sibur-grid .table-striped > tbody > tr:nth-of-type(odd) td {
     background-color: rgba(0, 240, 255, 0.03) !important;
     /* background-color: #ffffff !important; */
 }
 
-/* Четные строки  */
+/*    */
 .sibur-grid .table-striped > tbody > tr:nth-of-type(even) td {
     background-color: rgba(0, 240, 255, 0.03) !important;
     /* background-color: #ffffff !important; */
 }
 
-/* Любая строка при наведении  */
+/*      */
 .sibur-grid .table-hover > tbody > tr:hover td {
     background-color: rgba(0, 240, 255, 0.06) !important;
 }
 
-/* цвет обычных номеров страниц */
+/*     */
 .sibur-grid .pagination .page-link {
     color: #008c95;
 }
 
-/* цвет активной (текущей) страницы */
+/*   ()  */
 .sibur-grid .pagination .page-item.active .page-link {
     background-color: #008c95;
     border-color: #008c95;
     color: white;
 }
 
-/* цвет при наведении курсора */
+/*     */
 .sibur-grid .pagination .page-link:hover {
-    color: #00606a; /* чуть темнее для эффекта наведения */
+    color: #00606a; /*      */
 }
 
-/* цвет для disabled-кнопок ("Previous"/"Next") */
+/*   disabled- ("Previous"/"Next") */
 .sibur-grid .pagination .page-item.disabled .page-link {
     color: #6c757d; 
 }
 
-/* Отображение аккордиона внутри деталей грида */
+/*      */
 
 .sibur-grid .accordion-button {
     background-color: #EAF2F2 !important;
@@ -194,12 +194,26 @@ h1:focus {
     color: #00606a;
 }
 
+.sibur-grid .sibur-grid-detail-toggle-all {
+    width: 100%;
+    box-sizing: border-box;
+    cursor: pointer;
+    margin-bottom: 1px;
+    /* Match accordion-item: border insets the button face like headers inside .accordion-item */
+    border: var(--bs-accordion-border-width, 1px) solid var(--bs-accordion-border-color, rgba(0, 0, 0, 0.125));
+    padding: var(--bs-accordion-btn-padding-y, 1rem) var(--bs-accordion-btn-padding-x, 1.25rem);
+}
+
+.sibur-grid .sibur-grid-detail-toggle-all::after {
+    display: none;
+}
+
 .sibur-grid .accordion-body {
     background-color: rgba(0, 240, 255, 0.03) !important;
 }
 
 
-/* Отображение деталей внутри грида */
+/*     */
 .sibur-grid-detail-container {
     display: grid;
     grid-template-columns: minmax(300px, 500px) 1fr;

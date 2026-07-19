@@ -11,13 +11,4 @@ public partial class TransportLegGrid : BaseGridPage<TransportLegDto, TransportL
 
     protected override object DetailKeySelector(TransportLegDto request)
         => request.TransportLegId;
-
-    private string GetCustomMessage(TransportLegDetailDto detail)
-    {
-        var message = EL["TransportLegDetailDto.CustomMessage"].Value;
-        message += detail.ProxyNodeCode is null
-            ? EL["TransportLegDetailDto.CustomMessageWithoutProxy"].Value
-            : EL["TransportLegDetailDto.CustomMessageWithProxy"].Value;
-        return message;
-    }
 }

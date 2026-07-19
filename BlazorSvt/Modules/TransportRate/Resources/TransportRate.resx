@@ -661,13 +661,4 @@
   <data name="TransportRateDetailDto.Leg2_TotalCostTransportCNY" xml:space="preserve">
 	  <value>Leg 2. Total Cost Transport, CNY</value>
   </data>
-  <data name="TransportRateDetailDto.CustomMessage" xml:space="preserve">
-	  <value>Custom Message From Transport Rate Details: </value>
-  </data>
-  <data name="TransportRateDetailDto.CustomMessageWithoutProxy" xml:space="preserve">
-	  <value>Transport Rate Without Proxy</value>
-  </data>
-  <data name="TransportRateDetailDto.CustomMessageWithProxy" xml:space="preserve">
-	  <value>Transport Rate With Proxy</value>
-  </data>
   </root>

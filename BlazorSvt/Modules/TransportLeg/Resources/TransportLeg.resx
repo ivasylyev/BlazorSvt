@@ -307,15 +307,6 @@
   <data name="TransportLegDetailDto.Group.42.LeadtimesLeg2" xml:space="preserve">
 	  <value>4.2. Leadtimes Leg 2</value>
   </data>
-  <data name="TransportLegDetailDto.CustomMessage" xml:space="preserve">
-	  <value>Custom Message From Transport Leg Details: </value>
-  </data>
-  <data name="TransportLegDetailDto.CustomMessageWithoutProxy" xml:space="preserve">
-	  <value>Transport Leg Without Proxy</value>
-  </data>
-  <data name="TransportLegDetailDto.CustomMessageWithProxy" xml:space="preserve">
-	  <value>Transport Leg With Proxy</value>
-  </data>
   <data name="TransportLegDetailDto.Leg1_SearchTime" xml:space="preserve">
 	  <value>Leg 1. Search Time, days</value>
   </data>

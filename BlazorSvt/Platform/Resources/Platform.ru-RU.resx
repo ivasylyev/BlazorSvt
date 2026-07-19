@@ -186,6 +186,12 @@
   <data name="GenericGrid.ReportGenerating" xml:space="preserve">
     <value>Отчет формируется...</value>
   </data>
+  <data name="GenericDetailView.CollapseAll" xml:space="preserve">
+    <value>Скрыть все</value>
+  </data>
+  <data name="GenericDetailView.ExpandAll" xml:space="preserve">
+    <value>Раскрыть все</value>
+  </data>
   <data name="LoadTimePanel.NotLoaded" xml:space="preserve">
     <value>Данные еще не загружены</value>
   </data>

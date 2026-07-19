@@ -303,15 +303,6 @@
   <data name="TransportLegDetailDto.Group.42.LeadtimesLeg2" xml:space="preserve">
     <value>4.2. Лидтаймы Плечо 2</value>
   </data>
-  <data name="TransportLegDetailDto.CustomMessage" xml:space="preserve">
-    <value>Кастомное сообщение от транспортных плеч: </value>
-  </data>
-  <data name="TransportLegDetailDto.CustomMessageWithoutProxy" xml:space="preserve">
-    <value>Плечо без промежуточного узла</value>
-  </data>
-  <data name="TransportLegDetailDto.CustomMessageWithProxy" xml:space="preserve">
-    <value>Плечо с промежуточным узлом</value>
-  </data>
   <data name="TransportLegDetailDto.Leg1_SearchTime" xml:space="preserve">
     <value>Плечо 1. Поиск, сут.</value>
   </data>
