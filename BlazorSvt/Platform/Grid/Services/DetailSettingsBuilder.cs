@@ -6,6 +6,7 @@ namespace BlazorSvt.Platform.Grid.Services;
 
 /// <summary>
 /// Helps build detail field settings without repeating Name/Display/Visible boilerplate.
+/// Empty display values (null, empty or whitespace strings) are hidden by default.
 /// </summary>
 public sealed class DetailSettingsBuilder<T>(IStringLocalizer<PlatformResources> platform)
 {
@@ -22,13 +23,15 @@ public sealed class DetailSettingsBuilder<T>(IStringLocalizer<PlatformResources>
         Func<T, object>? display = null)
     {
         var compiled = property.Compile();
+        Func<T, object> displaySelector = display ?? (dto => compiled(dto) is { } value ? value : string.Empty);
         fields.Add(new DetailSetting<T>
         {
             Name = MemberName(property),
             Header = header,
             GroupHeader = groupHeader,
-            DisplaySelector = display ?? (dto => compiled(dto) is { } value ? value : string.Empty),
-            VisibleSelector = visible ?? (_ => true),
+            DisplaySelector = displaySelector,
+            // Hide null / empty / whitespace display values; keep explicit business rules via `visible`.
+            VisibleSelector = dto => (visible?.Invoke(dto) ?? true) && HasMeaningfulValue(displaySelector(dto)),
             HasMargin = hasMargin
         });
         return this;
@@ -112,6 +115,13 @@ public sealed class DetailSettingsBuilder<T>(IStringLocalizer<PlatformResources>
             hasMargin,
             dto => compiled(dto) ? platform["Common.Archive"] : platform["Common.Active"]);
     }
+
+    private static bool HasMeaningfulValue(object? value) => value switch
+    {
+        null => false,
+        string s => !string.IsNullOrWhiteSpace(s),
+        _ => true
+    };
 
     private static string MemberName<TProp>(Expression<Func<T, TProp>> property) =>
         property.Body switch
