@@ -116,175 +116,176 @@
   </resheader>
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </resheader><data name="Test" xml:space="preserve">
+  </resheader>
+  <data name="Test" xml:space="preserve">
     <value>Тест</value>
   </data>
   <data name="HeaderMenu.Home" xml:space="preserve">
-	  <value>Домашняя</value>
+    <value>Домашняя</value>
   </data>
   <data name="HeaderMenu.TransportRate" xml:space="preserve">
-	  <value>Ставки</value>
+    <value>Ставки</value>
   </data>
   <data name="HeaderMenu.AverageRateLevel3" xml:space="preserve">
-	  <value>Cредневзвешенные ставки</value>
+    <value>Ср. ставки</value>
   </data>
   <data name="HeaderMenu.TransportLeg" xml:space="preserve">
-	  <value>Транспортные плечи</value>
+    <value>Плечи</value>
   </data>
   <data name="HeaderMenu.LocationsNodes" xml:space="preserve">
-	  <value>Местоположения-Узлы</value>
+    <value>Узлы</value>
   </data>
   <data name="HeaderMenu.Load" xml:space="preserve">
-	  <value>Загрузка</value>
+    <value>Загрузка</value>
   </data>
   <data name="Load.Title" xml:space="preserve">
-	  <value>Загрузка</value>
+    <value>Загрузка</value>
   </data>
   <data name="Load.WithoutProxy" xml:space="preserve">
-	  <value>Плечи без прокси</value>
+    <value>Плечи без прокси</value>
   </data>
   <data name="Load.Proxy" xml:space="preserve">
-	  <value>Плечи с прокси</value>
+    <value>Плечи с прокси</value>
   </data>
-	<data name="LoadTimePanel.LoadTimeFormat" xml:space="preserve">
-	  <value>Время загрузки {0:F3} сек.</value>
-  </data>
-  <data name="GenericGrid.Settings" xml:space="preserve">
-	  <value>Настройки</value>
+  <data name="LoadTimePanel.LoadTimeFormat" xml:space="preserve">
+    <value>Время загрузки {0:F3} сек.</value>
   </data>
   <data name="GenericGrid.ResetFilters" xml:space="preserve">
-	  <value>Сбросить фильтры</value>
+    <value>Сбросить фильтры</value>
+  </data>
+  <data name="GenericGrid.Settings" xml:space="preserve">
+    <value>Настройки</value>
   </data>
   <data name="GenericGrid.EnumFilterSelectText" xml:space="preserve">
-	  <value>Выберите</value>
+    <value>Выберите</value>
   </data>
   <data name="GenericGrid.PaginationItemsTextFormat" xml:space="preserve">
-	  <value>{0} - {1} из {2} элементов</value>
+    <value>{0} - {1} из {2} элементов</value>
   </data>
   <data name="GenericGrid.Reports" xml:space="preserve">
-	  <value>Отчеты</value>
+    <value>Отчеты</value>
   </data>
   <data name="GenericGrid.ShortReport" xml:space="preserve">
-	  <value>Краткий отчет</value>
+    <value>Краткий отчет</value>
   </data>
   <data name="GenericGrid.FullReport" xml:space="preserve">
-	  <value>Полный отчет</value>
+    <value>Полный отчет</value>
   </data>
   <data name="GenericGrid.ReportConfirm.Title" xml:space="preserve">
-	  <value>Подтверждение отчёта</value>
+    <value>Подтверждение отчёта</value>
   </data>
   <data name="GenericGrid.ReportConfirm.Message" xml:space="preserve">
-	  <value>Отчёт имеет {0} строчек. Формирование может занять несколько минут. Продолжить?</value>
+    <value>Отчёт имеет {0} строчек. Формирование может занять несколько минут. Продолжить?</value>
   </data>
   <data name="GenericGrid.ReportConfirm.Yes" xml:space="preserve">
-	  <value>Да</value>
+    <value>Да</value>
   </data>
   <data name="GenericGrid.ReportConfirm.No" xml:space="preserve">
-	  <value>Нет</value>
+    <value>Нет</value>
   </data>
   <data name="GenericGrid.ReportGenerating" xml:space="preserve">
-	  <value>Отчет формируется...</value>
+    <value>Отчет формируется...</value>
   </data>
   <data name="LoadTimePanel.NotLoaded" xml:space="preserve">
-	  <value>Данные еще не загружены</value>
+    <value>Данные еще не загружены</value>
   </data>
   <data name="ExcelLoader.Load" xml:space="preserve">
-	  <value>Загрузить</value>
+    <value>Загрузить</value>
   </data>
   <data name="Settings.Title" xml:space="preserve">
-	  <value>Настройки</value>
+    <value>Настройки</value>
   </data>
-	<data name="Settings.Ok" xml:space="preserve">
-	  <value>ОК</value>
+  <data name="Settings.Ok" xml:space="preserve">
+    <value>ОК</value>
   </data>
   <data name="Settings.Reset" xml:space="preserve">
-	  <value>Сбросить</value>
+    <value>Сбросить</value>
   </data>
   <data name="Settings.Cancel" xml:space="preserve">
-	  <value>Отмена</value>
+    <value>Отмена</value>
   </data>
   <data name="Home.Home" xml:space="preserve">
-	  <value>Домашняя</value>
+    <value>Домашняя</value>
   </data>
-	<data name="Home.Message" xml:space="preserve">
-	  <value>Демо проект СВТ с использованием Blazor Bootstrap Web App (.NET 9) + MS SQL Full Text Search.</value>
+  <data name="Home.Message" xml:space="preserve">
+    <value>Демо проект СВТ с использованием Blazor Bootstrap Web App (.NET 9) + MS SQL Full Text Search.</value>
   </data>
   <data name="ErrorDisplay.Message" xml:space="preserve">
-	  <value>Сообщение:</value>
+    <value>Сообщение:</value>
   </data>
   <data name="ErrorDisplay.Type" xml:space="preserve">
-	  <value>Тип:</value>
+    <value>Тип:</value>
   </data>
   <data name="ErrorDisplay.StackTrace" xml:space="preserve">
-	  <value>StackTrace:</value>
+    <value>StackTrace:</value>
   </data>
   <data name="ErrorDisplay.Title" xml:space="preserve">
-	  <value>При выполнении программы возникла ошибка. Нажмите для просмотра деталей.</value>
+    <value>При выполнении программы возникла ошибка. Нажмите для просмотра деталей.</value>
   </data>
   <data name="FilterOperator.Contains" xml:space="preserve">
-	  <value>Содержит</value>
+    <value>Содержит</value>
   </data>
   <data name="FilterOperator.DoesNotContain" xml:space="preserve">
-	  <value>Не содержит</value>
+    <value>Не содержит</value>
   </data>
   <data name="FilterOperator.StartsWith" xml:space="preserve">
-	  <value>Начинается с</value>
+    <value>Начинается с</value>
   </data>
   <data name="FilterOperator.EndsWith" xml:space="preserve">
-	  <value>Заканчивается на</value>
+    <value>Заканчивается на</value>
   </data>
   <data name="FilterOperator.Equals" xml:space="preserve">
-	  <value>Равно</value>
+    <value>Равно</value>
   </data>
   <data name="FilterOperator.NotEquals" xml:space="preserve">
-	  <value>Не равно</value>
+    <value>Не равно</value>
   </data>
   <data name="FilterOperator.LessThan" xml:space="preserve">
-	  <value>Меньше</value>
+    <value>Меньше</value>
   </data>
   <data name="FilterOperator.LessThanOrEquals" xml:space="preserve">
-	  <value>Меньше или равно</value>
+    <value>Меньше или равно</value>
   </data>
   <data name="FilterOperator.GreaterThan" xml:space="preserve">
-	  <value>Больше</value>
+    <value>Больше</value>
   </data>
   <data name="FilterOperator.GreaterThanOrEquals" xml:space="preserve">
-	  <value>Больше или равно</value>
+    <value>Больше или равно</value>
   </data>
   <data name="FilterOperator.Clear" xml:space="preserve">
-	  <value>Очистить</value>
+    <value>Очистить</value>
   </data>
   <data name="Validation.ParseError" xml:space="preserve">
-	  <value>Не удалось преобразовать значение '{0}' для поля '{1}'</value>
+    <value>Не удалось преобразовать значение '{0}' для поля '{1}'</value>
   </data>
   <data name="Validation.Required" xml:space="preserve">
-	  <value>Обязательное поле</value>
+    <value>Обязательное поле</value>
   </data>
   <data name="Validation.GreaterThanZero" xml:space="preserve">
-	  <value>Значение должно быть больше нуля</value>
+    <value>Значение должно быть больше нуля</value>
   </data>
   <data name="Excel.ErrorsColumnHeader" xml:space="preserve">
-	  <value>Ошибки</value>
+    <value>Ошибки</value>
   </data>
   <data name="Load.ImportSuccess" xml:space="preserve">
-	  <value>Загружено строк: {0}</value>
+    <value>Загружено строк: {0}</value>
   </data>
   <data name="Load.ImportHasErrors" xml:space="preserve">
-	  <value>Найдены ошибки в строках: {0}</value>
+    <value>Найдены ошибки в строках: {0}</value>
   </data>
   <data name="Load.DownloadErrors" xml:space="preserve">
-	  <value>Скачать файл с ошибками</value>
+    <value>Скачать файл с ошибками</value>
   </data>
   <data name="Common.Yes" xml:space="preserve">
-	  <value>Да</value>
+    <value>Да</value>
   </data>
   <data name="Common.No" xml:space="preserve">
-	  <value>Нет</value>
+    <value>Нет</value>
   </data>
   <data name="Common.Archive" xml:space="preserve">
-	  <value>Архив</value>
+    <value>Архив</value>
   </data>
   <data name="Common.Active" xml:space="preserve">
-	  <value>Актив</value>
+    <value>Актив</value>
   </data>
 </root>

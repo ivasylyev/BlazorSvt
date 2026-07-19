@@ -5,7 +5,11 @@ namespace BlazorSvt.Platform.Sync;
 /// </summary>
 public class SnapshotSyncOptions
 {
-    /// <summary>Включена ли фоновая синхронизация. По умолчанию выключена.</summary>
+    /// <summary>
+    /// Деплой-выключатель фоновой синхронизации. По умолчанию выключена.
+    /// При <c>false</c> воркер не запускается (нужны смена конфига и рестарт).
+    /// Оперативный kill switch — <c>V2SyncEnabled</c> в <c>dbo.vw_FeatureToggle</c>.
+    /// </summary>
     public bool Enabled { get; set; }
 
     /// <summary>Интервал между циклами инкрементальной синхронизации.

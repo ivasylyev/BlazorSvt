@@ -11,6 +11,8 @@ namespace BlazorSvt.Platform.Sync;
 /// синхронизацию по каждому <see cref="ISnapshotSyncJob"/>, а один раз в сутки в
 /// <see cref="SnapshotSyncOptions.ReconcileAtTime"/> — reconciliation.
 ///
+/// Два выключателя: <see cref="SnapshotSyncOptions.Enabled"/> (деплой, до рестарта)
+/// и <see cref="IV2SyncFeatureToggle"/> / <c>V2SyncEnabled</c> (оперативный, без рестарта).
 /// Инкремент не запускается в blackout-окнах (<see cref="SnapshotSyncOptions.BlackoutIntervals"/>);
 /// reconciliation в них выполняется — окна как раз задуманы под тяжёлые операции.
 /// Все времена трактуются в поясе <see cref="SnapshotSyncOptions.TimeZone"/>.
@@ -20,6 +22,7 @@ public sealed class SnapshotSyncScheduler : BackgroundService
 {
     private readonly List<ISnapshotSyncJob> jobs;
     private readonly SnapshotSyncExecutor executor;
+    private readonly IV2SyncFeatureToggle featureToggle;
     private readonly SnapshotSyncOptions options;
     private readonly ILogger<SnapshotSyncScheduler> logger;
 
@@ -30,11 +33,13 @@ public sealed class SnapshotSyncScheduler : BackgroundService
     public SnapshotSyncScheduler(
         IEnumerable<ISnapshotSyncJob> jobs,
         SnapshotSyncExecutor executor,
+        IV2SyncFeatureToggle featureToggle,
         IOptions<SnapshotSyncOptions> options,
         ILogger<SnapshotSyncScheduler> logger)
     {
         this.jobs = jobs.ToList();
         this.executor = executor;
+        this.featureToggle = featureToggle;
         this.options = options.Value;
         this.logger = logger;
 
@@ -49,7 +54,9 @@ public sealed class SnapshotSyncScheduler : BackgroundService
     {
         if (!options.Enabled)
         {
-            logger.LogInformation("SnapshotSync выключен (Sync:Enabled=false).");
+            logger.LogInformation(
+                "SnapshotSync выключен. Sync:Enabled=false (деплой-выключатель: воркер не запускается до смены конфига и рестарта). " +
+                "V2SyncEnabled не опрашивается (оперативный kill switch из dbo.vw_FeatureToggle).");
             return;
         }
 
@@ -59,11 +66,15 @@ public sealed class SnapshotSyncScheduler : BackgroundService
             return;
         }
 
+        var v2SyncEnabled = await featureToggle.IsEnabledAsync(stoppingToken);
         logger.LogInformation(
-            "SnapshotSync запущен: {Count} справочник(ов), интервал {Interval}с, reconcile в {ReconcileAt} ({Tz}).",
-            jobs.Count, options.IntervalSeconds, options.ReconcileAtTime, timeZone.Id);
+            "SnapshotSync запущен: {Count} справочник(ов), интервал {Interval}с, reconcile в {ReconcileAt} ({Tz}). " +
+            "Sync:Enabled=true (деплой-выключатель: false останавливает воркер до рестарта). " +
+            "V2SyncEnabled={V2SyncEnabled} (оперативный kill switch из dbo.vw_FeatureToggle; смена без рестарта; нет строки/ошибка чтения = выкл).",
+            jobs.Count, options.IntervalSeconds, options.ReconcileAtTime, timeZone.Id, v2SyncEnabled);
 
         using var timer = new PeriodicTimer(TimeSpan.FromSeconds(options.IntervalSeconds));
+        var skipTracker = new V2SyncSkipTracker(initialEnabled: v2SyncEnabled);
 
         // На старте не догоняем пропущенный reconcile: точка отсчёта = "сейчас".
         var previousLocal = NowLocal();
@@ -71,10 +82,40 @@ public sealed class SnapshotSyncScheduler : BackgroundService
         do
         {
             var nowLocal = NowLocal();
+
+            if (!await ShouldRunCycleAsync(skipTracker, stoppingToken))
+            {
+                previousLocal = nowLocal;
+                continue;
+            }
+
             await RunCycleAsync(previousLocal, nowLocal, stoppingToken);
             previousLocal = nowLocal;
         }
         while (await WaitForNextTickAsync(timer, stoppingToken));
+    }
+
+    private async Task<bool> ShouldRunCycleAsync(V2SyncSkipTracker skipTracker, CancellationToken stoppingToken)
+    {
+        var enabled = await featureToggle.IsEnabledAsync(stoppingToken);
+        var decision = skipTracker.Observe(enabled);
+
+        if (decision.LogTransition)
+        {
+            logger.LogWarning(
+                decision.Enabled
+                    ? "SnapshotSync: V2SyncEnabled включён — синхронизация возобновлена."
+                    : "SnapshotSync: V2SyncEnabled выключен — синхронизация приостановлена.");
+        }
+
+        if (decision.LogHeartbeat)
+        {
+            logger.LogWarning(
+                "SnapshotSync: V2SyncEnabled выключен, работа пропущена (heartbeat, пропущено тиков: {SkippedTicks}).",
+                decision.SkippedTicks);
+        }
+
+        return decision.ShouldRun;
     }
 
     private async Task RunCycleAsync(DateTime previousLocal, DateTime nowLocal, CancellationToken stoppingToken)

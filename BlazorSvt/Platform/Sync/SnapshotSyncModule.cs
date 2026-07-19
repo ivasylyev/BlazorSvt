@@ -12,6 +12,7 @@ public static class SnapshotSyncModule
     {
         services.Configure<SnapshotSyncOptions>(configuration.GetSection("Sync"));
 
+        services.AddSingleton<IV2SyncFeatureToggle, V2SyncFeatureToggle>();
         services.AddSingleton<SyncStateStore>();
         services.AddSingleton<SnapshotSyncExecutor>();
         services.AddHostedService<SnapshotSyncScheduler>();

@@ -61,6 +61,7 @@ Serilog (`Host/Program.cs`, секция `Serilog` в `appsettings.json`). Пр�
 
 Инкрементальная односторонняя синхронизация: `Platform/Sync/` (оркестрация) + SQL-процедуры
 (`v2.Sync_*`, `v2.{Entity}_PopulateAffectedKeys`). Детали — `SqlScripts/README.md`.
+Два выключателя: `Sync:Enabled` (деплой) и `V2SyncEnabled` в `dbo.vw_FeatureToggle` (оперативный kill switch).
 
 **Детекция** — `RowVer` (rowversion) на базовых `dbo.PrimitiveEntityData_*`; курсоры в `v2.SyncState`
 (`LastRowVersion`, `LastRunUtc` — не `LastRowVer`).
