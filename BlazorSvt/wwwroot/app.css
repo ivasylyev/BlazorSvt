@@ -241,17 +241,18 @@ h1:focus {
     border: 1px solid rgba(0, 240, 255, 0.1);
 }
 
-/* Layout: content fills viewport between header and footer */
+/* Layout: sticky footer — at viewport bottom when short, below content when tall */
 main {
     display: flex;
     flex-direction: column;
+    height: auto;
+    min-height: 100vh;
 }
 
 main > article {
     flex: 1 1 auto;
     display: flex;
     flex-direction: column;
-    min-height: 0;
 }
 
 /* Home page card stretches to full content height */
