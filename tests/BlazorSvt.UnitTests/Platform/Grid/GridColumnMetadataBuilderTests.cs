@@ -36,7 +36,31 @@ public class GridColumnMetadataBuilderTests
 
         columns.Should().NotBeEmpty();
         columns.Select(c => c["ColumnName"]!.Value<string>()).Should().Contain(nameof(TransportLegDto.Code));
-        columns.Select(c => c["ColumnName"]!.Value<string>()).Should().NotContain(nameof(TransportLegDto.TransportKindCode));
+        columns.Select(c => c["ColumnName"]!.Value<string>()).Should().Contain(nameof(TransportLegDto.TransportKindCode));
+        columns.Select(c => c["ColumnName"]!.Value<string>()).Should().NotContain(nameof(TransportLegDto.TransportationTimeT));
+    }
+
+    [Fact]
+    public void BuildAllowedColumnsJson_DecimalColumns_HaveDecimalColumnType()
+    {
+        var json = GridColumnMetadataBuilder.BuildAllowedColumnsJson(typeof(TransportRateDto));
+        var columns = JArray.Parse(json);
+
+        var totalCostTon = columns.Single(c => c["ColumnName"]!.Value<string>() == nameof(TransportRateDto.TotalCostTon));
+        totalCostTon["ColumnType"]!.Value<string>().Should().Be("DECIMAL");
+
+        var totalCostTransport = columns.Single(c => c["ColumnName"]!.Value<string>() == nameof(TransportRateDto.TotalCostTransport));
+        totalCostTransport["ColumnType"]!.Value<string>().Should().Be("DECIMAL");
+    }
+
+    [Fact]
+    public void BuildAllowedColumnsJson_NullableDecimalColumns_HaveDecimalColumnType()
+    {
+        var json = GridColumnMetadataBuilder.BuildAllowedColumnsJson(typeof(ParityRatesDto));
+        var columns = JArray.Parse(json);
+
+        var factRate = columns.Single(c => c["ColumnName"]!.Value<string>() == nameof(ParityRatesDto.FactRate));
+        factRate["ColumnType"]!.Value<string>().Should().Be("DECIMAL");
     }
 
     [Fact]

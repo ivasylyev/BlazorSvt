@@ -37,6 +37,7 @@ GO
 CREATE FULLTEXT INDEX ON v2.TransportLeg_Snapshot
 ( 
     Code               LANGUAGE 1033,      -- English,
+    TransportKindCode  LANGUAGE 1033,      -- English,
     NodeFromCode       LANGUAGE 1033,      -- English,
     NodeFromNameEn     LANGUAGE 1033,      -- English,
     NodeFromNameRu     LANGUAGE 1049,      -- Russian,

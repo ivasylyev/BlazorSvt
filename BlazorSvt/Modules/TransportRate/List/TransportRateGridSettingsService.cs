@@ -22,9 +22,9 @@ public class TransportRateGridSettingsService(
         b.Add(x => x.Code, L["TransportRateDto.Code"]);
         b.AddYesNo(x => x.IsDefRate, L["TransportRateDto.IsDefRate"]);
         b.AddEnum(isRu, x => x.RateTypeIdRu, x => x.RateTypeIdEn, L["TransportRateDto.RateTypeName"]);
-        b.Add(x => x.TransportKindCode, L["TransportRateDto.TransportKindCode"], visible: false, filterable: false);
+        b.Add(x => x.TransportKindCode, L["TransportRateDto.TransportKindCode"], visible: false);
         b.AddEnum(isRu, x => x.TransportKindIdRu, x => x.TransportKindIdEn, L["TransportRateDto.TransportKindName"]);
-        b.Add(x => x.TransportTypeCode, L["TransportRateDto.TransportTypeCode"], visible: false, filterable: false);
+        b.Add(x => x.TransportTypeCode, L["TransportRateDto.TransportTypeCode"], visible: false);
         b.AddEnum(isRu, x => x.TransportTypeIdRu, x => x.TransportTypeIdEn, L["TransportRateDto.TransportTypeName"]);
         b.Add(x => x.NodeFromCode, L["TransportRateDto.NodeFromCode"], visible: false);
         b.AddLocalized(isRu, x => x.NodeFromNameRu, x => x.NodeFromNameEn, L["TransportRateDto.NodeFromName"]);
@@ -38,8 +38,8 @@ public class TransportRateGridSettingsService(
         b.AddLocalized(isRu, x => x.ProductNameRu, x => x.ProductNameEn, L["TransportRateDto.ProductName"]);
         b.AddDateOnly(x => x.StartDate, L["TransportRateDto.StartDate"]);
         b.AddDateOnly(x => x.EndDate, L["TransportRateDto.EndDate"]);
-        b.Add(x => x.TotalCostTon, L["TransportRateDto.TotalCostTon"], filterable: false);
-        b.Add(x => x.TotalCostTransport, L["TransportRateDto.TotalCostTransport"], filterable: false);
+        b.Add(x => x.TotalCostTon, L["TransportRateDto.TotalCostTon"]);
+        b.Add(x => x.TotalCostTransport, L["TransportRateDto.TotalCostTransport"]);
         b.AddEnum(x => x.CurrencyId, L["TransportRateDto.Currency"]);
         b.AddSystemColumns(
             x => x.CreationDate,

@@ -186,7 +186,7 @@ BEGIN
         ColumnType    NVARCHAR(20) '$.ColumnType'
     )
     WHERE ColumnName IS NOT NULL
-      AND UPPER(ColumnType) IN (N'NVARCHAR', N'ID', N'DATE', N'BIT');
+      AND UPPER(ColumnType) IN (N'NVARCHAR', N'ID', N'DATE', N'BIT', N'DECIMAL');
 
     SET @SortKey = NULLIF(LTRIM(RTRIM(@SortKey)), N'');
     SET @SortDirection = UPPER(NULLIF(LTRIM(RTRIM(@SortDirection)), N''));
@@ -249,6 +249,7 @@ BEGIN
     SET SqlOperator = v2.fn_GetDateSqlOperator(Operator),
         SqlValue = CASE ColumnType
             WHEN N'ID' THEN CONVERT(NVARCHAR(30), TRY_CONVERT(BIGINT, ColumnValue))
+            WHEN N'DECIMAL' THEN CONVERT(NVARCHAR(50), TRY_CONVERT(DECIMAL(38, 10), ColumnValue))
             WHEN N'DATE' THEN CONVERT(NVARCHAR(10), TRY_CONVERT(DATE, ColumnValue), 23)
             ELSE ColumnValue
         END,
@@ -285,6 +286,15 @@ BEGIN
                     AND ' + SqlColumnName + N' ' + SqlOperator + N' ' + SqlValue + N' '
                 ELSE ''
                 END
+
+            -- Логика для DECIMAL
+            WHEN N'DECIMAL' THEN
+                CASE WHEN SqlOperator IS NOT NULL AND SqlValue IS NOT NULL THEN
+                    N'
+                    AND ' + SqlColumnName + N' ' + SqlOperator + N' ' + SqlValue + N' '
+                ELSE ''
+                END
+
             -- Логика для ДАТ
             WHEN N'DATE' THEN 
                 CASE WHEN SqlOperator IS NOT NULL AND SqlValue IS NOT NULL THEN

@@ -228,9 +228,12 @@ python .cursor/skills/add-reference-book/scripts/generate-module-resx.py `
 
 Кратко: `{Entity}Dto.*` ← short; парный `{Entity}DetailDto.*` ← `short (full)` если short ≠ full; full для нового модуля — из только что записанного MDM-значения; Detail-only / Groups / Title / мёртвые ключи — не трогать; неизвестные поля — предложить short на approve и **дописать в глоссарий**.
 
-**Заголовок справочника** (`{Entity}Grid.Title` + `HeaderMenu.{Entity}`):
+**Заголовок справочника** (`{Entity}Grid.Title` и `HeaderMenu.{Entity}`):
 
-Русский — из MDM (`PrimitiveEntityInfo.Name` = системное имя `{Entity}`):
+**По умолчанию** оба ключа получают одно и то же значение из MDM (ниже).  
+**Исключение:** пользователь может задать **укороченный** пункт меню (`HeaderMenu.{Entity}`), оставив `{Entity}Grid.Title` полным из MDM. Пример: меню «Паритеты» / `Parities`, title «Паритетные ставки» / `Parity rates`. Без явного запроса на укорочение меню — держать значения одинаковыми.
+
+Русский title — из MDM (`PrimitiveEntityInfo.Name` = системное имя `{Entity}`):
 
 ```sql
 SELECT TOP 1 [Description]
@@ -238,11 +241,11 @@ FROM PrimitiveEntityInfo
 WHERE [Name] = '{Entity}';
 ```
 
-→ `{Entity}.ru-RU.resx` (`{Entity}Grid.Title`) и `Platform.ru-RU.resx` (`HeaderMenu.{Entity}`).
+→ `{Entity}.ru-RU.resx` (`{Entity}Grid.Title`); по умолчанию то же → `Platform.ru-RU.resx` (`HeaderMenu.{Entity}`).
 
 Пустой `Description` → **стоп, спросить пользователя**.
 
-Английский — из `Dictionary` (при исторических дубликатах достаточно `TOP 1`, не спрашивать):
+Английский title — из `Dictionary` (при исторических дубликатах достаточно `TOP 1`, не спрашивать):
 
 ```sql
 SELECT TOP 1 DEn.[Value]
@@ -258,11 +261,11 @@ WHERE DRu.[Value] = (
   AND DRu.LocaleId = 2;
 ```
 
-→ `{Entity}.resx` (`{Entity}Grid.Title`) и `Platform.resx` (`HeaderMenu.{Entity}`).
+→ `{Entity}.resx` (`{Entity}Grid.Title`); по умолчанию то же → `Platform.resx` (`HeaderMenu.{Entity}`).
 
 Если запрос не вернул строку — перевод `Description` **агентом** при генерации; передать в скрипт `--title-en "..."`.
 
-Скрипт: `--platform-resources-dir BlazorSvt/Platform/Resources` — обновляет `HeaderMenu.{Entity}` в Platform resx.
+Скрипт: `--platform-resources-dir BlazorSvt/Platform/Resources` — обновляет `HeaderMenu.{Entity}` в Platform resx (при укороченном меню — править `HeaderMenu.*` вручную после скрипта или не перезаписывать короткие значения).
 
 ### 6. Ссылочные атрибуты
 
@@ -402,7 +405,13 @@ UNION ALL SELECT N'dbo.PrimitiveEntityData_1014'  -- LocationsNodes
 **03 — Indexes:**
 
 - `UX_{Entity}_Snapshot_Id` на `[PRIMARY]` (для FTS при партициях)
-- FULLTEXT на `Code` (только если `Code` — `NVARCHAR`; для числового `Code` FTS не нужен — достаточно фильтрованных индексов), `*NameEn`, `*NameRu`, whitelist Codes (языки 1033 / 1049)
+- FULLTEXT (языки 1033 / 1049):
+  - `*NameEn`, `*NameRu`
+  - whitelist Codes (`NodeFromCode`, …)
+  - **все прочие NVARCHAR-поля короткого списка / грида** (свободный текст: `Comment`, `DataSource`, `Methodology`, …)
+  - `Code` сущности: **только** если `NVARCHAR` **и** значения — осмысленный текст для поиска. Если `Code` — GUID / UUID-строка (как у ParityRates) — **FTS не ставить**, достаточно фильтрованных NCIX по `Code`
+  - числовой `Code` (`INT`) — FTS не нужен, только фильтрованные индексы
+  - `decimal` / даты / bit / Id — **не** в FTS
 - `ALTER FULLTEXT … SET STOPLIST = OFF`
 - Фильтрованные индексы на `Code` сущности и ID **коротких** enum-ссылок (`LocationTypeId`, …); **не** создавать NCIX по Id длинных ссылок (Region, Country)
 - NCIX на `{Entity}Id` и скрытые FK каскада (`NodeFromId`, …)
@@ -441,6 +450,7 @@ UNION ALL SELECT N'dbo.PrimitiveEntityData_1014'  -- LocationsNodes
 | FK / `INT` | `Id` |
 | `NVARCHAR` | `Nvarchar` |
 | `DATETIME` | `Date` |
+| `DECIMAL` | `Decimal` |
 
 **Full export** — platform-процедура `v2.ExportBlazorGridDetail`: grid-метаданные из list-DTO, `@DetailViewName` и `@EntityKeyColumn` из `[DetailSource]` на detail-DTO. Per-module export-процедура **не нужна**.
 
@@ -562,6 +572,8 @@ public required RateTypeEn RateTypeIdEn { get; set; }
 - Порядок и группы как **длинный список (п.4)**
 - `GroupHeader` из resx: ключ `{Entity}DetailDto.Group.{GroupRank}.{SanitizedGroupNameEn}`
 - `SanitizedGroupNameEn`: PascalCase, только буквы/цифры (пробелы и спецсимволы удалить)
+- Пустые значения (`null` / `""` / whitespace) скрываются **автоматически** в `DetailSettingsBuilder` — не дублировать `visible: dto => x is not null` для обычных optional-строк
+- Явный `visible:` — только для условных блоков (proxy/leg, calc type и т.п.); он AND с проверкой display-значения
 
 ### Grid.razor
 
@@ -592,7 +604,7 @@ public required RateTypeEn RateTypeIdEn { get; set; }
 
 Ключи в **Platform** resx:
 
-- `HeaderMenu.{Entity}` (пункт меню; **те же значения**, что `{Entity}Grid.Title` — см. п.5)
+- `HeaderMenu.{Entity}` (пункт меню; по умолчанию = `{Entity}Grid.Title`, либо укороченный текст по явному запросу — см. п.5)
 - Прочие cross-cutting строки не добавлять в модульный resx
 
 В `{Entity}Grid.razor.cs` — `IStringLocalizer<Resources.{Entity}> EL` для `PageTitle` и специфичных сообщений; `SvtComponentBase.L` — только platform-строки.

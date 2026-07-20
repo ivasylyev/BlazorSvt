@@ -34,7 +34,7 @@ public class TransportLegDto
     [GridColumn(SqlColumn = "TransportKindId")]
     public required TransportKindEn TransportKindIdEn { get; set; }
 
-    [GridColumn(Filterable = false)]
+    [GridColumn]
     public required string TransportKindCode { get; set; }
 
     [GridColumn(Filterable = false)]

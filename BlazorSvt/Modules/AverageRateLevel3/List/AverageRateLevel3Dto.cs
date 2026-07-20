@@ -29,10 +29,10 @@ public class AverageRateLevel3Dto
     [GridColumn]
     public DateTime LastChangeDate { get; set; }
 
-    [GridColumn(Filterable = false)]
+    [GridColumn]
     public decimal RateLevel3 { get; set; }
 
-    [GridColumn(Filterable = false)]
+    [GridColumn]
     public decimal EffectiveLoadOfTransportType { get; set; }
 
     [GridColumn]
@@ -80,10 +80,10 @@ public class AverageRateLevel3Dto
     [GridColumn(SqlColumn = "TransportKindId")]
     public required TransportKindEn TransportKindIdEn { get; set; }
 
-    [GridColumn(Filterable = false)]
+    [GridColumn]
     public required string TransportKindCode { get; set; }
 
-    [GridColumn(Filterable = false)]
+    [GridColumn]
     public required string TransportTypeCode { get; set; }
 
     [GridColumn(SqlColumn = "TransportTypeId")]

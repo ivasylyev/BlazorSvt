@@ -71,7 +71,7 @@ public class ParityRatesDto
     [GridColumn]
     public required string NodeToNameEn { get; set; }
 
-    [GridColumn(Filterable = false)]
+    [GridColumn]
     public required string TransportTypeCode { get; set; }
 
     [GridColumn(SqlColumn = "TransportTypeId")]
@@ -98,16 +98,16 @@ public class ParityRatesDto
     [GridColumn]
     public string? ProductNameEn { get; set; }
 
-    [GridColumn(Filterable = false)]
+    [GridColumn]
     public decimal? Level_Danger_Product { get; set; }
 
-    [GridColumn(Filterable = false)]
+    [GridColumn]
     public decimal TotalCostTransport { get; set; }
 
-    [GridColumn(Filterable = false)]
+    [GridColumn]
     public decimal LoadOfTransport { get; set; }
 
-    [GridColumn(Filterable = false)]
+    [GridColumn]
     public decimal TotalCostTon { get; set; }
 
     [GridColumn]
@@ -119,10 +119,10 @@ public class ParityRatesDto
     [GridColumn]
     public string? DataSource { get; set; }
 
-    [GridColumn(Filterable = false)]
+    [GridColumn]
     public decimal? FactRate { get; set; }
 
-    [GridColumn(Filterable = false)]
+    [GridColumn]
     public decimal? BusinessPlanningRate { get; set; }
 
     [GridColumn]

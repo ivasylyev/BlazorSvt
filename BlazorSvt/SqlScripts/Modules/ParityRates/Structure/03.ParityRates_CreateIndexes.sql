@@ -35,6 +35,7 @@ CREATE FULLTEXT INDEX ON v2.ParityRates_Snapshot
     NodeToCode         LANGUAGE 1033,
     NodeToNameEn       LANGUAGE 1033,
     NodeToNameRu       LANGUAGE 1049,
+    TransportTypeCode  LANGUAGE 1033,
     ProductGroupCode   LANGUAGE 1033,
     ProductGroupNameRu LANGUAGE 1049,
     ProductGroupNameEn LANGUAGE 1033,

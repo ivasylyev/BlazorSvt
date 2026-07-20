@@ -30,10 +30,10 @@ public class TransportRateDto
     [GridColumn]
     public DateTime LastChangeDate { get; set; }
 
-    [GridColumn(Filterable = false)]
+    [GridColumn]
     public decimal TotalCostTon { get; set; }
 
-    [GridColumn(Filterable = false)]
+    [GridColumn]
     public decimal TotalCostTransport { get; set; }
 
     [GridColumn]
@@ -81,10 +81,10 @@ public class TransportRateDto
     [GridColumn(SqlColumn = "TransportKindId")]
     public required TransportKindEn TransportKindIdEn { get; set; }
 
-    [GridColumn(Filterable = false)]
+    [GridColumn]
     public required string TransportKindCode { get; set; }
 
-    [GridColumn(Filterable = false)]
+    [GridColumn]
     public required string TransportTypeCode { get; set; }
 
     [GridColumn(SqlColumn = "TransportTypeId")]

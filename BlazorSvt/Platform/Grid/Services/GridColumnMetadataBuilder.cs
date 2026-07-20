@@ -175,6 +175,11 @@ public static class GridColumnMetadataBuilder
             return GridColumnType.Date;
         }
 
+        if (type == typeof(decimal))
+        {
+            return GridColumnType.Decimal;
+        }
+
         return null;
     }
 
@@ -219,6 +224,7 @@ public static class GridColumnMetadataBuilder
             GridColumnType.Nvarchar => "NVARCHAR",
             GridColumnType.Date => "DATE",
             GridColumnType.Bit => "BIT",
+            GridColumnType.Decimal => "DECIMAL",
             _ => throw new ArgumentOutOfRangeException(nameof(columnType), columnType, null)
         };
 }

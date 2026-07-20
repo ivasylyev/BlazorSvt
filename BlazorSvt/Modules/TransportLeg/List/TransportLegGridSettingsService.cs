@@ -23,7 +23,7 @@ public class TransportLegGridSettingsService(
         b.Add(x => x.Code, L["TransportLegDto.Code"]);
         b.AddYesNo(x => x.CanBeUsed, L["TransportLegDto.CanBeUsed"]);
         b.AddEnum(isRu, x => x.ShipmentTypeIdRu, x => x.ShipmentTypeIdEn, L["TransportLegDto.ShipmentTypeName"]);
-        b.Add(x => x.TransportKindCode, L["TransportLegDto.TransportKindCode"], visible: false, filterable: false);
+        b.Add(x => x.TransportKindCode, L["TransportLegDto.TransportKindCode"], visible: false);
         b.AddEnum(isRu, x => x.TransportKindIdRu, x => x.TransportKindIdEn, L["TransportLegDto.TransportKindName"]);
         b.Add(x => x.NodeFromCode, L["TransportLegDto.NodeFromCode"], visible: false);
         b.AddLocalized(isRu, x => x.NodeFromNameRu, x => x.NodeFromNameEn, L["TransportLegDto.NodeFromName"]);

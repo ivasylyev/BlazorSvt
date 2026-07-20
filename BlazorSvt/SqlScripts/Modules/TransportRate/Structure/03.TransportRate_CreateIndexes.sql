@@ -45,6 +45,8 @@ CREATE FULLTEXT INDEX ON v2.TransportRate_Snapshot
     NodeToCode         LANGUAGE 1033,      -- English,
     NodeToNameEn       LANGUAGE 1033,      -- English,
     NodeToNameRu       LANGUAGE 1049,      -- Russian,
+    TransportKindCode  LANGUAGE 1033,      -- English,
+    TransportTypeCode  LANGUAGE 1033,      -- English,
     ProductGroupCode   LANGUAGE 1033,      -- English,
     ProductGroupNameRu LANGUAGE 1049,      -- Russian,
     ProductGroupNameEn LANGUAGE 1033,      -- English,
