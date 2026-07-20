@@ -358,6 +358,8 @@ WHERE DRu.[Value] = (
 | `NodeFrom` | `vw_LocationsNodes` |
 | `NodeTo` | `vw_LocationsNodes` |
 | `ProxyNode` | `vw_LocationsNodes` |
+| `ProxyNode1` / `ProxyNode2` / `ProxyNode3` (и любой числовой суффикс) | `vw_LocationsNodes` |
+| `NodeFromCode` / `NodeToCode` (у ParityRates — BIGINT Id, не строковый Code) | `vw_LocationsNodes` |
 
 ---
 

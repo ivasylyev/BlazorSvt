@@ -41,7 +41,9 @@ VALUES
     (N'dbo.PrimitiveEntityData_1013', N'ProductGroup'),
     (N'dbo.PrimitiveEntityData_1015', N'MTR (Product)'),
     -- AverageRateLevel3
-    (N'dbo.PrimitiveEntityData_2057', N'AverageRateLevel3 (основная)');
+    (N'dbo.PrimitiveEntityData_2057', N'AverageRateLevel3 (основная)'),
+    -- ParityRates
+    (N'dbo.PrimitiveEntityData_2109', N'ParityRates (основная)');
 
 DECLARE @tableName SYSNAME, @comment NVARCHAR(100), @sql NVARCHAR(MAX);
 
@@ -61,7 +63,8 @@ BEGIN
         SELECT 1 FROM sys.columns
         WHERE object_id = OBJECT_ID(@tableName) AND name = N'RowVer')
     BEGIN
-        SET @sql = N'ALTER TABLE ' + @tableName + N' ADD RowVer rowversion NOT NULL;';
+        SET @sql = N'SET QUOTED_IDENTIFIER ON; SET ANSI_NULLS ON; ALTER TABLE '
+            + @tableName + N' ADD RowVer rowversion NOT NULL;';
         PRINT N'Добавляю RowVer в ' + @tableName + N' (' + @comment + N')';
         EXEC sys.sp_executesql @sql;
     END
@@ -92,6 +95,7 @@ INSERT INTO @idxTables (TableName, IndexName)
 VALUES
     (N'dbo.PrimitiveEntityData_2012', N'ix_PrimitiveEntityData_2012_RowVer'),  -- TransportRate
     (N'dbo.PrimitiveEntityData_2057', N'ix_PrimitiveEntityData_2057_RowVer'),  -- AverageRateLevel3
+    (N'dbo.PrimitiveEntityData_2109', N'ix_PrimitiveEntityData_2109_RowVer'),  -- ParityRates
     (N'dbo.PrimitiveEntityData_1015', N'ix_PrimitiveEntityData_1015_RowVer'),  -- MTR (Product)
     (N'dbo.PrimitiveEntityData_1014', N'ix_PrimitiveEntityData_1014_RowVer');  -- LocationsNodes
 

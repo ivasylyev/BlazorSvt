@@ -126,6 +126,9 @@
   <data name="HeaderMenu.TransportRate" xml:space="preserve">
     <value>Ставки</value>
   </data>
+  <data name="HeaderMenu.ParityRates" xml:space="preserve">
+    <value>Паритеты</value>
+  </data>
   <data name="HeaderMenu.AverageRateLevel3" xml:space="preserve">
     <value>Ср. ставки</value>
   </data>

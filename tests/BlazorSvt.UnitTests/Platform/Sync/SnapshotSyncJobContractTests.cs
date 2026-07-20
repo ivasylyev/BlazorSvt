@@ -2,6 +2,8 @@ using BlazorSvt.Modules.AverageRateLevel3.List;
 using BlazorSvt.Modules.AverageRateLevel3.Sync;
 using BlazorSvt.Modules.LocationsNodes.List;
 using BlazorSvt.Modules.LocationsNodes.Sync;
+using BlazorSvt.Modules.ParityRates.List;
+using BlazorSvt.Modules.ParityRates.Sync;
 using BlazorSvt.Modules.TransportLeg.List;
 using BlazorSvt.Modules.TransportLeg.Sync;
 using BlazorSvt.Modules.TransportRate.List;
@@ -24,6 +26,7 @@ public class SnapshotSyncJobContractTests
         "dbo.PrimitiveEntityData_2048", // RateType
         "dbo.PrimitiveEntityData_2023", // TransportType
         "dbo.PrimitiveEntityData_2016", // Currency
+        "dbo.PrimitiveEntityData_2108", // Relevance
     ];
 
     public static TheoryData<ISnapshotSyncJob, Type, string, string, string, string, string> RegisteredJobs =>
@@ -57,6 +60,15 @@ public class SnapshotSyncJobContractTests
                 "v2.TransportRate_PopulateAffectedKeys"
             },
             {
+                new ParityRatesSyncJob(),
+                typeof(ParityRatesDto),
+                "ParityRates",
+                "v2.ParityRates_Snapshot",
+                nameof(ParityRatesDto.ParityRatesId),
+                "v2.vw_ParityRates_SnapshotSource",
+                "v2.ParityRates_PopulateAffectedKeys"
+            },
+            {
                 new AverageRateLevel3SyncJob(),
                 typeof(AverageRateLevel3Dto),
                 "AverageRateLevel3",
@@ -73,6 +85,7 @@ public class SnapshotSyncJobContractTests
             new LocationsNodesSyncJob(),
             new TransportLegSyncJob(),
             new TransportRateSyncJob(),
+            new ParityRatesSyncJob(),
             new AverageRateLevel3SyncJob(),
         };
 

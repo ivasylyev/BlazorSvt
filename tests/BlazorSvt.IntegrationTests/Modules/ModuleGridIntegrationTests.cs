@@ -3,6 +3,8 @@ using BlazorSvt.Modules.AverageRateLevel3.Detail;
 using BlazorSvt.Modules.AverageRateLevel3.List;
 using BlazorSvt.Modules.LocationsNodes.Detail;
 using BlazorSvt.Modules.LocationsNodes.List;
+using BlazorSvt.Modules.ParityRates.Detail;
+using BlazorSvt.Modules.ParityRates.List;
 using BlazorSvt.Modules.TransportLeg.Detail;
 using BlazorSvt.Modules.TransportLeg.List;
 using BlazorSvt.Modules.TransportRate.Detail;
@@ -38,6 +40,20 @@ public class ModuleGridIntegrationTests(DatabaseFixture fixture) : IntegrationTe
         var (rows, totalCount) = await GridSpTestHelper.ExecuteGetBlazorGridDataAsync<TransportRateDto>(
             connectionString,
             typeof(TransportRateDto),
+            GridSpTestHelper.CreateDefaultQuery());
+
+        rows.Should().NotBeEmpty();
+        totalCount.Should().BeGreaterThan(0);
+    }
+
+    [SkippableFact]
+    public async Task ParityRatesGrid_ReturnsRows()
+    {
+        var connectionString = RequireConnectionString();
+
+        var (rows, totalCount) = await GridSpTestHelper.ExecuteGetBlazorGridDataAsync<ParityRatesDto>(
+            connectionString,
+            typeof(ParityRatesDto),
             GridSpTestHelper.CreateDefaultQuery());
 
         rows.Should().NotBeEmpty();
@@ -138,6 +154,29 @@ public class ModuleGridIntegrationTests(DatabaseFixture fixture) : IntegrationTe
 
         detail.Should().NotBeNull();
         detail!.TransportRateId.Should().Be(entityKey);
+    }
+
+    [SkippableFact]
+    public async Task ParityRatesDetailView_ReturnsRowForGridEntityKey()
+    {
+        var connectionString = RequireConnectionString();
+
+        var (rows, _) = await GridSpTestHelper.ExecuteGetBlazorGridDataAsync<ParityRatesDto>(
+            connectionString,
+            typeof(ParityRatesDto),
+            GridSpTestHelper.CreateDefaultQuery(pageSize: 1));
+
+        var entityKey = rows[0].ParityRatesId;
+
+        var detail = await GridSpTestHelper.QueryDetailViewAsync<ParityRatesDetailDto>(
+            connectionString,
+            "v2.vw_ParityRates_Detail",
+            "ParityRatesId",
+            entityKey);
+
+        detail.Should().NotBeNull();
+        detail!.ParityRatesId.Should().Be(entityKey);
+        detail.Code.Should().NotBeNullOrWhiteSpace();
     }
 
     [SkippableFact]

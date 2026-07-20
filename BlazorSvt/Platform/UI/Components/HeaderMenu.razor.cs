@@ -12,6 +12,7 @@ public partial class HeaderMenu : SvtComponentBase
         new() { Url = "", Text = L["HeaderMenu.Home"] , Icon = IconName.HouseDoorFill },
         new() { Url = "transportrate", Text = L["HeaderMenu.TransportRate"], Icon = IconName.Calculator },
         new() { Url = "averageratelevel3", Text = L["HeaderMenu.AverageRateLevel3"], Icon = IconName.CalculatorFill },
+        new() { Url = "parityrates", Text = L["HeaderMenu.ParityRates"], Icon = IconName.Percent },
         new() { Url = "transportleg", Text = L["HeaderMenu.TransportLeg"], Icon = IconName.SignpostSplit },
         new() { Url = "locationsnodes", Text = L["HeaderMenu.LocationsNodes"], Icon = IconName.GeoAltFill },
         //    new() { Url = "load", Text = L["HeaderMenu.Load"], Icon = IconName.Upload }

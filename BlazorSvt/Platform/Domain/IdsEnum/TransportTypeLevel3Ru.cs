@@ -9,8 +9,8 @@ namespace BlazorSvt.Platform.Domain.IdsEnum;
 /// </summary>
 public enum TransportTypeLevel3Ru
 {
-    // [Display(Name = "Авто фура 1,5 т")]
-    // Auto_1 = 543820,
+    [Display(Name = "Авто фура 1,5 т")]
+    Auto_1 = 543820,
 
     [Display(Name = "Авто фура 10 т")]
     Auto_10 = 543817,
@@ -18,11 +18,11 @@ public enum TransportTypeLevel3Ru
     [Display(Name = "Авто фура 20 т")]
     Auto_20 = 543816,
 
-    // [Display(Name = "Авто фура 4 т")]
-    // Auto_4 = 543819,
+    [Display(Name = "Авто фура 4 т")]
+    Auto_4 = 543819,
 
-    // [Display(Name = "Авто фура 6 т")]
-    // Auto_6 = 543818,
+    [Display(Name = "Авто фура 6 т")]
+    Auto_6 = 543818,
 
     [Display(Name = "Авто_Бочки_20")]
     Auto_Barrel_20 = 18063624,
@@ -159,8 +159,8 @@ public enum TransportTypeLevel3Ru
     // [Display(Name = "Контейнеровоз")]
     // Sea = 543835,
 
-    // [Display(Name = "Танкер")]
-    // Tanker = 543839,
+    [Display(Name = "Танкер")]
+    Tanker = 543839,
 
     // [Display(Name = "Танкер ECO")]
     // Tanker_ECO = 543836,

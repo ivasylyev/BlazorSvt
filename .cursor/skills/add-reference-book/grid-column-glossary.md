@@ -115,5 +115,17 @@
 | Регион | `RegionName` / `RegionCode` | Регион | Код региона | Region | Region code |
 | Тип узла | `TypeNodeName` / `TypeNodeCode` | Тип узла | Код тип узла | Node type | Type code |
 | Тип местоположения | `LocationTypeName` / `LocationTypeCode` | Тип места | Код типа места | Loc. type | Loc. code |
+| Актуальность | `RelevanceName` | Актуальность | — | Relevance | — |
+| Пром. узел 1/2 | `ProxyNode1Name` / `ProxyNode2Name` (+ Code) | Пром.1 / Пром.2 | Код пром.1 / Код пром.2 | Proxy 1 / Proxy 2 | Proxy 1 code / Proxy 2 code |
+| Опасный груз (уровень) | `Level_Danger_Product` | Оп. груз | — | Danger lvl | — |
+| Загрузка ТС | `LoadOfTransport` | Загрузка | — | Load | — |
+| Примечание | `Comment` | Примечание | — | Comment | — |
+| Источник данных | `DataSource` | Источник | — | Source | — |
+| Фактическая ставка | `FactRate` | Факт. ставка | — | Fact rate | — |
+| Ставка БП | `BusinessPlanningRate` | Ставка БП | — | BP rate | — |
+| ЗоО отдел | `DepartmentResponsibilityArea` | ЗоО отдел | — | Dept area | — |
+| ЗоО сотрудник | `EmployeeResponsibilityArea` | ЗоО сотр. | — | Emp. area | — |
+| Методология | `Methodology` | Методология | — | Methodology | — |
+| Приоритет | `PriorityText` | Приоритет | — | Priority | — |
 
 `RateTypeCode` в grid settings может отсутствовать — short применяют только если ключ реально используется в гриде; иначе ключ считается мёртвым для правки.

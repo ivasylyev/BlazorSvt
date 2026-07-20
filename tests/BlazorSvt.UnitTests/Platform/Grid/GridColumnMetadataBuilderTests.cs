@@ -1,5 +1,6 @@
 using BlazorSvt.Modules.AverageRateLevel3.List;
 using BlazorSvt.Modules.LocationsNodes.List;
+using BlazorSvt.Modules.ParityRates.List;
 using BlazorSvt.Modules.TransportLeg.List;
 using BlazorSvt.Modules.TransportRate.List;
 using BlazorSvt.Platform.Grid.Services;
@@ -14,6 +15,7 @@ public class GridColumnMetadataBuilderTests
     [Theory]
     [InlineData(typeof(TransportLegDto), "v2.TransportLeg_Snapshot", nameof(TransportLegDto.TransportLegId))]
     [InlineData(typeof(TransportRateDto), "v2.TransportRate_Snapshot", nameof(TransportRateDto.TransportRateId))]
+    [InlineData(typeof(ParityRatesDto), "v2.ParityRates_Snapshot", nameof(ParityRatesDto.ParityRatesId))]
     [InlineData(typeof(AverageRateLevel3Dto), "v2.AverageRateLevel3_Snapshot", nameof(AverageRateLevel3Dto.AverageRateLevel3Id))]
     [InlineData(typeof(LocationsNodesDto), "v2.LocationsNodes_Snapshot", nameof(LocationsNodesDto.LocationsNodesId))]
     public void GetMetadata_ReturnsSnapshotTableAndEntityKey(Type dtoType, string expectedTable, string expectedEntityKey)

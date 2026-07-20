@@ -9,8 +9,8 @@ namespace BlazorSvt.Platform.Domain.IdsEnum;
 /// </summary>
 public enum TransportTypeLevel3En
 {
-    // [Display(Name = "Auto FTL 1 ton")]
-    // Auto_1 = 543820,
+    [Display(Name = "Auto FTL 1 ton")]
+    Auto_1 = 543820,
 
     [Display(Name = "Auto FTL 10 tons")]
     Auto_10 = 543817,
@@ -18,11 +18,11 @@ public enum TransportTypeLevel3En
     [Display(Name = "Auto FTL 20 tons")]
     Auto_20 = 543816,
 
-    // [Display(Name = "Auto FTL 4 tons")]
-    // Auto_4 = 543819,
+    [Display(Name = "Auto FTL 4 tons")]
+    Auto_4 = 543819,
 
-    // [Display(Name = "Auto FTL 6 tons")]
-    // Auto_6 = 543818,
+    [Display(Name = "Auto FTL 6 tons")]
+    Auto_6 = 543818,
 
     [Display(Name = "Auto_Barrel_20")]
     Auto_Barrel_20 = 18063624,
@@ -159,8 +159,8 @@ public enum TransportTypeLevel3En
     // [Display(Name = "Sea")]
     // Sea = 543835,
 
-    // [Display(Name = "Tanker")]
-    // Tanker = 543839,
+    [Display(Name = "Tanker")]
+    Tanker = 543839,
 
     // [Display(Name = "Tanker_ECO")]
     // Tanker_ECO = 543836,

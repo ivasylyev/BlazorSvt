@@ -14,6 +14,9 @@ SqlScripts/
 │   ├── TransportRate/
 │   │   ├── Structure/      # Snapshot-таблица, индексы, seed
 │   │   └── Programmability/ # Detail view, export
+│   ├── ParityRates/
+│   │   ├── Structure/
+│   │   └── Programmability/
 │   ├── AverageRateLevel3/
 │   │   ├── Structure/
 │   │   └── Programmability/
@@ -57,6 +60,17 @@ SqlScripts/
 | 4 | `Modules/TransportRate/Structure/03.TransportRate_CreateIndexes.sql` |
 | 5 | `Modules/TransportRate/Programmability/vw_TransportRate_Detail.sql` |
 | 6 | `Modules/TransportRate/Programmability/sp_TransportRate_PopulateAffectedKeys.sql` |
+
+**ParityRates** (проекция создаётся до Insert — он из неё заливается)
+
+| # | Скрипт |
+|---|--------|
+| 1 | `Modules/ParityRates/Structure/01.ParityRates_CreateTable.sql` |
+| 2 | `Modules/ParityRates/Programmability/vw_ParityRates_SnapshotSource.sql` |
+| 3 | `Modules/ParityRates/Structure/02.ParityRates_Insert.sql` |
+| 4 | `Modules/ParityRates/Structure/03.ParityRates_CreateIndexes.sql` |
+| 5 | `Modules/ParityRates/Programmability/vw_ParityRates_Detail.sql` |
+| 6 | `Modules/ParityRates/Programmability/sp_ParityRates_PopulateAffectedKeys.sql` |
 
 **AverageRateLevel3** (проекция создаётся до Insert — он из неё заливается)
 

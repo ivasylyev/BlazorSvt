@@ -1,0 +1,104 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype"><value>text/microsoft-resx</value></resheader>
+  <resheader name="version"><value>2.0</value></resheader>
+  <resheader name="reader"><value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value></resheader>
+  <resheader name="writer"><value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value></resheader>
+  <data name="ParityRatesDetailDto.BusinessPlanningRate" xml:space="preserve"><value>Ставка БП</value></data>
+  <data name="ParityRatesDetailDto.Code" xml:space="preserve"><value>Код</value></data>
+  <data name="ParityRatesDetailDto.Comment" xml:space="preserve"><value>Примечание</value></data>
+  <data name="ParityRatesDetailDto.CreationDate" xml:space="preserve"><value>Создано (Дата создания)</value></data>
+  <data name="ParityRatesDetailDto.Currency" xml:space="preserve"><value>Валюта</value></data>
+  <data name="ParityRatesDetailDto.Dangerous_Cargo" xml:space="preserve"><value>Опасный груз</value></data>
+  <data name="ParityRatesDetailDto.DataSource" xml:space="preserve"><value>Источник (Источник данных)</value></data>
+  <data name="ParityRatesDetailDto.DepartmentResponsibilityArea" xml:space="preserve"><value>ЗоО отдел (Зона ответственности - Отдел)</value></data>
+  <data name="ParityRatesDetailDto.EmployeeResponsibilityArea" xml:space="preserve"><value>ЗоО сотр. (Зона ответственности - Сотрудник)</value></data>
+  <data name="ParityRatesDetailDto.EndDate" xml:space="preserve"><value>Окончание (Период действия по)</value></data>
+  <data name="ParityRatesDetailDto.FactRate" xml:space="preserve"><value>Факт. ставка (Фактическая ставка)</value></data>
+  <data name="ParityRatesDetailDto.Group.0.Default" xml:space="preserve"><value>По умолчанию</value></data>
+  <data name="ParityRatesDetailDto.IsArchive" xml:space="preserve"><value>Архив</value></data>
+  <data name="ParityRatesDetailDto.LastChangeDate" xml:space="preserve"><value>Изменено (Дата изменения)</value></data>
+  <data name="ParityRatesDetailDto.Level_Danger_Product" xml:space="preserve"><value>Оп. груз (Опасный груз)</value></data>
+  <data name="ParityRatesDetailDto.LoadOfTransport" xml:space="preserve"><value>Загрузка (Загрузка, т)</value></data>
+  <data name="ParityRatesDetailDto.Methodology" xml:space="preserve"><value>Методология</value></data>
+  <data name="ParityRatesDetailDto.NodeFromCode" xml:space="preserve"><value>Код отпр. (Код узла отправления)</value></data>
+  <data name="ParityRatesDetailDto.NodeFromName" xml:space="preserve"><value>Отправление (Узел отправления)</value></data>
+  <data name="ParityRatesDetailDto.NodeToCode" xml:space="preserve"><value>Код назн. (Код узла назначения)</value></data>
+  <data name="ParityRatesDetailDto.NodeToName" xml:space="preserve"><value>Назначение (Узел назначения)</value></data>
+  <data name="ParityRatesDetailDto.PriorityText" xml:space="preserve"><value>Приоритет</value></data>
+  <data name="ParityRatesDetailDto.ProductCode" xml:space="preserve"><value>Код прод.</value></data>
+  <data name="ParityRatesDetailDto.ProductGroupCode" xml:space="preserve"><value>Код гр. пр. (Код группы продуктов)</value></data>
+  <data name="ParityRatesDetailDto.ProductGroupName" xml:space="preserve"><value>Группа прод. (Группа продуктов)</value></data>
+  <data name="ParityRatesDetailDto.ProductName" xml:space="preserve"><value>Продукт</value></data>
+  <data name="ParityRatesDetailDto.ProxyNode1Code" xml:space="preserve"><value>Код пром.1</value></data>
+  <data name="ParityRatesDetailDto.ProxyNode1Name" xml:space="preserve"><value>Пром.1 (Узел промежуточный1)</value></data>
+  <data name="ParityRatesDetailDto.ProxyNode2Code" xml:space="preserve"><value>Код пром.2</value></data>
+  <data name="ParityRatesDetailDto.ProxyNode2Name" xml:space="preserve"><value>Пром.2 (Узел промежуточный2)</value></data>
+  <data name="ParityRatesDetailDto.RelevanceCode" xml:space="preserve"><value>Код актуальности</value></data>
+  <data name="ParityRatesDetailDto.RelevanceName" xml:space="preserve"><value>Актуальность</value></data>
+  <data name="ParityRatesDetailDto.StartDate" xml:space="preserve"><value>Начало (Период действия с)</value></data>
+  <data name="ParityRatesDetailDto.TotalCostTon" xml:space="preserve"><value>За тонну (Общая стоимость за тонну)</value></data>
+  <data name="ParityRatesDetailDto.TotalCostTransport" xml:space="preserve"><value>За ТС (Общая стоимость за транспортное средство)</value></data>
+  <data name="ParityRatesDetailDto.TransportTypeCode" xml:space="preserve"><value>Код типа ТС</value></data>
+  <data name="ParityRatesDetailDto.TransportTypeName" xml:space="preserve"><value>Тип ТС (Тип транспорта)</value></data>
+  <data name="ParityRatesDto.BusinessPlanningRate" xml:space="preserve"><value>Ставка БП</value></data>
+  <data name="ParityRatesDto.Code" xml:space="preserve"><value>Код</value></data>
+  <data name="ParityRatesDto.Comment" xml:space="preserve"><value>Примечание</value></data>
+  <data name="ParityRatesDto.CreationDate" xml:space="preserve"><value>Создано</value></data>
+  <data name="ParityRatesDto.Currency" xml:space="preserve"><value>Валюта</value></data>
+  <data name="ParityRatesDto.DataSource" xml:space="preserve"><value>Источник</value></data>
+  <data name="ParityRatesDto.DepartmentResponsibilityArea" xml:space="preserve"><value>ЗоО отдел</value></data>
+  <data name="ParityRatesDto.EmployeeResponsibilityArea" xml:space="preserve"><value>ЗоО сотр.</value></data>
+  <data name="ParityRatesDto.EndDate" xml:space="preserve"><value>Окончание</value></data>
+  <data name="ParityRatesDto.FactRate" xml:space="preserve"><value>Факт. ставка</value></data>
+  <data name="ParityRatesDto.IsArchive" xml:space="preserve"><value>Архив</value></data>
+  <data name="ParityRatesDto.LastChangeDate" xml:space="preserve"><value>Изменено</value></data>
+  <data name="ParityRatesDto.Level_Danger_Product" xml:space="preserve"><value>Оп. груз</value></data>
+  <data name="ParityRatesDto.LoadOfTransport" xml:space="preserve"><value>Загрузка</value></data>
+  <data name="ParityRatesDto.Methodology" xml:space="preserve"><value>Методология</value></data>
+  <data name="ParityRatesDto.NodeFromCode" xml:space="preserve"><value>Код отпр.</value></data>
+  <data name="ParityRatesDto.NodeFromName" xml:space="preserve"><value>Отправление</value></data>
+  <data name="ParityRatesDto.NodeToCode" xml:space="preserve"><value>Код назн.</value></data>
+  <data name="ParityRatesDto.NodeToName" xml:space="preserve"><value>Назначение</value></data>
+  <data name="ParityRatesDto.PriorityText" xml:space="preserve"><value>Приоритет</value></data>
+  <data name="ParityRatesDto.ProductCode" xml:space="preserve"><value>Код прод.</value></data>
+  <data name="ParityRatesDto.ProductGroupCode" xml:space="preserve"><value>Код гр. пр.</value></data>
+  <data name="ParityRatesDto.ProductGroupName" xml:space="preserve"><value>Группа прод.</value></data>
+  <data name="ParityRatesDto.ProductName" xml:space="preserve"><value>Продукт</value></data>
+  <data name="ParityRatesDto.ProxyNode1Code" xml:space="preserve"><value>Код пром.1</value></data>
+  <data name="ParityRatesDto.ProxyNode1Name" xml:space="preserve"><value>Пром.1</value></data>
+  <data name="ParityRatesDto.ProxyNode2Code" xml:space="preserve"><value>Код пром.2</value></data>
+  <data name="ParityRatesDto.ProxyNode2Name" xml:space="preserve"><value>Пром.2</value></data>
+  <data name="ParityRatesDto.RelevanceName" xml:space="preserve"><value>Актуальность</value></data>
+  <data name="ParityRatesDto.StartDate" xml:space="preserve"><value>Начало</value></data>
+  <data name="ParityRatesDto.TotalCostTon" xml:space="preserve"><value>За тонну</value></data>
+  <data name="ParityRatesDto.TotalCostTransport" xml:space="preserve"><value>За ТС</value></data>
+  <data name="ParityRatesDto.TransportTypeCode" xml:space="preserve"><value>Код типа ТС</value></data>
+  <data name="ParityRatesDto.TransportTypeName" xml:space="preserve"><value>Тип ТС</value></data>
+  <data name="ParityRatesGrid.Title" xml:space="preserve"><value>Паритетные ставки</value></data>
+</root>
