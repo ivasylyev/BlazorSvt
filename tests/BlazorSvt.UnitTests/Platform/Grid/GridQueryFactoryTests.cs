@@ -1,6 +1,7 @@
 using BlazorBootstrap;
 using BlazorSvt.Modules.TransportLeg.List;
 using BlazorSvt.Modules.TransportLeg.List.IdsEnum;
+using BlazorSvt.Modules.TransportRate.List;
 using BlazorSvt.Platform.Grid.Models;
 using BlazorSvt.Platform.Grid.Services;
 using FluentAssertions;
@@ -11,6 +12,7 @@ namespace BlazorSvt.UnitTests.Platform.Grid;
 public class GridQueryFactoryTests
 {
     private readonly GridQueryFactory<TransportLegDto> _factory = new();
+    private readonly GridQueryFactory<TransportRateDto> _rateFactory = new();
 
     [Fact]
     public void Create_WhenSortingIsEmpty_UsesDefaultAscWithNullSortKey()
@@ -106,6 +108,34 @@ public class GridQueryFactoryTests
         var query = _factory.Create(request, "ru-RU");
 
         query.Filters.Should().Contain(f => f.Operator == expectedOperator);
+    }
+
+    [Theory]
+    [InlineData(FilterOperator.Equals, GridFilterOperators.EqualsOperator)]
+    [InlineData(FilterOperator.NotEquals, GridFilterOperators.NotEqualsOperator)]
+    [InlineData(FilterOperator.LessThan, GridFilterOperators.LessThanOperator)]
+    [InlineData(FilterOperator.LessThanOrEquals, GridFilterOperators.LessThanOrEqualsOperator)]
+    [InlineData(FilterOperator.GreaterThan, GridFilterOperators.GreaterThanOperator)]
+    [InlineData(FilterOperator.GreaterThanOrEquals, GridFilterOperators.GreaterThanOrEqualsOperator)]
+    public void Create_MapsDecimalComparisonOperators(FilterOperator sourceOperator, string expectedOperator)
+    {
+        var request = new GridDataProviderRequest<TransportRateDto>
+        {
+            PageNumber = 1,
+            PageSize = 20,
+            Filters =
+            [
+                new FilterItem(nameof(TransportRateDto.TotalCostTon), "100.50", sourceOperator, StringComparison.Ordinal)
+            ],
+            Sorting = []
+        };
+
+        var query = _rateFactory.Create(request, "ru-RU");
+
+        query.Filters.Should().ContainSingle(f =>
+            f.PropertyName == nameof(TransportRateDto.TotalCostTon)
+            && f.Value == "100.50"
+            && f.Operator == expectedOperator);
     }
 
     [Fact]

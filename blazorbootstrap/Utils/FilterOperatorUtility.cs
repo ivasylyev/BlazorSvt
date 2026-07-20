@@ -109,11 +109,11 @@ public static class FilterOperatorUtility
         List<FilterOperatorInfo> result = new()
         {
             new FilterOperatorInfo("=", "Equals", FilterOperator.Equals),
-            // new FilterOperatorInfo("!=", "Not equals", FilterOperator.NotEquals),
-            // new FilterOperatorInfo("<", "Less than", FilterOperator.LessThan),
-            // new FilterOperatorInfo("<=", "Less than or equals", FilterOperator.LessThanOrEquals),
-            // new FilterOperatorInfo(">", "Greater than", FilterOperator.GreaterThan),
-            // new FilterOperatorInfo(">=", "Greater than or equals", FilterOperator.GreaterThanOrEquals),
+            new FilterOperatorInfo("!=", "Not equals", FilterOperator.NotEquals),
+            new FilterOperatorInfo("<", "Less than", FilterOperator.LessThan),
+            new FilterOperatorInfo("<=", "Less than or equals", FilterOperator.LessThanOrEquals),
+            new FilterOperatorInfo(">", "Greater than", FilterOperator.GreaterThan),
+            new FilterOperatorInfo(">=", "Greater than or equals", FilterOperator.GreaterThanOrEquals),
             new FilterOperatorInfo("x", "Clear", FilterOperator.Clear)
         };
 
