@@ -21,7 +21,7 @@ description: >-
 
 **Целевой стек**: Blazor Server + MS SQL. **Стиль**: модульный монолит. **Миграция**: Strangler Fig с общей БД на переходный период.
 
-**Текущий статус**: фреймворк read-only справочников и отчётов (TransportLeg, TransportRate, AverageRateLevel3, LocationsNodes; legacy: Legs, Rates); зачаток Import; каркас unit + integration тестов в `tests/`. Дорожная карта: (1) ~50 справочников → (2) синхронизация → (3) batch → (4) редакторы = batch pipeline → (5) интеграции.
+**Текущий статус**: фреймворк read-only справочников и отчётов (TransportLeg, TransportRate, AverageRateLevel3, LocationsNodes; legacy: Legs, Rates); зачаток Import; каркас unit + integration тестов в `tests/`. Дорожная карта MVP — в [roadmap.md](roadmap.md).
 
 ## Чеклист перед реализацией
 
@@ -47,4 +47,5 @@ description: >-
 
 ## Подробная документация
 
-Полное обоснование замещения, сравнение альтернатив и целевое состояние — в [reference.md](reference.md).
+- Обоснование замещения, сравнение альтернатив и целевое состояние — [reference.md](reference.md)
+- Дорожная карта миграции (MVP, бэклог, критерии) — [roadmap.md](roadmap.md)

@@ -91,7 +91,7 @@ tests/                       # Unit + integration (read-only SQL)
 - **Strangler Fig** — переходный период с общей БД `mdm`, детальные view могут ссылаться на legacy-объекты `dbo.vw_*`.
 - **Инкрементальный sync** — RowVer → `PopulateAffectedKeys` → upsert snapshot; детали в `SqlScripts/README.md`.
 
-Подробнее: `.cursor/skills/svt-architecture/`, правило `svt-development-patterns`.
+Подробнее: `.cursor/skills/svt-architecture/` (`reference.md` — архитектура, `roadmap.md` — дорожная карта MVP), правило `svt-development-patterns`.
 
 ---
 

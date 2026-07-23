@@ -1,0 +1,23 @@
+﻿Параметр	Значение	Комментарий
+Роль	senior .NET + MS SQL	анализ+dev+тесты+ревью+UAT+релиз в оценке
+Единица	человеко-день	1 чел.-день ≈ 6–7 ч чистой работы
+FTE справочно	220 чел.-дней / год	колонки FTE_*_12мес
+Scope	A — полная трудоёмкость	сделанное (ретро) + остаток
+Agent stack	Cursor: strong models (arch/framework) + fast (тираж); senior review	
+RO simple	3.5 / 1.0	без / с агентом; как ParityRates
+RO typical	5.0 / 1.5	как LocationsNodes / TransportLeg
+RO complex	8.0 / 2.5	~10 шт.; как AverageRateLevel3
+RO hardest (пилот)	12+framework feedback	TransportRate; Validate* ≈ 2753 LOC
+Editor typical (~10 rules)	6.0 / 2.0	после CQRS+UI framework
+Editor complex (~100 rules)	22.0 / 11.0	калибр ValidateTransportRate vs WarehouseASVERPLimitation (~8×)
+Loader typical	2.5 / 0.8	reuse валидаторов редактора
+Loader complex	7.0 / 3.0	batch/staging/уникальные кейсы
+Объёмы	~60 RO / ~50 editors / ~50 loaders / ~10 reports / ~10 dashboards / ~30 integrations	из плана
+Сложность RO	~10 сложных; TransportRates самый сложный; большинство ≤ LocationsNodes	
+Сложность editor/loader	~10 сущностей × ~100 проверок; остальные × ~10	
+Skills без агента	0	время на skills только в колонке «с агентом»
+UAT/релиз/координация	мультипликатор агента ~0.85–1.0	мало ускоряется
+Тираж по skill	мультипликатор ~0.25–0.35	RO после add-reference-book
+Порт бизнес-логики SQL→C#	мультипликатор ~0.45–0.55	агент + обязательный senior review
+Факт по коду: сделано	Host/Platform/Sync + 5 RO + skill RO + tests; Import stub	
+Факт по коду: не сделано	Auth/роли, write-CQRS, целевые loaders, отчёты вне RO, заявки, аудит, дашборды, оркестрация, прод MVP 0.1, CI BlazorSVT	
