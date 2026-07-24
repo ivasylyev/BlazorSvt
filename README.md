@@ -43,7 +43,10 @@ BlazorSvt/                  # Основное приложение
     └── Modules/             # Structure + Programmability по справочникам
 
 blazorbootstrap/             # Локальная сборка UI-компонентов
-docs/                        # Документация Blazor Bootstrap (сторонняя, не СВТ)
+docs/
+├── user-guide/              # Руководство пользователя СВТ 2.0 (RU/EN, Confluence)
+├── estimation/              # Оценки трудозатрат трансформации
+└── …                        # Прочее; blog/ — сторонняя документация Blazor Bootstrap
 tests/                       # Unit + integration (read-only SQL)
 ```
 
