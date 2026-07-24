@@ -7,10 +7,9 @@ namespace BlazorSvt.Host.Components.Pages
         [Inject]
         public ILogger<Home> Logger { get; set; } = default!;
 
-        protected override async Task OnInitializedAsync()
+        protected override void OnInitialized()
         {
             Logger.LogInformation("Home page initializing");
-            await Task.CompletedTask;
         }
     }
 }

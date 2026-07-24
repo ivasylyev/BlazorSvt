@@ -1,0 +1,39 @@
+.home-rate-pivot-grid-col ::deep .home-rate-pivot-table {
+    font-size: 0.75rem;
+    white-space: nowrap;
+}
+
+.home-rate-pivot-grid-col ::deep .home-rate-pivot-table thead th {
+    background-color: #EAF2F2;
+    color: #00606a;
+    font-weight: bold;
+}
+
+.home-rate-pivot-grid-col ::deep .home-rate-pivot-table th,
+.home-rate-pivot-grid-col ::deep .home-rate-pivot-table td {
+    vertical-align: middle;
+    padding: 0.25rem 0.4rem;
+}
+
+.home-rate-pivot-grid-col ::deep .home-rate-pivot-table.table-hover > tbody > tr:hover td {
+    background-color: rgba(0, 240, 255, 0.06) !important;
+}
+
+.home-rate-pivot-split {
+    align-items: stretch;
+    --bs-gutter-x: 2rem;
+}
+
+.home-rate-pivot-grid-col,
+.home-rate-pivot-chart-col {
+    min-width: 0;
+}
+
+.home-rate-pivot-chart-col {
+    display: flex;
+    flex-direction: column;
+}
+
+.home-rate-pivot-chart-col ::deep canvas {
+    max-width: 100%;
+}

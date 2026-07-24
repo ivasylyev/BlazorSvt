@@ -3,6 +3,7 @@ using Blazored.LocalStorage;
 using BlazorSvt.Host.Components;
 using BlazorSvt.Import;
 using BlazorSvt.Modules.AverageRateLevel3;
+using BlazorSvt.Modules.HomeRatePivot;
 using BlazorSvt.Modules.LocationsNodes;
 using BlazorSvt.Modules.ParityRates;
 using BlazorSvt.Modules.TransportLeg;
@@ -41,6 +42,7 @@ builder.Services.AddParityRatesModule();
 builder.Services.AddAverageRateLevel3Module();
 builder.Services.AddTransportLegModule();
 builder.Services.AddLocationsNodesModule();
+builder.Services.AddHomeRatePivotModule();
 
 var supportedCultures = new[] { "ru-RU", "en-US" };
 var localizationOptions = new RequestLocalizationOptions()
