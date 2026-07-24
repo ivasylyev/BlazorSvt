@@ -64,6 +64,21 @@ public class DetailSettingsBuilderTests
     }
 
     [Fact]
+    public void AddYesNo_NullableBool_HidesNullAndLocalizesValues()
+    {
+        var settings = new DetailSettingsBuilder<SampleDto>(platform)
+            .AddYesNo("G", x => x.NullableFlag, "Flag")
+            .Build();
+
+        var field = settings.GroupSettings["G"].Single();
+        field.VisibleSelector(new SampleDto { NullableFlag = null }).Should().BeFalse();
+        field.VisibleSelector(new SampleDto { NullableFlag = true }).Should().BeTrue();
+        field.VisibleSelector(new SampleDto { NullableFlag = false }).Should().BeTrue();
+        field.DisplaySelector(new SampleDto { NullableFlag = true }).Should().Be("Common.Yes");
+        field.DisplaySelector(new SampleDto { NullableFlag = false }).Should().Be("Common.No");
+    }
+
+    [Fact]
     public void Add_RespectsExplicitVisibleAndStillHidesEmpty()
     {
         var settings = new DetailSettingsBuilder<SampleDto>(platform)
@@ -81,6 +96,7 @@ public class DetailSettingsBuilderTests
         public string? Name { get; set; }
         public string? Code { get; set; }
         public bool Flag { get; set; }
+        public bool? NullableFlag { get; set; }
         public decimal Amount { get; set; }
     }
 }

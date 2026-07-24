@@ -99,6 +99,28 @@ public sealed class DetailSettingsBuilder<T>(IStringLocalizer<PlatformResources>
             dto => compiled(dto) ? platform["Common.Yes"] : platform["Common.No"]);
     }
 
+    public DetailSettingsBuilder<T> AddYesNo(
+        string groupHeader,
+        Expression<Func<T, bool?>> property,
+        string header,
+        Func<T, bool>? visible = null,
+        bool hasMargin = false)
+    {
+        var compiled = property.Compile();
+        return Add(
+            groupHeader,
+            property,
+            header,
+            visible,
+            hasMargin,
+            dto => compiled(dto) switch
+            {
+                true => platform["Common.Yes"],
+                false => platform["Common.No"],
+                null => string.Empty
+            });
+    }
+
     public DetailSettingsBuilder<T> AddArchiveStatus(
         string groupHeader,
         Expression<Func<T, bool>> property,

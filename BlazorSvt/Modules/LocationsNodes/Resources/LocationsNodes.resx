@@ -73,6 +73,9 @@
   <data name="LocationsNodesDetailDto.CoordinateW" xml:space="preserve">
     <value>Geographic latitude</value>
   </data>
+  <data name="LocationsNodesDetailDto.CountryCode" xml:space="preserve">
+    <value>Country code</value>
+  </data>
   <data name="LocationsNodesDetailDto.CountryCodeDPO" xml:space="preserve">
     <value>CountryCodeDPO</value>
   </data>
@@ -172,6 +175,9 @@
   <data name="LocationsNodesDetailDto.Level4CityRU" xml:space="preserve">
     <value>4_level_CityRU</value>
   </data>
+  <data name="LocationsNodesDetailDto.LocationTypeCode" xml:space="preserve">
+    <value>Location type code</value>
+  </data>
   <data name="LocationsNodesDetailDto.LocationTypeCodeNSI" xml:space="preserve">
     <value>LocationTypeCodeNSI</value>
   </data>
@@ -256,6 +262,9 @@
   <data name="LocationsNodesDetailDto.PointTube" xml:space="preserve">
     <value>Tie-in point</value>
   </data>
+  <data name="LocationsNodesDetailDto.RegionCode" xml:space="preserve">
+    <value>Region code</value>
+  </data>
   <data name="LocationsNodesDetailDto.RegionCodeDPO" xml:space="preserve">
     <value>RegionCodeDPO</value>
   </data>
@@ -312,6 +321,9 @@
   </data>
   <data name="LocationsNodesDetailDto.TransportArea" xml:space="preserve">
     <value>Transport zone</value>
+  </data>
+  <data name="LocationsNodesDetailDto.TypeNodeCode" xml:space="preserve">
+    <value>Node type code</value>
   </data>
   <data name="LocationsNodesDetailDto.TypeNodeCodeNSI" xml:space="preserve">
     <value>TypeNodeCodeNSI</value>

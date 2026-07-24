@@ -493,6 +493,155 @@ def write_tsv(path: Path, headers: list[str], data_rows: list[list]) -> None:
             w.writerow(row)
 
 
+def _wiki_cell(value: object) -> str:
+    """Escape pipe for Confluence Wiki Markup table cells."""
+    return str(value).replace("|", "\\|").replace("\n", " ")
+
+
+def _status_wiki(status: str) -> str:
+    return {"Done": "✅ Done", "Partial": "🔶 Partial", "Todo": "⬜ Todo"}.get(status, status)
+
+
+def write_confluence_part_iii(
+    path: Path,
+    rows: list[Row],
+    stage_data: list[list],
+    task_data: list[list],
+    totals: dict[str, float],
+) -> None:
+    """Wiki Markup for Confluence page Part III (paste into pageId=567442215)."""
+    from datetime import date
+
+    lines: list[str] = []
+    a = lines.append
+
+    a("# III. Оценка трудоёмкости")
+    a("")
+    a("Формат: разметка для вставки в Confluence (Wiki Markup).")
+    a("Страница плана: https://confluence.sibur.local/pages/viewpage.action?pageId=567442215")
+    a("Источник расчёта в репо: `docs/estimation/` (перегенерация: `python generate_effort_estimate.py`).")
+    a("")
+    a("---")
+    a("")
+    a("h1. III. Оценка трудоёмкости")
+    a("")
+    a(
+        "{info:title=Назначение}\n"
+        "Экспертная оценка *полной* трудоёмкости трансформации СВТ (Scope A: сделанное + остаток) "
+        "в *человеко-днях* для senior .NET + MS SQL. Две колонки: без ИИ-агента и с Cursor-агентом "
+        "(сильные модели — архитектура/фреймворк; быстрая — тираж; senior review). "
+        f"Дата фиксации: {date.today().isoformat()}. "
+        "Детальный расчёт и нормы — в репозитории BlazorSVT, папка {{docs/estimation}}.\n"
+        "{info}"
+    )
+    a("")
+    a("h2. Сводка: сделано / остаток / полная")
+    a("")
+    a("||Срез||Без агента (чел.-дни)||С агентом (чел.-дни)||Доля без %||Доля с %||")
+    full_n, full_w = totals["no_ai"], totals["with_ai"]
+    for label, n, w in (
+        ("Сделано (ретро по коду)", totals["done_no_ai"], totals["done_with_ai"]),
+        ("Остаток", totals["rem_no_ai"], totals["rem_with_ai"]),
+        ("Полная (Scope A)", full_n, full_w),
+    ):
+        dn = round(100 * n / full_n, 1) if full_n else 0
+        dw = round(100 * w / full_w, 1) if full_w else 0
+        a(f"|{_wiki_cell(label)}|{n}|{w}|{dn}|{dw}|")
+    a("")
+    a(
+        f"*Итого:* без агента *{full_n}* чел.-дней (~*{round(full_n / 220, 2)}* FTE·год); "
+        f"с агентом *{full_w}* чел.-дней (~*{round(full_w / 220, 2)}* FTE·год); "
+        f"эффект агента ~*{round(100 * (1 - full_w / full_n), 1) if full_n else 0}*%. "
+        f"1 FTE·год = 220 чел.-дней."
+    )
+    a("")
+    a("h2. Сводка по этапам (MVP)")
+    a("")
+    a(
+        "||Этап||Полная без||Полная с||Сделано без||Сделано с||Остаток без||Остаток с||Эффект агента %||"
+        "FTE без (12 мес)||FTE с (12 мес)||"
+    )
+    for row in stage_data:
+        a("|" + "|".join(_wiki_cell(x) for x in row) + "|")
+    a("")
+    a("h2. Допущения и нормы")
+    a("")
+    a("||Параметр||Значение||Комментарий||")
+    for param, value, comment in [
+        ("Роль", "senior .NET + MS SQL", "анализ+dev+тесты+ревью+UAT+релиз"),
+        ("Единица", "человеко-день", "1 чел.-день ≈ 6–7 ч чистой работы"),
+        ("Scope", "A — полная трудоёмкость", "ретро по коду + остаток"),
+        (
+            "Агент",
+            "Cursor: strong (arch/framework) + fast (тираж)",
+            "skills только в колонке «с агентом»",
+        ),
+        ("RO simple / typical / complex", "3.5/1.0 · 5.0/1.5 · 8.0/2.5", "без / с агентом"),
+        ("Editor ~10 / ~100 правил", "6.0/2.0 · 22.0/11.0", "после CQRS+UI framework"),
+        ("Loader typical / complex", "2.5/0.8 · 7.0/3.0", "reuse валидаторов редактора"),
+        (
+            "Объёмы",
+            "~60 RO / ~50 editors / ~50 loaders / ~10 reports / ~10 dashboards / ~30 integrations",
+            "из плана трансформации",
+        ),
+        (
+            "Сложность",
+            "~10 сложных RO; TransportRates — эталон максимума",
+            "редактор/загрузчик: ~10×100 проверок, остальные ~10",
+        ),
+    ]:
+        a(f"|{_wiki_cell(param)}|{_wiki_cell(value)}|{_wiki_cell(comment)}|")
+    a("")
+    a("h2. Оценка по задачам бэклога (каскад: этап → задача)")
+    a("")
+    a(
+        "||Этап||Задача||Полная без||Полная с||Сделано без||Сделано с||Остаток без||Остаток с||Эффект %||"
+    )
+    for row in task_data:
+        a("|" + "|".join(_wiki_cell(x) for x in row) + "|")
+    a("")
+    a("h2. Детальная оценка по пунктам (каскад: этап → задача → пункт)")
+    a("")
+    a(
+        "||Этап||Задача||Пункт||Название||Статус||Полная без||Полная с||Сделано без||Сделано с||"
+        "Остаток без||Остаток с||Примечание||"
+    )
+    for r in rows:
+        a(
+            "|"
+            + "|".join(
+                _wiki_cell(x)
+                for x in (
+                    r.stage,
+                    r.backlog,
+                    r.item,
+                    r.title,
+                    _status_wiki(r.status),
+                    r.no_ai,
+                    r.with_ai,
+                    r.done_no_ai,
+                    r.done_with_ai,
+                    r.rem_no_ai,
+                    r.rem_with_ai,
+                    r.note,
+                )
+            )
+            + "|"
+        )
+    a("")
+    a(
+        "{tip:title=Как обновить}\n"
+        "1. В репозитории: {{python docs/estimation/generate_effort_estimate.py}}\n"
+        "2. Скопировать тело ниже заголовка {{h1. III. Оценка трудоёмкости}} "
+        "из файла {{docs/estimation/part-iii-effort.confluence.md}} в Confluence "
+        "(режим Wiki Markup) на страницу плана, раздел III.\n"
+        "{tip}"
+    )
+    a("")
+
+    path.write_text("\n".join(lines) + "\n", encoding="utf-8")
+
+
 def main() -> None:
     rows = build_rows()
     OUT.mkdir(parents=True, exist_ok=True)
@@ -696,11 +845,20 @@ def main() -> None:
     ]
     write_tsv(OUT / "04_done_vs_remaining.tsv", done_vs[0], done_vs[1:])
 
+    write_confluence_part_iii(
+        OUT / "part-iii-effort.confluence.md",
+        rows,
+        stage_data,
+        task_data,
+        totals,
+    )
+
     print("=== SUMMARY BY STAGE ===")
     for row in stage_data:
         print("\t".join(str(x) for x in row))
     print()
     print("Files written to", OUT)
+    print("Confluence Wiki Markup:", OUT / "part-iii-effort.confluence.md")
 
 
 if __name__ == "__main__":

@@ -165,6 +165,12 @@
   <data name="GenericGrid.PaginationItemsTextFormat" xml:space="preserve">
 	  <value>{0} - {1} from {2} items</value>
   </data>
+  <data name="GenericGrid.EmptyText" xml:space="preserve">
+	  <value>No records to display</value>
+  </data>
+  <data name="GenericGrid.ItemsPerPageText" xml:space="preserve">
+	  <value>Items per page</value>
+  </data>
   <data name="GenericGrid.Reports" xml:space="preserve">
 	  <value>Reports</value>
   </data>
@@ -194,6 +200,9 @@
   </data>
   <data name="GenericDetailView.ExpandAll" xml:space="preserve">
 	  <value>Expand all</value>
+  </data>
+  <data name="GenericDetailView.Loading" xml:space="preserve">
+	  <value>Loading...</value>
   </data>
   
   <data name="LoadTimePanel.NotLoaded" xml:space="preserve">
@@ -232,7 +241,7 @@
 	  <value>StackTrace:</value>
   </data>
   <data name="ErrorDisplay.Title" xml:space="preserve">
-	  <value>Un error </value>
+	  <value>A program error occurred. Click for details.</value>
 	  <comment>A program error occurred. Click for details.</comment>
   </data>
   <data name="FilterOperator.Contains" xml:space="preserve">

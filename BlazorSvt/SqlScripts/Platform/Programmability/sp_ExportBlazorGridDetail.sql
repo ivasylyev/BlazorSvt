@@ -4,9 +4,7 @@ GO
 /*
 Example:
 
-USE mdm
-GO
-
+USE mdm;
 EXEC v2.ExportBlazorGridDetail
     @PageNumber = 1,
     @PageSize = 100,
