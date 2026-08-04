@@ -4,7 +4,7 @@ using BlazorSvt.Platform.UI.Navigation;
 
 namespace BlazorSvt.Platform.UI.Components;
 
-public partial class HeaderMenu : SvtComponentBase
+public partial class HeaderMenu : SvtComponentBase, IDisposable
 {
     private List<MenuItem>? menuItems = default;
     private List<MenuItem> GetMenuItems() =>
@@ -33,10 +33,12 @@ public partial class HeaderMenu : SvtComponentBase
     {
         return IsActive(url) ? "sibur-dark-inverted-btn" : "sibur-dark-btn";
     }
+
     private bool IsActive(string url)
     {
-         var relative = "/" + Nav.ToBaseRelativePath(Nav.Uri).Trim('/');
-         return relative == url;
+        var relative = Nav.ToBaseRelativePath(Nav.Uri).Trim('/');
+        var target = (url ?? string.Empty).Trim('/');
+        return string.Equals(relative, target, StringComparison.OrdinalIgnoreCase);
     }
 
     public void Dispose()

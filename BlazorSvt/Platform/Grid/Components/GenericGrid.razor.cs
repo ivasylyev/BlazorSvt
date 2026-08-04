@@ -76,8 +76,6 @@ public partial class GenericGrid<TItem, TDetailItem> : SvtComponentBase, IDispos
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
-        Logger.LogInformation("Generic grid OnAfterRenderAsync");
-
         if (firstRender)
         {
             gridSettings = await GridSettingsService.GetGridSettingsAsync(Lang);
