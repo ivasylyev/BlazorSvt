@@ -7,13 +7,6 @@ SET QUOTED_IDENTIFIER ON
 GO
 
 -- Удаляем полнотекстовый индекс
-IF EXISTS (SELECT * FROM sys.fulltext_indexes WHERE object_id = OBJECT_ID('v2.TransportRateSnapshot'))
-BEGIN
-    DROP FULLTEXT INDEX ON v2.TransportRateSnapshot;
-END
-GO
-
--- Удаляем полнотекстовый индекс
 IF EXISTS (SELECT * FROM sys.fulltext_indexes WHERE object_id = OBJECT_ID('v2.TransportRate_Snapshot'))
 BEGIN
     DROP FULLTEXT INDEX ON v2.TransportRate_Snapshot;
@@ -23,7 +16,6 @@ GO
 
 
 -- Удаляем уникальный индекс для полнтотекстового индекса
-DROP INDEX IF EXISTS UX_TransportRateSnapshot_Id ON [v2].[TransportRateSnapshot];
 DROP INDEX IF EXISTS UX_TransportRate_Snapshot_Id ON [v2].[TransportRate_Snapshot];
 GO
 
@@ -65,7 +57,6 @@ GO
 
 
 --  индекс для Кода для активного партишена
-DROP INDEX IF EXISTS ix_TransportRateSnapshot_Active_Code ON [v2].[TransportRateSnapshot];
 DROP INDEX IF EXISTS ix_TransportRate_Snapshot_Active_Code ON [v2].[TransportRate_Snapshot];
 GO
 CREATE NONCLUSTERED INDEX ix_TransportRate_Snapshot_Active_Code
@@ -74,7 +65,6 @@ WHERE IsArchive = 0;
 GO
 
 --  индекс для Кода для архивного партишена
-DROP INDEX IF EXISTS ix_TransportRateSnapshot_Archive_Code ON [v2].[TransportRateSnapshot];
 DROP INDEX IF EXISTS ix_TransportRate_Snapshot_Archive_Code ON [v2].[TransportRate_Snapshot];
 GO
 CREATE NONCLUSTERED INDEX ix_TransportRate_Snapshot_Archive_Code
@@ -89,9 +79,9 @@ GO
 
 
 
+
 --  индекс на Даты 
 
-DROP INDEX IF EXISTS ix_TransportRateSnapshot_Active_Date ON [v2].[TransportRateSnapshot];
 DROP INDEX IF EXISTS ix_TransportRate_Snapshot_Active_Date ON [v2].[TransportRate_Snapshot];
 GO
 CREATE NONCLUSTERED INDEX ix_TransportRate_Snapshot_Active_Date
@@ -99,7 +89,6 @@ ON v2.TransportRate_Snapshot (StartDate, EndDate)
 WHERE IsArchive = 0;
 GO
 
-DROP INDEX IF EXISTS ix_TransportRateSnapshot_Archive_Date ON [v2].[TransportRateSnapshot];
 DROP INDEX IF EXISTS ix_TransportRate_Snapshot_Archive_Date ON [v2].[TransportRate_Snapshot];
 GO
 CREATE NONCLUSTERED INDEX ix_TransportRate_Snapshot_Archive_Date
@@ -111,7 +100,6 @@ GO
 
 --  индекс на Транспорт
 
-DROP INDEX IF EXISTS [ix_TransportRateSnapshot_Active_TransportKindId_TransportTypeId] ON [v2].[TransportRateSnapshot];
 DROP INDEX IF EXISTS [ix_TransportRate_Snapshot_Active_TransportKindId_TransportTypeId] ON [v2].[TransportRate_Snapshot];
 GO
 CREATE NONCLUSTERED INDEX [ix_TransportRate_Snapshot_Active_TransportKindId_TransportTypeId] ON [v2].TransportRate_Snapshot
@@ -122,7 +110,6 @@ CREATE NONCLUSTERED INDEX [ix_TransportRate_Snapshot_Active_TransportKindId_Tran
 WHERE IsArchive = 0;
 GO
 
-DROP INDEX IF EXISTS [ix_TransportRateSnapshot_Archive_TransportKindId_TransportTypeId] ON [v2].[TransportRateSnapshot];
 DROP INDEX IF EXISTS [ix_TransportRate_Snapshot_Archive_TransportKindId_TransportTypeId] ON [v2].[TransportRate_Snapshot];
 GO
 CREATE NONCLUSTERED INDEX [ix_TransportRate_Snapshot_Archive_TransportKindId_TransportTypeId] ON [v2].TransportRate_Snapshot
@@ -136,7 +123,6 @@ GO
 
 -- индекс на Тип ставки 
 
-DROP INDEX IF EXISTS [ix_TransportRateSnapshot_Active_RateTypeId] ON [v2].[TransportRateSnapshot];
 DROP INDEX IF EXISTS [ix_TransportRate_Snapshot_Active_RateTypeId] ON [v2].[TransportRate_Snapshot];
 GO
 CREATE NONCLUSTERED INDEX [ix_TransportRate_Snapshot_Active_RateTypeId] ON [v2].TransportRate_Snapshot
@@ -146,7 +132,6 @@ CREATE NONCLUSTERED INDEX [ix_TransportRate_Snapshot_Active_RateTypeId] ON [v2].
 WHERE IsArchive = 0;
 GO
 
-DROP INDEX IF EXISTS [ix_TransportRateSnapshot_Archive_RateTypeId] ON [v2].[TransportRateSnapshot];
 DROP INDEX IF EXISTS [ix_TransportRate_Snapshot_Archive_RateTypeId] ON [v2].[TransportRate_Snapshot];
 GO
 CREATE NONCLUSTERED INDEX [ix_TransportRate_Snapshot_Archive_RateTypeId] ON [v2].TransportRate_Snapshot

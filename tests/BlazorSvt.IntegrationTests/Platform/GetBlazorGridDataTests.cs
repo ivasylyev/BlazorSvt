@@ -46,7 +46,6 @@ public class GetBlazorGridDataTests(DatabaseFixture fixture) : IntegrationTestBa
         var query = new GridQuery(
             1,
             1,
-            "ru-RU",
             new GridSort(nameof(TransportLegDto.Code), "ASC"),
             [new GridFilter("IsArchive", "False", GridFilterOperators.EqualsOperator)]);
 
@@ -73,7 +72,6 @@ public class GetBlazorGridDataTests(DatabaseFixture fixture) : IntegrationTestBa
         var archivedQuery = new GridQuery(
             1,
             1,
-            "ru-RU",
             new GridSort(null, "ASC"),
             [new GridFilter("IsArchive", "True", GridFilterOperators.EqualsOperator)]);
 

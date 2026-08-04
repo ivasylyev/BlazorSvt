@@ -24,7 +24,7 @@ public abstract class BaseGridPage<TItem, TDetailItem> : SvtComponentBase
         using (new StopwatchTransaction(TimingService))
         {
             var stopwatch = Stopwatch.StartNew();
-            var result = await GetDataAsync(request, Lang);
+            var result = await GetDataAsync(request);
 
             Logger.LogDebug(
                 "Grid {ItemType} page {PageNumber}/{PageSize} loaded {Count}/{TotalCount} in {ElapsedMs} ms",
@@ -44,7 +44,7 @@ public abstract class BaseGridPage<TItem, TDetailItem> : SvtComponentBase
         using (new StopwatchTransaction(TimingService))
         {
             var stopwatch = Stopwatch.StartNew();
-            var detail = await GetDetailDataAsync(request, Lang);
+            var detail = await GetDetailDataAsync(request);
 
             Logger.LogDebug(
                 "Detail {DetailType} for {ItemType} loaded in {ElapsedMs} ms",
@@ -59,12 +59,10 @@ public abstract class BaseGridPage<TItem, TDetailItem> : SvtComponentBase
     /// <summary>Бизнес-ключ строки для detail/export (обычно {Entity}Id).</summary>
     protected abstract object DetailKeySelector(TItem request);
 
-    protected virtual Task<GridDataProviderResult<TItem>> GetDataAsync(
-        GridDataProviderRequest<TItem> request,
-        string lang) =>
-        DataService.GetDataAsync(request, lang);
+    protected virtual Task<GridDataProviderResult<TItem>> GetDataAsync(GridDataProviderRequest<TItem> request) =>
+        DataService.GetDataAsync(request);
 
-    protected virtual Task<TDetailItem> GetDetailDataAsync(TItem request, string lang)
+    protected virtual Task<TDetailItem> GetDetailDataAsync(TItem request)
     {
         var key = DetailKeySelector(request);
         return DataService.GetDetailDataAsync(key);

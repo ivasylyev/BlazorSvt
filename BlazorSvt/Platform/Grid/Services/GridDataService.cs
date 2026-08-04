@@ -31,12 +31,11 @@ public class GridDataService<TItem, TDetailItem>(
 
     public async Task<IReadOnlyList<TItem>> GetShortReportBatchAsync(
         GridDataProviderRequest<TItem> request,
-        string lang,
         int pageNumber,
         int pageSize,
         CancellationToken cancellationToken)
     {
-        var query = gridQueryFactory.Create(request, lang, pageNumber, pageSize);
+        var query = gridQueryFactory.Create(request, pageNumber, pageSize);
 
         var (data, _) = await ExecuteStoredProcedureAsync(
             query,
@@ -48,12 +47,11 @@ public class GridDataService<TItem, TDetailItem>(
 
     public async Task<IReadOnlyList<TDetailItem>> GetFullReportBatchAsync(
         GridDataProviderRequest<TItem> request,
-        string lang,
         int pageNumber,
         int pageSize,
         CancellationToken cancellationToken)
     {
-        var query = gridQueryFactory.Create(request, lang, pageNumber, pageSize);
+        var query = gridQueryFactory.Create(request, pageNumber, pageSize);
 
 #pragma warning disable CS0618 // Type or member is obsolete
         await using var connection = new SqlConnection(connectionString);
@@ -105,9 +103,9 @@ public class GridDataService<TItem, TDetailItem>(
         throw new Exception($"{DetailSourceName} with {key} returns no data");
     }
 
-    public async Task<GridDataProviderResult<TItem>> GetDataAsync(GridDataProviderRequest<TItem> request, string lang)
+    public async Task<GridDataProviderResult<TItem>> GetDataAsync(GridDataProviderRequest<TItem> request)
     {
-        var query = gridQueryFactory.Create(request, lang);
+        var query = gridQueryFactory.Create(request);
 
         var (data, totalCount) = await ExecuteStoredProcedureAsync(
             query,

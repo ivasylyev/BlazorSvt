@@ -17,7 +17,6 @@ public static class FtsFilterTestSupport
         new(
             1,
             10,
-            "ru-RU",
             new GridSort(null, "ASC"),
             [IsArchiveFalse, ..filters]);
 }

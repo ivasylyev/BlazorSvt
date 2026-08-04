@@ -9,7 +9,7 @@ EXEC v2.GetBlazorGridData
      @PageNumber=1,
      @PageSize=10,
      @LangSuffix = 'Ru',
-     @TableName = N'mdm.v2.TransportRateSnapshot',
+     @TableName = N'mdm.v2.TransportRate_Snapshot',
      @AllowedColumnsJson = N'[
             {"ColumnName": "Code", "ColumnType": "ID"},
             {"ColumnName": "RateTypeCode", "ColumnType": "ID"},

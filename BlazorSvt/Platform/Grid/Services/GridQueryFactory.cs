@@ -17,13 +17,11 @@ public class GridQueryFactory<TItem> : IGridQueryFactory<TItem>
 
     public GridQuery Create(
         GridDataProviderRequest<TItem> request,
-        string lang,
         int? pageNumber = null,
         int? pageSize = null) =>
         new(
             pageNumber ?? request.PageNumber,
             pageSize ?? request.PageSize,
-            lang,
             ExtractSorting(request),
             ExtractFilters(request));
 

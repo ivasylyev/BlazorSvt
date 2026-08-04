@@ -19,8 +19,10 @@ GO
     В грид и DTO не отдаются.
 
     ВНИМАНИЕ: членство строки в snapshot зависит от rt.Code (RateType) и
-    p.Code (MTR) в WHERE. Поэтому источники 2048 и 1015 обязательны в каскаде
+    p.Code (MTR) в WHERE. Источник MTR (1015) обязателен в каскаде
     процедуры детекции — иначе вход/выход строки отследит только суточный reconcile.
+    RateType (2048) — стабильный справочник, в Sources не входит;
+    смена членства по RateType ловится только reconcile.
 */
 
 CREATE OR ALTER VIEW v2.vw_TransportRate_SnapshotSource

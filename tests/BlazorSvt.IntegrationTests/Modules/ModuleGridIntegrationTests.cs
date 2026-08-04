@@ -98,12 +98,12 @@ public class ModuleGridIntegrationTests(DatabaseFixture fixture) : IntegrationTe
         var (pageOne, totalCount) = await GridSpTestHelper.ExecuteGetBlazorGridDataAsync<TransportLegDto>(
             connectionString,
             typeof(TransportLegDto),
-            new GridQuery(1, 10, "ru-RU", sort, filters));
+            new GridQuery(1, 10, sort, filters));
 
         var (pageTwo, _) = await GridSpTestHelper.ExecuteGetBlazorGridDataAsync<TransportLegDto>(
             connectionString,
             typeof(TransportLegDto),
-            new GridQuery(2, 10, "ru-RU", sort, filters));
+            new GridQuery(2, 10, sort, filters));
 
         pageOne.Should().NotBeEmpty();
         pageTwo.Should().NotBeEmpty();

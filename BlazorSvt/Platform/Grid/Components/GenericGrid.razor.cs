@@ -27,19 +27,13 @@ public partial class GenericGrid<TItem, TDetailItem> : SvtComponentBase, IDispos
     public IGridSettingsService<TItem> GridSettingsService { get; set; } = default!;
 
     [Inject]
-    public IGridExcelExporter GridExcelExporter { get; set; } = default!;
-
-    [Inject]
-    public IFileDownloadService FileDownloadService { get; set; } = default!;
+    public GridReportExporter<TItem, TDetailItem> ReportExporter { get; set; } = default!;
 
     [Inject]
     public IOptions<ReportOptions> ReportOptions { get; set; } = default!;
 
     [Inject]
     public PreloadService PreloadService { get; set; } = default!;
-
-    [Inject]
-    public IGridDataService<TItem, TDetailItem> GridDataService { get; set; } = default!;
 
     [Inject]
     public IDetailSettingsService<TDetailItem> DetailSettingsService { get; set; } = default!;
@@ -225,41 +219,12 @@ public partial class GenericGrid<TItem, TDetailItem> : SvtComponentBase, IDispos
         var batchSize = ReportOptions.Value.ReportBatchSize;
         var baseRequest = grid.CreateDataProviderRequest(pageNumber: 1, pageSizeOverride: batchSize);
 
-        await using var stream = new MemoryStream();
-        var session = GridExcelExporter.BeginShortReport(stream, gridSettings!.ColumnSettings);
-
-        try
-        {
-            for (var pageNumber = 1; ; pageNumber++)
-            {
-                cancellationToken.ThrowIfCancellationRequested();
-
-                var batch = await GridDataService.GetShortReportBatchAsync(
-                    baseRequest,
-                    Lang,
-                    pageNumber,
-                    batchSize,
-                    cancellationToken);
-
-                if (batch.Count == 0)
-                    break;
-
-                session.WriteBatch(batch, cancellationToken);
-
-                if (batch.Count < batchSize)
-                    break;
-            }
-
-            session.Complete(totalCount);
-        }
-        finally
-        {
-            session.Dispose();
-        }
-
-        stream.Position = 0;
-        await FileDownloadService.DownloadFromStreamAsync(stream, BuildReportFileName("short"), cancellationToken);
-        Logger.LogInformation("Short report: exported {Count} items", totalCount);
+        await ReportExporter.ExportShortAsync(
+            baseRequest,
+            gridSettings!.ColumnSettings,
+            totalCount,
+            BuildReportFileName("short"),
+            cancellationToken);
     }
 
     private async Task ExportFullReportAsync(int totalCount, CancellationToken cancellationToken)
@@ -269,41 +234,12 @@ public partial class GenericGrid<TItem, TDetailItem> : SvtComponentBase, IDispos
         var detailSettings = DetailSettingsService.GetGridDetailSettings(Lang);
         var columns = detailSettings.GroupSettings.Values.SelectMany(settings => settings);
 
-        await using var stream = new MemoryStream();
-        var session = GridExcelExporter.BeginFullReport(stream, columns);
-
-        try
-        {
-            for (var pageNumber = 1; ; pageNumber++)
-            {
-                cancellationToken.ThrowIfCancellationRequested();
-
-                var batch = await GridDataService.GetFullReportBatchAsync(
-                    baseRequest,
-                    Lang,
-                    pageNumber,
-                    batchSize,
-                    cancellationToken);
-
-                if (batch.Count == 0)
-                    break;
-
-                session.WriteBatch(batch, cancellationToken);
-
-                if (batch.Count < batchSize)
-                    break;
-            }
-
-            session.Complete(totalCount);
-        }
-        finally
-        {
-            session.Dispose();
-        }
-
-        stream.Position = 0;
-        await FileDownloadService.DownloadFromStreamAsync(stream, BuildReportFileName("full"), cancellationToken);
-        Logger.LogInformation("Full report: exported {Count} items", totalCount);
+        await ReportExporter.ExportFullAsync(
+            baseRequest,
+            columns,
+            totalCount,
+            BuildReportFileName("full"),
+            cancellationToken);
     }
 
     private string BuildReportFileName(string reportKind)

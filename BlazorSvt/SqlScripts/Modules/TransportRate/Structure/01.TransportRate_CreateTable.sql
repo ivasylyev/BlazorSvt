@@ -2,27 +2,10 @@
 GO
 
 -- Удаляем полнотекстовый индекс
-IF EXISTS (SELECT * FROM sys.fulltext_indexes WHERE object_id = OBJECT_ID('v2.TransportRateSnapshot'))
-BEGIN
-    DROP FULLTEXT INDEX ON v2.TransportRateSnapshot;
-END
-GO
-
--- Удаляем полнотекстовый индекс
 IF EXISTS (SELECT * FROM sys.fulltext_indexes WHERE object_id = OBJECT_ID('v2.TransportRate_Snapshot'))
 BEGIN
     DROP FULLTEXT INDEX ON v2.TransportRate_Snapshot;
 END
-GO
-
--- Удаляем индексы (если существуют)
-DECLARE @sql NVARCHAR(MAX) = '';
-SELECT @sql = @sql + 'DROP INDEX IF EXISTS [' + name + '] ON v2.TransportRateSnapshot; '
-FROM sys.indexes 
-WHERE object_id = OBJECT_ID('v2.TransportRateSnapshot')
-  AND name IS NOT NULL
-  AND name NOT LIKE 'PK_%';  -- Не удаляем PRIMARY KEY
-EXEC sp_executesql @sql;
 GO
 
 -- Удаляем индексы (если существуют)
@@ -33,10 +16,6 @@ WHERE object_id = OBJECT_ID('v2.TransportRate_Snapshot')
   AND name IS NOT NULL
   AND name NOT LIKE 'PK_%';  -- Не удаляем PRIMARY KEY
 EXEC sp_executesql @sql_new;
-GO
-
--- 2. Удаляем таблицу
-DROP TABLE IF EXISTS v2.TransportRateSnapshot;
 GO
 
 -- 2. Удаляем таблицу

@@ -14,6 +14,7 @@ public static class PlatformModule
         services.AddScoped<PageTimingService>();
         services.AddScoped(typeof(IGridQueryFactory<>), typeof(GridQueryFactory<>));
         services.AddScoped(typeof(IGridDataService<,>), typeof(GridDataService<,>));
+        services.AddScoped(typeof(GridReportExporter<,>), typeof(GridReportExporter<,>));
         services.AddScoped<IGridExcelExporter, GridExcelExporter>();
         services.AddScoped<IFileDownloadService, FileDownloadService>();
         services.AddScoped<CircuitHandler, CircuitCorrelationHandler>();

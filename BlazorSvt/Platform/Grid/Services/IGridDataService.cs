@@ -11,7 +11,7 @@ namespace BlazorSvt.Platform.Grid.Services;
 public interface IGridDataService<TItem, TDetailItem>
 {
     /// <summary>Страница grid (snapshot + фильтры/сортировка/пагинация).</summary>
-    Task<GridDataProviderResult<TItem>> GetDataAsync(GridDataProviderRequest<TItem> request, string lang);
+    Task<GridDataProviderResult<TItem>> GetDataAsync(GridDataProviderRequest<TItem> request);
 
     /// <summary>Одна запись detail по бизнес-ключу (<c>SELECT * FROM {DetailSource}</c>).</summary>
     Task<TDetailItem> GetDetailDataAsync(object key);
@@ -19,7 +19,6 @@ public interface IGridDataService<TItem, TDetailItem>
     /// <summary>Пакет краткого Excel-отчёта (те же колонки, что grid; удлинённый таймаут).</summary>
     Task<IReadOnlyList<TItem>> GetShortReportBatchAsync(
         GridDataProviderRequest<TItem> request,
-        string lang,
         int pageNumber,
         int pageSize,
         CancellationToken cancellationToken);
@@ -27,7 +26,6 @@ public interface IGridDataService<TItem, TDetailItem>
     /// <summary>Пакет полного Excel-отчёта через <c>v2.ExportBlazorGridDetail</c>.</summary>
     Task<IReadOnlyList<TDetailItem>> GetFullReportBatchAsync(
         GridDataProviderRequest<TItem> request,
-        string lang,
         int pageNumber,
         int pageSize,
         CancellationToken cancellationToken);

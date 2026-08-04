@@ -125,7 +125,6 @@ public static class GridSpTestHelper
         new(
             pageNumber,
             pageSize,
-            "ru-RU",
             new GridSort(null, "ASC"),
             [new GridFilter("IsArchive", "False", GridFilterOperators.EqualsOperator)]);
 

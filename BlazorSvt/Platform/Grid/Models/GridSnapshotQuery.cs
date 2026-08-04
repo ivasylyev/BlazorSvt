@@ -7,10 +7,9 @@ public sealed class GridSnapshotQuery
     public required string SelectList { get; init; }
     public required string KeysOnlySelectList { get; init; }
 
-    public static GridSnapshotQuery For<T>(bool keysOnly = false) =>
-        For(typeof(T), keysOnly);
+    public static GridSnapshotQuery For<T>() => For(typeof(T));
 
-    public static GridSnapshotQuery For(Type dtoType, bool keysOnly = false)
+    public static GridSnapshotQuery For(Type dtoType)
     {
         var metadata = GridColumnMetadataBuilder.GetMetadata(dtoType);
         return new GridSnapshotQuery
@@ -21,6 +20,4 @@ public sealed class GridSnapshotQuery
             KeysOnlySelectList = GridColumnMetadataBuilder.BuildSelectList(dtoType, keysOnly: true)
         };
     }
-
-    public string GetSelectList(bool keysOnly) => keysOnly ? KeysOnlySelectList : SelectList;
 }

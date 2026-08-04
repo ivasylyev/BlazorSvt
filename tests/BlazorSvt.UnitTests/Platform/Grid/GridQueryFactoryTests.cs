@@ -19,7 +19,7 @@ public class GridQueryFactoryTests
     {
         var request = CreateRequest(sorting: []);
 
-        var query = _factory.Create(request, "ru-RU");
+        var query = _factory.Create(request);
 
         query.Sort.PropertyName.Should().BeNull();
         query.Sort.Direction.Should().Be("ASC");
@@ -33,7 +33,7 @@ public class GridQueryFactoryTests
             new SortingItem<TransportLegDto>("Code", x => x.Code, SortDirection.Descending)
         ]);
 
-        var query = _factory.Create(request, "ru-RU");
+        var query = _factory.Create(request);
 
         query.Sort.PropertyName.Should().Be("Code");
         query.Sort.Direction.Should().Be("DESC");
@@ -44,7 +44,7 @@ public class GridQueryFactoryTests
     {
         var request = CreateRequest(filters: null);
 
-        var query = _factory.Create(request, "ru-RU");
+        var query = _factory.Create(request);
 
         query.Filters.Should().ContainSingle()
             .Which.Should().BeEquivalentTo(new GridFilter("IsArchive", "False", GridFilterOperators.EqualsOperator));
@@ -58,7 +58,7 @@ public class GridQueryFactoryTests
             new FilterItem(nameof(TransportLegDto.NodeFromNameRu), "казань", FilterOperator.Contains, StringComparison.OrdinalIgnoreCase)
         ]);
 
-        var query = _factory.Create(request, "ru-RU");
+        var query = _factory.Create(request);
 
         query.Filters.Should().Contain(f =>
             f.PropertyName == nameof(TransportLegDto.NodeFromNameRu)
@@ -74,7 +74,7 @@ public class GridQueryFactoryTests
             new FilterItem(nameof(TransportLegDto.ShipmentTypeIdRu), nameof(ShipmentTypeRu.TVD), FilterOperator.Equals, StringComparison.Ordinal)
         ]);
 
-        var query = _factory.Create(request, "ru-RU");
+        var query = _factory.Create(request);
 
         query.Filters.Should().Contain(f =>
             f.PropertyName == nameof(TransportLegDto.ShipmentTypeIdRu)
@@ -87,7 +87,7 @@ public class GridQueryFactoryTests
     {
         var request = CreateRequest(pageNumber: 5, pageSize: 50);
 
-        var query = _factory.Create(request, "ru-RU", pageNumber: 1, pageSize: 10);
+        var query = _factory.Create(request, pageNumber: 1, pageSize: 10);
 
         query.PageNumber.Should().Be(1);
         query.PageSize.Should().Be(10);
@@ -105,7 +105,7 @@ public class GridQueryFactoryTests
             new FilterItem(nameof(TransportLegDto.Code), "LEG-1", sourceOperator, StringComparison.Ordinal)
         ]);
 
-        var query = _factory.Create(request, "ru-RU");
+        var query = _factory.Create(request);
 
         query.Filters.Should().Contain(f => f.Operator == expectedOperator);
     }
@@ -130,22 +130,12 @@ public class GridQueryFactoryTests
             Sorting = []
         };
 
-        var query = _rateFactory.Create(request, "ru-RU");
+        var query = _rateFactory.Create(request);
 
         query.Filters.Should().ContainSingle(f =>
             f.PropertyName == nameof(TransportRateDto.TotalCostTon)
             && f.Value == "100.50"
             && f.Operator == expectedOperator);
-    }
-
-    [Fact]
-    public void Create_PreservesLanguageSuffix()
-    {
-        var request = CreateRequest();
-
-        var query = _factory.Create(request, "en-US");
-
-        query.Lang.Should().Be("en-US");
     }
 
     private static GridDataProviderRequest<TransportLegDto> CreateRequest(
