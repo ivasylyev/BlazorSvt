@@ -19,9 +19,9 @@ description: >-
 
 **СВТ** — MDM логистических маршрутов, тарифов, складских ограничений. Замещение легаси (Angular, распределённый монолит, Elastic, RabbitMQ, метамодель справочников, логика в SP/SQL Agent).
 
-**Целевой стек**: Blazor Server + MS SQL. **Стиль**: модульный монолит. **Миграция**: Strangler Fig с общей БД на переходный период.
+**Целевой стек**: Blazor Server + MS SQL. **Стиль**: модульный монолит. **Миграция**: Strangler Fig с общей БД; SoT = легаси до cutover; exit dual-run волнами → SoT flip в конце.
 
-**Текущий статус**: фреймворк read-only справочников и отчётов (TransportLeg, TransportRate, AverageRateLevel3, LocationsNodes; legacy: Legs, Rates); зачаток Import; каркас unit + integration тестов в `tests/`. Дорожная карта MVP — в [roadmap.md](roadmap.md).
+**Текущий статус**: фреймворк read-only справочников и отчётов (TransportLeg, TransportRate, AverageRateLevel3, LocationsNodes, ParityRates; legacy: Legs, Rates); watermark-sync; зачаток Import; каркас unit + integration тестов в `tests/`. Дорожная карта MVP — в [roadmap.md](roadmap.md).
 
 ## Чеклист перед реализацией
 
@@ -32,7 +32,7 @@ description: >-
 5. Read через snapshot/CQRS; write отделён?
 6. Без Elastic/RabbitMQ/распределённого монолита?
 7. Покрыты ли изменения тестами? Unit — C#-логика (`GridQueryFactory`, валидаторы, contract DTO); integration — read-only smoke SP/view для нового справочника (см. `svt-development-patterns`, секция «Тестирование»)
-8. Есть аудит/логирование для изменений данных?
+8. Для write: write-through в легаси до cutover; LWW; общий write-toggle; аудит полей — с MVP 1.0 (до этого риск принят)
 
 ## Ключевые антипаттерны легаси (не повторять)
 

@@ -32,7 +32,7 @@ alwaysApply: false
 - `IGridDataService<TDto,TDetail>` + `GridQueryFactory` — запросы к read-модели через `v2.GetBlazorGridData`
 - `[GridSnapshot]` + `[GridColumn]` на list-DTO → `GridColumnMetadataBuilder` собирает `@AllowedColumnsJson` и `@SelectList`
 - Настройки колонок/деталей — через `IGridSettingsService` / `IDetailSettingsService` (UI-слой, отдельно от SQL-метаданных)
-- `DetailSettingsBuilder` по умолчанию скрывает поля с пустым display (`null`, `""`, whitespace); явный `visible:` — только бизнес-правила (AND с проверкой значения). Bool / числа / даты остаются видимыми; чтобы скрыть `0`, кастомный `display` → пустая строка
+- `DetailSettingsBuilder` — бизнес-`visible:` полей детальной панели; скрытие пустых (`null`/`""`/whitespace) — `Grid:HideEmptyDetailFields` в `GenericDetailView` (UI only, не full report). Bool/числа/даты остаются видимыми; чтобы скрыть `0`, кастомный `display` → пустая строка
 
 ## Import / batch (целевой паттерн)
 
@@ -117,7 +117,7 @@ RowVer на основной PED-таблице. Стабильные источ
 
 - `GridQueryFactory` — маппинг фильтров, сортировки, enum → int, дефолтный `IsArchive=False`
 - `GridColumnMetadataBuilder` — contract list-DTO: table name, entity key, `@AllowedColumnsJson`, `@SelectList`
-- `DetailSettingsBuilder` — скрытие пустых detail-полей
+- `DetailDisplayValue` / `DetailSettingsBuilder` — видимость detail-полей и `HideEmptyDetailFields`
 - `SnapshotSyncJobContractTests` — metadata SyncJob + Sources
 - Новый справочник → unit contract-тест для `{Entity}Dto` и SyncJob
 

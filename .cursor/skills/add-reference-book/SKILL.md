@@ -572,8 +572,8 @@ public required RateTypeEn RateTypeIdEn { get; set; }
 - Порядок и группы как **длинный список (п.4)**
 - `GroupHeader` из resx: ключ `{Entity}DetailDto.Group.{GroupRank}.{SanitizedGroupNameEn}`
 - `SanitizedGroupNameEn`: PascalCase, только буквы/цифры (пробелы и спецсимволы удалить)
-- Пустые значения (`null` / `""` / whitespace) скрываются **автоматически** в `DetailSettingsBuilder` — не дублировать `visible: dto => x is not null` для обычных optional-строк
-- Явный `visible:` — только для условных блоков (proxy/leg, calc type и т.п.); он AND с проверкой display-значения
+- Пустые значения (`null` / `""` / whitespace) скрываются в UI при `Grid:HideEmptyDetailFields` (default `true`) — не дублировать `visible: dto => x is not null` для обычных optional-строк
+- Явный `visible:` — только для условных блоков (proxy/leg, calc type и т.п.); скрытие пустых к нему AND в `GenericDetailView`
 
 ### Grid.razor
 
