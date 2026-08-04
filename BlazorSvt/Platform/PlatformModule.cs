@@ -10,6 +10,7 @@ public static class PlatformModule
     {
         services.Configure<DatabaseOptions>(configuration.GetSection("Database"));
         services.Configure<ReportOptions>(configuration.GetSection("Reports"));
+        services.Configure<GridOptions>(configuration.GetSection("Grid"));
         services.AddScoped<PageTimingService>();
         services.AddScoped(typeof(IGridQueryFactory<>), typeof(GridQueryFactory<>));
         services.AddScoped(typeof(IGridDataService<,>), typeof(GridDataService<,>));

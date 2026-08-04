@@ -26,12 +26,12 @@ else if (detail is not null)
     <Accordion @ref="accordion" AlwaysOpen="true">
         @foreach (var groupPair in detailSettings.GroupSettings)
         {
-            if (groupPair.Value.Any(s => s.VisibleSelector(detail)))
+            if (groupPair.Value.Any(IsFieldVisible))
             {
                 <AccordionItem Title="@groupPair.Key" Active="true">
                     <Content>
                         <div class="sibur-grid-detail-container">
-                            @foreach (var setting in groupPair.Value.Where(v => v.VisibleSelector(detail)))
+                            @foreach (var setting in groupPair.Value.Where(IsFieldVisible))
                             {
                                 var marginClass = setting.HasMargin ? "mt-4" : string.Empty;
                                 <div class="sibur-grid-detail-label @marginClass">@setting.Header:</div>
