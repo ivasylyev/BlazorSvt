@@ -248,7 +248,13 @@ BEGIN
         SqlValue = CASE ColumnType
             WHEN N'ID' THEN CONVERT(NVARCHAR(30), TRY_CONVERT(BIGINT, ColumnValue))
             WHEN N'DECIMAL' THEN CONVERT(NVARCHAR(50), TRY_CONVERT(DECIMAL(38, 10), ColumnValue))
-            WHEN N'DATE' THEN CONVERT(NVARCHAR(10), TRY_CONVERT(DATE, ColumnValue), 23)
+            -- DATETIME range (1753-01-01..9999-12-31): reject intermediate type=date values (e.g. 0002-09-30)
+            WHEN N'DATE' THEN
+                CASE
+                    WHEN TRY_CONVERT(DATETIME, ColumnValue) IS NOT NULL
+                        THEN CONVERT(NVARCHAR(10), CONVERT(DATE, TRY_CONVERT(DATETIME, ColumnValue)), 23)
+                    ELSE NULL
+                END
             ELSE ColumnValue
         END,
         FtsValue = NULLIF(LTRIM(RTRIM(

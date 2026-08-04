@@ -121,7 +121,9 @@ public partial class Grid<TItem> : BlazorBootstrapComponentBase
     }
 
     /// <summary>
-    /// Get filters applied to data queries. Short text filters (below <see cref="MinTextFilterLength"/>) are excluded.
+    /// Get filters applied to data queries.
+    /// Pending short text (below <see cref="MinTextFilterLength"/>) and pending date/datetime
+    /// filters (outside SQL DATETIME range or unparseable) are excluded.
     /// </summary>
     /// <returns>IEnumerable</returns>
     public IEnumerable<FilterItem>? GetFilters()
@@ -130,7 +132,7 @@ public partial class Grid<TItem> : BlazorBootstrapComponentBase
         if (columnFilters is null)
             return null;
 
-        return columnFilters.Where(filter => !IsPendingShortTextFilter(filter));
+        return columnFilters.Where(filter => !IsPendingFilter(filter));
     }
 
     private IEnumerable<FilterItem>? GetColumnFilters()
@@ -144,16 +146,15 @@ public partial class Grid<TItem> : BlazorBootstrapComponentBase
         return filterableColumns.Select(column => new FilterItem(column.PropertyName, column.GetFilterValue(), column.GetFilterOperator(), column.StringComparison));
     }
 
-    private bool IsPendingShortTextFilter(GridColumn<TItem> column) =>
-        GridFilterUtility.IsPendingShortTextFilter(column.GetPropertyTypeName(), column.GetFilterValue(), MinTextFilterLength);
-
-    private bool IsPendingShortTextFilter(FilterItem filter)
+    private bool IsPendingFilter(FilterItem filter)
     {
         var column = columns.FirstOrDefault(c => c.PropertyName == filter.PropertyName);
         if (column is null)
             return false;
 
-        return GridFilterUtility.IsPendingShortTextFilter(column.GetPropertyTypeName(), filter.Value, MinTextFilterLength);
+        var propertyTypeName = column.GetPropertyTypeName();
+        return GridFilterUtility.IsPendingShortTextFilter(propertyTypeName, filter.Value, MinTextFilterLength)
+               || GridFilterUtility.IsPendingDateFilter(propertyTypeName, filter.Value);
     }
 
     private bool HasSameEffectiveFiltersAsLastQuery()
