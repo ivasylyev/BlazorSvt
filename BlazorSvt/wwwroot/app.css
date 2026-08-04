@@ -109,6 +109,10 @@ h1:focus {
 
 /* Grid  */
 
+/* Keep grid body tall enough for filter dropdowns when few rows are visible */
+.sibur-grid .table-responsive {
+    min-height: 450px;
+}
 
 /* ˜˜˜˜˜˜˜ ˜˜˜˜˜˜˜˜ ˜ ˜˜˜˜˜˜˜˜˜˜˜˜˜˜˜ ˜˜˜˜˜ ˜˜ ˜˜˜˜˜ ˜˜˜˜˜˜˜˜ - ˜˜˜ ˜˜˜˜˜˜ ˜˜˜˜˜˜˜˜˜˜˜ ˜˜˜  */
 .sibur-grid .placeholder-glow .placeholder {

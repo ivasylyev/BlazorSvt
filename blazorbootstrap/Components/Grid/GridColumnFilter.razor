@@ -2,7 +2,7 @@
 @inherits BlazorBootstrapComponentBase
 
 <div class="d-flex">
-    <button type="button" class="btn @filterButtonColorString me-1 d-flex dropdown-toggle bb-grid-filter @FilterButtonCSSClass" data-bs-toggle="dropdown" aria-expanded="false">
+    <button type="button" class="btn @filterButtonColorString me-1 d-flex dropdown-toggle bb-grid-filter @FilterButtonCSSClass" data-bs-toggle="dropdown" data-bs-popper-config='{"strategy":"fixed"}' aria-expanded="false">
         @if (string.IsNullOrWhiteSpace(filterValue))
         {
             <span class="me-2">
@@ -56,8 +56,8 @@
     }
     else if (PropertyTypeName == StringConstants.PropertyTypeNameEnum)
     {
-        <Dropdown @key="inputKey"  Color="DropdownColor.Light">
-            <DropdownToggleButton Class="px-1" Style="@filterStyle">
+        <Dropdown @key="inputKey" Color="DropdownColor.Light">
+            <DropdownToggleButton Class="px-1" Style="@filterStyle" AdditionalAttributes="fixedStrategyPopperAttributes">
                 @if (string.IsNullOrWhiteSpace(filterValue))
                 {
                     <span class="px-2">@EnumFilterSelectText</span>
