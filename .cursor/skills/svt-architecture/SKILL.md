@@ -19,7 +19,7 @@ description: >-
 
 **СВТ** — MDM логистических маршрутов, тарифов, складских ограничений. Замещение легаси (Angular, распределённый монолит, Elastic, RabbitMQ, метамодель справочников, логика в SP/SQL Agent).
 
-**Целевой стек**: Blazor Server + MS SQL. **Стиль**: модульный монолит. **Миграция**: Strangler Fig с общей БД; SoT = легаси до cutover; exit dual-run волнами → SoT flip в конце.
+**Целевой стек**: Blazor Server + MS SQL. **Стиль**: модульный монолит. **Миграция**: Strangler Fig с общей БД; SoT = легаси до cutover; exit dual-run волнами → инкрементальный SoT flip по доменам справочников → единый финальный демонтаж легаси в конце (детали — в roadmap.md, §2а).
 
 **Текущий статус**: фреймворк read-only справочников и отчётов (TransportLeg, TransportRate, AverageRateLevel3, LocationsNodes, ParityRates; legacy: Legs, Rates); watermark-sync; зачаток Import; каркас unit + integration тестов в `tests/`. Дорожная карта MVP — в [roadmap.md](roadmap.md).
 
