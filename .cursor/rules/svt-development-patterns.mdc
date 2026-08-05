@@ -24,7 +24,11 @@ alwaysApply: false
 
 ## Модульная регистрация
 
-Каждый модуль — `public static class *Module` с `Add*Module(IServiceCollection)`. Зависимости только через Platform-интерфейсы, не через другие Modules напрямую. Общие IdsEnum — `Platform/Domain/IdsEnum/`.
+Каждый модуль — `public static class *Module` с `Add*Module(IServiceCollection)`. Зависимости только через Platform-интерфейсы, не через другие Modules напрямую — это **hard architecture violation**, не стиль (единая сборка `BlazorSvt.csproj`, границу компилятор не проверяет; проверяется dependency-тестом в CI, см. `svt-architecture` skill → `roadmap.md` §2/7.0.5). Общие IdsEnum — `Platform/Domain/IdsEnum/`.
+
+- **Нельзя**: `Modules/{X}` импортирует класс/DTO из `Modules/{Y}` (X≠Y) напрямую (`using BlazorSvt.Modules.{Y}...`)
+- **Можно** (эталон в коде): cross-reference данные на чтении резолвятся в SQL-снапшоте, а не в C# — см. `TransportRateDto` (`NodeFromCode`/`NodeFromNameRu`/`NodeFromNameEn` из джойна с `LocationsNodes` в snapshot-view, не ссылка на класс модуля); общие enum — в `Platform/Domain/IdsEnum/`, не в модуле-источнике
+- На запись (будущие редакторы/загрузчики, раздел 10+ roadmap): cross-domain FK-валидация — через общий Platform-сервис, параметризованный таблицей/колонкой, не через прямую ссылку на класс чужого модуля
 
 ## Grid-фреймворк
 
