@@ -32,7 +32,7 @@ description: >-
 5. Read через snapshot/CQRS; write отделён?
 6. Без Elastic/RabbitMQ/распределённого монолита?
 7. Покрыты ли изменения тестами? Unit — C#-логика (`GridQueryFactory`, валидаторы, contract DTO); integration — read-only smoke SP/view для нового справочника (см. `svt-development-patterns`, секция «Тестирование»)
-8. Для write: write-through в легаси до cutover; LWW; общий write-toggle; аудит полей — с MVP 1.0 (до этого риск принят)
+8. Для write: write-through в легаси до cutover; LWW; доменный write-toggle (`V2WriteEnabled_{Домен}`, не единый глобальный); аудит полей — с MVP 1.0 (до этого риск принят)
 
 ## Ключевые антипаттерны легаси (не повторять)
 
@@ -49,3 +49,5 @@ description: >-
 
 - Обоснование замещения, сравнение альтернатив и целевое состояние — [reference.md](reference.md)
 - Дорожная карта миграции (MVP, бэклог, критерии) — [roadmap.md](roadmap.md)
+- Диаграммы архитектуры для подачи на архитектурное ревью (As-Is / целевая программы / будущее
+  вне скоупа) — [docs/architecture/README.md](../../../docs/architecture/README.md)
