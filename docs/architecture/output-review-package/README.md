@@ -1,9 +1,13 @@
 # Диаграммы архитектуры СВТ
 
+> Это плоская копия-снэпшот пакета документов для архитектурного ревью по состоянию на
+> 06.08.2026 (все файлы — в одной папке, ссылки между ними адаптированы под эту структуру).
+> Канонический источник — репозиторий BlazorSVT: `.cursor/skills/svt-architecture/reference.md`,
+> `.cursor/skills/svt-architecture/roadmap.md`, `docs/architecture/`.
+
 Диаграммы развёртывания (deployment-level: серверы, сети, порты) для подачи на архитектурное
 ревью трансформации СВТ. Текстовое обоснование, сравнительные таблицы альтернатив и полный план —
-в [`../../.cursor/skills/svt-architecture/reference.md`](../../.cursor/skills/svt-architecture/reference.md)
-и [`roadmap.md`](../../.cursor/skills/svt-architecture/roadmap.md).
+в [`reference.md`](reference.md) и [`roadmap.md`](roadmap.md).
 
 Сводное заключение «как стало» (снимок текущего состояния документации в формате architecture
 review) — [`review-current-state.html`](review-current-state.html).
@@ -12,9 +16,9 @@ review) — [`review-current-state.html`](review-current-state.html).
 
 | № | Файл | Состояние | Статус |
 |---|---|---|---|
-| 1 | [`diagrams/01-as-is-legacy.png`](diagrams/01-as-is-legacy.png) | Легаси (As-Is): распределённый монолит, Elastic, RabbitMQ, Angular | Текущее состояние прод |
-| 2 | [`diagrams/02-to-be-current-program.png`](diagrams/02-to-be-current-program.png) | Целевая архитектура **текущей программы** трансформации (итог MVP 2.0 / Gate D): та же ВМ и Windows Server 2016/IIS, модульный монолит .NET Blazor, без Elastic/RabbitMQ | Согласуется в рамках этого ревью |
-| 3 | [`diagrams/03-future-containers-out-of-scope.png`](diagrams/03-future-containers-out-of-scope.png) | Возможное будущее состояние — контейнеризация (Docker/Kubernetes) | **Вне скоупа текущей программы**; отдельная будущая инициатива с отдельным бизнес-кейсом |
+| 1 | [`01-as-is-legacy.png`](01-as-is-legacy.png) | Легаси (As-Is): распределённый монолит, Elastic, RabbitMQ, Angular | Текущее состояние прод |
+| 2 | [`02-to-be-current-program.png`](02-to-be-current-program.png) | Целевая архитектура **текущей программы** трансформации (итог MVP 2.0 / Gate D): та же ВМ и Windows Server 2016/IIS, модульный монолит .NET Blazor, без Elastic/RabbitMQ | Согласуется в рамках этого ревью |
+| 3 | [`03-future-containers-out-of-scope.png`](03-future-containers-out-of-scope.png) | Возможное будущее состояние — контейнеризация (Docker/Kubernetes) | **Вне скоупа текущей программы**; отдельная будущая инициатива с отдельным бизнес-кейсом |
 
 ## Почему три, а не одна схема
 
