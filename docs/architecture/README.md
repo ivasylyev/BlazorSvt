@@ -1,12 +1,16 @@
-# Диаграммы архитектуры СВТ
+# Архитектурные материалы СВТ 2.0 (пакет на ревью)
 
-Диаграммы развёртывания (deployment-level: серверы, сети, порты) для подачи на архитектурное
-ревью трансформации СВТ. Текстовое обоснование, сравнительные таблицы альтернатив и полный план —
-в [`../../.cursor/skills/svt-architecture/reference.md`](../../.cursor/skills/svt-architecture/reference.md)
-и [`roadmap.md`](../../.cursor/skills/svt-architecture/roadmap.md).
+Диаграммы развёртывания, обоснование и дорожная карта для **условного** архитектурного
+одобрения.
 
-Сводное заключение «как стало» (снимок текущего состояния документации в формате architecture
-review) — [`review-current-state.html`](review-current-state.html).
+- Обоснование и альтернативы: [`../../.cursor/skills/svt-architecture/reference.md`](../../.cursor/skills/svt-architecture/reference.md) (в т.ч. §6.9)
+- План, Gate A/B/C/D, **отложенная митигация рисков §2б** (реестр D-* + приложения: модель угроз,
+  SoD, миграции, SLI/SLO, метрики пилотов, протокол нагрузки):
+  [`../../.cursor/skills/svt-architecture/roadmap.md`](../../.cursor/skills/svt-architecture/roadmap.md)
+- Снимок повторного architecture review: [`review-current-state.html`](review-current-state.html)
+
+Отдельные файлы под каждый артефакт митигации **не ведутся** — всё в `roadmap.md` §2б,
+чтобы занятому ревьюеру не прыгать по папке.
 
 ## Последовательность диаграмм
 
@@ -30,3 +34,5 @@ review) — [`review-current-state.html`](review-current-state.html).
 Единственное, на что диаграмма 3 влияет уже сейчас: выбор механизма сессий Blazor Server
 (sticky/affinity, см. `reference.md` §6.1) не должен архитектурно исключать последующий переход
 на многоузловой/K8s-деплой.
+
+Пакет для передачи: [`output-review-package/`](output-review-package/).

@@ -48,6 +48,8 @@ description: >-
 ## Подробная документация
 
 - Обоснование замещения, сравнение альтернатив и целевое состояние — [reference.md](reference.md)
-- Дорожная карта миграции (MVP, бэклог, критерии) — [roadmap.md](roadmap.md)
-- Диаграммы архитектуры для подачи на архитектурное ревью (As-Is / целевая программы / будущее
-  вне скоупа) — [docs/architecture/README.md](../../../docs/architecture/README.md)
+  (условное архитектурное одобрение — §6.9)
+- Дорожная карта миграции (MVP, бэклог, критерии, Gate A/B/C/D) — [roadmap.md](roadmap.md)
+  (отложенная митигация рисков и приложения threat model / SoD / SLI/SLO / … — §2б)
+- Диаграммы для архитектурного ревью —
+  [docs/architecture/README.md](../../../docs/architecture/README.md)
