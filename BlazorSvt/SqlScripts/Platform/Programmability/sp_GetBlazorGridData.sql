@@ -194,7 +194,9 @@ BEGIN
         SET @SortDirection = ISNULL(@SortDirection, N'ASC');
 
         IF @SortDirection NOT IN (N'ASC', N'DESC')
+        BEGIN
             ;THROW 50000, 'Invalid sort direction.', 1;
+        END
 
         SELECT TOP (1)
             @SortColumn = AC.SqlColumnName
@@ -220,7 +222,7 @@ BEGIN
                   AND name = @SortColumn
            )
         BEGIN
-            THROW 50000, 'Invalid sort column.', 1;
+            ;THROW 50000, 'Invalid sort column.', 1;
         END
 
         SET @OrderByClause = N'ORDER BY ' + QUOTENAME(@SortColumn) + N' ' + @SortDirection + N', [Id]';

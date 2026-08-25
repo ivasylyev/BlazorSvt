@@ -370,6 +370,16 @@ WHERE DRu.[Value] = (
 
 **Кодировка (обязательно):** все файлы `BlazorSvt/SqlScripts/**/*.sql` — **UTF-8 with BOM** (`EF BB BF`). Без исключений: Structure, Programmability, Platform, Sync. Иначе Visual Studio на русской Windows открывает кириллические комментарии как «кракозябры». При создании/правке сохранять с BOM (не UTF-8 без BOM).
 
+**`THROW` (обязательно):** внутри `BEGIN…END` всегда с ведущей точкой с запятой:
+
+```sql
+BEGIN
+    ;THROW 50000, N'Message.', 1;
+END
+```
+
+Иначе SSDT в Visual Studio подчёркивает ошибку; вариант `IF … ;THROW` без `BEGIN…END` ломает sqlcmd.
+
 Папки:
 
 ```

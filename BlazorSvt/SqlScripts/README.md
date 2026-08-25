@@ -210,6 +210,16 @@ reconcile не догоняется, а ждёт следующих суток.
 
 Ключевая процедура `v2.GetBlazorGridData` (Platform) — универсальный query engine: whitelist колонок, фильтры, FTS, пагинация.
 
+### THROW в T-SQL (обязательно)
+
+`THROW` должен быть **первым** оператором в batch. Внутри `BEGIN…END` всегда пишите с ведущей точкой с запятой — иначе SSDT / SQL Server Data Tools в Visual Studio подчёркивает ошибку, а без `BEGIN…END` конструкция `IF … ;THROW` ломает sqlcmd:
+
+```sql
+BEGIN
+    ;THROW 50000, N'Message.', 1;
+END
+```
+
 ## Накат Programmability (dev)
 
 ```powershell

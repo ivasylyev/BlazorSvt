@@ -50,6 +50,7 @@ alwaysApply: false
 - **Read**: snapshot-таблицы, `v2.GetBlazorGridData`, `v2.ExportBlazorGridDetail`, `vw_*_Detail` — только выборка
 - **Write** (будущее): отдельные команды в C#, не бизнес-логика в SP
 - Dapper + `SqlDateOnlyTypeHandler`; доступ к БД через `DbConnectionLogDecorator` → `LoggedOperation` (тайминг, ошибки, параметры в scope). `DapperLogExtensions` — только хелпер `ToDictionary` для параметров
+- **`THROW`:** внутри `BEGIN…END` всегда с ведущей `;` — `BEGIN ;THROW 50000, N'…', 1; END` (иначе VS/SSDT ругается; без `BEGIN…END` ломается sqlcmd)
 
 ## Логирование
 
