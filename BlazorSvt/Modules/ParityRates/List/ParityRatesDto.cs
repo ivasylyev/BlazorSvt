@@ -136,4 +136,7 @@ public class ParityRatesDto
 
     [GridColumn]
     public string? PriorityText { get; set; }
+
+    [GridColumn]
+    public string? MarketingDataStructure { get; set; }
 }

@@ -98,6 +98,7 @@ CREATE TABLE v2.ParityRates_Snapshot (
     EmployeeResponsibilityArea  NVARCHAR(4000) NULL,
     Methodology                 NVARCHAR(4000) NULL,
     PriorityText                NVARCHAR(4000) NULL,
+    MarketingDataStructure      NVARCHAR(4000) NULL,
 
     -- Скрытые FK для каскадной синхронизации
     NodeFromId                  INT NOT NULL,

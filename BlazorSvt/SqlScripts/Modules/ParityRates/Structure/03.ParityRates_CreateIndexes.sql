@@ -46,7 +46,8 @@ CREATE FULLTEXT INDEX ON v2.ParityRates_Snapshot
     DepartmentResponsibilityArea LANGUAGE 1049,
     EmployeeResponsibilityArea   LANGUAGE 1049,
     Methodology        LANGUAGE 1049,
-    PriorityText       LANGUAGE 1049
+    PriorityText       LANGUAGE 1049,
+    MarketingDataStructure LANGUAGE 1049
 )
 KEY INDEX UX_ParityRates_Snapshot_Id
 WITH STOPLIST = SYSTEM,

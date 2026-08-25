@@ -58,4 +58,5 @@ public class ParityRatesDetailDto
     public string? EmployeeResponsibilityArea { get; set; }
     public string? Methodology { get; set; }
     public string? PriorityText { get; set; }
+    public string? MarketingDataStructure { get; set; }
 }

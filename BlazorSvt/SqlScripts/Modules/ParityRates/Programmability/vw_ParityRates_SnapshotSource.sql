@@ -72,6 +72,7 @@ AS
         LEFT(pr.EmployeeResponsibilityArea, 4000)               AS EmployeeResponsibilityArea,
         LEFT(pr.Methodology, 4000)                              AS Methodology,
         LEFT(pr.PriorityText, 4000)                             AS PriorityText,
+        LEFT(pr.MarketingDataStructure, 4000)                   AS MarketingDataStructure,
 
         CAST(nf.Id AS INT)                                      AS NodeFromId,
         CAST(nt.Id AS INT)                                      AS NodeToId,

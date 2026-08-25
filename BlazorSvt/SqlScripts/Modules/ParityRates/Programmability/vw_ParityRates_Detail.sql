@@ -67,7 +67,8 @@ AS
         LEFT(pr.DepartmentResponsibilityArea, 4000)             AS DepartmentResponsibilityArea,
         LEFT(pr.EmployeeResponsibilityArea, 4000)               AS EmployeeResponsibilityArea,
         LEFT(pr.Methodology, 4000)                              AS Methodology,
-        LEFT(pr.PriorityText, 4000)                             AS PriorityText
+        LEFT(pr.PriorityText, 4000)                             AS PriorityText,
+        LEFT(pr.MarketingDataStructure, 4000)                   AS MarketingDataStructure
 
     FROM vw_ParityRates pr (NOLOCK)
     LEFT JOIN vw_Relevance rel (NOLOCK) ON pr.Relevance = rel.Id

@@ -46,6 +46,7 @@
   <data name="ParityRatesDetailDto.Level_Danger_Product" xml:space="preserve"><value>Оп. груз (Опасный груз)</value></data>
   <data name="ParityRatesDetailDto.LoadOfTransport" xml:space="preserve"><value>Загрузка (Загрузка, т)</value></data>
   <data name="ParityRatesDetailDto.Methodology" xml:space="preserve"><value>Методология</value></data>
+  <data name="ParityRatesDetailDto.MarketingDataStructure" xml:space="preserve"><value>Маркетинг (Маркетинг: структура данных)</value></data>
   <data name="ParityRatesDetailDto.NodeFromCode" xml:space="preserve"><value>Код отпр. (Код узла отправления)</value></data>
   <data name="ParityRatesDetailDto.NodeFromName" xml:space="preserve"><value>Отправление (Узел отправления)</value></data>
   <data name="ParityRatesDetailDto.NodeToCode" xml:space="preserve"><value>Код назн. (Код узла назначения)</value></data>
@@ -81,6 +82,7 @@
   <data name="ParityRatesDto.Level_Danger_Product" xml:space="preserve"><value>Оп. груз</value></data>
   <data name="ParityRatesDto.LoadOfTransport" xml:space="preserve"><value>Загрузка</value></data>
   <data name="ParityRatesDto.Methodology" xml:space="preserve"><value>Методология</value></data>
+  <data name="ParityRatesDto.MarketingDataStructure" xml:space="preserve"><value>Маркетинг</value></data>
   <data name="ParityRatesDto.NodeFromCode" xml:space="preserve"><value>Код отпр.</value></data>
   <data name="ParityRatesDto.NodeFromName" xml:space="preserve"><value>Отправление</value></data>
   <data name="ParityRatesDto.NodeToCode" xml:space="preserve"><value>Код назн.</value></data>

@@ -46,6 +46,7 @@
   <data name="ParityRatesDetailDto.Level_Danger_Product" xml:space="preserve"><value>Danger lvl (Dangerous cargo level)</value></data>
   <data name="ParityRatesDetailDto.LoadOfTransport" xml:space="preserve"><value>Load (Load, t)</value></data>
   <data name="ParityRatesDetailDto.Methodology" xml:space="preserve"><value>Methodology</value></data>
+  <data name="ParityRatesDetailDto.MarketingDataStructure" xml:space="preserve"><value>Marketing</value></data>
   <data name="ParityRatesDetailDto.NodeFromCode" xml:space="preserve"><value>From code (Origin node code)</value></data>
   <data name="ParityRatesDetailDto.NodeFromName" xml:space="preserve"><value>From (Origin node)</value></data>
   <data name="ParityRatesDetailDto.NodeToCode" xml:space="preserve"><value>To code (Destination node code)</value></data>
@@ -81,6 +82,7 @@
   <data name="ParityRatesDto.Level_Danger_Product" xml:space="preserve"><value>Danger lvl</value></data>
   <data name="ParityRatesDto.LoadOfTransport" xml:space="preserve"><value>Load</value></data>
   <data name="ParityRatesDto.Methodology" xml:space="preserve"><value>Methodology</value></data>
+  <data name="ParityRatesDto.MarketingDataStructure" xml:space="preserve"><value>Marketing</value></data>
   <data name="ParityRatesDto.NodeFromCode" xml:space="preserve"><value>From code</value></data>
   <data name="ParityRatesDto.NodeFromName" xml:space="preserve"><value>From</value></data>
   <data name="ParityRatesDto.NodeToCode" xml:space="preserve"><value>To code</value></data>

@@ -49,6 +49,7 @@ INSERT INTO v2.ParityRates_Snapshot (
     ,EmployeeResponsibilityArea
     ,Methodology
     ,PriorityText
+    ,MarketingDataStructure
     ,NodeFromId
     ,NodeToId
     ,ProxyNode1Id
@@ -99,6 +100,7 @@ SELECT
     ,EmployeeResponsibilityArea
     ,Methodology
     ,PriorityText
+    ,MarketingDataStructure
     ,NodeFromId
     ,NodeToId
     ,ProxyNode1Id

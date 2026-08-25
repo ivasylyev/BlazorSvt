@@ -51,6 +51,7 @@ public class ParityRatesGridSettingsService(
         b.Add(x => x.EmployeeResponsibilityArea, L["ParityRatesDto.EmployeeResponsibilityArea"]);
         b.Add(x => x.Methodology, L["ParityRatesDto.Methodology"]);
         b.Add(x => x.PriorityText, L["ParityRatesDto.PriorityText"]);
+        b.Add(x => x.MarketingDataStructure, L["ParityRatesDto.MarketingDataStructure"]);
         b.AddSystemColumns(
             x => x.CreationDate,
             x => x.LastChangeDate,

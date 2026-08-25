@@ -62,6 +62,7 @@ public class ParityRatesDetailSettingsService(
         b.Add(g0, x => x.EmployeeResponsibilityArea, L["ParityRatesDetailDto.EmployeeResponsibilityArea"]);
         b.Add(g0, x => x.Methodology, L["ParityRatesDetailDto.Methodology"]);
         b.Add(g0, x => x.PriorityText, L["ParityRatesDetailDto.PriorityText"]);
+        b.Add(g0, x => x.MarketingDataStructure, L["ParityRatesDetailDto.MarketingDataStructure"]);
 
         return b.Build();
     }
