@@ -107,9 +107,10 @@ CREATE TABLE v2.TransportLeg_Snapshot (
     NodeFromCode        NVARCHAR(10) NOT NULL,
     NodeFromNameEn      NVARCHAR(30) NOT NULL,
     NodeFromNameRu      NVARCHAR(30) NOT NULL,
-    RegionFromCode      NVARCHAR(10) NOT NULL,
-    RegionFromNameEn    NVARCHAR(60) NOT NULL,
-    RegionFromNameRu    NVARCHAR(60) NOT NULL,
+    -- Регион узла опционален (напр. зарубежные узлы без региона в legacy).
+    RegionFromCode      NVARCHAR(10) NULL,
+    RegionFromNameEn    NVARCHAR(60) NULL,
+    RegionFromNameRu    NVARCHAR(60) NULL,
 
     ProxyNodeCode       NVARCHAR(10) NULL,
     ProxyNodeNameEn     NVARCHAR(30) NULL,
@@ -121,9 +122,9 @@ CREATE TABLE v2.TransportLeg_Snapshot (
     NodeToCode          NVARCHAR(10) NOT NULL,
     NodeToNameEn        NVARCHAR(30) NOT NULL,
     NodeToNameRu        NVARCHAR(30) NOT NULL,
-    RegionToCode        NVARCHAR(10) NOT NULL,
-    RegionToNameEn      NVARCHAR(60) NOT NULL,
-    RegionToNameRu      NVARCHAR(60) NOT NULL,
+    RegionToCode        NVARCHAR(10) NULL,
+    RegionToNameEn      NVARCHAR(60) NULL,
+    RegionToNameRu      NVARCHAR(60) NULL,
     
     CreationDate        DATETIME NOT NULL,
     LastChangeDate      DATETIME NOT NULL,
@@ -134,8 +135,8 @@ CREATE TABLE v2.TransportLeg_Snapshot (
     NodeFromId          INT NOT NULL,
     NodeToId            INT NOT NULL,
     ProxyNodeId         INT NULL,
-    RegionFromId        INT NOT NULL,
-    RegionToId          INT NOT NULL,
+    RegionFromId        INT NULL,
+    RegionToId          INT NULL,
     ProxyRegionId       INT NULL
     
     CONSTRAINT PK_TransportLeg_Snapshot PRIMARY KEY CLUSTERED (IsArchive, Id)

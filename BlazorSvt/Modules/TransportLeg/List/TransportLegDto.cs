@@ -63,13 +63,13 @@ public class TransportLegDto
     public required string NodeFromNameEn { get; set; }
 
     [GridColumn]
-    public required string RegionFromCode { get; set; }
+    public string? RegionFromCode { get; set; }
 
     [GridColumn]
-    public required string RegionFromNameRu { get; set; }
+    public string? RegionFromNameRu { get; set; }
 
     [GridColumn]
-    public required string RegionFromNameEn { get; set; }
+    public string? RegionFromNameEn { get; set; }
 
     [GridColumn]
     public string? ProxyNodeCode { get; set; }
@@ -99,13 +99,13 @@ public class TransportLegDto
     public required string NodeToNameEn { get; set; }
 
     [GridColumn]
-    public required string RegionToCode { get; set; }
+    public string? RegionToCode { get; set; }
 
     [GridColumn]
-    public required string RegionToNameRu { get; set; }
+    public string? RegionToNameRu { get; set; }
 
     [GridColumn]
-    public required string RegionToNameEn { get; set; }
+    public string? RegionToNameEn { get; set; }
 
     [GridColumn]
     public DateTime CreationDate { get; set; }

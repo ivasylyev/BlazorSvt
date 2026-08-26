@@ -48,9 +48,9 @@ public class TransportLegDetailDto
     public required string NodeFromCode { get; set; }
     public required string NodeFromNameRu { get; set; }
     public required string NodeFromNameEn { get; set; }
-    public required string RegionFromCode { get; set; }
-    public required string RegionFromNameRu { get; set; }
-    public required string RegionFromNameEn { get; set; }
+    public string? RegionFromCode { get; set; }
+    public string? RegionFromNameRu { get; set; }
+    public string? RegionFromNameEn { get; set; }
 
     public string? ProxyNodeCode { get; set; }
     public string? ProxyNodeNameRu { get; set; }
@@ -62,9 +62,9 @@ public class TransportLegDetailDto
     public required string NodeToCode { get; set; }
     public required string NodeToNameRu { get; set; }
     public required string NodeToNameEn { get; set; }
-    public required string RegionToCode { get; set; }
-    public required string RegionToNameRu { get; set; }
-    public required string RegionToNameEn { get; set; }
+    public string? RegionToCode { get; set; }
+    public string? RegionToNameRu { get; set; }
+    public string? RegionToNameEn { get; set; }
 
 
     public DateTime CreationDate { get; set; }

@@ -150,13 +150,15 @@ GO
 DROP INDEX IF EXISTS [ix_TransportLeg_Snapshot_RegionFromId] ON [v2].[TransportLeg_Snapshot];
 GO
 CREATE NONCLUSTERED INDEX [ix_TransportLeg_Snapshot_RegionFromId]
-ON v2.TransportLeg_Snapshot (RegionFromId);
+ON v2.TransportLeg_Snapshot (RegionFromId)
+WHERE RegionFromId IS NOT NULL;
 GO
 
 DROP INDEX IF EXISTS [ix_TransportLeg_Snapshot_RegionToId] ON [v2].[TransportLeg_Snapshot];
 GO
 CREATE NONCLUSTERED INDEX [ix_TransportLeg_Snapshot_RegionToId]
-ON v2.TransportLeg_Snapshot (RegionToId);
+ON v2.TransportLeg_Snapshot (RegionToId)
+WHERE RegionToId IS NOT NULL;
 GO
 
 DROP INDEX IF EXISTS [ix_TransportLeg_Snapshot_ProxyRegionId] ON [v2].[TransportLeg_Snapshot];

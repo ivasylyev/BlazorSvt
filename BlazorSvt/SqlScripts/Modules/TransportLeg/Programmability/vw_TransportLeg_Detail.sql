@@ -95,9 +95,9 @@ AS
     JOIN vw_TransportKind tk (NOLOCK) ON l.TransportKind = tk.Id
 
     JOIN vw_LocationsNodes nf (NOLOCK) ON l.NodeFrom = nf.Id
-    JOIN vw_Region rf (NOLOCK) ON rf.Id = nf.Region
+    LEFT JOIN vw_Region rf (NOLOCK) ON rf.Id = nf.Region
     JOIN vw_LocationsNodes nt (NOLOCK) ON l.NodeTo = nt.Id
-    JOIN vw_Region rt (NOLOCK) ON rt.Id = nt.Region
+    LEFT JOIN vw_Region rt (NOLOCK) ON rt.Id = nt.Region
     LEFT JOIN vw_LocationsNodes np (NOLOCK) ON l.ProxyNode = np.Id
     LEFT JOIN vw_Region rp (NOLOCK) ON rp.Id = np.Region
 GO
