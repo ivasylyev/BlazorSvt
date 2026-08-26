@@ -1,0 +1,664 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader><data name="TransportRateGrid.Title" xml:space="preserve">
+    <value>Rates</value>
+  </data>
+  <data name="TransportRateDto.Code" xml:space="preserve">
+	  <value>Code</value>
+  </data>
+  <data name="TransportRateDto.IsDefRate" xml:space="preserve">
+	  <value>Deflator</value>
+  </data>
+  <data name="TransportRateDto.RateTypeName" xml:space="preserve">
+	  <value>Rate type</value>
+  </data>
+  <data name="TransportRateDto.NodeFromCode" xml:space="preserve">
+	  <value>From code</value>
+  </data>	
+  <data name="TransportRateDto.NodeFromName" xml:space="preserve">
+	  <value>From</value>
+  </data>
+  <data name="TransportRateDto.NodeToCode" xml:space="preserve">
+	  <value>To code</value>
+  </data>	
+  <data name="TransportRateDto.NodeToName" xml:space="preserve">
+	  <value>To</value>
+  </data>
+  <data name="TransportRateDto.ProxyNodeName" xml:space="preserve">
+	  <value>Proxy</value>
+  </data>
+  <data name="TransportRateDto.ProxyNodeCode" xml:space="preserve">
+	  <value>Proxy code</value>
+  </data>
+  <data name="TransportRateDto.ProductGroupCode" xml:space="preserve">
+	  <value>Group code</value>
+  </data>
+	<data name="TransportRateDto.ProductGroupName" xml:space="preserve">
+	  <value>Group</value>
+  </data>
+
+	<data name="TransportRateDto.ProductCode" xml:space="preserve">
+	  <value>Prod. code</value>
+  </data>
+  <data name="TransportRateDto.ProductName" xml:space="preserve">
+	  <value>Product</value>
+  </data>
+  <data name="TransportRateDto.StartDate" xml:space="preserve">
+	  <value>Start</value>
+  </data>
+  <data name="TransportRateDto.EndDate" xml:space="preserve">
+	  <value>End</value>
+  </data>
+  <data name="TransportRateDto.CurrencyCode" xml:space="preserve">
+	  <value>Currency</value>
+  </data>
+  <data name="TransportRateDto.Currency" xml:space="preserve">
+	  <value>Currency</value>
+  </data>
+  <data name="TransportRateDto.TotalCostTon" xml:space="preserve">
+	  <value>Per ton</value>
+  </data>
+  <data name="TransportRateDto.TotalCostTransport" xml:space="preserve">
+	  <value>Per vehicle</value>
+  </data>
+  <data name="TransportRateDto.CreationDate" xml:space="preserve">
+	  <value>Created</value>
+  </data>
+  <data name="TransportRateDto.LastChangeDate" xml:space="preserve">
+	  <value>Changed</value>
+  </data>
+  <data name="TransportRateDto.IsArchive" xml:space="preserve">
+	  <value>Archive</value>
+  </data>
+
+<data name="TransportRateDto.RateTypeCode" xml:space="preserve">
+	  <value>Rate Type Code</value>
+  </data>
+  <data name="TransportRateDto.TransportKindCode" xml:space="preserve">
+	  <value>Tr. kind code</value>
+  </data>
+  <data name="TransportRateDto.TransportKindName" xml:space="preserve">
+	  <value>Transport kind</value>
+  </data>
+  <data name="TransportRateDto.TransportTypeCode" xml:space="preserve">
+	  <value>Tr. type code</value>
+  </data>
+  <data name="TransportRateDto.TransportTypeName" xml:space="preserve">
+	  <value>Transport type</value>
+  </data>
+
+<data name="TransportRateDetailDto.Code" xml:space="preserve">
+	  <value>Code</value>
+  </data>
+  <data name="TransportRateDetailDto.IsDefRate" xml:space="preserve">
+	  <value>Deflator (Deflated)</value>
+  </data>
+
+<data name="TransportRateDetailDto.CreationDate" xml:space="preserve">
+	  <value>Created</value>
+  </data>
+  <data name="TransportRateDetailDto.LastChangeDate" xml:space="preserve">
+	  <value>Changed</value>
+  </data>
+  <data name="TransportRateDetailDto.IsArchive" xml:space="preserve">
+	  <value>Archive (Is Archive)</value>
+  </data>
+
+<data name="TransportRateDetailDto.StartDate" xml:space="preserve">
+	  <value>Start (Start Date)</value>
+  </data>
+  <data name="TransportRateDetailDto.EndDate" xml:space="preserve">
+	  <value>End (End Date)</value>
+  </data>
+  <data name="TransportRateDetailDto.TotalCostTon" xml:space="preserve">
+	  <value>Per ton (Total Cost Ton)</value>
+  </data>
+  <data name="TransportRateDetailDto.TotalCostTransport" xml:space="preserve">
+	  <value>Per vehicle (Total Cost Transport)</value>
+  </data>
+  <data name="TransportRateDetailDto.Currency" xml:space="preserve">
+	  <value>Currency</value>
+  </data>
+  <data name="TransportRateDetailDto.RateTypeCode" xml:space="preserve">
+	  <value>Rate Type Code</value>
+  </data>
+  <data name="TransportRateDetailDto.RateTypeName" xml:space="preserve">
+	  <value>Rate type</value>
+  </data>
+  <data name="TransportRateDetailDto.TransportKindCode" xml:space="preserve">
+	  <value>Tr. kind code (Transport Kind Code)</value>
+  </data>
+  <data name="TransportRateDetailDto.TransportKindName" xml:space="preserve">
+	  <value>Transport kind (Transport Kind Name)</value>
+  </data>
+  <data name="TransportRateDetailDto.TransportTypeCode" xml:space="preserve">
+	  <value>Tr. type code (Transport Type Code)</value>
+  </data>
+  <data name="TransportRateDetailDto.TransportTypeName" xml:space="preserve">
+	  <value>Transport type (Transport Type Name)</value>
+  </data>
+  <data name="TransportRateDetailDto.ProductGroupCode" xml:space="preserve">
+	  <value>Group code (Product Group Code)</value>
+  </data>
+  <data name="TransportRateDetailDto.ProductCode" xml:space="preserve">
+	  <value>Prod. code (Product Code)</value>
+  </data>
+  <data name="TransportRateDetailDto.ProductName" xml:space="preserve">
+	  <value>Product</value>
+  </data>
+  <data name="TransportRateDetailDto.Group.1.RateParameters" xml:space="preserve">
+	  <value>1. Rate Parameters</value>
+  </data>
+  <data name="TransportRateDetailDto.Group.2.RateDates" xml:space="preserve">
+	  <value>2. Rate Dates</value>
+  </data>
+  <data name="TransportRateDetailDto.Group.3.OriginDestination" xml:space="preserve">
+	  <value>3. Origin - Destination</value>
+  </data>
+  <data name="TransportRateDetailDto.Group.4.Transport" xml:space="preserve">
+	  <value>4. Transport</value>
+  </data>
+  <data name="TransportRateDetailDto.Group.5.MultimodalTransportation" xml:space="preserve">
+	  <value>5. Multimodal Transportation</value>
+  </data>
+  <data name="TransportRateDetailDto.Group.6.Cargo" xml:space="preserve">
+	  <value>6. Cargo</value>
+  </data>
+  <data name="TransportRateDetailDto.Group.7.RateAmountExcludingVAT" xml:space="preserve">
+	  <value>7. Rate Amount (excluding VAT)</value>
+  </data>
+  <data name="TransportRateDetailDto.Group.8.RateComponentsExcludingVATPerTon" xml:space="preserve">
+	  <value>8. Rate Components (excluding VAT, per ton)</value>
+  </data>
+  <data name="TransportRateDetailDto.Group.10.Comments" xml:space="preserve">
+	  <value>10. Comments</value>
+  </data>
+  <data name="TransportRateDetailDto.Group.11.ReferenceCalculatedCostsInCurrencies" xml:space="preserve">
+	  <value>11. Reference. Calculated Costs in Currencies</value>
+  </data>
+  <data name="TransportRateDetailDto.Group.12.Leadtimes" xml:space="preserve">
+	  <value>12. Leadtimes</value>
+  </data>
+  <data name="TransportRateDetailDto.Group.13.Leg1" xml:space="preserve">
+	  <value>13. Leg 1</value>
+  </data>
+  <data name="TransportRateDetailDto.Group.14.LeadtimesRate1" xml:space="preserve">
+	  <value>14. Leadtimes. Rate 1</value>
+  </data>
+  <data name="TransportRateDetailDto.Group.15.Leg2" xml:space="preserve">
+	  <value>15. Leg 2</value>
+  </data>
+  <data name="TransportRateDetailDto.Group.16.LeadtimesRate2" xml:space="preserve">
+	  <value>16. Leadtimes. Rate 2</value>
+  </data>
+  <data name="TransportRateDetailDto.NodeFromCode" xml:space="preserve">
+	  <value>From code (Node From Code)</value>
+  </data>
+  <data name="TransportRateDetailDto.NodeFromName" xml:space="preserve">
+	  <value>From (Node From Name)</value>
+  </data>
+  <data name="TransportRateDetailDto.RegionFromCode" xml:space="preserve">
+	  <value>Region From Code</value>
+  </data>
+  <data name="TransportRateDetailDto.RegionFromName" xml:space="preserve">
+	  <value>Region From Name</value>
+  </data>
+  <data name="TransportRateDetailDto.ProxyNodeCode" xml:space="preserve">
+	  <value>Proxy code (Proxy Node Code)</value>
+  </data>
+  <data name="TransportRateDetailDto.ProxyNodeName" xml:space="preserve">
+	  <value>Proxy (Proxy Node Name)</value>
+  </data>
+  <data name="TransportRateDetailDto.ProxyRegionCode" xml:space="preserve">
+	  <value>Proxy Region Code</value>
+  </data>
+  <data name="TransportRateDetailDto.ProxyRegionName" xml:space="preserve">
+	  <value>Proxy Region Name</value>
+  </data>
+  <data name="TransportRateDetailDto.NodeToCode" xml:space="preserve">
+	  <value>To code (Node To Code)</value>
+  </data>
+  <data name="TransportRateDetailDto.NodeToName" xml:space="preserve">
+	  <value>To (Node To Name)</value>
+  </data>
+  <data name="TransportRateDetailDto.RegionToCode" xml:space="preserve">
+	  <value>Region To Code</value>
+  </data>
+  <data name="TransportRateDetailDto.RegionToName" xml:space="preserve">
+	  <value>Region To Name</value>
+  </data>
+  <data name="TransportRateDetailDto.SearchTime" xml:space="preserve">
+	  <value>Search Time, days</value>
+  </data>
+  <data name="TransportRateDetailDto.LoadTime" xml:space="preserve">
+	  <value>Load Time, days</value>
+  </data>
+  <data name="TransportRateDetailDto.DaysWaiting" xml:space="preserve">
+	  <value>Days Waiting, days</value>
+  </data>
+  <data name="TransportRateDetailDto.TravelTime" xml:space="preserve">
+	  <value>Travel Time, days</value>
+  </data>
+  <data name="TransportRateDetailDto.UnLoadTime" xml:space="preserve">
+	  <value>UnLoad Time, days</value>
+  </data>
+  <data name="TransportRateDetailDto.TransportationTime" xml:space="preserve">
+	  <value>Transportation Time, days</value>
+  </data>
+  <data name="TransportRateDetailDto.Distance" xml:space="preserve">
+	  <value>Distance</value>
+  </data>
+  <data name="TransportRateDetailDto.Leg1_SearchTime" xml:space="preserve">
+	  <value>Leg 1. Search Time, days</value>
+  </data>
+  <data name="TransportRateDetailDto.Leg1_LoadTime" xml:space="preserve">
+	  <value>Leg 1. Load Time, days</value>
+  </data>
+  <data name="TransportRateDetailDto.Leg1_DaysWaiting" xml:space="preserve">
+	  <value>Leg 1. Days Waiting, days</value>
+  </data>
+  <data name="TransportRateDetailDto.Leg1_TravelTime" xml:space="preserve">
+	  <value>Leg 1. Travel Time, days</value>
+  </data>
+  <data name="TransportRateDetailDto.Leg1_TransportationTime" xml:space="preserve">
+	  <value>Leg 1. Transportation Time, days</value>
+  </data>
+  <data name="TransportRateDetailDto.Leg1_Distance" xml:space="preserve">
+	  <value>Leg 1. Distance</value>
+  </data>
+  <data name="TransportRateDetailDto.Leg2_UpLoadTime" xml:space="preserve">
+	  <value>Leg 2. UnLoad Time, days</value>
+  </data>
+  <data name="TransportRateDetailDto.Leg2_DaysWaiting" xml:space="preserve">
+	  <value>Leg 2. Days Waiting, days</value>
+  </data>
+  <data name="TransportRateDetailDto.Leg2_TravelTime" xml:space="preserve">
+	  <value>Leg 2. Travel Time, days</value>
+  </data>
+  <data name="TransportRateDetailDto.Leg2_TransportationTime" xml:space="preserve">
+	  <value>Leg 2. Transportation Time, days</value>
+  </data>
+  <data name="TransportRateDetailDto.Leg2_Distance" xml:space="preserve">
+	  <value>Leg 2. Distance</value>
+  </data>
+  <data name="TransportRateDetailDto.AverageRateCode" xml:space="preserve">
+	  <value>Average Rate Code</value>
+  </data>
+  <data name="TransportRateDetailDto.AverageRateLevel3TotalCostTon" xml:space="preserve">
+	  <value>Average Rate Level 3, per ton</value>
+  </data>
+  <data name="TransportRateDetailDto.CalcType" xml:space="preserve">
+	  <value>Calculation Type</value>
+  </data>
+  <data name="TransportRateDetailDto.CurrencyRateMonth" xml:space="preserve">
+	  <value>Currency Rate Month</value>
+  </data>
+  <data name="TransportRateDetailDto.EffectiveLoadOfTransportType" xml:space="preserve">
+	  <value>Effective Load</value>
+  </data>
+  <data name="TransportRateDetailDto.TotalCostTonRUB" xml:space="preserve">
+	  <value>Total Cost Ton, RUB</value>
+  </data>
+  <data name="TransportRateDetailDto.TotalCostTonEUR" xml:space="preserve">
+	  <value>Total Cost Ton, EUR</value>
+  </data>
+  <data name="TransportRateDetailDto.TotalCostTonCNY" xml:space="preserve">
+	  <value>Total Cost Ton, CNY</value>
+  </data>
+  <data name="TransportRateDetailDto.TotalCostTonUSD" xml:space="preserve">
+	  <value>Total Cost Ton, USD</value>
+  </data>
+  <data name="TransportRateDetailDto.TotalCostTransportRUB" xml:space="preserve">
+	  <value>Total Cost Transport, RUB</value>
+  </data>
+  <data name="TransportRateDetailDto.TotalCostTransportEUR" xml:space="preserve">
+	  <value>Total Cost Transport, EUR</value>
+  </data>
+  <data name="TransportRateDetailDto.TotalCostTransportCNY" xml:space="preserve">
+	  <value>Total Cost Transport, CNY</value>
+  </data>
+  <data name="TransportRateDetailDto.TotalCostTransportUSD" xml:space="preserve">
+	  <value>Total Cost Transport, USD</value>
+  </data>
+  <data name="TransportRateDetailDto.EmptyRFSize" xml:space="preserve">
+	  <value>Empty RF</value>
+  </data>
+  <data name="TransportRateDetailDto.EmptyRFCurrency" xml:space="preserve">
+	  <value>Empty RF Currency</value>
+  </data>
+  <data name="TransportRateDetailDto.EmptyCISSize" xml:space="preserve">
+	  <value>Empty CIS</value>
+  </data>
+  <data name="TransportRateDetailDto.EmptyCISCurrency" xml:space="preserve">
+	  <value>Empty CIS Currency</value>
+  </data>
+  <data name="TransportRateDetailDto.ProvisionTransportSize" xml:space="preserve">
+	  <value>Provision Transport</value>
+  </data>
+  <data name="TransportRateDetailDto.ProvisionTransportCurrency" xml:space="preserve">
+	  <value>Provision Transport Currency</value>
+  </data>
+  <data name="TransportRateDetailDto.FerryboatSize" xml:space="preserve">
+	  <value>Ferryboat</value>
+  </data>
+  <data name="TransportRateDetailDto.FerryboatCurrency" xml:space="preserve">
+	  <value>Ferryboat Currency</value>
+  </data>
+  <data name="TransportRateDetailDto.TEFromSize" xml:space="preserve">
+	  <value>TE From</value>
+  </data>
+  <data name="TransportRateDetailDto.TEFromCurrency" xml:space="preserve">
+	  <value>TE From Currency</value>
+  </data>
+  <data name="TransportRateDetailDto.RatePNPFromSize" xml:space="preserve">
+	  <value>PNP From</value>
+  </data>
+  <data name="TransportRateDetailDto.PNPFromCurrency" xml:space="preserve">
+	  <value>PNP From Currency</value>
+  </data>
+  <data name="TransportRateDetailDto.TEToSize" xml:space="preserve">
+	  <value>TE To</value>
+  </data>
+  <data name="TransportRateDetailDto.TEToCurrency" xml:space="preserve">
+	  <value>TE To Currency</value>
+  </data>
+  <data name="TransportRateDetailDto.PNPToSize" xml:space="preserve">
+	  <value>PNP To</value>
+  </data>
+  <data name="TransportRateDetailDto.PNPToCurrency" xml:space="preserve">
+	  <value>PNP To Currency</value>
+  </data>
+  <data name="TransportRateDetailDto.DrainLoadingSize" xml:space="preserve">
+	  <value>Drain Loading</value>
+  </data>
+  <data name="TransportRateDetailDto.DrainLoadingCurrency" xml:space="preserve">
+	  <value>Drain Loading Currency</value>
+  </data>
+  <data name="TransportRateDetailDto.TransshipmentSize" xml:space="preserve">
+	  <value>Transshipment</value>
+  </data>
+  <data name="TransportRateDetailDto.TransshipmentCurrency" xml:space="preserve">
+	  <value>Transshipment Currency</value>
+  </data>
+  <data name="TransportRateDetailDto.FreightSize" xml:space="preserve">
+	  <value>Freight</value>
+  </data>
+  <data name="TransportRateDetailDto.FreightCurrency" xml:space="preserve">
+	  <value>Freight Currency</value>
+  </data>
+  <data name="TransportRateDetailDto.AdditionalFeesCISSize" xml:space="preserve">
+	  <value>Additional Fees CIS</value>
+  </data>
+  <data name="TransportRateDetailDto.AdditionalFeesCISCurrency" xml:space="preserve">
+	  <value>Additional Fees CIS Currency</value>
+  </data>
+  <data name="TransportRateDetailDto.LoadedCISSize" xml:space="preserve">
+	  <value>Loaded CIS</value>
+  </data>
+  <data name="TransportRateDetailDto.LoadedCISCurrency" xml:space="preserve">
+	  <value>Loaded CIS Currency</value>
+  </data>
+  <data name="TransportRateDetailDto.LoadedRFSize" xml:space="preserve">
+	  <value>Loaded RF</value>
+  </data>
+  <data name="TransportRateDetailDto.LoadedRFCurrency" xml:space="preserve">
+	  <value>Loaded RF Currency</value>
+  </data>
+  <data name="TransportRateDetailDto.TEFromSize_fix" xml:space="preserve">
+	  <value>TE From (fix)</value>
+  </data>
+  <data name="TransportRateDetailDto.TEFromCurrency_fix" xml:space="preserve">
+	  <value>TE From Currency (fix)</value>
+  </data>
+  <data name="TransportRateDetailDto.TEToSize_fix" xml:space="preserve">
+	  <value>TE To (fix)</value>
+  </data>
+  <data name="TransportRateDetailDto.TEToCurrency_fix" xml:space="preserve">
+	  <value>TE To Currency (fix)</value>
+  </data>
+  <data name="TransportRateDetailDto.Basis" xml:space="preserve">
+	  <value>Basis</value>
+  </data>
+  <data name="TransportRateDetailDto.BasisNodeCode" xml:space="preserve">
+	  <value>Basis Node Code</value>
+  </data>
+  <data name="TransportRateDetailDto.BasisNodeNameRu" xml:space="preserve">
+	  <value>Basis Node</value>
+  </data>
+  <data name="TransportRateDetailDto.ProductGroupNameEnRu" xml:space="preserve">
+	  <value>Product Group</value>
+  </data>
+  <data name="TransportRateDetailDto.ProductDPOCOde" xml:space="preserve">
+	  <value>Product DPO Code</value>
+  </data>
+  <data name="TransportRateDetailDto.ContractorCode" xml:space="preserve">
+	  <value>Contractor Code</value>
+  </data>
+  <data name="TransportRateDetailDto.ContractorNameSearch" xml:space="preserve">
+	  <value>Contractor</value>
+  </data>
+  <data name="TransportRateDetailDto.ContractorEGRUL" xml:space="preserve">
+	  <value>Contractor EGRUL</value>
+  </data>
+  <data name="TransportRateDetailDto.Nomination" xml:space="preserve">
+	  <value>Nomination</value>
+  </data>
+  <data name="TransportRateDetailDto.TenderServicePack" xml:space="preserve">
+	  <value>Tender Service Pack</value>
+  </data>
+  <data name="TransportRateDetailDto.TenderNumber" xml:space="preserve">
+	  <value>Tender Number</value>
+  </data>
+  <data name="TransportRateDetailDto.AdditionalAgreementNumber" xml:space="preserve">
+	  <value>Additional Agreement Number</value>
+  </data>
+  <data name="TransportRateDetailDto.Comment" xml:space="preserve">
+	  <value>Comment</value>
+  </data>
+  <data name="TransportRateDetailDto.LegCode" xml:space="preserve">
+	  <value>Leg Code</value>
+  </data>
+  <data name="TransportRateDetailDto.LegChangeDate" xml:space="preserve">
+	  <value>Leg Changed</value>
+  </data>
+  <data name="TransportRateDetailDto.LeadTimeChangeDate" xml:space="preserve">
+	  <value>Lead Time Changed</value>
+  </data>
+  <data name="TransportRateDetailDto.LeadTimeStartDate" xml:space="preserve">
+	  <value>Lead Time Start</value>
+  </data>
+  <data name="TransportRateDetailDto.LeadTimeEndDate" xml:space="preserve">
+	  <value>Lead Time End</value>
+  </data>
+  <data name="TransportRateDetailDto.LeadTimeCode" xml:space="preserve">
+	  <value>Lead Time Code</value>
+  </data>
+  <data name="TransportRateDetailDto.Leg1_EffectiveLoad" xml:space="preserve">
+	  <value>Leg 1. Effective Load</value>
+  </data>
+  <data name="TransportRateDetailDto.Leg1_TotalCostTon" xml:space="preserve">
+	  <value>Leg 1. Total Cost Ton</value>
+  </data>
+  <data name="TransportRateDetailDto.Leg1_TotalCostTransport" xml:space="preserve">
+	  <value>Leg 1. Total Cost Transport</value>
+  </data>
+  <data name="TransportRateDetailDto.Leg1_BaseCurrency" xml:space="preserve">
+	  <value>Leg 1. Base Currency</value>
+  </data>
+  <data name="TransportRateDetailDto.Leg1_TotalCostTonRUB" xml:space="preserve">
+	  <value>Leg 1. Total Cost Ton, RUB</value>
+  </data>
+  <data name="TransportRateDetailDto.Leg1_TotalCostTonUSD" xml:space="preserve">
+	  <value>Leg 1. Total Cost Ton, USD</value>
+  </data>
+  <data name="TransportRateDetailDto.Leg1_TotalCostTonEUR" xml:space="preserve">
+	  <value>Leg 1. Total Cost Ton, EUR</value>
+  </data>
+  <data name="TransportRateDetailDto.Leg1_TotalCostTonCNY" xml:space="preserve">
+	  <value>Leg 1. Total Cost Ton, CNY</value>
+  </data>
+  <data name="TransportRateDetailDto.Leg1_TotalCostTransportRUB" xml:space="preserve">
+	  <value>Leg 1. Total Cost Transport, RUB</value>
+  </data>
+  <data name="TransportRateDetailDto.Leg1_TotalCostTransportUSD" xml:space="preserve">
+	  <value>Leg 1. Total Cost Transport, USD</value>
+  </data>
+  <data name="TransportRateDetailDto.Leg1_TotalCostTransportEUR" xml:space="preserve">
+	  <value>Leg 1. Total Cost Transport, EUR</value>
+  </data>
+  <data name="TransportRateDetailDto.Leg1_TotalCostTransportCNY" xml:space="preserve">
+	  <value>Leg 1. Total Cost Transport, CNY</value>
+  </data>
+  <data name="TransportRateDetailDto.Leg2_EffectiveLoad" xml:space="preserve">
+	  <value>Leg 2. Effective Load</value>
+  </data>
+  <data name="TransportRateDetailDto.Leg2_TotalCostTon" xml:space="preserve">
+	  <value>Leg 2. Total Cost Ton</value>
+  </data>
+  <data name="TransportRateDetailDto.Leg2_TotalCostTransport" xml:space="preserve">
+	  <value>Leg 2. Total Cost Transport</value>
+  </data>
+  <data name="TransportRateDetailDto.Leg2_BaseCurrency" xml:space="preserve">
+	  <value>Leg 2. Base Currency</value>
+  </data>
+  <data name="TransportRateDetailDto.Leg2_TotalCostTonRUB" xml:space="preserve">
+	  <value>Leg 2. Total Cost Ton, RUB</value>
+  </data>
+  <data name="TransportRateDetailDto.Leg2_TotalCostTonUSD" xml:space="preserve">
+	  <value>Leg 2. Total Cost Ton, USD</value>
+  </data>
+  <data name="TransportRateDetailDto.Leg2_TotalCostTonEUR" xml:space="preserve">
+	  <value>Leg 2. Total Cost Ton, EUR</value>
+  </data>
+  <data name="TransportRateDetailDto.Leg2_TotalCostTonCNY" xml:space="preserve">
+	  <value>Leg 2. Total Cost Ton, CNY</value>
+  </data>
+  <data name="TransportRateDetailDto.Leg2_TotalCostTransportRUB" xml:space="preserve">
+	  <value>Leg 2. Total Cost Transport, RUB</value>
+  </data>
+  <data name="TransportRateDetailDto.Leg2_TotalCostTransportUSD" xml:space="preserve">
+	  <value>Leg 2. Total Cost Transport, USD</value>
+  </data>
+  <data name="TransportRateDetailDto.Leg2_TotalCostTransportEUR" xml:space="preserve">
+	  <value>Leg 2. Total Cost Transport, EUR</value>
+  </data>
+  <data name="TransportRateDetailDto.Leg2_TotalCostTransportCNY" xml:space="preserve">
+	  <value>Leg 2. Total Cost Transport, CNY</value>
+  </data>
+  </root>

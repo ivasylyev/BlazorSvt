@@ -4,6 +4,15 @@ public partial class GridColumnFilter : BlazorBootstrapComponentBase
 {
     #region Fields and Constants
 
+    /// <summary>
+    /// Popper fixed strategy so filter menus escape .table-responsive overflow clipping.
+    /// Per-instance: DropdownToggleButton mutates AdditionalAttributes in OnInitialized.
+    /// </summary>
+    private readonly Dictionary<string, object> fixedStrategyPopperAttributes = new()
+    {
+        ["data-bs-popper-config"] = "{\"strategy\":\"fixed\"}"
+    };
+
     private int inputKey;
 
     private int lastResetTrigger;

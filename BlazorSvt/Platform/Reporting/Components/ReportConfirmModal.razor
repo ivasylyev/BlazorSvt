@@ -1,0 +1,12 @@
+@inherits SvtComponentBase
+<Modal @ref="modal"
+       Title="@L["GenericGrid.ReportConfirm.Title"]"
+       OnHidden="HandleHiddenAsync">
+    <BodyTemplate>
+        @string.Format(L["GenericGrid.ReportConfirm.Message"], rowCount)
+    </BodyTemplate>
+    <FooterTemplate>
+        <Button Class="sibur-dark-btn" @onclick="HandleYesAsync">@L["GenericGrid.ReportConfirm.Yes"]</Button>
+        <Button Class="sibur-dna-btn" @onclick="HandleNoAsync">@L["GenericGrid.ReportConfirm.No"]</Button>
+    </FooterTemplate>
+</Modal>

@@ -1,0 +1,80 @@
+@using BlazorSvt.Modules.HomeRatePivot.Data
+@inherits SvtComponentBase
+
+<div class="home-rate-pivot">
+    <Card class="sibur-card">
+        <CardBody>
+            <CardTitle>@EL["HomeRatePivotWidget.Title"]</CardTitle>
+
+            @if (_error is not null)
+            {
+                <Alert Color="AlertColor.Danger">@_error</Alert>
+            }
+            else if (_isLoading || _table is null)
+            {
+                <div class="p-3 text-muted">@EL["HomeRatePivotWidget.Loading"]</div>
+            }
+            else
+            {
+                <div class="row g-3 home-rate-pivot-split">
+                    <div class="col-lg-6 home-rate-pivot-grid-col">
+                        <div class="text-muted mb-2">
+                            @string.Format(
+                                EL["HomeRatePivotWidget.ProductSubtitle"],
+                                EL["HomeRatePivotWidget.ProductName"],
+                                _monthHeaders.First(),
+                                _monthHeaders.Last())
+                        </div>
+                        <Grid TItem="HomeRatePivotRow"
+                              Class="table table-sm table-hover table-bordered home-rate-pivot-table"
+                              DataProvider="GridDataProvider"
+                              AllowPaging="false"
+                              AllowSorting="false"
+                              AllowFiltering="false"
+                              AllowRowClick="true"
+                              OnRowClick="OnGridRowClickAsync"
+                              RowClass="GetRowClass"
+                              Responsive="true">
+                            <GridColumns>
+                                <GridColumn TItem="HomeRatePivotRow"
+                                            HeaderText="@EL["HomeRatePivotWidget.Directions"]"
+                                            PropertyName="@nameof(HomeRatePivotRow.DirectionLabel)"
+                                            Sortable="false"
+                                            Filterable="false">
+                                    @context.DirectionLabel
+                                </GridColumn>
+                                <GridColumn TItem="HomeRatePivotRow"
+                                            HeaderText="@EL["HomeRatePivotWidget.TransportKind"]"
+                                            PropertyName="TransportKind"
+                                            Sortable="false"
+                                            Filterable="false">
+                                    @EL["HomeRatePivotWidget.TransportKindAuto"]
+                                </GridColumn>
+                                @for (var i = 0; i < _monthHeaders.Length; i++)
+                                {
+                                    var monthIndex = i;
+                                    <GridColumn TItem="HomeRatePivotRow"
+                                                HeaderText="@_monthHeaders[monthIndex]"
+                                                PropertyName="@($"Rate{monthIndex}")"
+                                                HeaderTextAlignment="Alignment.End"
+                                                TextAlignment="Alignment.End"
+                                                Sortable="false"
+                                                Filterable="false">
+                                        @FormatRate(context.RatesByMonth[monthIndex])
+                                    </GridColumn>
+                                }
+                            </GridColumns>
+                        </Grid>
+                    </div>
+                    <div class="col-lg-6 home-rate-pivot-chart-col">
+                        @if (_selectedRow is not null)
+                        {
+                            <div class="text-muted mb-2">@_selectedRow.DirectionLabel</div>
+                        }
+                        <BarChart @ref="_barChart" class="mb-0" />
+                    </div>
+                </div>
+            }
+        </CardBody>
+    </Card>
+</div>

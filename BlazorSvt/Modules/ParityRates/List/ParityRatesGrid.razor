@@ -1,0 +1,16 @@
+@page "/parityrates"
+@using BlazorSvt.Modules.ParityRates.Detail
+@inherits BaseGridPage<ParityRatesDto, ParityRatesDetailDto>
+
+<GenericGrid TItem="ParityRatesDto"
+             TDetailItem="ParityRatesDetailDto"
+             PageTitle="@EL["ParityRatesGrid.Title"]"
+             AllowDetailView="true"
+             DataProvider="DataProvider"
+             DetailDataProvider="DetailDataProvider"
+             DetailKeySelector="DetailKeySelector">
+
+    <DetailViewTemplate Context="detail">
+    </DetailViewTemplate>
+
+</GenericGrid>

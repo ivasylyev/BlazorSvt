@@ -1,0 +1,746 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+<data name="AverageRateLevel3DetailDto.AdditionalFeesCISCurrency" xml:space="preserve">
+    <value>Additional charges in CIS countries (freight forwarder’s fee) (per ton) (excluding VAT). Currency</value>
+  </data>
+  <data name="AverageRateLevel3DetailDto.AdditionalFeesCISSize" xml:space="preserve">
+    <value>Additional charges in CIS countries (freight forwarder’s fee) (per ton) (excluding VAT). Size of the rate component</value>
+  </data>
+<data name="AverageRateLevel3DetailDto.AverageRateLevel3" xml:space="preserve">
+    <value>Average Rate</value>
+  </data>
+  <data name="AverageRateLevel3DetailDto.Basis" xml:space="preserve">
+    <value>Basis</value>
+  </data>
+  <data name="AverageRateLevel3DetailDto.BasisNode" xml:space="preserve">
+    <value>BasisNode</value>
+  </data>
+  <data name="AverageRateLevel3DetailDto.CalcDate" xml:space="preserve">
+    <value>Сalculation date</value>
+  </data>
+  <data name="AverageRateLevel3DetailDto.Code" xml:space="preserve">
+    <value>Code</value>
+  </data>
+  <data name="AverageRateLevel3DetailDto.Comment" xml:space="preserve">
+    <value>Comments</value>
+  </data>
+  <data name="AverageRateLevel3DetailDto.CoordinateL" xml:space="preserve">
+    <value>Geographic longitude</value>
+  </data>
+  <data name="AverageRateLevel3DetailDto.CoordinateW" xml:space="preserve">
+    <value>Geographic latitude</value>
+  </data>
+  <data name="AverageRateLevel3DetailDto.CreationDate" xml:space="preserve">
+    <value>Created (Creation date)</value>
+  </data>
+  <data name="AverageRateLevel3DetailDto.CurrencyRateMonth" xml:space="preserve">
+    <value>The planned exchange rate is valid till</value>
+  </data>
+  <data name="AverageRateLevel3DetailDto.CurrencyStandard" xml:space="preserve">
+    <value>Reference currency</value>
+  </data>
+  <data name="AverageRateLevel3DetailDto.Direction" xml:space="preserve">
+    <value>Direction</value>
+  </data>
+  <data name="AverageRateLevel3DetailDto.DrainLoadingCurrency" xml:space="preserve">
+    <value>Dischargе-loading (per ton) (excluding VAT). Currency</value>
+  </data>
+  <data name="AverageRateLevel3DetailDto.DrainLoadingSize" xml:space="preserve">
+    <value>Dischargе-loading (per ton) (excluding VAT). The size of the component rate</value>
+  </data>
+  <data name="AverageRateLevel3DetailDto.EffectiveLoadOfTransportType" xml:space="preserve">
+    <value>Load (Effective loading of the transport vehicle type (in tons))</value>
+  </data>
+  <data name="AverageRateLevel3DetailDto.EmptyCISCurrency" xml:space="preserve">
+    <value>Empty run across the CIS (per ton) (excluding VAT).  Currency</value>
+  </data>
+  <data name="AverageRateLevel3DetailDto.EmptyCISSize" xml:space="preserve">
+    <value>Empty run across the CIS (per ton) (excluding VAT). Size of the rate component</value>
+  </data>
+  <data name="AverageRateLevel3DetailDto.EmptyRFCurrency" xml:space="preserve">
+    <value>Empty run across the Russian Federation (per ton) (excluding VAT).  Currency</value>
+  </data>
+  <data name="AverageRateLevel3DetailDto.EmptyRFSize" xml:space="preserve">
+    <value>Empty run across the Russian Federation (per ton) (excluding VAT). Size of the rate component</value>
+  </data>
+  <data name="AverageRateLevel3DetailDto.EndDate" xml:space="preserve">
+    <value>End (Validity period till)</value>
+  </data>
+  <data name="AverageRateLevel3DetailDto.Export" xml:space="preserve">
+    <value>Export</value>
+  </data>
+  <data name="AverageRateLevel3DetailDto.FIASFrom" xml:space="preserve">
+    <value>Departure FIAS</value>
+  </data>
+  <data name="AverageRateLevel3DetailDto.FIASTo" xml:space="preserve">
+    <value>Destination FIAS</value>
+  </data>
+  <data name="AverageRateLevel3DetailDto.FerryboatCurrency" xml:space="preserve">
+    <value>Ferry services (per ton) (excluding VAT). Currency</value>
+  </data>
+  <data name="AverageRateLevel3DetailDto.FerryboatSize" xml:space="preserve">
+    <value>Ferry services (per ton) (excluding VAT). Size of the rate component</value>
+  </data>
+  <data name="AverageRateLevel3DetailDto.FreightCurrency" xml:space="preserve">
+    <value>Freight (per ton) (excluding VAT). Currency</value>
+  </data>
+  <data name="AverageRateLevel3DetailDto.FreightSize" xml:space="preserve">
+    <value>Freight (per ton) (excluding VAT). Size of the rate component</value>
+  </data>
+  <data name="AverageRateLevel3DetailDto.Group.0.Default" xml:space="preserve">
+    <value>Default</value>
+  </data>
+  <data name="AverageRateLevel3DetailDto.IsArchive" xml:space="preserve">
+    <value>Archive</value>
+  </data>
+  <data name="AverageRateLevel3DetailDto.IsDefRate" xml:space="preserve">
+    <value>Deflator</value>
+  </data>
+  <data name="AverageRateLevel3DetailDto.IsExportToIntegration" xml:space="preserve">
+    <value>IsExportToIntegration</value>
+  </data>
+  <data name="AverageRateLevel3DetailDto.IsIndicative" xml:space="preserve">
+    <value>Indicative rate</value>
+  </data>
+  <data name="AverageRateLevel3DetailDto.IsUsedInCBD" xml:space="preserve">
+    <value>IsUsedInCBD</value>
+  </data>
+  <data name="AverageRateLevel3DetailDto.LastChangeDate" xml:space="preserve">
+    <value>Changed (Last change date)</value>
+  </data>
+  <data name="AverageRateLevel3DetailDto.Leg1_BaseCurrency" xml:space="preserve">
+    <value>Leg1_BaseCurrency</value>
+  </data>
+  <data name="AverageRateLevel3DetailDto.Leg1_EffectiveLoad" xml:space="preserve">
+    <value>Leg1_EffectiveLoad</value>
+  </data>
+  <data name="AverageRateLevel3DetailDto.Leg1_TotalCostTon" xml:space="preserve">
+    <value>Leg1_TotalCostTon</value>
+  </data>
+  <data name="AverageRateLevel3DetailDto.Leg1_TotalCostTonCNY" xml:space="preserve">
+    <value>Leg1_TotalCostTonCNY</value>
+  </data>
+  <data name="AverageRateLevel3DetailDto.Leg1_TotalCostTonEUR" xml:space="preserve">
+    <value>Leg1_TotalCostTonEUR</value>
+  </data>
+  <data name="AverageRateLevel3DetailDto.Leg1_TotalCostTonRUB" xml:space="preserve">
+    <value>Leg1_TotalCostTonRUB</value>
+  </data>
+  <data name="AverageRateLevel3DetailDto.Leg1_TotalCostTonUSD" xml:space="preserve">
+    <value>Leg1_TotalCostTonUSD</value>
+  </data>
+  <data name="AverageRateLevel3DetailDto.Leg1_TotalCostTransport" xml:space="preserve">
+    <value>Leg1_TotalCostTransport</value>
+  </data>
+  <data name="AverageRateLevel3DetailDto.Leg1_TotalCostTransportCNY" xml:space="preserve">
+    <value>Leg1_TotalCostTransportCNY</value>
+  </data>
+  <data name="AverageRateLevel3DetailDto.Leg1_TotalCostTransportEUR" xml:space="preserve">
+    <value>Leg1_TotalCostTransportEUR</value>
+  </data>
+  <data name="AverageRateLevel3DetailDto.Leg1_TotalCostTransportRUB" xml:space="preserve">
+    <value>Leg1_TotalCostTransportRUB</value>
+  </data>
+  <data name="AverageRateLevel3DetailDto.Leg1_TotalCostTransportUSD" xml:space="preserve">
+    <value>Leg1_TotalCostTransportUSD</value>
+  </data>
+  <data name="AverageRateLevel3DetailDto.Leg1_TransportType" xml:space="preserve">
+    <value>Leg1_TransportType</value>
+  </data>
+  <data name="AverageRateLevel3DetailDto.Leg2_BaseCurrency" xml:space="preserve">
+    <value>Leg2_BaseCurrency</value>
+  </data>
+  <data name="AverageRateLevel3DetailDto.Leg2_EffectiveLoad" xml:space="preserve">
+    <value>Leg2_EffectiveLoad</value>
+  </data>
+  <data name="AverageRateLevel3DetailDto.Leg2_TotalCostTon" xml:space="preserve">
+    <value>Leg2_TotalCostTon</value>
+  </data>
+  <data name="AverageRateLevel3DetailDto.Leg2_TotalCostTonCNY" xml:space="preserve">
+    <value>Leg2_TotalCostTonCNY</value>
+  </data>
+  <data name="AverageRateLevel3DetailDto.Leg2_TotalCostTonEUR" xml:space="preserve">
+    <value>Leg2_TotalCostTonEUR</value>
+  </data>
+  <data name="AverageRateLevel3DetailDto.Leg2_TotalCostTonRUB" xml:space="preserve">
+    <value>Leg2_TotalCostTonRUB</value>
+  </data>
+  <data name="AverageRateLevel3DetailDto.Leg2_TotalCostTonUSD" xml:space="preserve">
+    <value>Leg2_TotalCostTonUSD</value>
+  </data>
+  <data name="AverageRateLevel3DetailDto.Leg2_TotalCostTransport" xml:space="preserve">
+    <value>Leg2_TotalCostTransport</value>
+  </data>
+  <data name="AverageRateLevel3DetailDto.Leg2_TotalCostTransportCNY" xml:space="preserve">
+    <value>Leg2_TotalCostTransportCNY</value>
+  </data>
+  <data name="AverageRateLevel3DetailDto.Leg2_TotalCostTransportEUR" xml:space="preserve">
+    <value>Leg2_TotalCostTransportEUR</value>
+  </data>
+  <data name="AverageRateLevel3DetailDto.Leg2_TotalCostTransportRUB" xml:space="preserve">
+    <value>Leg2_TotalCostTransportRUB</value>
+  </data>
+  <data name="AverageRateLevel3DetailDto.Leg2_TotalCostTransportUSD" xml:space="preserve">
+    <value>Leg2_TotalCostTransportUSD</value>
+  </data>
+  <data name="AverageRateLevel3DetailDto.Leg2_TransportType" xml:space="preserve">
+    <value>Leg2_TransportType</value>
+  </data>
+  <data name="AverageRateLevel3DetailDto.LoadedCISCurrency" xml:space="preserve">
+    <value>Loaded run across the CIS (per ton) (excluding VAT). Currency</value>
+  </data>
+  <data name="AverageRateLevel3DetailDto.LoadedCISSize" xml:space="preserve">
+    <value>Loaded run across the CIS (per ton) (excluding VAT). Size of the rate component</value>
+  </data>
+  <data name="AverageRateLevel3DetailDto.LoadedRFCurrency" xml:space="preserve">
+    <value>Loaded run across the Russian Federation (per ton) (excluding VAT). Currency</value>
+  </data>
+  <data name="AverageRateLevel3DetailDto.LoadedRFSize" xml:space="preserve">
+    <value>Loaded run across the Russian Federation (per ton) (excluding VAT). Size of the rate component</value>
+  </data>
+  <data name="AverageRateLevel3DetailDto.MaxDailyTransportation" xml:space="preserve">
+    <value>Maximum daily volume of transportation (t)</value>
+  </data>
+  <data name="AverageRateLevel3DetailDto.MinDailyTransportation" xml:space="preserve">
+    <value>Minimum daily volume of transportation (t)</value>
+  </data>
+<data name="AverageRateLevel3DetailDto.NodeFrom" xml:space="preserve">
+    <value>Departure node</value>
+  </data>
+  <data name="AverageRateLevel3DetailDto.NodeFromEN" xml:space="preserve">
+    <value>Node From EN</value>
+  </data>
+  <data name="AverageRateLevel3DetailDto.NodeTo" xml:space="preserve">
+    <value>Destination node</value>
+  </data>
+  <data name="AverageRateLevel3DetailDto.NodeToEN" xml:space="preserve">
+    <value>Node To EN</value>
+  </data>
+  <data name="AverageRateLevel3DetailDto.OpenStreetMapFROM" xml:space="preserve">
+    <value>Departure OpenStreetMap code</value>
+  </data>
+  <data name="AverageRateLevel3DetailDto.OpenStreetMapTO" xml:space="preserve">
+    <value>Destination OpenStreetMap code</value>
+  </data>
+  <data name="AverageRateLevel3DetailDto.PNPFromCurrency" xml:space="preserve">
+    <value>Non-public railway track at the departure station (per ton) (excluding VAT). Currency</value>
+  </data>
+  <data name="AverageRateLevel3DetailDto.PNPFromSize" xml:space="preserve">
+    <value>Non-public railway track at the departure station (per ton) (excluding VAT). Size of the rate component</value>
+  </data>
+  <data name="AverageRateLevel3DetailDto.PNPToCurrency" xml:space="preserve">
+    <value>Non-public railway track at the destination station (per ton) (excluding VAT). Currency</value>
+  </data>
+  <data name="AverageRateLevel3DetailDto.PNPToSize" xml:space="preserve">
+    <value>Non-public railway track at the destination station (per ton) (excluding VAT). Size of the rate component</value>
+  </data>
+  <data name="AverageRateLevel3DetailDto.Product" xml:space="preserve">
+    <value>Product</value>
+  </data>
+  <data name="AverageRateLevel3DetailDto.ProductGroup" xml:space="preserve">
+    <value>Product group</value>
+  </data>
+  <data name="AverageRateLevel3DetailDto.ProvisionTransportCurrency" xml:space="preserve">
+    <value>Provision of transport vehicles (per ton) (excluding VAT). Currency</value>
+  </data>
+  <data name="AverageRateLevel3DetailDto.ProvisionTransportSize" xml:space="preserve">
+    <value>Provision of transport vehicles (per ton) (excluding VAT). The size of the component rate</value>
+  </data>
+  <data name="AverageRateLevel3DetailDto.ProxyNode" xml:space="preserve">
+    <value>ProxyNode</value>
+  </data>
+  <data name="AverageRateLevel3DetailDto.ProxyRegion" xml:space="preserve">
+    <value>ProxyRegion</value>
+  </data>
+  <data name="AverageRateLevel3DetailDto.RateLevel3" xml:space="preserve">
+    <value>Avg rate (Avg.rate of level 3 in ref.currency)</value>
+  </data>
+  <data name="AverageRateLevel3DetailDto.RateType" xml:space="preserve">
+    <value>RateType</value>
+  </data>
+  <data name="AverageRateLevel3DetailDto.RegionFrom" xml:space="preserve">
+    <value>Departure region</value>
+  </data>
+  <data name="AverageRateLevel3DetailDto.RegionTo" xml:space="preserve">
+    <value>Destination region</value>
+  </data>
+  <data name="AverageRateLevel3DetailDto.SSPRateTypePriority" xml:space="preserve">
+    <value>SSPRateTypePriority</value>
+  </data>
+  <data name="AverageRateLevel3DetailDto.StartDate" xml:space="preserve">
+    <value>Start (Validity period from)</value>
+  </data>
+  <data name="AverageRateLevel3DetailDto.TEFromCurrency" xml:space="preserve">
+    <value>Freight forwarding services at the departure station (variable costs) (per ton) (excluding VAT). Currency</value>
+  </data>
+  <data name="AverageRateLevel3DetailDto.TEFromCurrency_fix" xml:space="preserve">
+    <value>TEFromCurrency_fix</value>
+  </data>
+  <data name="AverageRateLevel3DetailDto.TEFromSize" xml:space="preserve">
+    <value>Freight forwarding services at the departure station (variable costs) (per ton) (excluding VAT). Size of the rate component</value>
+  </data>
+  <data name="AverageRateLevel3DetailDto.TEFromSize_fix" xml:space="preserve">
+    <value>TEFromSize_fix</value>
+  </data>
+  <data name="AverageRateLevel3DetailDto.TEToCurrency" xml:space="preserve">
+    <value>Freight forwarding services at the destination station (variable costs) (per ton) (excluding VAT). Currency</value>
+  </data>
+  <data name="AverageRateLevel3DetailDto.TEToCurrency_fix" xml:space="preserve">
+    <value>TEToCurrency_fix</value>
+  </data>
+  <data name="AverageRateLevel3DetailDto.TEToSize" xml:space="preserve">
+    <value>Freight forwarding services at the destination station (variable costs) (per ton) (excluding VAT). Size of the rate component</value>
+  </data>
+  <data name="AverageRateLevel3DetailDto.TEToSize_fix" xml:space="preserve">
+    <value>TEToSize_fix</value>
+  </data>
+  <data name="AverageRateLevel3DetailDto.TotalCostTonCNY" xml:space="preserve">
+    <value>TotalCostTonCNY</value>
+  </data>
+  <data name="AverageRateLevel3DetailDto.TotalCostTonEUR" xml:space="preserve">
+    <value>TotalCostTonEUR</value>
+  </data>
+  <data name="AverageRateLevel3DetailDto.TotalCostTonRUB" xml:space="preserve">
+    <value>TotalCostTonRUB</value>
+  </data>
+  <data name="AverageRateLevel3DetailDto.TotalCostTonUSD" xml:space="preserve">
+    <value>TotalCostTonUSD</value>
+  </data>
+  <data name="AverageRateLevel3DetailDto.TotalCostTransportCNY" xml:space="preserve">
+    <value>TotalCostTransportCNY</value>
+  </data>
+  <data name="AverageRateLevel3DetailDto.TotalCostTransportEUR" xml:space="preserve">
+    <value>TotalCostTransportEUR</value>
+  </data>
+  <data name="AverageRateLevel3DetailDto.TotalCostTransportRUB" xml:space="preserve">
+    <value>TotalCostTransportRUB</value>
+  </data>
+  <data name="AverageRateLevel3DetailDto.TotalCostTransportUSD" xml:space="preserve">
+    <value>TotalCostTransportUSD</value>
+  </data>
+  <data name="AverageRateLevel3DetailDto.TransportKind" xml:space="preserve">
+    <value>Means of transportation</value>
+  </data>
+  <data name="AverageRateLevel3DetailDto.TransportType" xml:space="preserve">
+    <value>Type of vehicle</value>
+  </data>
+  <data name="AverageRateLevel3DetailDto.TransshipmentCurrency" xml:space="preserve">
+    <value>Transshipment (per ton) (excluding VAT). Currency</value>
+  </data>
+  <data name="AverageRateLevel3DetailDto.TransshipmentSize" xml:space="preserve">
+    <value>Transshipment (per ton) (excluding VAT). Size of the rate component</value>
+  </data>
+
+
+<data name="AverageRateLevel3Dto.Code" xml:space="preserve">
+    <value>Code</value>
+  </data>
+  <data name="AverageRateLevel3Dto.CountryCode" xml:space="preserve">
+    <value>Country code</value>
+  </data>
+  <data name="AverageRateLevel3Dto.CreationDate" xml:space="preserve">
+    <value>Created</value>
+  </data>
+  <data name="AverageRateLevel3Dto.IsArchive" xml:space="preserve">
+    <value>Archive</value>
+  </data>
+  <data name="AverageRateLevel3Dto.LastChangeDate" xml:space="preserve">
+    <value>Changed</value>
+  </data>
+  <data name="AverageRateLevel3Dto.LocationTypeCode" xml:space="preserve">
+    <value>Location type code</value>
+  </data>
+<data name="AverageRateLevel3Dto.RegionCode" xml:space="preserve">
+    <value>Region code</value>
+  </data>
+  <data name="AverageRateLevel3Dto.TypeNodeCode" xml:space="preserve">
+    <value>Node type code</value>
+  </data>
+<data name="AverageRateLevel3Grid.Title" xml:space="preserve">
+    <value>Average Rate</value>
+  </data>
+  <data name="AverageRateLevel3Dto.IsDefRate" xml:space="preserve">
+    <value>Deflator</value>
+  </data>
+  <data name="AverageRateLevel3Dto.RateTypeName" xml:space="preserve">
+    <value>Rate type</value>
+  </data>
+  <data name="AverageRateLevel3Dto.NodeFromCode" xml:space="preserve">
+    <value>From code</value>
+  </data>
+  <data name="AverageRateLevel3Dto.NodeFromName" xml:space="preserve">
+    <value>From</value>
+  </data>
+  <data name="AverageRateLevel3Dto.NodeToCode" xml:space="preserve">
+    <value>To code</value>
+  </data>
+  <data name="AverageRateLevel3Dto.NodeToName" xml:space="preserve">
+    <value>To</value>
+  </data>
+  <data name="AverageRateLevel3Dto.ProxyNodeCode" xml:space="preserve">
+    <value>Proxy code</value>
+  </data>
+  <data name="AverageRateLevel3Dto.ProxyNodeName" xml:space="preserve">
+    <value>Proxy</value>
+  </data>
+  <data name="AverageRateLevel3Dto.ProductGroupCode" xml:space="preserve">
+    <value>Group code</value>
+  </data>
+  <data name="AverageRateLevel3Dto.ProductGroupName" xml:space="preserve">
+    <value>Group</value>
+  </data>
+  <data name="AverageRateLevel3Dto.ProductCode" xml:space="preserve">
+    <value>Prod. code</value>
+  </data>
+  <data name="AverageRateLevel3Dto.ProductName" xml:space="preserve">
+    <value>Product</value>
+  </data>
+  <data name="AverageRateLevel3Dto.StartDate" xml:space="preserve">
+    <value>Start</value>
+  </data>
+  <data name="AverageRateLevel3Dto.EndDate" xml:space="preserve">
+    <value>End</value>
+  </data>
+  <data name="AverageRateLevel3Dto.Currency" xml:space="preserve">
+    <value>Currency</value>
+  </data>
+  <data name="AverageRateLevel3Dto.RateLevel3" xml:space="preserve">
+    <value>Avg rate</value>
+  </data>
+  <data name="AverageRateLevel3Dto.EffectiveLoadOfTransportType" xml:space="preserve">
+    <value>Load</value>
+  </data>
+  <data name="AverageRateLevel3Dto.TransportKindCode" xml:space="preserve">
+    <value>Tr. kind code</value>
+  </data>
+  <data name="AverageRateLevel3Dto.TransportKindName" xml:space="preserve">
+    <value>Transport kind</value>
+  </data>
+  <data name="AverageRateLevel3Dto.TransportTypeCode" xml:space="preserve">
+    <value>Tr. type code</value>
+  </data>
+  <data name="AverageRateLevel3Dto.TransportTypeName" xml:space="preserve">
+    <value>Transport type</value>
+  </data>
+  <data name="AverageRateLevel3DetailDto.TransportRateCodes" xml:space="preserve">
+    <value>Transport rate codes</value>
+  </data>
+  <data name="AverageRateLevel3DetailDto.RateTypeName" xml:space="preserve">
+    <value>Rate type</value>
+  </data>
+  <data name="AverageRateLevel3DetailDto.RateTypeCode" xml:space="preserve">
+    <value>Rate type code</value>
+  </data>
+  <data name="AverageRateLevel3DetailDto.Group.1.RateParameters" xml:space="preserve">
+    <value>1. Rate Parameters</value>
+  </data>
+  <data name="AverageRateLevel3DetailDto.Group.2.RateDates" xml:space="preserve">
+    <value>2. Rate Dates</value>
+  </data>
+  <data name="AverageRateLevel3DetailDto.Group.3.OriginDestination" xml:space="preserve">
+    <value>3. Origin - Destination</value>
+  </data>
+  <data name="AverageRateLevel3DetailDto.Group.4.Transport" xml:space="preserve">
+    <value>4. Transport</value>
+  </data>
+  <data name="AverageRateLevel3DetailDto.Group.6.Cargo" xml:space="preserve">
+    <value>6. Cargo</value>
+  </data>
+  <data name="AverageRateLevel3DetailDto.Group.7.RateAmountExcludingVAT" xml:space="preserve">
+    <value>7. Rate Amount (excluding VAT)</value>
+  </data>
+  <data name="AverageRateLevel3DetailDto.Group.8.RateComponentsExcludingVATPerTon" xml:space="preserve">
+    <value>8. Rate Components (excluding VAT, per ton)</value>
+  </data>
+  <data name="AverageRateLevel3DetailDto.Group.10.Comments" xml:space="preserve">
+    <value>10. Comments</value>
+  </data>
+  <data name="AverageRateLevel3DetailDto.Group.11.ReferenceCalculatedCostsInCurrencies" xml:space="preserve">
+    <value>11. Reference. Calculated Costs in Currencies</value>
+  </data>
+  <data name="AverageRateLevel3DetailDto.Group.12.Leadtimes" xml:space="preserve">
+    <value>12. Leadtimes</value>
+  </data>
+  <data name="AverageRateLevel3DetailDto.Group.13.Leg1" xml:space="preserve">
+    <value>13. Leg 1</value>
+  </data>
+  <data name="AverageRateLevel3DetailDto.Group.14.LeadtimesRate1" xml:space="preserve">
+    <value>14. Leadtimes. Rate 1</value>
+  </data>
+  <data name="AverageRateLevel3DetailDto.Group.15.Leg2" xml:space="preserve">
+    <value>15. Leg 2</value>
+  </data>
+  <data name="AverageRateLevel3DetailDto.Group.16.LeadtimesRate2" xml:space="preserve">
+    <value>16. Leadtimes. Rate 2</value>
+  </data>
+  <data name="AverageRateLevel3DetailDto.NodeFromCode" xml:space="preserve">
+    <value>From code (Node From Code)</value>
+  </data>
+  <data name="AverageRateLevel3DetailDto.NodeFromName" xml:space="preserve">
+    <value>From (Node From Name)</value>
+  </data>
+  <data name="AverageRateLevel3DetailDto.RegionFromCode" xml:space="preserve">
+    <value>Region From Code</value>
+  </data>
+  <data name="AverageRateLevel3DetailDto.RegionFromName" xml:space="preserve">
+    <value>Region From Name</value>
+  </data>
+  <data name="AverageRateLevel3DetailDto.ProxyNodeCode" xml:space="preserve">
+    <value>Proxy code (Proxy Node Code)</value>
+  </data>
+  <data name="AverageRateLevel3DetailDto.ProxyNodeName" xml:space="preserve">
+    <value>Proxy (Proxy Node Name)</value>
+  </data>
+  <data name="AverageRateLevel3DetailDto.ProxyRegionCode" xml:space="preserve">
+    <value>Proxy Region Code</value>
+  </data>
+  <data name="AverageRateLevel3DetailDto.ProxyRegionName" xml:space="preserve">
+    <value>Proxy Region Name</value>
+  </data>
+  <data name="AverageRateLevel3DetailDto.NodeToCode" xml:space="preserve">
+    <value>To code (Node To Code)</value>
+  </data>
+  <data name="AverageRateLevel3DetailDto.NodeToName" xml:space="preserve">
+    <value>To (Node To Name)</value>
+  </data>
+  <data name="AverageRateLevel3DetailDto.RegionToCode" xml:space="preserve">
+    <value>Region To Code</value>
+  </data>
+  <data name="AverageRateLevel3DetailDto.RegionToName" xml:space="preserve">
+    <value>Region To Name</value>
+  </data>
+  <data name="AverageRateLevel3DetailDto.BasisNodeNameRu" xml:space="preserve">
+    <value>Basis node name</value>
+  </data>
+  <data name="AverageRateLevel3DetailDto.BasisNodeCode" xml:space="preserve">
+    <value>Basis node code</value>
+  </data>
+  <data name="AverageRateLevel3DetailDto.TransportKindCode" xml:space="preserve">
+    <value>Tr. kind code (Transport kind code)</value>
+  </data>
+  <data name="AverageRateLevel3DetailDto.TransportKindName" xml:space="preserve">
+    <value>Transport kind (Means of transportation)</value>
+  </data>
+  <data name="AverageRateLevel3DetailDto.TransportTypeCode" xml:space="preserve">
+    <value>Tr. type code (Transport type code)</value>
+  </data>
+  <data name="AverageRateLevel3DetailDto.TransportTypeName" xml:space="preserve">
+    <value>Transport type (Type of vehicle)</value>
+  </data>
+  <data name="AverageRateLevel3DetailDto.ProductGroupNameEnRu" xml:space="preserve">
+    <value>Group (Product group)</value>
+  </data>
+  <data name="AverageRateLevel3DetailDto.ProductGroupCode" xml:space="preserve">
+    <value>Group code (Product group code)</value>
+  </data>
+  <data name="AverageRateLevel3DetailDto.ProductCode" xml:space="preserve">
+    <value>Prod. code (Product code)</value>
+  </data>
+  <data name="AverageRateLevel3DetailDto.ProductName" xml:space="preserve">
+    <value>Product</value>
+  </data>
+  <data name="AverageRateLevel3DetailDto.ProductDPOCOde" xml:space="preserve">
+    <value>Product DPO code</value>
+  </data>
+  <data name="AverageRateLevel3DetailDto.LegCode" xml:space="preserve">
+    <value>Leg code</value>
+  </data>
+  <data name="AverageRateLevel3DetailDto.LegChangeDate" xml:space="preserve">
+    <value>Leg change date</value>
+  </data>
+  <data name="AverageRateLevel3DetailDto.LeadTimeCode" xml:space="preserve">
+    <value>Leadtime code</value>
+  </data>
+  <data name="AverageRateLevel3DetailDto.LeadTimeStartDate" xml:space="preserve">
+    <value>Leadtime start date</value>
+  </data>
+  <data name="AverageRateLevel3DetailDto.LeadTimeEndDate" xml:space="preserve">
+    <value>Leadtime end date</value>
+  </data>
+  <data name="AverageRateLevel3DetailDto.LeadTimeChangeDate" xml:space="preserve">
+    <value>Leadtime change date</value>
+  </data>
+  <data name="AverageRateLevel3DetailDto.SearchTime" xml:space="preserve">
+    <value>Search Time, days</value>
+  </data>
+  <data name="AverageRateLevel3DetailDto.LoadTime" xml:space="preserve">
+    <value>Load Time, days</value>
+  </data>
+  <data name="AverageRateLevel3DetailDto.DaysWaiting" xml:space="preserve">
+    <value>Days Waiting, days</value>
+  </data>
+  <data name="AverageRateLevel3DetailDto.TravelTime" xml:space="preserve">
+    <value>Travel Time, days</value>
+  </data>
+  <data name="AverageRateLevel3DetailDto.UnLoadTime" xml:space="preserve">
+    <value>UnLoad Time, days</value>
+  </data>
+  <data name="AverageRateLevel3DetailDto.TransportationTime" xml:space="preserve">
+    <value>Transportation Time, days</value>
+  </data>
+  <data name="AverageRateLevel3DetailDto.Distance" xml:space="preserve">
+    <value>Distance</value>
+  </data>
+  <data name="AverageRateLevel3DetailDto.Leg1_SearchTime" xml:space="preserve">
+    <value>Leg 1. Search Time, days</value>
+  </data>
+  <data name="AverageRateLevel3DetailDto.Leg1_LoadTime" xml:space="preserve">
+    <value>Leg 1. Load Time, days</value>
+  </data>
+  <data name="AverageRateLevel3DetailDto.Leg1_DaysWaiting" xml:space="preserve">
+    <value>Leg 1. Days Waiting, days</value>
+  </data>
+  <data name="AverageRateLevel3DetailDto.Leg1_TravelTime" xml:space="preserve">
+    <value>Leg 1. Travel Time, days</value>
+  </data>
+  <data name="AverageRateLevel3DetailDto.Leg1_TransportationTime" xml:space="preserve">
+    <value>Leg 1. Transportation Time, days</value>
+  </data>
+  <data name="AverageRateLevel3DetailDto.Leg1_Distance" xml:space="preserve">
+    <value>Leg 1. Distance</value>
+  </data>
+  <data name="AverageRateLevel3DetailDto.Leg2_UpLoadTime" xml:space="preserve">
+    <value>Leg 2. UnLoad Time, days</value>
+  </data>
+  <data name="AverageRateLevel3DetailDto.Leg2_DaysWaiting" xml:space="preserve">
+    <value>Leg 2. Days Waiting, days</value>
+  </data>
+  <data name="AverageRateLevel3DetailDto.Leg2_TravelTime" xml:space="preserve">
+    <value>Leg 2. Travel Time, days</value>
+  </data>
+  <data name="AverageRateLevel3DetailDto.Leg2_TransportationTime" xml:space="preserve">
+    <value>Leg 2. Transportation Time, days</value>
+  </data>
+  <data name="AverageRateLevel3DetailDto.Leg2_Distance" xml:space="preserve">
+    <value>Leg 2. Distance</value>
+  </data>
+  <data name="AverageRateLevel3DetailDto.Leg1_TransportTypeNameRu" xml:space="preserve">
+    <value>Leg 1. Transport type</value>
+  </data>
+  <data name="AverageRateLevel3DetailDto.Leg1_TransportTypeNameRuEn" xml:space="preserve">
+    <value>Leg 1. Transport type</value>
+  </data>
+  <data name="AverageRateLevel3DetailDto.Leg2_TransportTypeNameRu" xml:space="preserve">
+    <value>Leg 2. Transport type</value>
+  </data>
+  <data name="AverageRateLevel3DetailDto.Leg2_TransportTypeNameRuEn" xml:space="preserve">
+    <value>Leg 2. Transport type</value>
+  </data>
+</root>

@@ -1,0 +1,25 @@
+﻿@inherits LayoutComponentBase
+
+<BlazorBootstrapLayout StickyHeader="true">
+    <HeaderSection>
+        <HeaderMenu />
+    </HeaderSection>
+
+    <ContentSection>
+        <ErrorBoundary>
+            <ChildContent>
+                @Body
+            </ChildContent>
+
+            <ErrorContent Context="ex">
+                <ErrorDisplay Exception="ex"/>
+            </ErrorContent>
+        </ErrorBoundary>
+    </ContentSection>
+
+    <FooterSection>
+        <LoadTimePanel />
+    </FooterSection>
+</BlazorBootstrapLayout>
+
+<Preload />

@@ -1,0 +1,23 @@
+---
+description: Добавление read-only справочника из легаси MDM в BlazorSVT
+globs: BlazorSvt/Modules/**/*,BlazorSvt/SqlScripts/Modules/**/*
+alwaysApply: false
+---
+
+# Добавление справочника
+
+При команде «добавить справочник» или создании файлов в `Modules/{Entity}/` / `SqlScripts/Modules/{Entity}/` — **сначала прочитай skill** `add-reference-book` (`.cursor/skills/add-reference-book/SKILL.md`) и следуй ему полностью.
+
+## Кратко
+
+1. Уточнить `{Entity}` = `PrimitiveEntityInfo.Name`
+2. Discovery в MDM → SQL → деплой БД → верификация SQL → C#
+3. **Новые** имена: `v2.{Entity}_Snapshot`, `{Entity}Id`, папка `Modules/{Entity}/`; grid через `v2.GetBlazorGridData` + атрибуты DTO; sync — SnapshotSource + PopulateAffectedKeys + SyncJob
+4. **Legs/Rates** — legacy-исключения (`LegId`, `RateId`); не рефакторить без отдельной команды
+5. C# писать **только после** успешного деплоя и верификации SQL
+6. У `PrimitiveEntityData_*` — комментарии с именами справочников (Insert / PopulateAffectedKeys / SyncJob)
+7. Resx грида: после генерации из MDM — **пост-обработка коротких имён** по [grid-column-glossary.md](../skills/add-reference-book/grid-column-glossary.md) (skill `add-reference-book`, п.5)
+
+## Эталоны
+
+`Modules/TransportRate`, `Modules/AverageRateLevel3`, `Modules/TransportLeg`, `Modules/LocationsNodes` — паттерны grid/detail/SQL/Sync; именование — по skill; короткие колонки грида — по глоссарию.

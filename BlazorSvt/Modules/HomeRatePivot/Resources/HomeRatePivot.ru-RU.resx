@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="HomeRatePivotWidget.Title" xml:space="preserve">
+    <value>Средние ставки по направлениям</value>
+  </data>
+  <data name="HomeRatePivotWidget.ProductSubtitle" xml:space="preserve">
+    <value>Продукт: {0} · {1}–{2}</value>
+  </data>
+  <data name="HomeRatePivotWidget.ProductName" xml:space="preserve">
+    <value>полиолефины</value>
+  </data>
+  <data name="HomeRatePivotWidget.Loading" xml:space="preserve">
+    <value>Загрузка…</value>
+  </data>
+  <data name="HomeRatePivotWidget.LoadError" xml:space="preserve">
+    <value>Не удалось загрузить сводную таблицу ставок.</value>
+  </data>
+  <data name="HomeRatePivotWidget.Directions" xml:space="preserve">
+    <value>Направления</value>
+  </data>
+  <data name="HomeRatePivotWidget.TransportKind" xml:space="preserve">
+    <value>тип ТС</value>
+  </data>
+  <data name="HomeRatePivotWidget.TransportKindAuto" xml:space="preserve">
+    <value>авто</value>
+  </data>
+  <data name="HomeRatePivotWidget.AverageRate" xml:space="preserve">
+    <value>Средняя ставка</value>
+  </data>
+  <data name="HomeRatePivotWidget.Month" xml:space="preserve">
+    <value>Месяц</value>
+  </data>
+  <data name="Month.Jan" xml:space="preserve">
+    <value>янв</value>
+  </data>
+  <data name="Month.Feb" xml:space="preserve">
+    <value>фев</value>
+  </data>
+  <data name="Month.Mar" xml:space="preserve">
+    <value>мар</value>
+  </data>
+  <data name="Month.Apr" xml:space="preserve">
+    <value>апр</value>
+  </data>
+  <data name="Month.May" xml:space="preserve">
+    <value>май</value>
+  </data>
+  <data name="Month.Jun" xml:space="preserve">
+    <value>июн</value>
+  </data>
+  <data name="Month.Jul" xml:space="preserve">
+    <value>июл</value>
+  </data>
+  <data name="Month.Aug" xml:space="preserve">
+    <value>авг</value>
+  </data>
+  <data name="Month.Sep" xml:space="preserve">
+    <value>сен</value>
+  </data>
+  <data name="Month.Oct" xml:space="preserve">
+    <value>окт</value>
+  </data>
+  <data name="Month.Nov" xml:space="preserve">
+    <value>ноя</value>
+  </data>
+  <data name="Month.Dec" xml:space="preserve">
+    <value>дек</value>
+  </data>
+</root>

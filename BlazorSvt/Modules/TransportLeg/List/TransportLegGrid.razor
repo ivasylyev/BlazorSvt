@@ -1,0 +1,16 @@
+﻿@page "/transportleg"
+@using BlazorSvt.Modules.TransportLeg.Detail
+@inherits BaseGridPage<TransportLegDto, TransportLegDetailDto>
+
+<GenericGrid TItem="TransportLegDto"
+             TDetailItem="TransportLegDetailDto"
+             PageTitle="@EL["TransportLegGrid.Title"]"
+             AllowDetailView="true"
+             DataProvider="DataProvider"
+             DetailDataProvider="DetailDataProvider"
+             DetailKeySelector="DetailKeySelector">
+
+    <DetailViewTemplate Context="detail">
+    </DetailViewTemplate>
+
+</GenericGrid>

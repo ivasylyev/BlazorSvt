@@ -1,0 +1,12 @@
+@inherits SvtComponentBase
+
+<div class="d-flex align-items-center gap-3 flex-wrap">
+    <label class="btn sibur-dna-btn mb-0">
+        @L["ExcelLoader.Load"]
+        <InputFile OnChange="OnFileSelectedAsync"
+                   accept=".xlsx,.xlsm,.xls"
+                   class="d-none"
+                   MaxAllowedSize="10485760"
+                   disabled="@_isLoading" />
+    </label>
+</div>

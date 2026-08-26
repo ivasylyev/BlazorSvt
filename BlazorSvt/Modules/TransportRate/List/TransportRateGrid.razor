@@ -1,0 +1,16 @@
+﻿@page "/transportrate"
+@using BlazorSvt.Modules.TransportRate.Detail
+@inherits BaseGridPage<TransportRateDto, TransportRateDetailDto>
+
+<GenericGrid TItem="TransportRateDto"
+             TDetailItem="TransportRateDetailDto"
+             PageTitle="@EL["TransportRateGrid.Title"]"
+             AllowDetailView="true"
+             DataProvider="DataProvider"
+             DetailDataProvider="DetailDataProvider"
+             DetailKeySelector="DetailKeySelector">
+
+    <DetailViewTemplate Context="detail">
+    </DetailViewTemplate>
+
+</GenericGrid>

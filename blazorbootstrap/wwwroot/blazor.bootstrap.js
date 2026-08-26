@@ -398,14 +398,22 @@ window.blazorBootstrap = {
     },
     dropdown: {
         dispose: (elementId) => {
-            let dropdownEl = document.getElementById(elementId);
-            if (dropdownEl != null)
-                bootstrap?.Dropdown?.getOrCreateInstance(dropdownEl)?.dispose();
+            let targetEl = window.blazorBootstrap.dropdown.getToggleElement(elementId);
+            if (targetEl != null)
+                bootstrap?.Dropdown?.getInstance(targetEl)?.dispose();
         },
         hide: (elementId) => {
+            let targetEl = window.blazorBootstrap.dropdown.getToggleElement(elementId);
+            if (targetEl != null)
+                bootstrap?.Dropdown?.getOrCreateInstance(targetEl)?.hide();
+        },
+        getToggleElement: (elementId) => {
             let dropdownEl = document.getElementById(elementId);
-            if (dropdownEl != null)
-                bootstrap?.Dropdown?.getOrCreateInstance(dropdownEl)?.hide();
+            if (dropdownEl == null)
+                return null;
+            if (dropdownEl.matches('[data-bs-toggle="dropdown"]'))
+                return dropdownEl;
+            return dropdownEl.querySelector('[data-bs-toggle="dropdown"]') ?? dropdownEl;
         },
         initialize: (elementId, dotNetHelper) => {
             let dropdownEl = document.getElementById(elementId);
@@ -425,22 +433,25 @@ window.blazorBootstrap = {
                 dotNetHelper.invokeMethodAsync('bsShownDropdown');
             });
 
-            bootstrap?.Dropdown?.getOrCreateInstance(dropdownEl);
+            // Bootstrap expects the toggle; init here so data-api reuses this instance (incl. popper-config).
+            let targetEl = window.blazorBootstrap.dropdown.getToggleElement(elementId);
+            if (targetEl != null)
+                bootstrap?.Dropdown?.getOrCreateInstance(targetEl);
         },
         show: (elementId) => {
-            let dropdownEl = document.getElementById(elementId);
-            if (dropdownEl != null)
-                bootstrap?.Dropdown?.getOrCreateInstance(dropdownEl)?.show();
+            let targetEl = window.blazorBootstrap.dropdown.getToggleElement(elementId);
+            if (targetEl != null)
+                bootstrap?.Dropdown?.getOrCreateInstance(targetEl)?.show();
         },
         toggle: (elementId) => {
-            let dropdownEl = document.getElementById(elementId);
-            if (dropdownEl != null)
-                bootstrap?.Dropdown?.getOrCreateInstance(dropdownEl)?.toggle();
+            let targetEl = window.blazorBootstrap.dropdown.getToggleElement(elementId);
+            if (targetEl != null)
+                bootstrap?.Dropdown?.getOrCreateInstance(targetEl)?.toggle();
         },
         update: (elementId) => {
-            let dropdownEl = document.getElementById(elementId);
-            if (dropdownEl != null)
-                bootstrap?.Dropdown?.getOrCreateInstance(dropdownEl)?.update();
+            let targetEl = window.blazorBootstrap.dropdown.getToggleElement(elementId);
+            if (targetEl != null)
+                bootstrap?.Dropdown?.getOrCreateInstance(targetEl)?.update();
         }
     },
     googlemaps: {

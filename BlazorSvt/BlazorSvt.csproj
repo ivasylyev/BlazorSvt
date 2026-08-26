@@ -4,11 +4,16 @@
     <TargetFramework>net9.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
+    <RootNamespace>BlazorSvt</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="ch1seL.Blazored.LocalStorage.Concurrent" Version="0.0.4" />
+    <PackageReference Include="ClosedXML" Version="0.105.0" />
+    <PackageReference Include="LargeXlsx" Version="2.0.0" />
     <PackageReference Include="Dapper" Version="2.1.66" />
+    <PackageReference Include="FluentValidation" Version="12.1.1" />
+    <PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="12.1.1" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.4" />
     <PackageReference Include="Serilog.AspNetCore" Version="10.0.0" />
     <PackageReference Include="Serilog.Enrichers.CorrelationId" Version="3.0.1" />
@@ -22,13 +27,13 @@
   </ItemGroup>
 
   <ItemGroup>
-    <EmbeddedResource Update="Resources\Svt.resx">
+    <EmbeddedResource Update="Platform\Resources\Platform.resx">
       <Generator></Generator>
     </EmbeddedResource>
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Controllers\" />
+    <Folder Include="logs\" />
   </ItemGroup>
 
 </Project>

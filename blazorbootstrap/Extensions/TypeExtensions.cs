@@ -62,7 +62,8 @@ public static class TypeExtensions
         if (propertyTypeName.Contains(StringConstants.PropertyTypeNameBoolean, StringComparison.InvariantCulture))
             return StringConstants.PropertyTypeNameBoolean;
 
-        if (propertyType!.IsEnum)
+        var effectiveType = Nullable.GetUnderlyingType(propertyType) ?? propertyType;
+        if (effectiveType.IsEnum)
             return StringConstants.PropertyTypeNameEnum;
 
         if (propertyTypeName.Contains(StringConstants.PropertyTypeNameGuid, StringComparison.InvariantCulture))
@@ -82,7 +83,12 @@ public static class TypeExtensions
         if (type is null || string.IsNullOrWhiteSpace(propertyName))
             return null;
 
-        return type.GetProperty(propertyName)?.PropertyType;
+        var propertyType = type.GetProperty(propertyName)?.PropertyType;
+        if (propertyType is null)
+            return null;
+
+        var underlyingType = Nullable.GetUnderlyingType(propertyType);
+        return underlyingType?.IsEnum == true ? underlyingType : propertyType;
     }
 
     public static string? GetDisplayName(this Type type, string? name)

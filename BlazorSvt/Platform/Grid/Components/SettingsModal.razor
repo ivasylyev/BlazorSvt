@@ -1,0 +1,36 @@
+﻿@inherits SvtComponentBase
+<Modal @ref="modal" Title="@L["Settings.Title"]" Size="ModalSize.Large">
+    <BodyTemplate>
+        <div class="container-fluid">
+            <div class="row">
+                @if (ColumnSettings is null)
+                {
+                    <div class="col-12">
+                        <PlaceholderContainer Animation="PlaceholderAnimation.Glow">
+                            <Placeholder Width="PlaceholderWidth.Col12" />
+                        </PlaceholderContainer>
+                    </div>
+                }
+                else
+                {
+                    <div class="col-12">
+                        <div style="column-count: 2; column-gap: 20px;">
+                            @foreach (var settings in ColumnSettings)
+                            {
+                                <div class="sibur-switch-color" style="break-inside: avoid;">
+                                    <Switch Label="@settings.Header" @bind-Value="@settings.Visible"></Switch>
+                                </div>
+                            }
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </BodyTemplate>
+
+    <FooterTemplate>
+        <Button Class="sibur-dark-btn" @onclick="HandleOk">@L["Settings.Ok"]</Button>
+        <Button Class="sibur-warn-btn" @onclick="HandleReset">@L["Settings.Reset"]</Button>
+        <Button Class="sibur-dna-btn" @onclick="HandleCancel">@L["Settings.Cancel"]</Button>
+    </FooterTemplate>
+</Modal>

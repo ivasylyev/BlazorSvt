@@ -1,0 +1,389 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <resheader name="resmimetype"><value>text/microsoft-resx</value></resheader>
+  <resheader name="version"><value>2.0</value></resheader>
+  <resheader name="reader"><value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value></resheader>
+  <resheader name="writer"><value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value></resheader>
+  <data name="LocationsNodesDetailDto.4_level_City" xml:space="preserve">
+    <value>4_level_City</value>
+  </data>
+  <data name="LocationsNodesDetailDto.4_level_City_codeN" xml:space="preserve">
+    <value>4_level_City_codeN</value>
+  </data>
+<data name="LocationsNodesDetailDto.AddressCountryCodeDPO" xml:space="preserve">
+    <value>AddressCountryCodeDPO</value>
+  </data>
+  <data name="LocationsNodesDetailDto.AddressCountryISO2" xml:space="preserve">
+    <value>AddressCountryISO2</value>
+  </data>
+  <data name="LocationsNodesDetailDto.AddressCountryISO3" xml:space="preserve">
+    <value>AddressCountryISO3</value>
+  </data>
+  <data name="LocationsNodesDetailDto.AddressLanguage" xml:space="preserve">
+    <value>AddressLanguage</value>
+  </data>
+  <data name="LocationsNodesDetailDto.AddressNameCountryEN" xml:space="preserve">
+    <value>AddressNameCountryEN</value>
+  </data>
+  <data name="LocationsNodesDetailDto.AddressNameCountryRU" xml:space="preserve">
+    <value>AddressNameCountryRU</value>
+  </data>
+  <data name="LocationsNodesDetailDto.AddressRegionISO" xml:space="preserve">
+    <value>AddressRegionISO</value>
+  </data>
+<data name="LocationsNodesDetailDto.AutoNode" xml:space="preserve">
+    <value>Transport node</value>
+  </data>
+  <data name="LocationsNodesDetailDto.BorderCountryCodeDPO" xml:space="preserve">
+    <value>BorderCountryCodeDPO</value>
+  </data>
+  <data name="LocationsNodesDetailDto.BorderCountryISO2" xml:space="preserve">
+    <value>BorderCountryISO2</value>
+  </data>
+  <data name="LocationsNodesDetailDto.BorderCountryISO3" xml:space="preserve">
+    <value>BorderCountryISO3</value>
+  </data>
+  <data name="LocationsNodesDetailDto.BorderCrossing" xml:space="preserve">
+    <value>Border crossing</value>
+  </data>
+  <data name="LocationsNodesDetailDto.BorderNameCountryEN" xml:space="preserve">
+    <value>BorderNameCountryEN</value>
+  </data>
+  <data name="LocationsNodesDetailDto.BorderNameCountryRU" xml:space="preserve">
+    <value>BorderNameCountryRU</value>
+  </data>
+  <data name="LocationsNodesDetailDto.CannotDeliver" xml:space="preserve">
+    <value>IsArchive</value>
+  </data>
+  <data name="LocationsNodesDetailDto.City" xml:space="preserve">
+    <value>City/Town</value>
+  </data>
+  <data name="LocationsNodesDetailDto.Code" xml:space="preserve">
+    <value>Code</value>
+  </data>
+  <data name="LocationsNodesDetailDto.CodeZDroad" xml:space="preserve">
+    <value>CodeZDroad</value>
+  </data>
+  <data name="LocationsNodesDetailDto.Code_NSI" xml:space="preserve">
+    <value>Code_NSI</value>
+  </data>
+  <data name="LocationsNodesDetailDto.CoordinateL" xml:space="preserve">
+    <value>Geographic longitude</value>
+  </data>
+  <data name="LocationsNodesDetailDto.CoordinateW" xml:space="preserve">
+    <value>Geographic latitude</value>
+  </data>
+  <data name="LocationsNodesDetailDto.CountryCode" xml:space="preserve">
+    <value>Country code</value>
+  </data>
+  <data name="LocationsNodesDetailDto.CountryCodeDPO" xml:space="preserve">
+    <value>CountryCodeDPO</value>
+  </data>
+  <data name="LocationsNodesDetailDto.CountryEN" xml:space="preserve">
+    <value>Country (EN)</value>
+  </data>
+  <data name="LocationsNodesDetailDto.CountryISO2" xml:space="preserve">
+    <value>CountryISO2</value>
+  </data>
+  <data name="LocationsNodesDetailDto.CountryISO3" xml:space="preserve">
+    <value>CountryISO3</value>
+  </data>
+  <data name="LocationsNodesDetailDto.CountryName" xml:space="preserve">
+    <value>Country</value>
+  </data>
+  <data name="LocationsNodesDetailDto.CountryRU" xml:space="preserve">
+    <value>CountryRU</value>
+  </data>
+  <data name="LocationsNodesDetailDto.CreationDate" xml:space="preserve">
+    <value>Created (Creation date)</value>
+  </data>
+  <data name="LocationsNodesDetailDto.CustomID" xml:space="preserve">
+    <value>CustomID</value>
+  </data>
+  <data name="LocationsNodesDetailDto.FIASCity" xml:space="preserve">
+    <value>FIAS city code</value>
+  </data>
+  <data name="LocationsNodesDetailDto.FIASCodeAddress" xml:space="preserve">
+    <value>FIASCodeAddress</value>
+  </data>
+  <data name="LocationsNodesDetailDto.FIASCodeCity" xml:space="preserve">
+    <value>FIASCodeCity</value>
+  </data>
+  <data name="LocationsNodesDetailDto.FIASDistrict" xml:space="preserve">
+    <value>FIAS district code</value>
+  </data>
+  <data name="LocationsNodesDetailDto.FIASHouse" xml:space="preserve">
+    <value>FIASHouse</value>
+  </data>
+  <data name="LocationsNodesDetailDto.FIASOfficeApart" xml:space="preserve">
+    <value>FIASOfficeApart</value>
+  </data>
+  <data name="LocationsNodesDetailDto.FIASRegion" xml:space="preserve">
+    <value>FIAS region code</value>
+  </data>
+  <data name="LocationsNodesDetailDto.FIASStreet" xml:space="preserve">
+    <value>FIASStreet</value>
+  </data>
+  <data name="LocationsNodesDetailDto.FullAddress" xml:space="preserve">
+    <value>Full address</value>
+  </data>
+  <data name="LocationsNodesDetailDto.GeonameId" xml:space="preserve">
+    <value>GeonameId</value>
+  </data>
+  <data name="LocationsNodesDetailDto.Group.0.Default" xml:space="preserve">
+    <value>Default</value>
+  </data>
+  <data name="LocationsNodesDetailDto.House" xml:space="preserve">
+    <value>Building</value>
+  </data>
+  <data name="LocationsNodesDetailDto.IsArchive" xml:space="preserve">
+    <value>Archive</value>
+  </data>
+  <data name="LocationsNodesDetailDto.IsDadata" xml:space="preserve">
+    <value>IsDadata</value>
+  </data>
+  <data name="LocationsNodesDetailDto.IsFactory" xml:space="preserve">
+    <value>IsFactory</value>
+  </data>
+  <data name="LocationsNodesDetailDto.IsKladr" xml:space="preserve">
+    <value>IsKladr</value>
+  </data>
+  <data name="LocationsNodesDetailDto.IsPlan" xml:space="preserve">
+    <value>IsPlan</value>
+  </data>
+  <data name="LocationsNodesDetailDto.IsPlanning" xml:space="preserve">
+    <value>IsPlanning</value>
+  </data>
+  <data name="LocationsNodesDetailDto.IsPortShip" xml:space="preserve">
+    <value>IsPortShip</value>
+  </data>
+  <data name="LocationsNodesDetailDto.IsPortStore" xml:space="preserve">
+    <value>IsPortStore</value>
+  </data>
+  <data name="LocationsNodesDetailDto.IsStore" xml:space="preserve">
+    <value>IsStore</value>
+  </data>
+  <data name="LocationsNodesDetailDto.LastChangeDate" xml:space="preserve">
+    <value>Changed (Last change date)</value>
+  </data>
+  <data name="LocationsNodesDetailDto.Level4CityEN" xml:space="preserve">
+    <value>4_level_CityEN</value>
+  </data>
+  <data name="LocationsNodesDetailDto.Level4CityFias" xml:space="preserve">
+    <value>4_level_City_FIAS</value>
+  </data>
+  <data name="LocationsNodesDetailDto.Level4CityRU" xml:space="preserve">
+    <value>4_level_CityRU</value>
+  </data>
+  <data name="LocationsNodesDetailDto.LocationTypeCode" xml:space="preserve">
+    <value>Location type code</value>
+  </data>
+  <data name="LocationsNodesDetailDto.LocationTypeCodeNSI" xml:space="preserve">
+    <value>LocationTypeCodeNSI</value>
+  </data>
+  <data name="LocationsNodesDetailDto.LocationTypeName" xml:space="preserve">
+    <value>Loc. type (Location type)</value>
+  </data>
+  <data name="LocationsNodesDetailDto.MarketCode" xml:space="preserve">
+    <value>MarketCode</value>
+  </data>
+  <data name="LocationsNodesDetailDto.MarketCodeDPO" xml:space="preserve">
+    <value>MarketCodeDPO</value>
+  </data>
+  <data name="LocationsNodesDetailDto.MarketNameEN" xml:space="preserve">
+    <value>MarketNameEN</value>
+  </data>
+  <data name="LocationsNodesDetailDto.MarketNameRU" xml:space="preserve">
+    <value>MarketNameRU</value>
+  </data>
+  <data name="LocationsNodesDetailDto.NameCityDistrictRU" xml:space="preserve">
+    <value>NameCityDistrictRU</value>
+  </data>
+  <data name="LocationsNodesDetailDto.NameCityRU" xml:space="preserve">
+    <value>NameCityRU</value>
+  </data>
+  <data name="LocationsNodesDetailDto.NameCountryEN" xml:space="preserve">
+    <value>NameCountryEN</value>
+  </data>
+  <data name="LocationsNodesDetailDto.NameCustom" xml:space="preserve">
+    <value>NameCustom</value>
+  </data>
+  <data name="LocationsNodesDetailDto.NameDistrictRU" xml:space="preserve">
+    <value>NameDistrictRU</value>
+  </data>
+  <data name="LocationsNodesDetailDto.NameEn" xml:space="preserve">
+    <value>Name EN</value>
+  </data>
+  <data name="LocationsNodesDetailDto.NameFederalDistrictRU" xml:space="preserve">
+    <value>NameFederalDistrictRU</value>
+  </data>
+  <data name="LocationsNodesDetailDto.NameRu" xml:space="preserve">
+    <value>Name RU</value>
+  </data>
+  <data name="LocationsNodesDetailDto.NameStoreEN" xml:space="preserve">
+    <value>NameStoreEN</value>
+  </data>
+  <data name="LocationsNodesDetailDto.NameStoreRU" xml:space="preserve">
+    <value>NameStoreRU</value>
+  </data>
+  <data name="LocationsNodesDetailDto.NameStore_en" xml:space="preserve">
+    <value>NameStore_en</value>
+  </data>
+  <data name="LocationsNodesDetailDto.NameStore_ru" xml:space="preserve">
+    <value>NameStore_ru</value>
+  </data>
+  <data name="LocationsNodesDetailDto.NameZD" xml:space="preserve">
+    <value>Railway station</value>
+  </data>
+  <data name="LocationsNodesDetailDto.NameZDEN" xml:space="preserve">
+    <value>NameZDEN</value>
+  </data>
+  <data name="LocationsNodesDetailDto.NameZDroadEN" xml:space="preserve">
+    <value>NameZDroadEN</value>
+  </data>
+  <data name="LocationsNodesDetailDto.NameZDroadRU" xml:space="preserve">
+    <value>NameZDroadRU</value>
+  </data>
+<data name="LocationsNodesDetailDto.NodesCode" xml:space="preserve">
+    <value>Location/node code</value>
+  </data>
+  <data name="LocationsNodesDetailDto.OKTMOCode" xml:space="preserve">
+    <value>OKTMOCode</value>
+  </data>
+  <data name="LocationsNodesDetailDto.OfficeApart" xml:space="preserve">
+    <value>Office/Apartment</value>
+  </data>
+  <data name="LocationsNodesDetailDto.OpenStreetMap" xml:space="preserve">
+    <value>OpenStreetMap code</value>
+  </data>
+  <data name="LocationsNodesDetailDto.Pobox" xml:space="preserve">
+    <value>Pobox</value>
+  </data>
+  <data name="LocationsNodesDetailDto.PointTube" xml:space="preserve">
+    <value>Tie-in point</value>
+  </data>
+  <data name="LocationsNodesDetailDto.RegionCode" xml:space="preserve">
+    <value>Region code</value>
+  </data>
+  <data name="LocationsNodesDetailDto.RegionCodeDPO" xml:space="preserve">
+    <value>RegionCodeDPO</value>
+  </data>
+  <data name="LocationsNodesDetailDto.RegionCodeNSI" xml:space="preserve">
+    <value>RegionCodeNSI</value>
+  </data>
+  <data name="LocationsNodesDetailDto.RegionCodeRF" xml:space="preserve">
+    <value>RegionCodeRF</value>
+  </data>
+  <data name="LocationsNodesDetailDto.RegionCountryMarketType" xml:space="preserve">
+    <value>RegionCountryMarketType</value>
+  </data>
+  <data name="LocationsNodesDetailDto.RegionEN" xml:space="preserve">
+    <value>Region (EN)</value>
+  </data>
+  <data name="LocationsNodesDetailDto.RegionNSIEN" xml:space="preserve">
+    <value>RegionNSIEN</value>
+  </data>
+  <data name="LocationsNodesDetailDto.RegionName" xml:space="preserve">
+    <value>Region</value>
+  </data>
+  <data name="LocationsNodesDetailDto.RegionRU" xml:space="preserve">
+    <value>RegionRU</value>
+  </data>
+  <data name="LocationsNodesDetailDto.Seaport" xml:space="preserve">
+    <value>Port</value>
+  </data>
+  <data name="LocationsNodesDetailDto.ShipmentPoint" xml:space="preserve">
+    <value>Shipping point</value>
+  </data>
+  <data name="LocationsNodesDetailDto.ShipmentPointOEBSCode" xml:space="preserve">
+    <value>ShipmentPointOEBSCode</value>
+  </data>
+  <data name="LocationsNodesDetailDto.ShipmentPointSAPCode" xml:space="preserve">
+    <value>ShipmentPointSAPCode</value>
+  </data>
+  <data name="LocationsNodesDetailDto.ShipmentPoint_en" xml:space="preserve">
+    <value>ShipmentPoint_en</value>
+  </data>
+  <data name="LocationsNodesDetailDto.Status" xml:space="preserve">
+    <value>Record status</value>
+  </data>
+  <data name="LocationsNodesDetailDto.StatusNSI" xml:space="preserve">
+    <value>StatusNSI</value>
+  </data>
+  <data name="LocationsNodesDetailDto.StoreID" xml:space="preserve">
+    <value>StoreID</value>
+  </data>
+  <data name="LocationsNodesDetailDto.Street" xml:space="preserve">
+    <value>Street</value>
+  </data>
+  <data name="LocationsNodesDetailDto.Terminal" xml:space="preserve">
+    <value>Terminal</value>
+  </data>
+  <data name="LocationsNodesDetailDto.TransportArea" xml:space="preserve">
+    <value>Transport zone</value>
+  </data>
+  <data name="LocationsNodesDetailDto.TypeNodeCode" xml:space="preserve">
+    <value>Node type code</value>
+  </data>
+  <data name="LocationsNodesDetailDto.TypeNodeCodeNSI" xml:space="preserve">
+    <value>TypeNodeCodeNSI</value>
+  </data>
+  <data name="LocationsNodesDetailDto.TypeNodeName" xml:space="preserve">
+    <value>Node type (TypeNode)</value>
+  </data>
+  <data name="LocationsNodesDetailDto.Virtual" xml:space="preserve">
+    <value>Virtual</value>
+  </data>
+<data name="LocationsNodesDetailDto.ZDCode" xml:space="preserve">
+    <value>Railway station code</value>
+  </data>
+  <data name="LocationsNodesDetailDto.ZDCodeN" xml:space="preserve">
+    <value>ZDCodeN</value>
+  </data>
+
+<data name="LocationsNodesDto.Code" xml:space="preserve">
+    <value>Code</value>
+  </data>
+  <data name="LocationsNodesDto.CountryCode" xml:space="preserve">
+    <value>Country code</value>
+  </data>
+  <data name="LocationsNodesDto.CountryName" xml:space="preserve">
+    <value>Country</value>
+  </data>
+  <data name="LocationsNodesDto.CreationDate" xml:space="preserve">
+    <value>Created</value>
+  </data>
+  <data name="LocationsNodesDto.IsArchive" xml:space="preserve">
+    <value>Archive</value>
+  </data>
+  <data name="LocationsNodesDto.LastChangeDate" xml:space="preserve">
+    <value>Changed</value>
+  </data>
+  <data name="LocationsNodesDto.LocationTypeCode" xml:space="preserve">
+    <value>Location type code</value>
+  </data>
+  <data name="LocationsNodesDto.LocationTypeName" xml:space="preserve">
+    <value>Loc. type</value>
+  </data>
+  <data name="LocationsNodesDto.Name" xml:space="preserve">
+    <value>Name</value>
+  </data>
+<data name="LocationsNodesDto.RegionCode" xml:space="preserve">
+    <value>Region code</value>
+  </data>
+  <data name="LocationsNodesDto.RegionName" xml:space="preserve">
+    <value>Region</value>
+  </data>
+  <data name="LocationsNodesDto.RegionRU" xml:space="preserve">
+    <value>RegionRU</value>
+  </data>
+  <data name="LocationsNodesDto.TypeNodeCode" xml:space="preserve">
+    <value>Node type code</value>
+  </data>
+  <data name="LocationsNodesDto.TypeNodeName" xml:space="preserve">
+    <value>Node type</value>
+  </data>
+<data name="LocationsNodesGrid.Title" xml:space="preserve">
+    <value>Locations-Nodes</value>
+  </data>
+</root>

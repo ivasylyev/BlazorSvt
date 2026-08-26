@@ -45,6 +45,12 @@ public partial class Grid<TItem> : BlazorBootstrapComponentBase
 
     private int resetCounter = 0;
 
+    /// <summary>
+    /// Filters last sent to the data provider. Used to skip redundant refreshes when UI filter text
+    /// changes but the effective query filters remain the same.
+    /// </summary>
+    private List<FilterItem> lastAppliedFilters = new();
+
     #endregion
 
     #region Methods
@@ -115,10 +121,21 @@ public partial class Grid<TItem> : BlazorBootstrapComponentBase
     }
 
     /// <summary>
-    /// Get filters.
+    /// Get filters applied to data queries.
+    /// Pending short text (below <see cref="MinTextFilterLength"/>) and pending date/datetime
+    /// filters (outside SQL DATETIME range or unparseable) are excluded.
     /// </summary>
     /// <returns>IEnumerable</returns>
     public IEnumerable<FilterItem>? GetFilters()
+    {
+        var columnFilters = GetColumnFilters();
+        if (columnFilters is null)
+            return null;
+
+        return columnFilters.Where(filter => !IsPendingFilter(filter));
+    }
+
+    private IEnumerable<FilterItem>? GetColumnFilters()
     {
         if (!AllowFiltering || columns == null || !columns.Any())
             return null;
@@ -127,6 +144,47 @@ public partial class Grid<TItem> : BlazorBootstrapComponentBase
             .Where(column => column.Filterable && column.GetFilterOperator() != FilterOperator.None && !string.IsNullOrWhiteSpace(column.GetFilterValue()));
 
         return filterableColumns.Select(column => new FilterItem(column.PropertyName, column.GetFilterValue(), column.GetFilterOperator(), column.StringComparison));
+    }
+
+    private bool IsPendingFilter(FilterItem filter)
+    {
+        var column = columns.FirstOrDefault(c => c.PropertyName == filter.PropertyName);
+        if (column is null)
+            return false;
+
+        var propertyTypeName = column.GetPropertyTypeName();
+        return GridFilterUtility.IsPendingShortTextFilter(propertyTypeName, filter.Value, MinTextFilterLength)
+               || GridFilterUtility.IsPendingDateFilter(propertyTypeName, filter.Value);
+    }
+
+    private bool HasSameEffectiveFiltersAsLastQuery()
+    {
+        var current = GetFilters()?.ToList() ?? new List<FilterItem>();
+
+        if (current.Count != lastAppliedFilters.Count)
+            return false;
+
+        return OrderFilters(current).SequenceEqual(OrderFilters(lastAppliedFilters));
+    }
+
+    private static IEnumerable<FilterItem> OrderFilters(IEnumerable<FilterItem> filters) =>
+        filters.OrderBy(f => f.PropertyName).ThenBy(f => f.Value).ThenBy(f => f.Operator);
+
+    private void UpdateLastAppliedFilters(IEnumerable<FilterItem>? appliedFilters) =>
+        lastAppliedFilters = appliedFilters?.ToList() ?? new List<FilterItem>();
+
+    /// <summary>
+    /// Creates a data provider request that reflects the grid's current filters and sorting.
+    /// </summary>
+    public GridDataProviderRequest<TItem> CreateDataProviderRequest(int? pageNumber = null, int? pageSizeOverride = null)
+    {
+        return new GridDataProviderRequest<TItem>
+        {
+            PageNumber = pageNumber ?? (AllowPaging ? gridCurrentState.PageIndex : 0),
+            PageSize = pageSizeOverride ?? (AllowPaging ? pageSize : 0),
+            Sorting = AllowSorting ? gridCurrentState.Sorting ?? GetDefaultSorting()! : null!,
+            Filters = AllowFiltering ? GetFilters()! : null!,
+        };
     }
 
     public void ClearFilters()
@@ -220,10 +278,20 @@ public partial class Grid<TItem> : BlazorBootstrapComponentBase
         cancellationTokenSource = new CancellationTokenSource();
 
         var token = cancellationTokenSource.Token;
-        await Task.Delay(300, token); // 300ms timeout for the debouncing
 
-        await SaveGridSettingsAsync();
-        await RefreshDataAsync(false, token);
+        try
+        {
+            await Task.Delay(300, token); // 300ms timeout for the debouncing
+
+            await SaveGridSettingsAsync();
+
+            if (!HasSameEffectiveFiltersAsLastQuery())
+                await RefreshDataAsync(false, token);
+        }
+        catch (OperationCanceledException)
+        {
+            // Superseded by a newer filter change.
+        }
     }
 
     internal async Task RefreshDataAsync(bool firstRender = false, CancellationToken cancellationToken = default)
@@ -231,53 +299,64 @@ public partial class Grid<TItem> : BlazorBootstrapComponentBase
         if (requestInProgress)
             return;
 
-        requestInProgress = true;
-
-        // TODO: validate the below two lines - `Save and Load Grid Settings` functionality impacted
-        //await InvokeAsync(StateHasChanged); // trigger the state changed to show the loading
-        //await Task.Delay(300);
-
-        if (firstRender)
-            await LoadGridSettingsAsync();
-
-        var request = new GridDataProviderRequest<TItem>
+        try
         {
-            PageNumber = AllowPaging ? gridCurrentState.PageIndex : 0,
-            PageSize = AllowPaging ? pageSize : 0,
-            Sorting = AllowSorting ? gridCurrentState.Sorting ?? GetDefaultSorting()! : null!,
-            Filters = AllowFiltering ? GetFilters()! : null!,
-            CancellationToken = cancellationToken
-        };
+            requestInProgress = true;
 
-        GridDataProviderResult<TItem> result = default!;
+            // TODO: validate the below two lines - `Save and Load Grid Settings` functionality impacted
+            //await InvokeAsync(StateHasChanged); // trigger the state changed to show the loading
+            //await Task.Delay(300);
 
-        if (DataProvider is not null)
-            result = await DataProvider.Invoke(request);
-        else if (Data is not null)
-            result = request.ApplyTo(Data);
+            if (firstRender)
+                await LoadGridSettingsAsync();
 
-        if (result is not null)
-        {
-            items = result.Data!.ToList();
-            totalCount = result.TotalCount ?? result.Data!.Count();
-            if (result.PageNumber.HasValue)
+            var request = new GridDataProviderRequest<TItem>
             {
-                gridCurrentState = new GridState<TItem>(result.PageNumber.Value, gridCurrentState.Sorting);
+                PageNumber = AllowPaging ? gridCurrentState.PageIndex : 0,
+                PageSize = AllowPaging ? pageSize : 0,
+                Sorting = AllowSorting ? gridCurrentState.Sorting ?? GetDefaultSorting()! : null!,
+                Filters = AllowFiltering ? GetFilters()! : null!,
+                CancellationToken = cancellationToken
+            };
+
+            GridDataProviderResult<TItem> result = default!;
+
+            if (DataProvider is not null)
+                result = await DataProvider.Invoke(request);
+            else if (Data is not null)
+                result = request.ApplyTo(Data);
+
+            if (result is not null)
+            {
+                items = result.Data!.ToList();
+                totalCount = result.TotalCount ?? result.Data!.Count();
+                if (result.PageNumber.HasValue)
+                {
+                    gridCurrentState = new GridState<TItem>(result.PageNumber.Value, gridCurrentState.Sorting);
+                }
+            }
+            else
+            {
+                items = new List<TItem>();
+                totalCount = 0;
+            }
+
+            UpdateLastAppliedFilters(request.Filters);
+
+            if (AllowSelection)
+            {
+                PrepareCheckboxIds();
+                await RefreshSelectionAsync();
             }
         }
-        else
+        catch (OperationCanceledException) when (cancellationToken.IsCancellationRequested)
         {
-            items = new List<TItem>();
-            totalCount = 0;
+            return;
         }
-
-        if (AllowSelection)
+        finally
         {
-            PrepareCheckboxIds();
-            await RefreshSelectionAsync();
+            requestInProgress = false;
         }
-
-        requestInProgress = false;
 
         await InvokeAsync(StateHasChanged);
     }
@@ -592,7 +671,7 @@ public partial class Grid<TItem> : BlazorBootstrapComponentBase
         if (!GridSettingsChanged.HasDelegate)
             return Task.CompletedTask;
 
-        var settings = new GridSettings { PageNumber = AllowPaging ? gridCurrentState.PageIndex : 0, PageSize = AllowPaging ? pageSize : 0, Filters = AllowFiltering ? GetFilters() : null };
+        var settings = new GridSettings { PageNumber = AllowPaging ? gridCurrentState.PageIndex : 0, PageSize = AllowPaging ? pageSize : 0, Filters = AllowFiltering ? GetColumnFilters() : null };
 
         return GridSettingsChanged.InvokeAsync(settings);
     }
@@ -651,6 +730,14 @@ public partial class Grid<TItem> : BlazorBootstrapComponentBase
         }
     }
 
+    private HashSet<string> expandedRows = new();
+    private void ToggleDetail(string id)
+    {
+        if (!expandedRows.Add(id))
+            expandedRows.Remove(id);
+        StateHasChanged();
+    }
+
     #endregion
 
     #region Properties, Indexers
@@ -689,6 +776,18 @@ public partial class Grid<TItem> : BlazorBootstrapComponentBase
     /// </remarks>
     [Parameter]
     public bool AllowFiltering { get; set; }
+
+    /// <summary>
+    /// Minimum length of a text filter value before it is sent to the data provider.
+    /// Values with 1 to (MinTextFilterLength - 1) characters defer refresh on filter change
+    /// and are treated as empty during pagination, sorting, and other data refreshes.
+    /// Set to 0 to disable.
+    /// </summary>
+    /// <remarks>
+    /// Default value is 3.
+    /// </remarks>
+    [Parameter]
+    public int MinTextFilterLength { get; set; } = 3;
 
     /// <summary>
     /// Gets or sets the grid paging.
