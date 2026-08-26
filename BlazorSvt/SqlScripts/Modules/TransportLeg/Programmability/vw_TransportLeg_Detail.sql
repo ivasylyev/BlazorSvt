@@ -7,6 +7,8 @@ Purpose:
   Strangler Fig: может присоединять legacy dbo.vw_* / ped.a_* — богаче, чем v2.*_Snapshot.
   Grid list → snapshot; detail/export → этот view ([DetailSource] на detail-DTO).
 
+  ShipmentTypeCodeT — сырой legacy-атрибут (коды через '/'); JOIN на vw_ShipmentType нет.
+
 Example:
 
 use mdm
@@ -35,8 +37,7 @@ AS
         CASE WHEN ISNULL(l.PrimitiveEntityDataStateId, 2) = 2 THEN 1 ELSE 0 END AS IsArchive,
         ISNULL(l.LegIsActive, 0)        AS CanBeUsed,
 
-        CAST(st.Id AS INT)              AS ShipmentTypeIdRu,  
-        CAST(st.Id AS INT)              AS ShipmentTypeIdEn,  
+        NULLIF(LTRIM(RTRIM(l.ShipmentTypeCodeT)), N'') AS ShipmentTypeCodeT,
 
         CAST(l.TransportKind AS INT)    AS TransportKindIdRu,     
         CAST(l.TransportKind AS INT)    AS TransportKindIdEn,     
@@ -92,7 +93,6 @@ AS
 
     FROM vw_TransportLeg l (NOLOCK)
     JOIN vw_TransportKind tk (NOLOCK) ON l.TransportKind = tk.Id
-    JOIN vw_ShipmentType st (NOLOCK) ON l.ShipmentTypeCodeT = st.Code
 
     JOIN vw_LocationsNodes nf (NOLOCK) ON l.NodeFrom = nf.Id
     JOIN vw_Region rf (NOLOCK) ON rf.Id = nf.Region

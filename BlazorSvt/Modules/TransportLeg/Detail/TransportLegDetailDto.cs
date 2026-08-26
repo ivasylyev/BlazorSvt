@@ -1,5 +1,4 @@
-﻿using BlazorSvt.Modules.TransportLeg.List.IdsEnum;
-using BlazorSvt.Platform.Domain.IdsEnum;
+﻿using BlazorSvt.Platform.Domain.IdsEnum;
 
 namespace BlazorSvt.Modules.TransportLeg.Detail;
 
@@ -13,8 +12,10 @@ public class TransportLegDetailDto
     public bool IsArchive { get; set; }
     public bool CanBeUsed { get; set; }
 
-    public required ShipmentTypeRu ShipmentTypeIdRu { get; set; }
-    public required ShipmentTypeEn ShipmentTypeIdEn { get; set; }
+    /// <summary>
+    /// Коды типа отправки (legacy ShipmentTypeCodeT): один или несколько через '/'.
+    /// </summary>
+    public string? ShipmentTypeCodeT { get; set; }
 
     public required string TransportKindCode { get; set; }
     public required TransportKindRu TransportKindIdRu { get; set; }

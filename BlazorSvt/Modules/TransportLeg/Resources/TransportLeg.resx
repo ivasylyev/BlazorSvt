@@ -181,7 +181,7 @@
 
 
 
-<data name="TransportLegDto.ShipmentTypeName" xml:space="preserve">
+<data name="TransportLegDto.ShipmentTypeCodeT" xml:space="preserve">
 	  <value>Shipment</value>
   </data>
   <data name="TransportLegDto.SearchTime" xml:space="preserve">
@@ -265,8 +265,8 @@
 
 
 
-<data name="TransportLegDetailDto.ShipmentTypeName" xml:space="preserve">
-	  <value>Shipment (Shipment Type Name)</value>
+<data name="TransportLegDetailDto.ShipmentTypeCodeT" xml:space="preserve">
+	  <value>Shipment type code</value>
   </data>
 	<data name="TransportLegDetailDto.SearchTime" xml:space="preserve">
 	  <value>Search (Search Time, days)</value>

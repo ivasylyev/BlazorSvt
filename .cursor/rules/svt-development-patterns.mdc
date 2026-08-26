@@ -89,7 +89,6 @@ Serilog (`Host/Program.cs`, секция `Serilog` в `appsettings.json`). Пр�
 | TypePlace (LocationType) | `dbo.PrimitiveEntityData_1007` | LocationsNodes |
 | TypeNode | `dbo.PrimitiveEntityData_2132` | LocationsNodes |
 | TransportKind | `dbo.PrimitiveEntityData_2008` | TransportLeg, TransportRate, AverageRateLevel3 |
-| ShipmentType | `dbo.PrimitiveEntityData_2142` | TransportLeg |
 | RateType | `dbo.PrimitiveEntityData_2048` | TransportRate, AverageRateLevel3 |
 | TransportType | `dbo.PrimitiveEntityData_2023` | TransportRate, AverageRateLevel3 |
 | Currency | `dbo.PrimitiveEntityData_2016` | TransportRate, AverageRateLevel3 |

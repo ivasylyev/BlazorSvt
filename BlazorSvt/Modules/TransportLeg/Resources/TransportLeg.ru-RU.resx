@@ -180,8 +180,8 @@
 
 
 
-<data name="TransportLegDto.ShipmentTypeName" xml:space="preserve">
-    <value>Тип отправки</value>
+<data name="TransportLegDto.ShipmentTypeCodeT" xml:space="preserve">
+    <value>Отправка</value>
   </data>
   <data name="TransportLegDto.SearchTime" xml:space="preserve">
     <value>Поиск</value>
@@ -261,8 +261,8 @@
 
 
 
-<data name="TransportLegDetailDto.ShipmentTypeName" xml:space="preserve">
-    <value>Тип отправки</value>
+<data name="TransportLegDetailDto.ShipmentTypeCodeT" xml:space="preserve">
+    <value>Код типа отправки</value>
   </data>
   <data name="TransportLegDetailDto.SearchTime" xml:space="preserve">
     <value>Поиск (Поиск, сут.)</value>

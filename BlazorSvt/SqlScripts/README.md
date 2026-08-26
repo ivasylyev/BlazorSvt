@@ -153,9 +153,10 @@ SQL-логика вынесена в процедуры. Все обращени
 скрытые FK-колонки snapshot (`*_Id`) — курсор ведётся по каждой таблице-источнику.
 
 **Стабильные справочники** (не отслеживаются, без `RowVer` и без каскада):
-`1007` TypePlace, `2132` TypeNode, `2008` TransportKind, `2142` ShipmentType,
+`1007` TypePlace, `2132` TypeNode, `2008` TransportKind,
 `2048` RateType, `2023` TransportType, `2016` Currency. Колонки `*_Id` в snapshot
 остаются, если нужны grid-DTO. Полный список — `.cursor/rules/svt-development-patterns.mdc`.
+У TransportLeg тип отправки — сырой `ShipmentTypeCodeT` (не FK/enum на `2142`).
 
 **Удаления.** Ловятся не инкрементом, а `reconciliation` (anti-join snapshot ↔
 проекция), который воркер запускает раз в сутки. Допустимо, что физически

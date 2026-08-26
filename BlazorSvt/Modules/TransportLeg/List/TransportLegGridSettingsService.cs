@@ -1,5 +1,4 @@
 ﻿using Blazored.LocalStorage;
-using BlazorSvt.Modules.TransportLeg.List.IdsEnum;
 using BlazorSvt.Platform.Domain.IdsEnum;
 using Microsoft.Extensions.Localization;
 
@@ -22,7 +21,7 @@ public class TransportLegGridSettingsService(
 
         b.Add(x => x.Code, L["TransportLegDto.Code"]);
         b.AddYesNo(x => x.CanBeUsed, L["TransportLegDto.CanBeUsed"]);
-        b.AddEnum(isRu, x => x.ShipmentTypeIdRu, x => x.ShipmentTypeIdEn, L["TransportLegDto.ShipmentTypeName"]);
+        b.Add(x => x.ShipmentTypeCodeT, L["TransportLegDto.ShipmentTypeCodeT"]);
         b.Add(x => x.TransportKindCode, L["TransportLegDto.TransportKindCode"], visible: false);
         b.AddEnum(isRu, x => x.TransportKindIdRu, x => x.TransportKindIdEn, L["TransportLegDto.TransportKindName"]);
         b.Add(x => x.NodeFromCode, L["TransportLegDto.NodeFromCode"], visible: false);

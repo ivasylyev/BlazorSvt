@@ -1,6 +1,4 @@
-﻿
-using BlazorSvt.Modules.TransportLeg.List.IdsEnum;
-using BlazorSvt.Platform.Domain.IdsEnum;
+﻿using BlazorSvt.Platform.Domain.IdsEnum;
 
 namespace BlazorSvt.Modules.TransportLeg.List;
 
@@ -22,11 +20,11 @@ public class TransportLegDto
     [GridColumn]
     public bool CanBeUsed { get; set; }
 
-    [GridColumn(SqlColumn = "ShipmentTypeId")]
-    public required ShipmentTypeRu ShipmentTypeIdRu { get; set; }
-
-    [GridColumn(SqlColumn = "ShipmentTypeId")]
-    public required ShipmentTypeEn ShipmentTypeIdEn { get; set; }
+    /// <summary>
+    /// Коды типа отправки (legacy ShipmentTypeCodeT): один или несколько через '/'.
+    /// </summary>
+    [GridColumn]
+    public string? ShipmentTypeCodeT { get; set; }
 
     [GridColumn(SqlColumn = "TransportKindId")]
     public required TransportKindRu TransportKindIdRu { get; set; }

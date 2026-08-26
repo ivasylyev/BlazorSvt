@@ -103,7 +103,7 @@
 | Стоимость за тонну | `TotalCostTon` | За тонну | — | Per ton | — |
 | Стоимость за ТС | `TotalCostTransport` | За ТС | — | Per vehicle | — |
 | Действует | `CanBeUsed` | Действует | — | Active | — |
-| Тип отправки | `ShipmentTypeName` | Тип отправки | — | Shipment | — |
+| Код типа отправки | `ShipmentTypeCodeT` | Отправка | — | Shipment | — |
 | Время поиска | `SearchTime` | Поиск | — | Search | — |
 | Время погрузки | `LoadTime` | Зарузка | — | Load | — |
 | Дни ожидания | `DaysWaiting` | Ожидание | — | Waiting | — |

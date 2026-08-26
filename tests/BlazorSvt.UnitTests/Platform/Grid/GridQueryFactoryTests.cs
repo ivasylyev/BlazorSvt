@@ -1,7 +1,7 @@
 using BlazorBootstrap;
 using BlazorSvt.Modules.TransportLeg.List;
-using BlazorSvt.Modules.TransportLeg.List.IdsEnum;
 using BlazorSvt.Modules.TransportRate.List;
+using BlazorSvt.Platform.Domain.IdsEnum;
 using BlazorSvt.Platform.Grid.Models;
 using BlazorSvt.Platform.Grid.Services;
 using FluentAssertions;
@@ -71,14 +71,14 @@ public class GridQueryFactoryTests
     {
         var request = CreateRequest(filters:
         [
-            new FilterItem(nameof(TransportLegDto.ShipmentTypeIdRu), nameof(ShipmentTypeRu.TVD), FilterOperator.Equals, StringComparison.Ordinal)
+            new FilterItem(nameof(TransportLegDto.TransportKindIdRu), nameof(TransportKindRu.Rail), FilterOperator.Equals, StringComparison.Ordinal)
         ]);
 
         var query = _factory.Create(request);
 
         query.Filters.Should().Contain(f =>
-            f.PropertyName == nameof(TransportLegDto.ShipmentTypeIdRu)
-            && f.Value == ((int)ShipmentTypeRu.TVD).ToString()
+            f.PropertyName == nameof(TransportLegDto.TransportKindIdRu)
+            && f.Value == ((int)TransportKindRu.Rail).ToString()
             && f.Operator == GridFilterOperators.EqualsOperator);
     }
 

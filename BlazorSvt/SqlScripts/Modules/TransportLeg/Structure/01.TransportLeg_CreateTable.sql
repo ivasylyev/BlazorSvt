@@ -90,7 +90,9 @@ CREATE TABLE v2.TransportLeg_Snapshot (
     IsArchive           BIT NOT NULL,
     CanBeUsed           BIT NOT NULL, -- активное плечо (то есть используется) или нет. Не то же самое что IsArchive!
 
-    ShipmentTypeId      INT NOT NULL,
+    -- Суффикс T в legacy: один или несколько кодов vw_ShipmentType через '/'.
+    -- NULL допустим при ошибках данных; в норме не пустой.
+    ShipmentTypeCodeT   NVARCHAR(30) NULL,
 
     TransportKindId     INT NOT NULL,
     TransportKindCode   NVARCHAR(5) NOT NULL,

@@ -38,6 +38,7 @@ CREATE FULLTEXT INDEX ON v2.TransportLeg_Snapshot
 ( 
     Code               LANGUAGE 1033,      -- English,
     TransportKindCode  LANGUAGE 1033,      -- English,
+    ShipmentTypeCodeT  LANGUAGE 1033,      -- English (коды через '/'; word breaker),
     NodeFromCode       LANGUAGE 1033,      -- English,
     NodeFromNameEn     LANGUAGE 1033,      -- English,
     NodeFromNameRu     LANGUAGE 1049,      -- Russian,
@@ -113,28 +114,7 @@ WHERE IsArchive = 1;
 GO
 
 
--- индекс на Тип отгрузки 
-
-DROP INDEX IF EXISTS [ix_TransportLegSnapshot_Active_ShipmentTypeId] ON [v2].[TransportLegSnapshot];
-DROP INDEX IF EXISTS [ix_TransportLeg_Snapshot_Active_ShipmentTypeId] ON [v2].[TransportLeg_Snapshot];
-GO
-CREATE NONCLUSTERED INDEX [ix_TransportLeg_Snapshot_Active_ShipmentTypeId] ON [v2].TransportLeg_Snapshot
-(
-	ShipmentTypeId
-)
-WHERE IsArchive = 0;
-GO
-
-DROP INDEX IF EXISTS [ix_TransportLegSnapshot_Archive_ShipmentTypeId] ON [v2].[TransportLegSnapshot];
-DROP INDEX IF EXISTS [ix_TransportLeg_Snapshot_Archive_ShipmentTypeId] ON [v2].[TransportLeg_Snapshot];
-GO
-CREATE NONCLUSTERED INDEX [ix_TransportLeg_Snapshot_Archive_ShipmentTypeId] ON [v2].TransportLeg_Snapshot
-(
-	ShipmentTypeId
-)
-WHERE IsArchive = 1;
-GO
-
+-- ShipmentTypeCodeT: без B-tree — поиск через FTS (значения вида TVD/PVG).
 
 -- Индекс на бизнес-ключ для синхронизации: upsert (MERGE ON TransportLegId),
 -- pre-delete смены партиции и reconciliation ищут строки по ключу без скана таблицы.

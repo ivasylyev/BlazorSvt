@@ -19,7 +19,7 @@ INSERT INTO v2.TransportLeg_Snapshot (
     ,IsArchive
     ,CanBeUsed
 
-    ,ShipmentTypeId
+    ,ShipmentTypeCodeT
 
     ,TransportKindId
     ,TransportKindCode
@@ -69,7 +69,7 @@ SELECT
     ,IsArchive
     ,CanBeUsed
 
-    ,ShipmentTypeId
+    ,ShipmentTypeCodeT
 
     ,TransportKindId
     ,TransportKindCode

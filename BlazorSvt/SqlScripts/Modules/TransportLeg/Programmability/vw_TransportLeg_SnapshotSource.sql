@@ -16,6 +16,9 @@ GO
     Дополнительно к grid-колонкам проекция отдаёт скрытые FK-колонки
     (*_Id) — они нужны только синхронизации для каскадной инвалидации
     (изменение Region/Node -> затронутые плечи). В грид не отдаются.
+
+    ShipmentTypeCodeT — сырой legacy-атрибут (один или несколько кодов
+    vw_ShipmentType через '/'). JOIN на vw_ShipmentType невозможен: связь 1-много.
 */
 
 CREATE OR ALTER VIEW v2.vw_TransportLeg_SnapshotSource
@@ -27,7 +30,7 @@ AS
         CASE WHEN ISNULL(l.PrimitiveEntityDataStateId, 2) = 2 THEN 1 ELSE 0 END AS IsArchive,
         ISNULL(l.LegIsActive, 0)        AS CanBeUsed,
 
-        CAST(st.Id AS INT)              AS ShipmentTypeId,
+        LEFT(NULLIF(LTRIM(RTRIM(l.ShipmentTypeCodeT)), N''), 30) AS ShipmentTypeCodeT,
 
         CAST(l.TransportKind AS INT)    AS TransportKindId,
         LEFT(tk.Code, 5)                AS TransportKindCode,
@@ -50,15 +53,15 @@ AS
         LEFT(np.Name_en, 30)            AS ProxyNodeNameEn,
         LEFT(np.Name_ru, 30)            AS ProxyNodeNameRu,
         LEFT(rp.Code, 10)               AS ProxyRegionCode,
-        LEFT(rp.Name_en, 30)            AS ProxyRegionNameEn,
-        LEFT(rp.Name_ru, 30)            AS ProxyRegionNameRu,
+        LEFT(rp.Name_en, 60)            AS ProxyRegionNameEn,
+        LEFT(rp.Name_ru, 60)            AS ProxyRegionNameRu,
 
         LEFT(nt.Code, 10)               AS NodeToCode,
         LEFT(nt.Name_en, 30)            AS NodeToNameEn,
         LEFT(nt.Name_ru, 30)            AS NodeToNameRu,
         LEFT(rt.Code, 10)               AS RegionToCode,
-        LEFT(rt.Name_en, 30)            AS RegionToNameEn,
-        LEFT(rt.Name_ru, 30)            AS RegionToNameRu,
+        LEFT(rt.Name_en, 60)            AS RegionToNameEn,
+        LEFT(rt.Name_ru, 60)            AS RegionToNameRu,
 
         l.CreationDate                  AS CreationDate,
         ISNULL(l.LastChangeDate, l.CreationDate) AS LastChangeDate,
@@ -73,7 +76,6 @@ AS
 
     FROM vw_TransportLeg l (NOLOCK)
     JOIN vw_TransportKind tk (NOLOCK) ON l.TransportKind = tk.Id
-    JOIN vw_ShipmentType st (NOLOCK) ON l.ShipmentTypeCodeT = st.Code
 
     JOIN vw_LocationsNodes nf (NOLOCK) ON l.NodeFrom = nf.Id
     JOIN vw_Region rf (NOLOCK) ON rf.Id = nf.Region

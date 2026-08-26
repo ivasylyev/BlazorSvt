@@ -15,7 +15,8 @@ GO
       dbo.PrimitiveEntityData_1008 — Region  (каскад через RegionFrom/To/Proxy).
       dbo.PrimitiveEntityData_1014 — LocationsNodes (каскад через NodeFrom/To/Proxy).
 
-    TransportKind (2008) и ShipmentType (2142) стабильны — не отслеживаются.
+    TransportKind (2008) стабилен — не отслеживается.
+    ShipmentTypeCodeT — сырой multi-code атрибут без FK; каскад по нему не нужен.
 
     Каскад — UNION эквиджойнов по одной FK-колонке snapshot: позволяет
     использовать NC-индексы по этим колонкам вместо OR-скана.

@@ -69,9 +69,9 @@ public class GridColumnMetadataBuilderTests
         var json = GridColumnMetadataBuilder.BuildAllowedColumnsJson(typeof(TransportLegDto));
         var columns = JArray.Parse(json);
 
-        var shipmentType = columns.Single(c => c["ColumnName"]!.Value<string>() == nameof(TransportLegDto.ShipmentTypeIdRu));
-        shipmentType["SqlColumnName"]!.Value<string>().Should().Be("ShipmentTypeId");
-        shipmentType["ColumnType"]!.Value<string>().Should().Be("ID");
+        var transportKind = columns.Single(c => c["ColumnName"]!.Value<string>() == nameof(TransportLegDto.TransportKindIdRu));
+        transportKind["SqlColumnName"]!.Value<string>().Should().Be("TransportKindId");
+        transportKind["ColumnType"]!.Value<string>().Should().Be("ID");
     }
 
     [Fact]

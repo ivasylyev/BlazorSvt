@@ -1,5 +1,4 @@
-﻿using BlazorSvt.Modules.TransportLeg.List.IdsEnum;
-using BlazorSvt.Platform.Domain.IdsEnum;
+﻿using BlazorSvt.Platform.Domain.IdsEnum;
 using Microsoft.Extensions.Localization;
 
 namespace BlazorSvt.Modules.TransportLeg.Detail;
@@ -42,7 +41,7 @@ public class TransportLegDetailSettingsService(
         b.AddLocalized(isRu, g2, x => x.RegionToNameRu, x => x.RegionToNameEn, L["TransportLegDetailDto.RegionToName"]);
 
         b.AddEnum(isRu, g3, x => x.TransportKindIdRu, x => x.TransportKindIdEn, L["TransportLegDetailDto.TransportKindName"]);
-        b.AddEnum(isRu, g4, x => x.ShipmentTypeIdRu, x => x.ShipmentTypeIdEn, L["TransportLegDetailDto.ShipmentTypeName"]);
+        b.Add(g4, x => x.ShipmentTypeCodeT, L["TransportLegDetailDto.ShipmentTypeCodeT"]);
 
         b.Add(g4, x => x.SearchTimeT, L["TransportLegDetailDto.SearchTime"], hasMargin: true);
         b.Add(g4, x => x.LoadTimeT, L["TransportLegDetailDto.LoadTime"]);

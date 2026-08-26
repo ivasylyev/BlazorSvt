@@ -271,7 +271,9 @@ WHERE DRu.[Value] = (
 
 **Признак ссылки:** FK-колонка в legacy table/view **или** целочисленный тип (`int`/`bigint`) и имя совпадает с другой сущностью / есть в [таблице алиасов](#таблица-алиасов-сущностей).
 
-**JOIN:** приоритет по **Id**; если нет — по **Code** (как `ShipmentTypeCodeT` → `vw_ShipmentType.Code`).
+**JOIN:** приоритет по **Id**; если нет — по **Code** (например legacy-атрибут хранит `Code` связанной сущности → `vw_{Ref}.Code`).
+
+**Не JOIN:** multi-code строковые атрибуты с суффиксом `T` (несколько кодов через `/`, напр. `ShipmentTypeCodeT` у TransportLeg) — класть в snapshot как сырое `NVARCHAR`, без резолва в Id/enum.
 
 **Эвристика без явного FK:**
 
@@ -319,7 +321,7 @@ WHERE DRu.[Value] = (
 **Исключения:**
 
 - `vw_Currency` — один enum `Currency` в `Platform/Domain/IdsEnum/` с `[Display(Name = "RUB"|"EUR"|…)]` (коды валют); **без** разделения на Ru/En.
-- `vw_ShipmentType` — имена полей **всегда** из `Code` (`TVD`, `PVG`, …), даже если общие правила иначе.
+- `vw_ShipmentType` — если когда-либо понадобится enum: имена полей **всегда** из `Code` (`TVD`, `PVG`, …). У TransportLeg enum **не** используется: в snapshot/grid лежит сырой `ShipmentTypeCodeT` (1–много кодов через `/`).
 
 **Общие короткие словари** (`RateType`, `TransportTypeLevel3`, `TransportKind`, `Currency`, …) — сразу в
 `Platform/Domain/IdsEnum/`. Если enum уже лежит в другом модуле — **перенести в Platform** и поправить
