@@ -1,29 +1,47 @@
 #Requires -Version 5.1
 <#
 .SYNOPSIS
-    Publishes all deploy SQL scripts to a flat folder with ordered 3-digit prefixes.
+    Publishes SQL deploy artifacts from Migrations/ and/or SoT sources.
 
 .DESCRIPTION
-    Copies Structure + Programmability scripts in README order to C:\publish\v2.
-    Clears existing *.sql in the target folder before copy.
+    Modes:
+      All             - copy every Migrations/{version}/ into TargetPath\{version}\
+      Release         - copy one Migrations/{Version}/ (requires -Version)
+      Programmability - flatten latest CREATE OR ALTER scripts from SoT into TargetPath\programmability\
+      FromSource      - legacy: flatten Structure+Programmability from SoT (greenfield snapshot)
+
     Does not modify source scripts in the repository.
 
 .EXAMPLE
-    .\Publish-AllSql.ps1
+    .\Publish-AllSql.ps1 -Mode All
 
 .EXAMPLE
-    .\Publish-AllSql.ps1 -TargetPath D:\deploy\v2
+    .\Publish-AllSql.ps1 -Mode Release -Version 2.0.1
+
+.EXAMPLE
+    .\Publish-AllSql.ps1 -Mode Programmability
+
+.EXAMPLE
+    .\Publish-AllSql.ps1 -Mode FromSource -TargetPath D:\deploy\v2-from-source
 #>
 [CmdletBinding()]
 param(
+    [ValidateSet('All', 'Release', 'Programmability', 'FromSource')]
+    [string]$Mode = 'All',
+
+    [string]$Version,
+
     [string]$TargetPath = 'C:\publish\v2'
 )
 
 Set-StrictMode -Version Latest
 $ErrorActionPreference = 'Stop'
 
-# Order matches BlazorSvt/SqlScripts/README.md
-$scriptManifest = @(
+$scriptRoot = $PSScriptRoot
+$migrationsRoot = Join-Path $scriptRoot 'Migrations'
+
+# Order matches BlazorSvt/SqlScripts/README.md (FromSource + Programmability)
+$fullManifest = @(
   'Platform\Structure\00.Create_Schema.sql'
   'Platform\Structure\01.Create_Fulltext_Catalog.sql'
   'Platform\Structure\02.Create_SyncState.sql'
@@ -69,34 +87,129 @@ $scriptManifest = @(
   'Modules\LocationsNodes\Programmability\sp_LocationsNodes_PopulateAffectedKeys.sql'
 )
 
-$scriptRoot = $PSScriptRoot
-
-if (-not (Test-Path -LiteralPath $TargetPath)) {
-    New-Item -ItemType Directory -Path $TargetPath -Force | Out-Null
-    Write-Host "Created: $TargetPath" -ForegroundColor Yellow
+$programmabilityManifest = $fullManifest | Where-Object {
+    $_ -match '\\Programmability\\'
 }
 
-Get-ChildItem -LiteralPath $TargetPath -Filter '*.sql' -File -ErrorAction SilentlyContinue |
-    Remove-Item -Force
+function Ensure-Directory {
+    param([string]$Path)
+    if (-not (Test-Path -LiteralPath $Path)) {
+        New-Item -ItemType Directory -Path $Path -Force | Out-Null
+        Write-Host "Created: $Path" -ForegroundColor Yellow
+    }
+}
 
-$copied = 0
-for ($i = 0; $i -lt $scriptManifest.Count; $i++) {
-    $relativePath = $scriptManifest[$i]
-    $sourcePath = Join-Path $scriptRoot $relativePath
+function Clear-SqlFiles {
+    param([string]$Path)
+    if (Test-Path -LiteralPath $Path) {
+        Get-ChildItem -LiteralPath $Path -Filter '*.sql' -File -ErrorAction SilentlyContinue |
+            Remove-Item -Force
+    }
+}
 
-    if (-not (Test-Path -LiteralPath $sourcePath)) {
-        throw "Source script not found: $sourcePath"
+function Get-MigrationVersions {
+    if (-not (Test-Path -LiteralPath $migrationsRoot)) {
+        throw "Migrations folder not found: $migrationsRoot"
     }
 
-    $prefix = '{0:D3}' -f ($i + 1)
-    $originalName = Split-Path -Leaf $sourcePath
-    $targetName = "$prefix.$originalName"
-    $targetFile = Join-Path $TargetPath $targetName
+    Get-ChildItem -LiteralPath $migrationsRoot -Directory |
+        Where-Object { $_.Name -match '^\d+\.\d+\.\d+$' } |
+        Sort-Object {
+            $parts = $_.Name.Split('.')
+            [int]$parts[0] * 1000000 + [int]$parts[1] * 1000 + [int]$parts[2]
+        }
+}
 
-    Copy-Item -LiteralPath $sourcePath -Destination $targetFile -Force
-    Write-Host "==> $targetName" -ForegroundColor Cyan
-    $copied++
+function Copy-MigrationFolder {
+    param(
+        [Parameter(Mandatory)][string]$VersionName,
+        [Parameter(Mandatory)][string]$DestinationDir
+    )
+
+    $sourceDir = Join-Path $migrationsRoot $VersionName
+    if (-not (Test-Path -LiteralPath $sourceDir)) {
+        throw "Migration version not found: $sourceDir"
+    }
+
+    Ensure-Directory -Path $DestinationDir
+    Clear-SqlFiles -Path $DestinationDir
+
+    $files = Get-ChildItem -LiteralPath $sourceDir -Filter '*.sql' -File |
+        Sort-Object Name
+
+    if ($files.Count -eq 0) {
+        throw "No *.sql files in $sourceDir"
+    }
+
+    $copied = 0
+    foreach ($file in $files) {
+        Copy-Item -LiteralPath $file.FullName -Destination (Join-Path $DestinationDir $file.Name) -Force
+        Write-Host "==> $VersionName/$($file.Name)" -ForegroundColor Cyan
+        $copied++
+    }
+    return $copied
+}
+
+function Publish-FromManifest {
+    param(
+        [Parameter(Mandatory)][string[]]$Manifest,
+        [Parameter(Mandatory)][string]$DestinationDir
+    )
+
+    Ensure-Directory -Path $DestinationDir
+    Clear-SqlFiles -Path $DestinationDir
+
+    $copied = 0
+    for ($i = 0; $i -lt $Manifest.Count; $i++) {
+        $relativePath = $Manifest[$i]
+        $sourcePath = Join-Path $scriptRoot $relativePath
+
+        if (-not (Test-Path -LiteralPath $sourcePath)) {
+            throw "Source script not found: $sourcePath"
+        }
+
+        $prefix = '{0:D3}' -f ($i + 1)
+        $originalName = Split-Path -Leaf $sourcePath
+        $targetName = "$prefix.$originalName"
+        Copy-Item -LiteralPath $sourcePath -Destination (Join-Path $DestinationDir $targetName) -Force
+        Write-Host "==> $targetName" -ForegroundColor Cyan
+        $copied++
+    }
+    return $copied
+}
+
+$total = 0
+
+switch ($Mode) {
+    'All' {
+        Ensure-Directory -Path $TargetPath
+        $versions = Get-MigrationVersions
+        if ($versions.Count -eq 0) {
+            throw "No version folders (x.y.z) under $migrationsRoot"
+        }
+        foreach ($dir in $versions) {
+            $dest = Join-Path $TargetPath $dir.Name
+            $total += Copy-MigrationFolder -VersionName $dir.Name -DestinationDir $dest
+        }
+    }
+    'Release' {
+        if ([string]::IsNullOrWhiteSpace($Version)) {
+            throw "Mode Release requires -Version (e.g. -Version 2.0.1)"
+        }
+        $dest = Join-Path $TargetPath $Version
+        $total = Copy-MigrationFolder -VersionName $Version -DestinationDir $dest
+    }
+    'Programmability' {
+        $dest = Join-Path $TargetPath 'programmability'
+        $total = Publish-FromManifest -Manifest $programmabilityManifest -DestinationDir $dest
+    }
+    'FromSource' {
+        $total = Publish-FromManifest -Manifest $fullManifest -DestinationDir $TargetPath
+    }
 }
 
 Write-Host ''
-Write-Host "Done. Published scripts: $copied -> $TargetPath" -ForegroundColor Green
+Write-Host "Done. Mode=$Mode. Published scripts: $total -> $TargetPath" -ForegroundColor Green
+if ($Mode -eq 'All' -or $Mode -eq 'Release') {
+    Write-Host "Hint: after schema migrations, publish programmability with -Mode Programmability" -ForegroundColor DarkGray
+}

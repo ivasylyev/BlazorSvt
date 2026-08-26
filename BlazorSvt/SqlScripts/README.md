@@ -7,7 +7,7 @@
 ```
 SqlScripts/
 ├── Platform/
-│   ├── Structure/          # Схема v2, full-text catalog, v2.SyncState
+│   ├── Structure/          # Схема v2, full-text catalog, v2.SyncState (SoT разработки)
 │   └── Programmability/    # Универсальный grid engine
 ├── Sync/                   # Синхронизация legacy → snapshot (rowversion на legacy)
 ├── Modules/
@@ -26,6 +26,10 @@ SqlScripts/
 │   └── LocationsNodes/
 │       ├── Structure/
 │       └── Programmability/
+├── Migrations/             # Релизные артефакты наката (immutable после выката)
+│   ├── 2.0.0/              # baseline
+│   ├── 2.0.1/              # upgrade
+│   └── README.md           # конвенция релизов / два контура
 └── Translations_info.txt   # Справочник переводов полей (не для деплоя)
 ```
 
@@ -232,12 +236,22 @@ END
 
 ## Публикация SQL для деплоя
 
+Релизные скрипты наката хранятся в `Migrations/` (см. `Migrations/README.md`). SoT разработки — `Platform/` / `Modules/` / `Sync/`.
+
 ```powershell
-.\BlazorSvt\SqlScripts\Publish-AllSql.ps1
+# Все версии → C:\publish\v2\{2.0.0,2.0.1,…}
+.\BlazorSvt\SqlScripts\Publish-AllSql.ps1 -Mode All
+
+# Один релиз
+.\BlazorSvt\SqlScripts\Publish-AllSql.ps1 -Mode Release -Version 2.0.1
+
+# Актуальный Programmability из SoT → C:\publish\v2\programmability\
+.\BlazorSvt\SqlScripts\Publish-AllSql.ps1 -Mode Programmability
+
+# Legacy: плоский greenfield-снимок из SoT (не история релизов)
+.\BlazorSvt\SqlScripts\Publish-AllSql.ps1 -Mode FromSource
 ```
 
-Копирует все deploy-скрипты (Structure + Programmability) в плоскую папку `C:\publish\v2` с трёхзначными префиксами (`001.`, `002.`, …) в порядке из раздела «Порядок выполнения» выше. Сценарий — полный re-deploy v2; накат вручную, скрипт за скриптом.
+Накат на стенд: папки миграций по порядку версий → затем Programmability. Новый справочник: Structure-дельта в `Migrations/X.Y.Z/` + обновить SoT и манифест `FromSource`/`Programmability` в `Publish-AllSql.ps1` + таблицы порядка выше.
 
 В Cursor: `/publish_all_sql`.
-
-При добавлении справочника обновить манифест в `Publish-AllSql.ps1` и таблицы порядка в этом README.
