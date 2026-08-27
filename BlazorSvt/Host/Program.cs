@@ -59,6 +59,33 @@ if (!string.IsNullOrEmpty(pathBase) && pathBase != "/")
     app.UsePathBase(pathBase);
 }
 
+// Edge/Chrome запрещают unload по умолчанию; blazor.web.js всё ещё регистрирует обработчик.
+app.Use(async (context, next) =>
+{
+    context.Response.OnStarting(() =>
+    {
+        const string headerName = "Permissions-Policy";
+        const string unloadDirective = "unload=(self)";
+        var headers = context.Response.Headers;
+        if (headers.TryGetValue(headerName, out var existing) && existing.Count > 0)
+        {
+            var current = existing.ToString();
+            if (!current.Contains("unload=", StringComparison.OrdinalIgnoreCase))
+            {
+                headers[headerName] = $"{current}, {unloadDirective}";
+            }
+        }
+        else
+        {
+            headers[headerName] = unloadDirective;
+        }
+
+        return Task.CompletedTask;
+    });
+
+    await next();
+});
+
 app.UseRequestLocalization(localizationOptions);
 app.MapControllers();
 
