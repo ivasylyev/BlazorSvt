@@ -12,6 +12,7 @@ using BlazorSvt.Platform;
 using BlazorSvt.Platform.Infrastructure.Data;
 using BlazorSvt.Platform.Sync;
 using Dapper;
+using Microsoft.AspNetCore.Server.IIS;
 using Serilog;
 
 SqlMapper.AddTypeHandler(new SqlDateOnlyTypeHandler());
@@ -24,6 +25,7 @@ Log.Logger = new LoggerConfiguration()
 
 builder.Host.UseSerilog();
 builder.Services.AddHttpContextAccessor();
+builder.Services.AddAuthentication(IISServerDefaults.AuthenticationScheme);
 
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
@@ -87,7 +89,6 @@ app.Use(async (context, next) =>
 });
 
 app.UseRequestLocalization(localizationOptions);
-app.MapControllers();
 
 if (!app.Environment.IsDevelopment())
 {
@@ -96,12 +97,15 @@ if (!app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+app.UseAuthentication();
+app.UseAuthorization();
 app.UseAntiforgery();
 app.Use(MiddlewareDecorator.MiddlewareShortCorrelationId);
 app.UseSerilogRequestLogging(options =>
 {
     options.GetLevel = SerilogRequestLogLevel.GetLevel;
 });
+app.MapControllers();
 app.MapStaticAssets();
 app.MapRazorComponents<App>()
     .AddInteractiveServerRenderMode();

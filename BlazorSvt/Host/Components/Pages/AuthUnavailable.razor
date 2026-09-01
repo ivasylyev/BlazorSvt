@@ -1,0 +1,13 @@
+@page "/auth-unavailable"
+@layout BlazorSvt.Host.Components.Layout.BareLayout
+@inject ICurrentUser CurrentUser
+
+<PageTitle>Unable to verify access / Не удалось проверить доступ</PageTitle>
+
+<div class="sibur-card card mx-auto" style="max-width: 40rem;">
+    <div class="card-body">
+        <p class="mb-1 text-muted">@CurrentUser.Login</p>
+        <p class="mb-3">Не удалось проверить доступ. Попробуйте позже.</p>
+        <p class="mb-0">Unable to verify access. Please try again later.</p>
+    </div>
+</div>

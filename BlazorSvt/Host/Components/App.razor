@@ -14,11 +14,11 @@
     <link rel="stylesheet" href="@Assets["BlazorSvt.styles.css"]" />
     <ImportMap />
     <link rel="icon" type="image/png" href="favicon.png" />
-    <HeadOutlet @rendermode="InteractiveServer" />
+    <HeadOutlet @rendermode="new InteractiveServerRenderMode(prerender: false)" />
 </head>
 
 <body>
-    <Routes @rendermode="InteractiveServer" />
+    <Routes @rendermode="new InteractiveServerRenderMode(prerender: false)" />
     <script src="_framework/blazor.web.js"></script>
     <script src="@Assets["lib/bootstrap/js/bootstrap.bundle.min.js"]"></script>
     <script src="@Assets["lib/chartjs/chart.umd.js"]"></script>

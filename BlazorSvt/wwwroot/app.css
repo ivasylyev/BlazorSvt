@@ -1,4 +1,4 @@
-
+ï»¿
 h1:focus {
     outline: none;
 }
@@ -21,15 +21,15 @@ h1:focus {
 .sibur-header-wrapper {
     /*background-color: #008c95;*/
     background-color: rgba(0, 140, 149, 0.2) !important;
-    /* ˜˜˜˜˜˜˜˜˜˜˜˜ ˜˜˜˜˜˜˜˜˜˜˜˜ px-4 (1.5rem) */
+    /* ĞšĞ¾Ğ¼Ğ¿ĞµĞ½ÑĞ°Ñ†Ğ¸Ñ Ğ³Ğ¾Ñ€Ğ¸Ğ·Ğ¾Ğ½Ñ‚Ğ°Ğ»ÑŒĞ½Ñ‹Ñ… Ğ¾Ñ‚ÑÑ‚ÑƒĞ¿Ğ¾Ğ² ĞºĞ¾Ğ½Ñ‚ĞµĞ¹Ğ½ĞµÑ€Ğ° px-4 (1.5rem) */
     margin-left: -1.5rem;
     margin-right: -1.5rem;
     padding-left: 1.5rem;
     padding-right: 1.5rem;
-    /* ˜˜˜˜˜˜˜˜˜˜˜ ˜˜ ˜˜˜ ˜˜˜˜˜˜ ˜ ˜˜˜˜˜˜ ˜˜˜˜˜˜˜˜ */
+    /* Ğ Ğ°ÑÑ‚ÑĞ½ÑƒÑ‚ÑŒ Ğ½Ğ° Ğ²ÑÑ ÑˆĞ¸Ñ€Ğ¸Ğ½Ñƒ Ñ ÑƒÑ‡Ñ‘Ñ‚Ğ¾Ğ¼ Ğ¾Ñ‚ÑÑ‚ÑƒĞ¿Ğ¾Ğ² */
     width: calc(100% + 3rem);
     height: 100%;
-    /* ˜˜˜˜˜˜˜˜˜˜ ˜˜˜˜˜˜˜˜˜˜ */
+    /* Ğ’ĞµÑ€Ñ‚Ğ¸ĞºĞ°Ğ»ÑŒĞ½Ğ¾Ğµ Ğ²Ñ‹Ñ€Ğ°Ğ²Ğ½Ğ¸Ğ²Ğ°Ğ½Ğ¸Ğµ */
     display: flex;
     align-items: center;
 }
@@ -88,22 +88,28 @@ h1:focus {
     font-weight: bold !important;
 }
 
+.sibur-header-user {
+    color: #00606a;
+    font-weight: bold;
+    cursor: default;
+}
+
 /* Switch  */
-/* ˜˜˜˜ ˜˜˜˜ ˜˜˜˜˜˜˜˜˜˜˜ ˜˜˜˜˜ */
+/* Ğ¦Ğ²ĞµÑ‚ Ñ„Ğ¾Ğ½Ğ° Ğ²ĞºĞ»ÑÑ‡Ñ‘Ğ½Ğ½Ğ¾Ğ³Ğ¾ Ñ‚ÑƒĞ¼Ğ±Ğ»ĞµÑ€Ğ° */
 .sibur-switch-color .form-check-input:checked {
     background-color: #008c95;
     border-color: #008c95;
 }
 
-/* ˜˜˜˜ "˜˜˜˜˜˜˜˜" (˜˜˜˜˜˜) */
+/* Ğ¤Ğ¾ĞºÑƒÑ Â«Ğ²ĞºĞ»ÑÑ‡ĞµĞ½Ğ¾Â» (Ñ‚ÑƒĞ¼Ğ±Ğ»ĞµÑ€) */
 .sibur-switch-color .form-check-input:checked:focus {
-        /* ˜˜˜˜˜˜˜˜˜ ˜˜˜˜˜˜˜˜ ˜˜˜˜˜˜ ˜˜ ˜˜˜˜˜, ˜˜˜˜ ˜˜˜˜˜˜˜ box-shadow */
+        /* ĞšĞ¾Ğ»ÑŒÑ†Ğ¾ Ñ„Ğ¾ĞºÑƒÑĞ° ĞºĞ½Ğ¾Ğ¿ĞºĞ¸ Ğ¸Ğ· Ñ‚ĞµĞ¼Ñ‹ Ñ‡ĞµÑ€ĞµĞ· box-shadow */
         box-shadow: 0 0 0 0.25rem rgba(0, 140, 149, 0.25);
     }
 
-/* ˜˜˜˜ "˜˜˜˜˜˜˜˜" ˜˜˜ ˜˜˜˜˜˜˜˜˜ */
+/* Ğ¥Ğ¾Ğ²ĞµÑ€ Ğ´Ğ»Ñ Ğ²ĞºĞ»ÑÑ‡Ñ‘Ğ½Ğ½Ğ¾Ğ³Ğ¾ Ñ‚ÑƒĞ¼Ğ±Ğ»ĞµÑ€Ğ° */
 .sibur-switch-color .form-check-input:checked:hover {
-        background-color: #007a82; /* ˜˜˜˜ ˜˜˜˜˜˜ ˜˜˜ ˜˜˜˜˜˜˜ ˜˜˜˜˜˜˜˜˜ */
+        background-color: #007a82; /* Ğ¦Ğ²ĞµÑ‚ Ñ‚ĞµĞ¼Ğ½ĞµĞµ Ğ´Ğ»Ñ ÑÑ„Ñ„ĞµĞºÑ‚Ğ° Ğ½Ğ°Ğ²ĞµĞ´ĞµĞ½Ğ¸Ñ */
     }
 
 
@@ -114,15 +120,15 @@ h1:focus {
     min-height: 450px;
 }
 
-/* ˜˜˜˜˜˜˜ ˜˜˜˜˜˜˜˜ ˜ ˜˜˜˜˜˜˜˜˜˜˜˜˜˜˜ ˜˜˜˜˜ ˜˜ ˜˜˜˜˜ ˜˜˜˜˜˜˜˜ - ˜˜˜ ˜˜˜˜˜˜ ˜˜˜˜˜˜˜˜˜˜˜ ˜˜˜  */
+/* Ğ£Ğ±Ñ€Ğ°Ñ‚ÑŒ Ğ¼ĞµÑ€Ñ†Ğ°Ğ½Ğ¸Ğµ Ğ¿Ğ»ĞµĞ¹ÑÑ…Ğ¾Ğ»Ğ´ĞµÑ€Ğ¾Ğ² ÑÑ‚Ñ€Ğ¾Ğº Ğ½Ğ° Ğ²Ñ€ĞµĞ¼Ñ Ğ·Ğ°Ğ³Ñ€ÑƒĞ·ĞºĞ¸ */
 .sibur-grid .placeholder-glow .placeholder {
     animation: none !important;
     background-color: transparent !important;
 }
 
-/* ˜˜˜˜˜˜˜˜˜ ˜˜˜˜˜ ˜˜˜˜˜˜˜ ˜˜ ˜˜˜˜˜˜˜˜˜ ˜˜˜˜˜˜  */
+/* Ğ’Ñ‹Ğ½ĞµÑÑ‚Ğ¸ Ğ¿Ğ°Ğ½ĞµĞ»ÑŒ Ñ„Ğ¸Ğ»ÑŒÑ‚Ñ€Ğ° Ğ½Ğ° Ğ¾Ñ‚Ğ´ĞµĞ»ÑŒĞ½ÑƒÑ ÑÑ‚Ñ€Ğ¾ĞºÑƒ */
 .sibur-grid  .bb-grid-filter {
-    /*display: none !important;*/ /*˜˜˜˜ ˜˜˜˜ ˜˜˜˜˜˜ ˜˜˜˜˜ ˜˜˜˜˜˜˜*/
+    /*display: none !important;*/ /* Ğ•ÑĞ»Ğ¸ Ğ½ÑƒĞ¶Ğ½Ğ¾ ÑĞºÑ€Ñ‹Ñ‚ÑŒ Ğ¿Ğ°Ğ½ĞµĞ»ÑŒ Ñ„Ğ¸Ğ»ÑŒÑ‚Ñ€Ğ° */
     flex-basis: 100% !important;
     width: max-content !important;
 }
@@ -151,46 +157,46 @@ h1:focus {
 }
 
 
-/* ˜˜˜˜˜˜˜˜ ˜˜˜˜˜˜ (˜˜˜˜˜˜˜˜˜ ˜˜˜˜˜˜˜˜˜)  */
+/* ĞĞµÑ‡Ñ‘Ñ‚Ğ½Ñ‹Ğµ ÑÑ‚Ñ€Ğ¾ĞºĞ¸ (Ñ‡ĞµÑ€ĞµĞ´Ğ¾Ğ²Ğ°Ğ½Ğ¸Ğµ Ğ·Ğ°Ğ»Ğ¸Ğ²ĞºĞ¸) */
 .sibur-grid .table-striped > tbody > tr:nth-of-type(odd) td {
     background-color: rgba(0, 240, 255, 0.03) !important;
     /* background-color: #ffffff !important; */
 }
 
-/* ˜˜˜˜˜˜ ˜˜˜˜˜˜  */
+/* Ğ§Ñ‘Ñ‚Ğ½Ñ‹Ğµ ÑÑ‚Ñ€Ğ¾ĞºĞ¸ */
 .sibur-grid .table-striped > tbody > tr:nth-of-type(even) td {
     background-color: rgba(0, 240, 255, 0.03) !important;
     /* background-color: #ffffff !important; */
 }
 
-/* ˜˜˜˜˜ ˜˜˜˜˜˜ ˜˜˜ ˜˜˜˜˜˜˜˜˜  */
+/* Ğ¥Ğ¾Ğ²ĞµÑ€ ÑÑ‚Ñ€Ğ¾ĞºĞ¸ Ğ¿Ñ€Ğ¸ Ğ½Ğ°Ğ²ĞµĞ´ĞµĞ½Ğ¸Ğ¸ */
 .sibur-grid .table-hover > tbody > tr:hover td {
     background-color: rgba(0, 240, 255, 0.06) !important;
 }
 
-/* ˜˜˜˜ ˜˜˜˜˜˜˜ ˜˜˜˜˜˜˜ ˜˜˜˜˜˜˜ */
+/* Ğ¦Ğ²ĞµÑ‚ ÑÑÑ‹Ğ»Ğ¾Ğº Ğ½Ğ¾Ğ¼ĞµÑ€Ğ¾Ğ² ÑÑ‚Ñ€Ğ°Ğ½Ğ¸Ñ† */
 .sibur-grid .pagination .page-link {
     color: #008c95;
 }
 
-/* ˜˜˜˜ ˜˜˜˜˜˜˜˜ (˜˜˜˜˜˜˜) ˜˜˜˜˜˜˜˜ */
+/* Ğ¦Ğ²ĞµÑ‚ Ğ°ĞºÑ‚Ğ¸Ğ²Ğ½Ğ¾Ğ³Ğ¾ (Ñ‚ĞµĞºÑƒÑ‰ĞµĞ³Ğ¾) ÑĞ»ĞµĞ¼ĞµĞ½Ñ‚Ğ° */
 .sibur-grid .pagination .page-item.active .page-link {
     background-color: #008c95;
     border-color: #008c95;
     color: white;
 }
 
-/* ˜˜˜˜ ˜˜˜ ˜˜˜˜˜˜˜˜˜ ˜˜˜˜˜˜˜ */
+/* Ğ¦Ğ²ĞµÑ‚ Ğ¿Ñ€Ğ¸ Ğ½Ğ°Ğ²ĞµĞ´ĞµĞ½Ğ¸Ğ¸ Ğ½Ğ° Ğ½Ğ¾Ğ¼ĞµÑ€ ÑÑ‚Ñ€Ğ°Ğ½Ğ¸Ñ†Ñ‹ */
 .sibur-grid .pagination .page-link:hover {
-    color: #00606a; /* ˜˜˜˜ ˜˜˜˜˜˜ ˜˜˜ ˜˜˜˜˜˜˜ ˜˜˜˜˜˜˜˜˜ */
+    color: #00606a; /* Ğ¦Ğ²ĞµÑ‚ Ñ‚ĞµĞ¼Ğ½ĞµĞµ Ğ´Ğ»Ñ ÑÑ„Ñ„ĞµĞºÑ‚Ğ° Ğ½Ğ°Ğ²ĞµĞ´ĞµĞ½Ğ¸Ñ */
 }
 
-/* ˜˜˜˜ ˜˜˜ disabled-˜˜˜˜˜˜ ("Previous"/"Next") */
+/* Ğ¦Ğ²ĞµÑ‚ Ğ´Ğ»Ñ disabled-ĞºĞ½Ğ¾Ğ¿Ğ¾Ğº ("Previous"/"Next") */
 .sibur-grid .pagination .page-item.disabled .page-link {
     color: #6c757d; 
 }
 
-/* ˜˜˜˜˜˜˜˜˜˜˜ ˜˜˜˜˜˜˜˜˜˜ ˜˜˜˜˜˜ ˜˜˜˜˜˜˜ ˜˜˜˜˜ */
+/* ĞĞºĞºĞ¾Ñ€Ğ´ĞµĞ¾Ğ½ Ñ€Ğ°ÑĞºÑ€Ñ‹Ñ‚Ğ¸Ñ ÑÑ‚Ñ€Ğ¾ĞºĞ¸ Ğ´ĞµÑ‚Ğ°Ğ»ĞµĞ¹ Ğ³Ñ€Ğ¸Ğ´Ğ° */
 
 .sibur-grid .accordion-button {
     background-color: #EAF2F2 !important;
@@ -217,7 +223,7 @@ h1:focus {
 }
 
 
-/* ˜˜˜˜˜˜˜˜˜˜˜ ˜˜˜˜˜˜˜ ˜˜˜˜˜˜ ˜˜˜˜˜ */
+/* Ğ”Ğ²ÑƒÑ…ĞºĞ¾Ğ»Ğ¾Ğ½Ğ¾Ñ‡Ğ½Ğ°Ñ Ñ€Ğ°Ğ·Ğ¼ĞµÑ‚ĞºĞ° Ğ¿Ğ°Ğ½ĞµĞ»Ğ¸ Ğ´ĞµÑ‚Ğ°Ğ»ĞµĞ¹ */
 .sibur-grid-detail-container {
     display: grid;
     grid-template-columns: minmax(300px, 500px) 1fr;
@@ -245,7 +251,7 @@ h1:focus {
     border: 1px solid rgba(0, 240, 255, 0.1);
 }
 
-/* Layout: sticky footer — at viewport bottom when short, below content when tall */
+/* Layout: sticky footer â€” at viewport bottom when short, below content when tall */
 main {
     display: flex;
     flex-direction: column;

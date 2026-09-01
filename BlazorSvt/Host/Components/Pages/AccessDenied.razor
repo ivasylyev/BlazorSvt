@@ -1,0 +1,25 @@
+@page "/access-denied"
+@layout BlazorSvt.Host.Components.Layout.BareLayout
+@inject ICurrentUser CurrentUser
+
+<PageTitle>Access denied / Доступ запрещен</PageTitle>
+
+<div class="sibur-card card mx-auto" style="max-width: 40rem;">
+    <div class="card-body">
+        <p class="mb-1 text-muted">
+            @CurrentUser.Login
+            @if (!string.IsNullOrWhiteSpace(CurrentUser.DisplayName))
+            {
+                <text> — @CurrentUser.DisplayName</text>
+            }
+        </p>
+        <p class="mb-3">
+            Доступ запрещен. Информация для получения доступа доступна во
+            <a href="@AccessDefaults.VkusUrl" target="_blank" rel="noopener noreferrer">ВКУСе</a>.
+        </p>
+        <p class="mb-0">
+            Access denied. Information on how to get access is available in
+            <a href="@AccessDefaults.VkusUrl" target="_blank" rel="noopener noreferrer">VKUS</a>.
+        </p>
+    </div>
+</div>

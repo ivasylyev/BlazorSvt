@@ -1,4 +1,5 @@
 ﻿using BlazorBootstrap;
+using BlazorSvt.Platform.Access;
 using BlazorSvt.Platform.Infrastructure;
 using BlazorSvt.Platform.Infrastructure.Data;
 using Dapper;
@@ -22,7 +23,8 @@ namespace BlazorSvt.Platform.Grid.Services;
 public class GridDataService<TItem, TDetailItem>(
     IOptions<DatabaseOptions> options,
     ILogger<GridDataService<TItem, TDetailItem>> logger,
-    IGridQueryFactory<TItem> gridQueryFactory)
+    IGridQueryFactory<TItem> gridQueryFactory,
+    IAccessGuard accessGuard)
     : IGridDataService<TItem, TDetailItem>
 {
     private readonly string connectionString = options.Value.MdmDb;
@@ -35,6 +37,8 @@ public class GridDataService<TItem, TDetailItem>(
         int pageSize,
         CancellationToken cancellationToken)
     {
+        accessGuard.Ensure(AccessAction.Read);
+
         var query = gridQueryFactory.Create(request, pageNumber, pageSize);
 
         var (data, _) = await ExecuteStoredProcedureAsync(
@@ -51,6 +55,8 @@ public class GridDataService<TItem, TDetailItem>(
         int pageSize,
         CancellationToken cancellationToken)
     {
+        accessGuard.Ensure(AccessAction.Read);
+
         var query = gridQueryFactory.Create(request, pageNumber, pageSize);
 
 #pragma warning disable CS0618 // Type or member is obsolete
@@ -73,6 +79,8 @@ public class GridDataService<TItem, TDetailItem>(
 
     public async Task<TDetailItem> GetDetailDataAsync(object key)
     {
+        accessGuard.Ensure(AccessAction.Read);
+
 #pragma warning disable CS0618 // Type or member is obsolete
         await using var connection = new SqlConnection(connectionString);
 #pragma warning restore CS0618 // Type or member is obsolete
@@ -105,6 +113,8 @@ public class GridDataService<TItem, TDetailItem>(
 
     public async Task<GridDataProviderResult<TItem>> GetDataAsync(GridDataProviderRequest<TItem> request)
     {
+        accessGuard.Ensure(AccessAction.Read);
+
         var query = gridQueryFactory.Create(request);
 
         var (data, totalCount) = await ExecuteStoredProcedureAsync(

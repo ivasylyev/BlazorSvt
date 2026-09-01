@@ -22,6 +22,15 @@
 
         <!-- Правая часть -->
         <div class="d-flex align-items-center gap-2 ms-auto">
+            @if (!string.IsNullOrWhiteSpace(CurrentUser.Login))
+            {
+                <span class="sibur-header-user text-nowrap"
+                      title="@CurrentUser.Login">
+                    @(string.IsNullOrWhiteSpace(CurrentUser.DisplayName)
+                        ? CurrentUser.Login
+                        : CurrentUser.DisplayName)
+                </span>
+            }
             <CultureSelector />
         </div>
 
