@@ -1,4 +1,5 @@
 using System.Collections.Concurrent;
+using BlazorSvt.Platform.Access;
 using Microsoft.AspNetCore.Components.Server.Circuits;
 using Serilog.Context;
 
@@ -8,7 +9,9 @@ namespace BlazorSvt.Platform.Infrastructure.Logging;
 /// Корреляция логов для Blazor Server circuit: ShortCorrelationId + CircuitId
 /// на каждое inbound-действие, плюс события open/close/connection-down.
 /// </summary>
-public sealed class CircuitCorrelationHandler(ILogger<CircuitCorrelationHandler> logger) : CircuitHandler
+public sealed class CircuitCorrelationHandler(
+    ILogger<CircuitCorrelationHandler> logger,
+    ICurrentUser currentUser) : CircuitHandler
 {
     private readonly ConcurrentDictionary<string, string> correlationIds = new();
 
@@ -59,6 +62,7 @@ public sealed class CircuitCorrelationHandler(ILogger<CircuitCorrelationHandler>
 
             using (LogContext.PushProperty("CircuitId", circuitId))
             using (LogContext.PushProperty("ShortCorrelationId", corrId))
+            using (LogContext.PushProperty("UserLogin", currentUser.Login))
             {
                 await next(context);
             }

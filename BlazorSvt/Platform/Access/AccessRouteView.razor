@@ -1,0 +1,109 @@
+@using BlazorRouteData = Microsoft.AspNetCore.Components.RouteData
+@inject ICurrentUser CurrentUser
+@inject UserAccessSynchronizer Synchronizer
+@inject NavigationManager Navigation
+
+@* Не рендерит целевой маршрут до сверки. NavigateTo без ведущего '/' — иначе уход из PathBase /v2 в легаси. *@
+
+@if (ShouldRenderPage())
+{
+    <RouteView RouteData="RouteData" DefaultLayout="DefaultLayout" />
+}
+
+@code {
+    [Parameter]
+    public required BlazorRouteData RouteData { get; set; }
+
+    [Parameter]
+    public required Type DefaultLayout { get; set; }
+
+    protected override async Task OnParametersSetAsync()
+    {
+        if (CurrentUser.State == AccessState.Uninitialized)
+        {
+            await Synchronizer.SynchronizeAsync();
+        }
+
+        RedirectIfNeeded();
+    }
+
+    private void RedirectIfNeeded()
+    {
+        if (IsOpenPage(RouteData.PageType))
+        {
+            return;
+        }
+
+        if (CurrentUser.State == AccessState.DirectoryUnavailable)
+        {
+            Navigate(AccessDefaults.AuthUnavailablePath);
+            return;
+        }
+
+        if (RequiresImport(RouteData.PageType))
+        {
+            if (!CurrentUser.BypassAccessControl)
+            {
+                Navigate(AccessDefaults.AccessDeniedPath);
+            }
+
+            return;
+        }
+
+        if (CurrentUser.BypassAccessControl)
+        {
+            return;
+        }
+
+        if (CurrentUser.State != AccessState.Allowed || CurrentUser.RoleNames.Count == 0)
+        {
+            Navigate(AccessDefaults.AccessDeniedPath);
+        }
+    }
+
+    private void Navigate(string path)
+    {
+        var target = path.Trim('/');
+        if (string.Equals(CurrentRelativePath(), target, StringComparison.OrdinalIgnoreCase))
+        {
+            return;
+        }
+
+        Navigation.NavigateTo(target, replace: true);
+    }
+
+    private string CurrentRelativePath()
+    {
+        var relative = Navigation.ToBaseRelativePath(Navigation.Uri);
+        return relative.Split('?', '#')[0].Trim('/');
+    }
+
+    private bool ShouldRenderPage()
+    {
+        if (IsOpenPage(RouteData.PageType))
+        {
+            return true;
+        }
+
+        if (CurrentUser.State == AccessState.DirectoryUnavailable)
+        {
+            return false;
+        }
+
+        if (RequiresImport(RouteData.PageType))
+        {
+            return CurrentUser.BypassAccessControl;
+        }
+
+        return CurrentUser.BypassAccessControl
+            || (CurrentUser.State == AccessState.Allowed && CurrentUser.RoleNames.Count > 0);
+    }
+
+    private static bool IsOpenPage(Type pageType)
+    {
+        var name = pageType.Name;
+        return name is "AccessDenied" or "AuthUnavailable" or "Error";
+    }
+
+    private static bool RequiresImport(Type pageType) => pageType.Name == "Load";
+}

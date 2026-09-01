@@ -1,5 +1,6 @@
 ﻿using BlazorSvt.Import.Models;
 using BlazorSvt.Import.Services;
+using BlazorSvt.Platform.Access;
 using FluentValidation;
 using Microsoft.AspNetCore.Components;
 
@@ -20,12 +21,17 @@ public partial class Load : SvtComponentBase
     public IStagingRepository<LegStgWithoutProxyDto> Repository { get; set; } = default!;
 
     [Inject]
+    public IAccessGuard AccessGuard { get; set; } = default!;
+
+    [Inject]
     public ILogger<Load> Logger { get; set; } = default!;
 
     private readonly ImportState _withoutProxy = new();
 
     private async Task ImportAsync(ExcelFile file)
     {
+        AccessGuard.Ensure(AccessAction.Import);
+
         _withoutProxy.Reset();
 
         Logger.LogInformation(

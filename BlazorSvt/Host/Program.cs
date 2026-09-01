@@ -12,6 +12,7 @@ using BlazorSvt.Platform;
 using BlazorSvt.Platform.Infrastructure.Data;
 using BlazorSvt.Platform.Sync;
 using Dapper;
+using Microsoft.AspNetCore.Server.IIS;
 using Serilog;
 
 SqlMapper.AddTypeHandler(new SqlDateOnlyTypeHandler());
@@ -24,6 +25,7 @@ Log.Logger = new LoggerConfiguration()
 
 builder.Host.UseSerilog();
 builder.Services.AddHttpContextAccessor();
+builder.Services.AddAuthentication(IISServerDefaults.AuthenticationScheme);
 
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
@@ -59,8 +61,34 @@ if (!string.IsNullOrEmpty(pathBase) && pathBase != "/")
     app.UsePathBase(pathBase);
 }
 
+// Edge/Chrome запрещают unload по умолчанию; blazor.web.js всё ещё регистрирует обработчик.
+app.Use(async (context, next) =>
+{
+    context.Response.OnStarting(() =>
+    {
+        const string headerName = "Permissions-Policy";
+        const string unloadDirective = "unload=(self)";
+        var headers = context.Response.Headers;
+        if (headers.TryGetValue(headerName, out var existing) && existing.Count > 0)
+        {
+            var current = existing.ToString();
+            if (!current.Contains("unload=", StringComparison.OrdinalIgnoreCase))
+            {
+                headers[headerName] = $"{current}, {unloadDirective}";
+            }
+        }
+        else
+        {
+            headers[headerName] = unloadDirective;
+        }
+
+        return Task.CompletedTask;
+    });
+
+    await next();
+});
+
 app.UseRequestLocalization(localizationOptions);
-app.MapControllers();
 
 if (!app.Environment.IsDevelopment())
 {
@@ -69,12 +97,15 @@ if (!app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+app.UseAuthentication();
+app.UseAuthorization();
 app.UseAntiforgery();
 app.Use(MiddlewareDecorator.MiddlewareShortCorrelationId);
 app.UseSerilogRequestLogging(options =>
 {
     options.GetLevel = SerilogRequestLogLevel.GetLevel;
 });
+app.MapControllers();
 app.MapStaticAssets();
 app.MapRazorComponents<App>()
     .AddInteractiveServerRenderMode();

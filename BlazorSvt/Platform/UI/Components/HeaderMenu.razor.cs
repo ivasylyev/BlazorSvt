@@ -1,11 +1,15 @@
 ﻿using BlazorBootstrap;
-using Microsoft.AspNetCore.Components.Routing;
+using BlazorSvt.Platform.Access;
 using BlazorSvt.Platform.UI.Navigation;
+using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components.Routing;
 
 namespace BlazorSvt.Platform.UI.Components;
 
 public partial class HeaderMenu : SvtComponentBase, IDisposable
 {
+    [Inject]
+    private ICurrentUser CurrentUser { get; set; } = default!;
     private List<MenuItem>? menuItems = default;
     private List<MenuItem> GetMenuItems() =>
     [

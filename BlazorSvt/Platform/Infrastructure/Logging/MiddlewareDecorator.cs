@@ -10,7 +10,9 @@ public static class MiddlewareDecorator
 
         context.Response.Headers[headerName] = shortCorrelationId;
 
+        var userLogin = context.User.Identity?.Name;
         using (Serilog.Context.LogContext.PushProperty("ShortCorrelationId", shortCorrelationId))
+        using (Serilog.Context.LogContext.PushProperty("UserLogin", userLogin))
         {
             await next();
         }

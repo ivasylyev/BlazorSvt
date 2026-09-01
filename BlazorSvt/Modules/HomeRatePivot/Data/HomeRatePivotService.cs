@@ -1,3 +1,4 @@
+using BlazorSvt.Platform.Access;
 using BlazorSvt.Platform.Domain.IdsEnum;
 using BlazorSvt.Platform.Infrastructure;
 using BlazorSvt.Platform.Infrastructure.Data;
@@ -14,7 +15,8 @@ namespace BlazorSvt.Modules.HomeRatePivot.Data;
 /// </summary>
 public sealed class HomeRatePivotService(
     IOptions<DatabaseOptions> options,
-    ILogger<HomeRatePivotService> logger) : IHomeRatePivotService
+    ILogger<HomeRatePivotService> logger,
+    IAccessGuard accessGuard) : IHomeRatePivotService
 {
     public const int MonthWindowSize = 6;
     public const int MonthsBack = 3;
@@ -30,6 +32,8 @@ public sealed class HomeRatePivotService(
         bool useRussianNames,
         CancellationToken cancellationToken = default)
     {
+        accessGuard.Ensure(AccessAction.Read);
+
         var months = BuildMonthWindow(DateOnly.FromDateTime(DateTime.Today));
         var fromDate = months[0];
         var toDateExclusive = months[^1].AddMonths(1);
