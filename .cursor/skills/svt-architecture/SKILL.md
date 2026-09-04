@@ -21,7 +21,7 @@ description: >-
 
 **Целевой стек**: Blazor Server + MS SQL. **Стиль**: модульный монолит. **Миграция**: Strangler Fig с общей БД; SoT = легаси до cutover; exit dual-run волнами → инкрементальный SoT flip по доменам справочников → единый финальный демонтаж легаси в конце (детали — в roadmap.md, §2а).
 
-**Текущий статус**: фреймворк read-only справочников и отчётов (TransportLeg, TransportRate, AverageRateLevel3, LocationsNodes, ParityRates; legacy: Legs, Rates); watermark-sync; Windows Auth + роли `dbo.Role` (бинарный read); зачаток Import; каркас unit + integration тестов в `tests/`. Дорожная карта MVP — в [roadmap.md](roadmap.md).
+**Текущий статус**: фреймворк read-only справочников и отчётов (TransportLeg, TransportRate, AverageRateLevel3, LocationsNodes, ParityRates; legacy: Legs, Rates); watermark-sync; Windows Auth + роли `dbo.Role` (бинарный read); зачаток Import; каркас unit + integration тестов в `tests/`. Скоуп справочников (63 в скоупе / 38 вне, работы RO/E/L, меню, приоритеты) — [catalogs-scope.md](catalogs-scope.md). Дорожная карта MVP — в [roadmap.md](roadmap.md).
 
 ## Чеклист перед реализацией
 
@@ -51,5 +51,6 @@ description: >-
   (условное архитектурное одобрение — §6.9)
 - Дорожная карта миграции (MVP, бэклог, критерии, Gate A/B/C/D) — [roadmap.md](roadmap.md)
   (отложенная митигация рисков и приложения threat model / SoD / SLI/SLO / … — §2б)
+- Реестр справочников (SoT скоупа: состав доменов, RO/E/L, меню, приоритеты) — [catalogs-scope.md](catalogs-scope.md). Канон при изменении — этот файл в репозитории; Excel на Confluence — только исходный дамп легаси
 - Диаграммы для архитектурного ревью —
   [docs/architecture/README.md](../../../docs/architecture/README.md)
