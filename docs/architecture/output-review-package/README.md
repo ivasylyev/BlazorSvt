@@ -21,6 +21,9 @@
 
 3. Диаграммы, `review-current-state.html` и это оглавление не переписывать на Confluence.
    Skills в `.cursor/skills/` не менять.
+4. Заархивировать папку `output-review-package` в `docs/architecture/output-review-package.zip`
+   (рядом с папкой, не внутри неё). В корне архива — сама папка `output-review-package/`.
+   Старый zip перезаписать.
 
 Скоуп согласования: **условное одобрение** направления (см. [01. Архитектура трансформации СВТ: проблемы и решение](https://confluence.sibur.local/pages/viewpage.action?pageId=573815762) §6.9;
 реестр и приложения митигаций — [02. План трансформации СВТ](https://confluence.sibur.local/pages/viewpage.action?pageId=573815766) §2б).
