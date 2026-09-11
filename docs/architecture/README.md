@@ -40,4 +40,5 @@
 (sticky/affinity, см. `reference.md` §6.1) не должен архитектурно исключать последующий переход
 на многоузловой/K8s-деплой.
 
-Пакет для передачи: [`output-review-package/`](output-review-package/).
+Пакет для передачи: [`output-review-package/`](output-review-package/)
+и архив [`output-review-package.zip`](output-review-package.zip) (рядом с папкой).

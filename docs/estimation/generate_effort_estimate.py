@@ -109,6 +109,123 @@ def mix_tc(n_typical: int, n_complex: int, typical: tuple, complex_: tuple) -> t
     )
 
 
+@dataclass(frozen=True)
+class Cat:
+    name: str
+    title: str
+    complexity: str
+    pri: int
+    has_e: bool
+    has_l: bool
+    domain: str
+
+
+# SoT of contours/order: catalogs-scope.md. Tuple: name, title, complexity, pri, E, L, domain.
+_CATALOG_ROWS = (
+    ("Rates", "Ставки", "Высокая", 1, True, True, "Ставки"),
+    ("AverageRateLevel3", "Средневзвешенные ставки 3 уровня", "Высокая", 1, False, False, "Ставки"),
+    ("ParityRates", "Паритетные ставки", "Средняя", 1, True, True, "Ставки"),
+    ("RateType", "Тип ставки", "Низкая", 2, True, True, "Ставки"),
+    ("Contractor", "Контрагенты", "Низкая", 2, False, False, "Ставки"),
+    ("Coefficient", "Коэффициент", "Средняя", 2, True, False, "Ставки"),
+    ("Priority_Rate", "Приоритеты типов ставок", "Средняя", 2, True, True, "Ставки"),
+    ("RateSyncClass", "Класс синхронизации ставок", "Низкая", 2, True, True, "Ставки"),
+    ("Basis", "Базисы поставки", "Низкая", 3, True, True, "Ставки"),
+    ("CoefficientType", "Тип коэффициента", "Низкая", 3, False, False, "Ставки"),
+    ("CoefficientCondition", "Условие коэффициента", "Низкая", 3, True, True, "Ставки"),
+    ("CoefficientComponent", "Составляющая коэффициента", "Низкая", 3, False, False, "Ставки"),
+    ("RateCalcType", "Способ расчёта ставки", "Низкая", 3, False, False, "Ставки"),
+    ("RateComponentType", "Тип составляющей ставки", "Низкая", 3, False, False, "Ставки"),
+    ("RateAutoSelectionSetting", "Настройка автоподбора ставок", "Низкая", 3, True, False, "Ставки"),
+    ("RateKind", "Вид ставки", "Низкая", 3, False, False, "Ставки"),
+    ("Relevance", "Актуальность", "Низкая", 3, False, False, "Ставки"),
+    ("TransportRequest", "Расчёт стоимости транспортировки", "Высокая", 3, False, False, "Ставки"),
+    ("MassiveRequest", "Массовые расчёты стоимости транспортировки", "Высокая", 3, False, False, "Ставки"),
+    ("ReportConstructor", "Конструктор отчётов ставок", "Средняя", 3, True, False, "Ставки"),
+    ("TransportLegs", "Транспортные плечи", "Высокая", 1, True, True, "Маршруты"),
+    ("LocationsNodes", "Местоположения-узлы", "Средняя", 1, False, False, "Маршруты"),
+    ("TransportRoute", "Транспортный маршрут", "Высокая", 1, True, True, "Маршруты"),
+    ("Region", "Регион", "Средняя", 2, True, True, "Маршруты"),
+    ("Country", "Страна", "Низкая", 2, True, True, "Маршруты"),
+    ("TransportKind", "Вид транспорта", "Низкая", 3, True, True, "Маршруты"),
+    ("TransportType", "Тип транспорта", "Низкая", 3, True, True, "Маршруты"),
+    ("TransportType_level_3", "Типы транспорта (3 уровень)", "Низкая", 3, True, True, "Маршруты"),
+    ("Federal_Districts", "Федеральные округа", "Низкая", 3, True, True, "Маршруты"),
+    ("ShipmentType", "Тип отправки", "Низкая", 3, True, True, "Маршруты"),
+    ("TypeNode", "Тип узла", "Низкая", 3, False, False, "Маршруты"),
+    ("VehicleType", "Тип подвижного состава", "Низкая", 3, False, False, "Маршруты"),
+    ("ProductGroup", "Транспортные группы", "Низкая", 1, True, True, "Продукты"),
+    ("MTR", "Продукты", "Низкая", 1, False, False, "Продукты"),
+    ("PlanFact", "План-факт", "Низкая", 2, True, True, "Продукты"),
+    ("MTR_DPO", "Материалы DPO", "Средняя", 2, False, False, "Продукты"),
+    ("DangerClass", "Классы опасности", "Низкая", 3, True, True, "Продукты"),
+    ("TransportTypeForProduct", "Тип транспорта для продукта", "Низкая", 3, True, True, "Продукты"),
+    ("WarehouseASVERP", "Склады АСВ – ERP", "Средняя", 1, True, True, "Склады и ограничения"),
+    ("WarehouseASVERPLimitation", "Склады АСВ – ERP. Ограничения", "Средняя", 1, True, True, "Склады и ограничения"),
+    ("OrganizationDPO", "Организации DPO", "Средняя", 2, False, False, "Склады и ограничения"),
+    ("WarehouseERP", "Склады ERP", "Низкая", 2, False, False, "Склады и ограничения"),
+    ("WarehouseOperator", "Склад. Оператор склада SI", "Низкая", 2, True, True, "Склады и ограничения"),
+    ("WarehouseSchedule", "Склады. График работы", "Низкая", 3, True, True, "Склады и ограничения"),
+    ("DepartmentNSI", "Дирекция АСВ НСИ", "Низкая", 3, True, True, "Склады и ограничения"),
+    ("OrganizationDPO_type", "Типы организаций DPO", "Низкая", 3, False, False, "Склады и ограничения"),
+    ("MKSourceNode", "МК: Узел отправления", "Низкая", 1, True, True, "Матрица каналов"),
+    ("MKShippingFactory", "МК: Завод отгрузки", "Низкая", 1, True, True, "Матрица каналов"),
+    ("MKDirection", "МК: Направление", "Низкая", 1, True, True, "Матрица каналов"),
+    ("MkDirectionChannel", "МК: Направление-канал", "Низкая", 1, True, True, "Матрица каналов"),
+    ("MkFactoryChannel", "МК: Заводы-канал", "Низкая", 1, True, True, "Матрица каналов"),
+    ("MKSourceNodeQuota", "МК: Общая квота по узлам отправления", "Средняя", 2, True, True, "Матрица каналов"),
+    ("MkDirectionChannelQuota", "МК: Общая квота по направлениям-каналам", "Средняя", 2, True, True, "Матрица каналов"),
+    ("MkFactoryChannelQuota", "МК: Общая квота по заводу-каналу", "Средняя", 2, True, True, "Матрица каналов"),
+    ("CBDNodeMapping", "Меппинг между узлами ЦБД и СВТ", "Низкая", 1, True, True, "Интеграция с ЦБД"),
+    ("CBDTransportTypeMapping", "Меппинг между типами транспорта ЦБД и СВТ", "Низкая", 1, True, True, "Интеграция с ЦБД"),
+    ("CBDRates", "Справочник ставок и лидтаймов ЦБД", "Высокая", 2, False, False, "Интеграция с ЦБД"),
+    ("StatusSearch", "Статусы результата поиска ставок для обновления ставок", "Низкая", 3, True, True, "Интеграция с ЦБД"),
+    ("Integration", "Интеграция", "Средняя", 1, True, False, "Вспомогательные"),
+    ("FeatureToggle", "Переключатель фич", "Низкая", 1, True, False, "Вспомогательные"),
+    ("CurrencyRate", "Курсы валют (плановые)", "Низкая", 2, False, False, "Вспомогательные"),
+    ("Currency", "Валюты", "Низкая", 3, True, True, "Вспомогательные"),
+    ("IntegrationDataType", "Тип данных для интеграции", "Низкая", 3, True, True, "Вспомогательные"),
+)
+CATALOGS = [Cat(*row) for row in _CATALOG_ROWS]
+assert len(CATALOGS) == 63
+
+RO_SKIP = {"Rates"}  # RO already in MVP 0.1
+RO_DONE = {"AverageRateLevel3", "ParityRates", "TransportLegs", "LocationsNodes"}
+WRITE_SKIP = {"TransportLegs"}  # E/L in MVP 0.5/0.6
+assert sum(1 for c in CATALOGS if c.name not in RO_SKIP) == 62
+WRITE_DOMAINS_07 = (
+    "Ставки",
+    "Маршруты",
+    "Продукты",
+    "Склады и ограничения",
+    "Матрица каналов",
+    "Интеграция с ЦБД",
+)
+
+
+def ro_norm(c: Cat) -> tuple[float, float]:
+    return {"Низкая": RO_SIMPLE, "Средняя": RO_TYPICAL, "Высокая": RO_COMPLEX}[c.complexity]
+
+
+def ed_norm(c: Cat) -> tuple[float, float]:
+    return ED_COMPLEX if c.complexity == "Высокая" else ED_TYPICAL
+
+
+def ld_norm(c: Cat) -> tuple[float, float]:
+    return LD_COMPLEX if c.complexity == "Высокая" else LD_TYPICAL
+
+
+def _next_id(prefix: str):
+    n = 0
+
+    def nid() -> str:
+        nonlocal n
+        n += 1
+        return f"{prefix}.{n}"
+
+    return nid
+
+
 def human_cell(stage: str) -> str:
     v = HUMAN_BY_STAGE.get(stage)
     if v is None:
@@ -213,17 +330,31 @@ def build_rows() -> list[Row]:
 
     # ========== MVP 0.2 ==========
     S = "0.2"
-    # Remaining RO by domain (catalogs-scope complexity: Низкая=simple, Средняя=typical, Высокая=complex).
-    # Done in 0.1: Rates (hardest, not in 0.2). Done in 0.2 groups: ARL3+ParityRates; TransportLegs+LocationsNodes.
-    rates_done = mix3(0, 1, 1, RO_SIMPLE, RO_TYPICAL, RO_COMPLEX)  # PR typical, ARL3 complex
-    rates_rem = mix3(12, 3, 2, RO_SIMPLE, RO_TYPICAL, RO_COMPLEX)
-    routes_done = mix3(0, 1, 1, RO_SIMPLE, RO_TYPICAL, RO_COMPLEX)  # LN typical, TL complex
-    routes_rem = mix3(8, 1, 1, RO_SIMPLE, RO_TYPICAL, RO_COMPLEX)
-    prod = mix3(5, 1, 0, RO_SIMPLE, RO_TYPICAL, RO_COMPLEX)
-    wh = mix3(5, 3, 0, RO_SIMPLE, RO_TYPICAL, RO_COMPLEX)
-    mk = mix3(5, 3, 0, RO_SIMPLE, RO_TYPICAL, RO_COMPLEX)
-    cbd = mix3(3, 0, 1, RO_SIMPLE, RO_TYPICAL, RO_COMPLEX)
-    aux = mix3(4, 1, 0, RO_SIMPLE, RO_TYPICAL, RO_COMPLEX)
+    nid_ro = _next_id("0.2.3")
+    ro_leaves: list[Row] = []
+    for c in CATALOGS:
+        if c.name in RO_SKIP:
+            continue
+        n, w = ro_norm(c)
+        done = c.name in RO_DONE
+        note = f"{c.domain}; пр. RO={c.pri}; {c.complexity}"
+        if done:
+            note += "; на проде (пилот)"
+        ro_leaves.append(
+            R(
+                S, "0.2.3", nid_ro(),
+                f"RO {c.name}: {c.title}",
+                "Done" if done else "Todo",
+                n, w, 1.0 if done else 0.0, note,
+            )
+        )
+    ro_leaves.append(
+        R_split(
+            S, "0.2.3", nid_ro(), "Доработка фреймворка/skill по ходу тиража RO", "Partial",
+            15.0, 12.0, 4.0, 5.0,
+            "без агента: framework; с агентом: +эволюция skill",
+        )
+    )
 
     rows += [
         R(S, "0.2.1", "0.2.1.1", "Анализ логов легаси (профиль нагрузки)", "Todo", 3.0, 2.0, 0.0),
@@ -248,28 +379,7 @@ def build_rows() -> list[Row]:
         R(S, "0.2.2", "0.2.2.5", "Инвентаризация SQL Agent job'ов жёсткого удаления", "Todo", 3.0, 2.0, 0.0),
         R(S, "0.2.2", "0.2.2.6", "Dependency-тест границ модулей в CI", "Todo", 2.0, 1.0, 0.0, "D-ARCH"),
         R(S, "0.2.2", "0.2.2.7", "Письменное подтверждение ИБ по read-only", "Todo", 1.0, 1.0, 0.0, "D-SEC-RO; блокирует тираж"),
-        R_split(
-            S, "0.2.3", "0.2.3.1", "Перенести группу «Ставки» (20; RO на проде 3, остаток 17)", "Partial",
-            rates_done[0] + rates_rem[0], rates_done[1] + rates_rem[1],
-            rates_done[0], rates_done[1],
-            "сделано: Rates (0.1), AverageRateLevel3, ParityRates",
-        ),
-        R_split(
-            S, "0.2.3", "0.2.3.2", "Перенести группу «Маршруты» (12; RO на проде 2, остаток 10)", "Partial",
-            routes_done[0] + routes_rem[0], routes_done[1] + routes_rem[1],
-            routes_done[0], routes_done[1],
-            "сделано: TransportLegs, LocationsNodes",
-        ),
-        R(S, "0.2.3", "0.2.3.3", "Перенести группу «Продукты» (6)", "Todo", *prod),
-        R(S, "0.2.3", "0.2.3.4", "Перенести группу «Склады и ограничения» (8)", "Todo", *wh),
-        R(S, "0.2.3", "0.2.3.5", "Перенести группу «Матрица каналов» (8)", "Todo", *mk),
-        R(S, "0.2.3", "0.2.3.6", "Перенести группу «Интеграция с ЦБД» (4)", "Todo", *cbd),
-        R(S, "0.2.3", "0.2.3.7", "Перенести Вспомогательные (5)", "Todo", *aux),
-        R_split(
-            S, "0.2.3", "0.2.3.8", "Доработка фреймворка/skill по ходу тиража RO", "Partial",
-            15.0, 12.0, 4.0, 5.0,
-            "без агента: framework; с агентом: +эволюция skill",
-        ),
+        *ro_leaves,
         R(S, "0.2.4", "0.2.4.1", "Сверка новых справочников с легаси", "Todo", 10.0, 6.0, 0.0),
         R(S, "0.2.4", "0.2.4.2", "Доработка по результатам сверки", "Todo", 12.0, 7.0, 0.0),
         R(S, "0.2.4", "0.2.4.3", "Нагрузочное тестирование", "Todo", 8.0, 5.0, 0.0),
@@ -386,56 +496,45 @@ def build_rows() -> list[Row]:
     # ========== MVP 0.7 ==========
     # Editors/loaders from catalogs-scope; TransportLegs already in 0.5/0.6.
     # Высокая → complex; Низкая+Средняя → typical.
-    st_ed, st_ld = mix_tc(9, 1, ED_TYPICAL, ED_COMPLEX), mix_tc(6, 1, LD_TYPICAL, LD_COMPLEX)
-    rt_ed, rt_ld = mix_tc(7, 1, ED_TYPICAL, ED_COMPLEX), mix_tc(7, 1, LD_TYPICAL, LD_COMPLEX)
-    pr_ed, pr_ld = mix_tc(4, 0, ED_TYPICAL, ED_COMPLEX), mix_tc(4, 0, LD_TYPICAL, LD_COMPLEX)
-    wh_ed, wh_ld = mix_tc(5, 0, ED_TYPICAL, ED_COMPLEX), mix_tc(5, 0, LD_TYPICAL, LD_COMPLEX)
-    mk_ed, mk_ld = mix_tc(8, 0, ED_TYPICAL, ED_COMPLEX), mix_tc(8, 0, LD_TYPICAL, LD_COMPLEX)
-    cb_ed, cb_ld = mix_tc(3, 0, ED_TYPICAL, ED_COMPLEX), mix_tc(3, 0, LD_TYPICAL, LD_COMPLEX)
-
     S = "0.7"
+    nid_w = _next_id("0.7.2")
+    write_leaves: list[Row] = []
+    for domain in WRITE_DOMAINS_07:
+        for c in CATALOGS:
+            if c.domain != domain or c.name in WRITE_SKIP:
+                continue
+            if not c.has_e and not c.has_l:
+                continue
+            note = f"{c.domain}; пр. E/L={c.pri}; {c.complexity}"
+            if c.has_e:
+                n, w = ed_norm(c)
+                write_leaves.append(
+                    R(S, "0.7.2", nid_w(), f"Редактор {c.name}: {c.title}", "Todo", n, w, 0.0, note)
+                )
+            if c.name == "Rates":
+                write_leaves.append(
+                    R(
+                        S, "0.7.2", nid_w(),
+                        "Пересчёт AverageRateLevel3 в C# (CRUD нет)", "Todo",
+                        10.0, 5.0, 0.0, "волна записи Ставок; после редактора Rates",
+                    )
+                )
+            if c.has_l:
+                n, w = ld_norm(c)
+                write_leaves.append(
+                    R(S, "0.7.2", nid_w(), f"Загрузчик {c.name}: {c.title}", "Todo", n, w, 0.0, note)
+                )
+    write_leaves.append(
+        R(S, "0.7.2", nid_w(), "Доработка фреймворка/skill на тираже записи", "Todo", 15.0, 12.0, 0.0)
+    )
+    write_leaves.append(
+        R(S, "0.7.2", nid_w(), "Перенос purge-логики в C# (если есть легаси job)", "Todo", 6.0, 3.5, 0.0)
+    )
+
     rows += [
         R(S, "0.7.1", "0.7.1.1", "Список редакторов/загрузчиков по доменам", "Done", 1.5, 0.8, 1.0, "catalogs-scope.md"),
         R(S, "0.7.1", "0.7.1.2", "Требования к полям/компонентам по доменам", "Todo", 8.0, 4.0, 0.0),
-        R(
-            S, "0.7.2", "0.7.2.1",
-            "Домен «Ставки»: 10 редакторов, 7 загрузчиков", "Todo",
-            round(st_ed[0] + st_ld[0], 2), round(st_ed[1] + st_ld[1], 2), 0.0,
-            "RO-заявки не входят; Rates = complex",
-        ),
-        R(S, "0.7.2", "0.7.2.2", "Пересчёт AverageRateLevel3 в C# (CRUD нет)", "Todo", 10.0, 5.0, 0.0, "волна записи Ставок"),
-        R(
-            S, "0.7.2", "0.7.2.3",
-            "Домен «Маршруты»: 8 редакторов/загрузчиков после пилота", "Todo",
-            round(rt_ed[0] + rt_ld[0], 2), round(rt_ed[1] + rt_ld[1], 2), 0.0,
-            "скоуп домена 9; −TransportLegs (0.5/0.6)",
-        ),
-        R(
-            S, "0.7.2", "0.7.2.4",
-            "Домен «Продукты»: 4 редактора+загрузчика", "Todo",
-            round(pr_ed[0] + pr_ld[0], 2), round(pr_ed[1] + pr_ld[1], 2),
-        ),
-        R(
-            S, "0.7.2", "0.7.2.5",
-            "Домен «Склады и ограничения»: 5 редакторов+загрузчиков", "Todo",
-            round(wh_ed[0] + wh_ld[0], 2), round(wh_ed[1] + wh_ld[1], 2),
-        ),
-        R(
-            S, "0.7.2", "0.7.2.6",
-            "Домен «Матрица каналов»: 8 редакторов+загрузчиков", "Todo",
-            round(mk_ed[0] + mk_ld[0], 2), round(mk_ed[1] + mk_ld[1], 2),
-        ),
-        R(
-            S, "0.7.2", "0.7.2.7",
-            "Домен «Интеграция с ЦБД»: 3 редактора+загрузчика", "Todo",
-            round(cb_ed[0] + cb_ld[0], 2), round(cb_ed[1] + cb_ld[1], 2), 0.0,
-            "CBDRates — RO",
-        ),
-        R_split(
-            S, "0.7.2", "0.7.2.8", "Доработка фреймворка/skill на тираже записи", "Todo",
-            15.0, 12.0, 0.0, 0.0,
-        ),
-        R(S, "0.7.2", "0.7.2.9", "Перенос purge-логики в C# (если есть легаси job)", "Todo", 6.0, 3.5, 0.0),
+        *write_leaves,
         R(S, "0.7.3", "0.7.3.1", "Gate A × 6 доменов (сопровождение сверки)", "Todo", 18.0, 12.0, 0.0, "не календарь ОПЭ"),
         R(S, "0.7.3", "0.7.3.2", "Gate B × 6 доменов (сопровождение ОПЭ)", "Todo", 30.0, 24.0, 0.0, "серийно по календарю"),
         R(S, "0.7.3", "0.7.3.3", "Gate C × 6 доменов (SoT Flip Decision Record)", "Todo", 6.0, 6.0, 0.0),
@@ -448,18 +547,34 @@ def build_rows() -> list[Row]:
     ]
 
     # ========== MVP 0.8 ==========
-    ax_ed, ax_ld = mix_tc(4, 0, ED_TYPICAL, ED_COMPLEX), mix_tc(2, 0, LD_TYPICAL, LD_COMPLEX)
     S = "0.8"
+    nid_ax = _next_id("0.8.2")
+    aux_leaves: list[Row] = []
+    for c in CATALOGS:
+        if c.domain != "Вспомогательные" or (not c.has_e and not c.has_l):
+            continue
+        note = f"{c.domain}; пр. E/L={c.pri}; {c.complexity}"
+        if c.has_e:
+            n, w = ed_norm(c)
+            aux_leaves.append(
+                R(S, "0.8.2", nid_ax(), f"Редактор {c.name}: {c.title}", "Todo", n, w, 0.0, note)
+            )
+        if c.has_l:
+            n, w = ld_norm(c)
+            aux_leaves.append(
+                R(S, "0.8.2", nid_ax(), f"Загрузчик {c.name}: {c.title}", "Todo", n, w, 0.0, note)
+            )
+    aux_leaves.append(
+        R(S, "0.8.2", nid_ax(), "Права «Редактор вспомогательных»", "Todo", 1.5, 0.8, 0.0)
+    )
+    aux_leaves.append(
+        R(S, "0.8.2", nid_ax(), "Purge-логика в C# при наличии легаси job", "Todo", 2.0, 1.0, 0.0)
+    )
+
     rows += [
         R(S, "0.8.1", "0.8.1.1", "Список вспомогательных с редактором/загрузчиком", "Done", 1.0, 0.5, 1.0, "4 E, из них 2 L"),
         R(S, "0.8.1", "0.8.1.2", "Согласовать представителей 4 групп на Gate A/B", "Todo", 1.5, 1.0, 0.0),
-        R(
-            S, "0.8.2", "0.8.2.1",
-            "Редакторы (4) и загрузчики (2) вспомогательных", "Todo",
-            round(ax_ed[0] + ax_ld[0], 2), round(ax_ed[1] + ax_ld[1], 2),
-        ),
-        R(S, "0.8.2", "0.8.2.2", "Права «Редактор вспомогательных»", "Todo", 1.5, 0.8, 0.0),
-        R(S, "0.8.2", "0.8.2.3", "Purge-логика в C# при наличии легаси job", "Todo", 2.0, 1.0, 0.0),
+        *aux_leaves,
         R(S, "0.8.3", "0.8.3.1", "Gate A (все 4 группы пользователей)", "Todo", 3.0, 2.0, 0.0),
         R(S, "0.8.3", "0.8.3.2", "Gate B ОПЭ (все 4 группы)", "Todo", 5.0, 4.0, 0.0),
         R(S, "0.8.3", "0.8.3.3", "Gate C SoT flip вспомогательных", "Todo", 1.0, 1.0, 0.0),
