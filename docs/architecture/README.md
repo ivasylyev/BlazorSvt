@@ -7,8 +7,11 @@
 - План, Gate A/B/C/D, **отложенная митигация рисков §2б** (реестр D-* + приложения: модель угроз,
   SoD, миграции, SLI/SLO, метрики пилотов, протокол нагрузки):
   [`../../.cursor/skills/svt-architecture/roadmap.md`](../../.cursor/skills/svt-architecture/roadmap.md)
+- Чеклист работ, таблица этапов и оценки:
+  [`../../.cursor/skills/svt-architecture/backlog.md`](../../.cursor/skills/svt-architecture/backlog.md)
 - Реестр справочников (скоуп, домены, RO/E/L):
   [`../../.cursor/skills/svt-architecture/catalogs-scope.md`](../../.cursor/skills/svt-architecture/catalogs-scope.md)
+  (в пакете для передачи — [`output-review-package/catalogs-scope.md`](output-review-package/catalogs-scope.md))
 - Снимок повторного architecture review: [`review-current-state.html`](review-current-state.html)
 
 Отдельные файлы под каждый артефакт митигации **не ведутся** — всё в `roadmap.md` §2б,
