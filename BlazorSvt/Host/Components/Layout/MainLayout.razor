@@ -18,7 +18,14 @@
     </ContentSection>
 
     <FooterSection>
-        <LoadTimePanel />
+        <div class="d-flex align-items-center w-100 column-gap-3 flex-nowrap">
+            <div class="flex-shrink-0 text-nowrap">
+                <LoadTimePanel />
+            </div>
+            <div class="flex-grow-1 text-end text-nowrap">
+                <BuildInfoPanel />
+            </div>
+        </div>
     </FooterSection>
 </BlazorBootstrapLayout>
 

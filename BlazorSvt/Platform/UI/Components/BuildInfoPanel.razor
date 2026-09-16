@@ -1,0 +1,9 @@
+@using BlazorSvt.Platform
+@inject IAppBuildInfo AppBuildInfo
+@inherits SvtComponentBase
+
+<div>
+    <span>
+        @string.Format(L["BuildInfoPanel.Format"], AppBuildInfo.Current.Version, AppBuildInfo.Current.BuildTimeUtc.ToLocalTime())
+    </span>
+</div>

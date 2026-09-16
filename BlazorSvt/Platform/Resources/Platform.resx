@@ -208,6 +208,9 @@
   <data name="LoadTimePanel.NotLoaded" xml:space="preserve">
 	  <value>Not Loaded</value>
   </data>
+  <data name="BuildInfoPanel.Format" xml:space="preserve">
+	  <value>Version {0} · {1:yyyy-MM-dd HH:mm:ss}</value>
+  </data>
   <data name="ExcelLoader.Load" xml:space="preserve">
 	  <value>Load</value>
   </data>

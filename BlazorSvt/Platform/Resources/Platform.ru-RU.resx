@@ -207,6 +207,9 @@
   <data name="LoadTimePanel.NotLoaded" xml:space="preserve">
     <value>Данные еще не загружены</value>
   </data>
+  <data name="BuildInfoPanel.Format" xml:space="preserve">
+    <value>Версия {0} · {1:dd.MM.yyyy HH:mm:ss}</value>
+  </data>
   <data name="ExcelLoader.Load" xml:space="preserve">
     <value>Загрузить</value>
   </data>

@@ -45,17 +45,22 @@ Use one of the URLs below (corporate network access is required):
 
 # Open the link in the browser (Edge).
 # If the browser prompts for credentials, sign in with your *Windows domain account* (the same one you use to log on to your PC).
-# The SVT 2.0 home page opens.
+# If the account *has a role* in SVT 2.0, the home page opens.
+# If there is *no role*, the *Access denied* screen opens (section 9.1).
 
 ----
 
 h2. 3. Menu and language
 
-At the top of the page you will find section buttons and the language selector.
+At the top of the page you will find section buttons, the current user, and the language selector.
 
 !01-menu-header.png|width=800,alt="SVT 2.0 menu"!
 
-On the right side of the header is the UI language (for example, *English (United States)*). When you change the language, button and column labels change. Column visibility settings are stored *separately for each language* (see section 7).
+On the right side of the header are the *current user* (usually the display name; hover to see the login in the form *DOMAIN\account*) and the UI language (for example, *English (United States)*). When you change the language, button and column labels change. Column visibility settings are stored *separately for each language* (see section 7).
+
+At the bottom of the page there is a footer bar: on the left, the load time of the current page; on the right, the application version and the build date/time. During the pilot this is needed so that a support request can name a specific build.
+
+!13-footer-build-info.png|width=800,alt="Footer: load time and version"!
 
 ||Menu button||Page title (as shown in the system)||
 |Home|Summary «Average rates by direction»|
@@ -232,31 +237,42 @@ Avoid exporting full reports larger than 20 thousand records. Use filters to lim
 
 ----
 
-h2. 9. If something goes wrong
+h2. 9. No access, or the page did not open as expected
 
-Try the following first:
+First look at *what is on the screen* — that decides what to do.
+
+||What you see||What it is||What to do||
+|*Access denied* card (no reference-book menu)|The account has no role in SVT 2.0|Section 9.1. Follow the *VKUS* link. This is not a program failure.|
+|*Unable to verify access* card|The system could not verify permissions|Section 9.2. Wait and refresh the page.|
+|Red banner about a program error|A failure while using a reference book|Section 9.3|
+|Blank, spinning, or frozen page, no banner|A failure with no on-screen message|Section 9.4|
+
+h3. 9.1. Access denied
+
+This screen opens when domain sign-in succeeded, but the account has *no role* in SVT 2.0. There is no reference-book menu. The build version is still shown at the bottom.
+
+The card shows the login (and the display name, if available) and the message in Russian and English. The *VKUS* link leads to information on how to get access. Resetting filters or refreshing the page is not needed here.
+
+!14-access-denied.png|width=800,alt="Access denied screen"!
+
+h3. 9.2. Unable to verify access
+
+This is *not the same* as access denied. The screen opens when the system *could not verify* permissions. Reference books do not open. There is no VKUS link on this screen.
+
+Wait and open the URL again (or press F5). If the screen remains, submit a request (section 9.5).
+
+!15-auth-unavailable.png|width=800,alt="Unable to verify access screen"!
+
+h3. 9.3. An error message is shown on the screen
+
+If a reference book already opened but the page behaves oddly, try the following first:
 
 * refresh the page (F5);
 * click *Reset Filters*;
 * in *Settings*, click *Reset* (default columns);
 * open the same URL in another browser or in InPrivate / Incognito mode.
 
-If the issue remains, submit a request (see below) and attach the materials described in this section.
-
-h3. 9.1. Where to send the request
-
-||Stage||Contact||
-|Pilot industrial operation|email [vasilevivv@sibur.ru]|
-|Production operation|ticket in *VKUS* (internal portal)|
-
-In the request, include:
-
-* environment (test or prod) and the page URL;
-* what you did (step by step);
-* what you expected and what happened;
-* screenshots and the error text (as below).
-
-h3. 9.2. An error message is shown on the screen
+If that does not help, capture the materials below and submit a request (section 9.5).
 
 Usually a banner appears at the top or in the page area:
 
@@ -274,9 +290,9 @@ Do the following:
 
 !09-error-details.png|height=250,alt="Expanded error details"!
 
-h3. 9.3. No error banner, but the page is blank, frozen, or the reference book did not load
+h3. 9.4. No error banner, but the page is blank, frozen, or the reference book did not load
 
-Sometimes there is no red banner, but the table does not appear, keeps loading, or the page «freezes». In that case, capture information from the *browser console*.
+First try the same steps as in section 9.3 (F5, reset filters, another browser). If that does not help, capture information from the *browser console*.
 
 Step by step (Edge / Chrome):
 
@@ -295,6 +311,19 @@ Step by step (Edge / Chrome):
 {tip:title=Do not interpret the text yourself}
 Attaching a screenshot or the copied text is enough. You do not need to interpret the messages — support specialists will do that.
 {tip}
+
+h3. 9.5. Where to send the request
+
+||Stage||Contact||
+|Pilot industrial operation|email [vasilevivv@sibur.ru]|
+|Production operation|ticket in *VKUS* (internal portal)|
+
+In the request, include:
+
+* environment (test or prod) and the page URL;
+* what you did (step by step);
+* what you expected and what happened;
+* screenshots and the error text (for sections 9.3 and 9.4 — as described there).
 
 ----
 
