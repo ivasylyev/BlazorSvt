@@ -33,6 +33,11 @@ SVT 2.0 is read-only. You cannot create, edit, or delete records here yet.
 
 SVT 2.0 data is synchronized from the legacy system. After a change in legacy SVT, the update usually appears in SVT 2.0 *within about 2 minutes*.
 
+Exceptions:
+
+* Every night from *01:00 to 02:30* updates wait until this window ends. On Saturdays there is an additional pause from *04:00 to 06:00*.
+* A record deleted in the legacy system appears in SVT 2.0 after the nightly reconciliation, *around 02:00*.
+
 ----
 
 h2. 2. How to open the system
@@ -56,7 +61,7 @@ At the top of the page you will find the *Home* button, the domain menus, the cu
 
 !1-menu-en.png|width=800,alt="SVT 2.0 menu"!
 
-*Home* opens the average-rates summary. The other reference books are grouped by domain: click a domain name and choose a reference book. Items inside a domain are listed *alphabetically* by the label in the current language. Hover a domain to see its full name. A domain that has no reference books yet is not shown.
+*Home* opens the average-rates summary. The other reference books are grouped by domain: hover a domain name and choose a reference book. Items inside a domain are listed *alphabetically* by the label in the current language. The hover tooltip shows the domain's full name. A domain that has no reference books yet is not shown.
 
 On the right side of the header are the *current user* (usually the display name; hover to see the login in the form *DOMAIN\account*) and the UI language (for example, *English (United States)*). When you change the language, button labels, menu items, and column labels change, and the order of reference books inside a domain is recalculated alphabetically. Column visibility settings are stored *separately for each language* (see section 7).
 
@@ -76,7 +81,14 @@ At the bottom of the page there is a footer bar: on the left, the load time of t
 
 h2. 4. Home page
 
-The home page shows the *«Average rates by direction»* summary (product: polyolefins, multi-month window).
+The home page shows the *«Average rates by direction»* summary. This is a fixed slice; the user cannot configure it:
+
+* product — polyolefins;
+* rate type — agreement;
+* transport kind — road (auto);
+* no intermediate node;
+* a six-month window: three months back and two months ahead of the current month;
+* the set of directions is predefined.
 
 !3-home-en.png|width=800,alt="Home: table and chart"!
 
@@ -84,13 +96,13 @@ The home page shows the *«Average rates by direction»* summary (product: polyo
 * On the right — a bar chart for the *selected* row.
 * To change the chart, click another row in the table.
 
-Product and direction filters on this page are not configurable by the user — this is a fixed summary.
+The contents of this summary cannot be changed by the user.
 
 ----
 
 h2. 5. Working with a reference book (common rules)
 
-Open a domain in the top menu and choose a reference book. A table of records opens.
+Hover a domain in the top menu and choose a reference book. A table of records opens.
 
 *Common for all reference books:*
 
@@ -217,13 +229,13 @@ Export respects the *current table filters*.
 
 # Click *Reports*.
 # Choose:
-** *Short report* — both visible and hidden grid columns;
+** *Short report* — only the columns turned on in *Settings*;
 ** *Full report* — an extended field set (as in the detail card).
 # The Excel file is downloaded to your browser downloads folder.
 
 !10-reports-menu-en.png|width=800,alt="Reports menu"!
 
-If there are many rows, a confirmation dialog appears: the system warns about the row count and possible wait time. Click *Yes* to continue or *No* to cancel.
+If there are many rows, a confirmation dialog appears. For a short report it opens when there are more than *20 thousand* rows; for a full report, when there are more than *5 thousand*. The system warns about the row count and possible wait time. Click *Yes* to continue or *No* to cancel. After *Yes* the export continues: the dialog does not block the file size.
 
 !11-reports-warning-en.png|width=800,alt="Large report confirmation"!
 
@@ -232,9 +244,10 @@ While the report is being generated, a status message may appear — wait until 
 {warning:title=Please note}
 Prefer short reports when possible. They are generated about ~10 times faster than full reports.
 
-You can export short reports of up to 200 thousand records.
+The sizes below are a recommendation, not a system limit. Exports larger than these sizes are not blocked.
 
-Avoid exporting full reports larger than 20 thousand records. Use filters to limit the number of rows.
+* Short reports are convenient to export up to *200 thousand* records.
+* Full reports larger than *20 thousand* records are better narrowed with filters.
 {warning}
 
 ----
@@ -340,4 +353,4 @@ h2. 10. Quick reference
 |View all fields of a record|Arrow on the left of the row|
 |Export to Excel|*Reports* → short or full|
 |Change language|Language button on the right of the header|
-|Data seems ~1 minute stale|Wait up to ~2 minutes after the change in legacy SVT|
+|Data seems ~1 minute stale|Usually wait up to ~2 minutes after the change in legacy SVT. From 01:00 to 02:30 updates wait until the window ends (on Saturdays also 04:00–06:00). Deletions appear after reconciliation around 02:00|

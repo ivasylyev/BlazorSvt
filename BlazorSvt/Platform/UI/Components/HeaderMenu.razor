@@ -14,20 +14,22 @@
 
             @foreach (var group in DomainGroups)
             {
-                <Dropdown Color="DropdownColor.Secondary">
-                    <DropdownToggleButton Class="@GetButtonClass(IsDomainActive(group))"
-                                          title="@L[group.HintResourceKey]">
+                <div class="sibur-domain-menu">
+                    <button type="button"
+                            class="btn dropdown-toggle @GetButtonClass(IsDomainActive(group))"
+                            title="@L[group.HintResourceKey]"
+                            aria-haspopup="true">
                         @L[group.TextResourceKey]
-                    </DropdownToggleButton>
-                    <DropdownMenu>
+                    </button>
+                    <div class="sibur-domain-menu-panel" role="menu">
                         @foreach (var item in group.Items)
                         {
                             <NavLink class="dropdown-item" href="@item.Url" Match="NavLinkMatch.All">
                                 @item.Text
                             </NavLink>
                         }
-                    </DropdownMenu>
-                </Dropdown>
+                    </div>
+                </div>
             }
         </div>
 

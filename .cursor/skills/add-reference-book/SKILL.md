@@ -12,7 +12,7 @@ description: >-
 Полный вертикальный срез: MDM discovery → SQL (Structure + Programmability + SnapshotSync) → деплой и верификация БД → C#-модуль.
 
 **Эталоны реализации:** `Modules/TransportRate`, `Modules/AverageRateLevel3`, `Modules/TransportLeg`, `Modules/LocationsNodes`.  
-Legacy `Legs`/`Rates` — не эталон и **не трогать** без отдельной команды (`LegId`, `RateId`).  
+Легаси-имена в реестре — `Rates` и `TransportLegs`. В коде это модули `TransportRate` и `TransportLeg`, бизнес-ключи `TransportRateId` и `TransportLegId`.  
 **Именование:** для **новых** справочников — соглашения ниже.
 
 ## Когда применять

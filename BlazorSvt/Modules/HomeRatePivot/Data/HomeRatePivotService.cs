@@ -70,7 +70,7 @@ public sealed class HomeRatePivotService(
             .ToList();
     }
 
-    private static HomeRatePivotTable Pivot(
+    internal static HomeRatePivotTable Pivot(
         IReadOnlyList<DateOnly> months,
         IReadOnlyList<HomeRatePivotFactRow> facts,
         bool useRussianNames)
@@ -123,7 +123,7 @@ public sealed class HomeRatePivotService(
         return new HomeRatePivotTable { Months = months, Rows = rows };
     }
 
-    private static string ResolveNodeName(
+    internal static string ResolveNodeName(
         bool useRussianNames,
         string? nameRu,
         string? nameEn,
@@ -137,7 +137,7 @@ public sealed class HomeRatePivotService(
         return FirstNonEmpty(nameEn, nameRu, code);
     }
 
-    private static string FirstNonEmpty(params string?[] values)
+    internal static string FirstNonEmpty(params string?[] values)
     {
         foreach (var value in values)
         {

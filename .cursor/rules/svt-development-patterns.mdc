@@ -10,7 +10,7 @@ alwaysApply: false
 
 **Полный алгоритм** — skill `add-reference-book` (`.cursor/skills/add-reference-book/SKILL.md`).
 
-Именование для **новых** справочников: `{Entity}` = `PrimitiveEntityInfo.Name`, папка `Modules/{Entity}/`, ключ `{Entity}Id`, snapshot `v2.{Entity}_Snapshot`. Существующие `Legs`/`Rates` — legacy до отдельного рефакторинга.
+Именование для **новых** справочников: `{Entity}` = `PrimitiveEntityInfo.Name`, папка `Modules/{Entity}/`, ключ `{Entity}Id`, snapshot `v2.{Entity}_Snapshot`. Уже перенесённые ставки и плечи: модули `TransportRate` / `TransportLeg`, ключи `TransportRateId` / `TransportLegId`; в реестре скоупа легаси-имена — `Rates` и `TransportLegs`.
 
 Краткая структура модуля:
 
