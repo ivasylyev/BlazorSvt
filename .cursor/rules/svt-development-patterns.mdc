@@ -19,7 +19,7 @@ alwaysApply: false
 3. `{Entity}GridSettingsService` / `{Entity}DetailSettingsService`
 4. `{Entity}Grid.razor` — `@page "/{entity}"`, `BaseGridPage<…>`
 5. `{Entity}SyncJob` в `Sync/` → `AddSingleton<ISnapshotSyncJob, …>()`
-6. `{Entity}Module.cs` → `Add{Entity}Module()` в `Host/Program.cs`
+6. `{Entity}Module.cs` → `Add{Entity}Module()` в `Host/Program.cs`; внутри — `AddCatalogMenu` (домен из catalogs-scope, ключ `HeaderMenu.{Entity}`). Шапка подхватит пункт сама; `HeaderMenu` не править
 7. SQL: `SqlScripts/Modules/{Entity}/Structure/` + `Programmability/` (`SnapshotSource`, `Detail`, `PopulateAffectedKeys`)
 
 ## Модульная регистрация

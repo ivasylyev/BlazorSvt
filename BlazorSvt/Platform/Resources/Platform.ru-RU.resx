@@ -127,19 +127,61 @@
     <value>Ставки</value>
   </data>
   <data name="HeaderMenu.ParityRates" xml:space="preserve">
-    <value>Паритеты</value>
+    <value>Паритетные ставки</value>
   </data>
   <data name="HeaderMenu.AverageRateLevel3" xml:space="preserve">
-    <value>Ср. ставки</value>
+    <value>Средневзвешенные ставки</value>
   </data>
   <data name="HeaderMenu.TransportLeg" xml:space="preserve">
-    <value>Плечи</value>
+    <value>Транспортные плечи</value>
   </data>
   <data name="HeaderMenu.LocationsNodes" xml:space="preserve">
-    <value>Узлы</value>
+    <value>Местоположения-Узлы</value>
   </data>
   <data name="HeaderMenu.Load" xml:space="preserve">
     <value>Загрузка</value>
+  </data>
+  <data name="HeaderMenu.Domain.Rates" xml:space="preserve">
+    <value>Ставки</value>
+  </data>
+  <data name="HeaderMenu.Domain.Rates.Hint" xml:space="preserve">
+    <value>Ставки</value>
+  </data>
+  <data name="HeaderMenu.Domain.Routes" xml:space="preserve">
+    <value>Маршруты</value>
+  </data>
+  <data name="HeaderMenu.Domain.Routes.Hint" xml:space="preserve">
+    <value>Маршруты</value>
+  </data>
+  <data name="HeaderMenu.Domain.Products" xml:space="preserve">
+    <value>Продукты</value>
+  </data>
+  <data name="HeaderMenu.Domain.Products.Hint" xml:space="preserve">
+    <value>Продукты</value>
+  </data>
+  <data name="HeaderMenu.Domain.Warehouses" xml:space="preserve">
+    <value>Склады</value>
+  </data>
+  <data name="HeaderMenu.Domain.Warehouses.Hint" xml:space="preserve">
+    <value>Склады и ограничения</value>
+  </data>
+  <data name="HeaderMenu.Domain.MK" xml:space="preserve">
+    <value>МК</value>
+  </data>
+  <data name="HeaderMenu.Domain.MK.Hint" xml:space="preserve">
+    <value>Матрица каналов</value>
+  </data>
+  <data name="HeaderMenu.Domain.Cbd" xml:space="preserve">
+    <value>ЦБД</value>
+  </data>
+  <data name="HeaderMenu.Domain.Cbd.Hint" xml:space="preserve">
+    <value>Интеграция с ЦБД</value>
+  </data>
+  <data name="HeaderMenu.Domain.Other" xml:space="preserve">
+    <value>Вспомогательные</value>
+  </data>
+  <data name="HeaderMenu.Domain.Other.Hint" xml:space="preserve">
+    <value>Вспомогательные справочники</value>
   </data>
   <data name="Load.Title" xml:space="preserve">
     <value>Загрузка</value>

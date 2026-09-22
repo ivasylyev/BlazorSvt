@@ -2,6 +2,7 @@ using BlazorSvt.Modules.AverageRateLevel3.Detail;
 using BlazorSvt.Modules.AverageRateLevel3.List;
 using BlazorSvt.Modules.AverageRateLevel3.Sync;
 using BlazorSvt.Platform.Sync;
+using BlazorSvt.Platform.UI.Navigation;
 
 namespace BlazorSvt.Modules.AverageRateLevel3;
 
@@ -13,6 +14,11 @@ public static class AverageRateLevel3Module
         services.AddScoped<IDetailSettingsService<AverageRateLevel3DetailDto>, AverageRateLevel3DetailSettingsService>();
 
         services.AddSingleton<ISnapshotSyncJob, AverageRateLevel3SyncJob>();
+        services.AddCatalogMenu(new CatalogMenuContribution(
+            CatalogDomain.Rates,
+            "averageratelevel3",
+            "HeaderMenu.AverageRateLevel3",
+            VisibleToEditor: true));
 
         return services;
     }

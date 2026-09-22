@@ -52,23 +52,25 @@ Use one of the URLs below (corporate network access is required):
 
 h2. 3. Menu and language
 
-At the top of the page you will find section buttons, the current user, and the language selector.
+At the top of the page you will find the *Home* button, the domain menus, the current user, and the language selector.
 
 !1-menu-en.png|width=800,alt="SVT 2.0 menu"!
 
-On the right side of the header are the *current user* (usually the display name; hover to see the login in the form *DOMAIN\account*) and the UI language (for example, *English (United States)*). When you change the language, button and column labels change. Column visibility settings are stored *separately for each language* (see section 7).
+*Home* opens the average-rates summary. The other reference books are grouped by domain: click a domain name and choose a reference book. Items inside a domain are listed *alphabetically* by the label in the current language. Hover a domain to see its full name. A domain that has no reference books yet is not shown.
+
+On the right side of the header are the *current user* (usually the display name; hover to see the login in the form *DOMAIN\account*) and the UI language (for example, *English (United States)*). When you change the language, button labels, menu items, and column labels change, and the order of reference books inside a domain is recalculated alphabetically. Column visibility settings are stored *separately for each language* (see section 7).
 
 At the bottom of the page there is a footer bar: on the left, the load time of the current page; on the right, the application version and the build date/time. During the pilot this is needed so that a support request can name a specific build.
 
 !2-footer-en.png|width=800,alt="Footer: load time and version"!
 
-||Menu button||Page title (as shown in the system)||
-|Home|Summary «Average rates by direction»|
-|Transport Rates|Rates|
-|Average Rates|Average Rate|
-|Parities|Parity rates|
-|Transport Legs|Transport Legs|
-|Locations-Nodes|Locations-Nodes|
+||Domain||Menu item||Page title (as shown in the system)||
+|—|Home|Summary «Average rates by direction»|
+|Rates|Average Rate|Average Rate|
+|Rates|Parity rates|Parity rates|
+|Rates|Rates|Rates|
+|Routes|Locations-Nodes|Locations-Nodes|
+|Routes|Transport Legs|Transport Legs|
 
 ----
 
@@ -88,7 +90,7 @@ Product and direction filters on this page are not configurable by the user — 
 
 h2. 5. Working with a reference book (common rules)
 
-Open the required section from the menu. A table of records opens.
+Open a domain in the top menu and choose a reference book. A table of records opens.
 
 *Common for all reference books:*
 
@@ -330,7 +332,7 @@ In the request, include:
 h2. 10. Quick reference
 
 ||Task||What to do||
-|Open a reference book|Button in the top menu|
+|Open a reference book|Domain menu in the header → reference book item|
 |Find records|Filters under column headers|
 |Clear search|*Reset Filters*|
 |Show / hide columns|*Settings* → switches → *Ok*|

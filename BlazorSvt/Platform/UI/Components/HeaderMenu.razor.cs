@@ -1,4 +1,4 @@
-﻿using BlazorBootstrap;
+﻿using System.Globalization;
 using BlazorSvt.Platform.Access;
 using BlazorSvt.Platform.UI.Navigation;
 using Microsoft.AspNetCore.Components;
@@ -10,33 +10,30 @@ public partial class HeaderMenu : SvtComponentBase, IDisposable
 {
     [Inject]
     private ICurrentUser CurrentUser { get; set; } = default!;
-    private List<MenuItem>? menuItems = default;
-    private List<MenuItem> GetMenuItems() =>
-    [
-        new() { Url = "", Text = L["HeaderMenu.Home"] , Icon = IconName.HouseDoorFill },
-        new() { Url = "transportrate", Text = L["HeaderMenu.TransportRate"], Icon = IconName.Calculator },
-        new() { Url = "averageratelevel3", Text = L["HeaderMenu.AverageRateLevel3"], Icon = IconName.CalculatorFill },
-        new() { Url = "parityrates", Text = L["HeaderMenu.ParityRates"], Icon = IconName.Percent },
-        new() { Url = "transportleg", Text = L["HeaderMenu.TransportLeg"], Icon = IconName.SignpostSplit },
-        new() { Url = "locationsnodes", Text = L["HeaderMenu.LocationsNodes"], Icon = IconName.GeoAltFill },
-        //    new() { Url = "load", Text = L["HeaderMenu.Load"], Icon = IconName.Upload }
-    ];
+
+    [Inject]
+    private IEnumerable<CatalogMenuContribution> Contributions { get; set; } = [];
+
+    private IReadOnlyList<MenuDomainGroup> DomainGroups =>
+        MenuComposer.Compose(Contributions, key => L[key].Value, CultureInfo.CurrentUICulture);
 
     protected override void OnInitialized()
     {
-        menuItems = GetMenuItems();
         Nav.LocationChanged += OnLocationChanged;
     }
 
     private void OnLocationChanged(object? sender, LocationChangedEventArgs e)
     {
-        StateHasChanged(); // перерисовать меню, чтобы обновилась подсветка
+        StateHasChanged();
     }
 
-    private string GetButtonClass(string url)
-    {
-        return IsActive(url) ? "sibur-dark-inverted-btn" : "sibur-dark-btn";
-    }
+    private string GetButtonClass(bool active) =>
+        active ? "sibur-dark-inverted-btn" : "sibur-dark-btn";
+
+    private bool IsHomeActive() => IsActive("");
+
+    private bool IsDomainActive(MenuDomainGroup group) =>
+        group.Items.Any(item => IsActive(item.Url));
 
     private bool IsActive(string url)
     {
@@ -50,4 +47,3 @@ public partial class HeaderMenu : SvtComponentBase, IDisposable
         Nav.LocationChanged -= OnLocationChanged;
     }
 }
-

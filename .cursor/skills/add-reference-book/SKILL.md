@@ -232,8 +232,7 @@ python .cursor/skills/add-reference-book/scripts/generate-module-resx.py `
 
 **Заголовок справочника** (`{Entity}Grid.Title` и `HeaderMenu.{Entity}`):
 
-**По умолчанию** оба ключа получают одно и то же значение из MDM (ниже).  
-**Исключение:** пользователь может задать **укороченный** пункт меню (`HeaderMenu.{Entity}`), оставив `{Entity}Grid.Title` полным из MDM. Пример: меню «Паритеты» / `Parities`, title «Паритетные ставки» / `Parity rates`. Без явного запроса на укорочение меню — держать значения одинаковыми.
+Оба ключа получают одно и то же значение из MDM (ниже). Пункт меню совпадает с заголовком страницы, без сокращений.
 
 Русский title — из MDM (`PrimitiveEntityInfo.Name` = системное имя `{Entity}`):
 
@@ -243,7 +242,7 @@ FROM PrimitiveEntityInfo
 WHERE [Name] = '{Entity}';
 ```
 
-→ `{Entity}.ru-RU.resx` (`{Entity}Grid.Title`); по умолчанию то же → `Platform.ru-RU.resx` (`HeaderMenu.{Entity}`).
+→ `{Entity}.ru-RU.resx` (`{Entity}Grid.Title`) и то же значение → `Platform.ru-RU.resx` (`HeaderMenu.{Entity}`).
 
 Пустой `Description` → **стоп, спросить пользователя**.
 
@@ -263,11 +262,11 @@ WHERE DRu.[Value] = (
   AND DRu.LocaleId = 2;
 ```
 
-→ `{Entity}.resx` (`{Entity}Grid.Title`); по умолчанию то же → `Platform.resx` (`HeaderMenu.{Entity}`).
+→ `{Entity}.resx` (`{Entity}Grid.Title`) и то же значение → `Platform.resx` (`HeaderMenu.{Entity}`).
 
 Если запрос не вернул строку — перевод `Description` **агентом** при генерации; передать в скрипт `--title-en "..."`.
 
-Скрипт: `--platform-resources-dir BlazorSvt/Platform/Resources` — обновляет `HeaderMenu.{Entity}` в Platform resx (при укороченном меню — править `HeaderMenu.*` вручную после скрипта или не перезаписывать короткие значения).
+Скрипт: `--platform-resources-dir BlazorSvt/Platform/Resources` — пишет в Platform resx тот же `HeaderMenu.{Entity}`, что и `{Entity}Grid.Title`.
 
 ### 6. Ссылочные атрибуты
 
@@ -618,7 +617,7 @@ public required RateTypeEn RateTypeIdEn { get; set; }
 
 Ключи в **Platform** resx:
 
-- `HeaderMenu.{Entity}` (пункт меню; по умолчанию = `{Entity}Grid.Title`, либо укороченный текст по явному запросу — см. п.5)
+- `HeaderMenu.{Entity}` (пункт меню = `{Entity}Grid.Title`, без сокращений)
 - Прочие cross-cutting строки не добавлять в модульный resx
 
 В `{Entity}Grid.razor.cs` — `IStringLocalizer<Resources.{Entity}> EL` для `PageTitle` и специфичных сообщений; `SvtComponentBase.L` — только platform-строки.
@@ -631,15 +630,32 @@ public required RateTypeEn RateTypeIdEn { get; set; }
 services.AddScoped<IGridSettingsService<{Entity}Dto>, {Entity}GridSettingsService>();
 services.AddScoped<IDetailSettingsService<{Entity}DetailDto>, {Entity}DetailSettingsService>();
 services.AddSingleton<ISnapshotSyncJob, {Entity}SyncJob>();
+services.AddCatalogMenu(new CatalogMenuContribution(
+    CatalogDomain.{Domain},
+    "{entity}",
+    "HeaderMenu.{Entity}",
+    VisibleToEditor: true));
 ```
+
+`{entity}` — сегмент `@page` без ведущего слэша. В файле модуля нужен `using BlazorSvt.Platform.UI.Navigation;`. `{Domain}` — член `CatalogDomain` по домену справочника в [catalogs-scope.md](../svt-architecture/catalogs-scope.md):
+
+| Домен в реестре | `CatalogDomain` |
+|---|---|
+| Ставки | `Rates` |
+| Маршруты | `Routes` |
+| Продукты | `Products` |
+| Склады и ограничения | `Warehouses` |
+| Матрица каналов | `MK` |
+| Интеграция с ЦБД | `Cbd` |
+| Вспомогательные | `Other` |
+
+`VisibleToEditor` — колонка «Меню ЕО» (`да` → `true`, `нет` → `false`). До MVP 0.4 шапка по этому флагу не фильтрует. Порядок пункта не задаётся: шапка сортирует подписи по алфавиту текущего языка. `HeaderMenu` для нового справочника не менять.
 
 **`{Entity}SyncJob`:** эталон `TransportRateSyncJob` / `AverageRateLevel3SyncJob` — consts `PrimitiveEntityData_*` с комментариями имён справочников; Sources = основная + каскад (узлы / ProductGroup / MTR и т.д. по проекции). Стабильные словари (RateType, Currency, …) **не** включать.
 
 **`Host/Program.cs`:** `builder.Services.Add{Entity}Module();`
 
-**`HeaderMenu.razor.cs`:** пункт с `Url = "{entity}"` (lowercase), текст `L["HeaderMenu.{Entity}"]`, иконка — произвольно по аналогии.
-
-URL меню **должен совпадать** с `@page` в `.razor`.
+URL вклада **должен совпадать** с `@page` в `.razor`.
 
 ---
 
@@ -703,7 +719,7 @@ dotnet test --filter "Category=Integration"
 - [ ] SyncState init с `LastRowVersion` / `LastRunUtc`
 - [ ] README + `Publish-AllSql.ps1` обновлены
 - [ ] Structure / Programmability задеплоены и верифицированы
-- [ ] C# модуль (List/Detail/Sync), DI, меню, resx
+- [ ] C# модуль (List/Detail/Sync), DI с `AddCatalogMenu`, resx
 - [ ] Общие enum в `Platform/Domain/IdsEnum` (рефакторинг затронутых модулей)
 - [ ] Unit: `GridColumnMetadataBuilderTests` + `SnapshotSyncJobContractTests`
 - [ ] Integration: grid + detail smoke + FTS
