@@ -2,7 +2,7 @@
 @inject IAppBuildInfo AppBuildInfo
 @inherits SvtComponentBase
 
-<div>
+<div class="text-muted">
     <span>
         @string.Format(L["BuildInfoPanel.Format"], AppBuildInfo.Current.Version, AppBuildInfo.Current.BuildTimeUtc.ToLocalTime())
     </span>
