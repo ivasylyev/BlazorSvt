@@ -100,16 +100,8 @@ h1:focus {
 
 .sibur-domain-menu-panel {
     display: none;
-    position: absolute;
     top: 100%;
     left: 0;
-    z-index: 20;
-    min-width: 12rem;
-    padding: 0.5rem 0;
-    background-color: #fff;
-    border: 1px solid rgba(0, 0, 0, 0.15);
-    border-radius: 0.375rem;
-    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
 }
 
 .sibur-domain-menu:hover .sibur-domain-menu-panel,
@@ -118,7 +110,17 @@ h1:focus {
 }
 
 .sibur-domain-menu-panel .dropdown-item {
+    display: block;
+    width: 100%;
+    padding: var(--bs-dropdown-item-padding-y, 0.25rem) var(--bs-dropdown-item-padding-x, 1rem);
     white-space: nowrap;
+    text-decoration: none;
+}
+
+.sibur-domain-menu-panel .dropdown-item:hover,
+.sibur-domain-menu-panel .dropdown-item:focus {
+    color: var(--bs-dropdown-link-hover-color, #1e2125);
+    background-color: var(--bs-dropdown-link-hover-bg, #e9ecef);
 }
 
 /* Switch  */

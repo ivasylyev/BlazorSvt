@@ -17,18 +17,19 @@
                 <div class="sibur-domain-menu">
                     <button type="button"
                             class="btn dropdown-toggle @GetButtonClass(IsDomainActive(group))"
-                            title="@L[group.HintResourceKey]"
                             aria-haspopup="true">
                         @L[group.TextResourceKey]
                     </button>
-                    <div class="sibur-domain-menu-panel" role="menu">
+                    <ul class="dropdown-menu sibur-domain-menu-panel">
                         @foreach (var item in group.Items)
                         {
-                            <NavLink class="dropdown-item" href="@item.Url" Match="NavLinkMatch.All">
-                                @item.Text
-                            </NavLink>
+                            <li>
+                                <NavLink class="dropdown-item" href="@item.Url" Match="NavLinkMatch.All">
+                                    @item.Text
+                                </NavLink>
+                            </li>
                         }
-                    </div>
+                    </ul>
                 </div>
             }
         </div>

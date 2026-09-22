@@ -61,7 +61,7 @@ At the top of the page you will find the *Home* button, the domain menus, the cu
 
 !1-menu-en.png|width=800,alt="SVT 2.0 menu"!
 
-*Home* opens the average-rates summary. The other reference books are grouped by domain: hover a domain name and choose a reference book. Items inside a domain are listed *alphabetically* by the label in the current language. The hover tooltip shows the domain's full name. A domain that has no reference books yet is not shown.
+*Home* opens the average-rates summary. The other reference books are grouped by domain: hover a domain name and choose a reference book. Items inside a domain are listed *alphabetically* by the label in the current language. A domain that has no reference books yet is not shown.
 
 On the right side of the header are the *current user* (usually the display name; hover to see the login in the form *DOMAIN\account*) and the UI language (for example, *English (United States)*). When you change the language, button labels, menu items, and column labels change, and the order of reference books inside a domain is recalculated alphabetically. Column visibility settings are stored *separately for each language* (see section 7).
 
