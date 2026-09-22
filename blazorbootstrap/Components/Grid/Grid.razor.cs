@@ -193,11 +193,11 @@ public partial class Grid<TItem> : BlazorBootstrapComponentBase
             return;
 
         var filterableColumns = columns
-            .Where(column => column.PropertyName != "IsArchive" && column.Filterable && column.GetFilterOperator() != FilterOperator.None && !string.IsNullOrWhiteSpace(column.GetFilterValue()));
+            .Where(column => column.Filterable && column.GetFilterOperator() != FilterOperator.None && !string.IsNullOrWhiteSpace(column.GetFilterValue()));
 
         foreach (var column in filterableColumns)
         {
-            column.SetFilterValue(null);
+            column.SetFilterValue(column.GetInitialFilterValue());
             //column.SetDefaultFilter();
         }
 

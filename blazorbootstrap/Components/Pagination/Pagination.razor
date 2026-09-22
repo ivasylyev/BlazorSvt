@@ -14,7 +14,7 @@
         {
             var target = pageNumber;
             var label = target.ToString();
-            <PaginationItem Active="ActivePageNumber == target" Text="@label" @onclick="() => SetPageNumberTo(target)"/>
+            <PaginationItem Class="fw-bold" Active="ActivePageNumber == target" Text="@label" @onclick="() => SetPageNumberTo(target)"/>
         }
         @foreach (var jump in PaginationLinks.GetForwardJumps(ActivePageNumber, TotalPages))
         {

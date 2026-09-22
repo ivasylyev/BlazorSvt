@@ -14,6 +14,8 @@ public partial class GridColumn<TItem> : BlazorBootstrapComponentBase
 
     private string filterValue = default!;
 
+    private string initialFilterValue = default!;
+
     private bool isVisible = true;
 
     private RenderFragment? headerTemplate;
@@ -28,6 +30,7 @@ public partial class GridColumn<TItem> : BlazorBootstrapComponentBase
 
         filterOperator = FilterOperator;
         filterValue = FilterValue;
+        initialFilterValue = FilterValue;
 
         currentSortDirection = SortDirection;
         defaultSortDirection = SortDirection;
@@ -47,6 +50,8 @@ public partial class GridColumn<TItem> : BlazorBootstrapComponentBase
     internal FilterOperator GetFilterOperator() => filterOperator;
 
     internal string GetFilterValue() => filterValue;
+
+    internal string GetInitialFilterValue() => initialFilterValue;
 
     internal Type GetPropertyType() => typeof(TItem).GetPropertyType(PropertyName)!;
 
