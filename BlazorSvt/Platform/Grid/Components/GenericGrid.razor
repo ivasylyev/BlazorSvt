@@ -1,6 +1,7 @@
 ﻿@typeparam TItem
 @typeparam TDetailItem
 @inherits SvtComponentBase
+@using BlazorSvt.Platform.Grid.Services
 <PageTitle>@PageTitle</PageTitle>
 
 <div class="d-flex justify-content-between align-items-center">
@@ -33,30 +34,33 @@
                OnReset="OnResetClick" />
 <ReportConfirmModal @ref="reportConfirmModal" />
 <div class="sibur-grid">
-    <Grid @ref="grid"
-          TItem="TItem"
-          Class="table table-hover table-bordered table-striped"
-          DataProvider="DataProvider"
-          AllowFiltering="true"
-          AllowPaging="true"
-          AllowSorting="true"
-          EnumFilterSelectText = "@L["GenericGrid.EnumFilterSelectText"]"
-          PaginationItemsTextFormat="@L["GenericGrid.PaginationItemsTextFormat"]"
-          EmptyText="@L["GenericGrid.EmptyText"]"
-          ItemsPerPageText="@L["GenericGrid.ItemsPerPageText"]"
-          FiltersTranslationProvider="GridFiltersTranslationProvider"
-          AllowDetailView="AllowDetailView"
-          RowKeySelector="DetailKeySelector"
-          Responsive="true">
-
-        @if (gridSettings is null)
-        {
-            <PlaceholderContainer Animation="PlaceholderAnimation.Glow">
-                <Placeholder Width="PlaceholderWidth.Col12" />
-            </PlaceholderContainer>
-        }
-        else
-        {
+    @if (gridSettings is null || pageSize is null)
+    {
+        <PlaceholderContainer Animation="PlaceholderAnimation.Glow">
+            <Placeholder Width="PlaceholderWidth.Col12" />
+        </PlaceholderContainer>
+    }
+    else
+    {
+        <Grid @ref="grid"
+              TItem="TItem"
+              Class="table table-hover table-bordered table-striped"
+              DataProvider="DataProvider"
+              AllowFiltering="true"
+              AllowPaging="true"
+              AllowSorting="true"
+              PageSize="pageSize.Value"
+              PageSizeSelectorVisible="true"
+              PageSizeSelectorItems="GridPageSizes.Allowed"
+              PageSizeChanged="OnPageSizeChanged"
+              EnumFilterSelectText = "@L["GenericGrid.EnumFilterSelectText"]"
+              PaginationItemsTextFormat="@L["GenericGrid.PaginationItemsTextFormat"]"
+              EmptyText="@L["GenericGrid.EmptyText"]"
+              ItemsPerPageText="@L["GenericGrid.ItemsPerPageText"]"
+              FiltersTranslationProvider="GridFiltersTranslationProvider"
+              AllowDetailView="AllowDetailView"
+              RowKeySelector="DetailKeySelector"
+              Responsive="true">
             <GridColumns>
                 @foreach (var settings in gridSettings.ColumnSettings)
                 {
@@ -84,6 +88,6 @@
                                  Template="DetailViewTemplate"/>
                
             </GridDetailView>
-        }
-    </Grid>
+        </Grid>
+    }
 </div>

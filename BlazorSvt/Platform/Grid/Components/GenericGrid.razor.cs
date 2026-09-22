@@ -14,6 +14,7 @@ public partial class GenericGrid<TItem, TDetailItem> : SvtComponentBase, IDispos
     private SettingsModal settingsModal = default!;
     private ReportConfirmModal reportConfirmModal = default!;
     private GridColumnSettingsCollection<TItem>? gridSettings;
+    private int? pageSize;
     private CancellationTokenSource? reportCancellationTokenSource;
 
     #endregion
@@ -25,6 +26,9 @@ public partial class GenericGrid<TItem, TDetailItem> : SvtComponentBase, IDispos
 
     [Inject]
     public IGridSettingsService<TItem> GridSettingsService { get; set; } = default!;
+
+    [Inject]
+    public IGridPageSizeService GridPageSizeService { get; set; } = default!;
 
     [Inject]
     public GridReportExporter<TItem, TDetailItem> ReportExporter { get; set; } = default!;
@@ -73,6 +77,7 @@ public partial class GenericGrid<TItem, TDetailItem> : SvtComponentBase, IDispos
         if (firstRender)
         {
             gridSettings = await GridSettingsService.GetGridSettingsAsync(Lang);
+            pageSize = await GridPageSizeService.GetAsync();
             StateHasChanged();
         }
     }
@@ -116,8 +121,17 @@ public partial class GenericGrid<TItem, TDetailItem> : SvtComponentBase, IDispos
 
     #region Filters
 
+    private async Task OnPageSizeChanged(int newPageSize)
+    {
+        pageSize = newPageSize;
+        await GridPageSizeService.SaveAsync(newPageSize);
+    }
+
     private async Task ClearFiltersAsync()
     {
+        if (grid is null)
+            return;
+
         grid.ClearFilters();
         await grid.RefreshDataAsync();
     }
@@ -176,7 +190,7 @@ public partial class GenericGrid<TItem, TDetailItem> : SvtComponentBase, IDispos
         int confirmationThreshold,
         Func<int, CancellationToken, Task> generateReport)
     {
-        if (gridSettings is null)
+        if (grid is null || gridSettings is null)
         {
             Logger.LogWarning("{ReportName} report skipped: grid settings are not loaded yet", reportName);
             return;
