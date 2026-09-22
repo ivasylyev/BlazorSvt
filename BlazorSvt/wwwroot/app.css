@@ -123,6 +123,14 @@ h1:focus {
     background-color: var(--bs-dropdown-link-hover-bg, #e9ecef);
 }
 
+.dropdown-item.active,
+.dropdown-item:active,
+.sibur-domain-menu-panel .dropdown-item.active,
+.sibur-domain-menu-panel .dropdown-item:active {
+    color: #fff;
+    background-color: #008c95;
+}
+
 /* Switch  */
 /* Цвет фона включённого тумблера */
 .sibur-switch-color .form-check-input:checked {
