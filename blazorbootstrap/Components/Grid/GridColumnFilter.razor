@@ -42,11 +42,11 @@
     }
     else if (PropertyTypeName == StringConstants.PropertyTypeNameDateOnly)
     {
-        <input @key="inputKey" class="form-control" style="@filterStyle" type="date" value="@filterValue" @oninput="@(async args => await OnFilterValueChangedAsync(args))" />
+        <input @key="inputKey" class="form-control" style="@filterStyle" type="date" lang="@CultureInfo.CurrentUICulture.Name" value="@filterValue" @oninput="@(async args => await OnFilterValueChangedAsync(args))" />
     }
     else if (PropertyTypeName == StringConstants.PropertyTypeNameDateTime)
     {
-        <input @key="inputKey" class="form-control" style="@filterStyle" type="datetime-local" value="@filterValue" @oninput="@(async args => await OnFilterValueChangedAsync(args))" />
+        <input @key="inputKey" class="form-control" style="@filterStyle" type="datetime-local" lang="@CultureInfo.CurrentUICulture.Name" value="@filterValue" @oninput="@(async args => await OnFilterValueChangedAsync(args))" />
     }
     else if (PropertyTypeName == StringConstants.PropertyTypeNameBoolean)
     {
