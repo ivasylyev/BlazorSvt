@@ -19,25 +19,6 @@ public partial class Pagination : BlazorBootstrapComponentBase
         return nextPageNumber;
     }
 
-    private int GetPageFromInclusive()
-    {
-        var q = ActivePageNumber / DisplayPages;
-        var r = ActivePageNumber % DisplayPages;
-
-        if (q < 1)
-            return 1;
-
-        if (q > 0 && r == 0)
-            return (q - 1) * DisplayPages + 1;
-
-        if (q > 1 && r < DisplayPages)
-            return q * DisplayPages + 1;
-
-        return ActivePageNumber / DisplayPages * DisplayPages + 1;
-    }
-
-    private int GetPageToExclusive() => TotalPages == 0 ? 1 : Math.Min(TotalPages, pageFromInclusive + DisplayPages - 1);
-
     private int GetPreviousPageNumber()
     {
         var previousPageNUmber = 1;
@@ -91,13 +72,13 @@ public partial class Pagination : BlazorBootstrapComponentBase
     public Alignment Alignment { get; set; } = Alignment.None;
 
     /// <summary>
-    /// Gets or sets the maximum page links to be displayed.
+    /// Gets or sets how many page numbers are shown around the active page.
     /// </summary>
     /// <remarks>
-    /// Default value is 5.
+    /// Default value is 5: two numbers on each side when the active page is far enough from either end.
     /// </remarks>
     [Parameter]
-    public int DisplayPages { get; set; } = 5;
+    public int DisplayPages { get; set; } = PaginationLinks.DefaultWindowSize;
 
     /// <summary>
     /// Gets or sets the first link icon.
@@ -170,10 +151,6 @@ public partial class Pagination : BlazorBootstrapComponentBase
     /// </summary>
     [Parameter]
     public EventCallback<int> PageChanged { get; set; }
-
-    private int pageFromInclusive => GetPageFromInclusive();
-
-    private int pageToExclusive => GetPageToExclusive();
 
     /// <summary>
     /// Gets or sets the previous link icon.

@@ -21,7 +21,7 @@ description: >-
 
 **Целевой стек**: Blazor Server + MS SQL. **Стиль**: модульный монолит. **Миграция**: Strangler Fig с общей БД; SoT = легаси до cutover; exit dual-run волнами → инкрементальный SoT flip по доменам справочников → единый финальный демонтаж легаси в конце (детали — в roadmap.md, §2а).
 
-**Текущий статус**: фреймворк read-only справочников и отчётов (TransportLeg, TransportRate, AverageRateLevel3, LocationsNodes, ParityRates; legacy: Legs, Rates); watermark-sync; Windows Auth + роли `dbo.Role` (бинарный read); зачаток Import; каркас unit + integration тестов в `tests/`. Скоуп справочников (63 в скоупе / 38 вне, работы RO/E/L, меню, приоритеты) — [catalogs-scope.md](catalogs-scope.md). Дорожная карта MVP — [roadmap.md](roadmap.md); чеклист работ — [backlog.md](backlog.md).
+**Текущий статус**: фреймворк read-only справочников и отчётов (TransportLeg, TransportRate, AverageRateLevel3, LocationsNodes, ParityRates; в реестре легаси-имена TransportLegs и Rates); watermark-sync; Windows Auth + роли `dbo.Role` (бинарный read); зачаток Import; каркас unit + integration тестов в `tests/`. Прототип домашней сводки (`HomeRatePivot`) читает снимки AverageRateLevel3 и LocationsNodes; правило отбора ставки пока в тексте SQL. Дашборды по дорожной карте остаются на MVP 1.1. Скоуп справочников (63 в скоупе / 38 вне, работы RO/E/L, меню, приоритеты) — [catalogs-scope.md](catalogs-scope.md). Дорожная карта MVP — [roadmap.md](roadmap.md); чеклист работ — [backlog.md](backlog.md).
 
 ## Чеклист перед реализацией
 

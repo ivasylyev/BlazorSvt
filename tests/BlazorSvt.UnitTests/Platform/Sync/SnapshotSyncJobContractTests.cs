@@ -79,15 +79,11 @@ public class SnapshotSyncJobContractTests
             },
         };
 
-    public static TheoryData<ISnapshotSyncJob> AllJobs =>
-        new()
-        {
-            new LocationsNodesSyncJob(),
-            new TransportLegSyncJob(),
-            new TransportRateSyncJob(),
-            new ParityRatesSyncJob(),
-            new AverageRateLevel3SyncJob(),
-        };
+    public static IEnumerable<object[]> AllJobs()
+    {
+        foreach (var row in RegisteredJobs)
+            yield return [row[0]!];
+    }
 
     [Theory]
     [MemberData(nameof(RegisteredJobs))]
@@ -109,6 +105,30 @@ public class SnapshotSyncJobContractTests
         var gridMetadata = GridColumnMetadataBuilder.GetMetadata(dtoType);
         gridMetadata.TableName.Should().Be(job.SnapshotTable);
         gridMetadata.EntityKeyPropertyName.Should().Be(job.EntityKeyColumn);
+    }
+
+    [Theory]
+    [MemberData(nameof(RegisteredJobs))]
+    public void GetMetadata_ReturnsSnapshotTableAndEntityKey(
+        ISnapshotSyncJob job,
+        Type dtoType,
+        string entity,
+        string expectedTable,
+        string expectedEntityKey,
+        string sourceView,
+        string populateProc)
+    {
+        _ = job;
+        _ = entity;
+        _ = sourceView;
+        _ = populateProc;
+
+        var metadata = GridColumnMetadataBuilder.GetMetadata(dtoType);
+
+        metadata.TableName.Should().Be(expectedTable);
+        metadata.EntityKeyPropertyName.Should().Be(expectedEntityKey);
+        metadata.Columns.Should().NotBeEmpty();
+        metadata.Columns.Should().ContainSingle(c => c.IsEntityKey);
     }
 
     [Theory]

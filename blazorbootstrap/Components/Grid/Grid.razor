@@ -67,7 +67,7 @@
                                 }
                             }
 
-                            <th class="@string.Join(" ", columnClassList)" style="@string.Join(";", columnStyleList)">
+                            <th @key="column.PropertyName" class="@string.Join(" ", columnClassList)" style="@string.Join(";", columnStyleList)">
                                 @if (column.Filterable)
                                 {
                                     <GridColumnFilter EnumFilterSelectText="@EnumFilterSelectText"

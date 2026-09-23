@@ -124,13 +124,13 @@
 	  <value>Home</value>
   </data>
   <data name="HeaderMenu.TransportRate" xml:space="preserve">
-	  <value>Transport Rates</value>
+	  <value>Rates</value>
   </data>
   <data name="HeaderMenu.ParityRates" xml:space="preserve">
-	  <value>Parities</value>
+	  <value>Parity rates</value>
   </data>
   <data name="HeaderMenu.AverageRateLevel3" xml:space="preserve">
-	  <value>Average Rates</value>
+	  <value>Average Rate</value>
   </data>
   <data name="HeaderMenu.TransportLeg" xml:space="preserve">
 	  <value>Transport Legs</value>
@@ -140,6 +140,48 @@
   </data>
   <data name="HeaderMenu.Load" xml:space="preserve">
 	  <value>Load</value>
+  </data>
+  <data name="HeaderMenu.Domain.Rates" xml:space="preserve">
+	  <value>Rates</value>
+  </data>
+  <data name="HeaderMenu.Domain.Rates.Hint" xml:space="preserve">
+	  <value>Rates</value>
+  </data>
+  <data name="HeaderMenu.Domain.Routes" xml:space="preserve">
+	  <value>Routes</value>
+  </data>
+  <data name="HeaderMenu.Domain.Routes.Hint" xml:space="preserve">
+	  <value>Routes</value>
+  </data>
+  <data name="HeaderMenu.Domain.Products" xml:space="preserve">
+	  <value>Products</value>
+  </data>
+  <data name="HeaderMenu.Domain.Products.Hint" xml:space="preserve">
+	  <value>Products</value>
+  </data>
+  <data name="HeaderMenu.Domain.Warehouses" xml:space="preserve">
+	  <value>Warehouses</value>
+  </data>
+  <data name="HeaderMenu.Domain.Warehouses.Hint" xml:space="preserve">
+	  <value>Warehouses and restrictions</value>
+  </data>
+  <data name="HeaderMenu.Domain.MK" xml:space="preserve">
+	  <value>MK</value>
+  </data>
+  <data name="HeaderMenu.Domain.MK.Hint" xml:space="preserve">
+	  <value>Channel matrix</value>
+  </data>
+  <data name="HeaderMenu.Domain.Cbd" xml:space="preserve">
+	  <value>CBD</value>
+  </data>
+  <data name="HeaderMenu.Domain.Cbd.Hint" xml:space="preserve">
+	  <value>CBD integration</value>
+  </data>
+  <data name="HeaderMenu.Domain.Other" xml:space="preserve">
+	  <value>Auxiliary</value>
+  </data>
+  <data name="HeaderMenu.Domain.Other.Hint" xml:space="preserve">
+	  <value>Auxiliary catalogs</value>
   </data>
   <data name="Load.Title" xml:space="preserve">
 	  <value>Load</value>
@@ -207,6 +249,9 @@
   
   <data name="LoadTimePanel.NotLoaded" xml:space="preserve">
 	  <value>Not Loaded</value>
+  </data>
+  <data name="BuildInfoPanel.Format" xml:space="preserve">
+	  <value>Version {0} · {1:yyyy-MM-dd HH:mm:ss}</value>
   </data>
   <data name="ExcelLoader.Load" xml:space="preserve">
 	  <value>Load</value>

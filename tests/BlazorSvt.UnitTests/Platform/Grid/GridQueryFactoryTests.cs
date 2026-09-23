@@ -40,6 +40,35 @@ public class GridQueryFactoryTests
     }
 
     [Fact]
+    public void Create_WhenSortingIsAscending_MapsToAscAndPropertyName()
+    {
+        var request = CreateRequest(sorting:
+        [
+            new SortingItem<TransportLegDto>("Code", x => x.Code, SortDirection.Ascending)
+        ]);
+
+        var query = _factory.Create(request);
+
+        query.Sort.PropertyName.Should().Be("Code");
+        query.Sort.Direction.Should().Be("ASC");
+    }
+
+    [Fact]
+    public void Create_WhenSortingHasTwoItems_UsesOnlyTheFirst()
+    {
+        var request = CreateRequest(sorting:
+        [
+            new SortingItem<TransportLegDto>("Code", x => x.Code, SortDirection.Ascending),
+            new SortingItem<TransportLegDto>("NodeFromNameRu", x => x.NodeFromNameRu, SortDirection.Descending)
+        ]);
+
+        var query = _factory.Create(request);
+
+        query.Sort.PropertyName.Should().Be("Code");
+        query.Sort.Direction.Should().Be("ASC");
+    }
+
+    [Fact]
     public void Create_WhenFiltersAreNull_AddsDefaultIsArchiveFalseFilter()
     {
         var request = CreateRequest(filters: null);
@@ -48,6 +77,32 @@ public class GridQueryFactoryTests
 
         query.Filters.Should().ContainSingle()
             .Which.Should().BeEquivalentTo(new GridFilter("IsArchive", "False", GridFilterOperators.EqualsOperator));
+    }
+
+    [Fact]
+    public void Create_WhenFiltersAreEmpty_ReturnsNoFilters()
+    {
+        var request = CreateRequest(filters: []);
+
+        var query = _factory.Create(request);
+
+        query.Filters.Should().BeEmpty();
+    }
+
+    [Fact]
+    public void Create_WhenFiltersAreProvidedWithoutIsArchive_KeepsOnlyThoseFilters()
+    {
+        var request = CreateRequest(filters:
+        [
+            new FilterItem(nameof(TransportLegDto.Code), "LEG-1", FilterOperator.Equals, StringComparison.Ordinal),
+            new FilterItem(nameof(TransportLegDto.NodeFromNameRu), "казань", FilterOperator.Contains, StringComparison.OrdinalIgnoreCase)
+        ]);
+
+        var query = _factory.Create(request);
+
+        query.Filters.Should().Equal(
+            new GridFilter(nameof(TransportLegDto.Code), "LEG-1", GridFilterOperators.EqualsOperator),
+            new GridFilter(nameof(TransportLegDto.NodeFromNameRu), "казань", GridFilterOperators.ContainsOperator));
     }
 
     [Fact]
@@ -82,6 +137,22 @@ public class GridQueryFactoryTests
             && f.Operator == GridFilterOperators.EqualsOperator);
     }
 
+    [Theory]
+    [InlineData("Nope")]
+    [InlineData("rail")]
+    public void Create_WhenEnumFilterValueIsNotParsed_KeepsOriginalString(string value)
+    {
+        var request = CreateRequest(filters:
+        [
+            new FilterItem(nameof(TransportLegDto.TransportKindIdRu), value, FilterOperator.Equals, StringComparison.Ordinal)
+        ]);
+
+        var query = _factory.Create(request);
+
+        query.Filters.Should().ContainSingle()
+            .Which.Value.Should().Be(value);
+    }
+
     [Fact]
     public void Create_WhenPageNumberAndPageSizeOverridden_UsesOverrideValues()
     {
@@ -98,6 +169,9 @@ public class GridQueryFactoryTests
     [InlineData(FilterOperator.LessThanOrEquals, GridFilterOperators.LessThanOrEqualsOperator)]
     [InlineData(FilterOperator.NotEquals, GridFilterOperators.NotEqualsOperator)]
     [InlineData(FilterOperator.Clear, GridFilterOperators.ClearOperator)]
+    [InlineData(FilterOperator.DoesNotContain, GridFilterOperators.DoesNotContainOperator)]
+    [InlineData(FilterOperator.StartsWith, GridFilterOperators.StartsWithOperator)]
+    [InlineData(FilterOperator.EndsWith, GridFilterOperators.EndsWithOperator)]
     public void Create_MapsFilterOperators(FilterOperator sourceOperator, string expectedOperator)
     {
         var request = CreateRequest(filters:
@@ -107,7 +181,29 @@ public class GridQueryFactoryTests
 
         var query = _factory.Create(request);
 
-        query.Filters.Should().Contain(f => f.Operator == expectedOperator);
+        query.Filters.Should().ContainSingle(f =>
+            f.PropertyName == nameof(TransportLegDto.Code)
+            && f.Value == "LEG-1"
+            && f.Operator == expectedOperator);
+    }
+
+    [Theory]
+    [InlineData(FilterOperator.IsNull)]
+    [InlineData((FilterOperator)999)]
+    public void Create_WhenOperatorIsNotMapped_UsesEqualsAndKeepsValue(FilterOperator sourceOperator)
+    {
+        var request = CreateRequest(filters:
+        [
+            new FilterItem(nameof(TransportLegDto.Code), "LEG-1", sourceOperator, StringComparison.Ordinal)
+        ]);
+
+        var query = _factory.Create(request);
+
+        query.Filters.Should().ContainSingle()
+            .Which.Should().BeEquivalentTo(new GridFilter(
+                nameof(TransportLegDto.Code),
+                "LEG-1",
+                GridFilterOperators.EqualsOperator));
     }
 
     [Theory]

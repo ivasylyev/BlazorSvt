@@ -56,6 +56,12 @@ var pathBase = builder.Configuration["PathBase"];
 
 var app = builder.Build();
 
+var buildInfo = app.Services.GetRequiredService<IAppBuildInfo>().Current;
+Log.Information(
+    "Application started. Version {Version}, BuildTimeUtc {BuildTimeUtc:o}",
+    buildInfo.Version,
+    buildInfo.BuildTimeUtc);
+
 if (!string.IsNullOrEmpty(pathBase) && pathBase != "/")
 {
     app.UsePathBase(pathBase);

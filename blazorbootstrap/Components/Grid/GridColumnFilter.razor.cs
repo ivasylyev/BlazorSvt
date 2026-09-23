@@ -43,7 +43,7 @@ public partial class GridColumnFilter : BlazorBootstrapComponentBase
         if (ResetTrigger != lastResetTrigger)
         {
             lastResetTrigger = ResetTrigger;
-            filterValue = null;
+            filterValue = FilterValue;
             inputKey++;
         }
         SetDefaultFilter();
@@ -207,6 +207,8 @@ public partial class GridColumnFilter : BlazorBootstrapComponentBase
     public GridFiltersTranslationDelegate FiltersTranslationProvider { get; set; } = default!;
 
     private string filterStyle => FilterWidth > 0 ? $"width:{FilterWidth.ToString(CultureInfo.InvariantCulture)}{Unit.ToCssString()};" : "";
+
+    private bool IsFilterChecked => filterValue is "True" or "true" or "1";
 
     /// <summary>
     /// Gets or sets filter value.

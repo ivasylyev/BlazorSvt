@@ -94,6 +94,43 @@ h1:focus {
     cursor: default;
 }
 
+.sibur-domain-menu {
+    position: relative;
+}
+
+.sibur-domain-menu-panel {
+    display: none;
+    top: 100%;
+    left: 0;
+}
+
+.sibur-domain-menu:hover .sibur-domain-menu-panel,
+.sibur-domain-menu:focus-within .sibur-domain-menu-panel {
+    display: block;
+}
+
+.sibur-domain-menu-panel .dropdown-item {
+    display: block;
+    width: 100%;
+    padding: var(--bs-dropdown-item-padding-y, 0.25rem) var(--bs-dropdown-item-padding-x, 1rem);
+    white-space: nowrap;
+    text-decoration: none;
+}
+
+.sibur-domain-menu-panel .dropdown-item:hover,
+.sibur-domain-menu-panel .dropdown-item:focus {
+    color: var(--bs-dropdown-link-hover-color, #1e2125);
+    background-color: var(--bs-dropdown-link-hover-bg, #e9ecef);
+}
+
+.dropdown-item.active,
+.dropdown-item:active,
+.sibur-domain-menu-panel .dropdown-item.active,
+.sibur-domain-menu-panel .dropdown-item:active {
+    color: #fff;
+    background-color: #008c95;
+}
+
 /* Switch  */
 /* Цвет фона включённого тумблера */
 .sibur-switch-color .form-check-input:checked {

@@ -2,6 +2,7 @@
 using BlazorSvt.Modules.TransportRate.List;
 using BlazorSvt.Modules.TransportRate.Sync;
 using BlazorSvt.Platform.Sync;
+using BlazorSvt.Platform.UI.Navigation;
 
 namespace BlazorSvt.Modules.TransportRate;
 
@@ -13,6 +14,11 @@ public static class TransportRateModule
         services.AddScoped<IDetailSettingsService<TransportRateDetailDto>, TransportRateDetailSettingsService>();
 
         services.AddSingleton<ISnapshotSyncJob, TransportRateSyncJob>();
+        services.AddCatalogMenu(new CatalogMenuContribution(
+            CatalogDomain.Rates,
+            "transportrate",
+            "HeaderMenu.TransportRate",
+            VisibleToEditor: true));
 
         return services;
     }

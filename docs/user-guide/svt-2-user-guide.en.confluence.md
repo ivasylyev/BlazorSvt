@@ -1,7 +1,7 @@
 # SVT 2.0 User Guide
 
 Format: Confluence Wiki Markup.  
-Images: `images/` folder next to this file (replace with English screenshots when publishing).  
+Images: `images/` folder next to this file (files with the `-en` suffix).  
 Source (RU): `svt-2-user-guide.ru.confluence.md`
 
 ---
@@ -33,6 +33,11 @@ SVT 2.0 is read-only. You cannot create, edit, or delete records here yet.
 
 SVT 2.0 data is synchronized from the legacy system. After a change in legacy SVT, the update usually appears in SVT 2.0 *within about 2 minutes*.
 
+Exceptions:
+
+* Every night from *01:00 to 02:30* updates wait until this window ends. On Saturdays there is an additional pause from *04:00 to 06:00*.
+* A record deleted in the legacy system appears in SVT 2.0 after the nightly reconciliation, *around 02:00*.
+
 ----
 
 h2. 2. How to open the system
@@ -45,45 +50,59 @@ Use one of the URLs below (corporate network access is required):
 
 # Open the link in the browser (Edge).
 # If the browser prompts for credentials, sign in with your *Windows domain account* (the same one you use to log on to your PC).
-# The SVT 2.0 home page opens.
+# If the account *has a role* in SVT 2.0, the home page opens.
+# If there is *no role*, the *Access denied* screen opens (section 9.1).
 
 ----
 
 h2. 3. Menu and language
 
-At the top of the page you will find section buttons and the language selector.
+At the top of the page you will find the *Home* button, the domain menus, the current user, and the language selector.
 
-!01-menu-header.png|width=800,alt="SVT 2.0 menu"!
+!1-menu-en.png|width=800,alt="SVT 2.0 menu"!
 
-On the right side of the header is the UI language (for example, *English (United States)*). When you change the language, button and column labels change. Column visibility settings are stored *separately for each language* (see section 7).
+*Home* opens the average-rates summary. The other reference books are grouped by domain: hover a domain name and choose a reference book. Items inside a domain are listed *alphabetically* by the label in the current language. A domain that has no reference books yet is not shown.
 
-||Menu button||Page title (as shown in the system)||
-|Home|Summary «Average rates by direction»|
-|Transport Rates|Rates|
-|Average Rates|Average Rate|
-|Parities|Parity rates|
-|Transport Legs|Transport Legs|
-|Locations-Nodes|Locations-Nodes|
+On the right side of the header are the *current user* (usually the display name; hover to see the login in the form *DOMAIN\account*) and the UI language (for example, *English (United States)*). When you change the language, button labels, menu items, and column labels change, and the order of reference books inside a domain is recalculated alphabetically. Column visibility settings are stored *separately for each language* (see section 7).
+
+At the bottom of the page there is a footer bar: on the left, the load time of the current page; on the right, the application version and the build date/time. During the pilot this is needed so that a support request can name a specific build.
+
+!2-footer-en.png|width=800,alt="Footer: load time and version"!
+
+||Domain||Menu item||Page title (as shown in the system)||
+|—|Home|Summary «Average rates by direction»|
+|Rates|Average Rate|Average Rate|
+|Rates|Parity rates|Parity rates|
+|Rates|Rates|Rates|
+|Routes|Locations-Nodes|Locations-Nodes|
+|Routes|Transport Legs|Transport Legs|
 
 ----
 
 h2. 4. Home page
 
-The home page shows the *«Average rates by direction»* summary (product: polyolefins, multi-month window).
+The home page shows the *«Average rates by direction»* summary. This is a fixed slice; the user cannot configure it:
 
-!02-home-grid-chart.png|height=250,alt="Home: table and chart"!
+* product — polyolefins;
+* rate type — agreement;
+* transport kind — road (auto);
+* no intermediate node;
+* a six-month window: three months back and two months ahead of the current month;
+* the set of directions is predefined.
+
+!3-home-en.png|width=800,alt="Home: table and chart"!
 
 * On the left — a table of directions and average rates by month.
 * On the right — a bar chart for the *selected* row.
 * To change the chart, click another row in the table.
 
-Product and direction filters on this page are not configurable by the user — this is a fixed summary.
+The contents of this summary cannot be changed by the user.
 
 ----
 
 h2. 5. Working with a reference book (common rules)
 
-Open the required section from the menu. A table of records opens.
+Hover a domain in the top menu and choose a reference book. A table of records opens.
 
 *Common for all reference books:*
 
@@ -107,7 +126,7 @@ h3. 5.1. Detail card
 # Click the arrow on the left of the row.
 # Field groups open (you can expand and collapse them). *Collapse all* / *Expand all* control all groups at once.
 
-!08-details_average_rate.png|height=250,alt="Average Rate detail card"!
+!4-averare-rate-en.png|width=800,alt="Average Rate detail card"!
 
 ----
 
@@ -127,7 +146,7 @@ Used for fields such as *Rate type*, *Transport kind*, *Transport type*, *Curren
 # Choose a value (for example, *Tender*).
 # The table refreshes.
 
-!03-rate-type-filter.png|height=250,alt="Filter: rate type"!
+!5-average-rate-filter-dropdown-en.png|width=800,alt="Filter: rate type"!
 
 h3. 6.2. Text search (nodes, names, product groups)
 
@@ -145,7 +164,7 @@ Enter *at least 3 characters*. A shorter string will not work.
 
 You can combine several text filters (for example, From + Proxy + To).
 
-!04-filter-nodefom-proxynode-nodeto.png|height=250,alt="Filter by nodes"!
+!6-average-rate-filter-nodes-en.png|width=800,alt="Filter by nodes"!
 
 h3. 6.3. Dates (start and end of the validity period)
 
@@ -159,7 +178,7 @@ Used for *Start*, *End*, and other date columns.
 ** *Clear* — remove the filter for this column
 # Enter the date in the format shown in the field (typically *dd.mm.yyyy*) or pick it from the calendar.
 
-!05-filter-start-end-choose-operation.png|height=250,alt="Date filter: operator selection"!
+!7-average-rate-filter-dates-en.png|width=800,alt="Date filter: operator selection"!
 
 h3. 6.4. Numbers (rates, load, and similar)
 
@@ -169,7 +188,7 @@ Used for *Avg rate*, *Per ton*, *Load*, and other numeric columns.
 # Enter a number (for example, *100*).
 # The table shows matching rows. The footer shows how many records were found (for example, *«1 - 4 from 4 items»*).
 
-!06-filter-totalcostton.png|height=250,alt="Numeric filter by average rate"!
+!8-average-rate-filter-numbers-en.png|width=800,alt="Numeric filter by average rate"!
 
 h3. 6.5. How to view archive records
 
@@ -192,7 +211,7 @@ If there are too many columns or a required column is missing, adjust visibility
 # *Cancel* — close without saving.
 # *Reset* — restore the *default* column set (if settings were changed incorrectly).
 
-!07-settings.png|height=250,alt="Column settings dialog"!
+!9-grid-settings-en.png|width=800,alt="Column settings dialog"!
 
 {info:title=Where settings are stored}
 Settings are stored in *your browser on this computer*, separately for *Russian* and *English*. On another computer or in another browser, the default column set is used again. Changing the language does not copy your settings from one language to the other.
@@ -210,53 +229,65 @@ Export respects the *current table filters*.
 
 # Click *Reports*.
 # Choose:
-** *Short report* — both visible and hidden grid columns;
+** *Short report* — only the columns turned on in *Settings*;
 ** *Full report* — an extended field set (as in the detail card).
 # The Excel file is downloaded to your browser downloads folder.
 
-!11-report-menu.png|height=250,alt="Reports menu"!
+!10-reports-menu-en.png|width=800,alt="Reports menu"!
 
-If there are many rows, a confirmation dialog appears: the system warns about the row count and possible wait time. Click *Yes* to continue or *No* to cancel.
+If there are many rows, a confirmation dialog appears. For a short report it opens when there are more than *20 thousand* rows; for a full report, when there are more than *5 thousand*. The system warns about the row count and possible wait time. Click *Yes* to continue or *No* to cancel. After *Yes* the export continues: the dialog does not block the file size.
 
-!12-report-confirm.png|height=250,alt="Large report confirmation"!
+!11-reports-warning-en.png|width=800,alt="Large report confirmation"!
 
 While the report is being generated, a status message may appear — wait until it finishes and do not close the tab.
 
 {warning:title=Please note}
 Prefer short reports when possible. They are generated about ~10 times faster than full reports.
 
-You can export short reports of up to 200 thousand records.
+The sizes below are a recommendation, not a system limit. Exports larger than these sizes are not blocked.
 
-Avoid exporting full reports larger than 20 thousand records. Use filters to limit the number of rows.
+* Short reports are convenient to export up to *200 thousand* records.
+* Full reports larger than *20 thousand* records are better narrowed with filters.
 {warning}
 
 ----
 
-h2. 9. If something goes wrong
+h2. 9. No access, or the page did not open as expected
 
-Try the following first:
+First look at *what is on the screen* — that decides what to do.
+
+||What you see||What it is||What to do||
+|*Access denied* card (no reference-book menu)|The account has no role in SVT 2.0|Section 9.1. Follow the *VKUS* link. This is not a program failure.|
+|*Unable to verify access* card|The system could not verify permissions|Section 9.2. Wait and refresh the page.|
+|Error banner about a program error|A failure while using a reference book|Section 9.3|
+|Blank, spinning, or frozen page, no banner|A failure with no on-screen message|Section 9.4|
+
+h3. 9.1. Access denied
+
+This screen opens when domain sign-in succeeded, but the account has *no role* in SVT 2.0. There is no reference-book menu. The build version is still shown at the bottom.
+
+The card shows the login (and the display name, if available) and the message in Russian and English. The *VKUS* link leads to information on how to get access. Resetting filters or refreshing the page is not needed here.
+
+!12-acces-denied-en.png|width=600,alt="Access denied screen"!
+
+h3. 9.2. Unable to verify access
+
+This is *not the same* as access denied. The screen opens when the system *could not verify* permissions. Reference books do not open. There is no VKUS link on this screen.
+
+Wait and open the URL again (or press F5). If the screen remains, submit a request (section 9.5).
+
+!13-auth-unavaliable-en.png|width=600,alt="Unable to verify access screen"!
+
+h3. 9.3. An error message is shown on the screen
+
+If a reference book already opened but the page behaves oddly, try the following first:
 
 * refresh the page (F5);
 * click *Reset Filters*;
 * in *Settings*, click *Reset* (default columns);
 * open the same URL in another browser or in InPrivate / Incognito mode.
 
-If the issue remains, submit a request (see below) and attach the materials described in this section.
-
-h3. 9.1. Where to send the request
-
-||Stage||Contact||
-|Pilot industrial operation|email [vasilevivv@sibur.ru]|
-|Production operation|ticket in *VKUS* (internal portal)|
-
-In the request, include:
-
-* environment (test or prod) and the page URL;
-* what you did (step by step);
-* what you expected and what happened;
-* screenshots and the error text (as below).
-
-h3. 9.2. An error message is shown on the screen
+If that does not help, capture the materials below and submit a request (section 9.5).
 
 Usually a banner appears at the top or in the page area:
 
@@ -272,11 +303,11 @@ Do the following:
 # *Click* the error banner — details open (a dark box with text).
 # Take a *second screenshot* with the details expanded, *or* select the text with the mouse (*Message*, *Type*, *StackTrace*), copy it (*Ctrl + C*), and paste it into the email / ticket.
 
-!09-error-details.png|height=250,alt="Expanded error details"!
+!14-error-en.png|width=800,alt="Expanded error details"!
 
-h3. 9.3. No error banner, but the page is blank, frozen, or the reference book did not load
+h3. 9.4. No error banner, but the page is blank, frozen, or the reference book did not load
 
-Sometimes there is no red banner, but the table does not appear, keeps loading, or the page «freezes». In that case, capture information from the *browser console*.
+First try the same steps as in section 9.3 (F5, reset filters, another browser). If that does not help, capture information from the *browser console*.
 
 Step by step (Edge / Chrome):
 
@@ -290,18 +321,31 @@ Step by step (Edge / Chrome):
 # Take a *screenshot* of the whole console window, *or* select the text with the mouse, copy it (*Ctrl + C*), and paste it into the request.
 # Close the panel with the × button or press *F12* again.
 
-!10-console-details.png|height=250,alt="Browser console (F12)"!
+!15-error-en.png|width=800,alt="Browser console (F12)"!
 
 {tip:title=Do not interpret the text yourself}
 Attaching a screenshot or the copied text is enough. You do not need to interpret the messages — support specialists will do that.
 {tip}
+
+h3. 9.5. Where to send the request
+
+||Stage||Contact||
+|Pilot industrial operation|email [vasilevivv@sibur.ru]|
+|Production operation|ticket in *VKUS* (internal portal)|
+
+In the request, include:
+
+* environment (test or prod) and the page URL;
+* what you did (step by step);
+* what you expected and what happened;
+* screenshots and the error text (for sections 9.3 and 9.4 — as described there).
 
 ----
 
 h2. 10. Quick reference
 
 ||Task||What to do||
-|Open a reference book|Button in the top menu|
+|Open a reference book|Domain menu in the header → reference book item|
 |Find records|Filters under column headers|
 |Clear search|*Reset Filters*|
 |Show / hide columns|*Settings* → switches → *Ok*|
@@ -309,4 +353,4 @@ h2. 10. Quick reference
 |View all fields of a record|Arrow on the left of the row|
 |Export to Excel|*Reports* → short or full|
 |Change language|Language button on the right of the header|
-|Data seems ~1 minute stale|Wait up to ~2 minutes after the change in legacy SVT|
+|Data seems ~1 minute stale|Usually wait up to ~2 minutes after the change in legacy SVT. From 01:00 to 02:30 updates wait until the window ends (on Saturdays also 04:00–06:00). Deletions appear after reconciliation around 02:00|

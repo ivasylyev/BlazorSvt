@@ -4,23 +4,36 @@
 <div class="sibur-header-wrapper">
     <div class="d-flex align-items-center w-100">
 
-        <!-- Левая часть (меню) -->
         <div class="d-flex align-items-center gap-2">
-            @if (menuItems is not null)
+            <Button Class="@GetButtonClass(IsHomeActive())"
+                    Type="ButtonType.Link"
+                    To="">
+                <Icon Name="@IconName.HouseDoorFill" Class="me-2"/>
+                @L["HeaderMenu.Home"]
+            </Button>
+
+            @foreach (var group in DomainGroups)
             {
-                foreach (var item in menuItems.Where(i => i.Enabled))
-                {
-                    <Button Class="@GetButtonClass(item.Url)"
-                            Type="ButtonType.Link"
-                            To="@item.Url">
-                        <Icon Name="@item.Icon" Class="me-2"/>
-                        @item.Text
-                    </Button>
-                }
+                <div class="sibur-domain-menu">
+                    <button type="button"
+                            class="btn dropdown-toggle @GetButtonClass(IsDomainActive(group))"
+                            aria-haspopup="true">
+                        @L[group.TextResourceKey]
+                    </button>
+                    <ul class="dropdown-menu sibur-domain-menu-panel">
+                        @foreach (var item in group.Items)
+                        {
+                            <li>
+                                <NavLink class="dropdown-item" href="@item.Url" Match="NavLinkMatch.All">
+                                    @item.Text
+                                </NavLink>
+                            </li>
+                        }
+                    </ul>
+                </div>
             }
         </div>
 
-        <!-- Правая часть -->
         <div class="d-flex align-items-center gap-2 ms-auto">
             @if (!string.IsNullOrWhiteSpace(CurrentUser.Login))
             {

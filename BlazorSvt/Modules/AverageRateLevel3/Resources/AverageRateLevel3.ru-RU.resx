@@ -474,7 +474,7 @@
     <value>Код типа узла</value>
   </data>
 <data name="AverageRateLevel3Grid.Title" xml:space="preserve">
-    <value>Cредневзвешенные ставки</value>
+    <value>Средневзвешенные ставки</value>
   </data>
   <data name="AverageRateLevel3Dto.IsDefRate" xml:space="preserve">
     <value>Дефлятор</value>

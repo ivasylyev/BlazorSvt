@@ -5,18 +5,21 @@
     <ul id="@Id" class="@ClassNames" style="@StyleNames" @attributes="@AdditionalAttributes" role="button">
         <PaginationItem Disabled="ActivePageNumber == 1" Text="@firstLinkText" @onclick="() => SetPageNumberTo(firstPageNumber)" LinkIcon="@FirstLinkIcon" LinkText="@firstLinkText" AriaLabel="@firstLinkText"/>
         <PaginationItem Disabled="ActivePageNumber == 1" Text="@previousLinkText" @onclick="() => SetPageNumberTo(previousPageNumber)" LinkIcon="@PreviousLinkIcon" LinkText="@previousLinkText" AriaLabel="@previousLinkText"/>
-        @if (pageFromInclusive > 1)
+        @foreach (var jump in PaginationLinks.GetBackwardJumps(ActivePageNumber, TotalPages))
         {
-            <PaginationItem @onclick="() => SetPageNumberTo(pageFromInclusive - 1)" LinkIcon="IconName.ThreeDots"/>
+            var target = jump.Page;
+            <PaginationItem Text="@jump.Label" @onclick="() => SetPageNumberTo(target)" AriaLabel="@jump.Label"/>
         }
-        @for (var i = pageFromInclusive; i <= pageToExclusive; i++)
+        @foreach (var pageNumber in PaginationLinks.GetPageNumbers(ActivePageNumber, TotalPages, DisplayPages))
         {
-            var j = i; // local scope
-            <PaginationItem Active="ActivePageNumber == i" Text="@j.ToString()" @onclick="() => SetPageNumberTo(j)"/>
+            var target = pageNumber;
+            var label = target.ToString();
+            <PaginationItem Class="fw-bold" Active="ActivePageNumber == target" Text="@label" @onclick="() => SetPageNumberTo(target)"/>
         }
-        @if (pageToExclusive < TotalPages)
+        @foreach (var jump in PaginationLinks.GetForwardJumps(ActivePageNumber, TotalPages))
         {
-            <PaginationItem @onclick="() => SetPageNumberTo(pageToExclusive + 1)" LinkIcon="IconName.ThreeDots"/>
+            var target = jump.Page;
+            <PaginationItem Text="@jump.Label" @onclick="() => SetPageNumberTo(target)" AriaLabel="@jump.Label"/>
         }
         <PaginationItem Disabled="ActivePageNumber == TotalPages" Text="@nextLinkText" @onclick="() => SetPageNumberTo(nextPageNumber)" LinkIcon="@NextLinkIcon" LinkText="@nextLinkText" AriaLabel="@nextLinkText"/>
         <PaginationItem Disabled="ActivePageNumber == TotalPages" Text="@lastLinkText" @onclick="() => SetPageNumberTo(lastPageNumber)" LinkIcon="@LastLinkIcon" LinkText="@lastLinkText" AriaLabel="@lastLinkText"/>

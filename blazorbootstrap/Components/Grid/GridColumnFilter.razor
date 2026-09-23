@@ -42,16 +42,16 @@
     }
     else if (PropertyTypeName == StringConstants.PropertyTypeNameDateOnly)
     {
-        <input @key="inputKey" class="form-control" style="@filterStyle" type="date" value="@filterValue" @oninput="@(async args => await OnFilterValueChangedAsync(args))" />
+        <input @key="inputKey" class="form-control" style="@filterStyle" type="date" lang="@CultureInfo.CurrentUICulture.Name" value="@filterValue" @oninput="@(async args => await OnFilterValueChangedAsync(args))" />
     }
     else if (PropertyTypeName == StringConstants.PropertyTypeNameDateTime)
     {
-        <input @key="inputKey" class="form-control" style="@filterStyle" type="datetime-local" value="@filterValue" @oninput="@(async args => await OnFilterValueChangedAsync(args))" />
+        <input @key="inputKey" class="form-control" style="@filterStyle" type="datetime-local" lang="@CultureInfo.CurrentUICulture.Name" value="@filterValue" @oninput="@(async args => await OnFilterValueChangedAsync(args))" />
     }
     else if (PropertyTypeName == StringConstants.PropertyTypeNameBoolean)
     {
         <div class="d-flex align-items-center" style="height: 38px;"> <!-- 38px — стандартная высота form-control в Bootstrap 5 -->
-            <input @key="inputKey" class="form-check-input" type="checkbox" value="@filterValue" @onchange="@(async args => await OnFilterValueChangedAsync(args))" />
+            <input @key="inputKey" class="form-check-input" type="checkbox" checked="@IsFilterChecked" value="@filterValue" @onchange="@(async args => await OnFilterValueChangedAsync(args))" />
         </div>
     }
     else if (PropertyTypeName == StringConstants.PropertyTypeNameEnum)

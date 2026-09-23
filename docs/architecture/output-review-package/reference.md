@@ -432,7 +432,7 @@
 BlazorSvt/
 ├── Host/           — composition root, Blazor host
 ├── Platform/       — cross-cutting: Grid, Reporting, UI, Infrastructure
-├── Modules/        — vertical slices (Legs, Rates, …)
+├── Modules/        — vertical slices (TransportLeg, TransportRate, HomeRatePivot, …)
 ├── Import/         — batch Excel import, validators, staging
 ├── SqlScripts/
 │   ├── Platform/   — schema, full-text, GetBlazorGridData

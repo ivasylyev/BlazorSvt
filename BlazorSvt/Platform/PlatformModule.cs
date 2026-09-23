@@ -14,6 +14,8 @@ public static class PlatformModule
         services.Configure<GridOptions>(configuration.GetSection("Grid"));
         services.Configure<AccessOptions>(configuration.GetSection(AccessOptions.SectionName));
         services.AddScoped<PageTimingService>();
+        services.AddSingleton<IAppBuildInfo, AppBuildInfoProvider>();
+        services.AddScoped<IGridPageSizeService, GridPageSizeService>();
         services.AddScoped(typeof(IGridQueryFactory<>), typeof(GridQueryFactory<>));
         services.AddScoped(typeof(IGridDataService<,>), typeof(GridDataService<,>));
         services.AddScoped(typeof(GridReportExporter<,>), typeof(GridReportExporter<,>));

@@ -11,8 +11,8 @@ public enum RateTypeEn
     [Display(Name = "Tender")] 
     Tender = 543746, //2 Тендерная
 
-    [Display(Name = "Spot")] 
-    Spot = 543748, //3 Спотовая
+    [Display(Name = "Business Plan")] 
+    BusinessPlan = 543748, //3 Бизнес-плановая
 
     [Display(Name = "Indicative")] 
     Indicative = 543749, // 4 Индикативная

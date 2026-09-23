@@ -193,11 +193,11 @@ public partial class Grid<TItem> : BlazorBootstrapComponentBase
             return;
 
         var filterableColumns = columns
-            .Where(column => column.PropertyName != "IsArchive" && column.Filterable && column.GetFilterOperator() != FilterOperator.None && !string.IsNullOrWhiteSpace(column.GetFilterValue()));
+            .Where(column => column.Filterable && column.GetFilterOperator() != FilterOperator.None && !string.IsNullOrWhiteSpace(column.GetFilterValue()));
 
         foreach (var column in filterableColumns)
         {
-            column.SetFilterValue(null);
+            column.SetFilterValue(column.GetInitialFilterValue());
             //column.SetDefaultFilter();
         }
 
@@ -578,8 +578,12 @@ public partial class Grid<TItem> : BlazorBootstrapComponentBase
 
     private async Task OnPageSizeChangedAsync(int newPageSize)
     {
+        if (pageSize == newPageSize)
+            return;
+
         pageSize = PageSize = newPageSize;
         await ResetPageNumberAsync();
+        await PageSizeChanged.InvokeAsync(newPageSize);
         await SaveGridSettingsAsync();
         await RefreshDataAsync(false);
     }
@@ -1063,14 +1067,21 @@ public partial class Grid<TItem> : BlazorBootstrapComponentBase
     public int PageSize { get; set; } = 10;
 
     /// <summary>
+    /// This event is triggered when the user selects another page size.
+    /// The grid has already switched to the new size and page 1; the data reload follows the callback.
+    /// </summary>
+    [Parameter]
+    public EventCallback<int> PageSizeChanged { get; set; }
+
+    /// <summary>
     /// Gets or sets the page size selector items.
     /// </summary>
     /// <remarks>
-    /// Default value is '{ 10, 20, 50 }'.
+    /// Default value is '{ 10, 15, 20, 30, 50 }'.
     /// </remarks>
     [Parameter]
     //[EditorRequired]
-    public int[] PageSizeSelectorItems { get; set; } = { 10, 20, 50 };
+    public int[] PageSizeSelectorItems { get; set; } = { 10, 15, 20, 30, 50 };
 
     /// <summary>
     /// Gets or sets the page size selector visible.

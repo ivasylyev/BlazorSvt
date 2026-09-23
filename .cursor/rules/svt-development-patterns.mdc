@@ -10,7 +10,7 @@ alwaysApply: false
 
 **Полный алгоритм** — skill `add-reference-book` (`.cursor/skills/add-reference-book/SKILL.md`).
 
-Именование для **новых** справочников: `{Entity}` = `PrimitiveEntityInfo.Name`, папка `Modules/{Entity}/`, ключ `{Entity}Id`, snapshot `v2.{Entity}_Snapshot`. Существующие `Legs`/`Rates` — legacy до отдельного рефакторинга.
+Именование для **новых** справочников: `{Entity}` = `PrimitiveEntityInfo.Name`, папка `Modules/{Entity}/`, ключ `{Entity}Id`, snapshot `v2.{Entity}_Snapshot`. Уже перенесённые ставки и плечи: модули `TransportRate` / `TransportLeg`, ключи `TransportRateId` / `TransportLegId`; в реестре скоупа легаси-имена — `Rates` и `TransportLegs`.
 
 Краткая структура модуля:
 
@@ -19,7 +19,7 @@ alwaysApply: false
 3. `{Entity}GridSettingsService` / `{Entity}DetailSettingsService`
 4. `{Entity}Grid.razor` — `@page "/{entity}"`, `BaseGridPage<…>`
 5. `{Entity}SyncJob` в `Sync/` → `AddSingleton<ISnapshotSyncJob, …>()`
-6. `{Entity}Module.cs` → `Add{Entity}Module()` в `Host/Program.cs`
+6. `{Entity}Module.cs` → `Add{Entity}Module()` в `Host/Program.cs`; внутри — `AddCatalogMenu` (домен из catalogs-scope, ключ `HeaderMenu.{Entity}`). Шапка подхватит пункт сама; `HeaderMenu` не править
 7. SQL: `SqlScripts/Modules/{Entity}/Structure/` + `Programmability/` (`SnapshotSource`, `Detail`, `PopulateAffectedKeys`)
 
 ## Модульная регистрация

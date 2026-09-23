@@ -5,8 +5,37 @@
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <RootNamespace>BlazorSvt</RootNamespace>
-    <Version>2.0.2.44</Version>
+    <VersionPrefix>2.3.45</VersionPrefix>
+    <GitRevisionCount>0</GitRevisionCount>
+    <BuildTimeUtc>$([System.DateTime]::UtcNow.ToString("yyyy-MM-ddTHH:mm:ssZ"))</BuildTimeUtc>
+    <!-- Prod already has environment-specific web.config / appsettings; do not overwrite on publish. -->
+    <IsTransformWebConfigDisabled>true</IsTransformWebConfigDisabled>
   </PropertyGroup>
+
+  <ItemGroup>
+    <AssemblyMetadata Include="BuildTimeUtc" Value="$(BuildTimeUtc)" />
+  </ItemGroup>
+
+  <Target Name="SetGitRevision" BeforeTargets="GetAssemblyVersion">
+    <Exec Command="git rev-list --count HEAD"
+          WorkingDirectory="$(MSBuildProjectDirectory)"
+          ConsoleToMSBuild="true"
+          IgnoreExitCode="true"
+          StandardOutputImportance="Low"
+          StandardErrorImportance="Low">
+      <Output TaskParameter="ConsoleOutput" ItemName="_GitRevListLines" />
+      <Output TaskParameter="ExitCode" PropertyName="_GitRevListExitCode" />
+    </Exec>
+    <PropertyGroup>
+      <_GitRevisionRaw Condition="'$(_GitRevListExitCode)' == '0'">@(_GitRevListLines)</_GitRevisionRaw>
+    </PropertyGroup>
+    <PropertyGroup>
+      <GitRevisionCount Condition="$([System.Text.RegularExpressions.Regex]::IsMatch('$(_GitRevisionRaw)', '^[0-9]+$'))">$(_GitRevisionRaw)</GitRevisionCount>
+      <Version>$(VersionPrefix).$(GitRevisionCount)</Version>
+      <AssemblyVersion>$(VersionPrefix).$(GitRevisionCount)</AssemblyVersion>
+      <FileVersion>$(VersionPrefix).$(GitRevisionCount)</FileVersion>
+    </PropertyGroup>
+  </Target>
 
   <ItemGroup>
     <PackageReference Include="ch1seL.Blazored.LocalStorage.Concurrent" Version="0.0.4" />
@@ -36,6 +65,13 @@
 
   <ItemGroup>
     <Folder Include="logs\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Update="web.config" CopyToPublishDirectory="Never" />
+    <Content Update="web.*.config" CopyToPublishDirectory="Never" />
+    <Content Update="appsettings.json" CopyToPublishDirectory="Never" />
+    <Content Update="appsettings.*.json" CopyToPublishDirectory="Never" />
   </ItemGroup>
 
 </Project>
