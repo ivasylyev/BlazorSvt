@@ -23,6 +23,8 @@ description: >-
 
 **Целевой стек**: Blazor Server + MS SQL. **Стиль**: модульный монолит. **Миграция**: Strangler Fig с общей БД; SoT = легаси до cutover; exit dual-run волнами → инкрементальный SoT flip по доменам справочников → единый финальный демонтаж легаси в конце (детали — в roadmap.md, §2а).
 
+Корпоративный паспорт действующей ИС (критичность, ИСПДн, СУБД, обновление) — [reference.md](reference.md) §4.6.
+
 **Текущий статус**: фреймворк read-only справочников и отчётов (TransportLeg, TransportRate, AverageRateLevel3, LocationsNodes, ParityRates; в реестре легаси-имена TransportLegs и Rates); watermark-sync; Windows Auth + роли `dbo.Role` (бинарный read); зачаток Import; каркас unit + integration тестов в `tests/`. Прототип домашней сводки (`HomeRatePivot`) читает снимки AverageRateLevel3 и LocationsNodes; правило отбора ставки пока в тексте SQL. Дашборды по дорожной карте остаются на MVP 1.1. Скоуп справочников (63 в скоупе / 38 вне, работы RO/E/L, меню, приоритеты) — [catalogs-scope.md](catalogs-scope.md). Дорожная карта MVP — [roadmap.md](roadmap.md); чеклист работ — [backlog.md](backlog.md).
 
 ## Чеклист перед реализацией
@@ -35,6 +37,7 @@ description: >-
 6. Без Elastic/RabbitMQ/распределённого монолита?
 7. Покрыты ли изменения тестами? Unit — C#-логика (`GridQueryFactory`, валидаторы, contract DTO); integration — read-only smoke SP/view для нового справочника (см. `svt-development-patterns`, секция «Тестирование»)
 8. Для write: write-through в легаси до cutover; LWW; доменный write-toggle (`V2WriteEnabled_{Домен}`, не единый глобальный); аудит полей — с MVP 1.0 (до этого риск принят)
+9. Если атрибут приходит из АСВ НСИ или ЦБД, не заводить для него редактор и не делать СВТ источником истины. Состав — [catalogs-scope.md](catalogs-scope.md), раздел «Внешние мастера»
 
 ## Требования, которых ещё нет в реестре
 

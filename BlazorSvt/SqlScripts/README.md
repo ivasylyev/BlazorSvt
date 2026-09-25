@@ -162,6 +162,8 @@ SQL-логика вынесена в процедуры. Все обращени
 остаются, если нужны grid-DTO. Полный список — `.cursor/rules/svt-development-patterns.mdc`.
 У TransportLeg тип отправки — сырой `ShipmentTypeCodeT` (не FK/enum на `2142`).
 
+Свой RO-грид справочника, у которого уже есть enum (RateType, TransportKind, TransportTypeLevel3, Currency, Relevance, TypeNode, TypePlace / LocationType), заливается один раз. `RowVer`, `SyncJob`, `PopulateAffectedKeys` и `SyncState` для него не создаются. `TransportType` в это исключение не входит: enum нет.
+
 **Удаления.** Ловятся не инкрементом, а `reconciliation` (anti-join snapshot ↔
 проекция), который воркер запускает раз в сутки. Допустимо, что физически
 удалённая запись «фантомит» в snapshot до суток.
