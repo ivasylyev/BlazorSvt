@@ -1,10 +1,11 @@
 #Requires -Version 5.1
 <#
 .SYNOPSIS
-    Deploys Programmability SQL scripts (Platform + all modules) to dev database.
+    Deploys Programmability SQL scripts (Platform + all modules) to local mdm.
 
 .DESCRIPTION
-    Reads connection string from BlazorSvt/appsettings.json.
+    Takes database name, user and password from BlazorSvt/appsettings.json (Database:MdmDb).
+    Server is always localhost. The Server value in appsettings.json is not used.
     Stops on the first failed script (sqlcmd -b).
 
 .EXAMPLE
@@ -67,7 +68,7 @@ function Get-ConnectionSettings {
     }
 
     return [PSCustomObject]@{
-        Server   = $builder.DataSource
+        Server   = 'localhost'
         Database = $builder.InitialCatalog
         User     = $builder.UserID
         Password = $builder.Password

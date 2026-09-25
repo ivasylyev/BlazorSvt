@@ -104,8 +104,7 @@ h1:focus {
     left: 0;
 }
 
-.sibur-domain-menu:hover .sibur-domain-menu-panel,
-.sibur-domain-menu:focus-within .sibur-domain-menu-panel {
+.sibur-domain-menu:hover .sibur-domain-menu-panel {
     display: block;
 }
 

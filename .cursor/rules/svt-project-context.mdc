@@ -58,7 +58,9 @@ MDM-система логистических маршрутов, тарифов
 | `SqlScripts/Platform/` | Схема v2, full-text, `GetBlazorGridData` |
 | `SqlScripts/Modules/{Name}/` | DDL и SP конкретного справочника |
 | `tests/BlazorSvt.UnitTests/` | Unit-тесты Platform, `GridQueryFactory`, contract DTO |
-| `tests/BlazorSvt.IntegrationTests/` | Read-only integration-тесты SP/view на dev-БД |
+| `tests/BlazorSvt.IntegrationTests/` | Read-only integration-тесты SP/view на локальной `mdm` (`localhost`) |
 | `docs/user-guide/` | Руководство пользователя СВТ 2.0 (RU/EN, Confluence Wiki Markup) |
 
 Подробная архитектура — в skill `svt-architecture` и правиле `svt-architecture-principles`.
+
+Команды агента, которым нужна БД (discovery, sqlcmd, накат Programmability, integration-тесты), подключаются к `localhost`, база `mdm`. Логин и пароль — из `Database:MdmDb`. Поле Server из этой строки не использовать. `appsettings.json` не менять: приложение ходит на сервер, записанный там. Перед integration-тестами задать `BLAZORSVT_TEST_CONNECTION` той же строкой с `Server=localhost`.

@@ -92,6 +92,9 @@
 | Тип транспорта | `TransportTypeName` / `TransportTypeCode` | Тип ТС | Код типа ТС | Transport type | Tr. type code |
 | Тип ставки | `RateTypeName` / `RateTypeCode` | Тип ставки | Код типа ст. | Rate type | Rate code |
 | Дефлятор | `IsDefRate` | Дефлятор | — | Deflator | — |
+| Номинация | `IsUseNomination` | Номинация | — | Nomination | — |
+| Дефлируется | `IsDeflated` | Дефлируется | — | Deflated | — |
+| Синхронизация | `IsIntoSyncClass` | Синхронизация | — | Sync | — |
 | Архив | `IsArchive` | Архив | — | Archive | — |
 | Дата создания | `CreationDate` | Создано | — | Created | — |
 | Дата изменения | `LastChangeDate` | Изменено | — | Changed | — |
@@ -129,3 +132,15 @@
 | Приоритет | `PriorityText` | Приоритет | — | Priority | — |
 
 `RateTypeCode` в grid settings может отсутствовать — short применяют только если ключ реально используется в гриде; иначе ключ считается мёртвым для правки.
+
+`IsDeflated` не путать с `IsDefRate`: у типа ставки признак «дефлируется», у ставки — «дефлятор».
+
+### Согласованный EN, если Dictionary вернул системное имя
+
+Для RateType `LocaleId = 1` совпал с именем атрибута. В resx писать полные имена отсюда, не системные. Short — из таблицы выше. Карточка: `{short} ({full})`, только если они различаются.
+
+| Key | RU полное | EN полное | RU short | EN short |
+|-----|-----------|-----------|----------|----------|
+| `IsUseNomination` | Используется номинация | Uses nomination | Номинация | Nomination |
+| `IsDeflated` | Дефлируется | Deflated | Дефлируется | Deflated |
+| `IsIntoSyncClass` | Использовать синхронизацию | Use synchronization | Синхронизация | Sync |

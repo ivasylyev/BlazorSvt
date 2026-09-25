@@ -5,7 +5,7 @@
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <RootNamespace>BlazorSvt</RootNamespace>
-    <VersionPrefix>2.3.45</VersionPrefix>
+    <VersionPrefix>2.3.46</VersionPrefix>
     <GitRevisionCount>0</GitRevisionCount>
     <BuildTimeUtc>$([System.DateTime]::UtcNow.ToString("yyyy-MM-ddTHH:mm:ssZ"))</BuildTimeUtc>
     <!-- Prod already has environment-specific web.config / appsettings; do not overwrite on publish. -->

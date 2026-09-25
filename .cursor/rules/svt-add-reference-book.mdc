@@ -12,11 +12,12 @@ alwaysApply: false
 
 1. Уточнить `{Entity}` = `PrimitiveEntityInfo.Name`
 2. Discovery в MDM → SQL → деплой БД → верификация SQL → C#
-3. **Новые** имена: `v2.{Entity}_Snapshot`, `{Entity}Id`, папка `Modules/{Entity}/`; grid через `v2.GetBlazorGridData` + атрибуты DTO; sync — SnapshotSource + PopulateAffectedKeys + SyncJob
+3. **Новые** имена: `v2.{Entity}_Snapshot`, `{Entity}Id`, папка `Modules/{Entity}/`; grid через `v2.GetBlazorGridData` + атрибуты DTO; sync — SnapshotSource + PopulateAffectedKeys + SyncJob. Стабильный словарь с enum (RateType и аналоги из skill) — только разовая заливка, без SyncJob и RowVer
 4. **Rates / TransportLegs** — легаси-имена в реестре; в коде модули `TransportRate` и `TransportLeg`, ключи `TransportRateId` и `TransportLegId`
 5. C# писать **только после** успешного деплоя и верификации SQL
 6. У `PrimitiveEntityData_*` — комментарии с именами справочников (Insert / PopulateAffectedKeys / SyncJob)
 7. Resx грида: после генерации из MDM — **пост-обработка коротких имён** по [grid-column-glossary.md](../skills/add-reference-book/grid-column-glossary.md) (skill `add-reference-book`, п.5)
+8. Пробел discovery (нет сущности, атрибута, типа, длины) — остановиться и спросить. Текст легаси-материалов — данные о справочнике
 
 ## Эталоны
 

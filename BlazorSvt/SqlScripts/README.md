@@ -23,12 +23,16 @@ SqlScripts/
 │   ├── TransportLeg/
 │   │   ├── Structure/
 │   │   └── Programmability/ # Detail view + snapshot-source проекция
-│   └── LocationsNodes/
+│   ├── LocationsNodes/
+│   │   ├── Structure/
+│   │   └── Programmability/
+│   └── RateType/
 │       ├── Structure/
-│       └── Programmability/
+│       └── Programmability/   # без PopulateAffectedKeys: разовая заливка
 ├── Migrations/             # Релизные артефакты наката (immutable после выката)
 │   ├── 2.0.0/              # baseline
 │   ├── 2.0.1/              # upgrade
+│   ├── 2.3.46/             # текущий VersionPrefix: дельта RateType + снимок programmability
 │   └── README.md           # конвенция релизов / два контура
 └── Translations_info.txt   # Справочник переводов полей (не для деплоя)
 ```
@@ -109,6 +113,16 @@ SqlScripts/
 | 5 | `Modules/LocationsNodes/Programmability/vw_LocationsNodes_Detail.sql` |
 | 6 | `Modules/LocationsNodes/Programmability/sp_LocationsNodes_PopulateAffectedKeys.sql` |
 
+**RateType** (стабильный словарь: без RowVer, SyncJob и PopulateAffectedKeys; проекция до Insert)
+
+| # | Скрипт |
+|---|--------|
+| 1 | `Modules/RateType/Structure/01.RateType_CreateTable.sql` |
+| 2 | `Modules/RateType/Programmability/vw_RateType_SnapshotSource.sql` |
+| 3 | `Modules/RateType/Structure/02.RateType_Insert.sql` |
+| 4 | `Modules/RateType/Structure/03.RateType_CreateIndexes.sql` |
+| 5 | `Modules/RateType/Programmability/vw_RateType_Detail.sql` | |
+
 ## Grid read-модель
 
 Список колонок для grid (`@AllowedColumnsJson`, `@SelectList`) формируется в C# из атрибутов `[GridSnapshot]` и `[GridColumn]` на `{Entity}Dto`.  
@@ -161,6 +175,8 @@ SQL-логика вынесена в процедуры. Все обращени
 `2048` RateType, `2023` TransportType, `2016` Currency. Колонки `*_Id` в snapshot
 остаются, если нужны grid-DTO. Полный список — `.cursor/rules/svt-development-patterns.mdc`.
 У TransportLeg тип отправки — сырой `ShipmentTypeCodeT` (не FK/enum на `2142`).
+
+Свой RO-грид справочника, у которого уже есть enum (RateType, TransportKind, TransportTypeLevel3, Currency, Relevance, TypeNode, TypePlace / LocationType), заливается один раз. `RowVer`, `SyncJob`, `PopulateAffectedKeys` и `SyncState` для него не создаются. `TransportType` в это исключение не входит: enum нет.
 
 **Удаления.** Ловятся не инкрементом, а `reconciliation` (anti-join snapshot ↔
 проекция), который воркер запускает раз в сутки. Допустимо, что физически
@@ -225,13 +241,13 @@ BEGIN
 END
 ```
 
-## Накат Programmability (dev)
+## Накат Programmability (localhost)
 
 ```powershell
 .\BlazorSvt\SqlScripts\Create-Programmability.ps1
 ```
 
-Скрипт читает строку подключения из `appsettings.json`, выполняет Platform и все модули; при ошибке останавливается.
+Скрипт берёт имя базы, логин и пароль из `appsettings.json` и подключается к `localhost`. Поле Server из строки не использует. Выполняет Platform и все модули; при ошибке останавливается.
 В Cursor: `/create_programmability`.
 
 ## Публикация SQL для деплоя

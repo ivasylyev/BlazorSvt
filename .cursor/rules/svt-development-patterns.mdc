@@ -101,6 +101,10 @@ Serilog (`Host/Program.cs`, секция `Serilog` в `appsettings.json`). Пр�
 `sp_{Entity}_PopulateAffectedKeys`, `{Entity}SyncJob` → `AddSingleton<ISnapshotSyncJob, …>()`,
 RowVer на основной PED-таблице. Стабильные источники в каскад **не** включать без явного решения.
 
+**Свой RO-грид стабильного словаря с enum** — разовая заливка, без инкремента. Класс (enum уже в коде): RateType, TransportKind, TransportTypeLevel3, Currency, Relevance, TypeNode, TypePlace (LocationType). `TransportType` и `ShipmentType` не входят: enum нет. Справочники «хранит константы» без enum не входят, пока enum не появится.
+
+Для такого справочника: снимок один раз из `vw_{Entity}_SnapshotSource`; `RowVer`, `SyncJob`, `PopulateAffectedKeys` и `SyncState` не создавать; в каскад чужих модулей не включать (их гриды показывают enum). Объём — только RO-грид и карточка. Перед генерацией сверить неархивные строки `vw_{Entity}` с enum (`Id` и состав); расхождение — стоп и вопрос, enum не перегенерировать. Если английский Dictionary равен системному имени атрибута — не копировать; человеко-читаемый EN согласовать и записать в глоссарий. Unit-тест SyncJob для этого класса не добавлять. Подробности — skill `add-reference-book`, раздел «Стабильный словарь с enum».
+
 Дочерние/связанные сущности (типа `RatesOfAverageRate`) — в каскад **только** если пользователь
 явно попросил; часто legacy меняет родителя и детей одновременно.
 
@@ -117,7 +121,7 @@ RowVer на основной PED-таблице. Стабильные источ
 | Проект | Назначение |
 |--------|------------|
 | `tests/BlazorSvt.UnitTests/` | Unit-тесты Platform и contract DTO |
-| `tests/BlazorSvt.IntegrationTests/` | Read-only тесты SP/view на dev-БД |
+| `tests/BlazorSvt.IntegrationTests/` | Read-only тесты SP/view на локальной `mdm` (`localhost`) |
 
 Стек: **xUnit**, **NSubstitute**, **FluentAssertions**. Integration: **Xunit.SkippableFact** (skip при недоступной БД).
 
@@ -128,18 +132,18 @@ RowVer на основной PED-таблице. Стабильные источ
 - `DetailDisplayValue` / `DetailSettingsBuilder` — видимость detail-полей и `HideEmptyDetailFields`
 - `SnapshotSyncJobContractTests` — metadata SyncJob + Sources
 - `Platform/Access` — `UserRoleReconciler`, `AccessGuard`, `UserAccessSynchronizer` (без живого AD)
-- Новый справочник → unit contract-тест для `{Entity}Dto` и SyncJob
+- Новый справочник → unit contract-тест для `{Entity}Dto` и SyncJob (SyncJob не тестировать у стабильного словаря с enum: job нет)
 
 **Import** (`Validators`, `ExcelParser`) — пока без тестов (прототип).
 
-### Integration-тесты (read-only, dev-БД)
+### Integration-тесты (read-only, локальная `mdm`)
 
 - `v2.GetBlazorGridData` — пагинация, фильтры, сортировка на существующих данных
 - `vw_{Entity}_Detail` — detail view по ключу из grid
 - **FTS** — `{Entity}FtsIntegrationTests` + `FtsFilterTestSupport` (эталон: TransportRate / AverageRateLevel3)
 - **AD** — `ActiveDirectorySmokeTests` (skip, если нет домена/DC)
 - **Без** синтетических INSERT и Docker/Testcontainers
-- Строка подключения: env `BLAZORSVT_TEST_CONNECTION` → fallback `Database:MdmDb` из `appsettings.json`
+- Перед запуском задай `BLAZORSVT_TEST_CONNECTION`: строка `Database:MdmDb` с `Server=localhost` (логин и пароль из неё же). Поле Server из `appsettings.json` не использовать, файл не менять. Без переменной тесты идут на сервер из `appsettings.json`
 - Эталоны: `ModuleGridIntegrationTests.cs`, `Modules/*/…FtsIntegrationTests.cs`
 
 ### Запуск

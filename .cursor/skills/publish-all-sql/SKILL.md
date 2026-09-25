@@ -44,8 +44,8 @@ description: >-
 
 Подробно: `BlazorSvt/SqlScripts/Migrations/README.md`.
 
-- **Migrations/** — immutable релизные артефакты (после выката не править).
-- С **2.0.2+** в папку релиза класть только schema-дельты; Programmability — отдельно (`-Mode Programmability`).
+- **Migrations/** — релизные артефакты. Имя папки = `VersionPrefix` в `BlazorSvt/BlazorSvt.csproj`. После выката папку не править.
+- В папке версии: дельта схемы, последним файлом — полный снимок programmability (`All_Programmability.sql`). Подробно: `SqlScripts/Migrations/README.md`.
 - `2.0.0` / `2.0.1` — архив факта из старого `C:\publish\v2` (001–037 / 038–054).
 
 ## Не копируется
