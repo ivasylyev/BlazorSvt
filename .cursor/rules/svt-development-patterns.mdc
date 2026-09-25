@@ -117,7 +117,7 @@ RowVer на основной PED-таблице. Стабильные источ
 | Проект | Назначение |
 |--------|------------|
 | `tests/BlazorSvt.UnitTests/` | Unit-тесты Platform и contract DTO |
-| `tests/BlazorSvt.IntegrationTests/` | Read-only тесты SP/view на dev-БД |
+| `tests/BlazorSvt.IntegrationTests/` | Read-only тесты SP/view на локальной `mdm` (`localhost`) |
 
 Стек: **xUnit**, **NSubstitute**, **FluentAssertions**. Integration: **Xunit.SkippableFact** (skip при недоступной БД).
 
@@ -132,14 +132,14 @@ RowVer на основной PED-таблице. Стабильные источ
 
 **Import** (`Validators`, `ExcelParser`) — пока без тестов (прототип).
 
-### Integration-тесты (read-only, dev-БД)
+### Integration-тесты (read-only, локальная `mdm`)
 
 - `v2.GetBlazorGridData` — пагинация, фильтры, сортировка на существующих данных
 - `vw_{Entity}_Detail` — detail view по ключу из grid
 - **FTS** — `{Entity}FtsIntegrationTests` + `FtsFilterTestSupport` (эталон: TransportRate / AverageRateLevel3)
 - **AD** — `ActiveDirectorySmokeTests` (skip, если нет домена/DC)
 - **Без** синтетических INSERT и Docker/Testcontainers
-- Строка подключения: env `BLAZORSVT_TEST_CONNECTION` → fallback `Database:MdmDb` из `appsettings.json`
+- Перед запуском задай `BLAZORSVT_TEST_CONNECTION`: строка `Database:MdmDb` с `Server=localhost` (логин и пароль из неё же). Поле Server из `appsettings.json` не использовать, файл не менять. Без переменной тесты идут на сервер из `appsettings.json`
 - Эталоны: `ModuleGridIntegrationTests.cs`, `Modules/*/…FtsIntegrationTests.cs`
 
 ### Запуск

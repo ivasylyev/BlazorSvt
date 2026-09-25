@@ -360,7 +360,7 @@ def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("--entity", default="LocationsNodes")
     parser.add_argument("--output-dir", type=Path, required=True)
-    parser.add_argument("--server", default="S001ITD-0084")
+    parser.add_argument("--server", default="localhost")
     parser.add_argument("--database", default="mdm")
     parser.add_argument("--user", default="SVT")
     parser.add_argument("--password", default="SVTsrv1!")

@@ -225,13 +225,13 @@ BEGIN
 END
 ```
 
-## Накат Programmability (dev)
+## Накат Programmability (localhost)
 
 ```powershell
 .\BlazorSvt\SqlScripts\Create-Programmability.ps1
 ```
 
-Скрипт читает строку подключения из `appsettings.json`, выполняет Platform и все модули; при ошибке останавливается.
+Скрипт берёт имя базы, логин и пароль из `appsettings.json` и подключается к `localhost`. Поле Server из строки не использует. Выполняет Platform и все модули; при ошибке останавливается.
 В Cursor: `/create_programmability`.
 
 ## Публикация SQL для деплоя

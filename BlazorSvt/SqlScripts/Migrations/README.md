@@ -31,7 +31,7 @@ Migrations/
 | Контур | Содержимое | Свойство | Где живёт |
 |--------|------------|----------|-----------|
 | **Schema / Migrations** | CREATE TABLE, ALTER, индексы, one-shot data fix | один раз, immutable | `Migrations/{version}/` |
-| **Programmability** | views, SP, fn (`CREATE OR ALTER`) | идемпотентно, всегда latest | SoT → publish `-Mode Programmability` или `/create_programmability` на dev |
+| **Programmability** | views, SP, fn (`CREATE OR ALTER`) | идемпотентно, всегда latest | SoT → publish `-Mode Programmability` или `/create_programmability` на локальную `mdm` |
 
 Накат на **уже развёрнутую** БД: скрипты из ещё не применённых папок релиза → затем весь Programmability.
 Greenfield: `2.0.0` → `2.0.1` → … → Programmability.

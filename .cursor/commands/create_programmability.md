@@ -1,6 +1,6 @@
 # create_programmability
 
-Накатить SQL-скрипты **Programmability** (Platform + все модули) на dev БД из `appsettings.json`.
+Накатить SQL-скрипты **Programmability** (Platform + все модули) на локальную БД `mdm` (`localhost`).
 
 ## Действия
 
@@ -20,6 +20,6 @@
 
 ## Ограничения
 
-- Только dev-среда; строка подключения берётся из `BlazorSvt/appsettings.json`.
+- Сервер всегда `localhost`. Имя базы, логин и пароль берутся из `Database:MdmDb` в `BlazorSvt/appsettings.json`. Поле Server из этой строки не использовать.
 - Не изменяй `appsettings.json` и содержимое SQL-скриптов без отдельной просьбы.
 - Структурные скрипты (`Structure/`) этой командой **не** накатываются.
