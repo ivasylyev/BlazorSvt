@@ -432,6 +432,8 @@ BlazorSvt/SqlScripts/Modules/{Entity}/
 
 Обновить также `SqlScripts/Publish-AllSql.ps1` (порядок: CreateTable → SnapshotSource → Insert → Indexes → Detail → PopulateAffectedKeys).
 
+Релизная копия — `SqlScripts/Migrations/{VersionPrefix}/`, где `{VersionPrefix}` берётся из `BlazorSvt/BlazorSvt.csproj`. Нумерация с `001`: дельта схемы, последним файлом полный снимок programmability `All_Programmability.sql`. В `C:\publish` само по себе не копировать. Конвенция — `SqlScripts/Migrations/README.md`.
+
 ### Structure
 
 **01 — CreateTable:** системные поля + атрибуты короткого списка (порядок п.1); партиционирование; SEQUENCE; DEFAULT на `Id`, `CreationDate`; скрытые FK (`*_Id`) для каскада sync.  

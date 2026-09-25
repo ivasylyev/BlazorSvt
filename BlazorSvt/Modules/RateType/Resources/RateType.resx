@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <resheader name="resmimetype"><value>text/microsoft-resx</value></resheader>
+  <resheader name="version"><value>2.0</value></resheader>
+  <resheader name="reader"><value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value></resheader>
+  <resheader name="writer"><value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value></resheader>
+  <data name="RateTypeGrid.Title" xml:space="preserve"><value>Rate type</value></data>
+  <data name="RateTypeDto.Code" xml:space="preserve"><value>Code</value></data>
+  <data name="RateTypeDto.Name" xml:space="preserve"><value>Name</value></data>
+  <data name="RateTypeDto.IsUseNomination" xml:space="preserve"><value>Nomination</value></data>
+  <data name="RateTypeDto.IsDeflated" xml:space="preserve"><value>Deflated</value></data>
+  <data name="RateTypeDto.Comment" xml:space="preserve"><value>Comment</value></data>
+  <data name="RateTypeDto.IsIntoSyncClass" xml:space="preserve"><value>Sync</value></data>
+  <data name="RateTypeDto.IsArchive" xml:space="preserve"><value>Archive</value></data>
+  <data name="RateTypeDto.CreationDate" xml:space="preserve"><value>Created</value></data>
+  <data name="RateTypeDto.LastChangeDate" xml:space="preserve"><value>Changed</value></data>
+  <data name="RateTypeDetailDto.Code" xml:space="preserve"><value>Code</value></data>
+  <data name="RateTypeDetailDto.Name" xml:space="preserve"><value>Name</value></data>
+  <data name="RateTypeDetailDto.IsUseNomination" xml:space="preserve"><value>Nomination (Uses nomination)</value></data>
+  <data name="RateTypeDetailDto.IsDeflated" xml:space="preserve"><value>Deflated</value></data>
+  <data name="RateTypeDetailDto.Comment" xml:space="preserve"><value>Comment</value></data>
+  <data name="RateTypeDetailDto.IsIntoSyncClass" xml:space="preserve"><value>Sync (Use synchronization)</value></data>
+  <data name="RateTypeDetailDto.IsArchive" xml:space="preserve"><value>Archive</value></data>
+  <data name="RateTypeDetailDto.CreationDate" xml:space="preserve"><value>Created</value></data>
+  <data name="RateTypeDetailDto.LastChangeDate" xml:space="preserve"><value>Changed</value></data>
+  <data name="RateTypeDetailDto.Group.0.Default" xml:space="preserve"><value>Default</value></data>
+</root>

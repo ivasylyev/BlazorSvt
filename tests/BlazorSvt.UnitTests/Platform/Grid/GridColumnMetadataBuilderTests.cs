@@ -1,4 +1,5 @@
 using BlazorSvt.Modules.AverageRateLevel3.List;
+using BlazorSvt.Modules.RateType.List;
 using BlazorSvt.Modules.ParityRates.List;
 using BlazorSvt.Modules.TransportLeg.List;
 using BlazorSvt.Modules.TransportRate.List;
@@ -75,6 +76,15 @@ public class GridColumnMetadataBuilderTests
 
         selectList.Should().Contain("TransportLegId");
         selectList.Should().NotContain(nameof(TransportLegDto.Code));
+    }
+
+    [Fact]
+    public void GetMetadata_RateType_UsesSnapshotTableAndEntityKey()
+    {
+        var metadata = GridColumnMetadataBuilder.GetMetadata(typeof(RateTypeDto));
+
+        metadata.TableName.Should().Be("v2.RateType_Snapshot");
+        metadata.EntityKeyPropertyName.Should().Be(nameof(RateTypeDto.RateTypeId));
     }
 
     [Fact]

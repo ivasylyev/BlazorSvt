@@ -85,6 +85,11 @@ $fullManifest = @(
   'Modules\LocationsNodes\Structure\03.LocationsNodes_CreateIndexes.sql'
   'Modules\LocationsNodes\Programmability\vw_LocationsNodes_Detail.sql'
   'Modules\LocationsNodes\Programmability\sp_LocationsNodes_PopulateAffectedKeys.sql'
+  'Modules\RateType\Structure\01.RateType_CreateTable.sql'
+  'Modules\RateType\Programmability\vw_RateType_SnapshotSource.sql'
+  'Modules\RateType\Structure\02.RateType_Insert.sql'
+  'Modules\RateType\Structure\03.RateType_CreateIndexes.sql'
+  'Modules\RateType\Programmability\vw_RateType_Detail.sql'
 )
 
 $programmabilityManifest = $fullManifest | Where-Object {

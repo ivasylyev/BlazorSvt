@@ -1,0 +1,16 @@
+@page "/ratetype"
+@using BlazorSvt.Modules.RateType.Detail
+@inherits BaseGridPage<RateTypeDto, RateTypeDetailDto>
+
+<GenericGrid TItem="RateTypeDto"
+             TDetailItem="RateTypeDetailDto"
+             PageTitle="@EL["RateTypeGrid.Title"]"
+             AllowDetailView="true"
+             DataProvider="DataProvider"
+             DetailDataProvider="DetailDataProvider"
+             DetailKeySelector="DetailKeySelector">
+
+    <DetailViewTemplate Context="detail">
+    </DetailViewTemplate>
+
+</GenericGrid>

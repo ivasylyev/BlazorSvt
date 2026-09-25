@@ -23,12 +23,16 @@ SqlScripts/
 │   ├── TransportLeg/
 │   │   ├── Structure/
 │   │   └── Programmability/ # Detail view + snapshot-source проекция
-│   └── LocationsNodes/
+│   ├── LocationsNodes/
+│   │   ├── Structure/
+│   │   └── Programmability/
+│   └── RateType/
 │       ├── Structure/
-│       └── Programmability/
+│       └── Programmability/   # без PopulateAffectedKeys: разовая заливка
 ├── Migrations/             # Релизные артефакты наката (immutable после выката)
 │   ├── 2.0.0/              # baseline
 │   ├── 2.0.1/              # upgrade
+│   ├── 2.3.46/             # текущий VersionPrefix: дельта RateType + снимок programmability
 │   └── README.md           # конвенция релизов / два контура
 └── Translations_info.txt   # Справочник переводов полей (не для деплоя)
 ```
@@ -108,6 +112,16 @@ SqlScripts/
 | 4 | `Modules/LocationsNodes/Structure/03.LocationsNodes_CreateIndexes.sql` |
 | 5 | `Modules/LocationsNodes/Programmability/vw_LocationsNodes_Detail.sql` |
 | 6 | `Modules/LocationsNodes/Programmability/sp_LocationsNodes_PopulateAffectedKeys.sql` |
+
+**RateType** (стабильный словарь: без RowVer, SyncJob и PopulateAffectedKeys; проекция до Insert)
+
+| # | Скрипт |
+|---|--------|
+| 1 | `Modules/RateType/Structure/01.RateType_CreateTable.sql` |
+| 2 | `Modules/RateType/Programmability/vw_RateType_SnapshotSource.sql` |
+| 3 | `Modules/RateType/Structure/02.RateType_Insert.sql` |
+| 4 | `Modules/RateType/Structure/03.RateType_CreateIndexes.sql` |
+| 5 | `Modules/RateType/Programmability/vw_RateType_Detail.sql` | |
 
 ## Grid read-модель
 

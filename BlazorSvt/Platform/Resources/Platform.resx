@@ -138,6 +138,9 @@
   <data name="HeaderMenu.LocationsNodes" xml:space="preserve">
 	  <value>Locations-Nodes</value>
   </data>
+  <data name="HeaderMenu.RateType" xml:space="preserve">
+	  <value>Rate type</value>
+  </data>
   <data name="HeaderMenu.Load" xml:space="preserve">
 	  <value>Load</value>
   </data>

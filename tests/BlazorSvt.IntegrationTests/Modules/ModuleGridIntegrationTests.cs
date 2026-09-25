@@ -4,6 +4,8 @@ using BlazorSvt.Modules.AverageRateLevel3.List;
 using BlazorSvt.Modules.LocationsNodes.Detail;
 using BlazorSvt.Modules.LocationsNodes.List;
 using BlazorSvt.Modules.ParityRates.Detail;
+using BlazorSvt.Modules.RateType.Detail;
+using BlazorSvt.Modules.RateType.List;
 using BlazorSvt.Modules.ParityRates.List;
 using BlazorSvt.Modules.TransportLeg.Detail;
 using BlazorSvt.Modules.TransportLeg.List;
@@ -222,5 +224,42 @@ public class ModuleGridIntegrationTests(DatabaseFixture fixture) : IntegrationTe
 
         detail.Should().NotBeNull();
         detail!.AverageRateLevel3Id.Should().Be(entityKey);
+    }
+
+    [SkippableFact]
+    public async Task RateTypeGrid_ReturnsRows()
+    {
+        var connectionString = RequireConnectionString();
+
+        var (rows, totalCount) = await GridSpTestHelper.ExecuteGetBlazorGridDataAsync<RateTypeDto>(
+            connectionString,
+            typeof(RateTypeDto),
+            GridSpTestHelper.CreateDefaultQuery());
+
+        rows.Should().NotBeEmpty();
+        totalCount.Should().BeGreaterThan(0);
+    }
+
+    [SkippableFact]
+    public async Task RateTypeDetailView_ReturnsRowForGridEntityKey()
+    {
+        var connectionString = RequireConnectionString();
+
+        var (rows, _) = await GridSpTestHelper.ExecuteGetBlazorGridDataAsync<RateTypeDto>(
+            connectionString,
+            typeof(RateTypeDto),
+            GridSpTestHelper.CreateDefaultQuery(pageSize: 1));
+
+        var entityKey = rows[0].RateTypeId;
+
+        var detail = await GridSpTestHelper.QueryDetailViewAsync<RateTypeDetailDto>(
+            connectionString,
+            "v2.vw_RateType_Detail",
+            "RateTypeId",
+            entityKey);
+
+        detail.Should().NotBeNull();
+        detail!.RateTypeId.Should().Be(entityKey);
+        detail.Code.Should().NotBeNullOrWhiteSpace();
     }
 }
