@@ -1,0 +1,349 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>СВТ · Процесс как сейчас</title>
+<style>
+  :root { --navy:#133152; --blue:#1e6aa8; --muted:#5a6b7a; --line:#d9e2ea; --paper:#fff; --bg:#f3f6f9; }
+  * { box-sizing:border-box; }
+  body { margin:0; background:var(--bg); color:#1b2733; font:15px/1.55 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif; }
+  .shell { max-width:1240px; margin:0 auto; padding:28px 20px 60px; }
+  .hero { background:linear-gradient(120deg,#5a2323,#8a3b2b); color:#fff; border-radius:16px; padding:30px 32px 26px; }
+  .eyebrow { margin:0 0 6px; font-size:12px; font-weight:700; letter-spacing:.08em; text-transform:uppercase; color:#f6d3c8; }
+  h1 { margin:0; font-size:30px; line-height:1.2; }
+  .subtitle { margin:10px 0 0; font-size:16px; color:#fbe7e1; }
+  h2.sec { margin:40px 0 14px; font-size:22px; color:var(--navy); padding-bottom:8px; border-bottom:2px solid var(--line); }
+  h3 { margin:26px 0 8px; font-size:18px; color:var(--navy); }
+  p { margin:0 0 10px; }
+  .card { background:var(--paper); border:1px solid var(--line); border-radius:12px; overflow:hidden; margin-bottom:16px; }
+  .pad { padding:16px 18px; }
+  .pad ul, .pad ol { margin:0; padding-left:20px; }
+  .pad li { margin-bottom:7px; }
+  .table-wrap { overflow-x:auto; }
+  table { width:100%; border-collapse:collapse; min-width:820px; }
+  th { text-align:left; padding:9px 11px; background:#f8fbfd; color:#526575; font-size:12px; text-transform:uppercase; letter-spacing:.03em; border-bottom:1px solid var(--line); }
+  td { padding:9px 11px; vertical-align:top; border-bottom:1px solid var(--line); font-size:14px; }
+  tr:last-child td { border-bottom:0; }
+  .num { color:var(--blue); font-weight:800; white-space:nowrap; }
+  .tag { display:inline-block; padding:1px 7px; border-radius:999px; font-size:11px; font-weight:800; white-space:nowrap; }
+  .fact { background:#e5f5ed; color:#136c4c; }
+  .gap { background:#fde8e8; color:#9b1c1c; }
+  .key { border-left:5px solid var(--navy); }
+  .warn { border-left:5px solid #c0392b; background:#fff8f7; }
+  .diagram { background:#fff; border:1px solid var(--line); border-radius:12px; padding:12px; margin-bottom:8px; overflow-x:auto; }
+  .diagram svg { display:block; margin:0 auto; }
+  .cap { font-size:13px; color:var(--muted); margin:0 0 22px; }
+  .legend { display:flex; flex-wrap:wrap; gap:14px; font-size:13px; color:var(--muted); margin:0 0 10px; }
+  .legend i { display:inline-block; width:22px; height:13px; border-radius:4px; vertical-align:-2px; margin-right:5px; }
+  .footer { margin-top:28px; color:#728291; font-size:12px; }
+  @media (max-width: 800px) { .shell { padding:14px 12px 40px; } h1 { font-size:22px; } }
+</style>
+</head>
+<body>
+<main class="shell">
+
+<header class="hero">
+  <p class="eyebrow">Система ведения тарифов (СВТ) · процесс «как сейчас»</p>
+  <h1>Как модель тарифов и сроков ведётся сегодня</h1>
+  <p class="subtitle">Схемы текущего процесса по вашим материалам: бэклог гипотез развития СВТ (выгрузка из Confluence 07.10.2026), «СВТ: от стабилизации к целевому проекту», «СВТ 2.0: варианты развития», итоги встречи 6 октября и документы Атласа.</p>
+  <p class="subtitle" style="font-size:13px;opacity:.85">Рабочая версия 07.10.2026 · владелец продукта СВТ · пара к целевому процессу в <a style="color:#fff" href="SVT-roli-i-puti.html">«Ролях и клиентских путях»</a></p>
+</header>
+
+<h2 class="sec">Главное в одном абзаце</h2>
+<div class="card pad key">
+  <p>Сегодня у СВТ нет одного процесса ведения модели. Есть <strong>шесть отдельных ручных конвейеров</strong> — по одному на каждый источник: тендер, фактические перевозки, ЖД-калькулятор НХТК, даты доставки для лидтаймов, порталы линий, ручной ввод. У каждого своя «кухня» в Excel вне СВТ, свои люди и свой ритм. Все они сходятся в СВТ, которая проверяет только формат, не хранит историю и раздаёт данные в шесть-восемь систем. Плюс есть <strong>обходы мимо СВТ</strong>: ЦБД и рейтинг складов обновляются вручную напрямую.</p>
+  <p style="margin:0">Целевое кольцо С1–С9 — это не новая надстройка, а замена этих шести конвейеров одним: один вход, один конвейер проверок, одна версия с датой, одна раздача.</p>
+</div>
+
+<h2 class="sec">Р0. Общая карта потоков</h2>
+<div class="legend">
+  <span><i style="background:#f1f4f7;border:1.5px dashed #8a96a3"></i>первоисточник</span>
+  <span><i style="background:#fff;border:1.5px solid #133152"></i>ручная обработка</span>
+  <span><i style="background:#fdecec;border:1.5px solid #c0392b"></i>боль, подтверждённая фактом</span>
+  <span><i style="background:transparent;border-top:2px dashed #c0392b;height:0;border-radius:0"></i>обход СВТ</span>
+</div>
+<div class="diagram"><div id="map"></div></div>
+<p class="cap">Слева — откуда берутся данные, в середине — как их сегодня готовят люди, справа — куда они уходят. Красный пунктир внизу — потоки, которые идут в обход СВТ, хотя СВТ — мастер-система по этим данным.</p>
+
+<h2 class="sec">Схемы отдельных конвейеров</h2>
+<div class="legend">
+  <span><i style="background:#fff;border:1.5px solid #133152"></i>действие</span>
+  <span><i style="background:#e5f5ed;border:1.5px solid #2e8b62"></i>событие</span>
+  <span><i style="background:#f1f4f7;border:1.5px dashed #8a96a3"></i>файл или внешняя система</span>
+  <span><i style="background:#fdecec;border:1.5px solid #c0392b"></i>где ломается</span>
+</div>
+
+<h3>Р1. Лидтаймы мультимодала</h3>
+<div class="diagram"><div id="lane-lt"></div></div>
+<p class="cap">Перерисовано со схемы в гипотезе 9 бэклога. Три функции, файлы «Актуализация LT_Месяц» и «Рабочий файл лидтаймы» с вкладкой для СВТ, до 2 рабочих дней в месяц (0,095 FTE) <span class="tag fact">факт</span>. СВТ — мастер-система по лидтаймам, но сами лидтаймы формируются вне её. По ЖД источника лидтаймов нет вообще, они не обновлялись несколько лет <span class="tag fact">факт</span>.</p>
+
+<h3>Р2. Тендерные ставки авто</h3>
+<div class="diagram"><div id="lane-tender"></div></div>
+<p class="cap">Ключ уникальности в СВТ — узлы и код контрагента, без «пакета услуг». Пакеты грузятся по очереди, и последний перетирает предыдущий: теряется около 7 файлов, до 2 100 ставок в месяц из ~5 000 <span class="tag fact">факт</span>. Интеграция с 7Rights в бэклоге СВТ отменена — уходит в реинжиниринг УЦП <span class="tag fact">факт</span>.</p>
+
+<h3>Р3. ЖД-ставки НХТК</h3>
+<div class="diagram"><div id="lane-rail"></div></div>
+<p class="cap">Конвертер 2022 года загружает в СВТ около 2 600 ставок из ~100 тыс.; в одном файле «НБ1» — 1 539 направлений × 52 продукта. Те же ставки вручную дублируются в ЦБД к ППР. Трудозатраты ≈1,7 FTE: обновление ЦБД 0,345, заявки 0,5 (растёт), запросы ССП 0,068, обработка Excel НХТК 0,7 <span class="tag fact">факт</span>. Гипотеза интеграции через Оптимакрос — «нет бюджета».</p>
+
+<h3>Р4. Фактические ставки из Логинет</h3>
+<div class="diagram"><div id="lane-fact"></div></div>
+<p class="cap">Скрипт официально разрешён, решение — «оставляем как есть»; для API-интеграции с Логинет нужен ЗНИ <span class="tag fact">факт</span>. После сбоя летом 2023 года скрипт месяц чинил сотрудник другого проекта. Риск остаётся: никто из команды поддержки СВТ не сможет восстановить скрипт, если он сломается; при устаревших фактических ставках недозакладывается сумма в ППР.</p>
+
+<h2 class="sec">Что происходит внутри самой СВТ</h2>
+<div class="card"><div class="table-wrap"><table>
+  <thead><tr><th style="width:190px">Что</th><th>Как сейчас</th><th style="width:230px">Источник</th></tr></thead>
+  <tbody>
+    <tr><td><strong>Проверка данных</strong></td><td>Контролируется только формат. Нет проверки «внесли 1 руб. или 1 млн». Ошибки ручного ввода — экспертно 1–2%. Примеры: норматив плеча 37 тыс. руб. вместо 17 тыс. (стажёр, март 2025); потенциальный ущерб одной ошибки в ППР — 608 тыс. $. Около 50% инцидентов — устаревшие бизнес-правила, выявлено 34 нарушенных правила.</td><td>Бэклог гипотез, п. 3; «от стабилизации к целевому проекту»</td></tr>
+    <tr><td><strong>Две разные логики</strong></td><td>Проверки и расчёты дублируются для редактора и загрузчика, их функционал часто не совпадает. Починка одного бага рождает другие: разные валюты и цены в ставке и средневзвешенной, дубли и пересечения ставок.</td><td>«Варианты развития 2027», Confluence</td></tr>
+    <tr><td><strong>История</strong></td><td>Хранятся только дата и автор последнего изменения. Что и кем было изменено — не хранится. Пользователей больше 50.</td><td>Бэклог гипотез, п. 4</td></tr>
+    <tr><td><strong>Роли</strong></td><td>Четыре роли с 2019 года: Инициатор, «Единое окно», Логист по виду транспорта, Администратор. «Единое окно» с полным доступом на создание и редактирование выдано более чем 50 пользователям; часть функций передана «Северстали» без разграничения внутренних и внешних пользователей.</td><td>Бэклог гипотез, п. 5</td></tr>
+    <tr><td><strong>Устойчивость</strong></td><td>Деградация на ~2 млн записей, отказ на ~3 млн. Блокировки при одновременной работе двух пользователей или пользователя и автоматического расчёта. После добавления ядер и настройки SQL Server загрузка 10 тыс. ставок ускорилась с 10,6 до 4,3 мин; на проде эффект проверяется (встреча 6 октября).</td><td>«Варианты развития», «от стабилизации», итоги 6 октября</td></tr>
+    <tr><td><strong>Раздача</strong></td><td>Интеграции с ССП, CRM, ЦБД, SAP ERP, ЕСД, НСИ. Сбои 2026: ССП не получили 2 500 ставок (март), сбой передачи в CRM (апрель), не загружена часть контрагентов из НСИ (сентябрь); 29 часов простоя без алерта с 28.03.2026.</td><td>«Варианты развития 2027», Confluence</td></tr>
+    <tr><td><strong>Английская версия</strong></td><td>Не тестировалась с 2019 года; ею пользуются около 15 сотрудников в Турции и Китае.</td><td>Бэклог гипотез, п. 6</td></tr>
+  </tbody>
+</table></div></div>
+
+<h3>Как ведение выглядит в руководстве пользователя</h3>
+<p>Руководство (ред. 32) описывает, что пользователь делает руками в СВТ сегодня. Из него видно, где процесс держится на одной роли и на правилах, о которых знает только тот, кто прочитал руководство.</p>
+<div class="card"><div class="table-wrap"><table>
+  <thead><tr><th style="width:190px">Что</th><th>Как сейчас</th><th style="width:230px">Раздел руководства</th></tr></thead>
+  <tbody>
+    <tr><td><strong>Всё через «Единое окно»</strong></td><td>Изменять справочники может только «Единое окно». Оно же заводит коэффициенты, ведёт матрицу каналов, утверждает и группирует заявки, запускает интеграции.</td><td>Разделы 1, 3, 8</td></tr>
+    <tr><td><strong>Заявки</strong></td><td>Инициатор создаёт заявку и прикладывает файл; «Единое окно» может разбить её на дочерние; логист по виду транспорта вносит ставку. Автоподбор отвечает без человека, если находит не индикативную средневзвешенную ставку 3 уровня, — с подъёмом до региона, страны или группы продуктов по настройке. Заявка больше трёх дней на доработке у инициатора закрывается как «Отклонена».</td><td>Разделы 3, 13</td></tr>
+    <tr><td><strong>Ручной запуск раздачи</strong></td><td>Передачу в ЦБД «Единое окно» запускает вручную, указывая версию плана; передачу лидтаймов, средневзвешенных ставок и параметров складов в ЕСД — тоже вручную. Результат смотрят в отчёте по интеграции; если отчёт пуст, ждут 10 минут и скачивают снова.</td><td>Раздел 1</td></tr>
+    <tr><td><strong>Обход для SAP ERP</strong></td><td>Если маршрут не ушёл в SAP ERP, пользователь обновляет лидтайм этого маршрута — так маршрут снова попадает в очередь на интеграцию.</td><td>Раздел 1</td></tr>
+    <tr><td><strong>Маршруты</strong></td><td>Маршрут нельзя отредактировать: его архивируют и создают новый.</td><td>Раздел о маршрутах</td></tr>
+    <tr><td><strong>Скрытые правила</strong></td><td>Лидтаймы ММ для ЦБД «докручиваются» до 32, 63, 93 или 124 суток. Дефлятор с несуществующей комбинацией условий «никогда не будет применён», и система об этом не предупреждает. Устаревшие ставки синхронизируются между группами продуктов раз в сутки, с 01 до 02 ночи.</td><td>Разделы 1.6, 1.11, синхронизация</td></tr>
+    <tr><td><strong>Загрузка</strong></td><td>Две ступени — первичная проверка формата и бизнес-проверка; по каждой выгружается отчёт об ошибках, исправления вносят прямо в отчёт и грузят заново. Для НХТК и части файлов — отдельный конвертер.</td><td>Разделы о загрузке и конвертере</td></tr>
+    <tr><td><strong>Матрица каналов</strong></td><td>8 справочников, правит только «Единое окно»; сумма квот трёх декад не больше месячного максимума ТС; цель данных — выбрать самый финансово выгодный завод-канал.</td><td>Раздел 8; <a href="SVT-baza-znaniy-matrica-kanalov.html">база знаний</a></td></tr>
+  </tbody>
+</table></div></div>
+
+<h3>Масштаб, потребители и метрики сервиса</h3>
+<p>По презентации «СВТ для ИТБК» V15 (16.05.2026):</p>
+<div class="card"><div class="table-wrap"><table>
+  <thead><tr><th style="width:190px">Что</th><th>Как сейчас</th></tr></thead>
+  <tbody>
+    <tr><td><strong>Данные</strong></td><td>Тарифы (авто, ММ, ЖД) — 2,3 млн; плановые ставки — 480 тыс.; маршруты — 300 тыс.; лидтаймы — 250 тыс.; складские ограничения — 300+; квоты — 3 тыс.+. Объём вырос с 0,5 млн записей в 2019 году до 3,5 млн в 2025-м.</td></tr>
+    <tr><td><strong>Пользователи</strong></td><td>196 уникальных пользователей ежедневно: сводная аналитика, экономика логистики, оперлогистика, централизованный маркетинг, отраслевые и экспортные продажи, ЦКС, «Северсталь», ЗЛУ, УЦП.</td></tr>
+    <tr><td><strong>Потребители</strong></td><td>ССП, ЕСД, КПО, CRM/E-Com, SAP TM, SAP ERP, ЦБД, ОЗЕРО — с частотой от раза в 5 минут до ручного запуска.</td></tr>
+    <tr><td><strong>Функции</strong></td><td>Заявки на расчёт ставки — 3 750 за 2025 год; «Умный подбор тарифа» — 90 тыс. запросов за 2025 год; средневзвешенные ставки; дефлятор с прогнозом на 14 месяцев для ЦБД; синхронизация ставок.</td></tr>
+    <tr><td><strong>Метрики Q1 / Q2 2026</strong></td><td>Ошибки качества данных: цель 5 в сутки, факт 6 и 10. Загрузка 30 тыс. ставок: цель ≤ 30 мин, факт 60+ мин или сбой. RPO: цель 1 ч, факт 24 ч. Доступность: цель 99,3%, факт 98,0% и 99,8%.</td></tr>
+    <tr><td><strong>Команда и бэклог</strong></td><td>3,3 FTE сегодня против 8 в 2025 году. Техдолг — 250 человеко-дней, запросы стейкхолдеров — 520 человеко-дней.</td></tr>
+    <tr><td><strong>Архитектура</strong></td><td>Бизнес-логика в базе данных и в заданиях SQL Agent, плюс Elastic и RabbitMQ — то, от чего уходит СВТ 2.0.</td></tr>
+  </tbody>
+</table></div></div>
+
+<h2 class="sec">Как сегодняшний процесс ложится на целевое кольцо</h2>
+<p>Каждая строка — этап целевого кольца, то, что сейчас стоит на его месте, и гипотезы вашего бэклога, которые его закрывают. Почти все эти гипотезы сейчас в статусе «нет бюджета»; на кольце видно, что это не разрозненные хотелки, а дыры одного процесса.</p>
+<div class="card"><div class="table-wrap"><table>
+  <thead><tr><th style="width:140px">Этап</th><th>Что сейчас на его месте</th><th style="width:300px">Гипотезы бэклога СВТ</th></tr></thead>
+  <tbody>
+    <tr><td class="num">С1 Событие</td><td>Изменение приходит файлом в ритме конкретного человека: раз в две недели, раз в месяц, 2 раза в год к ППР</td><td>—</td></tr>
+    <tr><td class="num">С2 Источник</td><td>Шесть ручных конвейеров (Р0); скрипт Логинет; конвертер НХТК 2022 года</td><td>Интеграция НХТК (нет бюджета); лидтаймы и расстояния ЖД из НХТК (нет бюджета); Логинет — оставить скрипт; 7Rights — в УЦП; ati.su — не подтверждена</td></tr>
+    <tr><td class="num">С3 Расчёт</td><td>Лидтаймы мультимодала — вручную, три функции; средняя ставка на маршрут в регион — вручную</td><td>Автоматизация лидтаймов ММ (нет бюджета); средняя ставка по транспортным зонам АСВ НСИ — в УЦП</td></tr>
+    <tr><td class="num">С4 Проверка</td><td>Только формат; две разные логики у редактора и загрузчика</td><td>«Умная контрольная среда» ввода тарифов (нет бюджета); требования к проверкам — направление 2 встречи 6 октября, IV квартал</td></tr>
+    <tr><td class="num">С5 Утверждение</td><td>Нет как шага; права — ЕО у 50+ пользователей</td><td>Реинжиниринг ролевой модели (нет бюджета) = MVP 0.4 СВТ 2.0</td></tr>
+    <tr><td class="num">С6 Версия</td><td>История не хранится; тендерные пакеты перетирают друг друга</td><td>Логирование изменений (нет бюджета) = MVP 1.0; логика тендерных ставок с «пакетом услуг» (нет бюджета)</td></tr>
+    <tr><td class="num">С7 Раздача</td><td>Шесть интеграций со сбоями; ЦБД и рейтинг складов — вручную в обход</td><td>Лидтаймы и ограничения в ЦБД — в УЦП; рейтинг складов для МЛС в ССП, SAP ERP, ЕСД/КПО (не подтверждена арх.); кратность паллет (не подтверждена арх.)</td></tr>
+    <tr><td class="num">С8 Покрытие</td><td>2 600 ЖД-ставок из ~100 тыс.; в CRM нет до 400 ставок; заявки вручную 0,5 FTE</td><td>Интеграция НХТК; заявки на расчёт ставки — MVP 0.9 СВТ 2.0</td></tr>
+    <tr><td class="num">С9 Обучение</td><td>Только авто — агент перетрат в ОПЭ; ЖД-лидтаймы годами не пересматривались</td><td>—</td></tr>
+  </tbody>
+</table></div></div>
+
+<h2 class="sec">Что из этого стало понятнее</h2>
+<div class="card pad"><ol>
+  <li><strong>Атлас для СВТ — это ваш шаг Ш3 «Сбор и синтез требований»</strong> из материала для Д. Капли и М. Аветисова от 02.10. Его итог Ш3.3 — «правила, по которым СВТ отклоняет ошибочные данные». В нашем идеальном процессе это реестр контролей КД-xx на этапе С4. То есть идеальный процесс — не отдельная работа для Атласа, а способ собрать эти 34+ правила с владельцами.</li>
+  <li><strong>Самая большая дыра — не в СВТ, а перед ней.</strong> Этапы С1–С3 сегодня живут целиком в Excel у разных функций. Поэтому одна архитектурная переделка СВТ не уберёт ручной труд — нужны источники событием и расчёт внутри.</li>
+  <li><strong>Две болезни — разные и лечатся раздельно</strong>, как вы и написали в плане: техника (Ш2, ускорение) и требования (Ш3, Атлас). Целевое кольцо описывает только вторую.</li>
+  <li><strong>Часть дыр уже закрывается дорожной картой СВТ 2.0:</strong> роли — MVP 0.4, единый конвейер — 0.5–0.7, заявки — 0.9, история изменений — 1.0. Это стоит показать руководству: гипотезы «без бюджета» на самом деле уже в плане трансформации.</li>
+  <li><strong>УЦП — важный смежный проект, которого не было в наших документах.</strong> Через него уходят 7Rights, лидтаймы и ограничения в ЦБД, средняя ставка по транспортным зонам. Его нужно добавить в стыки.</li>
+</ol></div>
+
+<h2 class="sec">Чего нет в материалах</h2>
+<div class="card pad warn"><ul>
+  <li>Как ведутся договорные ставки, паритеты и складские ограничения — схем и описаний нет <span class="tag gap">пробел</span>. Матрица каналов описана отдельно: до ФТТ SVT-3716 логисты переносили данные СВТ → Excel → Оптимакрос вручную (<a href="SVT-baza-znaniy-matrica-kanalov.html">база знаний</a>).</li>
+  <li>Отдельного шага утверждения изменений справочников нет: по руководству всё правит и утверждает «Единое окно», ставку по заявке — логист по виду транспорта. Кто внутри «Единого окна» отвечает за какой домен — не описано <span class="tag gap">пробел</span>.</li>
+  <li>Формулы средневзвешенных и индикативных ставок в руководстве не описаны <span class="tag gap">пробел</span>.</li>
+  <li>Цифры трудозатрат — разного охвата: ≈2,8 FTE загрузки «Северсталью» и ≈1,7 FTE по ЖД НХТК относятся к разным потокам и не суммируются в общий итог.</li>
+</ul></div>
+
+<p class="footer">СВТ · процесс «как сейчас» · рабочая версия 07.10.2026 · все факты взяты из материалов, перечисленных в шапке · интервью по СВТ не проводились.</p>
+</main>
+
+<script>
+(function () {
+  var NAVY = '#133152', MUTED = '#5a6b7a', RED = '#c0392b';
+  var STYLE = {
+    task:  { fill:'#ffffff', stroke:NAVY,     dash:'' },
+    event: { fill:'#e5f5ed', stroke:'#2e8b62', dash:'' },
+    ext:   { fill:'#f1f4f7', stroke:'#8a96a3', dash:'5 4' },
+    pain:  { fill:'#fdecec', stroke:RED,       dash:'' }
+  };
+  function esc(s) { return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+  function textBlock(cx, cy, label, size, weight, color, anchor) {
+    var lines = label.split('\n'), lh = size + 3, y0 = cy - (lines.length - 1) * lh / 2;
+    return lines.map(function (l, i) {
+      var w = (i === 0 && weight) ? ' font-weight="' + weight + '"' : '';
+      return '<text x="' + cx + '" y="' + (y0 + i * lh) + '" font-size="' + size + '"' + w + ' fill="' + (color || '#1b2733') +
+        '" text-anchor="' + (anchor || 'middle') + '" dominant-baseline="middle">' + esc(l) + '</text>';
+    }).join('');
+  }
+  function marker(id, color) {
+    return '<marker id="' + id + '" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="' + color + '"/></marker>';
+  }
+
+  function lanes(id, cfg) {
+    var el = document.getElementById(id); if (!el) return;
+    var colW = cfg.colW || 150, laneH = cfg.laneH || 96, labelW = 150, top = 20;
+    var W = labelW + cfg.cols * colW + 16, H = top + cfg.lanes.length * laneH + 12, mk = 'm-' + id, nodes = {}, out = [];
+    out.push('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ' + W + ' ' + H + '" style="width:100%;height:auto;min-width:900px" font-family="Segoe UI, Arial, sans-serif">');
+    out.push('<defs>' + marker(mk, NAVY) + marker(mk + 'r', RED) + '</defs>');
+    cfg.lanes.forEach(function (name, i) {
+      var y = top + i * laneH;
+      out.push('<rect x="0" y="' + y + '" width="' + W + '" height="' + laneH + '" fill="' + (i % 2 ? '#f8fbfd' : '#ffffff') + '" stroke="#d9e2ea"/>');
+      out.push('<rect x="0" y="' + y + '" width="' + labelW + '" height="' + laneH + '" fill="#eef4fa" stroke="#d9e2ea"/>');
+      out.push(textBlock(labelW / 2, y + laneH / 2, name, 12.5, 700, NAVY));
+    });
+    cfg.nodes.forEach(function (n) {
+      nodes[n.id] = { x: labelW + n.col * colW + 9, y: top + n.lane * laneH + 12, w: colW - 18, h: laneH - 24, lane:n.lane, col:n.col, type:n.type };
+    });
+    (cfg.edges || []).forEach(function (e) {
+      var a = nodes[e[0]], b = nodes[e[1]], label = e[2] || '', d, lx, ly;
+      if (!a || !b) return;
+      if (b.col > a.col) {
+        var sx = a.x + a.w, sy = a.y + a.h / 2, ex = b.x, ey = b.y + b.h / 2;
+        if (a.lane === b.lane) { d = 'M' + sx + ',' + sy + ' H' + ex; lx = (sx + ex) / 2; ly = sy - 7; }
+        else { var mx = (sx + ex) / 2; d = 'M' + sx + ',' + sy + ' H' + mx + ' V' + ey + ' H' + ex; lx = mx + 4; ly = (sy + ey) / 2; }
+      } else {
+        var cx = a.x + a.w / 2;
+        d = b.lane > a.lane ? 'M' + cx + ',' + (a.y + a.h) + ' V' + b.y : 'M' + cx + ',' + a.y + ' V' + (b.y + b.h);
+        lx = cx + 5; ly = b.lane > a.lane ? (a.y + a.h + b.y) / 2 : (a.y + b.y + b.h) / 2;
+      }
+      var red = b.type === 'pain';
+      out.push('<path d="' + d + '" fill="none" stroke="' + (red ? RED : NAVY) + '" stroke-width="1.6" marker-end="url(#' + (red ? mk + 'r' : mk) + ')"/>');
+      if (label) out.push('<text x="' + lx + '" y="' + ly + '" font-size="11" fill="' + MUTED + '" font-style="italic">' + esc(label) + '</text>');
+    });
+    cfg.nodes.forEach(function (n) {
+      var p = nodes[n.id], s = STYLE[n.type || 'task'], r = n.type === 'event' ? 22 : 9;
+      out.push('<rect x="' + p.x + '" y="' + p.y + '" width="' + p.w + '" height="' + p.h + '" rx="' + r + '" fill="' + s.fill + '" stroke="' + s.stroke + '" stroke-width="1.6"' + (s.dash ? ' stroke-dasharray="' + s.dash + '"' : '') + '/>');
+      out.push(textBlock(p.x + p.w / 2, p.y + p.h / 2, n.text, 11.5, 700));
+    });
+    out.push('</svg>');
+    el.innerHTML = out.join('');
+  }
+
+  function flowMap() {
+    var el = document.getElementById('map'); if (!el) return;
+    var rows = [
+      ['7Rights\nтендер авто', 'Excel-выгрузки + номинация ЗЛУ → SharePoint → Логинет;\nв СВТ готовит и грузит «Северсталь»\n(номинации 1,1 FTE; 0,5 FTE стажёра на завод в месяц)', 'пакеты перетирают\nдо 2 100 ставок/мес'],
+      ['Логинет\nфактические перевозки', 'ручная выгрузка раз в 2 недели →\nPython-скрипт в облаке → загрузка в СВТ', 'лето 2023: месяц\nполовина ставок устарела'],
+      ['НХТК\nкалькулятор ЖД', '27 Excel (15 РФ + 12 экспорт),\nручная обработка 0,7 FTE, конвертер 2022 г.', 'в СВТ ~2 600\nиз ~100 тыс. ставок'],
+      ['Даты доставки\n18 источников', 'LT_Месяц: аналитика → оперлогистика →\nнормативы → «Рабочий файл лидтаймы»', 'ЖД-лидтаймы\nне обновлялись годами'],
+      ['Порталы линий\n(паритеты)', 'ручная выгрузка, «Северсталь» 1,3 FTE\n(материалы Атласа)', ''],
+      ['Пользователи\nи заявки', 'ручной ввод через «Единое окно» (50+ чел.);\nЖД-заявки: 2 200 в СВТ + 1 500 почтой (2024)', 'только проверка\nформата, 1–2% ошибок'],
+      ['Рейтинг складов\nдля МЛС', 'xls вручную в ССП, SAP ERP, ЕСД/КПО', 'обход СВТ'],
+      ['ЖД-ставки и лидтаймы\nдля ЦБД', 'вручную в ЦБД к ППР, 2 раза в год (0,345 FTE);\nлидтаймы в ЦБД вносят раньше, чем в СВТ', 'обход СВТ']
+    ];
+    var W = 1200, top = 34, rh = 70, H = top + rows.length * rh + 16, out = [];
+    var xs = 8, ws = 170, xm = 200, wm = 360, xp = 572, wp = 150, xv = 760, wv = 190, xc = 990, wc = 200;
+    out.push('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ' + W + ' ' + H + '" style="width:100%;height:auto;min-width:960px" font-family="Segoe UI, Arial, sans-serif">');
+    out.push('<defs>' + marker('mp', NAVY) + marker('mpr', RED) + '</defs>');
+    [['Первоисточник', xs + ws / 2], ['Как готовят данные сегодня', xm + wm / 2], ['Где ломается', xp + wp / 2], ['СВТ (легаси)', xv + wv / 2], ['Потребители', xc + wc / 2]].forEach(function (t) {
+      out.push(textBlock(t[1], 16, t[0], 12.5, 800, '#1e6aa8'));
+    });
+    var svtTop = top + 6, svtBot = top + 6 * rh - 6;
+    out.push('<rect x="' + xv + '" y="' + svtTop + '" width="' + wv + '" height="' + (svtBot - svtTop) + '" rx="12" fill="#eef4fa" stroke="' + NAVY + '" stroke-width="1.8"/>');
+    out.push(textBlock(xv + wv / 2, (svtTop + svtBot) / 2, 'СВТ — мастер-система\n\nпроверка только формата\nистория не хранится\nЕО у 50+ пользователей\nдве логики: редактор\nи загрузчик\nдеградация с 2 млн\nзаписей', 12, 800, NAVY));
+    var cTop = top + 6, cBot = top + rows.length * rh - 6;
+    out.push('<rect x="' + xc + '" y="' + cTop + '" width="' + wc + '" height="' + (cBot - cTop) + '" rx="12" fill="#f1f4f7" stroke="#8a96a3" stroke-dasharray="5 4"/>');
+    out.push(textBlock(xc + wc / 2, (cTop + cBot) / 2, 'ССП / ППР\nЦБД\nCRM\nSAP ERP\nЕСД / КПО\nTMS, Логинет\nBW (план)\n\nсбои 2026:\nССП −2 500 ставок,\nCRM, НСИ;\n29 ч простоя\nбез алерта', 12, 700, MUTED));
+    out.push('<path d="M' + (xv + wv) + ',' + ((svtTop + svtBot) / 2) + ' H' + xc + '" stroke="' + NAVY + '" stroke-width="2.4" marker-end="url(#mp)"/>');
+    rows.forEach(function (r, i) {
+      var y = top + i * rh + 8, h = rh - 16, cy = y + h / 2, bypass = i >= 6;
+      out.push('<rect x="' + xs + '" y="' + y + '" width="' + ws + '" height="' + h + '" rx="9" fill="#f1f4f7" stroke="#8a96a3" stroke-dasharray="5 4"/>');
+      out.push(textBlock(xs + ws / 2, cy, r[0], 11.5, 700, NAVY));
+      out.push('<rect x="' + xm + '" y="' + y + '" width="' + wm + '" height="' + h + '" rx="9" fill="#fff" stroke="' + NAVY + '" stroke-width="1.4"/>');
+      out.push(textBlock(xm + 10, cy, r[1], 11, 600, '#1b2733', 'start'));
+      out.push('<path d="M' + (xs + ws) + ',' + cy + ' H' + xm + '" stroke="' + NAVY + '" stroke-width="1.5" marker-end="url(#mp)"/>');
+      if (r[2]) {
+        out.push('<rect x="' + xp + '" y="' + y + '" width="' + wp + '" height="' + h + '" rx="9" fill="#fdecec" stroke="' + RED + '" stroke-width="1.4"/>');
+        out.push(textBlock(xp + wp / 2, cy, r[2], 11, 700, '#8a1f1f'));
+      }
+      if (bypass) {
+        out.push('<path d="M' + (xp + wp) + ',' + cy + ' H' + xc + '" stroke="' + RED + '" stroke-width="1.8" stroke-dasharray="7 5" marker-end="url(#mpr)"/>');
+      } else {
+        var from = r[2] ? xp + wp : xm + wm;
+        if (!r[2]) out.push('<path d="M' + (xm + wm) + ',' + cy + ' H' + (xp + wp) + '" stroke="' + NAVY + '" stroke-width="1.5"/>');
+        out.push('<path d="M' + from + ',' + cy + ' H' + xv + '" stroke="' + NAVY + '" stroke-width="1.5" marker-end="url(#mp)"/>');
+      }
+    });
+    out.push('</svg>');
+    el.innerHTML = out.join('');
+  }
+
+  flowMap();
+
+  lanes('lane-lt', {
+    cols: 7, colW: 150,
+    lanes: ['Сводная аналитика\nи отчётность /\n«Северсталь»', 'Операционная\nлогистика', 'Закупки', 'СВТ'],
+    nodes: [
+      { id:'l1', lane:0, col:0, text:'Исторический\nанализ лидтаймов\n(18 источников)' },
+      { id:'l2', lane:1, col:1, type:'ext', text:'Файл\nс аналитикой\n(Excel)' },
+      { id:'lf', lane:2, col:1, type:'ext', text:'Файл\n«Актуализация\nLT_Месяц»' },
+      { id:'l3', lane:1, col:2, text:'Анализ\nлидтаймов' },
+      { id:'l4', lane:1, col:3, text:'Проставляют\nнормативы' },
+      { id:'l5', lane:0, col:4, text:'Обработка файла\nс нормативами' },
+      { id:'l6', lane:0, col:5, text:'Обогащают файл\nс лидтаймами' },
+      { id:'l7', lane:3, col:6, type:'pain', text:'Загрузка в СВТ\nиз вкладки «СВТ»\n2 р.д. в месяц' }
+    ],
+    edges: [ ['l1','l2'], ['l1','lf'], ['l2','l3'], ['lf','l3'], ['l3','l4'], ['l4','l5'], ['l5','l6'], ['l6','l7'] ]
+  });
+
+  lanes('lane-tender', {
+    cols: 6, colW: 170,
+    lanes: ['7Rights', 'ЗЛУ', '«Северсталь»', 'СВТ', 'Логинет, TMS\nи другие системы'],
+    nodes: [
+      { id:'t1', lane:0, col:0, type:'event', text:'Итог тендера:\nлоты, по 200–300\nставок в файле' },
+      { id:'t2', lane:1, col:1, text:'Excel-выгрузки\n+ номинация\n(вручную)' },
+      { id:'t3', lane:2, col:2, text:'Приведение\nк формату, загрузка\n(номинации 1,1 FTE)' },
+      { id:'t6', lane:4, col:2, type:'ext', text:'SharePoint →\nЛогинет\n(отдельно от СВТ)' },
+      { id:'t4', lane:3, col:3, text:'Загрузка пакета;\nключ без\n«пакета услуг»' },
+      { id:'t5', lane:3, col:4, type:'pain', text:'Следующий пакет\nперетирает прошлый:\n−2 100 ставок/мес' },
+      { id:'t7', lane:4, col:5, type:'pain', text:'В TMS и других\nсистемах данные\nрасходятся с СВТ' }
+    ],
+    edges: [ ['t1','t2'], ['t2','t3'], ['t2','t6'], ['t3','t4'], ['t4','t5'], ['t5','t7'] ]
+  });
+
+  lanes('lane-rail', {
+    cols: 6, colW: 168,
+    lanes: ['НХТК', 'Сотрудники\nСИБУР', 'СВТ', 'ЦБД', 'CRM / клиент'],
+    nodes: [
+      { id:'r1', lane:0, col:0, type:'ext', text:'Калькулятор:\n27 Excel\n(15 РФ + 12 SI)' },
+      { id:'r2', lane:1, col:1, text:'Ручная обработка\nExcel, 0,7 FTE;\nконвертер 2022 г.' },
+      { id:'r3', lane:2, col:2, type:'pain', text:'В СВТ ~2 600\nиз ~100 тыс.\nставок' },
+      { id:'r4', lane:3, col:2, text:'Те же ставки\nвручную в ЦБД,\n2 р/год, 0,345 FTE' },
+      { id:'r5', lane:4, col:3, type:'pain', text:'Нет до 400 ставок:\nрасчёт клиенту\nпо неверной цене' },
+      { id:'r6', lane:1, col:4, text:'ЖД-заявки вручную\n0,5 FTE: 2 200 в СВТ\n+ 1 500 почтой' },
+      { id:'r7', lane:2, col:5, text:'Недостающая\nставка добавлена\nвручную' }
+    ],
+    edges: [ ['r1','r2'], ['r2','r3'], ['r2','r4'], ['r3','r5','нет ставки'], ['r5','r6'], ['r6','r7'] ]
+  });
+
+  lanes('lane-fact', {
+    cols: 5, colW: 190,
+    lanes: ['Логинет', 'Сотрудник', 'Скрипт\n(облако)', 'СВТ'],
+    nodes: [
+      { id:'f1', lane:0, col:0, type:'ext', text:'Фактические\nперевозки' },
+      { id:'f2', lane:1, col:1, text:'Ручная выгрузка\nраз в 2 недели' },
+      { id:'f3', lane:2, col:2, text:'Python-скрипт:\nперевод в\nформат СВТ' },
+      { id:'f4', lane:3, col:3, text:'Загрузка\nфактических\nставок' },
+      { id:'f5', lane:2, col:4, type:'pain', text:'Лето 2023: сбой —\nмесяц в СВТ половина\nставок устаревшие' }
+    ],
+    edges: [ ['f1','f2'], ['f2','f3'], ['f3','f4'], ['f4','f5','риск'] ]
+  });
+})();
+</script>
+</body>
+</html>

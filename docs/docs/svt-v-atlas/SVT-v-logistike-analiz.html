@@ -1,0 +1,207 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>СВТ в целевой архитектуре логистики: разбор документов</title>
+<style>
+  :root { --navy:#133152; --blue:#1e6aa8; --sky:#eaf4fb; --muted:#5a6b7a; --line:#d9e2ea; --paper:#fff; --bg:#f3f6f9; }
+  * { box-sizing:border-box; }
+  body { margin:0; background:var(--bg); color:#1b2733; font:15px/1.5 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif; }
+  .shell { max-width:1200px; margin:0 auto; padding:28px 20px 60px; }
+  .hero { background:linear-gradient(120deg,var(--navy),#215f91); color:#fff; border-radius:16px; padding:30px 32px 26px; }
+  .eyebrow { margin:0 0 6px; font-size:12px; font-weight:700; letter-spacing:.08em; text-transform:uppercase; color:#bfe1f7; }
+  h1 { margin:0; font-size:28px; line-height:1.2; }
+  .subtitle { margin:10px 0 0; font-size:16px; color:#e2f0fa; }
+  h2.sec { margin:34px 0 14px; font-size:21px; color:var(--navy); padding-bottom:8px; border-bottom:2px solid var(--line); }
+  h2.sec .n { display:inline-block; width:30px; height:30px; line-height:30px; text-align:center; border-radius:50%; background:var(--navy); color:#fff; font-size:14px; font-weight:800; margin-right:10px; }
+  p.lead { color:#3d4c59; margin:0 0 14px; }
+  .card { background:var(--paper); border:1px solid var(--line); border-radius:12px; overflow:hidden; margin-bottom:16px; }
+  .pad { padding:16px 18px; }
+  .pad ul, .pad ol { margin:0; padding-left:20px; }
+  .pad li { margin-bottom:6px; color:#3d4c59; }
+  .table-wrap { overflow-x:auto; }
+  table { width:100%; border-collapse:collapse; min-width:640px; }
+  th { text-align:left; padding:11px 14px; background:#f8fbfd; color:#526575; font-size:12px; text-transform:uppercase; letter-spacing:.03em; border-bottom:1px solid var(--line); }
+  td { padding:12px 14px; vertical-align:top; border-bottom:1px solid var(--line); font-size:14px; }
+  tr:last-child td { border-bottom:0; }
+  .num { color:var(--blue); font-weight:800; white-space:nowrap; }
+  .alert { border-left:5px solid #c0392b; background:#fff6f5; }
+  .alert h3 { margin:0 0 8px; color:#9b1c1c; font-size:16px; }
+  .ok { border-left:5px solid #1f8a5c; }
+  .split { display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-bottom:16px; }
+  .split .card { margin:0; }
+  .split h4 { margin:0 0 8px; color:var(--navy); font-size:15px; }
+  .st { display:inline-block; padding:3px 9px; border-radius:999px; font-size:12px; font-weight:800; white-space:nowrap; }
+  .st.hi { background:#e5f5ed; color:#136c4c; }
+  .st.mid { background:#fdecd2; color:#8a5a09; }
+  .st.lo { background:#eef1f4; color:#5a6b7a; }
+  .note { font-size:13px; color:var(--muted); margin:8px 0 0; }
+  .footer { margin-top:26px; color:#728291; font-size:12px; }
+  @media (max-width: 800px) {
+    .shell { padding:14px 12px 40px; }
+    .hero { padding:20px 18px; }
+    h1 { font-size:22px; }
+    .split { grid-template-columns:1fr; }
+  }
+  @media print { body { background:#fff; } }
+</style>
+</head>
+<body>
+<main class="shell">
+
+  <header class="hero">
+    <p class="eyebrow">Владелец продукта СВТ · разбор материалов</p>
+    <h1>СВТ в целевой архитектуре логистики</h1>
+    <p class="subtitle">Что дают документы «Управление логистикой» (целевая архитектура и executive-версия) для задач СВТ в Atlas</p>
+    <p class="subtitle" style="font-size:13px;opacity:.85;margin-top:4px;">Рабочая версия · 07.10.2026</p>
+  </header>
+
+  <h2 class="sec"><span class="n">1</span>Вывод</h2>
+  <p class="lead">Документы полезны напрямую: это целевая архитектура, в которой СВТ — ядро. Но СВТ в них не названа ни разу, а механизм, который она реализует, описан как отсутствующий. Это первое, что нужно исправить.</p>
+  <div class="card pad alert">
+    <h3>СВТ — это механизм П3, а документ считает, что его нет</h3>
+    <p style="margin:0 0 8px">Тарифно-нормативная модель П3 — «нормативная стоимость и нормативный срок каждой схемы: тарифы инфраструктуры, договорные ставки, фрахт, перевалка». По содержанию это СВТ: система ведения тарифов, маршрутов, лидтаймов и ограничений.</p>
+    <p style="margin:0 0 8px">В executive-версии текущее состояние П3: «единого источника по всем видам транспорта нет… вне авто роль модели играют опыт и разрозненные файлы». Решение: строить П3 «масштабированием авто-модели» прогноза тарифов ИИ.АВТО.</p>
+    <p style="margin:0"><strong>Риск:</strong> рядом с СВТ появится второй тарифный источник. Это та же болезнь, которую документ сам называет в НСИ: «нет понятия мастер-систем».</p>
+  </div>
+
+  <h2 class="sec"><span class="n">2</span>Где СВТ в конструкции кольца</h2>
+  <p class="lead">Соответствие — трактовка владельца продукта, требует подтверждения авторами документов.</p>
+  <div class="card"><div class="table-wrap"><table>
+    <thead><tr><th>Элемент документа</th><th>Что это</th><th>Что в СВТ</th></tr></thead>
+    <tbody>
+      <tr><td class="num">П3 · Д-04</td><td>Тарифно-нормативная модель: ставки</td><td>Ставки, средневзвешенные, паритетные, коэффициенты (домен «Ставки»)</td></tr>
+      <tr><td class="num">Д-14</td><td>Нормативный срок доставки по схеме, «П3 — единственная копия»</td><td>Лидтаймы</td></tr>
+      <tr><td class="num">П1</td><td>НСИ логистики: локации, каталог схем доставки, виды подвижного состава</td><td>Плечи, маршруты, узлы, виды и типы транспорта (домен «Маршруты»); атрибуты из АСВ НСИ СВТ не мастерит</td></tr>
+      <tr><td class="num">П2 · Д-05</td><td>Договоры и ставки перевозчиков</td><td>Частично: контрагенты, тендерные ставки</td></tr>
+    </tbody>
+  </table></div></div>
+  <p class="lead">Кто читает П3 в кольце:</p>
+  <div class="card"><div class="table-wrap"><table>
+    <thead><tr><th>Где</th><th>Что делает</th><th>Что будет при ошибке в СВТ</th></tr></thead>
+    <tbody>
+      <tr><td class="num">Ш2 · К-02</td><td>Схема доставки считается против модели; отклонение сверх лимита — к человеку</td><td>Ложные эскалации или пропуск дорогой схемы</td></tr>
+      <tr><td class="num">Ш6 · К-09</td><td>Сверхнормативный простой сразу получает цену; норматив — Д-14</td><td>Неверная цена простоя, ложные алерты об опоздании</td></tr>
+      <tr><td class="num">Ш8 · К-08</td><td>Счёт перевозчика сверяется со ставкой до оплаты</td><td>Блокировка правильного счёта или оплата неправильного</td></tr>
+      <tr><td class="num">Ш9 · А-13</td><td>Ревизор правил предлагает изменить ставки и сроки по фактам</td><td>Обучение на грязных данных закрепляет ошибку</td></tr>
+      <tr><td class="num">M-03</td><td>Индекс цены: факт против модели</td><td>Индекс не значит ничего</td></tr>
+    </tbody>
+  </table></div></div>
+
+  <h2 class="sec"><span class="n">3</span>Что это даёт нашим задачам</h2>
+  <div class="card"><div class="table-wrap"><table>
+    <thead><tr><th>Польза</th><th>Суть</th><th>Важность</th></tr></thead>
+    <tbody>
+      <tr>
+        <td class="num">Слот в Atlas</td>
+        <td>Первая волна внедрения (Ш6–Ш8: трекинг, цена простоя, сверка счетов) уже опирается на П3. Значит, СВТ нужна в первой волне, а не «потом». Закрывает наш открытый вопрос «СВТ не в первом скоупе Atlas».</td>
+        <td><span class="st hi">Высокая</span></td>
+      </tr>
+      <tr>
+        <td class="num">Цена 34 правил</td>
+        <td>Ошибка ставки в СВТ превращается в ошибку контролей К-02, К-08, К-09 — то есть в деньги. Сильный довод для Ш3 «актуальные требования».</td>
+        <td><span class="st hi">Высокая</span></td>
+      </tr>
+      <tr>
+        <td class="num">Заполнение раздела 3</td>
+        <td>В executive-версии строки П3 и частично П1 по сути пусты, владельцев просят заполнить «как сейчас». Вписываем факты СВТ — и П3 описан как «есть, требует ремонта правил», а не «нет».</td>
+        <td><span class="st hi">Высокая</span></td>
+      </tr>
+      <tr>
+        <td class="num">Новые требования</td>
+        <td>Три требования к СВТ, которых нет в нашем бэклоге — раздел 4.</td>
+        <td><span class="st mid">Средняя</span></td>
+      </tr>
+      <tr>
+        <td class="num">Методика</td>
+        <td>Готовые инструменты для Э1–Э3 — раздел 5.</td>
+        <td><span class="st mid">Средняя</span></td>
+      </tr>
+    </tbody>
+  </table></div></div>
+
+  <h2 class="sec"><span class="n">4</span>Новые требования к СВТ</h2>
+  <div class="card"><div class="table-wrap"><table>
+    <thead><tr><th>Требование</th><th>Откуда</th><th>Что меняет у нас</th></tr></thead>
+    <tbody>
+      <tr>
+        <td class="num">Ставка на дату</td>
+        <td>Правило получает версию и дату вступления в силу; старые перевозки закрываются по версии, действовавшей на их дату</td>
+        <td>API должен отдавать ставку и срок «на дату перевозки» и историю версий. Аудит изменений (MVP 1.0) может понадобиться раньше</td>
+      </tr>
+      <tr>
+        <td class="num">Новый писатель</td>
+        <td>Ревизор А-13 готовит изменения ставок и сроков, утверждает владелец П3</td>
+        <td>Запись от агента идёт через тот же конвейер проверок, что редактор и загрузчик. Отдельного «технического» пути в обход проверок нет</td>
+      </tr>
+      <tr>
+        <td class="num">Доступ агентов</td>
+        <td>Агенты ходят в корпоративные системы только через MCP-обёртки (решение AIS-D-52)</td>
+        <td>Кроме API для фронта Atlas нужен доступ для агентов — по тем же правам и тем же правилам</td>
+      </tr>
+    </tbody>
+  </table></div></div>
+
+  <h2 class="sec"><span class="n">5</span>Что взять из методики</h2>
+  <div class="split">
+    <div class="card pad ok">
+      <h4>Для схемы To-Be</h4>
+      <ul>
+        <li>Формула шага: событие → правило → действие; правило хранится в ядре и читается по ссылке</li>
+        <li>Нормальные формы шага: одно событие на шаг; не решать на неполных данных; правило в одном месте</li>
+        <li>Три реакции контроля: блокировка, маршрутизация, уведомление — «записать в отчёт» не контроль</li>
+        <li>Жизненный цикл правила: предложение → утверждение владельцем → версия → дата вступления</li>
+      </ul>
+    </div>
+    <div class="card pad ok">
+      <h4>Для светофоров и интервью</h4>
+      <ul>
+        <li>M-03 «индекс цены» и M-04 «дисциплина данных» — готовые сигналы для светофоров СВТ</li>
+        <li>Реестр допущений: допущение либо подтверждается, либо правит конструкцию; через месяц после интервью висящих нет</li>
+        <li>Список «что спросить у владельцев в первую неделю» — шаблон для Э3</li>
+        <li>Пустая ячейка лучше выдуманной: «как сейчас» — только факт или помеченный пробел</li>
+      </ul>
+    </div>
+  </div>
+
+  <h2 class="sec"><span class="n">6</span>Что поправить в нашей черновой To-Be</h2>
+  <div class="card"><div class="table-wrap"><table>
+    <thead><tr><th>Сейчас в черновике</th><th>Проблема</th><th>Как поправить</th></tr></thead>
+    <tbody>
+      <tr><td>Контроли К-01…К-04</td><td>Совпадают с кодами К-01…К-12 логистики, смысл другой</td><td>Переименовать контроли данных СВТ, например в КД-xx</td></tr>
+      <tr><td>Механизмы М1–М8</td><td>Дублируют П1–П8</td><td>Заменить ссылками на П1, П3, П6, П7, П8</td></tr>
+      <tr><td>Отдельное кольцо Т1–Т9</td><td>Процесс ставок — не второе кольцо, а жизненный цикл правила П3</td><td>Подать To-Be как контур ведения П3; Т9 = А-13 + утверждение владельцем; Т8 «нет тарифа» = случай Ш2 «каталог пуст для направления»</td></tr>
+      <tr><td>Роль «владелец домена»</td><td>Владелец П3 по плану логистики — ФЭС; у Д-04 владелец — «экономика логистики»</td><td>Развести: владелец правила П3 и владелец продукта системы СВТ</td></tr>
+    </tbody>
+  </table></div></div>
+
+  <h2 class="sec"><span class="n">7</span>Что к нам почти не относится</h2>
+  <div class="card pad">
+    Ш4–Ш5 (ВЭД, пакет документов, весовой контроль), претензионная работа, портал перевозчиков, трек «агенты в eXpress». Это фон для понимания кольца, не работа СВТ.
+  </div>
+
+  <h2 class="sec"><span class="n">8</span>Вопросы к авторам (Агапов, Фролов)</h2>
+  <div class="card"><div class="table-wrap"><table>
+    <thead><tr><th>Вопрос</th><th>Почему важно</th></tr></thead>
+    <tbody>
+      <tr><td class="num">1. СВТ — ядро П3 и Д-14?</td><td>Или П3 строится заново от модели ИИ.АВТО. От ответа зависит, будет ли второй тарифный источник</td></tr>
+      <tr><td class="num">2. Где живут прогнозные тарифы ИИ.АВТО?</td><td>2 700+ направлений: в СВТ как отдельный тип ставки или вне неё. Прогноз, норматив и договорная ставка — разные сущности</td></tr>
+      <tr><td class="num">3. Кто владелец П3?</td><td>Владелец правила (ФЭС / экономика логистики) и владелец продукта системы — разные роли, это нужно зафиксировать</td></tr>
+      <tr><td class="num">4. Кто впишет СВТ в раздел 3?</td><td>Предложение: владелец продукта СВТ заполняет строки П3 и П1 фактами</td></tr>
+    </tbody>
+  </table></div></div>
+
+  <h2 class="sec"><span class="n">9</span>Следующие шаги</h2>
+  <div class="card pad">
+    <ol>
+      <li>Подготовить текст для строк П1 и П3 раздела 3 executive-версии — только факты СВТ</li>
+      <li>Переписать черновую To-Be в нотации логистики (коды, механизмы, жизненный цикл правила)</li>
+      <li>Задать авторам четыре вопроса из раздела 8 до старта Э2</li>
+    </ol>
+  </div>
+
+  <p class="footer">Владелец продукта СВТ · разбор документов «Управление логистикой» · рабочая версия 07.10.2026</p>
+</main>
+</body>
+</html>

@@ -1,0 +1,162 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>СВТ · Роли пользователей</title>
+<style>
+  :root { --navy:#133152; --blue:#1e6aa8; --muted:#5a6b7a; --line:#d9e2ea; --paper:#fff; --bg:#f3f6f9; }
+  * { box-sizing:border-box; }
+  body { margin:0; background:var(--bg); color:#1b2733; font:15px/1.55 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif; }
+  .shell { max-width:1240px; margin:0 auto; padding:28px 20px 60px; }
+  .hero { background:linear-gradient(120deg,var(--navy),#215f91); color:#fff; border-radius:16px; padding:30px 32px 26px; }
+  .eyebrow { margin:0 0 6px; font-size:12px; font-weight:700; letter-spacing:.08em; text-transform:uppercase; color:#bfe1f7; }
+  h1 { margin:0; font-size:30px; line-height:1.2; }
+  .subtitle { margin:10px 0 0; font-size:16px; color:#e2f0fa; }
+  h2.sec { margin:40px 0 14px; font-size:22px; color:var(--navy); padding-bottom:8px; border-bottom:2px solid var(--line); }
+  h3 { margin:26px 0 8px; font-size:18px; color:var(--navy); }
+  p { margin:0 0 10px; }
+  .card { background:var(--paper); border:1px solid var(--line); border-radius:12px; overflow:hidden; margin-bottom:16px; }
+  .pad { padding:16px 18px; }
+  .pad ul, .pad ol { margin:0; padding-left:20px; }
+  .pad li { margin-bottom:6px; }
+  .table-wrap { overflow-x:auto; }
+  table { width:100%; border-collapse:collapse; min-width:760px; }
+  th { text-align:left; padding:9px 11px; background:#f8fbfd; color:#526575; font-size:12px; text-transform:uppercase; letter-spacing:.03em; border-bottom:1px solid var(--line); }
+  td { padding:9px 11px; vertical-align:top; border-bottom:1px solid var(--line); font-size:14px; }
+  tr:last-child td { border-bottom:0; }
+  .num { color:var(--blue); font-weight:800; white-space:nowrap; }
+  .tag { display:inline-block; padding:1px 7px; border-radius:999px; font-size:11px; font-weight:800; white-space:nowrap; }
+  .fact { background:#e5f5ed; color:#136c4c; }
+  .hyp { background:#fdecd2; color:#8a5a09; }
+  .gap { background:#fde8e8; color:#9b1c1c; }
+  .done { background:#e5f5ed; color:#136c4c; }
+  .key { border-left:5px solid var(--navy); }
+  .warn { border-left:5px solid #c0392b; background:#fff8f7; }
+  .big { display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:12px; margin-bottom:16px; }
+  .big div { background:#fff; border:1px solid var(--line); border-radius:12px; padding:14px 16px; }
+  .big b { display:block; font-size:18px; color:var(--navy); line-height:1.25; margin-bottom:4px; }
+  .big span { font-size:13px; color:var(--muted); }
+  .mx td, .mx th { text-align:center; font-size:13px; }
+  .mx td:first-child, .mx th:first-child { text-align:left; }
+  .mx .e { background:#e5f5ed; color:#136c4c; font-weight:800; }
+  .mx .v { background:#eaf4fb; color:#1c4f70; }
+  .mx .x { color:#a0aab4; }
+  .mx .q { background:#fff6d6; color:#8a5a09; }
+  .footer { margin-top:28px; color:#728291; font-size:12px; }
+  @media (max-width: 800px) { .shell { padding:14px 12px 40px; } h1 { font-size:22px; } }
+  @media print { body { background:#fff; } .hero { color:#000; background:#fff; border:2px solid var(--navy); } }
+</style>
+</head>
+<body>
+<main class="shell">
+
+<header class="hero">
+  <p class="eyebrow">Система ведения тарифов (СВТ) · роли пользователей</p>
+  <h1>Кто работает в СВТ и что каждому доступно</h1>
+  <p class="subtitle">Роль — это группа пользователей, которые работают в системе, со своим набором прав: что видят, что правят, что утверждают. Каждая группа видит и правит только свои данные.</p>
+  <p class="subtitle" style="font-size:13px;opacity:.85">Заказчик и владелец процесса — Капля Денис · бизнес-лидер — Кудрявцев Владимир · владелец сервиса — Подоплелова Екатерина · рабочая версия 08.10.2026</p>
+</header>
+
+<h2 class="sec">1. Пять ролей</h2>
+<div class="big">
+  <div><b>Владельцы данных</b><span>аналитика операций: просмотр всего, утверждение изменений</span></div>
+  <div><b>Северсталь</b><span>внешний сервис: урезанные права только на загрузку</span></div>
+  <div><b>Маршруты и лидтаймы</b><span>только маршруты, плечи и лидтаймы; к ставкам доступа нет</span></div>
+  <div><b>Складские ограничения</b><span>только ограничения и график работы складов; склады — просмотр</span></div>
+  <div><b>Администратор (ИТ)</b><span>пользователи, права, настройки, интеграции; данные не правит</span></div>
+</div>
+<div class="card pad key">
+  <p style="margin:0">Ролей нет у тех, кто в СВТ не работает: поддержки, владельцев продукта, руководства как управления. Автоматика («Умный подбор тарифа», автоподбор по заявке, синхронизация ставок, дефлятор, раздача в системы) — тоже не роль: она работает сама, а правила для неё задают владельцы данных.</p>
+</div>
+
+<div class="card"><div class="table-wrap"><table>
+  <thead><tr><th style="width:200px">Роль</th><th style="width:230px">Кто</th><th>Что делает в СВТ</th><th style="width:250px">Ограничения</th></tr></thead>
+  <tbody>
+    <tr>
+      <td class="num">1 · Владельцы данных</td>
+      <td>Подразделение аналитики операций: Карпов В., Кудрявцев В., Миназова <span class="tag fact">со слов владельца сервиса</span></td>
+      <td>Видят все справочники и отчёты. Отвечают за качество данных: утверждают изменения сверх допуска, решают спорные значения, задают правила автоматики (формулы, пороги, настройки подбора).</td>
+      <td>Правят ли данные сами или только утверждают — <span class="tag gap">уточнить</span></td>
+    </tr>
+    <tr>
+      <td class="num">2 · Северсталь</td>
+      <td>Внешний сервис «Северсталь» — сегодня ≈2,8 FTE на загрузке номинаций, ставок, лидтаймов, паритетов <span class="tag fact">факт</span></td>
+      <td>Загружает данные, которые пока не приходят по интеграции, и исправляет отказы своих загрузок.</td>
+      <td>Урезанные права: без утверждения, без настроек и правил, без управления пользователями. Внешний пользователь отделён от внутренних — сегодня такого разделения нет <span class="tag fact">факт</span>. Точный список справочников — <span class="tag gap">уточнить</span></td>
+    </tr>
+    <tr>
+      <td class="num">3 · Маршруты и лидтаймы</td>
+      <td>Сотрудники, которые ведут только маршруты или лидтаймы</td>
+      <td>Создают и правят маршруты, плечи, лидтаймы; видят связанные справочники (узлы, локации).</td>
+      <td>К ставкам и тарифам доступа нет — ни на правку, ни на просмотр</td>
+    </tr>
+    <tr>
+      <td class="num">4 · Складские ограничения</td>
+      <td>Сотрудники, которые ведут складские ограничения</td>
+      <td>Правят складские ограничения и график работы складов; смотрят склады.</td>
+      <td>Склады только просматривают: они приходят по интеграции из АСВ и ERP. К остальным справочникам доступа нет</td>
+    </tr>
+    <tr>
+      <td class="num">5 · Администратор (ИТ)</td>
+      <td>ИТ-сотрудник, который сопровождает справочники в системе</td>
+      <td>Заводит пользователей и выдаёт роли, ведёт настройки, следит за интеграциями и запускает повторную доставку.</td>
+      <td>Значения ставок, маршрутов и ограничений не правит</td>
+    </tr>
+  </tbody>
+</table></div></div>
+
+<h2 class="sec">2. Права ролей по справочникам</h2>
+<div class="card"><div class="table-wrap"><table class="mx">
+  <thead><tr><th>Справочники</th><th>1 · Владельцы данных</th><th>2 · Северсталь</th><th>3 · Маршруты и лидтаймы</th><th>4 · Складские ограничения</th><th>5 · Администратор</th></tr></thead>
+  <tbody>
+    <tr><td>Ставки и тарифы</td><td class="e">просмотр, утверждение</td><td class="q">загрузка?</td><td class="x">нет доступа</td><td class="x">нет доступа</td><td class="x">нет доступа</td></tr>
+    <tr><td>Маршруты и плечи</td><td class="e">просмотр, утверждение</td><td class="q">загрузка?</td><td class="e">правка</td><td class="x">нет доступа</td><td class="x">нет доступа</td></tr>
+    <tr><td>Лидтаймы</td><td class="e">просмотр, утверждение</td><td class="q">загрузка?</td><td class="e">правка</td><td class="x">нет доступа</td><td class="x">нет доступа</td></tr>
+    <tr><td>Склады (из АСВ и ERP)</td><td class="v">просмотр</td><td class="x">нет доступа</td><td class="x">нет доступа</td><td class="v">просмотр</td><td class="x">нет доступа</td></tr>
+    <tr><td>Складские ограничения, график работы складов</td><td class="e">просмотр, утверждение</td><td class="x">нет доступа</td><td class="x">нет доступа</td><td class="e">правка</td><td class="x">нет доступа</td></tr>
+    <tr><td>Матрица каналов</td><td class="e">просмотр, утверждение</td><td class="x">нет доступа</td><td class="x">нет доступа</td><td class="x">нет доступа</td><td class="x">нет доступа</td></tr>
+    <tr><td>Заявки на расчёт стоимости</td><td class="e">просмотр, утверждение</td><td class="x">нет доступа</td><td class="x">нет доступа</td><td class="x">нет доступа</td><td class="x">нет доступа</td></tr>
+    <tr><td>Пользователи, роли, настройки, интеграции</td><td class="v">правила автоматики</td><td class="x">нет доступа</td><td class="x">нет доступа</td><td class="x">нет доступа</td><td class="e">правка</td></tr>
+  </tbody>
+</table></div></div>
+<p class="note" style="font-size:13px;color:var(--muted)">Зелёный — правит или утверждает; голубой — только смотрит; серый — доступа нет; жёлтый — нужно подтвердить. Права Северстали отмечены по тому, что она загружает сегодня (номинации, ставки, лидтаймы, паритеты); целевой список — за бизнесом.</p>
+
+<h2 class="sec">3. Где роль нужна в процессе</h2>
+<p>В кольце ведения модели (<a href="SVT-idealnyy-process.html">идеальный процесс</a>) человек нужен только в точках решения. Кто в какой точке:</p>
+<div class="card"><div class="table-wrap"><table>
+  <thead><tr><th style="width:240px">Точка решения</th><th>Кто решает</th></tr></thead>
+  <tbody>
+    <tr><td class="num">Ч-1 · спорное значение (Ш4)</td><td>Роль, которая ведёт этот справочник: маршруты и лидтаймы — роль 3, складские ограничения — роль 4; ставки — роль 1. Если данные загрузила Северсталь — она исправляет отказ</td></tr>
+    <tr><td class="num">Ч-2 · изменение сверх допуска (Ш5)</td><td>Роль 1 — владельцы данных</td></tr>
+    <tr><td class="num">Ч-3 · нет значения или оно истекает (Ш8)</td><td>Роль, которая ведёт этот справочник (1, 3 или 4)</td></tr>
+    <tr><td class="num">Ч-4 · поменять правило (Ш9)</td><td>Роль 1 — владельцы данных; включает правило администратор (роль 5)</td></tr>
+  </tbody>
+</table></div></div>
+
+<h2 class="sec">4. Роли доступа сегодня и куда они переходят</h2>
+<p>В легаси-СВТ четыре роли доступа с 2019 года (бэклог гипотез, руководство пользователя ред. 32). Главная проблема — «Единое окно»: роль выдана более чем 50 пользователям и может править всё. В СВТ 2.0 она упраздняется (MVP 0.4).</p>
+<div class="card"><div class="table-wrap"><table>
+  <thead><tr><th style="width:230px">Роль сегодня</th><th>Что может сегодня</th><th style="width:320px">Куда переходит</th></tr></thead>
+  <tbody>
+    <tr><td><strong>Единое окно</strong></td><td>Правка всех справочников, коэффициенты, матрица каналов, утверждение и группировка заявок, ручной запуск интеграций в ЦБД и ЕСД</td><td>Делится между ролями 1, 3, 4 — каждая в своих справочниках; запуск интеграций уходит в автоматику и к администратору</td></tr>
+    <tr><td><strong>Логист по виду транспорта</strong></td><td>Рассчитывает и вносит ставку плеча по заявке</td><td><span class="tag gap">уточнить</span>: кто вносит ставку по заявке в целевом процессе</td></tr>
+    <tr><td><strong>Инициатор</strong></td><td>Создаёт заявку на расчёт, отвечает на доработку</td><td><span class="tag gap">уточнить</span>: отдельная роль или просмотр с правом создать заявку</td></tr>
+    <tr><td><strong>Администратор</strong></td><td>Настройки, пользователи, отчёты</td><td>Роль 5 — администратор (ИТ)</td></tr>
+  </tbody>
+</table></div></div>
+
+<h2 class="sec">5. Что нужно решить с бизнесом</h2>
+<div class="card pad warn"><ol>
+  <li><strong>Кто правит ставки и тарифы.</strong> По вашей схеме ставки видят и утверждают владельцы данных, загружает Северсталь. Правят ли их сами владельцы данных, или нужна отдельная роль «Ставки» (ЖД-тарифы, ЗЛУ по тендерам авто, экономика логистики по коэффициентам)?</li>
+  <li><strong>Кто ведёт матрицу каналов.</strong> Квоты сегодня вводит ЗЛУ (ФТТ SVT-3716). Это отдельная роль или часть роли 1?</li>
+  <li><strong>Заявки на расчёт стоимости.</strong> Кто создаёт заявку (3 750 за 2025 год) и кто вносит ставку, если автоподбор не нашёл?</li>
+  <li><strong>Просмотр для остальных.</strong> 196 пользователей ежедневно смотрят справочники: продажи, ЦКС, маркетинг, планирование. Нужна ли роль «Просмотр» и что в неё входит — например, видят ли они ставки?</li>
+  <li><strong>Тарифы плеч.</strong> У плеча есть ставка. Видит ли её роль 3, если к ставкам доступа у неё нет?</li>
+  <li><strong>Северсталь.</strong> Точный список справочников, которые она загружает в целевом процессе, когда часть данных пойдёт по интеграции.</li>
+</ol></div>
+
+<p class="footer">СВТ · роли пользователей · рабочая версия 08.10.2026 · состав ролей — со слов владельца сервиса 08.10.2026; роли доступа сегодня — руководство пользователя СВТ ред. 32, бэклог гипотез СВТ · не утверждено бизнесом · связанные документы: <a href="SVT-idealnyy-process.html">идеальный процесс</a>, <a href="SVT-kak-seychas.html">процесс как сейчас</a>, <a href="SVT-baza-znaniy-matrica-kanalov.html">матрица каналов</a>.</p>
+</main>
+</body>
+</html>

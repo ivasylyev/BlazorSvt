@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ускорение СВТ — итоги встречи 6 октября 2026</title>
+<style>
+  :root {
+    --ink: #1b2430;
+    --muted: #5b6876;
+    --line: #dfe4ea;
+    --accent: #1f4e79;
+    --accent-soft: #eef3f8;
+    --warn: #8a5a00;
+    --warn-soft: #fdf6e6;
+    --ok: #15603c;
+    --ok-soft: #eef7f1;
+    --soft: #f7f8fa;
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    padding: 32px 20px 72px;
+    background: #f4f6f8;
+    color: var(--ink);
+    font-family: "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    font-size: 15px;
+    line-height: 1.55;
+  }
+
+  .page {
+    max-width: 1100px;
+    margin: 0 auto;
+    background: #fff;
+    border: 1px solid var(--line);
+    border-radius: 6px;
+    padding: 36px 44px 48px;
+  }
+
+  header { margin-bottom: 24px; }
+
+  .kicker {
+    margin: 0 0 8px;
+    color: var(--accent);
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+  }
+
+  h1 {
+    margin: 0 0 8px;
+    font-size: 28px;
+    line-height: 1.25;
+    color: var(--accent);
+  }
+
+  .meta {
+    margin: 0;
+    color: var(--muted);
+    font-size: 14px;
+  }
+
+  h2 {
+    margin: 28px 0 12px;
+    padding-bottom: 8px;
+    border-bottom: 2px solid var(--accent);
+    color: var(--accent);
+    font-size: 18px;
+  }
+
+  p { margin: 0 0 12px; }
+
+  .lead {
+    margin: 0 0 20px;
+    padding: 14px 16px;
+    background: var(--warn-soft);
+    border-left: 4px solid var(--warn);
+  }
+
+  .lead strong { display: block; margin-bottom: 4px; }
+
+  .tracks {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 12px;
+    margin: 0 0 8px;
+  }
+
+  .track {
+    padding: 14px 16px 12px;
+    border: 1px solid var(--line);
+    border-radius: 6px;
+    background: var(--soft);
+  }
+
+  .track-head {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 8px;
+    margin-bottom: 8px;
+  }
+
+  .track h3 {
+    margin: 0;
+    font-size: 15px;
+    line-height: 1.3;
+  }
+
+  .track p { margin: 0; font-size: 13px; color: var(--muted); }
+
+  .track.off { opacity: .72; }
+
+  .table-wrap { overflow-x: auto; }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14px;
+    min-width: 860px;
+  }
+
+  th, td {
+    padding: 10px 12px;
+    border: 1px solid var(--line);
+    text-align: left;
+    vertical-align: top;
+  }
+
+  th {
+    background: var(--accent-soft);
+    color: var(--accent);
+    font-weight: 650;
+  }
+
+  tr.group td {
+    background: var(--accent);
+    color: #fff;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: .04em;
+    text-transform: uppercase;
+    padding: 8px 12px;
+  }
+
+  tr.attention td {
+    background: var(--warn-soft);
+    border-top-color: #e6d3a1;
+    border-bottom-color: #e6d3a1;
+  }
+
+  tr.attention td:first-child {
+    box-shadow: inset 4px 0 0 var(--warn);
+    font-weight: 700;
+  }
+
+  tr.clarify td {
+    background: #f3eaf8;
+    border-top-color: #d4b8e6;
+    border-bottom-color: #d4b8e6;
+  }
+
+  tr.clarify td:first-child {
+    box-shadow: inset 4px 0 0 #7a3ea8;
+    font-weight: 700;
+  }
+
+  .tag {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 99px;
+    font-size: 12px;
+    font-weight: 650;
+    line-height: 1.5;
+    white-space: nowrap;
+  }
+
+  .tag-done { background: var(--ok-soft); color: var(--ok); }
+  .tag-due { background: var(--warn-soft); color: var(--warn); }
+  .tag-open { background: var(--accent-soft); color: var(--accent); }
+  .tag-stop { background: #eef0f2; color: #4e5966; }
+  .tag-flag { background: #f3eaf8; color: #7a3ea8; }
+  .dir { font-weight: 650; white-space: nowrap; color: var(--accent); }
+
+  .note {
+    margin-top: 24px;
+    color: var(--muted);
+    font-size: 13px;
+  }
+
+  @media (max-width: 800px) {
+    .page { padding: 24px 16px 32px; }
+    h1 { font-size: 24px; }
+    .tracks { grid-template-columns: 1fr; }
+  }
+
+  @media print {
+    body { background: #fff; padding: 0; }
+    .page { border: 0; max-width: none; padding: 0; }
+    .track, tr { break-inside: avoid; }
+  }
+</style>
+</head>
+<body>
+<div class="page">
+  <header>
+    <p class="kicker">Постмит</p>
+    <h1>Ускорение работы СВТ</h1>
+    <p class="meta">Встречи 6 и 7 октября 2026. Протокол уточнён 8 октября, действия сгруппированы по состоянию.</p>
+  </header>
+
+  <div class="lead">
+    <strong>Сейчас в работе</strong>
+    Направление 1 — пункт 2а: живая база с прода на «тест 2», обезличивание, замеры. Направление 3 — пункт 6: логи загрузки до предела по коду, Claude только на ставки. Направление 2 не открываем. К пятнице 10 октября — промежуточный отчёт Антону: что проверено, где предел. Не писать, что БД исчерпана.
+  </div>
+
+  <h2>Три направления</h2>
+  <div class="tracks">
+    <article class="track">
+      <div class="track-head">
+        <h3>1. Проверка инфраструктуры</h3>
+        <span class="tag tag-due">В работе</span>
+      </div>
+      <p>Стенды как прод, счётчики, память, standby. Сейчас: п. 2а.</p>
+    </article>
+    <article class="track off">
+      <div class="track-head">
+        <h3>2. Требования к проверкам</h3>
+        <span class="tag tag-stop">Не приступаем</span>
+      </div>
+      <p>Целостность данных и правила. 4-й квартал. Claude сюда не подключаем.</p>
+    </article>
+    <article class="track">
+      <div class="track-head">
+        <h3>3. Рефакторинг с ИИ</h3>
+        <span class="tag tag-due">В работе</span>
+      </div>
+      <p>Быстродействие загрузки ставок. Сейчас: п. 6. Claude — итерациями, не всю базу.</p>
+    </article>
+  </div>
+
+  <h2>Ближайшие действия</h2>
+  <div class="table-wrap">
+  <table>
+    <thead>
+      <tr>
+        <th style="width:5%">№</th>
+        <th style="width:12%">Направление</th>
+        <th style="width:38%">Действие</th>
+        <th style="width:16%">Состояние</th>
+        <th style="width:18%">Ответственный</th>
+        <th style="width:11%">Срок</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr class="group"><td colspan="6">Выполнено</td></tr>
+      <tr>
+        <td>3</td>
+        <td class="dir">3. Рефакторинг</td>
+        <td>Исследовать гипотезу фильтра «только неархивные» при чтении</td>
+        <td><span class="tag tag-stop">Гипотеза не подтверждена</span></td>
+        <td>Васильев Иван</td>
+        <td>7 октября</td>
+      </tr>
+      <tr>
+        <td>4</td>
+        <td class="dir">1. Инфра</td>
+        <td>Вторая линия (Жуков, Ваганов и другие) подключена к ежедневному разбору инцидентов</td>
+        <td><span class="tag tag-done">Выполнено</span></td>
+        <td>Подоплелова Екатерина</td>
+        <td>6 октября</td>
+      </tr>
+
+      <tr class="group"><td colspan="6">В работе</td></tr>
+      <tr class="attention">
+        <td>6</td>
+        <td class="dir">3. Рефакторинг</td>
+        <td>Детализировать логи процедуры загрузки до конкретных шагов и дойти до предела, который ещё можно выжать кодом</td>
+        <td><span class="tag tag-due">В фокусе</span></td>
+        <td>Васильев Иван</td>
+        <td>До 10 октября</td>
+      </tr>
+      <tr>
+        <td>2а</td>
+        <td class="dir">1. Инфра</td>
+        <td>Перенести живую базу на «тест 2», обезличить и снять быстродействие до и после обезличивания</td>
+        <td><span class="tag tag-due">В работе</span></td>
+        <td>Васильев Иван, Петренев Дмитрий, Стефановский Александр</td>
+        <td>После п. 2, до обновления SQL</td>
+      </tr>
+      <tr>
+        <td>1</td>
+        <td class="dir">1. Инфра</td>
+        <td>Счётчики на проде. Снять графики во время большой загрузки (Вова, 20–21)</td>
+        <td><span class="tag tag-due">В работе</span></td>
+        <td>Петренев Дмитрий</td>
+        <td>7 октября, вечер</td>
+      </tr>
+
+      <tr class="group"><td colspan="6">Не закрыто · к выполнению</td></tr>
+      <tr>
+        <td>2</td>
+        <td class="dir">1. Инфра</td>
+        <td>До обновления SQL создать «тест 2»: та же ВМ, что на проде, Windows 2019 и MS SQL Server Standard 2017</td>
+        <td><span class="tag tag-open">К выполнению</span></td>
+        <td>Петренев Дмитрий</td>
+        <td>До обновления SQL</td>
+      </tr>
+      <tr>
+        <td>3а</td>
+        <td class="dir">3. Рефакторинг</td>
+        <td>Физический разрез таблицы (партиции). В п. 3 не делали</td>
+        <td><span class="tag tag-open">Не закрыта</span></td>
+        <td>Васильев Иван</td>
+        <td>После предела по коду</td>
+      </tr>
+      <tr>
+        <td>7</td>
+        <td class="dir">1. Инфра</td>
+        <td>Отчёт по самым нагруженным объектам на проде и «тесте 2» (по объёму физических записей). Гипотеза: закрепить топ в памяти и замерить. Всю базу в память не кладём</td>
+        <td><span class="tag tag-open">К выполнению</span></td>
+        <td>Петренев Дмитрий</td>
+        <td>До 10 октября</td>
+      </tr>
+      <tr>
+        <td>9</td>
+        <td class="dir">Отчёт</td>
+        <td>Целевые метрики из СВТ 2.0: при каких значениях загрузки пользователи считают систему приемлемой</td>
+        <td><span class="tag tag-open">К выполнению</span></td>
+        <td>Подоплелова Екатерина</td>
+        <td>До 10 октября</td>
+      </tr>
+
+      <tr class="group"><td colspan="6">Без движения · уточнить</td></tr>
+      <tr>
+        <td>4а</td>
+        <td class="dir">1. Инфра</td>
+        <td>Петренев предоставляет второй линии события SCOM по серверам СВТ, после этого вторая линия их принимает и подписывается</td>
+        <td><span class="tag tag-due">Без движения</span></td>
+        <td>Петренев Дмитрий, затем вторая линия</td>
+        <td>Не сдвинулось</td>
+      </tr>
+      <tr class="clarify">
+        <td>8</td>
+        <td class="dir">1. Инфра</td>
+        <td>Рассмотреть standby-реплику только для чтения (Enterprise) для интеграций и отчётов. Сначала понять, кто грузит основную базу. Неясно, что нужно от Васильева Ивана — отдельно на следующей встрече</td>
+        <td><span class="tag tag-flag">Уточнить на встрече</span></td>
+        <td>Ершов Алексей, Петренев Дмитрий; вклад Васильева — уточнить</td>
+        <td>Следующая встреча</td>
+      </tr>
+    </tbody>
+  </table>
+  </div>
+
+  <p class="note">Таблица сгруппирована по состоянию, не по номеру. Жёлтым — текущий фокус (п. 6). Сиреневым — п. 8 на следующую встречу. Направление 2 не открываем.</p>
+</div>
+</body>
+</html>

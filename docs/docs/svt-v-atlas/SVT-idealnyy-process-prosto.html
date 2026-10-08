@@ -1,0 +1,239 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>СВТ: идеальный процесс простыми словами</title>
+<style>
+  :root { --navy:#133152; --blue:#1e6aa8; --muted:#5a6b7a; --line:#d9e2ea; --bg:#f3f6f9; }
+  * { box-sizing:border-box; }
+  body { margin:0; background:var(--bg); color:#1b2733; font:16px/1.55 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif; }
+  .shell { max-width:1180px; margin:0 auto; padding:28px 20px 60px; }
+  .hero { background:linear-gradient(120deg,var(--navy),#215f91); color:#fff; border-radius:16px; padding:28px 32px; }
+  h1 { margin:0; font-size:30px; line-height:1.2; }
+  .subtitle { margin:10px 0 0; font-size:17px; color:#e2f0fa; }
+  h2 { margin:40px 0 12px; font-size:23px; color:var(--navy); }
+  p { margin:0 0 12px; }
+  .card { background:#fff; border:1px solid var(--line); border-radius:12px; padding:16px 20px; margin-bottom:16px; }
+  .key { border-left:5px solid var(--navy); }
+  .diagram { background:#fff; border:1px solid var(--line); border-radius:12px; padding:12px; margin-bottom:10px; overflow-x:auto; }
+  .diagram svg { display:block; margin:0 auto; }
+  .cap { font-size:14px; color:var(--muted); margin:0 0 18px; }
+  table { width:100%; border-collapse:collapse; background:#fff; border:1px solid var(--line); border-radius:12px; overflow:hidden; }
+  th { text-align:left; padding:10px 12px; background:#f8fbfd; color:#526575; font-size:13px; border-bottom:1px solid var(--line); }
+  td { padding:10px 12px; vertical-align:top; border-bottom:1px solid var(--line); font-size:15px; }
+  tr:last-child td { border-bottom:0; }
+  ol.steps { margin:0; padding-left:22px; }
+  ol.steps li { margin-bottom:8px; }
+  .who { display:inline-block; padding:1px 8px; border-radius:999px; font-size:12px; font-weight:700; }
+  .auto { background:#e7f4f2; color:#1d6f6a; }
+  .man { background:#fff3cd; color:#7a5a00; }
+  .footer { margin-top:28px; color:#728291; font-size:12px; }
+</style>
+</head>
+<body>
+<main class="shell">
+
+<header class="hero">
+  <h1>Идеальный процесс СВТ — простыми словами</h1>
+  <p class="subtitle">Что такое Атлас, где в нём стоит СВТ и как СВТ работает в идеале. Без колец и кодов.</p>
+</header>
+
+<h2>1. Что такое Атлас и где в нём СВТ</h2>
+<p><strong>Атлас</strong> — это описание того, как СИБУР везёт груз: от заказа клиента до оплаты счёта перевозчику. Это девять шагов по пути груза. На многих шагах нужны <strong>цена и срок</strong>: сколько стоит перевезти, сколько дней это займёт, можно ли туда везти. Эти цифры Атлас сам не хранит — он берёт их из СВТ.</p>
+<div class="diagram"><div id="pic-atlas"></div></div>
+<p class="cap">Верхний ряд — путь груза в Атласе. Нижняя полоса — СВТ. Синие стрелки: шаг Атласа берёт цифру из СВТ. Зелёные пунктирные: факты перевозок возвращаются в СВТ, чтобы поправить цены и сроки.</p>
+<div class="card key">
+  <p style="margin:0"><strong>Главная мысль для Атласа:</strong> СВТ — единственное место, где живут цены, маршруты, сроки и ограничения. Атлас и все системы читают их из СВТ и не держат своих копий. Если у Атласа появится своя таблица ставок, цифры разойдутся — как сегодня расходятся СВТ, Логинет и Excel.</p>
+</div>
+
+<h2>2. Как СВТ работает в идеале</h2>
+<p>Идеальный процесс СВТ — это то, <strong>как цифра попадает в СВТ и уходит потребителям</strong>. Шагов шесть, и они одинаковы для ставок, лидтаймов, маршрутов, квот и складов.</p>
+<div class="diagram"><div id="pic-svt"></div></div>
+<p class="cap">Слева — откуда приходят данные. В середине — шесть шагов внутри СВТ: бирюзовые делает система сама, жёлтый — человек, и только если изменение большое. Справа — кто получает результат. Внизу — четыре случая, когда нужен человек.</p>
+
+<div class="card">
+  <ol class="steps">
+    <li><strong>Получить.</strong> Данные приходят из системы, где они родились: итоги тендера, калькулятор НХТК, квоты ЗЛУ, факты доставки. Не из Excel по почте. <span class="who auto">система</span></li>
+    <li><strong>Посчитать.</strong> СВТ сама считает средневзвешенные ставки, лидтаймы, прогноз для ЦБД. Человек утверждает формулу один раз, а не пересчитывает руками каждый месяц. <span class="who auto">система</span></li>
+    <li><strong>Проверить.</strong> Одни и те же проверки для ручного ввода, загрузки файла и интеграции: «1 рубль вместо миллиона», пересечение периодов, сумма номинаций 130%. Ошибка не проходит. <span class="who auto">система</span></li>
+    <li><strong>Утвердить — только если изменение большое.</strong> Ставка изменилась в пределах допуска — сохраняется сама. Больше допуска — владелец данных получает готовое «было / стало / почему» и нажимает «да» или «нет». <span class="who man">человек, редко</span></li>
+    <li><strong>Сохранить версию с датой.</strong> Старое значение не стирается, а закрывается датой. Всегда можно ответить, по какой ставке считали план или счёт. <span class="who auto">система</span></li>
+    <li><strong>Отдать всем.</strong> Новая цифра сама уходит во все системы: планирование, Оптимакрос, SAP, CRM, ЦБД, Атлас. Не дошло — поддержка видит это сразу. <span class="who auto">система</span></li>
+  </ol>
+</div>
+
+<h2>3. Когда нужен человек</h2>
+<table>
+  <thead><tr><th style="width:240px">Случай</th><th>Пример</th><th style="width:220px">Кто решает</th></tr></thead>
+  <tbody>
+    <tr><td><strong>Данные спорные</strong></td><td>НХТК прислал ставку, которая не проходит проверку</td><td>Владелец данных этого вида: ЗЛУ, ЖД-тарифы, аналитика операций</td></tr>
+    <tr><td><strong>Изменение больше допуска</strong></td><td>Новая ставка на 40% выше прошлой</td><td>Владелец данных</td></tr>
+    <tr><td><strong>Цифры нет</strong></td><td>Продажам нужна ставка на новое направление, автоподбор не нашёл</td><td>Владелец данных — с таймером</td></tr>
+    <tr><td><strong>Правило пора менять</strong></td><td>Проверка блокирует правильные данные; формула устарела</td><td>Владелец данных предлагает, Капля Д. утверждает</td></tr>
+  </tbody>
+</table>
+<p class="cap" style="margin-top:8px">Всё остальное время человек в процессе не участвует. Уже сегодня так работают «Умный подбор тарифа», автоподбор по заявке, синхронизация ставок и дефлятор — нужно только, чтобы у их правил был хозяин.</p>
+
+<h2>4. Один пример целиком: закрылся тендер по авто</h2>
+<table>
+  <thead><tr><th style="width:50%">Сегодня</th><th>В идеале</th></tr></thead>
+  <tbody>
+    <tr><td>Итоги тендера выгружают из 7Rights в Excel</td><td>Итоги сами приходят в СВТ (через УЦП)</td></tr>
+    <tr><td>«Северсталь» готовит файл и грузит; номинацию правят руками дважды</td><td>СВТ считает номинации по формуле</td></tr>
+    <tr><td>Проверяется только формат; новый пакет ставок перетирает старый</td><td>Проверки ловят ошибки; пакеты не перетирают друг друга</td></tr>
+    <tr><td>Утверждения нет — что загрузили, то и действует</td><td>В допуске — сохраняется само; вне допуска — ЗЛУ получает одно решение «было / стало»</td></tr>
+    <tr><td>История не хранится</td><td>Новая версия с датой начала действия</td></tr>
+    <tr><td>Квоты отдельно уходят в Логинет; ставки в ЦБД — ручным запуском</td><td>Ставки и квоты сами уходят во все системы и в Атлас</td></tr>
+    <tr><td><strong>Цикл 3–4 недели, несколько людей</strong></td><td><strong>Дни; человек — только если ставка вышла за допуск</strong></td></tr>
+  </tbody>
+</table>
+
+<h2>5. Как положить это в Атлас</h2>
+<div class="card">
+  <p>Атласу не нужно описывать СВТ изнутри. Ему нужно записать у себя три вещи:</p>
+  <ol class="steps">
+    <li><strong>СВТ — источник цен, маршрутов, сроков и ограничений для всех видов транспорта.</strong> В документах Атласа это место называется «тарифно-нормативная модель П3»: это и есть СВТ. Записать до 16.10.</li>
+    <li><strong>Атлас не копирует данные СВТ, а читает их</strong> «на дату» — через интеграцию. Записать до 23.10.</li>
+    <li><strong>Как СВТ обновляет данные — шесть шагов выше.</strong> В документах Атласа они называются «кольцо ведения модели С1–С9». Это те же шаги, только разбитые мельче: событие, источник, расчёт, проверка, утверждение, версия, раздача, контроль дыр, обучение на фактах. Войти в эталон Атласа к 30.10.</li>
+  </ol>
+</div>
+<table>
+  <thead><tr><th style="width:280px">Наши слова</th><th>Как это называется в документах Атласа</th></tr></thead>
+  <tbody>
+    <tr><td>Получить</td><td>С1 событие, С2 источник</td></tr>
+    <tr><td>Посчитать</td><td>С3 расчёт</td></tr>
+    <tr><td>Проверить</td><td>С4 проверка, правила КД</td></tr>
+    <tr><td>Утвердить, если изменение большое</td><td>С5 утверждение, «точка решения человека»</td></tr>
+    <tr><td>Сохранить версию с датой</td><td>С6 публикация версии</td></tr>
+    <tr><td>Отдать всем</td><td>С7 раздача</td></tr>
+    <tr><td>Цифры нет — задача владельцу</td><td>С8 покрытие и дыры</td></tr>
+    <tr><td>Факты поправляют цены и сроки</td><td>С9 обучение</td></tr>
+  </tbody>
+</table>
+
+<p class="footer">СВТ · идеальный процесс простыми словами · 07.10.2026 · подробная версия — <a href="SVT-idealnyy-process.html">идеальный процесс</a>, роли — <a href="SVT-roli-celevogo-processa.html">роли и пути</a>, сегодня — <a href="SVT-kak-seychas.html">как сейчас</a>.</p>
+</main>
+
+<script>
+(function () {
+  var NAVY = '#133152';
+  function esc(s) { return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+  function text(cx, cy, label, size, weight, color) {
+    var lines = label.split('\n'), lh = size + 4, y0 = cy - (lines.length - 1) * lh / 2;
+    return lines.map(function (l, i) {
+      return '<text x="' + cx + '" y="' + (y0 + i * lh) + '" font-size="' + size + '" font-weight="' + ((i === 0 && weight) ? weight : 400) +
+        '" fill="' + (color || '#1b2733') + '" text-anchor="middle" dominant-baseline="middle">' + esc(l) + '</text>';
+    }).join('');
+  }
+  function box(x, y, w, h, fill, stroke, label, size, weight, dash) {
+    return '<rect x="' + x + '" y="' + y + '" width="' + w + '" height="' + h + '" rx="10" fill="' + fill + '" stroke="' + stroke +
+      '" stroke-width="1.6"' + (dash ? ' stroke-dasharray="5 4"' : '') + '/>' + text(x + w / 2, y + h / 2, label, size || 12, weight || 700);
+  }
+  function arrow(d, color, mk, dash) {
+    return '<path d="' + d + '" fill="none" stroke="' + color + '" stroke-width="1.8"' + (dash ? ' stroke-dasharray="6 4"' : '') + ' marker-end="url(#' + mk + ')"/>';
+  }
+  function svg(id, W, H, body) {
+    var el = document.getElementById(id); if (!el) return;
+    el.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ' + W + ' ' + H + '" style="width:100%;height:auto;min-width:900px" font-family="Segoe UI, Arial, sans-serif">' +
+      '<defs>' +
+      '<marker id="mb" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#1e6aa8"/></marker>' +
+      '<marker id="mg" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#2e8b62"/></marker>' +
+      '<marker id="mn" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="' + NAVY + '"/></marker>' +
+      '<marker id="my" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#c99a06"/></marker>' +
+      '</defs>' + body + '</svg>';
+  }
+
+  // Картинка 1: путь груза в Атласе и СВТ под ним
+  (function () {
+    var out = [], W = 1100, H = 340, bw = 110, bh = 74, y = 40, step = 120;
+    var steps = ['1. Заказ\nклиента', '2. Выбор\nсхемы\nдоставки', '3. Закупка\nперевозки\n(тендер)', '4. Документы,\nВЭД', '5. Погрузка,\nотгрузка',
+                 '6. В пути:\nтрекинг,\nпростой', '7. Доставлено:\nфакт', '8. Счёт\nперевозчика\nи оплата', '9. Разбор\nи улучшение'];
+    var reads = { 0:'срок', 1:'цена\nи срок', 2:'базовая\nставка', 5:'норматив\nсрока', 7:'ставка\nдля сверки' };
+    var backs = { 6:'факт\nсрока и цены', 8:'предложение\nпоправить' };
+    out.push(text(W / 2, 16, 'АТЛАС — путь груза от заказа до оплаты', 14, 800, NAVY));
+    steps.forEach(function (s, i) {
+      var x = 10 + i * step, hl = reads.hasOwnProperty(i);
+      out.push(box(x, y, bw, bh, hl ? '#eaf4fb' : '#ffffff', hl ? '#1e6aa8' : '#9fb3c4', s, 12, 700));
+      if (i < steps.length - 1) out.push(arrow('M' + (x + bw) + ',' + (y + bh / 2) + ' H' + (x + step), '#9fb3c4', 'mn'));
+    });
+    var by = 240, bh2 = 80;
+    out.push('<rect x="10" y="' + by + '" width="' + (W - 20) + '" height="' + bh2 + '" rx="14" fill="#133152"/>');
+    out.push(text(W / 2, by + 30, 'СВТ — система ведения тарифов', 18, 800, '#ffffff'));
+    out.push(text(W / 2, by + 56, 'ставки и тарифы · маршруты и плечи · лидтаймы · склады и ограничения · квоты матрицы каналов', 13, 400, '#d6e7f5'));
+    Object.keys(reads).forEach(function (k) {
+      var cx = 10 + k * step + bw / 2 - 14;
+      out.push(arrow('M' + cx + ',' + by + ' V' + (y + bh + 4), '#1e6aa8', 'mb'));
+      out.push(text(cx - 2, 172, reads[k], 11, 700, '#1e6aa8').replace(/text-anchor="middle"/g, 'text-anchor="end"'));
+    });
+    Object.keys(backs).forEach(function (k) {
+      var cx = 10 + k * step + bw / 2 + 14;
+      out.push(arrow('M' + cx + ',' + (y + bh) + ' V' + (by - 4), '#2e8b62', 'mg', true));
+      out.push(text(cx + 4, 172, backs[k], 11, 700, '#2e8b62').replace(/text-anchor="middle"/g, 'text-anchor="start"'));
+    });
+    svg('pic-atlas', W, H, out.join(''));
+  })();
+
+  // Картинка 2: идеальный процесс СВТ
+  (function () {
+    var out = [], W = 1120, H = 470;
+    var src = ['Тендеры\n(7Rights через УЦП)', 'ЖД-тарифы\n(НХТК)', 'Квоты ЗЛУ', 'Факты доставки', 'Порталы линий,\nрынок', 'Заявка:\nнужна ставка'];
+    var dst = ['Планирование:\nССП, ППР, ЦБД', 'Оптимакрос', 'SAP ERP, SAP TM', 'CRM, E-Com', 'ЕСД, КПО, ОЗЕРО', 'Атлас'];
+    out.push(text(105, 14, 'Откуда', 13, 800, NAVY));
+    out.push(text(1015, 14, 'Кому', 13, 800, NAVY));
+    src.forEach(function (s, i) { out.push(box(10, 30 + i * 52, 190, 44, '#ffffff', '#9fb3c4', s, 12, 700, true)); });
+    dst.forEach(function (s, i) { out.push(box(920, 30 + i * 52, 190, 44, '#ffffff', '#9fb3c4', s, 12, 700, true)); });
+
+    out.push('<rect x="230" y="22" width="660" height="306" rx="16" fill="#f4f8fb" stroke="#133152" stroke-width="2"/>');
+    out.push(text(560, 44, 'СВТ', 16, 800, NAVY));
+    var steps = [
+      ['1. Получить', 'из системы,\nне из Excel', 'a'],
+      ['2. Посчитать', 'средневзвеш.,\nлидтаймы,\nпрогноз', 'a'],
+      ['3. Проверить', 'одни правила\nдля всех входов', 'a'],
+      ['4. Утвердить', 'только если\nизменение\nбольшое', 'h'],
+      ['5. Сохранить', 'версию\nс датой;\nстарое не стираем', 'a'],
+      ['6. Отдать всем', 'сразу во все\nсистемы', 'a']
+    ];
+    var sx = 244, sw = 96, sg = 10, sy = 120, sh = 120;
+    steps.forEach(function (s, i) {
+      var x = sx + i * (sw + sg), hitl = s[2] === 'h';
+      out.push('<rect x="' + x + '" y="' + sy + '" width="' + sw + '" height="' + sh + '" rx="10" fill="' + (hitl ? '#fff6d6' : '#e7f4f2') +
+        '" stroke="' + (hitl ? '#c99a06' : '#1d6f6a') + '" stroke-width="1.6"/>');
+      out.push(text(x + sw / 2, sy + 22, s[0], 12.5, 800, NAVY));
+      out.push(text(x + sw / 2, sy + 72, s[1], 11, 400, '#33475a'));
+      out.push(text(x + sw / 2, sy + sh - 12, hitl ? 'человек' : 'система', 10.5, 700, hitl ? '#7a5a00' : '#1d6f6a'));
+      if (i < steps.length - 1) out.push(arrow('M' + (x + sw) + ',' + (sy + sh / 2) + ' H' + (x + sw + sg), NAVY, 'mn'));
+    });
+    out.push(text(560, 90, 'одинаково для ставок, лидтаймов, маршрутов, квот и складов', 12, 400, '#5a6b7a'));
+    out.push(text(560, 290, 'изменение в пределах допуска проходит шаг 4 само — без человека', 12, 700, '#1d6f6a'));
+
+    src.forEach(function (s, i) {
+      var y = 30 + i * 52 + 22;
+      out.push(arrow('M200,' + y + ' C215,' + y + ' 225,' + (sy + sh / 2) + ' ' + (sx - 2) + ',' + (sy + sh / 2), '#9fb3c4', 'mn'));
+    });
+    var ex = sx + 5 * (sw + sg) + sw;
+    dst.forEach(function (s, i) {
+      var y = 30 + i * 52 + 22;
+      out.push(arrow('M' + ex + ',' + (sy + sh / 2) + ' C' + (ex + 20) + ',' + (sy + sh / 2) + ' 900,' + y + ' 918,' + y, '#9fb3c4', 'mn'));
+    });
+
+    var py = 360, ph = 96;
+    out.push('<rect x="230" y="' + py + '" width="660" height="' + ph + '" rx="14" fill="#fff6d6" stroke="#c99a06" stroke-width="1.8"/>');
+    out.push(text(560, py + 20, 'Человек нужен только в четырёх случаях', 13.5, 800, '#7a5a00'));
+    var cases = ['данные\nспорные', 'изменение\nбольше допуска', 'цифры нет —\nавтоподбор не нашёл', 'правило\nпора менять'];
+    cases.forEach(function (c, i) {
+      var cx = 230 + 660 / 8 * (2 * i + 1);
+      out.push(text(cx, py + 60, c, 12, 700, '#1b2733'));
+    });
+    [2, 3].forEach(function (i) {
+      var cx = sx + i * (sw + sg) + sw / 2;
+      out.push(arrow('M' + cx + ',' + (sy + sh) + ' V' + (py - 4), '#c99a06', 'my', true));
+    });
+    out.push(arrow('M1015,' + (30 + 5 * 52 + 44) + ' V' + (py + ph / 2) + ' H894', '#c99a06', 'my', true));
+    out.push(text(1022, 380, 'значения нет', 11, 700, '#7a5a00').replace(/text-anchor="middle"/g, 'text-anchor="start"'));
+    svg('pic-svt', W, H, out.join(''));
+  })();
+})();
+</script>
+</body>
+</html>
