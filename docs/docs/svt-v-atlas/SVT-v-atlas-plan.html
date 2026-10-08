@@ -1,0 +1,164 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>СВТ в Atlas: план проекта</title>
+<style>
+  :root { --navy:#133152; --blue:#1e6aa8; --sky:#eaf4fb; --muted:#5a6b7a; --line:#d9e2ea; --paper:#fff; --bg:#f3f6f9; }
+  * { box-sizing:border-box; }
+  body { margin:0; background:var(--bg); color:#1b2733; font:15px/1.5 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif; }
+  .shell { max-width:1200px; margin:0 auto; padding:28px 20px 60px; }
+  .hero { background:linear-gradient(120deg,var(--navy),#215f91); color:#fff; border-radius:16px; padding:30px 32px 26px; }
+  .eyebrow { margin:0 0 6px; font-size:12px; font-weight:700; letter-spacing:.08em; text-transform:uppercase; color:#bfe1f7; }
+  h1 { margin:0; font-size:29px; line-height:1.2; }
+  .subtitle { margin:10px 0 0; font-size:16px; color:#e2f0fa; }
+  h2.sec { margin:34px 0 14px; font-size:21px; color:var(--navy); padding-bottom:8px; border-bottom:2px solid var(--line); }
+  h2.sec .n { display:inline-block; width:30px; height:30px; line-height:30px; text-align:center; border-radius:50%; background:var(--navy); color:#fff; font-size:14px; font-weight:800; margin-right:10px; vertical-align:middle; }
+  h3.phase { margin:26px 0 8px; font-size:17px; color:var(--navy); display:flex; align-items:center; gap:10px; flex-wrap:wrap; }
+  p.lead { color:#3d4c59; margin:0 0 14px; }
+  .card { background:var(--paper); border:1px solid var(--line); border-radius:12px; overflow:hidden; margin-bottom:16px; }
+  .table-wrap { overflow-x:auto; }
+  table { width:100%; border-collapse:collapse; min-width:640px; }
+  th { text-align:left; padding:11px 14px; background:#f8fbfd; color:#526575; font-size:12px; text-transform:uppercase; letter-spacing:.03em; border-bottom:1px solid var(--line); }
+  td { padding:12px 14px; vertical-align:top; border-bottom:1px solid var(--line); font-size:14px; }
+  tr:last-child td { border-bottom:0; }
+  .num { color:var(--blue); font-weight:800; white-space:nowrap; }
+  .st { display:inline-block; padding:4px 10px; border-radius:999px; font-size:12px; font-weight:800; white-space:nowrap; }
+  .st.ok { background:#e5f5ed; color:#136c4c; border:1px solid #9dd4bd; }
+  .st.work { background:#fdecd2; color:#8a5a09; border:1px solid #efc989; }
+  .st.plan { background:var(--sky); color:#1c4f70; border:1px solid #bfe1f7; }
+  .st.gap { background:#fde8e8; color:#9b1c1c; border:1px solid #f3b4b4; }
+  .stages { display:grid; grid-template-columns:repeat(6,1fr); gap:6px; margin:14px 0 6px; }
+  .stage { position:relative; border:1px solid var(--line); border-radius:10px; padding:12px 12px 14px; background:#fff; color:#7a8794; min-height:84px; }
+  .stage .sn { display:inline-block; min-width:28px; padding:0 6px; height:22px; line-height:22px; text-align:center; border-radius:11px; background:#e8eef3; color:#7a8794; font-weight:800; font-size:11px; margin-bottom:6px; }
+  .stage .sname { display:block; font-weight:800; font-size:13px; line-height:1.25; }
+  .stage.cur { background:var(--navy); border-color:var(--navy); color:#fff; box-shadow:0 4px 14px rgba(19,49,82,.28); } .stage.cur .sn { background:#fff; color:var(--navy); }
+  .stage .here { position:absolute; right:8px; top:8px; font-size:10px; font-weight:800; text-transform:uppercase; letter-spacing:.06em; color:#ffd479; }
+  .split { display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-bottom:16px; }
+  .split .card { margin:0; padding:16px 18px; }
+  .split h4 { margin:0 0 8px; color:var(--navy); font-size:15px; }
+  .split ul { margin:0; padding-left:18px; } .split li { margin-bottom:5px; font-size:14px; color:#3d4c59; }
+  .footer { margin-top:26px; color:#728291; font-size:12px; }
+  @media (max-width: 800px) {
+    .shell { padding:14px 12px 40px; }
+    .hero { padding:20px 18px; }
+    h1 { font-size:22px; }
+    .stages { grid-template-columns:repeat(2,1fr); }
+    .split { grid-template-columns:1fr; }
+    table { min-width:560px; }
+  }
+  @media print { body { background:#fff; } }
+</style>
+</head>
+<body>
+<main class="shell">
+
+  <header class="hero">
+    <p class="eyebrow">Владелец продукта СВТ · план проекта</p>
+    <h1>СВТ в Atlas: единое окно для работы с тарифами</h1>
+    <p class="subtitle">Пользовательский интерфейс СВТ переносится в Atlas, СВТ остаётся бэкендом</p>
+    <p class="subtitle" style="font-size:13px;opacity:.85;margin-top:4px;">Рабочая версия · 06.10.2026</p>
+  </header>
+
+  <h2 class="sec"><span class="n">1</span>Цель проекта</h2>
+  <p class="lead">Пользователи СВТ работают с тарифами, маршрутами, лидтаймами и ограничениями в Atlas — без переключения между системами и без Excel как отдельного рабочего инструмента. Atlas показывает, где процесс СВТ тормозит или ломается, и формирует из этого бэклог для ИТ-команды.</p>
+  <div class="card"><div class="table-wrap"><table><thead><tr><th>Цель Atlas</th><th>Что это значит для СВТ</th></tr></thead><tbody>
+    <tr><td class="num">Единое окно</td><td>Гриды, фильтры, формы и загрузка Excel по ставкам и справочникам — в интерфейсе Atlas. Новому сотруднику не нужно искать, где получить доступ к СВТ</td></tr>
+    <tr><td class="num">Прозрачность</td><td>Каталог процессов СВТ с ролями и светофорами: где загрузка идёт дольше нормы, где падает интеграция, где нет тарифа</td></tr>
+    <tr><td class="num">Гибкие правила</td><td>Пороги нормальности процесса (например, срок загрузки или доля неполных ставок) бизнес меняет в Atlas без доработки СВТ</td></tr>
+    <tr><td class="num">Бэклог</td><td>Красные светофоры по СВТ становятся задачами для команды СВТ, жёлтые — отложенными</td></tr>
+  </tbody></table></div></div>
+
+  <h2 class="sec"><span class="n">2</span>Как делится работа между Atlas и СВТ</h2>
+  <div class="split">
+    <div class="card">
+      <h4>Atlas</h4>
+      <ul>
+        <li>Интерфейс: гриды, фильтры, формы, загрузка Excel</li>
+        <li>Шлюз: принимает файл от пользователя и передаёт в СВТ; запрашивает у СВТ справочники и ставки для показа</li>
+        <li>Правила процесса: светофоры, пороги, алерты, точки подключения человека</li>
+        <li>Не интеграционная шина: обмены СВТ с CRM, НСИ и другими системами идут напрямую, мимо Atlas</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h4>СВТ</h4>
+      <ul>
+        <li>Хранение данных и единственный источник истины по тарифам, маршрутам, лидтаймам, ограничениям</li>
+        <li>Правила корректности данных: что СВТ принимает и что отклоняет — одни и те же для ручного ввода и загрузки</li>
+        <li>API для Atlas: чтение с серверной пагинацией и фильтрами (до 10 млн записей на справочник), загрузка файлов, статусы операций</li>
+        <li>Интеграции со смежными системами</li>
+      </ul>
+    </div>
+  </div>
+  <p class="lead">Граница правил: в Atlas — когда процесс считается нормальным и когда звать человека; в СВТ — какие данные допустимы. Например, «пересекающиеся средневзвешенные ставки» СВТ отклоняет сама; «загрузка ставок идёт дольше нормы» подсвечивает Atlas.</p>
+
+  <h2 class="sec"><span class="n">3</span>План по этапам методологии Атласа</h2>
+  <div class="stages">
+    <div class="stage cur"><span class="sn">Э0–1</span><span class="sname">Идеальный процесс СВТ</span><span class="here">Старт</span></div>
+    <div class="stage"><span class="sn">Э2</span><span class="sname">ИТ-экспертиза</span></div>
+    <div class="stage"><span class="sn">Э3</span><span class="sname">Интервью с бизнесом</span></div>
+    <div class="stage"><span class="sn">Э4</span><span class="sname">HTML-прототип</span></div>
+    <div class="stage"><span class="sn">Э5</span><span class="sname">Утверждение бизнесом</span></div>
+    <div class="stage"><span class="sn">Э6</span><span class="sname">Разработка</span></div>
+  </div>
+  <p class="lead">Этапы 0–3 совпадают с шагом Ш3 плана СВТ — сбором и синтезом требований. Отдельного обследования для Atlas не проводим: одни интервью, один результат. Пилотный процесс — работа со ставками: загрузка из Excel, просмотр, контроль полноты. Ставки — первый домен в дорожной карте СВТ и главный источник инцидентов.</p>
+
+  <h3 class="phase">Этап 0–1. Идеальный процесс <span class="st work">Старт</span></h3>
+  <p class="lead">С помощью ИИ описываем, как процесс ведения тарифов должен работать в идеальном мире, без оглядки на текущую СВТ.</p>
+  <div class="card"><div class="table-wrap"><table><thead><tr><th>Шаг</th><th>Что делаем</th><th>Результат</th><th>Статус</th></tr></thead><tbody>
+    <tr><td class="num">Э1.1</td><td>Границы пилота: процессы работы со ставками и роли (редактор, читатель, владелец домена)</td><td>Список процессов и ролей пилота</td><td><span class="st work">Черновик в To-Be</span></td></tr>
+    <tr><td class="num">Э1.2</td><td>Генерация идеального процесса: шаги, роли, данные на входе и выходе, точки подключения человека</td><td>Эталонная схема To-Be — <a href="SVT-v-atlas-to-be.html">SVT-v-atlas-to-be.html</a></td><td><span class="st work">Черновик 07.10</span></td></tr>
+    <tr><td class="num">Э1.3</td><td>Черновые светофоры: какие события красные, жёлтые, зелёные</td><td>Сигналы S-1…S-5 без порогов — в той же схеме</td><td><span class="st work">Черновик 07.10</span></td></tr>
+  </tbody></table></div></div>
+
+  <h3 class="phase">Этап 2. ИТ-экспертиза <span class="st plan">Запланировано</span></h3>
+  <p class="lead">Команда СВТ корректирует идеальный процесс: что и почему не может так работать на практике.</p>
+  <div class="card"><div class="table-wrap"><table><thead><tr><th>Шаг</th><th>Что делаем</th><th>Результат</th><th>Статус</th></tr></thead><tbody>
+    <tr><td class="num">Э2.1</td><td>Сверка с текущей СВТ: какие данные и операции уже есть, каких нет</td><td>Карта разрывов</td><td><span class="st plan">Запланировано</span></td></tr>
+    <tr><td class="num">Э2.2</td><td>Ограничения: объёмы (до 2 млн записей сейчас, цель 10 млн), пакеты до 30 тыс. строк, внешние мастера (НСИ), структура хранения — с учётом результатов Ш2</td><td>Скорректированная схема</td><td><span class="st plan">Запланировано</span></td></tr>
+    <tr><td class="num">Э2.3</td><td>Состав API СВТ, который понадобится Atlas</td><td>Черновой контракт API</td><td><span class="st plan">Запланировано</span></td></tr>
+  </tbody></table></div></div>
+
+  <h3 class="phase">Этап 3. Интервью с бизнесом <span class="st plan">Запланировано</span></h3>
+  <p class="lead">Приходим к экспертам с эталонной схемой, проводим фокус-группы, выясняем, как процесс работает сейчас (As-Is), и подгоняем схему под реальность.</p>
+  <div class="card"><div class="table-wrap"><table><thead><tr><th>Шаг</th><th>Что делаем</th><th>Результат</th><th>Статус</th></tr></thead><tbody>
+    <tr><td class="num">Э3.1</td><td>Состав экспертов по тарифам, маршрутам, лидтаймам и ограничениям</td><td>Календарь интервью</td><td><span class="st plan">Запланировано</span></td></tr>
+    <tr><td class="num">Э3.2</td><td>Фокус-группы: As-Is, где сейчас используется Excel, какие правила устарели</td><td>Схема процесса, согласованная с бизнесом</td><td><span class="st plan">Запланировано</span></td></tr>
+    <tr><td class="num">Э3.3</td><td>Пороги светофоров и правила подключения человека</td><td>Правила процесса для Atlas</td><td><span class="st plan">Запланировано</span></td></tr>
+    <tr><td class="num">Э3.4</td><td>Актуальные правила корректности данных — включая 34 уже выявленных нарушения</td><td>Требования к проверкам в СВТ</td><td><span class="st plan">Запланировано</span></td></tr>
+  </tbody></table></div></div>
+
+  <h3 class="phase">Этап 4. HTML-прототип <span class="st plan">Запланировано</span></h3>
+  <p class="lead">Прототип интерфейса СВТ в Atlas без интеграции с реальной СВТ. Данные — сгенерированные или выгрузка части справочников.</p>
+  <div class="card"><div class="table-wrap"><table><thead><tr><th>Шаг</th><th>Что делаем</th><th>Результат</th><th>Статус</th></tr></thead><tbody>
+    <tr><td class="num">Э4.1</td><td>Экраны пилота: грид ставок с фильтрами, загрузка Excel с результатом проверки, карточка ставки</td><td>Кликабельный прототип</td><td><span class="st plan">Запланировано</span></td></tr>
+    <tr><td class="num">Э4.2</td><td>Светофоры по процессу ставок на тестовых данных</td><td>Экран прозрачности процесса</td><td><span class="st plan">Запланировано</span></td></tr>
+  </tbody></table></div></div>
+
+  <h3 class="phase">Этап 5. Утверждение <span class="st plan">Запланировано</span></h3>
+  <p class="lead">Прототип показываем бизнесу. Если бизнес готов в нём работать — концепция утверждена.</p>
+  <div class="card"><div class="table-wrap"><table><thead><tr><th>Шаг</th><th>Что делаем</th><th>Результат</th><th>Статус</th></tr></thead><tbody>
+    <tr><td class="num">Э5.1</td><td>Демонстрация экспертам и владельцам процесса</td><td>Решение: работаем в прототипе или дорабатываем</td><td><span class="st plan">Запланировано</span></td></tr>
+  </tbody></table></div></div>
+
+  <h3 class="phase">Этап 6. Разработка <span class="st plan">После Э5 и Ш4</span></h3>
+  <p class="lead">Утверждённый прототип по частям переносится в продуктив: фронтенд в Atlas, API на стороне СВТ. Старт — после целевого проекта СВТ (Ш4), чтобы API строился на новой структуре хранения, а не на текущей.</p>
+  <div class="card"><div class="table-wrap"><table><thead><tr><th>Шаг</th><th>Что делаем</th><th>Результат</th><th>Статус</th></tr></thead><tbody>
+    <tr><td class="num">Э6.1</td><td>API СВТ: чтение справочников и ставок</td><td>Atlas показывает данные СВТ</td><td><span class="st plan">Запланировано</span></td></tr>
+    <tr><td class="num">Э6.2</td><td>API СВТ: загрузка Excel через Atlas в общий конвейер проверок СВТ</td><td>Пользователь грузит ставки из Atlas</td><td><span class="st plan">Запланировано</span></td></tr>
+    <tr><td class="num">Э6.3</td><td>Светофоры на реальных данных процесса</td><td>Бэклог для команды СВТ из Atlas</td><td><span class="st plan">Запланировано</span></td></tr>
+  </tbody></table></div></div>
+
+  <h2 class="sec"><span class="n">4</span>Открытые вопросы</h2>
+  <div class="card"><div class="table-wrap"><table><thead><tr><th>Вопрос</th><th>Почему важно</th><th>Статус</th></tr></thead><tbody>
+    <tr><td>У СВТ нет API для внешнего интерфейса — сейчас интерфейс встроен в саму СВТ</td><td>Без API Atlas не может быть шлюзом. Это новая работа команды СВТ</td><td><span class="st gap">Нужно решение</span></td></tr>
+    <tr><td>Судьба интерфейса СВТ 2.0: остаётся для части ролей или полностью заменяется Atlas</td><td>Определяет, развивать ли интерфейс СВТ 2.0 дальше</td><td><span class="st gap">Нужно решение</span></td></tr>
+    <tr><td>СВТ не входит в первый скоуп Atlas (автологистика, закупки, старая упаковка)</td><td>Нужен слот команды Atlas под СВТ</td><td><span class="st gap">Нужно решение</span></td></tr>
+    <tr><td>Вход и права: сейчас Windows-аутентификация и роли СВТ</td><td>Пользователь Atlas должен получать в СВТ ровно свои права</td><td><span class="st plan">На Э2</span></td></tr>
+  </tbody></table></div></div>
+
+  <p class="footer">Владелец продукта СВТ · рабочая версия плана проекта «СВТ в Atlas» · 06.10.2026</p>
+</main>
+</body>
+</html>

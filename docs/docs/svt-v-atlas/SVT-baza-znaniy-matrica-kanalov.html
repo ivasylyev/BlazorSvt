@@ -1,0 +1,308 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>СВТ · База знаний · Матрица каналов</title>
+<style>
+  :root { --navy:#133152; --blue:#1e6aa8; --muted:#5a6b7a; --line:#d9e2ea; --paper:#fff; --bg:#f3f6f9; }
+  * { box-sizing:border-box; }
+  body { margin:0; background:var(--bg); color:#1b2733; font:15px/1.55 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif; }
+  .shell { max-width:1240px; margin:0 auto; padding:28px 20px 60px; }
+  .hero { background:linear-gradient(120deg,#0f4a4a,#1d6f6a); color:#fff; border-radius:16px; padding:30px 32px 26px; }
+  .eyebrow { margin:0 0 6px; font-size:12px; font-weight:700; letter-spacing:.08em; text-transform:uppercase; color:#c9efe9; }
+  h1 { margin:0; font-size:30px; line-height:1.2; }
+  .subtitle { margin:10px 0 0; font-size:16px; color:#e2f6f3; }
+  h2.sec { margin:40px 0 14px; font-size:22px; color:var(--navy); padding-bottom:8px; border-bottom:2px solid var(--line); }
+  h3 { margin:24px 0 8px; font-size:18px; color:var(--navy); }
+  p { margin:0 0 10px; }
+  .card { background:var(--paper); border:1px solid var(--line); border-radius:12px; overflow:hidden; margin-bottom:16px; }
+  .pad { padding:16px 18px; }
+  .pad ul, .pad ol { margin:0; padding-left:20px; }
+  .pad li { margin-bottom:7px; }
+  .table-wrap { overflow-x:auto; }
+  table { width:100%; border-collapse:collapse; min-width:820px; }
+  th { text-align:left; padding:9px 11px; background:#f8fbfd; color:#526575; font-size:12px; text-transform:uppercase; letter-spacing:.03em; border-bottom:1px solid var(--line); }
+  td { padding:9px 11px; vertical-align:top; border-bottom:1px solid var(--line); font-size:14px; }
+  tr:last-child td { border-bottom:0; }
+  .num { color:var(--blue); font-weight:800; white-space:nowrap; }
+  code { font-family:Consolas,monospace; font-size:12.5px; background:#f1f4f7; padding:1px 5px; border-radius:4px; }
+  .tag { display:inline-block; padding:1px 7px; border-radius:999px; font-size:11px; font-weight:800; white-space:nowrap; }
+  .fact { background:#e5f5ed; color:#136c4c; }
+  .gap { background:#fde8e8; color:#9b1c1c; }
+  .hyp { background:#fdecd2; color:#8a5a09; }
+  .key { border-left:5px solid #1d6f6a; }
+  .warn { border-left:5px solid #c0392b; background:#fff8f7; }
+  .meta { display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:12px; }
+  .meta div { background:#fff; border:1px solid var(--line); border-radius:10px; padding:10px 12px; font-size:13.5px; }
+  .meta b { display:block; font-size:11px; color:#526575; text-transform:uppercase; letter-spacing:.04em; margin-bottom:3px; }
+  .diagram { background:#fff; border:1px solid var(--line); border-radius:12px; padding:12px; margin-bottom:8px; overflow-x:auto; }
+  .diagram svg { display:block; margin:0 auto; }
+  .cap { font-size:13px; color:var(--muted); margin:0 0 22px; }
+  .legend { display:flex; flex-wrap:wrap; gap:14px; font-size:13px; color:var(--muted); margin:0 0 10px; }
+  .legend i { display:inline-block; width:22px; height:13px; border-radius:4px; vertical-align:-2px; margin-right:5px; }
+  .footer { margin-top:28px; color:#728291; font-size:12px; }
+  @media (max-width: 800px) { .shell { padding:14px 12px 40px; } h1 { font-size:22px; } }
+</style>
+</head>
+<body>
+<main class="shell">
+
+<header class="hero">
+  <p class="eyebrow">СВТ · база знаний · домен «Матрица каналов»</p>
+  <h1>Матрица каналов: логистические ограничения для календарного планирования</h1>
+  <p class="subtitle">Конспект ФТТ SVT-3716 «Разработка функционала ведения логистических ограничений для интеграции в Матрицу каналов» (Confluence, выгрузка 07.10.2026) с привязкой к реестру справочников СВТ 2.0 и к целевому кольцу С1–С9.</p>
+</header>
+
+<h2 class="sec">0. Карточка домена</h2>
+<div class="meta">
+  <div><b>Зачем</b>СВТ — единственный мастер-источник данных для календарного планирования и диспетчеризации отгрузок: маршруты по плечам, ставки, плановые лидтаймы, квоты и другие логистические ограничения, с автоматической передачей в Оптимакрос.</div>
+  <div><b>Справочники</b>8 новых сущностей: завод отгрузки, узел отправления, направление, направление-канал и квоты к ним. В легаси — ID 2152–2160 (<code>MK*</code>).</div>
+  <div><b>Кто ведёт</b>ЗЛУ — справочники и квоты. Аналитика операций — плечи, тарифы, плановые лидтаймы. АСВ НСИ — заводы (организации DPO) и узлы по интеграции. Сегодня в системе править все 8 справочников может только роль «Единое окно» (руководство пользователя ред. 32, раздел 8).</div>
+  <div><b>Для чего данные</b>По квотам, ставкам и лидтаймам выбирается наиболее финансово выгодный завод-канал — чтобы минимизировать затраты на перевозку. Поэтому у каждого завода-канала должны быть ставки и лидтаймы (руководство, раздел 8.9).</div>
+  <div><b>Потребитель</b>Оптимакрос (OptiMacros): дашборды «Общая квота по станциям отправления», «Общая квота по направлениям-каналам», «Матрица каналов (месяц)».</div>
+  <div><b>Ритм</b>Справочники — по требованию. Квоты — не реже 1 раза в месяц, на 12–15 месяцев вперёд. Передача — 1 раз в сутки ночью или по требованию, через SAP PI.</div>
+  <div><b>В СВТ 2.0</b>Все 8 — RO в MVP 0.2, редактор и загрузчик (RO+E+L) в MVP 0.7; пятый домен в порядке тиража (<code>catalogs-scope.md</code>).</div>
+</div>
+
+<h2 class="sec">1. Что было не так (as-is по ФТТ)</h2>
+<div class="card pad warn"><ul>
+  <li><strong>Данные о перевозке «зашиты» в Оптимакрос:</strong> станции отгрузки, погранпереходы, направления. Любое изменение — доработка у подрядчика.</li>
+  <li><strong>Двойной ввод:</strong> логисты вручную переносят данные СВТ → Excel → Оптимакрос, с ошибками переноса.</li>
+  <li><strong>Справочники не связаны:</strong> каналы в Оптимакрос не связаны с маршрутами в СВТ; при изменении маршрута матрицу каналов правят вручную.</li>
+  <li><strong>Квоты без вида транспорта:</strong> общая квота считалась суммой авто и контейнерных поездов, хотя складывать их нельзя.</li>
+</ul></div>
+
+<h2 class="sec">2. Термины</h2>
+<div class="card"><div class="table-wrap"><table>
+  <thead><tr><th style="width:210px">Термин</th><th>Определение</th><th style="width:250px">Пример</th></tr></thead>
+  <tbody>
+    <tr><td><strong>Завод отгрузки</strong></td><td>Завод или терминал, с которого отгружается продукция; ссылка на организацию DPO.</td><td>ЗСНХ, Полиом</td></tr>
+    <tr><td><strong>Узел отправления</strong></td><td>ЖД- или авто-станция завода или терминала в связке с типом транспорта и единицей измерения (КП, КТК, КВ, Авто).</td><td>(A56395) г. Тобольск — ЖД КТК — КП</td></tr>
+    <tr><td><strong>Общая квота по узлам отправления</strong></td><td>Инфраструктурное ограничение отгрузки со станции на месяц: квота, нормативная загрузка ТС, длина КП (для авто = 1).</td><td>Тобольск: 80, июнь 2025, 24,75 т, 76</td></tr>
+    <tr><td><strong>Направление (зона)</strong></td><td>Группа узлов назначения — страны или регионы.</td><td>ЮВА: Китай, Вьетнам</td></tr>
+    <tr><td><strong>Направление-канал</strong></td><td>Тыловой терминал (если есть) + тип транспорта 1 + погранпереход + тип транспорта 2 + направление + единица измерения. На него накладываются квоты.</td><td>ТУРЦИЯ — Жиг. море — Ново; ЮВА — СПБ</td></tr>
+    <tr><td><strong>Квота по направлению-каналу</strong></td><td>Ограничение отправки через канал на месяц.</td><td>ЮВА-СПБ, ЖД: 20, июнь 2025</td></tr>
+    <tr><td><strong>Завод-канал</strong></td><td>Завод + направление-канал + узел отправления + транспортная группа продукта + дирекция + единица измерения.</td><td>ЗСНХ — Жиг. море — Ново — Турция — Каучуки</td></tr>
+    <tr><td><strong>Квота по заводу-каналу</strong></td><td>Мин./макс. количество ТС в месяц, квоты по декадам, период ограничения внутри месяца, признаки «активный маршрут» и «сборный поезд».</td><td>ЗСНХ Тобольск — СПБ — Турция</td></tr>
+    <tr><td><strong>КП / КТК / КВ</strong></td><td>Контейнерный поезд / крупнотоннажный контейнер / крытый вагон.</td><td></td></tr>
+  </tbody>
+</table></div></div>
+
+<h2 class="sec">3. Как сущности ложатся на перевозку</h2>
+<div class="diagram"><div id="chain"></div></div>
+<p class="cap">Сверху — физическая перевозка, снизу — какие её участки покрывает каждая сущность. Канал может начинаться не с завода, а с тылового терминала: если до него продукт едет авто без ограничений, это плечо не входит в канал. Поэтому у узла отправления нет прямой связи с заводом.</p>
+
+<h2 class="sec">4. Целевой процесс по ФТТ</h2>
+<div class="legend">
+  <span><i style="background:#fff;border:1.5px solid #133152"></i>действие</span>
+  <span><i style="background:#fff6d6;border:1.5px solid #c99a06"></i>ручной шаг человека</span>
+  <span><i style="background:#f1f4f7;border:1.5px dashed #8a96a3"></i>внешняя система</span>
+</div>
+<div class="diagram"><div id="lane-mk"></div></div>
+<p class="cap">Перерисовано с общей схемы ФТТ. По ФТТ историю переданных ограничений, тарифов и лидтаймов ведёт Оптимакрос. Решение владельца продукта от 07.10.2026: мастер истории — СВТ; у Оптимакрос остаётся копия для своих дашбордов (см. раздел 8).</p>
+
+<div class="card"><div class="table-wrap"><table>
+  <thead><tr><th style="width:190px">Кто</th><th>Что делает</th><th style="width:240px">Как и как часто</th></tr></thead>
+  <tbody>
+    <tr><td><strong>АСВ НСИ</strong></td><td>Передаёт в СВТ организации DPO (заводы) и узлы</td><td>Интеграция</td></tr>
+    <tr><td><strong>ЗЛУ</strong></td><td>Ведёт узлы отправления, заводы отгрузки, направления, направления-каналы, заводы-каналы</td><td>Загрузчик СВТ, по требованию; первичная загрузка — разово</td></tr>
+    <tr><td><strong>ЗЛУ</strong></td><td>Ведёт три вида квот на 12–15 месяцев вперёд</td><td>Загрузчик или редактор, не реже 1 раза в месяц</td></tr>
+    <tr><td><strong>Аналитика операций</strong></td><td>Ведёт плечи с лидтаймами и тарифами со станций отправления через направления-каналы</td><td>Существующие справочники СВТ</td></tr>
+    <tr><td><strong>СВТ</strong></td><td>Консолидирует, проверяет, формирует выгрузку; подбирает одну средневзвешенную ставку и лидтайм для каждого завода-канала</td><td>—</td></tr>
+    <tr><td><strong>СВТ</strong></td><td>Передаёт квоты, плечи, тарифы и лидтаймы в Оптимакрос автоматически; ручного запуска ЗЛУ нет</td><td>1 раз в сутки ночью или по требованию, через SAP PI <span class="tag fact">решение 07.10.2026</span></td></tr>
+    <tr><td><strong>Оптимакрос</strong></td><td>Показывает квоты в дашбордах; агрегирует квоты заводов-каналов и сверяет с квотой направления-канала; обогащает матрицу тарифами и лидтаймами; хранит историю</td><td>—</td></tr>
+  </tbody>
+</table></div></div>
+
+<h2 class="sec">5. Справочники домена</h2>
+<div class="card"><div class="table-wrap"><table>
+  <thead><tr><th style="width:200px">Справочник</th><th style="width:220px">Бизнес-ключ</th><th>Шаблон кода</th><th>Ссылки на справочники СВТ</th></tr></thead>
+  <tbody>
+    <tr><td><strong>Завод отгрузки</strong><br><code>MKShippingFactory</code> · 2153</td><td>Организация DPO (уникальна), наименование</td><td>Ручной, 5 символов: <code>ZSNH</code></td><td>Организации DPO</td></tr>
+    <tr><td><strong>Узел отправления</strong><br><code>MKSourceNode</code> · 2152</td><td>Узел отгрузки + тип транспорта</td><td>узел + тип транспорта: <code>A56395-MRC</code></td><td>Местоположение-Узлы; Тип транспорта 3-го уровня</td></tr>
+    <tr><td><strong>Общая квота по узлам отправления</strong><br><code>MKSourceNodeQuota</code> · 2155</td><td>Узел отправления + дата начала</td><td>узел + дата: <code>A56395_MRC_01062025</code></td><td>Узел отправления</td></tr>
+    <tr><td><strong>Направление</strong><br><code>MKDirection</code> · 2154</td><td>Код; узлы назначения не пересекаются с другими направлениями</td><td>Ручной, 5 символов: <code>SEA</code></td><td>Местоположение-Узлы (узлы назначения 01, 02)</td></tr>
+    <tr><td><strong>Направление-канал</strong><br><code>MkDirectionChannel</code> · 2156</td><td>Тыловой терминал + типы транспорта + погранпереход + направление</td><td><code>R637000_MRC_P0002_MS_TR</code></td><td>Местоположение-Узлы; Тип транспорта 3-го уровня; Направление</td></tr>
+    <tr><td><strong>Общая квота по направлениям-каналам</strong><br><code>MkDirectionChannelQuota</code> · 2158</td><td>Направление-канал + дата начала</td><td>канал + дата</td><td>Направление-канал</td></tr>
+    <tr><td><strong>Заводы-каналы</strong><br><code>MkFactoryChannel</code> · 2159</td><td>Завод + направление-канал</td><td>завод + канал: <code>ZSNH_R637000_MRC_P0002_MS_TR</code>; наименование собирается автоматически</td><td>Завод отгрузки; Направление-канал; Узел отправления; Транспортная группа</td></tr>
+    <tr><td><strong>Квота по заводу-каналу</strong><br><code>MkFactoryChannelQuota</code> · 2160</td><td>Завод-канал + дата начала</td><td>завод-канал + дата</td><td>Завод-канал</td></tr>
+  </tbody>
+</table></div></div>
+<p class="cap">Общее для всех квот: период — календарный месяц (с первого по последнее число), нормативная загрузка ≠ 0, квота может быть 0 — это запрет отгрузки; хранится вся история, хотя Оптимакрос показывает 3 месяца.</p>
+
+<h2 class="sec">6. Правила из ФТТ — готовые кандидаты в реестр контролей</h2>
+<p>Это ровно то, чего не хватало для этапа С4 «Проверка» и для вашего шага Ш3.3 «требования к проверкам»: правила записаны, у них есть домен и понятный владелец (ЗЛУ). Нумерация КД-МК — рабочая, чтобы не путать с общим реестром КД-01…КД-34. КД-МК-12 взято из руководства пользователя, остальные — из ФТТ; в таблице оно стоит среди блокирующих правил, перед мониторингами.</p>
+<div class="card"><div class="table-wrap"><table>
+  <thead><tr><th style="width:100px">Код</th><th>Правило</th><th style="width:150px">Тип</th><th style="width:150px">Реакция</th></tr></thead>
+  <tbody>
+    <tr><td class="num">КД-МК-01</td><td>Бизнес-ключ уникален в каждом из 8 справочников; наименования не дублируются</td><td>Уникальность</td><td>Блокировка</td></tr>
+    <tr><td class="num">КД-МК-02</td><td>Все ссылки (организация DPO, узлы, типы транспорта, направление) — на активные записи</td><td>Ссылочная</td><td>Блокировка</td></tr>
+    <tr><td class="num">КД-МК-03</td><td>Направления не пересекаются по узлам назначения; у направления есть хотя бы один узел</td><td>Структурная</td><td>Блокировка</td></tr>
+    <tr><td class="num">КД-МК-04</td><td>Квота действует ровно календарный месяц: начало — первое число, окончание — последнее</td><td>Период</td><td>Блокировка</td></tr>
+    <tr><td class="num">КД-МК-05</td><td>Нормативная загрузка ≠ 0; квота и количество ТС могут быть 0 (ноль = запрет отгрузки)</td><td>Значение</td><td>Блокировка</td></tr>
+    <tr><td class="num">КД-МК-06</td><td>Для каждого узла назначения направления у завода-канала есть маршрут: узлы и типы транспорта плеч совпадают с узлами и типами канала</td><td><strong>Междоменная</strong> (Маршруты)</td><td>Блокировка при создании</td></tr>
+    <tr><td class="num">КД-МК-07</td><td>Авто и КП не суммируются в общей квоте — считаются раздельно по единице измерения</td><td>Расчётная (Оптимакрос)</td><td>—</td></tr>
+    <tr><td class="num">КД-МК-12</td><td>Сумма квот 1-й, 2-й и 3-й декады не превышает «Количество ТС, макс. объём в месяц» (руководство пользователя ред. 32, раздел 8.8)</td><td>Значение</td><td>Блокировка</td></tr>
+    <tr><td class="num">КД-МК-08</td><td>Мониторинг: организации DPO у заводов актуальны</td><td>Покрытие</td><td>Уведомление</td></tr>
+    <tr><td class="num">КД-МК-09</td><td>Мониторинг: у всех станций и тыловых терминалов, погранпереходов, направлений и типов транспорта внутри активных каналов — активные узлы</td><td>Покрытие</td><td>Уведомление</td></tr>
+    <tr><td class="num">КД-МК-10</td><td>Мониторинг: у каждой станции отправления и каждого направления-канала есть квота на текущий месяц</td><td>Покрытие</td><td>Уведомление</td></tr>
+    <tr><td class="num">КД-МК-11</td><td>Мониторинг: для каждого завода-канала созданы все маршруты из КД-МК-06</td><td>Покрытие</td><td>Уведомление</td></tr>
+  </tbody>
+</table></div></div>
+<p class="cap">Реакции «блокировка» и «уведомление» проставлены по смыслу ФТТ («запрещено создавать», «требуется дополнить мониторинг»). Пороги и владельцев нужно подтвердить у ЗЛУ <span class="tag hyp">гипотеза</span>.</p>
+
+<h2 class="sec">7. Интеграционные потоки в Оптимакрос</h2>
+<div class="card"><div class="table-wrap"><table>
+  <thead><tr><th style="width:290px">Поток</th><th>Ключевые поля и содержимое</th></tr></thead>
+  <tbody>
+    <tr><td><strong>5.1 Общая квота по узлам отправления</strong></td><td>Код и наименование узла, тип транспорта, узел отгрузки, период, единица измерения, нормативная загрузка, квота, длина КП</td></tr>
+    <tr><td><strong>5.2 Общая квота по направлениям-каналам</strong></td><td>Канал (тыловой терминал, погранпереход, типы транспорта), направление со списком узлов назначения, период, единица, загрузка, квота, длина КП</td></tr>
+    <tr><td><strong>5.3 Квота по заводу-каналу</strong></td><td>Завод-канал, вид загрузки (паллеты или насыпь), период квоты и ограничения, дирекция, загрузка, длина КП, мин./макс. ТС, квоты по декадам, активный маршрут, сборный поезд</td></tr>
+    <tr><td><strong>5.4 Лидтаймы и средневзвешенные ставки для заводов-каналов</strong></td><td>Завод, канал, узел отгрузки, узел назначения, период, транспортная группа, дирекция; ставка за тонну и за ТС (в валюте и в USD), признак дефлирования, эффективная загрузка; лидтайм по составляющим — поиск, погрузка, в пути, ожидание, разгрузка, итого</td></tr>
+  </tbody>
+</table></div></div>
+<p class="cap">Транспорт — шина SAP PI; Оптимакрос с ней работает. Ставка берётся действующая на начало периода. Раздел 6 ФТТ «Наценка на услуги» (фиксированные или процентные надбавки по каналам, типам транспорта, категориям грузов; источник — договоры с экспедиторами; отдельное поле «Доп. услуги») — без ответа в вопросах ФТТ.</p>
+
+<h2 class="sec">8. Что это даёт идеальному процессу</h2>
+<p>Матрица каналов ложится на то же кольцо С1–С9, что и ставки. Ниже — где ФТТ уже совпадает с целевым процессом, а где расходится.</p>
+<div class="card"><div class="table-wrap"><table>
+  <thead><tr><th style="width:140px">Этап</th><th>Матрица каналов по ФТТ</th><th style="width:330px">Вывод для целевого процесса</th></tr></thead>
+  <tbody>
+    <tr><td class="num">С1 Событие</td><td>Новый месяц планирования; изменение инфраструктуры (станция, погранпереход); новый канал</td><td>Событие — горизонт квот истекает меньше чем на 12 месяцев; сейчас его никто не отслеживает</td></tr>
+    <tr><td class="num">С2 Источник</td><td>Заводы и узлы — из АСВ НСИ интеграцией; квоты — экспертно ЗЛУ, файлом</td><td>Совпадает с принципом «из первоисточника»; для квот первоисточник — сам ЗЛУ</td></tr>
+    <tr><td class="num">С3 Расчёт</td><td>СВТ выбирает одну ставку и лидтайм для завода-канала по транспортной группе; наценка экспедитора поверх</td><td>Правило выбора одной ставки из нескольких в ФТТ не записано <span class="tag gap">пробел</span> — кандидат в реестр правил Я2</td></tr>
+    <tr><td class="num">С4 Проверка</td><td>11 правил (раздел 6), включая междоменное с Маршрутами</td><td>Первый домен, где правила уже записаны целиком. КД-МК-06 — пример, почему нужен один конвейер на все домены</td></tr>
+    <tr><td class="num">С5 Утверждение</td><td>Не предусмотрено: ЗЛУ вводит и сразу может передать</td><td>Для квоты = 0 (запрет отгрузки) нужен осознанный шаг утверждения <span class="tag hyp">гипотеза</span></td></tr>
+    <tr><td class="num">С6 Версия</td><td>Квоты помесячные, история хранится; но историю переданных данных «ведёт Оптимакрос»</td><td><strong>Решено 07.10.2026: мастер истории квот, тарифов и лидтаймов — СВТ</strong> <span class="tag fact">решение владельца продукта</span>. Оптимакрос хранит копию для дашбордов и не является источником для других систем. Формулировку ФТТ «Оптимакрос ведёт историчность» нужно поправить</td></tr>
+    <tr><td class="num">С7 Раздача</td><td>В ФТТ два режима: ЗЛУ инициирует передачу (раздел 3.3) и ночью раз в сутки (ответы на вопросы)</td><td><strong>Решено 07.10.2026: передача автоматическая</strong> <span class="tag fact">решение владельца продукта</span> — ночью раз в сутки или по требованию. Ручного шага ЗЛУ в раздаче нет; формулировку раздела 3.3 ФТТ нужно поправить</td></tr>
+    <tr><td class="num">С8 Покрытие</td><td>Четыре мониторинга полноты (КД-МК-08…11)</td><td>Готовое наполнение этапа С8 «каталог покрытия» для домена</td></tr>
+    <tr><td class="num">С9 Обучение</td><td>Нормативная загрузка — экспертная, «усреднённая»; сверки с фактом нет</td><td>Сверка нормативной загрузки с фактической — кандидат в сигналы обучения</td></tr>
+  </tbody>
+</table></div></div>
+
+<h2 class="sec">9. Открытые вопросы</h2>
+<div class="card pad warn"><ol>
+  <li><strong>Как выбирается одна ставка для завода-канала,</strong> если подходящих несколько? В ФТТ — только «нужно выбрать одну».</li>
+  <li><strong>Наценка на услуги:</strong> откуда данные, статичное или динамичное значение — вопрос в ФТТ без ответа.</li>
+  <li><s>Кто мастер истории квот, тарифов и лидтаймов — СВТ или Оптимакрос?</s> <strong>Закрыт 07.10.2026: СВТ.</strong> Осталось синхронизировать с ФТТ (раздел 3.3) и с подрядчиком Оптимакрос.</li>
+  <li><s>Режим передачи: ручной запуск ЗЛУ или ночная выгрузка?</s> <strong>Закрыт 07.10.2026: автоматически</strong> — ночью раз в сутки или по требованию. Осталось поправить раздел 3.3 ФТТ.</li>
+  <li><strong>Статус реализации:</strong> справочники в легаси есть (ID 2152–2160); работают ли все четыре потока в Оптимакрос и доработки на его стороне (раздел 7 ФТТ) — в материале не указано <span class="tag gap">пробел</span>.</li>
+  <li><strong>Нестыковки внутри ФТТ:</strong> у квоты по заводу-каналу дата окончания — «ручной ввод», хотя период — календарный месяц; примеры кодов канала в разных разделах записаны по-разному (<code>R637000_MRC_P0002_MS_TR</code> и <code>TR_R637000_P0002_Rail</code>); одинаковые названия каналов на разные направления («сух. пп.» на ЮВА и на Турцию) планируется переименовать.</li>
+  <li><strong>Узлы «Турция Север» и «Турция Юг»</strong> (тип «регион») — по ФТТ их нужно создать; созданы ли — неизвестно.</li>
+</ol></div>
+
+<p class="footer">СВТ · база знаний · матрица каналов · рабочая версия 07.10.2026 · источники: ФТТ SVT-3716 (Confluence, выгрузка 07.10.2026), руководство пользователя СВТ ред. 32 (раздел 8), реестр справочников СВТ 2.0 · связанные документы: <a href="SVT-kak-seychas.html">процесс как сейчас</a>, <a href="SVT-dokument1-celevaya-arhitektura.html">Документ 1</a>, <a href="SVT-roli-i-puti.html">роли и клиентские пути</a>.</p>
+</main>
+
+<script>
+(function () {
+  var NAVY = '#133152', MUTED = '#5a6b7a', TEAL = '#1d6f6a';
+  var STYLE = {
+    task: { fill:'#ffffff', stroke:NAVY,      dash:'' },
+    hitl: { fill:'#fff6d6', stroke:'#c99a06', dash:'' },
+    ext:  { fill:'#f1f4f7', stroke:'#8a96a3', dash:'5 4' }
+  };
+  function esc(s) { return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+  function textBlock(cx, cy, label, size, weight, color, anchor) {
+    var lines = label.split('\n'), lh = size + 3, y0 = cy - (lines.length - 1) * lh / 2;
+    return lines.map(function (l, i) {
+      var w = (i === 0 && weight) ? ' font-weight="' + weight + '"' : '';
+      return '<text x="' + cx + '" y="' + (y0 + i * lh) + '" font-size="' + size + '"' + w + ' fill="' + (color || '#1b2733') +
+        '" text-anchor="' + (anchor || 'middle') + '" dominant-baseline="middle">' + esc(l) + '</text>';
+    }).join('');
+  }
+  function marker(id, color) {
+    return '<marker id="' + id + '" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="' + color + '"/></marker>';
+  }
+  function box(x, y, w, h, fill, stroke, dash, rx) {
+    return '<rect x="' + x + '" y="' + y + '" width="' + w + '" height="' + h + '" rx="' + (rx || 9) + '" fill="' + fill + '" stroke="' + stroke + '" stroke-width="1.6"' + (dash ? ' stroke-dasharray="' + dash + '"' : '') + '/>';
+  }
+
+  function chain() {
+    var el = document.getElementById('chain'); if (!el) return;
+    var W = 1180, H = 470, out = [];
+    out.push('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ' + W + ' ' + H + '" style="width:100%;height:auto;min-width:900px" font-family="Segoe UI, Arial, sans-serif">');
+    out.push('<defs>' + marker('mc', NAVY) + '</defs>');
+    out.push(box(10, 10, W - 20, 180, '#f8fbfd', '#d9e2ea', '', 12));
+    out.push(textBlock(30, 30, 'Перевозка', 13, 800, NAVY, 'start'));
+    out.push(box(30, 48, 200, 130, '#eef4fa', '#8a96a3', '5 4', 10));
+    out.push(textBlock(130, 64, 'Завод', 12, 800, MUTED));
+    out.push(box(45, 78, 170, 40, '#fff', NAVY)); out.push(textBlock(130, 98, 'Заводской узел\nотгрузки 1', 11, 600));
+    out.push(box(45, 126, 170, 40, '#fff', NAVY)); out.push(textBlock(130, 146, 'Заводской узел\nотгрузки 2', 11, 600));
+    out.push(box(330, 112, 190, 52, '#fff', NAVY)); out.push(textBlock(425, 138, 'Тыловой терминал', 12, 700));
+    out.push(box(620, 112, 190, 52, '#fff', NAVY)); out.push(textBlock(715, 138, 'Погранпереход', 12, 700));
+    out.push(box(910, 48, 240, 130, '#eef4fa', '#8a96a3', '5 4', 10));
+    out.push(textBlock(1030, 64, 'Направление (зона)', 12, 800, MUTED));
+    out.push(box(925, 78, 210, 40, '#fff', NAVY)); out.push(textBlock(1030, 98, 'Узел назначения 1 (Китай)', 11, 600));
+    out.push(box(925, 126, 210, 40, '#fff', NAVY)); out.push(textBlock(1030, 146, 'Узел назначения 2 (Вьетнам)', 11, 600));
+    [[215, 146, 330, 138, 'тип транспорта 1'], [520, 138, 620, 138, 'тип транспорта 2'], [810, 130, 925, 98, ''], [810, 146, 925, 146, 'тип транспорта 3']].forEach(function (a) {
+      var mx = (a[0] + a[2]) / 2;
+      out.push('<path d="M' + a[0] + ',' + a[1] + ' H' + mx + ' V' + a[3] + ' H' + a[2] + '" fill="none" stroke="' + NAVY + '" stroke-width="1.6" marker-end="url(#mc)"/>');
+      if (a[4]) out.push('<text x="' + mx + '" y="' + (Math.min(a[1], a[3]) - 7) + '" font-size="11" fill="' + MUTED + '" text-anchor="middle" font-style="italic">' + a[4] + '</text>');
+    });
+    function bracket(x1, x2, y, label, sub, color) {
+      out.push('<path d="M' + x1 + ',' + (y - 12) + ' V' + y + ' H' + x2 + ' V' + (y - 12) + '" fill="none" stroke="' + color + '" stroke-width="2.4"/>');
+      out.push(box(x1, y + 8, x2 - x1, 46, '#fff', color, '', 8));
+      out.push(textBlock((x1 + x2) / 2, y + 31, label + '\n' + sub, 11.5, 800, color));
+    }
+    bracket(30, 520, 222, 'Узел отправления + квота по узлу', 'заводской узел ИЛИ тыловой терминал + тип транспорта', '#c0392b');
+    bracket(330, 1150, 300, 'Направление-канал + квота по каналу', 'тыловой терминал (если есть) → погранпереход → направление; типы транспорта 2 и 3', TEAL);
+    bracket(30, 1150, 378, 'Завод-канал + квота по заводу-каналу (мин./макс. ТС, декады)', 'завод + узел отправления + направление-канал + транспортная группа + дирекция; для каждого узла назначения нужен маршрут в СВТ', '#1e6aa8');
+    out.push('</svg>');
+    el.innerHTML = out.join('');
+  }
+
+  function lanes(id, cfg) {
+    var el = document.getElementById(id); if (!el) return;
+    var colW = cfg.colW || 150, laneH = cfg.laneH || 96, labelW = 150, top = 20;
+    var W = labelW + cfg.cols * colW + 16, H = top + cfg.lanes.length * laneH + 12, mk = 'm-' + id, nodes = {}, out = [];
+    out.push('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ' + W + ' ' + H + '" style="width:100%;height:auto;min-width:900px" font-family="Segoe UI, Arial, sans-serif">');
+    out.push('<defs>' + marker(mk, NAVY) + '</defs>');
+    cfg.lanes.forEach(function (name, i) {
+      var y = top + i * laneH;
+      out.push('<rect x="0" y="' + y + '" width="' + W + '" height="' + laneH + '" fill="' + (i % 2 ? '#f8fbfd' : '#ffffff') + '" stroke="#d9e2ea"/>');
+      out.push('<rect x="0" y="' + y + '" width="' + labelW + '" height="' + laneH + '" fill="#eef4fa" stroke="#d9e2ea"/>');
+      out.push(textBlock(labelW / 2, y + laneH / 2, name, 12.5, 700, NAVY));
+    });
+    cfg.nodes.forEach(function (n) {
+      nodes[n.id] = { x: labelW + n.col * colW + 9, y: top + n.lane * laneH + 12, w: colW - 18, h: laneH - 24, lane:n.lane, col:n.col };
+    });
+    (cfg.edges || []).forEach(function (e) {
+      var a = nodes[e[0]], b = nodes[e[1]], d;
+      if (!a || !b) return;
+      var sx = a.x + a.w, sy = a.y + a.h / 2, ex = b.x, ey = b.y + b.h / 2;
+      if (a.lane === b.lane) d = 'M' + sx + ',' + sy + ' H' + ex;
+      else { var mx = (sx + ex) / 2; d = 'M' + sx + ',' + sy + ' H' + mx + ' V' + ey + ' H' + ex; }
+      out.push('<path d="' + d + '" fill="none" stroke="' + NAVY + '" stroke-width="1.6" marker-end="url(#' + mk + ')"/>');
+    });
+    cfg.nodes.forEach(function (n) {
+      var p = nodes[n.id], s = STYLE[n.type || 'task'];
+      out.push(box(p.x, p.y, p.w, p.h, s.fill, s.stroke, s.dash));
+      out.push(textBlock(p.x + p.w / 2, p.y + p.h / 2, n.text, 11.5, 700));
+    });
+    out.push('</svg>');
+    el.innerHTML = out.join('');
+  }
+
+  chain();
+
+  lanes('lane-mk', {
+    cols: 6, colW: 175,
+    lanes: ['ЗЛУ', 'Аналитика\nопераций', 'АСВ НСИ', 'СВТ', 'Оптимакрос'],
+    nodes: [
+      { id:'z1', lane:0, col:0, type:'hitl', text:'Справочники МК:\nузлы, заводы,\nнаправления, каналы' },
+      { id:'z2', lane:0, col:1, type:'hitl', text:'Квоты на 12–15 мес\nвперёд, ≥ 1 раз\nв месяц (файл)' },
+      { id:'a1', lane:1, col:1, text:'Плечи, тарифы,\nплановые лидтаймы' },
+      { id:'n1', lane:2, col:1, type:'ext', text:'Организации DPO\nи узлы\n(интеграция)' },
+      { id:'s1', lane:3, col:2, text:'Проверки ключей\nи ссылок; подбор\nставки и лидтайма' },
+      { id:'z3', lane:3, col:3, text:'Автоматическая\nпередача: ночью\nили по требованию' },
+      { id:'o1', lane:4, col:4, type:'ext', text:'Дашборды квот\nи матрица\nканалов (месяц)' },
+      { id:'o2', lane:4, col:5, type:'ext', text:'Сверка квот\nзаводов-каналов\nс квотой канала' }
+    ],
+    edges: [ ['z1','z2'], ['z2','s1'], ['a1','s1'], ['n1','s1'], ['s1','z3'], ['z3','o1'], ['o1','o2'] ]
+  });
+})();
+</script>
+</body>
+</html>
