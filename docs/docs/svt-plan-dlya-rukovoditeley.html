@@ -5,52 +5,105 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>СВТ: от стабилизации к целевому проекту</title>
 <style>
-  :root { --navy:#133152; --blue:#1e6aa8; --sky:#eaf4fb; --muted:#5a6b7a; --line:#d9e2ea; --paper:#fff; --bg:#f3f6f9; }
-  * { box-sizing:border-box; }
-  body { margin:0; background:var(--bg); color:#1b2733; font:15px/1.5 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif; }
-  .shell { max-width:1200px; margin:0 auto; padding:28px 20px 60px; }
-  .hero { background:linear-gradient(120deg,var(--navy),#215f91); color:#fff; border-radius:16px; padding:30px 32px 26px; }
-  .eyebrow { margin:0 0 6px; font-size:12px; font-weight:700; letter-spacing:.08em; text-transform:uppercase; color:#bfe1f7; }
-  h1 { margin:0; font-size:29px; line-height:1.2; }
-  .subtitle { margin:10px 0 0; font-size:16px; color:#e2f0fa; }
-  h2.sec { margin:34px 0 14px; font-size:21px; color:var(--navy); padding-bottom:8px; border-bottom:2px solid var(--line); }
-  h2.sec .n { display:inline-block; width:30px; height:30px; line-height:30px; text-align:center; border-radius:50%; background:var(--navy); color:#fff; font-size:14px; font-weight:800; margin-right:10px; vertical-align:middle; }
-  h3.phase { margin:26px 0 8px; font-size:17px; color:var(--navy); display:flex; align-items:center; gap:10px; flex-wrap:wrap; }
-  p.lead { color:#3d4c59; margin:0 0 14px; }
-  .card { background:var(--paper); border:1px solid var(--line); border-radius:12px; overflow:hidden; margin-bottom:16px; }
-  .table-wrap { overflow-x:auto; }
-  table { width:100%; border-collapse:collapse; min-width:640px; }
-  th { text-align:left; padding:11px 14px; background:#f8fbfd; color:#526575; font-size:12px; text-transform:uppercase; letter-spacing:.03em; border-bottom:1px solid var(--line); }
-  td { padding:12px 14px; vertical-align:top; border-bottom:1px solid var(--line); font-size:14px; }
-  tr:last-child td { border-bottom:0; }
-  .num { color:var(--blue); font-weight:800; white-space:nowrap; }
-  .st { display:inline-block; padding:4px 10px; border-radius:999px; font-size:12px; font-weight:800; white-space:nowrap; }
-  .st.ok { background:#e5f5ed; color:#136c4c; border:1px solid #9dd4bd; }
-  .st.work { background:#fdecd2; color:#8a5a09; border:1px solid #efc989; }
-  .st.plan { background:var(--sky); color:#1c4f70; border:1px solid #bfe1f7; }
-  .stages { display:grid; grid-template-columns:repeat(4,1fr); gap:6px; margin:14px 0 6px; }
-  .stage { position:relative; border:1px solid var(--line); border-radius:10px; padding:12px 12px 14px; background:#fff; color:#7a8794; min-height:74px; }
-  .stage .sn { display:inline-block; min-width:28px; padding:0 6px; height:22px; line-height:22px; text-align:center; border-radius:11px; background:#e8eef3; color:#7a8794; font-weight:800; font-size:11px; margin-bottom:6px; }
-  .stage .sname { display:block; font-weight:800; font-size:13px; line-height:1.25; }
-  .stage.done { background:#e5f5ed; border-color:#9dd4bd; color:#136c4c; } .stage.done .sn { background:#136c4c; color:#fff; }
-  .stage.cur { background:var(--navy); border-color:var(--navy); color:#fff; box-shadow:0 4px 14px rgba(19,49,82,.28); } .stage.cur .sn { background:#fff; color:var(--navy); }
-  .stage .here { position:absolute; right:8px; top:8px; font-size:10px; font-weight:800; text-transform:uppercase; letter-spacing:.06em; color:#ffd479; }
-  .stage.done .here { color:#136c4c; }
-  .metric { display:flex; align-items:center; gap:18px; flex-wrap:wrap; background:#fff; border:1px solid var(--line); border-radius:12px; padding:18px 22px; margin-bottom:16px; }
-  .metric .m-val { display:block; font-size:30px; font-weight:800; line-height:1; color:#7a8794; }
-  .metric .m-cap { display:block; margin-top:6px; font-size:12.5px; color:var(--muted); }
-  .metric .m-to .m-val { font-size:52px; color:#136c4c; }
-  .metric .m-arrow { font-size:28px; color:#9aa8b5; }
-  .metric .m-gain { margin-left:auto; background:#e5f5ed; color:#136c4c; border:1px solid #9dd4bd; border-radius:999px; padding:8px 16px; font-weight:800; font-size:15px; }
-  .footer { margin-top:26px; color:#728291; font-size:12px; }
-  @media (max-width: 700px) {
-    .shell { padding:14px 12px 40px; }
-    .hero { padding:20px 18px; }
-    h1 { font-size:22px; }
-    .stages { grid-template-columns:repeat(2,1fr); }
-    table { min-width:560px; }
+  :root {
+    --navy:#133152;
+    --blue:#1e6aa8;
+    --blue-deep:#154e80;
+    --sky:#e8f3fb;
+    --bad:#c0392b;
+    --ok:#136c4c;
+    --ok-bg:#e7f6ee;
+    --warn:#8a5a09;
+    --warn-bg:#fff6e8;
+    --muted:#5a6b7a;
+    --line:#d7e0e8;
+    --paper:#fff;
+    --bg:#eef2f6;
   }
-  @media print { body { background:#fff; } }
+  * { box-sizing:border-box; }
+  body { margin:0; background:var(--bg); color:#15202b; font:16px/1.5 "Segoe UI",Roboto,Arial,sans-serif; }
+  .shell { max-width:1080px; margin:0 auto; padding:28px 20px 64px; }
+  .hero { background:linear-gradient(135deg,#0f2740 0%,#1a4f7a 100%); color:#fff; border-radius:18px; padding:32px 36px 28px; }
+  .eyebrow { margin:0 0 8px; font-size:12px; font-weight:700; letter-spacing:.1em; text-transform:uppercase; color:#9fd0ee; }
+  h1 { margin:0; font-size:30px; line-height:1.2; }
+  .hero .sub { margin:12px 0 0; font-size:18px; color:#d7ebf7; }
+  .meta { margin:10px 0 0; font-size:13px; color:#9bb8cc; }
+  h2 { margin:34px 0 12px; font-size:22px; color:var(--navy); }
+  h2 .n { display:inline-block; width:28px; height:28px; margin-right:8px; line-height:28px; text-align:center; border-radius:50%; background:var(--navy); color:#fff; font-size:14px; vertical-align:2px; }
+  .lead { margin:0 0 14px; color:#3d4c59; }
+  .split { display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+  .half { background:linear-gradient(180deg,#f4f9fd,#fff); border:1px solid #c5dff0; border-top:4px solid var(--blue); border-radius:14px; padding:18px 20px 16px; }
+  .half .pct { display:block; font-size:34px; font-weight:800; color:var(--blue); letter-spacing:-.03em; line-height:1; }
+  .half h3 { margin:8px 0 8px; font-size:18px; color:var(--blue-deep); }
+  .half p { margin:0; color:#243240; font-size:15px; }
+  .path { display:grid; grid-template-columns:repeat(4,1fr); gap:8px; }
+  .path .p { border:1px solid var(--line); border-radius:12px; padding:14px; background:#fff; color:#7a8794; }
+  .path .p.done { background:var(--ok-bg); border-color:#9dd4bd; color:var(--ok); }
+  .path .p.now { background:var(--navy); border-color:var(--navy); color:#fff; }
+  .path .sn { font-size:11px; font-weight:800; letter-spacing:.06em; text-transform:uppercase; }
+  .path .t { display:block; margin-top:6px; font-weight:800; font-size:14px; line-height:1.3; }
+  .phase { display:flex; align-items:center; gap:10px; flex-wrap:wrap; margin:28px 0 8px; font-size:18px; color:var(--navy); }
+  .tag { display:inline-block; padding:3px 10px; border-radius:999px; font-size:12px; font-weight:800; white-space:nowrap; }
+  .tag.ok { background:var(--ok-bg); color:var(--ok); }
+  .tag.work { background:var(--warn-bg); color:var(--warn); }
+  .tag.plan { background:var(--sky); color:var(--blue-deep); }
+  .tag.no { background:#fdecea; color:var(--bad); }
+  .card { background:var(--paper); border:1px solid var(--line); border-radius:14px; overflow:hidden; margin-bottom:12px; }
+  table { width:100%; border-collapse:collapse; font-size:14px; }
+  th { text-align:left; padding:10px 14px; background:#f7fafc; color:#526575; font-size:12px; text-transform:uppercase; letter-spacing:.03em; }
+  td { padding:11px 14px; border-top:1px solid var(--line); vertical-align:top; }
+  th:last-child, td:last-child { text-align:right; width:1%; white-space:nowrap; }
+  .id { color:var(--blue); font-weight:800; white-space:nowrap; }
+  .kpis { display:grid; grid-template-columns:repeat(5, minmax(0,1fr)); gap:8px; margin-bottom:12px; }
+  .kpi { background:#fff; border:1px solid var(--line); border-radius:10px; padding:10px 12px; }
+  .kpi .step { font-size:11px; font-weight:800; letter-spacing:.04em; text-transform:uppercase; color:var(--blue); }
+  .kpi .l { margin-top:4px; font-size:13px; font-weight:800; color:var(--navy); line-height:1.25; }
+  .kpi .f { margin-top:6px; font-size:13px; font-weight:700; color:var(--bad); }
+  .kpi .t { font-size:16px; font-weight:800; color:var(--ok); }
+  .verdict { background:var(--warn-bg); border:1px solid #efc989; border-radius:14px; padding:16px 18px; }
+  .verdict strong { display:block; color:var(--warn); margin-bottom:4px; }
+  details.fold { margin:0; }
+  details.fold > summary {
+    cursor:pointer; list-style:none; display:flex; align-items:center; gap:10px;
+  }
+  details.fold > summary::-webkit-details-marker { display:none; }
+  details.fold > summary .chev {
+    flex:0 0 22px; width:22px; height:22px; border-radius:6px;
+    background:var(--sky); color:var(--blue-deep);
+    display:inline-flex; align-items:center; justify-content:center;
+    font-size:11px; font-weight:800; transition:transform .15s ease;
+  }
+  details.fold[open] > summary .chev { transform:rotate(90deg); }
+  details.fold > summary .fold-title { font-weight:800; color:var(--navy); }
+  details.fold > summary .fold-hint { color:var(--muted); font-size:13px; }
+  details.fold > summary:hover .fold-title { color:var(--blue); }
+  .subs { list-style:none; margin:10px 0 0; padding:0; display:flex; flex-direction:column; gap:6px; }
+  .subs .grp {
+    margin:8px 0 0; font-size:11px; font-weight:800; letter-spacing:.06em;
+    text-transform:uppercase; color:var(--muted);
+  }
+  .subs .grp:first-child { margin-top:2px; }
+  .subs .row {
+    display:grid; grid-template-columns:1fr auto; gap:12px; align-items:center;
+    background:#f7fafc; border-radius:10px; padding:8px 10px;
+  }
+  .subs .row .tag { margin-top:1px; }
+  .footer { margin-top:28px; font-size:12px; color:#7a8794; }
+  @media (max-width: 800px) {
+    .split, .path { grid-template-columns:1fr 1fr; }
+    .kpis { grid-template-columns:repeat(3, minmax(0,1fr)); }
+    h1 { font-size:24px; }
+  }
+  @media (max-width: 560px) {
+    .split, .path, .kpis { grid-template-columns:1fr; }
+    .hero { padding:22px 18px; }
+  }
+  @media print {
+    body { background:#fff; }
+    .shell { padding:0; }
+    details.fold { page-break-inside:avoid; }
+    details.fold > .subs, details.fold .subs { display:flex !important; }
+  }
 </style>
 </head>
 <body>
@@ -59,68 +112,122 @@
   <header class="hero">
     <p class="eyebrow">Владелец продукта СВТ · рассказ и план шагов</p>
     <h1>СВТ: от стабилизации к целевому проекту</h1>
-    <p class="subtitle">Система ведения тарифов, маршрутов, лидтаймов и ограничений</p>
-    <p class="subtitle" style="font-size:13px;opacity:.85;margin-top:4px;">Для Д. Капли и М. Аветисова · 02.10.2026</p>
+    <p class="sub">Система ведения тарифов, маршрутов, лидтаймов и ограничений</p>
+    <p class="meta">Для Д. Капли и М. Аветисова · обновлено 12.10.2026</p>
   </header>
 
-  <h2 class="sec"><span class="n">1</span>Контекст</h2>
+  <h2><span class="n">1</span>Контекст</h2>
   <p class="lead">После детального разбора бэклога выявлено: около половины инцидентов связаны с некорректными бизнес-правилами, которые не соответствуют текущим бизнес-процессам. Вторая половина — техника и архитектура. Исправление архитектуры необходимо, но недостаточно для гарантии корректных данных пользователям и смежным системам.</p>
-  <div class="card"><div class="table-wrap"><table><thead><tr><th>Часть</th><th>Что это</th><th>Чем лечится</th></tr></thead><tbody>
-    <tr><td class="num">Требования · ~50%</td><td>Система принимает данные, которые бизнес считает ошибкой: требования устарели или непонятны</td><td>Исправление некорректных данных в системе и повторная отправка в интеграции. Полечили только случаи, с которыми столкнулись. Случаи регулярно повторяются из-за неактуальных и неполных бизнес-правил. Необходимо провести пересмотр имеющихся бизнес-правил и сформулировать требования для их переработки.</td></tr>
-    <tr><td class="num">Техника и архитектура · ~50%</td><td>Подвисания или сбои при загрузке, падение интеграций</td><td>Добавление железа и настройка SQL Server, переработка структуры базы данных, оптимизация запросов, доработка интеграций с мониторингом</td></tr>
-  </tbody></table></div></div>
-
-  <h2 class="sec"><span class="n">2</span>План шагов</h2>
-  <div class="stages">
-    <div class="stage done"><span class="sn">Ш1</span><span class="sname">Усилили команду: база данных и разбор инцидентов</span><span class="here">Выполнено</span></div>
-    <div class="stage cur"><span class="sn">Ш2</span><span class="sname">Переработка структуры хранения данных в SQL Server</span><span class="here">Сейчас</span></div>
-    <div class="stage cur"><span class="sn">Ш3</span><span class="sname">Сбор и синтез требований: Атлас процессов</span><span class="here">Сейчас</span></div>
-    <div class="stage"><span class="sn">Ш4</span><span class="sname">Целевой проект</span></div>
-  </div>
-  <p class="lead">Ш2 и Ш3 идут параллельно и не смешиваются. Проект трансформации (оценка на фазе L3) не запускаем до Ш4.</p>
-
-  <h3 class="phase">Ш1. Подключили технических специалистов и усилили команду <span class="st ok">Сделано</span></h3>
-  <div class="card"><div class="table-wrap"><table><thead><tr><th>Шаг</th><th>Что сделали</th><th>Кто</th><th>Статус</th></tr></thead><tbody>
-    <tr><td class="num">Ш1.1</td><td>Усиление по базе данных. Разобрали причины блокировок запросов: устройство приложения и структура хранения. Добавили ядра и настроили параллелизм на уровне SQL Server. Это стабилизация — корневая причина остаётся</td><td>А. Ершов, И. Васильев</td><td><span class="st ok">Выполнено</span></td></tr>
-    <tr><td class="num">Ш1.2</td><td>Усиление по разбору инцидентов. А. Жукову и А. Коряйкину переданы конкретные инциденты по падению интеграций и задачи создания мониторинга</td><td>Е. Подоплелова; команды А. Жукова и А. Коряйкина</td><td><span class="st ok">Передано</span></td></tr>
-    <tr><td class="num">Ш1.3</td><td>Исправление инцидентов по интеграциям, дальше мониторинг и реакция на инциденты</td><td>Команда А. Коряйкина</td><td><span class="st work">Срок 31.10</span></td></tr>
-  </tbody></table></div></div>
-  <p class="lead">Результат Ш1.1: типовые операции загрузки и обработки ускорились более чем в два раза.</p>
-  <div class="metric">
-    <div class="m-from"><span class="m-val">10,6</span><span class="m-cap">мин на 10 тыс. ставок<br>Бюджетный процесс, середина III кв.</span></div>
-    <div class="m-arrow">→</div>
-    <div class="m-to"><span class="m-val">4,3</span><span class="m-cap">мин на 10 тыс. ставок<br>После ядер и настройки SQL Server</span></div>
-    <div class="m-gain">в 2,5 раза быстрее</div>
+  <div class="split">
+    <article class="half">
+      <span class="pct">~50%</span>
+      <h3>Требования</h3>
+      <p>Система принимает данные, которые бизнес считает ошибкой: требования устарели или непонятны. Полечили только случаи, с которыми столкнулись: исправили данные и отправили в интеграции повторно. Случаи повторяются, потому что правила неактуальны и неполны. Нужен пересмотр правил и требования на их переработку.</p>
+    </article>
+    <article class="half">
+      <span class="pct">~50%</span>
+      <h3>Техника и архитектура</h3>
+      <p>Подвисания или сбои при загрузке, падение интеграций. Лечится добавлением железа и настройкой SQL Server, переработкой структуры базы, оптимизацией запросов, доработкой интеграций с мониторингом.</p>
+    </article>
   </div>
 
-  <h3 class="phase">Ш2. Переработка структуры хранения данных в SQL Server <span class="st work">В работе</span></h3>
-  <p class="lead">Проверяем гипотезу об оптимизации: эволюционно раскрыть и упростить иерархическую табличную архитектуру в текущем SQL Server. Анализ SQL-запросов и исходного кода — с помощью Claude. Миграция на PostgreSQL — только после того, как упрощение работает.</p>
-  <div class="card"><div class="table-wrap"><table><thead><tr><th>Шаг</th><th>Что делаем</th><th>Кто</th><th>Статус</th></tr></thead><tbody>
-    <tr><td class="num">Ш2.1</td><td>Формирование рабочей группы. Создание гипотез.</td><td>Е. Подоплелова</td><td><span class="st work">В работе</span></td></tr>
-    <tr><td class="num">Ш2.2</td><td>Анализ гипотез с Claude: проверка возможности упростить структуру таблиц, код запросов, а также код приложения.</td><td>И. Васильев, А. Ершов</td><td><span class="st plan">Запланировано</span></td></tr>
-    <tr><td class="num">Ш2.3</td><td>Прогон изменений на тех же объёмах данных: гипотеза подтверждена или зафиксирован предел</td><td>И. Васильев, А. Ершов</td><td><span class="st plan">Запланировано</span></td></tr>
-    <tr><td class="num">Ш2.4</td><td>В случае положительного результата прогона: стабилизация прототипа с последующей выкладкой на продуктив</td><td>И. Васильев, А. Ершов</td><td><span class="st plan">Запланировано</span></td></tr>
-  </tbody></table></div></div>
+  <h2><span class="n">2</span>План шагов</h2>
+  <div class="path">
+    <div class="p done"><span class="sn">Ш1 · выполнено</span><span class="t">Усилили команду: база данных и разбор инцидентов</span></div>
+    <div class="p done"><span class="sn">Ш2 · выполнено</span><span class="t">Переработка структуры хранения данных в SQL Server</span></div>
+    <div class="p now"><span class="sn">Ш3 · сейчас</span><span class="t">Сбор и синтез требований: Атлас процессов</span></div>
+    <div class="p"><span class="sn">Ш4 · после Ш3</span><span class="t">Целевой проект</span></div>
+  </div>
+  <p class="lead" style="margin-top:12px">Ш2 закрыт. Ш3 идёт отдельно от техники. Оценку целевого проекта на фазе L3 не запускаем до Ш4.</p>
 
-  <h3 class="phase">Ш3. Проект по сбору и синтезу требований <span class="st work">Открываем</span></h3>
-  <p class="lead">Обследование и актуализация бизнес-требований по методологии построения Атласов. Построение Атласа процессов начинаем с СВТ: она стоит в самом начале эталонного процесса. С технической доработкой Ш2 не смешиваем.</p>
-  <div class="card"><div class="table-wrap"><table><thead><tr><th>Шаг</th><th>Что делаем</th><th>Кто</th><th>Статус</th></tr></thead><tbody>
-    <tr><td class="num">Ш3.1</td><td>Состав экспертов по тарифам, маршрутам, лидтаймам и ограничениям</td><td>Е. Подоплелова, А. Агапов</td><td><span class="st plan">Запланировано</span></td></tr>
-    <tr><td class="num">Ш3.2</td><td>Интервью и Атлас процессов СВТ</td><td>Команда СВТ</td><td><span class="st plan">Запланировано</span></td></tr>
-    <tr><td class="num">Ш3.3</td><td>Актуальные требования: правила, по которым СВТ отклоняет ошибочные данные и обрабатывает корректные данные</td><td>Команда СВТ, эксперты бизнеса</td><td><span class="st plan">Запланировано</span></td></tr>
-  </tbody></table></div></div>
-  <p class="lead">Примеры нарушений бизнес-правил, которые были выявлены в инцидентах. Это не полный перечень. На данный момент было выявлено 34 бизнес-правила с нарушениями.</p>
-  <div class="card"><div class="table-wrap"><table><thead><tr><th>Требование</th><th>Пример ошибки</th></tr></thead><tbody>
-    <tr><td>Средневзвешенные ставки не пересекаются</td><td>Одновременно действуют ставки Казань–Китай 1000 и 1100 за тонну</td></tr>
-    <tr><td>Заполнены составляющие вида транспорта</td><td>Для ЖД не указана стоимость возврата вагонов</td></tr>
-    <tr><td>Вид транспорта маршрута соответствует плечам</td><td>Вид транспорта «ЖД», первое плечо ЖД, второе — море</td></tr>
-    <tr><td>Сумма номинаций в группе — 100%</td><td>Контрагент А — 60%, контрагент Б — 70%, итого 130%</td></tr>
-  </tbody></table></div></div>
+  <h3 class="phase">Ш1. Подключили технических специалистов и усилили команду <span class="tag ok">Выполнено</span></h3>
+  <div class="card"><table>
+    <thead><tr><th>Шаг</th><th>Что сделали</th><th>Кто</th><th>Статус</th></tr></thead>
+    <tbody>
+      <tr><td class="id">Ш1.1</td><td>Разобрали блокировки: устройство приложения и структура хранения. Добавили ядра и настроили параллелизм SQL Server. Это стабилизация — корневая причина остаётся</td><td>А. Ершов, И. Васильев</td><td><span class="tag ok">Выполнено</span></td></tr>
+      <tr><td class="id">Ш1.2</td><td>Передали конкретные инциденты по падению интеграций и задачи мониторинга</td><td>Е. Подоплелова; команды А. Жукова и А. Коряйкина</td><td><span class="tag ok">Передано</span></td></tr>
+      <tr><td class="id">Ш1.3</td><td>Исправление инцидентов по интеграциям, дальше мониторинг и реакция</td><td>Команда А. Коряйкина</td><td><span class="tag work">Срок 31.10</span></td></tr>
+    </tbody>
+  </table></div>
 
-  <h3 class="phase">Ш4. Анализ и пересборка в целевой проект <span class="st plan">После Ш2 и Ш3</span></h3>
-  <p class="lead">Сводим результат доработок хранения данных и актуализированные требования. На этой основе формулируем проект: как СВТ должна работать в целевом виде. Тогда же — оценка на фазе L3, ресурс и бюджет.</p>
+  <h3 class="phase">Ш2. Переработка структуры хранения данных в SQL Server <span class="tag ok">Выполнено</span></h3>
+  <p class="lead">Все подшаги закрыты, изменения на проде. Хранение целиком не перестраивали: выигрыш — единицы или несколько процентов, цена — ядро системы. Поручение по коду запросов закрыто отдельно: код выжат до предела, эффект подтверждён на проде.</p>
+  <div class="card"><table>
+    <thead><tr><th>Шаг</th><th>Результат</th><th>Кто</th><th>Статус</th></tr></thead>
+    <tbody>
+      <tr><td class="id">Ш2.1</td><td>Рабочая группа сформирована. Гипотезы оптимизации созданы</td><td>Е. Подоплелова</td><td><span class="tag ok">Выполнено</span></td></tr>
+      <tr><td class="id">Ш2.2</td><td>
+        <details class="fold">
+          <summary><span class="chev">▶</span><span class="fold-title">Разобрали гипотезы</span><span class="fold-hint">структура и код запросов</span></summary>
+          <div class="subs">
+            <div class="grp">Структура хранения</div>
+            <div class="row"><span>Убрать таблицу связей целиком. Итог: выигрыш в лучшем случае единицы процентов, цена — переписывание ядра.</span><span class="tag no">Гипотеза не подтверждена</span></div>
+            <div class="row"><span>Сделать хранение полностью плоским. Итог: возможно лишь частично, ускорение на несколько процентов.</span><span class="tag no">Гипотеза не подтверждена</span></div>
+            <div class="row"><span>Убрать лишние ключи, которые система создавала на всякий случай. Меньше взаимных блокировок, ускорение на несколько процентов.</span><span class="tag ok">Сделали</span></div>
+            <div class="row"><span>Разнести загрузку и дополнительные расчёты по разным транзакциям. Основная загрузка в одной, расчёты отдельно, без потери данных.</span><span class="tag ok">Сделали</span></div>
+            <div class="grp">Приложение</div>
+            <div class="row"><span>Дальше ускорять поисковый кеш. Итог: за 2022–2024 уже ускорили, сейчас около 20% времени операции, значимого прироста нет.</span><span class="tag no">Гипотеза не подтверждена</span></div>
+            <div class="grp">Код запросов</div>
+            <div class="row"><span>Разобрали самые тяжёлые запросы по логам и планам и оптимизировали их.</span><span class="tag ok">Сделали</span></div>
+          </div>
+        </details>
+      </td><td>И. Васильев, А. Ершов, Д. Петренев</td><td><span class="tag ok">Выполнено</span></td></tr>
+      <tr><td class="id">Ш2.3</td><td>
+        <details class="fold">
+          <summary><span class="chev">▶</span><span class="fold-title">Прогнали на объёмах прода</span><span class="fold-hint">ключи, транзакции, запросы, мониторинг</span></summary>
+          <div class="subs">
+            <div class="row"><span>Лишние ключи убраны.</span><span class="tag ok">Сделали</span></div>
+            <div class="row"><span>Транзакции раздроблены: загрузка отдельно от дополнительных расчётов.</span><span class="tag ok">Сделали</span></div>
+            <div class="row"><span>Код запросов оптимизирован и выложен на прод. Пользователи выполняют операции без сбоев, время ниже допустимого порога.</span><span class="tag ok">Сделали</span></div>
+            <div class="row"><span>Мониторинг не мешает работе. Убраны 80 неиспользуемых проверок. 160 проверок выполняются за 3 минуты вместо 12 и не блокируют таблицы.</span><span class="tag ok">Сделали</span></div>
+            <div class="row"><span>Дальше переделывать структуру хранения и поисковый кеш. Итог: выигрыш единицы или несколько процентов против переписывания ядра.</span><span class="tag no">Гипотеза не подтверждена</span></div>
+          </div>
+        </details>
+      </td><td>И. Васильев</td><td><span class="tag ok">Выполнено</span></td></tr>
+      <tr><td class="id">Ш2.4</td><td>Выложено на продуктив. Пользователи проверили массовую загрузку. Метрики собраны</td><td>И. Васильев, Е. Подоплелова</td><td><span class="tag ok">Выполнено</span></td></tr>
+    </tbody>
+  </table></div>
 
-  <p class="footer">Владелец продукта СВТ · материал для Д. Капли и М. Аветисова · 02.10.2026</p>
+  <h3 class="phase">Итоговые результаты для бизнеса</h3>
+  <div class="kpis">
+    <article class="kpi"><div class="step">Ш1 · усилили команду</div><div class="l">Загрузка 10 тыс.</div><div class="f">было 10,6 мин</div><div class="t">4,3 мин</div></article>
+    <article class="kpi"><div class="step">Ш2 · оптимизация</div><div class="l">Загрузка 10 тыс.</div><div class="f">было 4 мин</div><div class="t">2,7 мин</div></article>
+    <article class="kpi"><div class="step">Ш2</div><div class="l">Валидация 10 тыс.</div><div class="f">было 45 сек</div><div class="t">15 сек</div></article>
+    <article class="kpi"><div class="step">Ш2</div><div class="l">Мониторинг</div><div class="f">было 11–12 мин</div><div class="t">3 мин</div></article>
+    <article class="kpi"><div class="step">Ш2</div><div class="l">Максимум без сбоя</div><div class="f">было 20 тыс., сбой на 40</div><div class="t">68 тыс.</div></article>
+  </div>
+  <div class="verdict">
+    <strong>Структуру целиком не трогали. Код запросов выжат до предела и уже на проде.</strong>
+    Оставшийся выигрыш по хранению — единицы или несколько процентов, это несоразмерно переписыванию ядра. Эффект для пользователя взят в коде запросов и в проверках мониторинга.
+  </div>
+
+  <h3 class="phase">Ш3. Сбор и синтез требований: Атлас процессов <span class="tag work">Сейчас</span></h3>
+  <p class="lead">Сначала описание эталона и согласование с В. Кудрявцевым. Интервью и прототип — только после правок по его критике. С техникой Ш2 не смешиваем.</p>
+  <div class="card"><table>
+    <thead><tr><th>Шаг</th><th>Что делаем</th><th>Кто</th><th>Срок</th></tr></thead>
+    <tbody>
+      <tr><td class="id">Ш3.1</td><td>Описание эталонного процесса СВТ</td><td>Е. Подоплелова</td><td><span class="tag work">До 15.10</span></td></tr>
+      <tr><td class="id">Ш3.2</td><td>Вынести эталонный процесс на анализ В. Кудрявцеву и согласовать его</td><td>И. Васильев</td><td><span class="tag plan">До конца октября</span></td></tr>
+      <tr><td class="id">Ш3.3</td><td>Исправления по результатам критики В. Кудрявцева</td><td>Е. Подоплелова</td><td><span class="tag plan">После анализа</span></td></tr>
+      <tr><td class="id">Ш3.4</td><td>Интервью с пользователями. Сотрудники бизнеса выделены устно, нужно письменное закрепление</td><td>Е. Подоплелова, бизнес</td><td><span class="tag plan">После правок</span></td></tr>
+      <tr><td class="id">Ш3.5</td><td>Прототип интерфейса по итогам интервью</td><td>Команда СВТ</td><td><span class="tag plan">До конца года</span></td></tr>
+    </tbody>
+  </table></div>
+  <p class="lead">Выявлено 34 бизнес-правила с нарушениями. Это не полный перечень.</p>
+  <div class="card"><table>
+    <thead><tr><th>Требование</th><th>Пример ошибки</th></tr></thead>
+    <tbody>
+      <tr><td>Средневзвешенные ставки не пересекаются</td><td>Одновременно Казань–Китай 1000 и 1100 за тонну</td></tr>
+      <tr><td>Заполнены составляющие вида транспорта</td><td>Для ЖД не указана стоимость возврата вагонов</td></tr>
+      <tr><td>Вид транспорта маршрута соответствует плечам</td><td>«ЖД», первое плечо ЖД, второе — море</td></tr>
+      <tr><td>Сумма номинаций в группе — 100%</td><td>60% + 70% = 130%</td></tr>
+    </tbody>
+  </table></div>
+
+  <h3 class="phase">Ш4. Целевой проект <span class="tag plan">После Ш3</span></h3>
+  <p class="lead">Технический предел с Ш2 уже есть. Дорожную карту собираем после эталонного процесса и с учётом отпусков ключевых людей: документ может меняться от приоритетов, это проговариваем с бизнесом. Письмо о согласовании бюджета L3 и сотрудников Е. Подоплелова направляет в ближайшее время.</p>
+
+  <p class="footer">Владелец продукта СВТ · материал для Д. Капли и М. Аветисова · 12.10.2026</p>
 </main>
 </body>
 </html>
