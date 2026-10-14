@@ -84,29 +84,12 @@
   th:last-child, td:last-child { text-align:right; width:1%; white-space:nowrap; }
   table.steps { table-layout:fixed; }
   table.steps th:nth-child(1), table.steps td.id { width:4.6em; }
-  table.steps th:nth-child(3), table.steps td:nth-child(3) { width:19em; white-space:normal; }
-  table.steps th:nth-child(4), table.steps td:nth-child(4) { width:18em; }
+  table.steps th:nth-child(3), table.steps td:nth-child(3) { width:12.5em; max-width:12.5em; white-space:normal; overflow:hidden; }
+  table.steps th:nth-child(4), table.steps td:nth-child(4) { width:12em; max-width:12em; white-space:normal; }
   .id { color:var(--blue); font-weight:800; white-space:nowrap; }
-  td.hyp-cell { padding:8px 0 11px; width:auto; text-align:left; white-space:normal; }
-  details.fold.hyps > summary {
-    display:grid;
-    grid-template-columns:minmax(0,1fr) 19em 18em;
-    align-items:center;
-    gap:0;
-    padding:3px 0;
-  }
-  details.fold.hyps > summary .fold-main {
-    display:flex; align-items:center; gap:10px; min-width:0; padding:0 14px;
-  }
-  details.fold.hyps > summary .fold-who { padding:0 14px; font-weight:400; color:#15202b; }
-  details.fold.hyps > summary > .tag { justify-self:end; margin-right:14px; }
-  table.hyp-inner { width:100%; table-layout:fixed; border-collapse:collapse; margin-top:8px; }
-  table.hyp-inner col.hyp-who { width:19em; }
-  table.hyp-inner col.hyp-st { width:18em; }
-  table.hyp-inner td { border-top:none; vertical-align:top; }
-  table.hyp-inner td.hyp-what { padding:0 14px 6px; }
-  table.hyp-inner td.hyp-who { padding:0; }
-  table.hyp-inner td.hyp-st { text-align:right; white-space:nowrap; padding:8px 14px; }
+  table.steps td:nth-child(4) .tag, table.steps td:last-child .tag { white-space:normal; max-width:100%; }
+  tr.hyp-group:has(details.fold:not([open])) + tr.hyp-item,
+  tr.hyp-group:has(details.fold:not([open])) + tr.hyp-item + tr.hyp-item { display:none; }
   .kpis { display:grid; grid-template-columns:repeat(5, minmax(0,1fr)); gap:8px; margin-bottom:12px; }
   .kpi { background:#fff; border:1px solid var(--line); border-radius:10px; padding:10px 12px; }
   .kpi .step { font-size:11px; font-weight:800; letter-spacing:.04em; text-transform:uppercase; color:var(--blue); }
@@ -119,7 +102,6 @@
   details.fold > summary {
     cursor:pointer; list-style:none; display:flex; align-items:center; gap:10px;
   }
-  details.fold.hyps > summary { display:grid; }
   details.fold > summary::-webkit-details-marker { display:none; }
   details.fold > summary .chev {
     flex:0 0 22px; width:22px; height:22px; border-radius:6px;
@@ -202,12 +184,12 @@
   <div class="card"><table class="steps">
     <thead><tr><th>Шаг</th><th>Что сделали</th><th>Кто</th><th>Статус</th></tr></thead>
     <tbody>
-      <tr><td class="id">Ш1.1</td><td>Усилили команду</td><td>А. Ершов, Д. Петренев</td><td><span class="tag ok">Выполнено</span></td></tr>
-      <tr><td class="id">Ш1.2</td><td>Разобрали инциденты за год. Выявили две категории: 1. неактуальные бизнес-правила; 2. неоптимальный код и недостаток физических ресурсов.</td><td>И. Васильев, Е. Подоплелова</td><td><span class="tag ok">Выполнено</span></td></tr>
-      <tr><td class="id">Ш1.3</td><td>Провели ревизию базы данных</td><td>И. Васильев, Д. Петренев</td><td><span class="tag ok">Выполнено</span></td></tr>
-      <tr><td class="id">Ш1.4</td><td>Сформулировали гипотезы, как устранить корневые причины. Бизнес-правила в скоуп не входят.</td><td>Е. Подоплелова, И. Васильев</td><td><span class="tag ok">Выполнено</span></td></tr>
-      <tr><td class="id">Ш1.5</td><td>Передали инциденты по падению интеграций и задачи мониторинга в поддержку второй линии</td><td>Е. Подоплелова; команды А. Жукова и А. Коряйкина</td><td><span class="tag ok">Передано</span></td></tr>
-      <tr><td class="id">Ш1.6</td><td>Исправление инцидентов по интеграциям и постановка интеграций на мониторинг</td><td>Команда А. Коряйкина</td><td><span class="tag work">Срок 31.10</span></td></tr>
+      <tr><td class="id">Ш1.1</td><td>Усилили команду</td><td>А.&nbsp;Ершов, Д.&nbsp;Петренев</td><td><span class="tag ok">Выполнено</span></td></tr>
+      <tr><td class="id">Ш1.2</td><td>Разобрали инциденты за год. Выявили две категории: 1. неактуальные бизнес-правила; 2. неоптимальный код и недостаток физических ресурсов.</td><td>И.&nbsp;Васильев, Е.&nbsp;Подоплелова</td><td><span class="tag ok">Выполнено</span></td></tr>
+      <tr><td class="id">Ш1.3</td><td>Провели ревизию базы данных</td><td>И.&nbsp;Васильев, Д.&nbsp;Петренев</td><td><span class="tag ok">Выполнено</span></td></tr>
+      <tr><td class="id">Ш1.4</td><td>Сформулировали гипотезы, как устранить корневые причины. Бизнес-правила в скоуп не входят.</td><td>Е.&nbsp;Подоплелова, И.&nbsp;Васильев</td><td><span class="tag ok">Выполнено</span></td></tr>
+      <tr><td class="id">Ш1.5</td><td>Передали инциденты по падению интеграций и задачи мониторинга в поддержку второй линии</td><td>Е.&nbsp;Подоплелова; команды А.&nbsp;Жукова и А.&nbsp;Коряйкина</td><td><span class="tag ok">Передано</span></td></tr>
+      <tr><td class="id">Ш1.6</td><td>Исправление инцидентов по интеграциям и постановка интеграций на мониторинг</td><td>Команда А.&nbsp;Коряйкина</td><td><span class="tag work">Срок 31.10</span></td></tr>
     </tbody>
   </table></div>
     </div>
@@ -219,10 +201,10 @@
   <div class="card"><table class="steps">
     <thead><tr><th>Шаг</th><th>Что сделали</th><th>Кто</th><th>Статус</th></tr></thead>
     <tbody>
-      <tr><td class="id">Ш2.1</td><td>Собрали счётчики производительности сервера под нагрузкой</td><td>Д. Петренев</td><td><span class="tag ok">Выполнено</span></td></tr>
-      <tr><td class="id">Ш2.2</td><td>Добавили память: 64 ГБ вместо 32 ГБ. Добавили ядра: 8 вместо 4</td><td>Д. Петренев, А. Ершов</td><td><span class="tag ok">Выполнено</span></td></tr>
-      <tr><td class="id">Ш2.3</td><td>Настроили параметры параллелизма выполнения запросов</td><td>Д. Петренев</td><td><span class="tag ok">Выполнено</span></td></tr>
-      <tr><td class="id">Ш2.4</td><td>Настроили уровни изоляции транзакций: оптимистичный Read Committed</td><td>Д. Петренев</td><td><span class="tag ok">Выполнено</span></td></tr>
+      <tr><td class="id">Ш2.1</td><td>Собрали счётчики производительности сервера под нагрузкой</td><td>Д.&nbsp;Петренев</td><td><span class="tag ok">Выполнено</span></td></tr>
+      <tr><td class="id">Ш2.2</td><td>Добавили память: 64 ГБ вместо 32 ГБ. Добавили ядра: 8 вместо 4</td><td>Д.&nbsp;Петренев, А.&nbsp;Ершов</td><td><span class="tag ok">Выполнено</span></td></tr>
+      <tr><td class="id">Ш2.3</td><td>Настроили параметры параллелизма выполнения запросов</td><td>Д.&nbsp;Петренев</td><td><span class="tag ok">Выполнено</span></td></tr>
+      <tr><td class="id">Ш2.4</td><td>Настроили уровни изоляции транзакций: оптимистичный Read Committed</td><td>Д.&nbsp;Петренев</td><td><span class="tag ok">Выполнено</span></td></tr>
     </tbody>
   </table></div>
     </div>
@@ -234,115 +216,115 @@
   <div class="card"><table class="steps">
     <thead><tr><th>Шаг</th><th>Что сделали</th><th>Кто</th><th>Статус</th></tr></thead>
     <tbody>
-      <tr><td class="id">Ш3.1</td><td>Собрали логи со временем выполнения ~400 запросов, а также планы ~15 наиболее тяжёлых запросов. Отдали в Claude вместе с кодом запросов. Сформировали гипотезы для оптимизации</td><td>И. Васильев</td><td><span class="tag ok">Выполнено</span></td></tr>
-      <tr><td class="id">Ш3.2</td><td class="hyp-cell" colspan="3">
-        <details class="fold hyps" open>
-          <summary><span class="fold-main"><span class="chev">▶</span><span class="fold-title">Гипотезы рабочей группы</span></span><span class="fold-who">И. Васильев</span><span class="tag ok">Выполнено</span></summary>
-          <table class="hyp-inner">
-            <colgroup><col><col class="hyp-who"><col class="hyp-st"></colgroup>
-            <tr>
-              <td class="hyp-what"><div class="row">
-                <strong class="hyp-title">1. Блокировка общей таблицы со связями сущностей.</strong>
-                <span class="hyp-line"><strong>Проблема:</strong> единая таблица связей блокирует операции нескольких пользователей.</span>
-                <span class="hyp-line"><strong>Гипотеза:</strong> изменить структуру хранения связей.</span>
-                <span class="hyp-line">Проверили с Claude по коду и счётчикам, ядро не переписывали.</span>
-                <span class="hyp-line"><strong>Итог:</strong> блокировки редкие, дедлоков на этой таблице нет, время — несколько процентов. Переписать ядро — отдельный контур и сверка данных, от месяца.</span>
-              </div></td>
-              <td class="hyp-who"></td>
-              <td class="hyp-st"><span class="tag no">Гипотеза Claude не подтверждена</span></td>
-            </tr>
-            <tr>
-              <td class="hyp-what"><div class="row">
-                <strong class="hyp-title">2. Денормализовать структуру хранения справочников</strong>
-                <span class="hyp-line"><strong>Проблема:</strong> избыточная иерархия хранения провоцирует блокировки и ожидание запросов.</span>
-                <span class="hyp-line"><strong>Гипотеза:</strong> сделать хранение плоским.</span>
-                <span class="hyp-line">Проанализировали с Claude код и планы запросов с прода. Изменений в системе не делали.</span>
-                <span class="hyp-line"><strong>Итог:</strong> денормализацию можно выполнить частично, при этом изменения незначительно повлияют на блокировки и быстродействие. Большой риск при оптимизации — сломать систему, изменения затрагивают основные объекты системы.</span>
-              </div></td>
-              <td class="hyp-who"></td>
-              <td class="hyp-st"><span class="tag no">Гипотеза Claude не подтверждена</span></td>
-            </tr>
-          </table>
-        </details>
-      </td></tr>
-      <tr><td class="id">Ш3.3</td><td class="hyp-cell" colspan="3">
-        <details class="fold hyps" open>
-          <summary><span class="fold-main"><span class="chev">▶</span><span class="fold-title">Гипотезы Claude по структуре</span><span class="fold-hint">ключи и транзакции, в работе</span></span><span class="fold-who">И. Васильев</span><span class="tag work">В работе</span></summary>
-          <table class="hyp-inner">
-            <colgroup><col><col class="hyp-who"><col class="hyp-st"></colgroup>
-            <tr>
-              <td class="hyp-what"><div class="row">
-                <strong class="hyp-title">1. Пересмотр ключей таблиц.</strong>
-                <span class="hyp-line"><strong>Проблема:</strong> периодические дедлоки при загрузке данных, интеграции и при проверках мониторинга.</span>
-                <span class="hyp-line"><strong>Решение:</strong> убрали неиспользуемые ключи, которые создало ядро. Целостность они не держат. На сколько дедлоков стало меньше, не замерить: они единичные. Ускорение на несколько процентов — побочный эффект.</span>
-              </div></td>
-              <td class="hyp-who"></td>
-              <td class="hyp-st"><span class="tag work">В работе</span></td>
-            </tr>
-            <tr>
-              <td class="hyp-what"><div class="row">
-                <strong class="hyp-title">2. Пересмотр объема транзакций.</strong>
-                <span class="hyp-line"><strong>Проблема:</strong> долгое ожидание пользователей из-за блокировок.</span>
-                <span class="hyp-line"><strong>Решение:</strong> разнесли создание ставок и дополнительные расчёты (средневзвешенные, дефляторы) по разным транзакциям. Ожидание короче. Если расчёт сорвётся, ставки не теряются: повторная загрузка или ночной пересчёт.</span>
-              </div></td>
-              <td class="hyp-who"></td>
-              <td class="hyp-st"><span class="tag work">В работе</span></td>
-            </tr>
-          </table>
-        </details>
-      </td></tr>
-      <tr><td class="id">Ш3.4</td><td class="hyp-cell" colspan="3">
-        <details class="fold hyps" open>
-          <summary><span class="fold-main"><span class="chev">▶</span><span class="fold-title">Приложение и кеш</span><span class="fold-hint">совместимость и предел ускорения</span></span><span class="fold-who">И. Васильев</span><span class="tag no">Гипотеза не подтверждена</span></summary>
-          <table class="hyp-inner">
-            <colgroup><col><col class="hyp-who"><col class="hyp-st"></colgroup>
-            <tr>
-              <td class="hyp-what"><div class="row">
-                <strong class="hyp-title">1. Совместимость приложения</strong>
-                <span class="hyp-line"><strong>Проблема:</strong> приложение несовместимо с обновлённой базой.</span>
-                <span class="hyp-line"><strong>Решение:</strong> структура базы не менялась, совместимость не нарушена.</span>
-              </div></td>
-              <td class="hyp-who"></td>
-              <td class="hyp-st"><span class="tag ok">Решение</span></td>
-            </tr>
-            <tr>
-              <td class="hyp-what"><div class="row">
-                <strong class="hyp-title">2. Оптимизация приложения</strong>
-                <span class="hyp-line"><strong>Проблема:</strong> приложение тормозит при обработке данных.</span>
-                <span class="hyp-line"><strong>Решение:</strong> обработка в приложении — около 20% общего времени. Основные расходы — обновление кеша. Его ускоряли ранее, почти дошли до предела. Дальнейшее ускорение не даст заметного улучшения.</span>
-              </div></td>
-              <td class="hyp-who"></td>
-              <td class="hyp-st"><span class="tag no">Предел</span></td>
-            </tr>
-          </table>
-        </details>
-      </td></tr>
-      <tr><td class="id">Ш3.5</td><td class="hyp-cell" colspan="3">
-        <details class="fold hyps" open>
-          <summary><span class="fold-main"><span class="chev">▶</span><span class="fold-title">Загрузка: время и стабильность</span><span class="fold-hint">запросы и мониторинг</span></span><span class="fold-who">И. Васильев</span><span class="tag ok">Выполнено</span></summary>
-          <table class="hyp-inner">
-            <colgroup><col><col class="hyp-who"><col class="hyp-st"></colgroup>
-            <tr>
-              <td class="hyp-what"><div class="row">
-                <strong class="hyp-title">1. Оптимизация запросов</strong>
-                <span class="hyp-line"><strong>Проблема:</strong> загрузка данных занимает слишком много времени.</span>
-                <span class="hyp-line"><strong>Решение:</strong> оптимизировали тяжёлые запросы вместе с Claude, кратно ускорили загрузку.</span>
-              </div></td>
-              <td class="hyp-who"></td>
-              <td class="hyp-st"><span class="tag ok">Выполнено</span></td>
-            </tr>
-            <tr>
-              <td class="hyp-what"><div class="row">
-                <strong class="hyp-title">2. Стабилизация пользовательских операций</strong>
-                <span class="hyp-line"><strong>Проблема:</strong> загрузка данных нестабильна.</span>
-                <span class="hyp-line"><strong>Решение:</strong> оптимизировали проверки мониторинга вместе с Claude, убрали блокировку таблиц при чтении мониторингом. Теперь при наложении мониторинг не мешает загрузке. Исключили 80 неиспользуемых проверок; оптимизировали 160 проверок: за 3 мин. вместо 12 мин.</span>
-              </div></td>
-              <td class="hyp-who"></td>
-              <td class="hyp-st"><span class="tag ok">Выполнено</span></td>
-            </tr>
-          </table>
-        </details>
-      </td></tr>
+      <tr><td class="id">Ш3.1</td><td>Собрали логи со временем выполнения ~400 запросов, а также планы ~15 наиболее тяжёлых запросов. Отдали в Claude вместе с кодом запросов. Сформировали гипотезы для оптимизации</td><td>И.&nbsp;Васильев</td><td><span class="tag ok">Выполнено</span></td></tr>
+      <tr class="hyp-group">
+        <td class="id" rowspan="3">Ш3.2</td>
+        <td>
+          <details class="fold" open>
+            <summary><span class="chev">▶</span><span class="fold-title">Гипотезы рабочей группы</span></summary>
+          </details>
+        </td>
+        <td rowspan="3">И.&nbsp;Васильев</td>
+        <td><span class="tag ok">Выполнено</span></td>
+      </tr>
+      <tr class="hyp-item">
+        <td><div class="row">
+          <strong class="hyp-title">1. Блокировка общей таблицы со связями сущностей.</strong>
+          <span class="hyp-line"><strong>Проблема:</strong> единая таблица связей блокирует операции нескольких пользователей.</span>
+          <span class="hyp-line"><strong>Гипотеза:</strong> изменить структуру хранения связей.</span>
+          <span class="hyp-line">Проверили с Claude по коду и счётчикам, ядро не переписывали.</span>
+          <span class="hyp-line"><strong>Итог:</strong> блокировки редкие, дедлоков на этой таблице нет, время — несколько процентов. Переписать ядро — отдельный контур и сверка данных, от месяца.</span>
+        </div></td>
+        <td><span class="tag no">Гипотеза не подтверждена</span></td>
+      </tr>
+      <tr class="hyp-item">
+        <td><div class="row">
+          <strong class="hyp-title">2. Денормализовать структуру хранения справочников</strong>
+          <span class="hyp-line"><strong>Проблема:</strong> избыточная иерархия хранения провоцирует блокировки и ожидание запросов.</span>
+          <span class="hyp-line"><strong>Гипотеза:</strong> сделать хранение плоским.</span>
+          <span class="hyp-line">Проанализировали с Claude код и планы запросов с прода. Изменений в системе не делали.</span>
+          <span class="hyp-line"><strong>Итог:</strong> денормализацию можно выполнить частично, при этом изменения незначительно повлияют на блокировки и быстродействие. Большой риск при оптимизации — сломать систему, изменения затрагивают основные объекты системы.</span>
+        </div></td>
+        <td><span class="tag no">Гипотеза не подтверждена</span></td>
+      </tr>
+      <tr class="hyp-group">
+        <td class="id" rowspan="3">Ш3.3</td>
+        <td>
+          <details class="fold" open>
+            <summary><span class="chev">▶</span><span class="fold-title">Гипотезы Claude по структуре</span></summary>
+          </details>
+        </td>
+        <td rowspan="3">И.&nbsp;Васильев</td>
+        <td><span class="tag work">В работе</span></td>
+      </tr>
+      <tr class="hyp-item">
+        <td><div class="row">
+          <strong class="hyp-title">1. Пересмотр ключей таблиц.</strong>
+          <span class="hyp-line"><strong>Проблема:</strong> периодические дедлоки при загрузке данных, интеграции и при проверках мониторинга.</span>
+          <span class="hyp-line"><strong>Решение:</strong> убрали неиспользуемые ключи, которые создало ядро. Целостность они не держат. На сколько дедлоков стало меньше, не замерить: они единичные. Ускорение на несколько процентов — побочный эффект.</span>
+        </div></td>
+        <td><span class="tag work">В работе</span></td>
+      </tr>
+      <tr class="hyp-item">
+        <td><div class="row">
+          <strong class="hyp-title">2. Пересмотр объема транзакций.</strong>
+          <span class="hyp-line"><strong>Проблема:</strong> долгое ожидание пользователей из-за блокировок.</span>
+          <span class="hyp-line"><strong>Решение:</strong> разнесли создание ставок и дополнительные расчёты (средневзвешенные, дефляторы) по разным транзакциям. Ожидание короче. Если расчёт сорвётся, ставки не теряются: повторная загрузка или ночной пересчёт.</span>
+        </div></td>
+        <td><span class="tag work">В работе</span></td>
+      </tr>
+      <tr class="hyp-group">
+        <td class="id" rowspan="3">Ш3.4</td>
+        <td>
+          <details class="fold" open>
+            <summary><span class="chev">▶</span><span class="fold-title">Приложение и кеш</span></summary>
+          </details>
+        </td>
+        <td rowspan="3">И.&nbsp;Васильев</td>
+        <td><span class="tag ok">Выполнено</span></td>
+      </tr>
+      <tr class="hyp-item">
+        <td><div class="row">
+          <strong class="hyp-title">1. Совместимость приложения</strong>
+          <span class="hyp-line"><strong>Проблема:</strong> приложение несовместимо с обновлённой базой.</span>
+          <span class="hyp-line"><strong>Решение:</strong> структура базы не менялась, совместимость не нарушена.</span>
+        </div></td>
+        <td><span class="tag no">Гипотеза не подтверждена</span></td>
+      </tr>
+      <tr class="hyp-item">
+        <td><div class="row">
+          <strong class="hyp-title">2. Оптимизация приложения</strong>
+          <span class="hyp-line"><strong>Проблема:</strong> приложение тормозит при обработке данных.</span>
+          <span class="hyp-line"><strong>Решение:</strong> обработка в приложении — около 20% общего времени. Основные расходы — обновление кеша. Его ускоряли ранее, почти дошли до предела. Дальнейшее ускорение не даст заметного улучшения.</span>
+        </div></td>
+        <td><span class="tag no">Предел</span></td>
+      </tr>
+      <tr class="hyp-group">
+        <td class="id" rowspan="3">Ш3.5</td>
+        <td>
+          <details class="fold" open>
+            <summary><span class="chev">▶</span><span class="fold-title">Загрузка: время и стабильность</span></summary>
+          </details>
+        </td>
+        <td rowspan="3">И.&nbsp;Васильев</td>
+        <td><span class="tag ok">Выполнено</span></td>
+      </tr>
+      <tr class="hyp-item">
+        <td><div class="row">
+          <strong class="hyp-title">1. Оптимизация запросов</strong>
+          <span class="hyp-line"><strong>Проблема:</strong> загрузка данных занимает слишком много времени.</span>
+          <span class="hyp-line"><strong>Решение:</strong> оптимизировали тяжёлые запросы вместе с Claude, кратно ускорили загрузку.</span>
+        </div></td>
+        <td><span class="tag ok">Выполнено</span></td>
+      </tr>
+      <tr class="hyp-item">
+        <td><div class="row">
+          <strong class="hyp-title">2. Стабилизация пользовательских операций</strong>
+          <span class="hyp-line"><strong>Проблема:</strong> загрузка данных нестабильна.</span>
+          <span class="hyp-line"><strong>Решение:</strong> оптимизировали проверки мониторинга вместе с Claude, убрали блокировку таблиц при чтении мониторингом. Теперь при наложении мониторинг не мешает загрузке. Исключили 80 неиспользуемых проверок; оптимизировали 160 проверок: за 3 мин. вместо 12 мин.</span>
+        </div></td>
+        <td><span class="tag ok">Выполнено</span></td>
+      </tr>
     </tbody>
   </table></div>
     </div>
@@ -356,9 +338,6 @@
       <tr class="grp"><td colspan="4">10 тыс. ставок</td></tr>
       <tr><td>Загрузка</td><td class="bad">16 мин</td><td class="good">2,7 мин</td><td>до 4 мин</td></tr>
       <tr><td>Валидация</td><td class="bad">45 сек</td><td class="good">15 сек</td><td>до 30 сек</td></tr>
-      <tr><td>Обновление, конец пакета БП</td><td class="bad">16 мин или сбой</td><td class="good">6 мин</td><td>до 8 мин</td></tr>
-      <tr><td>Вторая загрузка всех данных БП к первой</td><td class="bad">в 3 раза дольше</td><td class="good">роста нет</td><td>—</td></tr>
-      <tr><td>Каждая следующая пачка 10 тыс. к предыдущей</td><td class="bad">+8%</td><td class="good">+4%</td><td>—</td></tr>
       <tr class="grp"><td colspan="4">60 тыс. ставок</td></tr>
       <tr><td>Загрузка</td><td class="bad">невозможно</td><td class="good">8 мин 30 сек</td><td>до 15 мин</td></tr>
       <tr><td>Валидация</td><td class="bad">5 мин</td><td class="good">1 мин 30 сек</td><td>до 3 мин</td></tr>
@@ -367,26 +346,19 @@
     </tbody>
   </table></div>
 
-  <div class="verdict">
-    <strong>Структуру целиком не меняли. Код запросов подтверждён на проде.</strong>
-    Выигрыш от перестройки хранения — проценты, цена — переписывание ядра. Ключи и разнесение транзакций сделаны, на прод выйдут следующим релизом.
-  </div>
-
   <details class="phase-fold" open>
     <summary class="phase"><span class="chev">▶</span><b>Ш4.</b> Сбор и синтез требований: Атлас процессов <span class="tag work">В работе</span><span class="phase-action"><span class="fold-label"></span></span></summary>
     <div class="phase-body">
-  <p class="lead">Сначала описание эталона и согласование с В. Кудрявцевым. Интервью и прототип — только после правок по его критике. С техникой шагов 2 и 3 не смешиваем.</p>
   <div class="card"><table class="steps">
     <thead><tr><th>Шаг</th><th>Что делаем</th><th>Кто</th><th>Срок</th></tr></thead>
     <tbody>
-      <tr><td class="id">Ш4.1</td><td>Описание эталонного процесса СВТ</td><td>Е. Подоплелова</td><td><span class="tag work">До 15.10</span></td></tr>
-      <tr><td class="id">Ш4.2</td><td>Вынести эталонный процесс на анализ В. Кудрявцеву и согласовать его</td><td>И. Васильев</td><td><span class="tag plan">До конца октября</span></td></tr>
-      <tr><td class="id">Ш4.3</td><td>Исправления по результатам критики В. Кудрявцева</td><td>Е. Подоплелова</td><td><span class="tag plan">После анализа</span></td></tr>
-      <tr><td class="id">Ш4.4</td><td>Интервью с пользователями. Сотрудники бизнеса выделены устно, нужно письменное закрепление</td><td>Е. Подоплелова, бизнес</td><td><span class="tag plan">После правок</span></td></tr>
+      <tr><td class="id">Ш4.1</td><td>Описание эталонного процесса СВТ</td><td>Е.&nbsp;Подоплелова</td><td><span class="tag work">До 15.10</span></td></tr>
+      <tr><td class="id">Ш4.2</td><td>Вынести эталонный процесс на анализ В. Кудрявцеву и согласовать его</td><td>И.&nbsp;Васильев</td><td><span class="tag plan">До конца октября</span></td></tr>
+      <tr><td class="id">Ш4.3</td><td>Исправления по результатам критики В. Кудрявцева</td><td>Е.&nbsp;Подоплелова</td><td><span class="tag plan">После анализа</span></td></tr>
+      <tr><td class="id">Ш4.4</td><td>Интервью с пользователями. Сотрудники бизнеса выделены устно, нужно письменное закрепление</td><td>Е.&nbsp;Подоплелова, бизнес</td><td><span class="tag plan">После правок</span></td></tr>
       <tr><td class="id">Ш4.5</td><td>Прототип интерфейса по итогам интервью</td><td>Команда СВТ</td><td><span class="tag plan">До конца года</span></td></tr>
     </tbody>
   </table></div>
-  <p class="lead">Примеры нарушенных правил. Выявлено 34, это не полный перечень.</p>
   <div class="card"><table>
     <thead><tr><th>Пример правила</th><th>Как проявляется ошибка</th></tr></thead>
     <tbody>
@@ -402,7 +374,6 @@
   <details class="phase-fold" open>
     <summary class="phase"><span class="chev">▶</span><b>Ш5.</b> Целевой проект <span class="tag plan">После Ш4</span><span class="phase-action"><span class="fold-label"></span></span></summary>
     <div class="phase-body">
-  <p class="lead">Дорожную карту собираем после эталонного процесса и с учётом отпусков ключевых людей: документ может меняться от приоритетов, это проговариваем с бизнесом. Письмо о согласовании бюджета L3 и сотрудников Е. Подоплелова направляет в ближайшее время.</p>
     </div>
   </details>
 
