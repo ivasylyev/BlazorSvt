@@ -154,7 +154,7 @@
     <div class="p done"><span class="sn"><b>Ш1</b> · выполнено</span><span class="t">Анализ корневых причин инцидентов</span></div>
     <div class="p done"><span class="sn"><b>Ш2</b> · выполнено</span><span class="t">Настройка инфраструктуры</span></div>
     <div class="p done"><span class="sn"><b>Ш3</b> · выполнено</span><span class="t">Доработка структуры и кода базы с Claude</span></div>
-    <div class="p now"><span class="sn"><b>Ш4</b> · сейчас</span><span class="t">Сбор и синтез требований для Атласа</span></div>
+    <div class="p now"><span class="sn"><b>Ш4</b> · сейчас</span><span class="t">Открытие L3 на сбор требований для Атласа</span></div>
     <div class="p"><span class="sn"><b>Ш5</b> · после Ш4</span><span class="t">Разработка целевого решения</span></div>
   </div>
   <div class="toolbar"><button type="button" class="btn-fold" id="toggle-steps">Свернуть шаги</button></div>
@@ -201,6 +201,30 @@
       <tr class="hyp-group">
         <td class="id" rowspan="3">Ш3.2</td>
         <td>
+          <span class="fold-title">Гипотезы рабочей группы по быстродействию и стабильности</span>
+        </td>
+        <td rowspan="3">И.&nbsp;Васильев</td>
+        <td><span class="tag ok">Выполнено</span></td>
+      </tr>
+      <tr class="hyp-item">
+        <td><div class="row">
+          <strong class="hyp-title">1. Оптимизация запросов</strong>
+          <span class="hyp-line"><strong>Проблема:</strong> загрузка данных занимает слишком много времени.</span>
+          <span class="hyp-line"><strong>Решение:</strong> оптимизировали тяжёлые запросы вместе с Claude, кратно ускорили загрузку.</span>
+        </div></td>
+        <td><span class="tag ok">Выполнено</span></td>
+      </tr>
+      <tr class="hyp-item">
+        <td><div class="row">
+          <strong class="hyp-title">2. Стабилизация пользовательских операций</strong>
+          <span class="hyp-line"><strong>Проблема:</strong> загрузка данных нестабильна.</span>
+          <span class="hyp-line"><strong>Решение:</strong> оптимизировали проверки мониторинга вместе с Claude, убрали блокировку таблиц при чтении мониторингом. Теперь при наложении мониторинг не мешает загрузке. Исключили 80 неиспользуемых проверок; оптимизировали 160 проверок: за 3 мин. вместо 12 мин.</span>
+        </div></td>
+        <td><span class="tag ok">Выполнено</span></td>
+      </tr>
+      <tr class="hyp-group">
+        <td class="id" rowspan="3">Ш3.3</td>
+        <td>
           <span class="fold-title">Гипотезы рабочей группы по структуре</span>
         </td>
         <td rowspan="3">И.&nbsp;Васильев</td>
@@ -227,12 +251,12 @@
         <td><span class="tag no">Гипотеза не подтверждена</span></td>
       </tr>
       <tr class="hyp-group">
-        <td class="id" rowspan="3">Ш3.3</td>
+        <td class="id" rowspan="3">Ш3.4</td>
         <td>
           <span class="fold-title">Гипотезы Claude по структуре</span>
         </td>
         <td rowspan="3">И.&nbsp;Васильев</td>
-        <td><span class="tag work">В работе</span></td>
+        <td><span class="tag work">Тестирование</span></td>
       </tr>
       <tr class="hyp-item">
         <td><div class="row">
@@ -240,7 +264,7 @@
           <span class="hyp-line"><strong>Проблема:</strong> периодические дедлоки при загрузке данных, интеграции и при проверках мониторинга.</span>
           <span class="hyp-line"><strong>Решение:</strong> убрали неиспользуемые ключи, которые создало ядро. Целостность они не держат. На сколько дедлоков стало меньше, не замерить: они единичные. Ускорение на несколько процентов — побочный эффект.</span>
         </div></td>
-        <td><span class="tag work">В работе</span></td>
+        <td><span class="tag work">Тестирование</span></td>
       </tr>
       <tr class="hyp-item">
         <td><div class="row">
@@ -248,10 +272,10 @@
           <span class="hyp-line"><strong>Проблема:</strong> долгое ожидание пользователей из-за блокировок.</span>
           <span class="hyp-line"><strong>Решение:</strong> разнесли создание ставок и дополнительные расчёты (средневзвешенные, дефляторы) по разным транзакциям. Ожидание короче. Если расчёт сорвётся, ставки не теряются: повторная загрузка или ночной пересчёт.</span>
         </div></td>
-        <td><span class="tag work">В работе</span></td>
+        <td><span class="tag work">Тестирование</span></td>
       </tr>
       <tr class="hyp-group">
-        <td class="id" rowspan="3">Ш3.4</td>
+        <td class="id" rowspan="3">Ш3.5</td>
         <td>
           <span class="fold-title">Гипотезы рабочей группы по оптимизации приложения</span>
         </td>
@@ -274,30 +298,6 @@
         </div></td>
         <td><span class="tag no">Предел</span></td>
       </tr>
-      <tr class="hyp-group">
-        <td class="id" rowspan="3">Ш3.5</td>
-        <td>
-          <span class="fold-title">Гипотезы рабочей группы по быстродействию и стабильности</span>
-        </td>
-        <td rowspan="3">И.&nbsp;Васильев</td>
-        <td><span class="tag ok">Выполнено</span></td>
-      </tr>
-      <tr class="hyp-item">
-        <td><div class="row">
-          <strong class="hyp-title">1. Оптимизация запросов</strong>
-          <span class="hyp-line"><strong>Проблема:</strong> загрузка данных занимает слишком много времени.</span>
-          <span class="hyp-line"><strong>Решение:</strong> оптимизировали тяжёлые запросы вместе с Claude, кратно ускорили загрузку.</span>
-        </div></td>
-        <td><span class="tag ok">Выполнено</span></td>
-      </tr>
-      <tr class="hyp-item">
-        <td><div class="row">
-          <strong class="hyp-title">2. Стабилизация пользовательских операций</strong>
-          <span class="hyp-line"><strong>Проблема:</strong> загрузка данных нестабильна.</span>
-          <span class="hyp-line"><strong>Решение:</strong> оптимизировали проверки мониторинга вместе с Claude, убрали блокировку таблиц при чтении мониторингом. Теперь при наложении мониторинг не мешает загрузке. Исключили 80 неиспользуемых проверок; оптимизировали 160 проверок: за 3 мин. вместо 12 мин.</span>
-        </div></td>
-        <td><span class="tag ok">Выполнено</span></td>
-      </tr>
     </tbody>
   </table></div>
     </div>
@@ -308,10 +308,10 @@
   <div class="card"><table class="metrics">
     <thead><tr><th>Метрика</th><th class="h-bad">Было</th><th class="h-good">Стало</th><th>Порог 2027</th></tr></thead>
     <tbody>
-      <tr class="grp"><td colspan="4">10 тыс. ставок</td></tr>
+      <tr class="grp"><td colspan="4">10 тыс. ставок: однопользовательский режим</td></tr>
       <tr><td>Валидация</td><td class="bad">45 сек</td><td class="good">15 сек</td><td>до 30 сек</td></tr>
       <tr><td>Загрузка</td><td class="bad">16 мин</td><td class="good">2,7 мин</td><td>до 5 мин</td></tr>
-      <tr class="grp"><td colspan="4">60 тыс. ставок</td></tr>
+      <tr class="grp"><td colspan="4">60 тыс. ставок: однопользовательский режим</td></tr>
       <tr><td>Валидация</td><td class="bad">5 мин</td><td class="good">1 мин 30 сек</td><td>до 3 мин</td></tr>
       <tr><td>Загрузка</td><td class="bad">невозможно</td><td class="good">8 мин 30 сек</td><td>до 15 мин</td></tr>
       <tr class="grp"><td colspan="4">Мониторинг</td></tr>
@@ -326,10 +326,10 @@
     <thead><tr><th>Шаг</th><th>Что делаем</th><th>Кто</th><th>Срок</th></tr></thead>
     <tbody>
       <tr><td class="id">Ш4.1</td><td>Описание эталонного процесса СВТ</td><td>Е.&nbsp;Подоплелова</td><td><span class="tag work">15.10</span></td></tr>
-      <tr><td class="id">Ш4.2</td><td>Вынести эталонный процесс на анализ В. Кудрявцеву и согласовать его</td><td>И.&nbsp;Васильев</td><td><span class="tag plan">конец октября</span></td></tr>
-      <tr><td class="id">Ш4.3</td><td>Исправления по результатам критики В. Кудрявцева</td><td>Е.&nbsp;Подоплелова</td><td><span class="tag plan">После анализа</span></td></tr>
-      <tr><td class="id">Ш4.4</td><td>Интервью с пользователями. Сотрудники бизнеса выделены устно, но нужно письменное закрепление</td><td>Е.&nbsp;Подоплелова, бизнес</td><td><span class="tag plan">После правок</span></td></tr>
-      <tr><td class="id">Ш4.5</td><td>Прототип интерфейса по итогам интервью</td><td>Команда СВТ</td><td><span class="tag plan">До конца года</span></td></tr>
+      <tr><td class="id">Ш4.2</td><td>Вынести эталонный процесс на анализ В. Кудрявцеву и согласовать его</td><td>И.&nbsp;Васильев</td><td><span class="tag work">31.10</span></td></tr>
+      <tr><td class="id">Ш4.3</td><td>Исправления по результатам критики В. Кудрявцева</td><td>Е.&nbsp;Подоплелова</td><td><span class="tag work">После анализа</span></td></tr>
+      <tr><td class="id">Ш4.4</td><td>Интервью с пользователями. Сотрудники бизнеса выделены устно, но нужно письменное закрепление</td><td>Е.&nbsp;Подоплелова, бизнес</td><td><span class="tag work">После правок</span></td></tr>
+      <tr><td class="id">Ш4.5</td><td>Прототип интерфейса по итогам интервью</td><td>Команда СВТ</td><td><span class="tag work">До конца года</span></td></tr>
     </tbody>
   </table></div>
   <div class="card"><table>
