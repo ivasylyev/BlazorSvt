@@ -35,6 +35,7 @@ public static class SerilogRequestLogLevel
             || value.StartsWith("/_blazor", StringComparison.OrdinalIgnoreCase)
             || value.StartsWith("/css", StringComparison.OrdinalIgnoreCase)
             || value.StartsWith("/js", StringComparison.OrdinalIgnoreCase)
-            || value.Equals("/favicon.ico", StringComparison.OrdinalIgnoreCase);
+            || value.Equals("/favicon.ico", StringComparison.OrdinalIgnoreCase)
+            || value.Equals("/hc", StringComparison.OrdinalIgnoreCase);
     }
 }

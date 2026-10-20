@@ -115,6 +115,12 @@ app.UseSerilogRequestLogging(options =>
 });
 app.MapControllers();
 app.MapStaticAssets();
+
+// Liveness: публичный URL /v2/hc (PathBase). Без БД и Blazor circuit.
+app.MapGet("/hc", () => Results.Text("healthy", "text/plain"))
+    .AllowAnonymous()
+    .ShortCircuit();
+
 app.MapRazorComponents<App>()
     .AddInteractiveServerRenderMode();
 
