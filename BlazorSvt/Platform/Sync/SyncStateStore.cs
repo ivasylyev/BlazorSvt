@@ -25,13 +25,15 @@ public sealed class SyncStateStore
     public Task<byte[]?> GetCursorAsync(
         DbConnectionLogDecorator db,
         string entity,
-        string sourceName)
+        string sourceName,
+        CancellationToken cancellationToken)
     {
         var parameters = new DynamicParameters();
         parameters.Add("Entity", entity);
         parameters.Add("SourceName", sourceName);
 
-        return db.QuerySingleOrDefaultAsync<byte[]?>(GetProc, parameters, CommandType.StoredProcedure);
+        return db.QuerySingleOrDefaultAsync<byte[]?>(
+            GetProc, parameters, CommandType.StoredProcedure, cancellationToken);
     }
 
     /// <summary>Создаёт/обновляет курсор источника после успешной обработки.</summary>

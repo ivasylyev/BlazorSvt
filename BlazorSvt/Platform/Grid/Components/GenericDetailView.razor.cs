@@ -5,11 +5,12 @@ using Microsoft.Extensions.Options;
 namespace BlazorSvt.Platform.Grid.Components;
 
 
-public partial class GenericDetailView<TItem, TDetailItem> : SvtComponentBase
+public partial class GenericDetailView<TItem, TDetailItem> : SvtComponentBase, IDisposable
 {
     private DetailSettingsCollection<TDetailItem>? detailSettings;
     private Accordion? accordion;
     private bool allExpanded = true;
+    private CancellationTokenSource? loadCancellationTokenSource;
 
     [Inject]
     public IDetailSettingsService<TDetailItem> DetailSettingsService { get; set; } = default!;
@@ -23,7 +24,7 @@ public partial class GenericDetailView<TItem, TDetailItem> : SvtComponentBase
     [Parameter]
     public TItem Item { get; set; } = default!;
     [Parameter]
-    public Func<TItem, Task<TDetailItem>> DetailDataProvider { get; set; } = default!;
+    public Func<TItem, CancellationToken, Task<TDetailItem>> DetailDataProvider { get; set; } = default!;
 
     [Parameter]
     public RenderFragment<TDetailItem>? Template { get; set; }
@@ -39,13 +40,22 @@ public partial class GenericDetailView<TItem, TDetailItem> : SvtComponentBase
         if (Item is null)
             return;
 
+        loadCancellationTokenSource?.Cancel();
+        loadCancellationTokenSource?.Dispose();
+        loadCancellationTokenSource = new CancellationTokenSource();
+        var cancellationToken = loadCancellationTokenSource.Token;
+
         try
         {
             isLoading = true;
             errorMessage = null;
             allExpanded = true;
-            detail = await DetailDataProvider(Item);
+            detail = await DetailDataProvider(Item, cancellationToken);
             detailSettings ??= DetailSettingsService.GetGridDetailSettings(Lang);
+        }
+        catch (OperationCanceledException) when (cancellationToken.IsCancellationRequested)
+        {
+            // superseded by a newer load or component dispose
         }
         catch (Exception ex)
         {
@@ -56,6 +66,13 @@ public partial class GenericDetailView<TItem, TDetailItem> : SvtComponentBase
         {
             isLoading = false;
         }
+    }
+
+    public void Dispose()
+    {
+        loadCancellationTokenSource?.Cancel();
+        loadCancellationTokenSource?.Dispose();
+        loadCancellationTokenSource = null;
     }
 
     private bool IsFieldVisible(DetailSetting<TDetailItem> setting) =>

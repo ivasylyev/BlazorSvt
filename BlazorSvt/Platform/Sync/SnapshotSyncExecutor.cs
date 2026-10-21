@@ -58,7 +58,7 @@ public sealed class SnapshotSyncExecutor(
 
         foreach (var source in job.Sources)
         {
-            var cursor = await stateStore.GetCursorAsync(db, job.Entity, source.Name);
+            var cursor = await stateStore.GetCursorAsync(db, job.Entity, source.Name, cancellationToken);
 
             if (cursor is null)
             {

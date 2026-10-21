@@ -21,7 +21,7 @@ public interface IGridDataService<TItem, TDetailItem>
     Task<GridPage<TItem>> GetPageAsync(GridQuery query, CancellationToken cancellationToken);
 
     /// <summary>Одна запись detail по бизнес-ключу (<c>SELECT * FROM {DetailSource}</c>).</summary>
-    Task<TDetailItem> GetDetailDataAsync(object key);
+    Task<TDetailItem> GetDetailDataAsync(object key, CancellationToken cancellationToken = default);
 
     /// <summary>Одна запись detail по бизнес-ключу; <c>null</c>, если записи нет.</summary>
     Task<TDetailItem?> FindDetailAsync(object key, CancellationToken cancellationToken);

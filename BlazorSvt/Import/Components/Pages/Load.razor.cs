@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Components;
 
 namespace BlazorSvt.Import.Components.Pages;
 
-public partial class Load : SvtComponentBase
+public partial class Load : SvtComponentBase, IDisposable
 {
     [Inject]
     public IExcelParser Parser { get; set; } = default!;
@@ -26,6 +26,7 @@ public partial class Load : SvtComponentBase
     [Inject]
     public ILogger<Load> Logger { get; set; } = default!;
 
+    private readonly CancellationTokenSource _importCancellationTokenSource = new();
     private readonly ImportState _withoutProxy = new();
 
     private async Task ImportAsync(ExcelFile file)
@@ -40,6 +41,7 @@ public partial class Load : SvtComponentBase
             file.Content.Length,
             nameof(LegStgWithoutProxyDto));
 
+        var cancellationToken = _importCancellationTokenSource.Token;
         try
         {
             using var stream = new MemoryStream(file.Content);
@@ -71,7 +73,7 @@ public partial class Load : SvtComponentBase
             }
 
             var validItems = results.Select(result => result.Item).ToList();
-            var inserted = await Repository.BulkInsertAsync(validItems);
+            var inserted = await Repository.BulkInsertAsync(validItems, cancellationToken);
 
             Logger.LogInformation(
                 "Import succeeded for {FileName}: inserted {InsertedCount} {ItemType} row(s)",
@@ -81,11 +83,21 @@ public partial class Load : SvtComponentBase
 
             _withoutProxy.SuccessMessage = L["Load.ImportSuccess", inserted];
         }
+        catch (OperationCanceledException) when (cancellationToken.IsCancellationRequested)
+        {
+            // page disposed while importing
+        }
         catch (Exception ex)
         {
             Logger.LogError(ex, "Import failed for file {FileName}", file.FileName);
             _withoutProxy.ErrorMessage = ex.Message;
         }
+    }
+
+    public void Dispose()
+    {
+        _importCancellationTokenSource.Cancel();
+        _importCancellationTokenSource.Dispose();
     }
 
     private RowValidationResult<LegStgWithoutProxyDto> Validate(ExcelRow<LegStgWithoutProxyDto> row)

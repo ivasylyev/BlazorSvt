@@ -50,7 +50,8 @@ public static class ApiProblems
         return context.Response.WriteAsJsonAsync(
             problem,
             ApiJson.Options(context),
-            contentType: "application/problem+json");
+            contentType: "application/problem+json",
+            cancellationToken: context.RequestAborted);
     }
 
     public static Task WriteAsync(HttpContext context, ApiException exception) =>

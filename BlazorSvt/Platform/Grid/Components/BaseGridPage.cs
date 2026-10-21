@@ -39,12 +39,12 @@ public abstract class BaseGridPage<TItem, TDetailItem> : SvtComponentBase
         }
     }
 
-    protected async Task<TDetailItem?> DetailDataProvider(TItem request)
+    protected async Task<TDetailItem?> DetailDataProvider(TItem request, CancellationToken cancellationToken)
     {
         using (new StopwatchTransaction(TimingService))
         {
             var stopwatch = Stopwatch.StartNew();
-            var detail = await GetDetailDataAsync(request);
+            var detail = await GetDetailDataAsync(request, cancellationToken);
 
             Logger.LogDebug(
                 "Detail {DetailType} for {ItemType} loaded in {ElapsedMs} ms",
@@ -62,9 +62,9 @@ public abstract class BaseGridPage<TItem, TDetailItem> : SvtComponentBase
     protected virtual Task<GridDataProviderResult<TItem>> GetDataAsync(GridDataProviderRequest<TItem> request) =>
         DataService.GetDataAsync(request);
 
-    protected virtual Task<TDetailItem> GetDetailDataAsync(TItem request)
+    protected virtual Task<TDetailItem> GetDetailDataAsync(TItem request, CancellationToken cancellationToken)
     {
         var key = DetailKeySelector(request);
-        return DataService.GetDetailDataAsync(key);
+        return DataService.GetDetailDataAsync(key, cancellationToken);
     }
 }

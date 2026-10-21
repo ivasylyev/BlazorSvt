@@ -79,9 +79,9 @@ public class GridDataService<TItem, TDetailItem>(
         return data;
     }
 
-    public async Task<TDetailItem> GetDetailDataAsync(object key)
+    public async Task<TDetailItem> GetDetailDataAsync(object key, CancellationToken cancellationToken = default)
     {
-        var result = await FindDetailAsync(key, CancellationToken.None);
+        var result = await FindDetailAsync(key, cancellationToken);
         if (result is not null)
         {
             return result;
