@@ -380,11 +380,11 @@
 
 ### 6.6.1 API для внешних фронтендов (Атлас)
 
-**Зачем.** Атлас — фронтенд над СВТ, CRM, SAP и другими системами для массовых пользователей. UI СВТ остаётся для ролей, которым нужен полный функционал. Атлас получает из СВТ всё, что есть в СВТ 2.0, через HTTP API, а не через БД.
+**Зачем.** Атлас — фронтенд над СВТ, CRM, SAP и другими системами для массовых пользователей. UI СВТ остаётся для ролей, которым нужен полный функционал. Атлас получает из СВТ данные **зарегистрированных** модулей СВТ 2.0 через HTTP API, а не через БД (не весь скоуп 63 сразу — по мере тиража RO).
 
 **Пилот (сделано, только чтение).** `/api/v1` в том же приложении и пуле IIS:
 
-- справочники — обобщённо для всех: список, схема полей, поиск (фильтры И, одна сортировка, страница до 1000), карточка, выгрузка Excel в ответе (`short` — колонки грида, `full` — поля карточки);
+- справочники — обобщённо для всех зарегистрированных модулей: список, схема полей, поиск (фильтры И, одна сортировка, страница до 1000), карточка, выгрузка Excel в ответе (`short` — колонки грида, `full` — поля карточки);
 - умный подбор ставки (`POST /rates/smart-lookup`) — поведение продовой `CalcTransportRateCRM`: 8 уровней обобщения (группа продуктов, регион назначения, вид транспорта), затем доп. узлы отправления DPO; ранжирование — приоритет типа ставки → шаг → близость к средней группы → бо́льшая ставка; пересчёт валюты `fnCurrencyRateConversion` на дату запроса (нет курса — 422). Паритет подтверждён тестом на запросах CRM.
 
 **Решения.**
@@ -494,10 +494,11 @@
 BlazorSvt/
 ├── Host/           — composition root, Blazor host
 ├── Platform/       — cross-cutting: Grid, Reporting, UI, Access, Api (/api/v1, OpenAPI), Infrastructure
-├── Modules/        — vertical slices (TransportLeg, TransportRate, HomeRatePivot, SmartRateLookup, …)
-├── Import/         — batch Excel import, validators, staging
+├── Modules/        — vertical slices (TransportRate, TransportLeg, AverageRateLevel3, LocationsNodes, ParityRates, RateType, HomeRatePivot, SmartRateLookup, …)
+├── Import/         — Excel + validators + UI prototype; staging not wired yet
 ├── SqlScripts/
 │   ├── Platform/   — schema, full-text, GetBlazorGridData
+│   ├── Migrations/ — schema migration scripts
 │   └── Modules/    — per-module DDL and read SP/fn
 docs/
 ├── api/            — svt-api-v1.openapi.json (снимок контракта API, сверяется тестом)

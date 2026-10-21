@@ -20,12 +20,12 @@ alwaysApply: false
 4. `{Entity}Grid.razor` — `@page "/{entity}"`, `BaseGridPage<…>`
 5. `{Entity}SyncJob` в `Sync/` → `AddSingleton<ISnapshotSyncJob, …>()`
 6. `{Entity}Module.cs` → `Add{Entity}Module()` в `Host/Program.cs`; внутри — `AddCatalogMenu` (домен из catalogs-scope, ключ `HeaderMenu.{Entity}`). Шапка подхватит пункт сама; `HeaderMenu` не править
-7. Там же — `AddCatalogApi<{Entity}Dto, {Entity}DetailDto>("{kebab-code}", домен, "HeaderMenu.{Entity}", period)`: всё, что есть в СВТ 2.0, доступно Атласу через API. Без регистрации падает `CatalogApiCoverageTests`; после — перегенерировать снимок OpenAPI (см. «API»)
+7. Там же — `AddCatalogApi<{Entity}Dto, {Entity}DetailDto>("{kebab-code}", домен, "HeaderMenu.{Entity}", period)`: каждый **зарегистрированный** модуль справочника доступен Атласу через API (не путать со всем скоупом 63). Без регистрации падает `CatalogApiCoverageTests`; после — перегенерировать снимок OpenAPI (см. «API»)
 8. SQL: `SqlScripts/Modules/{Entity}/Structure/` + `Programmability/` (`SnapshotSource`, `Detail`, `PopulateAffectedKeys`)
 
 ## Модульная регистрация
 
-Каждый модуль — `public static class *Module` с `Add*Module(IServiceCollection)`. Зависимости только через Platform-интерфейсы, не через другие Modules напрямую — это **hard architecture violation**, не стиль (единая сборка `BlazorSvt.csproj`, границу компилятор не проверяет; проверяется dependency-тестом в CI, см. `svt-architecture` skill → `roadmap.md` §2 / `backlog.md` 0.2.2.6). Общие IdsEnum — `Platform/Domain/IdsEnum/`.
+Каждый модуль — `public static class *Module` с `Add*Module(IServiceCollection)`. Зависимости только через Platform-интерфейсы, не через другие Modules напрямую — это **hard architecture violation**, не стиль (единая сборка `BlazorSvt.csproj`, границу компилятор не проверяет; проверяется `ModuleBoundaryTests` — включение в CI пайплайна BlazorSvt ещё открыто, `backlog.md` 0.2.2.6 / roadmap D-ARCH). Общие IdsEnum — `Platform/Domain/IdsEnum/`.
 
 - **Нельзя**: `Modules/{X}` импортирует класс/DTO из `Modules/{Y}` (X≠Y) напрямую (`using BlazorSvt.Modules.{Y}...`)
 - **Можно** (эталон в коде): cross-reference данные на чтении резолвятся в SQL-снапшоте, а не в C# — см. `TransportRateDto` (`NodeFromCode`/`NodeFromNameRu`/`NodeFromNameEn` из джойна с `LocationsNodes` в snapshot-view, не ссылка на класс модуля); общие enum — в `Platform/Domain/IdsEnum/`, не в модуле-источнике
@@ -42,7 +42,7 @@ alwaysApply: false
 ## Import / batch (целевой паттерн)
 
 - FluentValidation-валидаторы в `Import/Validators/`
-- Staging через `IStagingRepository<T>` → единый pipeline с будущими редакторами
+- Staging через `IStagingRepository<T>` → единый pipeline с будущими редакторами (**сейчас stub**: `BulkInsertAsync` бросает `NotImplementedException`; на проде `AccessAction.Import` всегда deny)
 - Не дублировать валидацию в Razor-компонентах
 - Структурированные логи пайплайна: старт (файл/размер/тип), число строк, validation fail, success, exception
 
@@ -106,6 +106,17 @@ Serilog (`Host/Program.cs`, секция `Serilog` в `appsettings.json`). Пр�
 в PopulateAffectedKeys, consts в SyncJob) — inline-комментарий с именем справочника
 (`-- AverageRateLevel3 (основная)`, `-- LocationsNodes`, …).
 
+### Два пространства идентификаторов легаси
+
+Не путать:
+
+| Пространство | Пример | Где смотреть |
+|--------------|--------|--------------|
+| `PrimitiveEntityInfo.Id` (UI / URL легаси `/masterdata/{id}`, реестр catalogs-scope) | RateType **2085**, TypeNode **2151**, TypePlace **1002** | `PrimitiveEntityInfo`, ссылки Confluence/легаси |
+| Номер таблицы `dbo.PrimitiveEntityData_XXXX` | RateType **2048**, TypeNode **2132**, TypePlace **1007** | DDL sync, `PopulateAffectedKeys`, consts SyncJob |
+
+Один справочник — два разных числа. В SQL и C# для PED всегда комментируй имя сущности рядом с номером таблицы.
+
 ### Стабильные справочники (не отслеживаются)
 
 Считаются неизменяемыми: **не** входят в `ISnapshotSyncJob.Sources`, **не** имеют веток в
@@ -117,7 +128,7 @@ Serilog (`Host/Program.cs`, секция `Serilog` в `appsettings.json`). Пр�
 | TypePlace (LocationType) | `dbo.PrimitiveEntityData_1007` | LocationsNodes |
 | TypeNode | `dbo.PrimitiveEntityData_2132` | LocationsNodes |
 | TransportKind | `dbo.PrimitiveEntityData_2008` | TransportLeg, TransportRate, AverageRateLevel3 |
-| RateType | `dbo.PrimitiveEntityData_2048` | TransportRate, AverageRateLevel3 |
+| RateType | `dbo.PrimitiveEntityData_2048` | TransportRate, AverageRateLevel3; свой RO-модуль `RateType` |
 | TransportType | `dbo.PrimitiveEntityData_2023` | TransportRate, AverageRateLevel3 |
 | Currency | `dbo.PrimitiveEntityData_2016` | TransportRate, AverageRateLevel3 |
 
