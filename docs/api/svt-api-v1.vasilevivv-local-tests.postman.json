@@ -1,0 +1,637 @@
+{
+  "info": {
+    "_postman_id": "a7c3e2b1-svt-api-v1-vasilevivv-local",
+    "name": "СВТ API v1 — локальные тесты vasilevivv",
+    "description": "Успешные запросы `/api/v1` для ручной проверки на https://localhost:7232 (учётка vasilevivv / laptop-4ca2juco\\ivan).\n\nСправочники: тела поиска из `ApiHttpTests` и `ApiCatalogDataTests`. Карточка берёт id из первой строки предыдущего поиска (запускайте Search first page перед Get item).\n\nУмный подбор: по одному найденному сейчас запросу на уровень 1–8 из `mdm_integ.dbo.TransportRateCRM` (без замены узла DPO). Уровень 7 на текущем снимке не воспроизводится — примера нет.\n\nЛокально: `Auth:IgnoreAccessControl`, Windows Auth выключен — достаточно `X-On-Behalf-Of`.\nВ Postman выключите SSL verification (Settings → SSL certificate verification).",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    { "key": "baseUrl", "value": "https://localhost:7232" },
+    { "key": "onBehalfOf", "value": "laptop-4ca2juco\\ivan" },
+    { "key": "transportRateId", "value": "0" },
+    { "key": "transportLegId", "value": "0" },
+    { "key": "averageRateLevel3Id", "value": "0" },
+    { "key": "parityRatesId", "value": "0" },
+    { "key": "locationsNodesId", "value": "0" },
+    { "key": "rateTypeId", "value": "0" }
+  ],
+  "protocolProfileBehavior": {
+    "strictSSL": false
+  },
+  "event": [
+    {
+      "listen": "prerequest",
+      "script": {
+        "type": "text/javascript",
+        "exec": [
+          "pm.request.headers.upsert({ key: 'X-On-Behalf-Of', value: pm.collectionVariables.get('onBehalfOf') });",
+          "pm.request.headers.upsert({ key: 'Accept-Language', value: 'ru-RU' });",
+          "pm.request.headers.upsert({ key: 'X-Correlation-ID', value: 'postman-' + Date.now() });"
+        ]
+      }
+    }
+  ],
+  "item": [
+    {
+      "name": "Catalogs",
+      "item": [
+        {
+          "name": "List catalogs",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/api/v1/catalogs",
+            "description": "ApiHttpTests.Catalogs_ReturnsListWithContractHeaders / ApiCatalogDataTests.Catalogs_ListsAllRegisteredCodes"
+          }
+        }
+      ]
+    },
+    {
+      "name": "transport-rates",
+      "item": [
+        {
+          "name": "Schema",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/api/v1/catalogs/transport-rates/schema",
+            "description": "ApiHttpTests.Schema_DescribesKeyPeriodAndReferences"
+          }
+        },
+        {
+          "name": "Search first page",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const json = pm.response.json();",
+                  "if (json.items && json.items.length) {",
+                  "  pm.collectionVariables.set('transportRateId', String(json.items[0].transportRateId));",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"page\": 1,\n  \"pageSize\": 10\n}"
+            },
+            "url": "{{baseUrl}}/api/v1/catalogs/transport-rates/items/search",
+            "description": "ApiCatalogDataTests.Search_FirstPage_ReturnsRows — сохраняет transportRateId"
+          }
+        },
+        {
+          "name": "Get item",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/api/v1/catalogs/transport-rates/items/{{transportRateId}}",
+            "description": "ApiCatalogDataTests.Item_ByIdFromSearch_ReturnsCard. Сначала Search first page."
+          }
+        },
+        {
+          "name": "Search cost and currency",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"filters\": [\n    { \"field\": \"totalCostTon\", \"operator\": \"eq\", \"value\": 100 },\n    { \"field\": \"currencyId\", \"operator\": \"eq\", \"value\": \"USD\" }\n  ],\n  \"page\": 1,\n  \"pageSize\": 100\n}"
+            },
+            "url": "{{baseUrl}}/api/v1/catalogs/transport-rates/items/search",
+            "description": "ApiCatalogDataTests.Search_TransportRates_CostAndCurrency_ReturnsRows"
+          }
+        },
+        {
+          "name": "Search asOf RUB",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"filters\": [\n    { \"field\": \"currencyId\", \"operator\": \"eq\", \"value\": \"RUB\" }\n  ],\n  \"asOf\": \"2026-10-20\",\n  \"pageSize\": 10\n}"
+            },
+            "url": "{{baseUrl}}/api/v1/catalogs/transport-rates/items/search",
+            "description": "ApiHttpTests.Search_ReturnsPageInContractFormat_NoStore"
+          }
+        },
+        {
+          "name": "Export short",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"kind\": \"Short\",\n  \"filters\": [\n    { \"field\": \"currencyId\", \"operator\": \"eq\", \"value\": \"USD\" }\n  ]\n}"
+            },
+            "url": "{{baseUrl}}/api/v1/catalogs/transport-rates/export",
+            "description": "Колонки грида, xlsx в ответе."
+          }
+        },
+        {
+          "name": "Export full",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"kind\": \"Full\",\n  \"filters\": [\n    { \"field\": \"currencyId\", \"operator\": \"eq\", \"value\": \"USD\" }\n  ]\n}"
+            },
+            "url": "{{baseUrl}}/api/v1/catalogs/transport-rates/export",
+            "description": "Поля карточки, xlsx в ответе."
+          }
+        }
+      ]
+    },
+    {
+      "name": "transport-legs",
+      "item": [
+        {
+          "name": "Schema",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/api/v1/catalogs/transport-legs/schema",
+            "description": "ApiCatalogDataTests.Schema_TransportLegs_ExposesEntityKeyAndNodeOperators"
+          }
+        },
+        {
+          "name": "Search first page",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const json = pm.response.json();",
+                  "if (json.items && json.items.length) {",
+                  "  pm.collectionVariables.set('transportLegId', String(json.items[0].transportLegId));",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"page\": 1,\n  \"pageSize\": 10\n}"
+            },
+            "url": "{{baseUrl}}/api/v1/catalogs/transport-legs/items/search",
+            "description": "ApiCatalogDataTests.Search_FirstPage_ReturnsRows"
+          }
+        },
+        {
+          "name": "Get item",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/api/v1/catalogs/transport-legs/items/{{transportLegId}}",
+            "description": "Сначала Search first page."
+          }
+        },
+        {
+          "name": "Export short",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{ \"kind\": \"Short\" }"
+            },
+            "url": "{{baseUrl}}/api/v1/catalogs/transport-legs/export"
+          }
+        },
+        {
+          "name": "Export full",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{ \"kind\": \"Full\" }"
+            },
+            "url": "{{baseUrl}}/api/v1/catalogs/transport-legs/export"
+          }
+        }
+      ]
+    },
+    {
+      "name": "average-rates-level3",
+      "item": [
+        {
+          "name": "Schema",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/api/v1/catalogs/average-rates-level3/schema"
+          }
+        },
+        {
+          "name": "Search first page",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const json = pm.response.json();",
+                  "if (json.items && json.items.length) {",
+                  "  pm.collectionVariables.set('averageRateLevel3Id', String(json.items[0].averageRateLevel3Id));",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"page\": 1,\n  \"pageSize\": 10\n}"
+            },
+            "url": "{{baseUrl}}/api/v1/catalogs/average-rates-level3/items/search"
+          }
+        },
+        {
+          "name": "Get item",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/api/v1/catalogs/average-rates-level3/items/{{averageRateLevel3Id}}",
+            "description": "Сначала Search first page."
+          }
+        },
+        {
+          "name": "Export short",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{ \"kind\": \"Short\" }"
+            },
+            "url": "{{baseUrl}}/api/v1/catalogs/average-rates-level3/export"
+          }
+        },
+        {
+          "name": "Export full",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{ \"kind\": \"Full\" }"
+            },
+            "url": "{{baseUrl}}/api/v1/catalogs/average-rates-level3/export"
+          }
+        }
+      ]
+    },
+    {
+      "name": "parity-rates",
+      "item": [
+        {
+          "name": "Schema",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/api/v1/catalogs/parity-rates/schema"
+          }
+        },
+        {
+          "name": "Search first page",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const json = pm.response.json();",
+                  "if (json.items && json.items.length) {",
+                  "  pm.collectionVariables.set('parityRatesId', String(json.items[0].parityRatesId));",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"page\": 1,\n  \"pageSize\": 10\n}"
+            },
+            "url": "{{baseUrl}}/api/v1/catalogs/parity-rates/items/search"
+          }
+        },
+        {
+          "name": "Get item",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/api/v1/catalogs/parity-rates/items/{{parityRatesId}}",
+            "description": "Сначала Search first page."
+          }
+        },
+        {
+          "name": "Search business filters",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"filters\": [\n    { \"field\": \"startDate\", \"operator\": \"ge\", \"value\": \"2026-01-01\" },\n    { \"field\": \"relevanceIdRu\", \"operator\": \"eq\", \"value\": \"Month\" },\n    { \"field\": \"nodeFromNameRu\", \"operator\": \"contains\", \"value\": \"ЦИНДАО\" },\n    { \"field\": \"productGroupNameRu\", \"operator\": \"contains\", \"value\": \"Полиэфиры\" }\n  ],\n  \"page\": 1,\n  \"pageSize\": 100\n}"
+            },
+            "url": "{{baseUrl}}/api/v1/catalogs/parity-rates/items/search",
+            "description": "ApiCatalogDataTests.Search_ParityRates_BusinessFilters_ReturnsRows"
+          }
+        },
+        {
+          "name": "Export short",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{ \"kind\": \"Short\" }"
+            },
+            "url": "{{baseUrl}}/api/v1/catalogs/parity-rates/export"
+          }
+        },
+        {
+          "name": "Export full",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{ \"kind\": \"Full\" }"
+            },
+            "url": "{{baseUrl}}/api/v1/catalogs/parity-rates/export"
+          }
+        }
+      ]
+    },
+    {
+      "name": "locations-nodes",
+      "item": [
+        {
+          "name": "Schema",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/api/v1/catalogs/locations-nodes/schema"
+          }
+        },
+        {
+          "name": "Search first page",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const json = pm.response.json();",
+                  "if (json.items && json.items.length) {",
+                  "  pm.collectionVariables.set('locationsNodesId', String(json.items[0].locationsNodesId));",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"page\": 1,\n  \"pageSize\": 10\n}"
+            },
+            "url": "{{baseUrl}}/api/v1/catalogs/locations-nodes/items/search"
+          }
+        },
+        {
+          "name": "Get item",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/api/v1/catalogs/locations-nodes/items/{{locationsNodesId}}",
+            "description": "Сначала Search first page."
+          }
+        },
+        {
+          "name": "Search name country created",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"filters\": [\n    { \"field\": \"nameRu\", \"operator\": \"contains\", \"value\": \"Москва\" },\n    { \"field\": \"countryNameRu\", \"operator\": \"contains\", \"value\": \"Российская\" },\n    { \"field\": \"creationDate\", \"operator\": \"ge\", \"value\": \"2019-01-01\" }\n  ],\n  \"page\": 1,\n  \"pageSize\": 100\n}"
+            },
+            "url": "{{baseUrl}}/api/v1/catalogs/locations-nodes/items/search",
+            "description": "ApiCatalogDataTests.Search_LocationsNodes_NameCountryCreated_ReturnsRows"
+          }
+        },
+        {
+          "name": "Export short",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{ \"kind\": \"Short\" }"
+            },
+            "url": "{{baseUrl}}/api/v1/catalogs/locations-nodes/export"
+          }
+        },
+        {
+          "name": "Export full",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{ \"kind\": \"Full\" }"
+            },
+            "url": "{{baseUrl}}/api/v1/catalogs/locations-nodes/export"
+          }
+        }
+      ]
+    },
+    {
+      "name": "rate-types",
+      "item": [
+        {
+          "name": "Schema",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/api/v1/catalogs/rate-types/schema"
+          }
+        },
+        {
+          "name": "Search first page",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const json = pm.response.json();",
+                  "if (json.items && json.items.length) {",
+                  "  pm.collectionVariables.set('rateTypeId', String(json.items[0].rateTypeId));",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"page\": 1,\n  \"pageSize\": 10\n}"
+            },
+            "url": "{{baseUrl}}/api/v1/catalogs/rate-types/items/search"
+          }
+        },
+        {
+          "name": "Get item",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/api/v1/catalogs/rate-types/items/{{rateTypeId}}",
+            "description": "Сначала Search first page."
+          }
+        },
+        {
+          "name": "Export short",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{ \"kind\": \"Short\" }"
+            },
+            "url": "{{baseUrl}}/api/v1/catalogs/rate-types/export"
+          }
+        },
+        {
+          "name": "Export full",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{ \"kind\": \"Full\" }"
+            },
+            "url": "{{baseUrl}}/api/v1/catalogs/rate-types/export"
+          }
+        }
+      ]
+    },
+    {
+      "name": "smart-lookup",
+      "description": "POST /api/v1/rates/smart-lookup. Профиль по умолчанию «Импорт в CRM». Ожидание: 200, found=true, match.level = номер запроса.",
+      "item": [
+        {
+          "name": "Level 1 — точное совпадение",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nodeFromCode\": \"R796103\",\n  \"nodeToCode\": \"R653200\",\n  \"productCode\": \"1709937\",\n  \"transportTypeCode\": \"Rail_VC_other\",\n  \"currencyCode\": \"RUB\",\n  \"date\": \"2026-09-24\"\n}"
+            },
+            "url": "{{baseUrl}}/api/v1/rates/smart-lookup",
+            "description": "CRM 412765. Сейчас находится ставка 37833408, match.level=1."
+          }
+        },
+        {
+          "name": "Level 2 — продукт до группы",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nodeFromCode\": \"A56395\",\n  \"nodeToCode\": \"UZ\",\n  \"productCode\": \"1006121\",\n  \"transportTypeCode\": \"Auto_20\",\n  \"currencyCode\": \"RUB\",\n  \"date\": \"2026-09-25\"\n}"
+            },
+            "url": "{{baseUrl}}/api/v1/rates/smart-lookup",
+            "description": "CRM 412800. Сейчас находится ставка 38128163, match.level=2."
+          }
+        },
+        {
+          "name": "Level 3 — назначение до региона",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nodeFromCode\": \"A55896\",\n  \"nodeToCode\": \"A56440\",\n  \"productCode\": \"953780\",\n  \"transportTypeCode\": \"Auto_20\",\n  \"currencyCode\": \"RUB\",\n  \"date\": \"2026-08-04\"\n}"
+            },
+            "url": "{{baseUrl}}/api/v1/rates/smart-lookup",
+            "description": "CRM 396943. Сейчас находится ставка 35554860, match.level=3."
+          }
+        },
+        {
+          "name": "Level 4 — регион и группа продуктов",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nodeFromCode\": \"A56522\",\n  \"nodeToCode\": \"A113201\",\n  \"productCode\": \"1382301\",\n  \"transportTypeCode\": \"Auto_20\",\n  \"currencyCode\": \"RUB\",\n  \"date\": \"2026-09-25\"\n}"
+            },
+            "url": "{{baseUrl}}/api/v1/rates/smart-lookup",
+            "description": "CRM 412785. Сейчас находится ставка 38108671, match.level=4."
+          }
+        },
+        {
+          "name": "Level 5 — тип транспорта до вида",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nodeFromCode\": \"A56522\",\n  \"nodeToCode\": \"REG81\",\n  \"productCode\": \"1184690\",\n  \"transportTypeCode\": \"Auto_C\",\n  \"currencyCode\": \"RUB\",\n  \"date\": \"2026-09-09\"\n}"
+            },
+            "url": "{{baseUrl}}/api/v1/rates/smart-lookup",
+            "description": "CRM 409120. Сейчас находится ставка 36317186, match.level=5."
+          }
+        },
+        {
+          "name": "Level 6 — группа продуктов и вид транспорта",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nodeFromCode\": \"A56211\",\n  \"nodeToCode\": \"REG89\",\n  \"productCode\": \"777801\",\n  \"transportTypeCode\": \"Auto_C\",\n  \"currencyCode\": \"RUB\",\n  \"date\": \"2026-09-14\"\n}"
+            },
+            "url": "{{baseUrl}}/api/v1/rates/smart-lookup",
+            "description": "CRM 410546. Сейчас находится ставка 35554321, match.level=6."
+          }
+        },
+        {
+          "name": "Level 8 — регион, группа и вид транспорта",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nodeFromCode\": \"A56543\",\n  \"nodeToCode\": \"A56212\",\n  \"productCode\": \"1732056\",\n  \"transportTypeCode\": \"Auto_TK\",\n  \"currencyCode\": \"RUB\",\n  \"date\": \"2026-06-15\"\n}"
+            },
+            "url": "{{baseUrl}}/api/v1/rates/smart-lookup",
+            "description": "CRM 381151. Сейчас находится ставка 33063052, match.level=8. Уровень 7 на текущем снимке не воспроизводится."
+          }
+        }
+      ]
+    }
+  ]
+}
