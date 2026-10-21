@@ -41,7 +41,7 @@ public static class ApiModule
 
         services.AddScoped<ICatalogFreshnessReader, CatalogFreshnessReader>();
 
-        services.AddOpenApi(OpenApiDocumentName, SvtOpenApi.Configure);
+        services.AddOpenApi(OpenApiDocumentName, options => SvtOpenApi.Configure(options, configuration));
 
         return services;
     }

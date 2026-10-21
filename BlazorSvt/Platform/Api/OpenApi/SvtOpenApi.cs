@@ -7,10 +7,12 @@ namespace BlazorSvt.Platform.Api.OpenApi;
 /// <summary>Документ OpenAPI: только <c>/api/v1</c>, общие заголовки, описание контракта.</summary>
 public static class SvtOpenApi
 {
-    public static void Configure(OpenApiOptions options)
+    public static void Configure(OpenApiOptions options, IConfiguration configuration)
     {
         options.ShouldInclude = description =>
             description.RelativePath?.StartsWith("api/v1/", StringComparison.OrdinalIgnoreCase) == true;
+
+        var serverUrl = NormalizePathBase(configuration["PathBase"]);
 
         options.AddDocumentTransformer((document, _, _) =>
         {
@@ -25,7 +27,13 @@ public static class SvtOpenApi
                     "JSON camelCase; даты yyyy-MM-dd; дата-время ISO 8601 UTC (Z); enum — строковые коды; null не опускается. " +
                     "Ошибки — ProblemDetails с полями code и traceId. Заголовок Sunset — плановая дата вывода версии."
             };
+            // Без PathBase Swagger UI бьёт в https://host/api/... вместо https://host/v2/api/...
             document.Servers.Clear();
+            if (serverUrl is not null)
+            {
+                document.Servers.Add(new OpenApiServer { Url = serverUrl });
+            }
+
             return Task.CompletedTask;
         });
 
@@ -47,6 +55,17 @@ public static class SvtOpenApi
                 example: "ru-RU"));
             return Task.CompletedTask;
         });
+    }
+
+    /// <summary>Относительный server URL для Swagger UI; <c>null</c> — корень хоста (локальный PathBase <c>/</c>).</summary>
+    private static string? NormalizePathBase(string? pathBase)
+    {
+        if (string.IsNullOrWhiteSpace(pathBase) || pathBase == "/")
+        {
+            return null;
+        }
+
+        return pathBase.TrimEnd('/');
     }
 
     private static OpenApiParameter Header(string name, bool required, string description, string? example = null) =>
