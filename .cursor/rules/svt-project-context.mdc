@@ -63,7 +63,7 @@ MDM-система логистических маршрутов, тарифов
 | `tests/BlazorSvt.UnitTests/` | Unit-тесты Platform, `GridQueryFactory`, contract DTO |
 | `tests/BlazorSvt.IntegrationTests/` | Read-only integration-тесты SP/view на локальной `mdm` (`localhost`) |
 | `docs/user-guide/` | Руководство пользователя СВТ 2.0 (RU/EN, Confluence Wiki Markup) |
-| `docs/api/` | Снимок контракта API (`svt-api-v1.openapi.json`), сверяется тестом |
+| `docs/api/` | Снимок контракта API (`svt-api-v1.openapi.json`, сверяется тестом) и локальная Postman-коллекция для ручного smoke (`svt-api-v1.vasilevivv-local-tests.postman.json`; стенд и учётка в переменных, это не контракт) |
 
 Подробная архитектура — в skill `svt-architecture` и правиле `svt-architecture-principles`.
 

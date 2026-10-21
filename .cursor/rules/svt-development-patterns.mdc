@@ -89,6 +89,7 @@ Serilog (`Host/Program.cs`, секция `Serilog` в `appsettings.json`). Пр�
 - **Контракт JSON** — `ApiJson`: camelCase; даты `yyyy-MM-dd`; дата-время — UTC `…Z` (легаси пишет локальное время сервера, `Unspecified` трактуется как локальное); enum — коды (имена членов); `null` не опускаются. Ошибки — `ApiException` → ProblemDetails с `code` (`ApiErrorCodes`), `traceId`, `errors` по полям; тексты — `Api.Error.*` в `Platform.resx`. Не бросать из API голые исключения для ожидаемых ситуаций
 - **HTTP**: `Cache-Control: no-store` на данных, `ETag` на списке и схеме; сжатие; отмена запроса уважается (499 в логе); 503 при остановке приложения; версия — `v1` в пути, заголовок `Sunset` (пока 01.01.2099)
 - **OpenAPI** — `/api/openapi/v1.json`, у каждой операции `operationId`; Swagger UI `/api/swagger` — флаг `Api:SwaggerUiEnabled`. Снимок контракта — `docs/api/svt-api-v1.openapi.json`; любое изменение контракта валит `OpenApiContractTests`. Осознанное изменение: `UPDATE_OPENAPI_SNAPSHOT=1`, перегенерировать и согласовать с Атласом
+- **Ручной прогон** — коллекция Postman `docs/api/svt-api-v1.vasilevivv-local-tests.postman.json` (локальный smoke: справочники и умный подбор). Не контракт: стенд и `X-On-Behalf-Of` в переменных коллекции. Импорт в Postman Desktop файлом, не путём. SSL verification для localhost выключить
 - **Умный подбор** — эталон поведения `CalcTransportRateCRM` (прод). Шаги и ранжирование — чистый C# (`LookupStepBuilder`, `SmartRateRanker`); SQL только отбирает кандидатов из `v2.AverageRateLevel3_Snapshot` и разрешает коды (легаси-view — техдолг, backlog). Новую операцию — отдельным модулем с `IApiEndpointContribution`
 
 ## Синхронизация legacy → snapshot
@@ -181,6 +182,7 @@ RowVer на основной PED-таблице. Стабильные источ
 - **AD** — `ActiveDirectorySmokeTests` (skip, если нет домена/DC)
 - **API по HTTP** — `Api/ApiHttpTests` на `ApiTestFactory` (`WebApplicationFactory<Program>`, тестовая схема аутентификации из заголовка `X-Test-User`, подменённые репозитории; БД не нужна): доступ, заголовки, ошибки, сериализация
 - **Контракт** — `Api/OpenApiContractTests`: `/api/openapi/v1.json` = `docs/api/svt-api-v1.openapi.json`
+- **Ручной smoke API** — `docs/api/svt-api-v1.vasilevivv-local-tests.postman.json` (не заменяет автотесты)
 - **Паритет подбора** — `SmartRateLookupParityTests`: последние запросы CRM из `mdm_integ.dbo.TransportRateCRM` по каждому уровню; эталон — `mdm_integ.dbo.CalcTransportRateCRM @Debug = 1`; skip без `mdm_integ`. Изменил подбор — прогнать
 - **Без** синтетических INSERT и Docker/Testcontainers
 - Перед запуском задай `BLAZORSVT_TEST_CONNECTION`: строка `Database:MdmDb` с `Server=localhost` (логин и пароль из неё же). Поле Server из `appsettings.json` не использовать, файл не менять. Без переменной тесты идут на сервер из `appsettings.json`

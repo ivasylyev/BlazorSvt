@@ -501,7 +501,8 @@ BlazorSvt/
 │   ├── Migrations/ — schema migration scripts
 │   └── Modules/    — per-module DDL and read SP/fn
 docs/
-├── api/            — svt-api-v1.openapi.json (снимок контракта API, сверяется тестом)
+├── api/            — svt-api-v1.openapi.json (снимок контракта, сверяется тестом);
+│                    svt-api-v1.vasilevivv-local-tests.postman.json (локальный smoke, не контракт)
 └── architecture/
     ├── README.md   — индекс диаграмм для подачи на архитектурное ревью
     ├── diagrams/   — 01-as-is-legacy.png, 02-to-be-current-program.png,
