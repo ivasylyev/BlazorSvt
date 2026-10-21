@@ -58,7 +58,7 @@ public sealed class CatalogApiEndpoints<TItem, TDetail>(CatalogApiDescriptor des
         var listTitles = new Dictionary<string, string>();
         foreach (var lang in LangsCurrentFirst())
         {
-            foreach (var column in gridSettings.GetDefaultGridSettings(lang))
+            foreach (var column in gridSettings.GetDefaultSettings(lang))
             {
                 listTitles.TryAdd(column.Name, column.Header);
             }
@@ -153,7 +153,7 @@ public sealed class CatalogApiEndpoints<TItem, TDetail>(CatalogApiDescriptor des
         }
         else
         {
-            var columns = gridSettings.GetDefaultGridSettings(lang)
+            var columns = gridSettings.GetDefaultSettings(lang)
                 .Select(c =>
                 {
                     c.Visible = true;

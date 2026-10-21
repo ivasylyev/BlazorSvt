@@ -13,7 +13,7 @@ public class LocationsNodesGridSettingsService(
 {
     protected override string StorageKey => "LocationsNodesGridColumnSettings";
 
-    protected override List<GridColumnSetting<LocationsNodesDto>> GetDefaultSettings(string lang)
+    public override IReadOnlyList<GridColumnSetting<LocationsNodesDto>> GetDefaultSettings(string lang)
     {
         var isRu = lang == "ru";
         var b = new GridColumnSettingsBuilder<LocationsNodesDto>(platform);

@@ -7,5 +7,5 @@ public interface IGridSettingsService<T>
     public Task ResetGridSettingsAsync(string lang);
 
     /// <summary>Колонки по умолчанию без пользовательских настроек (без LocalStorage/JS).</summary>
-    public IReadOnlyList<GridColumnSetting<T>> GetDefaultGridSettings(string lang);
+    public IReadOnlyList<GridColumnSetting<T>> GetDefaultSettings(string lang);
 }
