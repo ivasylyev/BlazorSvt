@@ -1,3 +1,4 @@
+﻿using BlazorSvt.Platform.Api.Catalogs;
 using BlazorSvt.Platform.Domain.IdsEnum;
 
 namespace BlazorSvt.Modules.AverageRateLevel3.List;
@@ -47,7 +48,7 @@ public class AverageRateLevel3Dto
     [GridColumn(SqlColumn = "RateTypeId")]
     public required RateTypeEn RateTypeIdEn { get; set; }
 
-    [GridColumn]
+    [GridColumn, ApiReference("locations-nodes", "code")]
     public required string NodeFromCode { get; set; }
 
     [GridColumn]
@@ -56,7 +57,7 @@ public class AverageRateLevel3Dto
     [GridColumn]
     public required string NodeFromNameEn { get; set; }
 
-    [GridColumn]
+    [GridColumn, ApiReference("locations-nodes", "code")]
     public string? ProxyNodeCode { get; set; }
 
     [GridColumn]
@@ -65,7 +66,7 @@ public class AverageRateLevel3Dto
     [GridColumn]
     public string? ProxyNodeNameEn { get; set; }
 
-    [GridColumn]
+    [GridColumn, ApiReference("locations-nodes", "code")]
     public required string NodeToCode { get; set; }
 
     [GridColumn]

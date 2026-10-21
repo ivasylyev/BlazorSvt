@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <resheader name="resmimetype"><value>text/microsoft-resx</value></resheader>
+  <resheader name="version"><value>2.0</value></resheader>
+  <resheader name="reader"><value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value></resheader>
+  <resheader name="writer"><value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value></resheader>
+  <data name="Match.Level1" xml:space="preserve"><value>Точное соответствие узла отправления, узла назначения, типа транспорта и продукта.</value></data>
+  <data name="Match.Level2" xml:space="preserve"><value>Осуществлено поднятие продукта до группы продуктов.</value></data>
+  <data name="Match.Level3" xml:space="preserve"><value>Осуществлено поднятие узла назначения до региона.</value></data>
+  <data name="Match.Level4" xml:space="preserve"><value>Осуществлено поднятие узла назначения до региона и продукта до группы продуктов.</value></data>
+  <data name="Match.Level5" xml:space="preserve"><value>Осуществлено поднятие типа транспорта до вида транспорта.</value></data>
+  <data name="Match.Level6" xml:space="preserve"><value>Осуществлено поднятие продукта до группы продуктов, типа транспорта до вида транспорта.</value></data>
+  <data name="Match.Level7" xml:space="preserve"><value>Осуществлено поднятие узла назначения до региона, типа транспорта до вида транспорта.</value></data>
+  <data name="Match.Level8" xml:space="preserve"><value>Осуществлено поднятие узла назначения до региона, продукта до группы продуктов, типа транспорта до вида транспорта.</value></data>
+  <data name="Match.DepartureReplaced" xml:space="preserve"><value>Заменен узел отправления на {0}.</value></data>
+</root>

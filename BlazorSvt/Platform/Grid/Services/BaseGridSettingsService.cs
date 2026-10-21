@@ -68,6 +68,7 @@ public abstract class BaseGridSettingsService<T>(
         }
     }
 
+    public IReadOnlyList<GridColumnSetting<T>> GetDefaultGridSettings(string lang) => GetDefaultSettings(lang);
 
     protected abstract List<GridColumnSetting<T>> GetDefaultSettings(string lang);
 }

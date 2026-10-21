@@ -7,6 +7,9 @@ namespace BlazorSvt.Platform.Reporting.Services;
 /// Пакетная выгрузка grid/detail в Excel: цикл батчей + скачивание файла.
 /// UI (confirm/preload/cancel) остаётся в <c>GenericGrid</c>.
 /// </summary>
+/// <remarks>
+/// <c>Write*Async</c> пишут книгу в произвольный поток без JS — их использует API (<c>/export</c>).
+/// </remarks>
 public sealed class GridReportExporter<TItem, TDetailItem>(
     IGridDataService<TItem, TDetailItem> dataService,
     IGridExcelExporter excelExporter,
@@ -24,23 +27,12 @@ public sealed class GridReportExporter<TItem, TDetailItem>(
         var batchSize = reportOptions.Value.ReportBatchSize;
 
         await using var stream = new MemoryStream();
-        var session = excelExporter.BeginShortReport(stream, columns);
-
-        try
-        {
-            await WriteBatchesAsync(
-                pageNumber => dataService.GetShortReportBatchAsync(
-                    baseRequest, pageNumber, batchSize, cancellationToken),
-                session,
-                batchSize,
-                cancellationToken);
-
-            session.Complete(totalCount);
-        }
-        finally
-        {
-            session.Dispose();
-        }
+        await WriteAsync(
+            excelExporter.BeginShortReport(stream, columns),
+            pageNumber => dataService.GetShortReportBatchAsync(
+                baseRequest, pageNumber, batchSize, cancellationToken),
+            batchSize,
+            cancellationToken);
 
         stream.Position = 0;
         await fileDownloadService.DownloadFromStreamAsync(stream, fileName, cancellationToken);
@@ -57,47 +49,78 @@ public sealed class GridReportExporter<TItem, TDetailItem>(
         var batchSize = reportOptions.Value.ReportBatchSize;
 
         await using var stream = new MemoryStream();
-        var session = excelExporter.BeginFullReport(stream, columns);
-
-        try
-        {
-            await WriteBatchesAsync(
-                pageNumber => dataService.GetFullReportBatchAsync(
-                    baseRequest, pageNumber, batchSize, cancellationToken),
-                session,
-                batchSize,
-                cancellationToken);
-
-            session.Complete(totalCount);
-        }
-        finally
-        {
-            session.Dispose();
-        }
+        await WriteAsync(
+            excelExporter.BeginFullReport(stream, columns),
+            pageNumber => dataService.GetFullReportBatchAsync(
+                baseRequest, pageNumber, batchSize, cancellationToken),
+            batchSize,
+            cancellationToken);
 
         stream.Position = 0;
         await fileDownloadService.DownloadFromStreamAsync(stream, fileName, cancellationToken);
         logger.LogInformation("Full report: exported {Count} items", totalCount);
     }
 
-    private static async Task WriteBatchesAsync<T>(
-        Func<int, Task<IReadOnlyList<T>>> fetchBatch,
+    /// <summary>Краткий отчёт в <paramref name="output"/>; фильтры и сортировка — из <paramref name="query"/>.</summary>
+    /// <returns>Число выгруженных строк.</returns>
+    public Task<int> WriteShortAsync(
+        Stream output,
+        GridQuery query,
+        IEnumerable<GridColumnSetting<TItem>> columns,
+        CancellationToken cancellationToken)
+    {
+        var batchSize = reportOptions.Value.ReportBatchSize;
+        return WriteAsync(
+            excelExporter.BeginShortReport(output, columns),
+            pageNumber => dataService.GetShortReportBatchAsync(
+                query with { PageNumber = pageNumber, PageSize = batchSize }, cancellationToken),
+            batchSize,
+            cancellationToken);
+    }
+
+    /// <summary>Полный отчёт (поля карточки) в <paramref name="output"/>.</summary>
+    /// <returns>Число выгруженных строк.</returns>
+    public Task<int> WriteFullAsync(
+        Stream output,
+        GridQuery query,
+        IEnumerable<DetailSetting<TDetailItem>> columns,
+        CancellationToken cancellationToken)
+    {
+        var batchSize = reportOptions.Value.ReportBatchSize;
+        return WriteAsync(
+            excelExporter.BeginFullReport(output, columns),
+            pageNumber => dataService.GetFullReportBatchAsync(
+                query with { PageNumber = pageNumber, PageSize = batchSize }, cancellationToken),
+            batchSize,
+            cancellationToken);
+    }
+
+    private static async Task<int> WriteAsync<T>(
         IGridReportSession<T> session,
+        Func<int, Task<IReadOnlyList<T>>> fetchBatch,
         int batchSize,
         CancellationToken cancellationToken)
     {
-        for (var pageNumber = 1; ; pageNumber++)
+        using (session)
         {
-            cancellationToken.ThrowIfCancellationRequested();
+            var written = 0;
+            for (var pageNumber = 1; ; pageNumber++)
+            {
+                cancellationToken.ThrowIfCancellationRequested();
 
-            var batch = await fetchBatch(pageNumber);
-            if (batch.Count == 0)
-                break;
+                var batch = await fetchBatch(pageNumber);
+                if (batch.Count == 0)
+                    break;
 
-            session.WriteBatch(batch, cancellationToken);
+                session.WriteBatch(batch, cancellationToken);
+                written += batch.Count;
 
-            if (batch.Count < batchSize)
-                break;
+                if (batch.Count < batchSize)
+                    break;
+            }
+
+            session.Complete(written);
+            return written;
         }
     }
 }

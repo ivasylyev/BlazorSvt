@@ -1,6 +1,7 @@
 using BlazorSvt.Modules.AverageRateLevel3.Detail;
 using BlazorSvt.Modules.AverageRateLevel3.List;
 using BlazorSvt.Modules.AverageRateLevel3.Sync;
+using BlazorSvt.Platform.Api.Catalogs;
 using BlazorSvt.Platform.Sync;
 using BlazorSvt.Platform.UI.Navigation;
 
@@ -19,6 +20,11 @@ public static class AverageRateLevel3Module
             "averageratelevel3",
             "HeaderMenu.AverageRateLevel3",
             VisibleToEditor: true));
+        services.AddCatalogApi<AverageRateLevel3Dto, AverageRateLevel3DetailDto>(
+            "average-rates-level3",
+            CatalogDomain.Rates,
+            "HeaderMenu.AverageRateLevel3",
+            new CatalogPeriod(nameof(AverageRateLevel3Dto.StartDate), nameof(AverageRateLevel3Dto.EndDate)));
 
         return services;
     }

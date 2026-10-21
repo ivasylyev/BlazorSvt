@@ -1,6 +1,7 @@
 ﻿using BlazorSvt.Modules.TransportRate.Detail;
 using BlazorSvt.Modules.TransportRate.List;
 using BlazorSvt.Modules.TransportRate.Sync;
+using BlazorSvt.Platform.Api.Catalogs;
 using BlazorSvt.Platform.Sync;
 using BlazorSvt.Platform.UI.Navigation;
 
@@ -19,6 +20,11 @@ public static class TransportRateModule
             "transportrate",
             "HeaderMenu.TransportRate",
             VisibleToEditor: true));
+        services.AddCatalogApi<TransportRateDto, TransportRateDetailDto>(
+            "transport-rates",
+            CatalogDomain.Rates,
+            "HeaderMenu.TransportRate",
+            new CatalogPeriod(nameof(TransportRateDto.StartDate), nameof(TransportRateDto.EndDate)));
 
         return services;
     }

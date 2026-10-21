@@ -1,4 +1,5 @@
-﻿using BlazorSvt.Platform.Domain.IdsEnum;
+﻿using BlazorSvt.Platform.Api.Catalogs;
+using BlazorSvt.Platform.Domain.IdsEnum;
 
 namespace BlazorSvt.Modules.TransportLeg.List;
 
@@ -53,7 +54,7 @@ public class TransportLegDto
     [GridColumn(Filterable = false)]
     public required string TransportationTimeT { get; set; }
 
-    [GridColumn]
+    [GridColumn, ApiReference("locations-nodes", "code")]
     public required string NodeFromCode { get; set; }
 
     [GridColumn]
@@ -71,7 +72,7 @@ public class TransportLegDto
     [GridColumn]
     public string? RegionFromNameEn { get; set; }
 
-    [GridColumn]
+    [GridColumn, ApiReference("locations-nodes", "code")]
     public string? ProxyNodeCode { get; set; }
 
     [GridColumn]
@@ -89,7 +90,7 @@ public class TransportLegDto
     [GridColumn]
     public string? ProxyRegionNameEn { get; set; }
 
-    [GridColumn]
+    [GridColumn, ApiReference("locations-nodes", "code")]
     public required string NodeToCode { get; set; }
 
     [GridColumn]

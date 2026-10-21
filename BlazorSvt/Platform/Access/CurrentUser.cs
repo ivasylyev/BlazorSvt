@@ -13,6 +13,9 @@ public sealed class CurrentUser : ICurrentUser
 
     public bool BypassAccessControl { get; private set; }
 
+    /// <summary>Код причины отказа (<see cref="AccessDenialReasons"/>); <c>null</c>, если доступ не отклонён.</summary>
+    public string? DenialReason { get; private set; }
+
     public void ApplyBypass(string login, string? displayName)
     {
         Login = login;
@@ -20,6 +23,7 @@ public sealed class CurrentUser : ICurrentUser
         RoleNames = [];
         State = AccessState.Allowed;
         BypassAccessControl = true;
+        DenialReason = null;
     }
 
     public void ApplyAllowed(string login, string? displayName, IReadOnlyList<string> roleNames)
@@ -29,15 +33,21 @@ public sealed class CurrentUser : ICurrentUser
         RoleNames = roleNames;
         State = AccessState.Allowed;
         BypassAccessControl = false;
+        DenialReason = null;
     }
 
-    public void ApplyDenied(string login, string? displayName, IReadOnlyList<string>? roleNames = null)
+    public void ApplyDenied(
+        string login,
+        string? displayName,
+        IReadOnlyList<string>? roleNames = null,
+        string? reason = null)
     {
         Login = login;
         DisplayName = displayName;
         RoleNames = roleNames ?? [];
         State = AccessState.Denied;
         BypassAccessControl = false;
+        DenialReason = reason;
     }
 
     public void ApplyDirectoryUnavailable(string login)
@@ -47,5 +57,6 @@ public sealed class CurrentUser : ICurrentUser
         RoleNames = [];
         State = AccessState.DirectoryUnavailable;
         BypassAccessControl = false;
+        DenialReason = null;
     }
 }

@@ -31,33 +31,35 @@ public class GridDataService<TItem, TDetailItem>(
     private readonly int defaultQueryTimeoutSeconds = options.Value.DefaultQueryTimeoutSeconds;
     private readonly int reportQueryTimeoutSeconds = options.Value.ReportQueryTimeoutSeconds;
 
-    public async Task<IReadOnlyList<TItem>> GetShortReportBatchAsync(
+    public Task<IReadOnlyList<TItem>> GetShortReportBatchAsync(
         GridDataProviderRequest<TItem> request,
         int pageNumber,
         int pageSize,
-        CancellationToken cancellationToken)
+        CancellationToken cancellationToken) =>
+        GetShortReportBatchAsync(gridQueryFactory.Create(request, pageNumber, pageSize), cancellationToken);
+
+    public async Task<IReadOnlyList<TItem>> GetShortReportBatchAsync(GridQuery query, CancellationToken cancellationToken)
     {
         accessGuard.Ensure(AccessAction.Read);
-
-        var query = gridQueryFactory.Create(request, pageNumber, pageSize);
 
         var (data, _) = await ExecuteStoredProcedureAsync(
             query,
             cancellationToken,
             reportQueryTimeoutSeconds);
 
-        return data.ToList();
+        return data;
     }
 
-    public async Task<IReadOnlyList<TDetailItem>> GetFullReportBatchAsync(
+    public Task<IReadOnlyList<TDetailItem>> GetFullReportBatchAsync(
         GridDataProviderRequest<TItem> request,
         int pageNumber,
         int pageSize,
-        CancellationToken cancellationToken)
+        CancellationToken cancellationToken) =>
+        GetFullReportBatchAsync(gridQueryFactory.Create(request, pageNumber, pageSize), cancellationToken);
+
+    public async Task<IReadOnlyList<TDetailItem>> GetFullReportBatchAsync(GridQuery query, CancellationToken cancellationToken)
     {
         accessGuard.Ensure(AccessAction.Read);
-
-        var query = gridQueryFactory.Create(request, pageNumber, pageSize);
 
 #pragma warning disable CS0618 // Type or member is obsolete
         await using var connection = new SqlConnection(connectionString);
@@ -79,25 +81,7 @@ public class GridDataService<TItem, TDetailItem>(
 
     public async Task<TDetailItem> GetDetailDataAsync(object key)
     {
-        accessGuard.Ensure(AccessAction.Read);
-
-#pragma warning disable CS0618 // Type or member is obsolete
-        await using var connection = new SqlConnection(connectionString);
-#pragma warning restore CS0618 // Type or member is obsolete
-        await connection.OpenAsync();
-
-        var parameters = new DynamicParameters();
-        parameters.Add("Key", key);
-
-        var sql = $"SELECT * FROM {DetailSourceName} WHERE {DetailSourceKeyColumn} = @Key";
-
-        var loggingConnection = new DbConnectionLogDecorator(connection, logger, defaultQueryTimeoutSeconds);
-
-        var result = await loggingConnection.QuerySingleOrDefaultAsync<TDetailItem?>(
-            sql,
-            parameters,
-            CommandType.Text);
-
+        var result = await FindDetailAsync(key, CancellationToken.None);
         if (result is not null)
         {
             return result;
@@ -111,25 +95,60 @@ public class GridDataService<TItem, TDetailItem>(
         throw new Exception($"{DetailSourceName} with {key} returns no data");
     }
 
-    public async Task<GridDataProviderResult<TItem>> GetDataAsync(GridDataProviderRequest<TItem> request)
+    public async Task<TDetailItem?> FindDetailAsync(object key, CancellationToken cancellationToken)
     {
         accessGuard.Ensure(AccessAction.Read);
 
-        var query = gridQueryFactory.Create(request);
+        try
+        {
+#pragma warning disable CS0618 // Type or member is obsolete
+            await using var connection = new SqlConnection(connectionString);
+#pragma warning restore CS0618 // Type or member is obsolete
+            await connection.OpenAsync(cancellationToken);
 
-        var (data, totalCount) = await ExecuteStoredProcedureAsync(
-            query,
-            request.CancellationToken,
-            defaultQueryTimeoutSeconds);
+            var parameters = new DynamicParameters();
+            parameters.Add("Key", key);
+
+            var sql = $"SELECT * FROM {DetailSourceName} WHERE {DetailSourceKeyColumn} = @Key";
+
+            var loggingConnection = new DbConnectionLogDecorator(connection, logger, defaultQueryTimeoutSeconds);
+
+            return await loggingConnection.QuerySingleOrDefaultAsync<TDetailItem?>(
+                sql,
+                parameters,
+                CommandType.Text,
+                cancellationToken);
+        }
+        catch (Exception ex) when (OperationCancellation.IsCancellation(ex, cancellationToken))
+        {
+            throw new OperationCanceledException(cancellationToken);
+        }
+    }
+
+    public async Task<GridDataProviderResult<TItem>> GetDataAsync(GridDataProviderRequest<TItem> request)
+    {
+        var page = await GetPageAsync(gridQueryFactory.Create(request), request.CancellationToken);
 
         return new GridDataProviderResult<TItem>
         {
-            Data = data,
-            TotalCount = totalCount
+            Data = page.Items,
+            TotalCount = page.TotalCount
         };
     }
 
-    private async Task<(IEnumerable<TItem>, int)> ExecuteStoredProcedureAsync(
+    public async Task<GridPage<TItem>> GetPageAsync(GridQuery query, CancellationToken cancellationToken)
+    {
+        accessGuard.Ensure(AccessAction.Read);
+
+        var (data, totalCount) = await ExecuteStoredProcedureAsync(
+            query,
+            cancellationToken,
+            defaultQueryTimeoutSeconds);
+
+        return new GridPage<TItem>(data, totalCount);
+    }
+
+    private async Task<(IReadOnlyList<TItem>, int)> ExecuteStoredProcedureAsync(
         GridQuery query,
         CancellationToken cancellationToken,
         int commandTimeoutSeconds)

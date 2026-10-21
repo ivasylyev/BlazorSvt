@@ -354,4 +354,19 @@
   <data name="Common.Active" xml:space="preserve">
     <value>Актив</value>
   </data>
+  <data name="Api.Error.invalid_request" xml:space="preserve"><value>Некорректный запрос.</value></data>
+  <data name="Api.Error.validation_failed" xml:space="preserve"><value>Ошибка в параметрах запроса. См. errors.</value></data>
+  <data name="Api.Error.unauthenticated" xml:space="preserve"><value>Вызывающий не аутентифицирован.</value></data>
+  <data name="Api.Error.client_not_trusted" xml:space="preserve"><value>Учётная запись не входит в список доверенных клиентов API.</value></data>
+  <data name="Api.Error.on_behalf_of_required" xml:space="preserve"><value>Не передан заголовок X-On-Behalf-Of.</value></data>
+  <data name="Api.Error.on_behalf_of_invalid" xml:space="preserve"><value>Заголовок X-On-Behalf-Of должен быть в формате DOMAIN\user.</value></data>
+  <data name="Api.Error.user_not_registered" xml:space="preserve"><value>Пользователь не зарегистрирован в СВТ.</value></data>
+  <data name="Api.Error.user_has_no_roles" xml:space="preserve"><value>У пользователя нет ролей в СВТ.</value></data>
+  <data name="Api.Error.access_denied" xml:space="preserve"><value>Доступ запрещён.</value></data>
+  <data name="Api.Error.not_found" xml:space="preserve"><value>Ресурс не найден.</value></data>
+  <data name="Api.Error.catalog_not_found" xml:space="preserve"><value>Справочник не найден.</value></data>
+  <data name="Api.Error.item_not_found" xml:space="preserve"><value>Запись {0} не найдена.</value></data>
+  <data name="Api.Error.currency_rate_missing" xml:space="preserve"><value>Не найден курс валют на дату запроса.</value></data>
+  <data name="Api.Error.service_unavailable" xml:space="preserve"><value>Сервис временно недоступен. Повторите позже.</value></data>
+  <data name="Api.Error.internal_error" xml:space="preserve"><value>Внутренняя ошибка. Сообщите traceId в поддержку.</value></data>
 </root>

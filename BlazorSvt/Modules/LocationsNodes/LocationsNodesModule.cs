@@ -1,6 +1,7 @@
 using BlazorSvt.Modules.LocationsNodes.Detail;
 using BlazorSvt.Modules.LocationsNodes.List;
 using BlazorSvt.Modules.LocationsNodes.Sync;
+using BlazorSvt.Platform.Api.Catalogs;
 using BlazorSvt.Platform.Sync;
 using BlazorSvt.Platform.UI.Navigation;
 
@@ -19,6 +20,10 @@ public static class LocationsNodesModule
             "locationsnodes",
             "HeaderMenu.LocationsNodes",
             VisibleToEditor: true));
+        services.AddCatalogApi<LocationsNodesDto, LocationsNodesDetailDto>(
+            "locations-nodes",
+            CatalogDomain.Routes,
+            "HeaderMenu.LocationsNodes");
 
         return services;
     }

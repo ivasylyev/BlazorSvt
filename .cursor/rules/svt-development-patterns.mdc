@@ -20,7 +20,8 @@ alwaysApply: false
 4. `{Entity}Grid.razor` — `@page "/{entity}"`, `BaseGridPage<…>`
 5. `{Entity}SyncJob` в `Sync/` → `AddSingleton<ISnapshotSyncJob, …>()`
 6. `{Entity}Module.cs` → `Add{Entity}Module()` в `Host/Program.cs`; внутри — `AddCatalogMenu` (домен из catalogs-scope, ключ `HeaderMenu.{Entity}`). Шапка подхватит пункт сама; `HeaderMenu` не править
-7. SQL: `SqlScripts/Modules/{Entity}/Structure/` + `Programmability/` (`SnapshotSource`, `Detail`, `PopulateAffectedKeys`)
+7. Там же — `AddCatalogApi<{Entity}Dto, {Entity}DetailDto>("{kebab-code}", домен, "HeaderMenu.{Entity}", period)`: всё, что есть в СВТ 2.0, доступно Атласу через API. Без регистрации падает `CatalogApiCoverageTests`; после — перегенерировать снимок OpenAPI (см. «API»)
+8. SQL: `SqlScripts/Modules/{Entity}/Structure/` + `Programmability/` (`SnapshotSource`, `Detail`, `PopulateAffectedKeys`)
 
 ## Модульная регистрация
 
@@ -59,13 +60,36 @@ Serilog (`Host/Program.cs`, секция `Serilog` в `appsettings.json`). Пр�
 - **DB**: только через `DbConnectionLogDecorator` / `LoggedOperation`; не писать «голый» Dapper в обход обёртки
 - **UI**: не глотать исключения без `LogError` (`ErrorDisplay` / ErrorBoundary, `GenericDetailView`, catch в страницах)
 - **Import/batch**: события пайплайна (см. выше); Warning при несматченных заголовках Excel
-- **Корреляция**: HTTP — `MiddlewareDecorator` (`ShortCorrelationId`, `UserLogin`); Blazor circuit — `CircuitCorrelationHandler` (`CircuitId` + `ShortCorrelationId` + `UserLogin`); sync — `SyncCycleId` на цикл в `SnapshotSyncScheduler`
+- **Корреляция**: HTTP — `MiddlewareDecorator` (`ShortCorrelationId`, `UserLogin`, `Channel`; входящий `X-Correlation-ID` принимается и возвращается в ответе); Blazor circuit — `CircuitCorrelationHandler` (`CircuitId` + `ShortCorrelationId` + `UserLogin`, `Channel = Blazor`); sync — `SyncCycleId` на цикл в `SnapshotSyncScheduler`
+- **API**: `Channel = Api`, `UserLogin` — конечный пользователь из `X-On-Behalf-Of`, `ApiClient` — служебная учётка. На вызов — одна строка `API {операция} {справочник} for {пользователь} via {клиент}: {статус}, rows, ms` (`ApiAccessMiddleware`; файловый шаблон выводит только текст сообщения). Тела запросов не логировать
 - **Sync health**: duration, cursor lag / affected в `SnapshotSyncExecutor`; ошибки entity изолированы в scheduler
 - **Аудит изменений данных** (кто/что/когда) — ещё не реализован; при write/batch/редакторах обязателен (чеклист architecture skill)
 
 ## Доступ (Windows Auth + роли)
 
 Каркас: `Platform/Access/`. IIS Windows Authentication, `hostingModel="inprocess"`. На circuit: Windows-логин → роли из `dbo.User`/`dbo.UserRole`. Сверка с AD (`UserRole` add/delete по прямым группам `DOMAIN\Group`) — только если `Auth:SynchronizeUserRoles=true`; иначе AD не вызывается. Любая роль → read (`IAccessGuard.Ensure(AccessAction.Read)`). `/load` закрыт (`AccessAction.Import`, только `Auth:IgnoreAccessControl` в Development). Без ролей — `access-denied`; сбой AD при включённой сверке — `auth-unavailable`. Write по домену — MVP 0.4+: не флаги на `ICurrentUser`, а новый `AccessAction` + `RoleNames`.
+
+**API (`/api`)** — та же Windows-аутентификация IIS. Вызывающий должен быть в `Api:TrustedClients` (список учёток `DOMAIN\svc`), иначе 403 `client_not_trusted` на весь `/api`, включая OpenAPI. На `/api/v1` обязателен `X-On-Behalf-Of: DOMAIN\user`; права — **только** по ролям этого пользователя (`UserAccessSynchronizer.SynchronizeOnBehalfAsync`: сохранённые роли `dbo.UserRole`, AD не опрашивается): нет в `dbo.User` → 403 `user_not_registered`, нет ролей → 403 `user_has_no_roles`. Права служебной учётки не используются. Сервисы проверяют `IAccessGuard` так же, как для Blazor.
+
+## API для внешних фронтендов (Атлас)
+
+Каркас: `Platform/Api/` (доступ, ошибки, JSON, OpenAPI, обобщённые маршруты справочников). Модуль подбора: `Modules/SmartRateLookup/`. Подключение: `AddSvtApi` / `UseSvtApi` / `MapSvtApi` в `Program.cs`. Пилот — **только чтение**.
+
+| Операция | Маршрут |
+|---|---|
+| Список справочников | `GET /api/v1/catalogs` |
+| Описание полей | `GET /api/v1/catalogs/{code}/schema` |
+| Поиск | `POST /api/v1/catalogs/{code}/items/search` |
+| Карточка | `GET /api/v1/catalogs/{code}/items/{id}` (id — свойство `[GridColumn(IsEntityKey = true)]`) |
+| Выгрузка Excel | `POST /api/v1/catalogs/{code}/export` (`kind`: `short` — колонки грида, `full` — поля карточки) |
+| Умный подбор ставки | `POST /api/v1/rates/smart-lookup` |
+
+- **Справочник в API** — `AddCatalogApi<TDto, TDetail>(code, domain, titleResourceKey, period, syncEntity)` в модуле. DTO и сервисы те же, что у грида; новых SQL не нужно. Ссылки на другие справочники — `[ApiReference("locations-nodes", "code")]` на свойстве DTO (атрибут из Platform, модульной границы не нарушает)
+- **Фильтры** проверяет `CatalogQueryTranslator` (чистая функция) до вызова `GetBlazorGridData`; SP не меняется. Только И; текст — `contains` (после очистки как в SP не короче 3 символов); числа/даты/ключи — `eq ne lt le gt ge`; флаги — `eq`; enum — `eq ne` по коду. Сортировка — одно поле. `pageSize` 1–1000, больше — 400. По умолчанию без архивных. `asOf` — `начало ≤ дата ≤ конец` по `period`. Ответ поиска: `items`, `totalCount`, `dataAsOf` (`MIN(v2.SyncState.LastRunUtc)` справочника)
+- **Контракт JSON** — `ApiJson`: camelCase; даты `yyyy-MM-dd`; дата-время — UTC `…Z` (легаси пишет локальное время сервера, `Unspecified` трактуется как локальное); enum — коды (имена членов); `null` не опускаются. Ошибки — `ApiException` → ProblemDetails с `code` (`ApiErrorCodes`), `traceId`, `errors` по полям; тексты — `Api.Error.*` в `Platform.resx`. Не бросать из API голые исключения для ожидаемых ситуаций
+- **HTTP**: `Cache-Control: no-store` на данных, `ETag` на списке и схеме; сжатие; отмена запроса уважается (499 в логе); 503 при остановке приложения; версия — `v1` в пути, заголовок `Sunset` (пока 01.01.2099)
+- **OpenAPI** — `/api/openapi/v1.json`, у каждой операции `operationId`; Swagger UI `/api/swagger` — флаг `Api:SwaggerUiEnabled`. Снимок контракта — `docs/api/svt-api-v1.openapi.json`; любое изменение контракта валит `OpenApiContractTests`. Осознанное изменение: `UPDATE_OPENAPI_SNAPSHOT=1`, перегенерировать и согласовать с Атласом
+- **Умный подбор** — эталон поведения `CalcTransportRateCRM` (прод). Шаги и ранжирование — чистый C# (`LookupStepBuilder`, `SmartRateRanker`); SQL только отбирает кандидатов из `v2.AverageRateLevel3_Snapshot` и разрешает коды (легаси-view — техдолг, backlog). Новую операцию — отдельным модулем с `IApiEndpointContribution`
 
 ## Синхронизация legacy → snapshot
 
@@ -133,6 +157,8 @@ RowVer на основной PED-таблице. Стабильные источ
 - `SnapshotSyncJobContractTests` — metadata SyncJob + Sources
 - `Platform/Access` — `UserRoleReconciler`, `AccessGuard`, `UserAccessSynchronizer` (без живого AD)
 - Новый справочник → unit contract-тест для `{Entity}Dto` и SyncJob (SyncJob не тестировать у стабильного словаря с enum: job нет)
+- **API**: `CatalogQueryTranslatorTests` (фильтры, ошибки по полям), `ApiJsonTests` (формат контракта), `SmartRateLookup/*` (шаги, ранжирование, сервис на подменённом репозитории), on-behalf в `UserAccessSynchronizerTests`
+- `CatalogApiCoverageTests` — каждый `[GridSnapshot]`-DTO и каждый пункт меню справочника зарегистрирован в API; новый справочник без `AddCatalogApi` валит тест
 
 **Import** (`Validators`, `ExcelParser`) — пока без тестов (прототип).
 
@@ -142,6 +168,9 @@ RowVer на основной PED-таблице. Стабильные источ
 - `vw_{Entity}_Detail` — detail view по ключу из grid
 - **FTS** — `{Entity}FtsIntegrationTests` + `FtsFilterTestSupport` (эталон: TransportRate / AverageRateLevel3)
 - **AD** — `ActiveDirectorySmokeTests` (skip, если нет домена/DC)
+- **API по HTTP** — `Api/ApiHttpTests` на `ApiTestFactory` (`WebApplicationFactory<Program>`, тестовая схема аутентификации из заголовка `X-Test-User`, подменённые репозитории; БД не нужна): доступ, заголовки, ошибки, сериализация
+- **Контракт** — `Api/OpenApiContractTests`: `/api/openapi/v1.json` = `docs/api/svt-api-v1.openapi.json`
+- **Паритет подбора** — `SmartRateLookupParityTests`: последние запросы CRM из `mdm_integ.dbo.TransportRateCRM` по каждому уровню; эталон — `mdm_integ.dbo.CalcTransportRateCRM @Debug = 1`; skip без `mdm_integ`. Изменил подбор — прогнать
 - **Без** синтетических INSERT и Docker/Testcontainers
 - Перед запуском задай `BLAZORSVT_TEST_CONNECTION`: строка `Database:MdmDb` с `Server=localhost` (логин и пароль из неё же). Поле Server из `appsettings.json` не использовать, файл не менять. Без переменной тесты идут на сервер из `appsettings.json`
 - Эталоны: `ModuleGridIntegrationTests.cs`, `Modules/*/…FtsIntegrationTests.cs`
