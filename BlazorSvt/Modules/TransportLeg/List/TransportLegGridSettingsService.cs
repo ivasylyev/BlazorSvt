@@ -14,7 +14,7 @@ public class TransportLegGridSettingsService(
 {
     protected override string StorageKey => "TransportLegGridColumnSettings";
 
-    protected override List<GridColumnSetting<TransportLegDto>> GetDefaultSettings(string lang)
+    public override IReadOnlyList<GridColumnSetting<TransportLegDto>> GetDefaultSettings(string lang)
     {
         var isRu = lang == "ru";
         var b = new GridColumnSettingsBuilder<TransportLegDto>(platform);

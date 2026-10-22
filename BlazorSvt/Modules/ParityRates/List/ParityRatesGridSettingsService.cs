@@ -14,7 +14,7 @@ public class ParityRatesGridSettingsService(
 {
     protected override string StorageKey => "ParityRatesGridColumnSettings";
 
-    protected override List<GridColumnSetting<ParityRatesDto>> GetDefaultSettings(string lang)
+    public override IReadOnlyList<GridColumnSetting<ParityRatesDto>> GetDefaultSettings(string lang)
     {
         var isRu = lang == "ru";
         var b = new GridColumnSettingsBuilder<ParityRatesDto>(platform);

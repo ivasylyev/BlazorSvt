@@ -1,5 +1,6 @@
 using BlazorSvt.Modules.RateType.Detail;
 using BlazorSvt.Modules.RateType.List;
+using BlazorSvt.Platform.Api.Catalogs;
 using BlazorSvt.Platform.UI.Navigation;
 
 namespace BlazorSvt.Modules.RateType;
@@ -15,6 +16,10 @@ public static class RateTypeModule
             "ratetype",
             "HeaderMenu.RateType",
             VisibleToEditor: true));
+        services.AddCatalogApi<RateTypeDto, RateTypeDetailDto>(
+            "rate-types",
+            CatalogDomain.Rates,
+            "HeaderMenu.RateType");
 
         return services;
     }

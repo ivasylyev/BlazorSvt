@@ -1,3 +1,4 @@
+﻿using BlazorSvt.Platform.Api.Catalogs;
 using BlazorSvt.Platform.Domain.IdsEnum;
 
 namespace BlazorSvt.Modules.ParityRates.List;
@@ -35,7 +36,7 @@ public class ParityRatesDto
     [GridColumn(SqlColumn = "RelevanceId")]
     public required RelevanceEn RelevanceIdEn { get; set; }
 
-    [GridColumn]
+    [GridColumn, ApiReference("locations-nodes", "code")]
     public required string NodeFromCode { get; set; }
 
     [GridColumn]
@@ -44,7 +45,7 @@ public class ParityRatesDto
     [GridColumn]
     public required string NodeFromNameEn { get; set; }
 
-    [GridColumn]
+    [GridColumn, ApiReference("locations-nodes", "code")]
     public string? ProxyNode1Code { get; set; }
 
     [GridColumn]
@@ -53,7 +54,7 @@ public class ParityRatesDto
     [GridColumn]
     public string? ProxyNode1NameEn { get; set; }
 
-    [GridColumn]
+    [GridColumn, ApiReference("locations-nodes", "code")]
     public string? ProxyNode2Code { get; set; }
 
     [GridColumn]
@@ -62,7 +63,7 @@ public class ParityRatesDto
     [GridColumn]
     public string? ProxyNode2NameEn { get; set; }
 
-    [GridColumn]
+    [GridColumn, ApiReference("locations-nodes", "code")]
     public required string NodeToCode { get; set; }
 
     [GridColumn]

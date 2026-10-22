@@ -13,7 +13,7 @@ public abstract class BaseGridSettingsService<T>(
 
     public async Task<GridColumnSettingsCollection<T>> GetGridSettingsAsync(string lang)
     {
-        var defaultSettings = GetDefaultSettings(lang);
+        var defaultSettings = GetDefaultSettings(lang).ToList();
 
         Dictionary<string, bool> loaded;
         try
@@ -68,6 +68,5 @@ public abstract class BaseGridSettingsService<T>(
         }
     }
 
-
-    protected abstract List<GridColumnSetting<T>> GetDefaultSettings(string lang);
+    public abstract IReadOnlyList<GridColumnSetting<T>> GetDefaultSettings(string lang);
 }

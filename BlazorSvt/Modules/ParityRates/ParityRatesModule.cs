@@ -1,6 +1,7 @@
 using BlazorSvt.Modules.ParityRates.Detail;
 using BlazorSvt.Modules.ParityRates.List;
 using BlazorSvt.Modules.ParityRates.Sync;
+using BlazorSvt.Platform.Api.Catalogs;
 using BlazorSvt.Platform.Sync;
 using BlazorSvt.Platform.UI.Navigation;
 
@@ -19,6 +20,11 @@ public static class ParityRatesModule
             "parityrates",
             "HeaderMenu.ParityRates",
             VisibleToEditor: true));
+        services.AddCatalogApi<ParityRatesDto, ParityRatesDetailDto>(
+            "parity-rates",
+            CatalogDomain.Rates,
+            "HeaderMenu.ParityRates",
+            new CatalogPeriod(nameof(ParityRatesDto.StartDate), nameof(ParityRatesDto.EndDate)));
 
         return services;
     }

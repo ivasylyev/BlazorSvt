@@ -1,6 +1,7 @@
 ﻿using BlazorSvt.Modules.TransportLeg.Detail;
 using BlazorSvt.Modules.TransportLeg.List;
 using BlazorSvt.Modules.TransportLeg.Sync;
+using BlazorSvt.Platform.Api.Catalogs;
 using BlazorSvt.Platform.Sync;
 using BlazorSvt.Platform.UI.Navigation;
 
@@ -19,6 +20,10 @@ public static class TransportLegModule
             "transportleg",
             "HeaderMenu.TransportLeg",
             VisibleToEditor: true));
+        services.AddCatalogApi<TransportLegDto, TransportLegDetailDto>(
+            "transport-legs",
+            CatalogDomain.Routes,
+            "HeaderMenu.TransportLeg");
 
         return services;
     }

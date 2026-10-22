@@ -12,7 +12,7 @@ description: >-
 
 # Атлас и эталонный процесс
 
-Сначала этот файл. Метод кольца — [method.md](method.md). Как это кладётся на СВТ — [svt.md](svt.md). Образец документа для правления — [logistika-etalon-pravlenie-2-1.html](logistika-etalon-pravlenie-2-1.html). Пакет промптов «от эталона к разработке» — [etalon-to-dev/README.md](etalon-to-dev/README.md). Шаблоны с рабочего стола «АТЛАС ШАБЛОНЫ» — [shablony/README.md](shablony/README.md). Документация СВТ, роли и какие файлы живые — [docs-svt.md](docs-svt.md). Код СВТ 2.0 этим навыком не пишется: стек и скоуп — skill `svt-architecture`.
+Сначала этот файл. Метод кольца — [method.md](method.md). Как это кладётся на СВТ — [svt.md](svt.md). Образец документа для правления — [logistika-etalon-pravlenie-2-1.html](logistika-etalon-pravlenie-2-1.html). Пакет промптов «от эталона к разработке» — [etalon-to-dev/README.md](etalon-to-dev/README.md). Шаблоны с рабочего стола «АТЛАС ШАБЛОНЫ» — [shablony/README.md](shablony/README.md). Документация СВТ, роли и какие файлы живые — [docs-svt.md](docs-svt.md). Код СВТ 2.0 этим навыком не пишется: стек и скоуп — skill `svt-architecture`. Технический обмен с фронтендом Атласа (пилотный read-only API) — [docs-svt.md](docs-svt.md), раздел «Обмен СВТ с Атласом»; в эталон как действующий обмен не вписывать до выхода на прод.
 
 ## Что такое Атлас
 

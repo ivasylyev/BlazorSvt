@@ -193,7 +193,8 @@ public sealed class UserAccessRepository(
             ORDER BY [Id]
             """,
             parameters,
-            CommandType.Text);
+            CommandType.Text,
+            cancellationToken);
     }
 
     private static Task InsertUserAsync(

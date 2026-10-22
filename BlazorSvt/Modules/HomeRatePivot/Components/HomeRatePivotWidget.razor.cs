@@ -8,7 +8,7 @@ using System.Globalization;
 
 namespace BlazorSvt.Modules.HomeRatePivot.Components;
 
-public partial class HomeRatePivotWidget
+public partial class HomeRatePivotWidget : SvtComponentBase, IDisposable
 {
     private static readonly string[] MonthResourceKeys =
     [
@@ -30,6 +30,7 @@ public partial class HomeRatePivotWidget
     [Inject]
     private IStringLocalizer<Resources.HomeRatePivot> EL { get; set; } = default!;
 
+    private readonly CancellationTokenSource _loadCancellationTokenSource = new();
     private HomeRatePivotTable? _table;
     private string[] _monthHeaders = [];
     private bool _isLoading = true;
@@ -43,13 +44,14 @@ public partial class HomeRatePivotWidget
 
     protected override async Task OnInitializedAsync()
     {
+        var cancellationToken = _loadCancellationTokenSource.Token;
         try
         {
             using (new StopwatchTransaction(TimingService))
             {
                 var stopwatch = Stopwatch.StartNew();
                 var useRussianNames = Lang.Equals("ru", StringComparison.OrdinalIgnoreCase);
-                _table = await PivotService.GetTableAsync(useRussianNames);
+                _table = await PivotService.GetTableAsync(useRussianNames, cancellationToken);
                 _monthHeaders = _table.Months.Select(FormatMonthHeader).ToArray();
                 Logger.LogDebug(
                     "Home rate pivot loaded {RowCount} rows in {ElapsedMs} ms",
@@ -58,6 +60,10 @@ public partial class HomeRatePivotWidget
             }
 
             _selectedRow = _table.Rows.FirstOrDefault();
+        }
+        catch (OperationCanceledException) when (cancellationToken.IsCancellationRequested)
+        {
+            // component disposed while loading
         }
         catch (Exception ex)
         {
@@ -68,6 +74,12 @@ public partial class HomeRatePivotWidget
         {
             _isLoading = false;
         }
+    }
+
+    public void Dispose()
+    {
+        _loadCancellationTokenSource.Cancel();
+        _loadCancellationTokenSource.Dispose();
     }
 
     protected override async Task OnAfterRenderAsync(bool firstRender)

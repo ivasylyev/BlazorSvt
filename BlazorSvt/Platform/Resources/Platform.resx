@@ -358,4 +358,19 @@
   <data name="Common.Active" xml:space="preserve">
 	  <value>Active</value>
   </data>
+  <data name="Api.Error.invalid_request" xml:space="preserve"><value>The request is malformed.</value></data>
+  <data name="Api.Error.validation_failed" xml:space="preserve"><value>Request parameters are invalid. See errors.</value></data>
+  <data name="Api.Error.unauthenticated" xml:space="preserve"><value>The caller is not authenticated.</value></data>
+  <data name="Api.Error.client_not_trusted" xml:space="preserve"><value>The calling account is not a trusted API client.</value></data>
+  <data name="Api.Error.on_behalf_of_required" xml:space="preserve"><value>The X-On-Behalf-Of header is required.</value></data>
+  <data name="Api.Error.on_behalf_of_invalid" xml:space="preserve"><value>The X-On-Behalf-Of header must be in DOMAIN\user format.</value></data>
+  <data name="Api.Error.user_not_registered" xml:space="preserve"><value>The user is not registered in SVT.</value></data>
+  <data name="Api.Error.user_has_no_roles" xml:space="preserve"><value>The user has no roles in SVT.</value></data>
+  <data name="Api.Error.access_denied" xml:space="preserve"><value>Access denied.</value></data>
+  <data name="Api.Error.not_found" xml:space="preserve"><value>Resource not found.</value></data>
+  <data name="Api.Error.catalog_not_found" xml:space="preserve"><value>Catalog not found.</value></data>
+  <data name="Api.Error.item_not_found" xml:space="preserve"><value>Record {0} not found.</value></data>
+  <data name="Api.Error.currency_rate_missing" xml:space="preserve"><value>No exchange rate found for the requested date.</value></data>
+  <data name="Api.Error.service_unavailable" xml:space="preserve"><value>The service is temporarily unavailable. Retry later.</value></data>
+  <data name="Api.Error.internal_error" xml:space="preserve"><value>Internal error. Report the traceId to support.</value></data>
 </root>

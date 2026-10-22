@@ -59,7 +59,7 @@ public partial class GenericGrid<TItem, TDetailItem> : SvtComponentBase, IDispos
 
     [Parameter]
     [EditorRequired]
-    public Func<TItem, Task<TDetailItem>> DetailDataProvider { get; set; } = default!;
+    public Func<TItem, CancellationToken, Task<TDetailItem>> DetailDataProvider { get; set; } = default!;
 
     [Parameter]
     [EditorRequired]
@@ -196,33 +196,41 @@ public partial class GenericGrid<TItem, TDetailItem> : SvtComponentBase, IDispos
             return;
         }
 
-        var totalCount = await GetTotalCountAsync();
-        if (totalCount == 0)
-            return;
-
-        if (totalCount > confirmationThreshold)
-        {
-            var confirmed = await reportConfirmModal.ConfirmAsync(totalCount);
-            if (!confirmed)
-                return;
-        }
-
         reportCancellationTokenSource?.Cancel();
         reportCancellationTokenSource?.Dispose();
         reportCancellationTokenSource = new CancellationTokenSource();
         var cancellationToken = reportCancellationTokenSource.Token;
 
-        PreloadService.Show(SpinnerColor.Light, L["GenericGrid.ReportGenerating"]);
         try
         {
-            await LoggedOperation.ExecuteAsync(
-                Logger,
-                $"{reportName} report",
-                () => generateReport(totalCount, cancellationToken));
+            var totalCount = await GetTotalCountAsync(cancellationToken);
+            if (totalCount == 0)
+                return;
+
+            if (totalCount > confirmationThreshold)
+            {
+                var confirmed = await reportConfirmModal.ConfirmAsync(totalCount);
+                if (!confirmed)
+                    return;
+            }
+
+            cancellationToken.ThrowIfCancellationRequested();
+
+            PreloadService.Show(SpinnerColor.Light, L["GenericGrid.ReportGenerating"]);
+            try
+            {
+                await LoggedOperation.ExecuteAsync(
+                    Logger,
+                    $"{reportName} report",
+                    () => generateReport(totalCount, cancellationToken));
+            }
+            finally
+            {
+                PreloadService.Hide();
+            }
         }
         finally
         {
-            PreloadService.Hide();
             reportCancellationTokenSource.Dispose();
             reportCancellationTokenSource = null;
         }
@@ -231,7 +239,10 @@ public partial class GenericGrid<TItem, TDetailItem> : SvtComponentBase, IDispos
     private async Task ExportShortReportAsync(int totalCount, CancellationToken cancellationToken)
     {
         var batchSize = ReportOptions.Value.ReportBatchSize;
-        var baseRequest = grid.CreateDataProviderRequest(pageNumber: 1, pageSizeOverride: batchSize);
+        var baseRequest = grid.CreateDataProviderRequest(
+            pageNumber: 1,
+            pageSizeOverride: batchSize,
+            cancellationToken: cancellationToken);
 
         await ReportExporter.ExportShortAsync(
             baseRequest,
@@ -244,7 +255,10 @@ public partial class GenericGrid<TItem, TDetailItem> : SvtComponentBase, IDispos
     private async Task ExportFullReportAsync(int totalCount, CancellationToken cancellationToken)
     {
         var batchSize = ReportOptions.Value.ReportBatchSize;
-        var baseRequest = grid.CreateDataProviderRequest(pageNumber: 1, pageSizeOverride: batchSize);
+        var baseRequest = grid.CreateDataProviderRequest(
+            pageNumber: 1,
+            pageSizeOverride: batchSize,
+            cancellationToken: cancellationToken);
         var detailSettings = DetailSettingsService.GetGridDetailSettings(Lang);
         var columns = detailSettings.GroupSettings.Values.SelectMany(settings => settings);
 
@@ -262,9 +276,13 @@ public partial class GenericGrid<TItem, TDetailItem> : SvtComponentBase, IDispos
         return $"{safeTitle}_{reportKind}_report_{DateTime.Now:yyyyMMdd_HHmmss}.xlsx";
     }
 
-    private async Task<int> GetTotalCountAsync()
+    private async Task<int> GetTotalCountAsync(CancellationToken cancellationToken)
     {
-        var countResult = await DataProvider.Invoke(grid.CreateDataProviderRequest(pageNumber: 1, pageSizeOverride: 1));
+        var countResult = await DataProvider.Invoke(
+            grid.CreateDataProviderRequest(
+                pageNumber: 1,
+                pageSizeOverride: 1,
+                cancellationToken: cancellationToken));
         return countResult.TotalCount ?? 0;
     }
 

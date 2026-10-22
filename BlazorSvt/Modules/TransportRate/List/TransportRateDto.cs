@@ -1,4 +1,4 @@
-﻿
+﻿using BlazorSvt.Platform.Api.Catalogs;
 using BlazorSvt.Platform.Domain.IdsEnum;
 
 namespace BlazorSvt.Modules.TransportRate.List;
@@ -48,7 +48,7 @@ public class TransportRateDto
     [GridColumn(SqlColumn = "RateTypeId")]
     public required RateTypeEn RateTypeIdEn { get; set; }
 
-    [GridColumn]
+    [GridColumn, ApiReference("locations-nodes", "code")]
     public required string NodeFromCode { get; set; }
 
     [GridColumn]
@@ -57,7 +57,7 @@ public class TransportRateDto
     [GridColumn]
     public required string NodeFromNameEn { get; set; }
 
-    [GridColumn]
+    [GridColumn, ApiReference("locations-nodes", "code")]
     public string? ProxyNodeCode { get; set; }
 
     [GridColumn]
@@ -66,7 +66,7 @@ public class TransportRateDto
     [GridColumn]
     public string? ProxyNodeNameEn { get; set; }
 
-    [GridColumn]
+    [GridColumn, ApiReference("locations-nodes", "code")]
     public required string NodeToCode { get; set; }
 
     [GridColumn]

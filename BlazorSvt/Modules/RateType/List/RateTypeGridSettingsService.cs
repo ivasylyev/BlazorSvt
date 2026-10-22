@@ -12,7 +12,7 @@ public class RateTypeGridSettingsService(
 {
     protected override string StorageKey => "RateTypeGridColumnSettings";
 
-    protected override List<GridColumnSetting<RateTypeDto>> GetDefaultSettings(string lang)
+    public override IReadOnlyList<GridColumnSetting<RateTypeDto>> GetDefaultSettings(string lang)
     {
         var b = new GridColumnSettingsBuilder<RateTypeDto>(platform);
 

@@ -1,0 +1,5549 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "СВТ API",
+    "description": "Read-only API СВТ для внешних фронтендов (Атлас). Вызывающий — доверенная служебная учётка (Windows Authentication); права — по пользователю из заголовка X-On-Behalf-Of. JSON camelCase; даты yyyy-MM-dd; дата-время ISO 8601 UTC (Z); enum — строковые коды; null не опускается. Ошибки — ProblemDetails с полями code и traceId. Заголовок Sunset — плановая дата вывода версии.",
+    "version": "v1"
+  },
+  "paths": {
+    "/api/v1/catalogs": {
+      "get": {
+        "tags": [
+          "catalogs"
+        ],
+        "summary": "Список справочников",
+        "description": "Справочники, доступные через API: код, заголовки RU/EN, домен, возможности. Поддерживает ETag.",
+        "operationId": "listCatalogs",
+        "parameters": [
+          {
+            "name": "X-On-Behalf-Of",
+            "in": "header",
+            "description": "Пользователь, от имени которого выполняется запрос: DOMAIN\\user. Права определяются его ролями в СВТ.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "X-Correlation-ID",
+            "in": "header",
+            "description": "Идентификатор корреляции; возвращается в ответе. Если не передан — генерируется.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "description": "ru-RU (по умолчанию) или en-US: язык заголовков полей и текстов ошибок. Данные RU/EN возвращаются как есть.",
+            "schema": {
+              "type": "string"
+            },
+            "example": "ru-RU"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CatalogListResponse"
+                }
+              }
+            }
+          },
+          "304": {
+            "description": "Not Modified"
+          }
+        }
+      }
+    },
+    "/api/v1/rates/smart-lookup": {
+      "post": {
+        "tags": [
+          "rates"
+        ],
+        "summary": "Умный подбор ставки",
+        "description": "Одна наиболее подходящая средневзвешенная ставка 3-го уровня. Если точного совпадения нет — подъём продукта до группы, узла назначения до региона, типа транспорта до вида (уровни 1–8), затем те же уровни для дополнительных узлов отправления организации DPO. Порядок: приоритет типа ставки по профилю → уровень → близость к средней → бо́льшая ставка. Ставка не найдена — 200 с found=false. Нет курса для пересчёта — 422 currency_rate_missing.",
+        "operationId": "smartRateLookup",
+        "parameters": [
+          {
+            "name": "X-On-Behalf-Of",
+            "in": "header",
+            "description": "Пользователь, от имени которого выполняется запрос: DOMAIN\\user. Права определяются его ролями в СВТ.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "X-Correlation-ID",
+            "in": "header",
+            "description": "Идентификатор корреляции; возвращается в ответе. Если не передан — генерируется.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "description": "ru-RU (по умолчанию) или en-US: язык заголовков полей и текстов ошибок. Данные RU/EN возвращаются как есть.",
+            "schema": {
+              "type": "string"
+            },
+            "example": "ru-RU"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SmartRateLookupRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SmartRateLookupResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HttpValidationProblemDetails"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Unprocessable Entity",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/catalogs/transport-rates/schema": {
+      "get": {
+        "tags": [
+          "transport-rates"
+        ],
+        "summary": "Описание полей справочника transport-rates",
+        "description": "Поля, типы, заголовки (по Accept-Language), операторы фильтра, значения enum, ссылки, период, ключ. Поддерживает ETag.",
+        "operationId": "getTransportRatesSchema",
+        "parameters": [
+          {
+            "name": "X-On-Behalf-Of",
+            "in": "header",
+            "description": "Пользователь, от имени которого выполняется запрос: DOMAIN\\user. Права определяются его ролями в СВТ.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "X-Correlation-ID",
+            "in": "header",
+            "description": "Идентификатор корреляции; возвращается в ответе. Если не передан — генерируется.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "description": "ru-RU (по умолчанию) или en-US: язык заголовков полей и текстов ошибок. Данные RU/EN возвращаются как есть.",
+            "schema": {
+              "type": "string"
+            },
+            "example": "ru-RU"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CatalogSchemaResponse"
+                }
+              }
+            }
+          },
+          "304": {
+            "description": "Not Modified"
+          }
+        }
+      }
+    },
+    "/api/v1/catalogs/transport-rates/items/search": {
+      "post": {
+        "tags": [
+          "transport-rates"
+        ],
+        "summary": "Поиск записей справочника transport-rates",
+        "description": "Фильтры объединяются через И; сортировка по одному полю; pageSize 1–1000. По умолчанию без архивных записей. asOf — записи, действующие на дату.",
+        "operationId": "searchTransportRates",
+        "parameters": [
+          {
+            "name": "X-On-Behalf-Of",
+            "in": "header",
+            "description": "Пользователь, от имени которого выполняется запрос: DOMAIN\\user. Права определяются его ролями в СВТ.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "X-Correlation-ID",
+            "in": "header",
+            "description": "Идентификатор корреляции; возвращается в ответе. Если не передан — генерируется.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "description": "ru-RU (по умолчанию) или en-US: язык заголовков полей и текстов ошибок. Данные RU/EN возвращаются как есть.",
+            "schema": {
+              "type": "string"
+            },
+            "example": "ru-RU"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CatalogSearchRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CatalogSearchResponseOfTransportRateDto"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HttpValidationProblemDetails"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/catalogs/transport-rates/items/{id}": {
+      "get": {
+        "tags": [
+          "transport-rates"
+        ],
+        "summary": "Карточка записи справочника transport-rates",
+        "description": "id — ключ записи (поле entityKey из /schema). Поля — как в карточке СВТ.",
+        "operationId": "getTransportRatesItem",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          },
+          {
+            "name": "X-On-Behalf-Of",
+            "in": "header",
+            "description": "Пользователь, от имени которого выполняется запрос: DOMAIN\\user. Права определяются его ролями в СВТ.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "X-Correlation-ID",
+            "in": "header",
+            "description": "Идентификатор корреляции; возвращается в ответе. Если не передан — генерируется.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "description": "ru-RU (по умолчанию) или en-US: язык заголовков полей и текстов ошибок. Данные RU/EN возвращаются как есть.",
+            "schema": {
+              "type": "string"
+            },
+            "example": "ru-RU"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TransportRateDetailDto"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/catalogs/transport-rates/export": {
+      "post": {
+        "tags": [
+          "transport-rates"
+        ],
+        "summary": "Выгрузка справочника transport-rates в Excel",
+        "description": "Файл .xlsx в ответе. kind=short — колонки грида, kind=full — поля карточки. Все колонки, без пользовательских настроек.",
+        "operationId": "exportTransportRates",
+        "parameters": [
+          {
+            "name": "X-On-Behalf-Of",
+            "in": "header",
+            "description": "Пользователь, от имени которого выполняется запрос: DOMAIN\\user. Права определяются его ролями в СВТ.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "X-Correlation-ID",
+            "in": "header",
+            "description": "Идентификатор корреляции; возвращается в ответе. Если не передан — генерируется.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "description": "ru-RU (по умолчанию) или en-US: язык заголовков полей и текстов ошибок. Данные RU/EN возвращаются как есть.",
+            "schema": {
+              "type": "string"
+            },
+            "example": "ru-RU"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CatalogExportRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HttpValidationProblemDetails"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/catalogs/parity-rates/schema": {
+      "get": {
+        "tags": [
+          "parity-rates"
+        ],
+        "summary": "Описание полей справочника parity-rates",
+        "description": "Поля, типы, заголовки (по Accept-Language), операторы фильтра, значения enum, ссылки, период, ключ. Поддерживает ETag.",
+        "operationId": "getParityRatesSchema",
+        "parameters": [
+          {
+            "name": "X-On-Behalf-Of",
+            "in": "header",
+            "description": "Пользователь, от имени которого выполняется запрос: DOMAIN\\user. Права определяются его ролями в СВТ.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "X-Correlation-ID",
+            "in": "header",
+            "description": "Идентификатор корреляции; возвращается в ответе. Если не передан — генерируется.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "description": "ru-RU (по умолчанию) или en-US: язык заголовков полей и текстов ошибок. Данные RU/EN возвращаются как есть.",
+            "schema": {
+              "type": "string"
+            },
+            "example": "ru-RU"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CatalogSchemaResponse"
+                }
+              }
+            }
+          },
+          "304": {
+            "description": "Not Modified"
+          }
+        }
+      }
+    },
+    "/api/v1/catalogs/parity-rates/items/search": {
+      "post": {
+        "tags": [
+          "parity-rates"
+        ],
+        "summary": "Поиск записей справочника parity-rates",
+        "description": "Фильтры объединяются через И; сортировка по одному полю; pageSize 1–1000. По умолчанию без архивных записей. asOf — записи, действующие на дату.",
+        "operationId": "searchParityRates",
+        "parameters": [
+          {
+            "name": "X-On-Behalf-Of",
+            "in": "header",
+            "description": "Пользователь, от имени которого выполняется запрос: DOMAIN\\user. Права определяются его ролями в СВТ.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "X-Correlation-ID",
+            "in": "header",
+            "description": "Идентификатор корреляции; возвращается в ответе. Если не передан — генерируется.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "description": "ru-RU (по умолчанию) или en-US: язык заголовков полей и текстов ошибок. Данные RU/EN возвращаются как есть.",
+            "schema": {
+              "type": "string"
+            },
+            "example": "ru-RU"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CatalogSearchRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CatalogSearchResponseOfParityRatesDto"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HttpValidationProblemDetails"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/catalogs/parity-rates/items/{id}": {
+      "get": {
+        "tags": [
+          "parity-rates"
+        ],
+        "summary": "Карточка записи справочника parity-rates",
+        "description": "id — ключ записи (поле entityKey из /schema). Поля — как в карточке СВТ.",
+        "operationId": "getParityRatesItem",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          },
+          {
+            "name": "X-On-Behalf-Of",
+            "in": "header",
+            "description": "Пользователь, от имени которого выполняется запрос: DOMAIN\\user. Права определяются его ролями в СВТ.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "X-Correlation-ID",
+            "in": "header",
+            "description": "Идентификатор корреляции; возвращается в ответе. Если не передан — генерируется.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "description": "ru-RU (по умолчанию) или en-US: язык заголовков полей и текстов ошибок. Данные RU/EN возвращаются как есть.",
+            "schema": {
+              "type": "string"
+            },
+            "example": "ru-RU"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ParityRatesDetailDto"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/catalogs/parity-rates/export": {
+      "post": {
+        "tags": [
+          "parity-rates"
+        ],
+        "summary": "Выгрузка справочника parity-rates в Excel",
+        "description": "Файл .xlsx в ответе. kind=short — колонки грида, kind=full — поля карточки. Все колонки, без пользовательских настроек.",
+        "operationId": "exportParityRates",
+        "parameters": [
+          {
+            "name": "X-On-Behalf-Of",
+            "in": "header",
+            "description": "Пользователь, от имени которого выполняется запрос: DOMAIN\\user. Права определяются его ролями в СВТ.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "X-Correlation-ID",
+            "in": "header",
+            "description": "Идентификатор корреляции; возвращается в ответе. Если не передан — генерируется.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "description": "ru-RU (по умолчанию) или en-US: язык заголовков полей и текстов ошибок. Данные RU/EN возвращаются как есть.",
+            "schema": {
+              "type": "string"
+            },
+            "example": "ru-RU"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CatalogExportRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HttpValidationProblemDetails"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/catalogs/average-rates-level3/schema": {
+      "get": {
+        "tags": [
+          "average-rates-level3"
+        ],
+        "summary": "Описание полей справочника average-rates-level3",
+        "description": "Поля, типы, заголовки (по Accept-Language), операторы фильтра, значения enum, ссылки, период, ключ. Поддерживает ETag.",
+        "operationId": "getAverageRatesLevel3Schema",
+        "parameters": [
+          {
+            "name": "X-On-Behalf-Of",
+            "in": "header",
+            "description": "Пользователь, от имени которого выполняется запрос: DOMAIN\\user. Права определяются его ролями в СВТ.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "X-Correlation-ID",
+            "in": "header",
+            "description": "Идентификатор корреляции; возвращается в ответе. Если не передан — генерируется.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "description": "ru-RU (по умолчанию) или en-US: язык заголовков полей и текстов ошибок. Данные RU/EN возвращаются как есть.",
+            "schema": {
+              "type": "string"
+            },
+            "example": "ru-RU"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CatalogSchemaResponse"
+                }
+              }
+            }
+          },
+          "304": {
+            "description": "Not Modified"
+          }
+        }
+      }
+    },
+    "/api/v1/catalogs/average-rates-level3/items/search": {
+      "post": {
+        "tags": [
+          "average-rates-level3"
+        ],
+        "summary": "Поиск записей справочника average-rates-level3",
+        "description": "Фильтры объединяются через И; сортировка по одному полю; pageSize 1–1000. По умолчанию без архивных записей. asOf — записи, действующие на дату.",
+        "operationId": "searchAverageRatesLevel3",
+        "parameters": [
+          {
+            "name": "X-On-Behalf-Of",
+            "in": "header",
+            "description": "Пользователь, от имени которого выполняется запрос: DOMAIN\\user. Права определяются его ролями в СВТ.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "X-Correlation-ID",
+            "in": "header",
+            "description": "Идентификатор корреляции; возвращается в ответе. Если не передан — генерируется.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "description": "ru-RU (по умолчанию) или en-US: язык заголовков полей и текстов ошибок. Данные RU/EN возвращаются как есть.",
+            "schema": {
+              "type": "string"
+            },
+            "example": "ru-RU"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CatalogSearchRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CatalogSearchResponseOfAverageRateLevel3Dto"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HttpValidationProblemDetails"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/catalogs/average-rates-level3/items/{id}": {
+      "get": {
+        "tags": [
+          "average-rates-level3"
+        ],
+        "summary": "Карточка записи справочника average-rates-level3",
+        "description": "id — ключ записи (поле entityKey из /schema). Поля — как в карточке СВТ.",
+        "operationId": "getAverageRatesLevel3Item",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          },
+          {
+            "name": "X-On-Behalf-Of",
+            "in": "header",
+            "description": "Пользователь, от имени которого выполняется запрос: DOMAIN\\user. Права определяются его ролями в СВТ.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "X-Correlation-ID",
+            "in": "header",
+            "description": "Идентификатор корреляции; возвращается в ответе. Если не передан — генерируется.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "description": "ru-RU (по умолчанию) или en-US: язык заголовков полей и текстов ошибок. Данные RU/EN возвращаются как есть.",
+            "schema": {
+              "type": "string"
+            },
+            "example": "ru-RU"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AverageRateLevel3DetailDto"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/catalogs/average-rates-level3/export": {
+      "post": {
+        "tags": [
+          "average-rates-level3"
+        ],
+        "summary": "Выгрузка справочника average-rates-level3 в Excel",
+        "description": "Файл .xlsx в ответе. kind=short — колонки грида, kind=full — поля карточки. Все колонки, без пользовательских настроек.",
+        "operationId": "exportAverageRatesLevel3",
+        "parameters": [
+          {
+            "name": "X-On-Behalf-Of",
+            "in": "header",
+            "description": "Пользователь, от имени которого выполняется запрос: DOMAIN\\user. Права определяются его ролями в СВТ.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "X-Correlation-ID",
+            "in": "header",
+            "description": "Идентификатор корреляции; возвращается в ответе. Если не передан — генерируется.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "description": "ru-RU (по умолчанию) или en-US: язык заголовков полей и текстов ошибок. Данные RU/EN возвращаются как есть.",
+            "schema": {
+              "type": "string"
+            },
+            "example": "ru-RU"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CatalogExportRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HttpValidationProblemDetails"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/catalogs/transport-legs/schema": {
+      "get": {
+        "tags": [
+          "transport-legs"
+        ],
+        "summary": "Описание полей справочника transport-legs",
+        "description": "Поля, типы, заголовки (по Accept-Language), операторы фильтра, значения enum, ссылки, период, ключ. Поддерживает ETag.",
+        "operationId": "getTransportLegsSchema",
+        "parameters": [
+          {
+            "name": "X-On-Behalf-Of",
+            "in": "header",
+            "description": "Пользователь, от имени которого выполняется запрос: DOMAIN\\user. Права определяются его ролями в СВТ.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "X-Correlation-ID",
+            "in": "header",
+            "description": "Идентификатор корреляции; возвращается в ответе. Если не передан — генерируется.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "description": "ru-RU (по умолчанию) или en-US: язык заголовков полей и текстов ошибок. Данные RU/EN возвращаются как есть.",
+            "schema": {
+              "type": "string"
+            },
+            "example": "ru-RU"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CatalogSchemaResponse"
+                }
+              }
+            }
+          },
+          "304": {
+            "description": "Not Modified"
+          }
+        }
+      }
+    },
+    "/api/v1/catalogs/transport-legs/items/search": {
+      "post": {
+        "tags": [
+          "transport-legs"
+        ],
+        "summary": "Поиск записей справочника transport-legs",
+        "description": "Фильтры объединяются через И; сортировка по одному полю; pageSize 1–1000. По умолчанию без архивных записей. asOf — записи, действующие на дату.",
+        "operationId": "searchTransportLegs",
+        "parameters": [
+          {
+            "name": "X-On-Behalf-Of",
+            "in": "header",
+            "description": "Пользователь, от имени которого выполняется запрос: DOMAIN\\user. Права определяются его ролями в СВТ.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "X-Correlation-ID",
+            "in": "header",
+            "description": "Идентификатор корреляции; возвращается в ответе. Если не передан — генерируется.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "description": "ru-RU (по умолчанию) или en-US: язык заголовков полей и текстов ошибок. Данные RU/EN возвращаются как есть.",
+            "schema": {
+              "type": "string"
+            },
+            "example": "ru-RU"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CatalogSearchRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CatalogSearchResponseOfTransportLegDto"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HttpValidationProblemDetails"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/catalogs/transport-legs/items/{id}": {
+      "get": {
+        "tags": [
+          "transport-legs"
+        ],
+        "summary": "Карточка записи справочника transport-legs",
+        "description": "id — ключ записи (поле entityKey из /schema). Поля — как в карточке СВТ.",
+        "operationId": "getTransportLegsItem",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          },
+          {
+            "name": "X-On-Behalf-Of",
+            "in": "header",
+            "description": "Пользователь, от имени которого выполняется запрос: DOMAIN\\user. Права определяются его ролями в СВТ.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "X-Correlation-ID",
+            "in": "header",
+            "description": "Идентификатор корреляции; возвращается в ответе. Если не передан — генерируется.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "description": "ru-RU (по умолчанию) или en-US: язык заголовков полей и текстов ошибок. Данные RU/EN возвращаются как есть.",
+            "schema": {
+              "type": "string"
+            },
+            "example": "ru-RU"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TransportLegDetailDto"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/catalogs/transport-legs/export": {
+      "post": {
+        "tags": [
+          "transport-legs"
+        ],
+        "summary": "Выгрузка справочника transport-legs в Excel",
+        "description": "Файл .xlsx в ответе. kind=short — колонки грида, kind=full — поля карточки. Все колонки, без пользовательских настроек.",
+        "operationId": "exportTransportLegs",
+        "parameters": [
+          {
+            "name": "X-On-Behalf-Of",
+            "in": "header",
+            "description": "Пользователь, от имени которого выполняется запрос: DOMAIN\\user. Права определяются его ролями в СВТ.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "X-Correlation-ID",
+            "in": "header",
+            "description": "Идентификатор корреляции; возвращается в ответе. Если не передан — генерируется.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "description": "ru-RU (по умолчанию) или en-US: язык заголовков полей и текстов ошибок. Данные RU/EN возвращаются как есть.",
+            "schema": {
+              "type": "string"
+            },
+            "example": "ru-RU"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CatalogExportRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HttpValidationProblemDetails"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/catalogs/locations-nodes/schema": {
+      "get": {
+        "tags": [
+          "locations-nodes"
+        ],
+        "summary": "Описание полей справочника locations-nodes",
+        "description": "Поля, типы, заголовки (по Accept-Language), операторы фильтра, значения enum, ссылки, период, ключ. Поддерживает ETag.",
+        "operationId": "getLocationsNodesSchema",
+        "parameters": [
+          {
+            "name": "X-On-Behalf-Of",
+            "in": "header",
+            "description": "Пользователь, от имени которого выполняется запрос: DOMAIN\\user. Права определяются его ролями в СВТ.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "X-Correlation-ID",
+            "in": "header",
+            "description": "Идентификатор корреляции; возвращается в ответе. Если не передан — генерируется.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "description": "ru-RU (по умолчанию) или en-US: язык заголовков полей и текстов ошибок. Данные RU/EN возвращаются как есть.",
+            "schema": {
+              "type": "string"
+            },
+            "example": "ru-RU"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CatalogSchemaResponse"
+                }
+              }
+            }
+          },
+          "304": {
+            "description": "Not Modified"
+          }
+        }
+      }
+    },
+    "/api/v1/catalogs/locations-nodes/items/search": {
+      "post": {
+        "tags": [
+          "locations-nodes"
+        ],
+        "summary": "Поиск записей справочника locations-nodes",
+        "description": "Фильтры объединяются через И; сортировка по одному полю; pageSize 1–1000. По умолчанию без архивных записей. asOf — записи, действующие на дату.",
+        "operationId": "searchLocationsNodes",
+        "parameters": [
+          {
+            "name": "X-On-Behalf-Of",
+            "in": "header",
+            "description": "Пользователь, от имени которого выполняется запрос: DOMAIN\\user. Права определяются его ролями в СВТ.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "X-Correlation-ID",
+            "in": "header",
+            "description": "Идентификатор корреляции; возвращается в ответе. Если не передан — генерируется.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "description": "ru-RU (по умолчанию) или en-US: язык заголовков полей и текстов ошибок. Данные RU/EN возвращаются как есть.",
+            "schema": {
+              "type": "string"
+            },
+            "example": "ru-RU"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CatalogSearchRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CatalogSearchResponseOfLocationsNodesDto"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HttpValidationProblemDetails"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/catalogs/locations-nodes/items/{id}": {
+      "get": {
+        "tags": [
+          "locations-nodes"
+        ],
+        "summary": "Карточка записи справочника locations-nodes",
+        "description": "id — ключ записи (поле entityKey из /schema). Поля — как в карточке СВТ.",
+        "operationId": "getLocationsNodesItem",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          },
+          {
+            "name": "X-On-Behalf-Of",
+            "in": "header",
+            "description": "Пользователь, от имени которого выполняется запрос: DOMAIN\\user. Права определяются его ролями в СВТ.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "X-Correlation-ID",
+            "in": "header",
+            "description": "Идентификатор корреляции; возвращается в ответе. Если не передан — генерируется.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "description": "ru-RU (по умолчанию) или en-US: язык заголовков полей и текстов ошибок. Данные RU/EN возвращаются как есть.",
+            "schema": {
+              "type": "string"
+            },
+            "example": "ru-RU"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LocationsNodesDetailDto"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/catalogs/locations-nodes/export": {
+      "post": {
+        "tags": [
+          "locations-nodes"
+        ],
+        "summary": "Выгрузка справочника locations-nodes в Excel",
+        "description": "Файл .xlsx в ответе. kind=short — колонки грида, kind=full — поля карточки. Все колонки, без пользовательских настроек.",
+        "operationId": "exportLocationsNodes",
+        "parameters": [
+          {
+            "name": "X-On-Behalf-Of",
+            "in": "header",
+            "description": "Пользователь, от имени которого выполняется запрос: DOMAIN\\user. Права определяются его ролями в СВТ.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "X-Correlation-ID",
+            "in": "header",
+            "description": "Идентификатор корреляции; возвращается в ответе. Если не передан — генерируется.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "description": "ru-RU (по умолчанию) или en-US: язык заголовков полей и текстов ошибок. Данные RU/EN возвращаются как есть.",
+            "schema": {
+              "type": "string"
+            },
+            "example": "ru-RU"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CatalogExportRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HttpValidationProblemDetails"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/catalogs/rate-types/schema": {
+      "get": {
+        "tags": [
+          "rate-types"
+        ],
+        "summary": "Описание полей справочника rate-types",
+        "description": "Поля, типы, заголовки (по Accept-Language), операторы фильтра, значения enum, ссылки, период, ключ. Поддерживает ETag.",
+        "operationId": "getRateTypesSchema",
+        "parameters": [
+          {
+            "name": "X-On-Behalf-Of",
+            "in": "header",
+            "description": "Пользователь, от имени которого выполняется запрос: DOMAIN\\user. Права определяются его ролями в СВТ.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "X-Correlation-ID",
+            "in": "header",
+            "description": "Идентификатор корреляции; возвращается в ответе. Если не передан — генерируется.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "description": "ru-RU (по умолчанию) или en-US: язык заголовков полей и текстов ошибок. Данные RU/EN возвращаются как есть.",
+            "schema": {
+              "type": "string"
+            },
+            "example": "ru-RU"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CatalogSchemaResponse"
+                }
+              }
+            }
+          },
+          "304": {
+            "description": "Not Modified"
+          }
+        }
+      }
+    },
+    "/api/v1/catalogs/rate-types/items/search": {
+      "post": {
+        "tags": [
+          "rate-types"
+        ],
+        "summary": "Поиск записей справочника rate-types",
+        "description": "Фильтры объединяются через И; сортировка по одному полю; pageSize 1–1000. По умолчанию без архивных записей. asOf — записи, действующие на дату.",
+        "operationId": "searchRateTypes",
+        "parameters": [
+          {
+            "name": "X-On-Behalf-Of",
+            "in": "header",
+            "description": "Пользователь, от имени которого выполняется запрос: DOMAIN\\user. Права определяются его ролями в СВТ.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "X-Correlation-ID",
+            "in": "header",
+            "description": "Идентификатор корреляции; возвращается в ответе. Если не передан — генерируется.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "description": "ru-RU (по умолчанию) или en-US: язык заголовков полей и текстов ошибок. Данные RU/EN возвращаются как есть.",
+            "schema": {
+              "type": "string"
+            },
+            "example": "ru-RU"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CatalogSearchRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CatalogSearchResponseOfRateTypeDto"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HttpValidationProblemDetails"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/catalogs/rate-types/items/{id}": {
+      "get": {
+        "tags": [
+          "rate-types"
+        ],
+        "summary": "Карточка записи справочника rate-types",
+        "description": "id — ключ записи (поле entityKey из /schema). Поля — как в карточке СВТ.",
+        "operationId": "getRateTypesItem",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          },
+          {
+            "name": "X-On-Behalf-Of",
+            "in": "header",
+            "description": "Пользователь, от имени которого выполняется запрос: DOMAIN\\user. Права определяются его ролями в СВТ.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "X-Correlation-ID",
+            "in": "header",
+            "description": "Идентификатор корреляции; возвращается в ответе. Если не передан — генерируется.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "description": "ru-RU (по умолчанию) или en-US: язык заголовков полей и текстов ошибок. Данные RU/EN возвращаются как есть.",
+            "schema": {
+              "type": "string"
+            },
+            "example": "ru-RU"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RateTypeDetailDto"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/catalogs/rate-types/export": {
+      "post": {
+        "tags": [
+          "rate-types"
+        ],
+        "summary": "Выгрузка справочника rate-types в Excel",
+        "description": "Файл .xlsx в ответе. kind=short — колонки грида, kind=full — поля карточки. Все колонки, без пользовательских настроек.",
+        "operationId": "exportRateTypes",
+        "parameters": [
+          {
+            "name": "X-On-Behalf-Of",
+            "in": "header",
+            "description": "Пользователь, от имени которого выполняется запрос: DOMAIN\\user. Права определяются его ролями в СВТ.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "X-Correlation-ID",
+            "in": "header",
+            "description": "Идентификатор корреляции; возвращается в ответе. Если не передан — генерируется.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "description": "ru-RU (по умолчанию) или en-US: язык заголовков полей и текстов ошибок. Данные RU/EN возвращаются как есть.",
+            "schema": {
+              "type": "string"
+            },
+            "example": "ru-RU"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CatalogExportRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HttpValidationProblemDetails"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "AverageRateLevel3DetailDto": {
+        "required": [
+          "code",
+          "currencyStandard",
+          "typeCode",
+          "typeName",
+          "nodeFromCode",
+          "nodeFromNameRu",
+          "nodeFromNameEn",
+          "nodeToCode",
+          "nodeToNameRu",
+          "nodeToNameEn",
+          "transportKindCode",
+          "transportKindNameRu",
+          "transportKindNameRuEn",
+          "transportTypeCode",
+          "transportTypeNameRu",
+          "transportTypeNameRuEn",
+          "legCode"
+        ],
+        "type": "object",
+        "properties": {
+          "averageRateLevel3Id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "code": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "isArchive": {
+            "type": "boolean"
+          },
+          "isDefRate": {
+            "type": "boolean"
+          },
+          "creationDate": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "lastChangeDate": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "transportRateCodes": {
+            "type": "string",
+            "nullable": true
+          },
+          "calcDate": {
+            "type": "string",
+            "format": "date"
+          },
+          "rateLevel3": {
+            "type": "number",
+            "format": "double"
+          },
+          "currencyStandard": {
+            "type": "string"
+          },
+          "currencyRateMonth": {
+            "type": "string",
+            "format": "date"
+          },
+          "effectiveLoadOfTransportType": {
+            "type": "number",
+            "format": "double"
+          },
+          "minDailyTransportation": {
+            "type": "number",
+            "format": "double"
+          },
+          "maxDailyTransportation": {
+            "type": "number",
+            "format": "double"
+          },
+          "startDate": {
+            "type": "string",
+            "format": "date"
+          },
+          "endDate": {
+            "type": "string",
+            "format": "date"
+          },
+          "typeCode": {
+            "type": "string"
+          },
+          "typeName": {
+            "type": "string"
+          },
+          "totalCostTonRUB": {
+            "type": "number",
+            "format": "double"
+          },
+          "totalCostTonEUR": {
+            "type": "number",
+            "format": "double"
+          },
+          "totalCostTonCNY": {
+            "type": "number",
+            "format": "double"
+          },
+          "totalCostTonUSD": {
+            "type": "number",
+            "format": "double"
+          },
+          "totalCostTransportRUB": {
+            "type": "number",
+            "format": "double"
+          },
+          "totalCostTransportEUR": {
+            "type": "number",
+            "format": "double"
+          },
+          "totalCostTransportCNY": {
+            "type": "number",
+            "format": "double"
+          },
+          "totalCostTransportUSD": {
+            "type": "number",
+            "format": "double"
+          },
+          "emptyRFSize": {
+            "type": "number",
+            "format": "double"
+          },
+          "emptyRFCurrency": {
+            "type": "string",
+            "nullable": true
+          },
+          "emptyCISSize": {
+            "type": "number",
+            "format": "double"
+          },
+          "emptyCISCurrency": {
+            "type": "string",
+            "nullable": true
+          },
+          "provisionTransportSize": {
+            "type": "number",
+            "format": "double"
+          },
+          "provisionTransportCurrency": {
+            "type": "string",
+            "nullable": true
+          },
+          "ferryboatSize": {
+            "type": "number",
+            "format": "double"
+          },
+          "ferryboatCurrency": {
+            "type": "string",
+            "nullable": true
+          },
+          "teFromSize": {
+            "type": "number",
+            "format": "double"
+          },
+          "teFromCurrency": {
+            "type": "string",
+            "nullable": true
+          },
+          "pnpFromSize": {
+            "type": "number",
+            "format": "double"
+          },
+          "pnpFromCurrency": {
+            "type": "string",
+            "nullable": true
+          },
+          "teToSize": {
+            "type": "number",
+            "format": "double"
+          },
+          "teToCurrency": {
+            "type": "string",
+            "nullable": true
+          },
+          "pnpToSize": {
+            "type": "number",
+            "format": "double"
+          },
+          "pnpToCurrency": {
+            "type": "string",
+            "nullable": true
+          },
+          "drainLoadingSize": {
+            "type": "number",
+            "format": "double"
+          },
+          "drainLoadingCurrency": {
+            "type": "string",
+            "nullable": true
+          },
+          "transshipmentSize": {
+            "type": "number",
+            "format": "double"
+          },
+          "transshipmentCurrency": {
+            "type": "string",
+            "nullable": true
+          },
+          "freightSize": {
+            "type": "number",
+            "format": "double"
+          },
+          "freightCurrency": {
+            "type": "string",
+            "nullable": true
+          },
+          "additionalFeesCISSize": {
+            "type": "number",
+            "format": "double"
+          },
+          "additionalFeesCISCurrency": {
+            "type": "string",
+            "nullable": true
+          },
+          "loadedCISSize": {
+            "type": "number",
+            "format": "double"
+          },
+          "loadedCISCurrency": {
+            "type": "string",
+            "nullable": true
+          },
+          "loadedRFSize": {
+            "type": "number",
+            "format": "double"
+          },
+          "loadedRFCurrency": {
+            "type": "string",
+            "nullable": true
+          },
+          "teFromSize_fix": {
+            "type": "number",
+            "format": "double"
+          },
+          "teFromCurrency_fix": {
+            "type": "string",
+            "nullable": true
+          },
+          "teToSize_fix": {
+            "type": "number",
+            "format": "double"
+          },
+          "teToCurrency_fix": {
+            "type": "string",
+            "nullable": true
+          },
+          "nodeFromCode": {
+            "type": "string"
+          },
+          "nodeFromNameRu": {
+            "type": "string"
+          },
+          "nodeFromNameEn": {
+            "type": "string"
+          },
+          "regionFromCode": {
+            "type": "string",
+            "nullable": true
+          },
+          "regionFromNameRu": {
+            "type": "string",
+            "nullable": true
+          },
+          "regionFromNameEn": {
+            "type": "string",
+            "nullable": true
+          },
+          "proxyNodeCode": {
+            "type": "string",
+            "nullable": true
+          },
+          "proxyNodeNameRu": {
+            "type": "string",
+            "nullable": true
+          },
+          "proxyNodeNameEn": {
+            "type": "string",
+            "nullable": true
+          },
+          "proxyRegionCode": {
+            "type": "string",
+            "nullable": true
+          },
+          "proxyRegionNameRu": {
+            "type": "string",
+            "nullable": true
+          },
+          "proxyRegionNameEn": {
+            "type": "string",
+            "nullable": true
+          },
+          "nodeToCode": {
+            "type": "string"
+          },
+          "nodeToNameRu": {
+            "type": "string"
+          },
+          "nodeToNameEn": {
+            "type": "string"
+          },
+          "regionToCode": {
+            "type": "string",
+            "nullable": true
+          },
+          "regionToNameRu": {
+            "type": "string",
+            "nullable": true
+          },
+          "regionToNameEn": {
+            "type": "string",
+            "nullable": true
+          },
+          "basis": {
+            "type": "string",
+            "nullable": true
+          },
+          "basisNodeCode": {
+            "type": "string",
+            "nullable": true
+          },
+          "basisNodeNameRu": {
+            "type": "string",
+            "nullable": true
+          },
+          "transportKindCode": {
+            "type": "string"
+          },
+          "transportKindNameRu": {
+            "type": "string"
+          },
+          "transportKindNameRuEn": {
+            "type": "string"
+          },
+          "transportTypeCode": {
+            "type": "string"
+          },
+          "transportTypeNameRu": {
+            "type": "string"
+          },
+          "transportTypeNameRuEn": {
+            "type": "string"
+          },
+          "productGroupCode": {
+            "type": "string",
+            "nullable": true
+          },
+          "productGroupNameEnRu": {
+            "type": "string",
+            "nullable": true
+          },
+          "productCode": {
+            "type": "string",
+            "nullable": true
+          },
+          "productNameRu": {
+            "type": "string",
+            "nullable": true
+          },
+          "productNameEn": {
+            "type": "string",
+            "nullable": true
+          },
+          "productDPOCOde": {
+            "type": "string",
+            "nullable": true
+          },
+          "comment": {
+            "type": "string",
+            "nullable": true
+          },
+          "legCode": {
+            "type": "string"
+          },
+          "legChangeDate": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "leadTimeChangeDate": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "leadTimeStartDate": {
+            "type": "string",
+            "format": "date",
+            "nullable": true
+          },
+          "leadTimeEndDate": {
+            "type": "string",
+            "format": "date",
+            "nullable": true
+          },
+          "leadTimeCode": {
+            "type": "string",
+            "nullable": true
+          },
+          "leadTimeSearchTime": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "leadTimeLoadTime": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "leadTimeTravelTime": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "leadTimeDaysWaiting": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "leadTimeUnLoadTime": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "leadTimeTransportationTime": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "leadTimeDistance": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "leg1_TransportTypeCode": {
+            "type": "string",
+            "nullable": true
+          },
+          "leg1_TransportTypeNameRu": {
+            "type": "string",
+            "nullable": true
+          },
+          "leg1_TransportTypeNameRuEn": {
+            "type": "string",
+            "nullable": true
+          },
+          "leg1_EffectiveLoad": {
+            "type": "number",
+            "format": "double"
+          },
+          "leg1_TotalCostTon": {
+            "type": "number",
+            "format": "double"
+          },
+          "leg1_TotalCostTransport": {
+            "type": "number",
+            "format": "double"
+          },
+          "leg1_BaseCurrency": {
+            "type": "string",
+            "nullable": true
+          },
+          "leg1_TotalCostTonRUB": {
+            "type": "number",
+            "format": "double"
+          },
+          "leg1_TotalCostTonUSD": {
+            "type": "number",
+            "format": "double"
+          },
+          "leg1_TotalCostTonEUR": {
+            "type": "number",
+            "format": "double"
+          },
+          "leg1_TotalCostTonCNY": {
+            "type": "number",
+            "format": "double"
+          },
+          "leg1_TotalCostTransportRUB": {
+            "type": "number",
+            "format": "double"
+          },
+          "leg1_TotalCostTransportUSD": {
+            "type": "number",
+            "format": "double"
+          },
+          "leg1_TotalCostTransportEUR": {
+            "type": "number",
+            "format": "double"
+          },
+          "leg1_TotalCostTransportCNY": {
+            "type": "number",
+            "format": "double"
+          },
+          "leadTimeLeg1_SearchTime": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "leadTimeLeg1_LoadTime": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "leadTimeLeg1_TravelTime": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "leadTimeLeg1_DaysWaiting": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "leadTimeLeg1_TransportationTime": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "leadTimeLeg1_Distance": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "leg2_TransportTypeCode": {
+            "type": "string",
+            "nullable": true
+          },
+          "leg2_TransportTypeNameRu": {
+            "type": "string",
+            "nullable": true
+          },
+          "leg2_TransportTypeNameRuEn": {
+            "type": "string",
+            "nullable": true
+          },
+          "leg2_EffectiveLoad": {
+            "type": "number",
+            "format": "double"
+          },
+          "leg2_TotalCostTon": {
+            "type": "number",
+            "format": "double"
+          },
+          "leg2_TotalCostTransport": {
+            "type": "number",
+            "format": "double"
+          },
+          "leg2_BaseCurrency": {
+            "type": "string",
+            "nullable": true
+          },
+          "leg2_TotalCostTonRUB": {
+            "type": "number",
+            "format": "double"
+          },
+          "leg2_TotalCostTonUSD": {
+            "type": "number",
+            "format": "double"
+          },
+          "leg2_TotalCostTonEUR": {
+            "type": "number",
+            "format": "double"
+          },
+          "leg2_TotalCostTonCNY": {
+            "type": "number",
+            "format": "double"
+          },
+          "leg2_TotalCostTransportRUB": {
+            "type": "number",
+            "format": "double"
+          },
+          "leg2_TotalCostTransportUSD": {
+            "type": "number",
+            "format": "double"
+          },
+          "leg2_TotalCostTransportEUR": {
+            "type": "number",
+            "format": "double"
+          },
+          "leg2_TotalCostTransportCNY": {
+            "type": "number",
+            "format": "double"
+          },
+          "leadTimeLeg2_TravelTime": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "leadTimeLeg2_DaysWaiting": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "leadTimeLeg2_UploadTime": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "leadTimeLeg2_TransportationTime": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "leadTimeLeg2_Distance": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          }
+        }
+      },
+      "AverageRateLevel3Dto": {
+        "required": [
+          "code",
+          "currencyId",
+          "rateTypeIdRu",
+          "rateTypeIdEn",
+          "nodeFromCode",
+          "nodeFromNameRu",
+          "nodeFromNameEn",
+          "nodeToCode",
+          "nodeToNameRu",
+          "nodeToNameEn",
+          "transportKindIdRu",
+          "transportKindIdEn",
+          "transportKindCode",
+          "transportTypeCode",
+          "transportTypeIdRu",
+          "transportTypeIdEn"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "averageRateLevel3Id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "isArchive": {
+            "type": "boolean"
+          },
+          "isDefRate": {
+            "type": "boolean"
+          },
+          "startDate": {
+            "type": "string",
+            "format": "date"
+          },
+          "endDate": {
+            "type": "string",
+            "format": "date"
+          },
+          "creationDate": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "lastChangeDate": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "rateLevel3": {
+            "type": "number",
+            "format": "double"
+          },
+          "effectiveLoadOfTransportType": {
+            "type": "number",
+            "format": "double"
+          },
+          "code": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "currencyId": {
+            "$ref": "#/components/schemas/Currency"
+          },
+          "rateTypeIdRu": {
+            "$ref": "#/components/schemas/RateTypeRu"
+          },
+          "rateTypeIdEn": {
+            "$ref": "#/components/schemas/RateTypeEn"
+          },
+          "nodeFromCode": {
+            "type": "string"
+          },
+          "nodeFromNameRu": {
+            "type": "string"
+          },
+          "nodeFromNameEn": {
+            "type": "string"
+          },
+          "proxyNodeCode": {
+            "type": "string",
+            "nullable": true
+          },
+          "proxyNodeNameRu": {
+            "type": "string",
+            "nullable": true
+          },
+          "proxyNodeNameEn": {
+            "type": "string",
+            "nullable": true
+          },
+          "nodeToCode": {
+            "type": "string"
+          },
+          "nodeToNameRu": {
+            "type": "string"
+          },
+          "nodeToNameEn": {
+            "type": "string"
+          },
+          "transportKindIdRu": {
+            "$ref": "#/components/schemas/TransportKindRu"
+          },
+          "transportKindIdEn": {
+            "$ref": "#/components/schemas/TransportKindEn"
+          },
+          "transportKindCode": {
+            "type": "string"
+          },
+          "transportTypeCode": {
+            "type": "string"
+          },
+          "transportTypeIdRu": {
+            "$ref": "#/components/schemas/TransportTypeLevel3Ru"
+          },
+          "transportTypeIdEn": {
+            "$ref": "#/components/schemas/TransportTypeLevel3En"
+          },
+          "productGroupCode": {
+            "type": "string",
+            "nullable": true
+          },
+          "productGroupNameRu": {
+            "type": "string",
+            "nullable": true
+          },
+          "productGroupNameEn": {
+            "type": "string",
+            "nullable": true
+          },
+          "productCode": {
+            "type": "integer",
+            "format": "int64",
+            "nullable": true
+          },
+          "productNameRu": {
+            "type": "string",
+            "nullable": true
+          },
+          "productNameEn": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
+      "CatalogDetailFieldSchema": {
+        "required": [
+          "name",
+          "type",
+          "title",
+          "group",
+          "nullable",
+          "enumValues"
+        ],
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string"
+          },
+          "title": {
+            "type": "string"
+          },
+          "group": {
+            "type": "string",
+            "nullable": true
+          },
+          "nullable": {
+            "type": "boolean"
+          },
+          "enumValues": {
+            "type": "array",
+            "items": {},
+            "nullable": true
+          }
+        }
+      },
+      "CatalogEnumValue": {
+        "required": [
+          "code",
+          "title"
+        ],
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "string"
+          },
+          "title": {
+            "type": "string"
+          }
+        }
+      },
+      "CatalogExportKind": {
+        "enum": [
+          "Short",
+          "Full"
+        ],
+        "default": "Short"
+      },
+      "CatalogExportRequest": {
+        "type": "object",
+        "properties": {
+          "kind": {
+            "$ref": "#/components/schemas/CatalogExportKind"
+          },
+          "filters": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/CatalogFilterRequest"
+            },
+            "nullable": true
+          },
+          "sort": {
+            "$ref": "#/components/schemas/CatalogSortRequest"
+          },
+          "asOf": {
+            "type": "string",
+            "format": "date",
+            "nullable": true
+          },
+          "includeArchived": {
+            "type": "boolean"
+          }
+        }
+      },
+      "CatalogFieldSchema": {
+        "required": [
+          "name",
+          "type",
+          "title",
+          "nullable",
+          "filterable",
+          "sortable",
+          "operators",
+          "enumValues",
+          "reference"
+        ],
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string"
+          },
+          "title": {
+            "type": "string"
+          },
+          "nullable": {
+            "type": "boolean"
+          },
+          "filterable": {
+            "type": "boolean"
+          },
+          "sortable": {
+            "type": "boolean"
+          },
+          "operators": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "enumValues": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/CatalogEnumValue"
+            },
+            "nullable": true
+          },
+          "reference": {
+            "$ref": "#/components/schemas/CatalogReference"
+          }
+        }
+      },
+      "CatalogFilterRequest": {
+        "type": "object",
+        "properties": {
+          "field": {
+            "type": "string",
+            "nullable": true
+          },
+          "operator": {
+            "type": "string",
+            "nullable": true
+          },
+          "value": {
+            "$ref": "#/components/schemas/NullableOfJsonElement"
+          }
+        }
+      },
+      "CatalogInfo": {
+        "required": [
+          "code",
+          "titleRu",
+          "titleEn",
+          "domain",
+          "capabilities"
+        ],
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "string"
+          },
+          "titleRu": {
+            "type": "string"
+          },
+          "titleEn": {
+            "type": "string"
+          },
+          "domain": {
+            "type": "string"
+          },
+          "capabilities": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "CatalogListResponse": {
+        "required": [
+          "items"
+        ],
+        "type": "object",
+        "properties": {
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/CatalogInfo"
+            }
+          }
+        }
+      },
+      "CatalogPeriodSchema": {
+        "required": [
+          "from",
+          "to"
+        ],
+        "type": "object",
+        "properties": {
+          "from": {
+            "type": "string"
+          },
+          "to": {
+            "type": "string"
+          }
+        },
+        "nullable": true
+      },
+      "CatalogReference": {
+        "required": [
+          "catalog",
+          "field"
+        ],
+        "type": "object",
+        "properties": {
+          "catalog": {
+            "type": "string"
+          },
+          "field": {
+            "type": "string"
+          }
+        },
+        "nullable": true
+      },
+      "CatalogSchemaResponse": {
+        "required": [
+          "code",
+          "title",
+          "entityKey",
+          "period",
+          "fields",
+          "detailFields"
+        ],
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "string"
+          },
+          "title": {
+            "type": "string"
+          },
+          "entityKey": {
+            "type": "string"
+          },
+          "period": {
+            "$ref": "#/components/schemas/CatalogPeriodSchema"
+          },
+          "fields": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/CatalogFieldSchema"
+            }
+          },
+          "detailFields": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/CatalogDetailFieldSchema"
+            }
+          }
+        }
+      },
+      "CatalogSearchRequest": {
+        "type": "object",
+        "properties": {
+          "filters": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/CatalogFilterRequest"
+            },
+            "nullable": true
+          },
+          "sort": {
+            "$ref": "#/components/schemas/CatalogSortRequest"
+          },
+          "page": {
+            "type": "integer",
+            "format": "int32",
+            "default": 1
+          },
+          "pageSize": {
+            "type": "integer",
+            "format": "int32",
+            "default": 100
+          },
+          "asOf": {
+            "type": "string",
+            "format": "date",
+            "nullable": true
+          },
+          "includeArchived": {
+            "type": "boolean"
+          }
+        }
+      },
+      "CatalogSearchResponseOfAverageRateLevel3Dto": {
+        "required": [
+          "items",
+          "totalCount",
+          "dataAsOf"
+        ],
+        "type": "object",
+        "properties": {
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/AverageRateLevel3Dto"
+            }
+          },
+          "totalCount": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "dataAsOf": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          }
+        }
+      },
+      "CatalogSearchResponseOfLocationsNodesDto": {
+        "required": [
+          "items",
+          "totalCount",
+          "dataAsOf"
+        ],
+        "type": "object",
+        "properties": {
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/LocationsNodesDto"
+            }
+          },
+          "totalCount": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "dataAsOf": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          }
+        }
+      },
+      "CatalogSearchResponseOfParityRatesDto": {
+        "required": [
+          "items",
+          "totalCount",
+          "dataAsOf"
+        ],
+        "type": "object",
+        "properties": {
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ParityRatesDto"
+            }
+          },
+          "totalCount": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "dataAsOf": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          }
+        }
+      },
+      "CatalogSearchResponseOfRateTypeDto": {
+        "required": [
+          "items",
+          "totalCount",
+          "dataAsOf"
+        ],
+        "type": "object",
+        "properties": {
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/RateTypeDto"
+            }
+          },
+          "totalCount": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "dataAsOf": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          }
+        }
+      },
+      "CatalogSearchResponseOfTransportLegDto": {
+        "required": [
+          "items",
+          "totalCount",
+          "dataAsOf"
+        ],
+        "type": "object",
+        "properties": {
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/TransportLegDto"
+            }
+          },
+          "totalCount": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "dataAsOf": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          }
+        }
+      },
+      "CatalogSearchResponseOfTransportRateDto": {
+        "required": [
+          "items",
+          "totalCount",
+          "dataAsOf"
+        ],
+        "type": "object",
+        "properties": {
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/TransportRateDto"
+            }
+          },
+          "totalCount": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "dataAsOf": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          }
+        }
+      },
+      "CatalogSortRequest": {
+        "type": "object",
+        "properties": {
+          "field": {
+            "type": "string",
+            "nullable": true
+          },
+          "direction": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "nullable": true
+      },
+      "Currency": {
+        "enum": [
+          "USD",
+          "EUR",
+          "CNY",
+          "RUB"
+        ]
+      },
+      "HttpValidationProblemDetails": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "nullable": true
+          },
+          "title": {
+            "type": "string",
+            "nullable": true
+          },
+          "status": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "detail": {
+            "type": "string",
+            "nullable": true
+          },
+          "instance": {
+            "type": "string",
+            "nullable": true
+          },
+          "errors": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          }
+        }
+      },
+      "LocationsNodesDetailDto": {
+        "required": [
+          "code",
+          "locationTypeIdRu",
+          "locationTypeIdEn",
+          "typeNodeIdRu",
+          "typeNodeIdEn"
+        ],
+        "type": "object",
+        "properties": {
+          "locationsNodesId": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "isArchive": {
+            "type": "boolean"
+          },
+          "creationDate": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "lastChangeDate": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "code": {
+            "type": "string"
+          },
+          "nameZD": {
+            "type": "string",
+            "nullable": true
+          },
+          "seaport": {
+            "type": "string",
+            "nullable": true
+          },
+          "autoNode": {
+            "type": "string",
+            "nullable": true
+          },
+          "fiasRegion": {
+            "type": "string",
+            "nullable": true
+          },
+          "fiasDistrict": {
+            "type": "string",
+            "nullable": true
+          },
+          "fiasCity": {
+            "type": "string",
+            "nullable": true
+          },
+          "terminal": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "openStreetMap": {
+            "type": "string",
+            "nullable": true
+          },
+          "virtual": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "isFactory": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "isPortShip": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "isPortStore": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "isStore": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "coordinateW": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "coordinateL": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "code_NSI": {
+            "type": "string",
+            "nullable": true
+          },
+          "status": {
+            "type": "integer",
+            "format": "int64",
+            "nullable": true
+          },
+          "pointTube": {
+            "type": "string",
+            "nullable": true
+          },
+          "street": {
+            "type": "string",
+            "nullable": true
+          },
+          "house": {
+            "type": "string",
+            "nullable": true
+          },
+          "officeApart": {
+            "type": "string",
+            "nullable": true
+          },
+          "zdCodeN": {
+            "type": "string",
+            "nullable": true
+          },
+          "nodesCode": {
+            "type": "string",
+            "nullable": true
+          },
+          "nameRu": {
+            "type": "string",
+            "nullable": true
+          },
+          "nameEn": {
+            "type": "string",
+            "nullable": true
+          },
+          "locationTypeIdRu": {
+            "$ref": "#/components/schemas/LocationTypeRu"
+          },
+          "locationTypeIdEn": {
+            "$ref": "#/components/schemas/LocationTypeEn"
+          },
+          "locationTypeCode": {
+            "type": "string",
+            "nullable": true
+          },
+          "locationTypeNameRu": {
+            "type": "string",
+            "nullable": true
+          },
+          "locationTypeNameEn": {
+            "type": "string",
+            "nullable": true
+          },
+          "typeNodeIdRu": {
+            "$ref": "#/components/schemas/TypeNodeRu"
+          },
+          "typeNodeIdEn": {
+            "$ref": "#/components/schemas/TypeNodeEn"
+          },
+          "typeNodeCode": {
+            "type": "string",
+            "nullable": true
+          },
+          "typeNodeNameRu": {
+            "type": "string",
+            "nullable": true
+          },
+          "typeNodeNameEn": {
+            "type": "string",
+            "nullable": true
+          },
+          "regionIdRu": {
+            "type": "integer",
+            "format": "int64",
+            "nullable": true
+          },
+          "regionIdEn": {
+            "type": "integer",
+            "format": "int64",
+            "nullable": true
+          },
+          "regionCode": {
+            "type": "string",
+            "nullable": true
+          },
+          "regionNameRu": {
+            "type": "string",
+            "nullable": true
+          },
+          "regionNameEn": {
+            "type": "string",
+            "nullable": true
+          },
+          "regionRU": {
+            "type": "string",
+            "nullable": true
+          },
+          "countryIdRu": {
+            "type": "integer",
+            "format": "int64",
+            "nullable": true
+          },
+          "countryIdEn": {
+            "type": "integer",
+            "format": "int64",
+            "nullable": true
+          },
+          "countryCode": {
+            "type": "string",
+            "nullable": true
+          },
+          "countryNameRu": {
+            "type": "string",
+            "nullable": true
+          },
+          "countryNameEn": {
+            "type": "string",
+            "nullable": true
+          },
+          "city": {
+            "type": "string",
+            "nullable": true
+          },
+          "fullAddress": {
+            "type": "string",
+            "nullable": true
+          },
+          "borderCrossing": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "locationTypeCodeNSI": {
+            "type": "string",
+            "nullable": true
+          },
+          "typeNodeCodeNSI": {
+            "type": "string",
+            "nullable": true
+          },
+          "regionNSIEN": {
+            "type": "string",
+            "nullable": true
+          },
+          "regionCodeNSI": {
+            "type": "string",
+            "nullable": true
+          },
+          "regionCodeDPO": {
+            "type": "string",
+            "nullable": true
+          },
+          "countryRU": {
+            "type": "string",
+            "nullable": true
+          },
+          "nameCountryEN": {
+            "type": "string",
+            "nullable": true
+          },
+          "countryISO2": {
+            "type": "string",
+            "nullable": true
+          },
+          "countryISO3": {
+            "type": "string",
+            "nullable": true
+          },
+          "countryCodeDPO": {
+            "type": "string",
+            "nullable": true
+          },
+          "marketNameRU": {
+            "type": "string",
+            "nullable": true
+          },
+          "marketNameEN": {
+            "type": "string",
+            "nullable": true
+          },
+          "marketCode": {
+            "type": "string",
+            "nullable": true
+          },
+          "marketCodeDPO": {
+            "type": "string",
+            "nullable": true
+          },
+          "codeZDroad": {
+            "type": "string",
+            "nullable": true
+          },
+          "nameZDroadRU": {
+            "type": "string",
+            "nullable": true
+          },
+          "nameZDroadEN": {
+            "type": "string",
+            "nullable": true
+          },
+          "nameZDEN": {
+            "type": "string",
+            "nullable": true
+          },
+          "addressCountryISO2": {
+            "type": "string",
+            "nullable": true
+          },
+          "addressCountryISO3": {
+            "type": "string",
+            "nullable": true
+          },
+          "addressCountryCodeDPO": {
+            "type": "string",
+            "nullable": true
+          },
+          "addressNameCountryRU": {
+            "type": "string",
+            "nullable": true
+          },
+          "addressNameCountryEN": {
+            "type": "string",
+            "nullable": true
+          },
+          "pobox": {
+            "type": "string",
+            "nullable": true
+          },
+          "nameFederalDistrictRU": {
+            "type": "string",
+            "nullable": true
+          },
+          "nameDistrictRU": {
+            "type": "string",
+            "nullable": true
+          },
+          "nameCityRU": {
+            "type": "string",
+            "nullable": true
+          },
+          "nameCityDistrictRU": {
+            "type": "string",
+            "nullable": true
+          },
+          "isKladr": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "addressLanguage": {
+            "type": "string",
+            "nullable": true
+          },
+          "regionCodeRF": {
+            "type": "string",
+            "nullable": true
+          },
+          "addressRegionISO": {
+            "type": "string",
+            "nullable": true
+          },
+          "fiasCodeCity": {
+            "type": "string",
+            "nullable": true
+          },
+          "fiasStreet": {
+            "type": "string",
+            "nullable": true
+          },
+          "fiasHouse": {
+            "type": "string",
+            "nullable": true
+          },
+          "oktmoCode": {
+            "type": "string",
+            "nullable": true
+          },
+          "fiasCodeAddress": {
+            "type": "string",
+            "nullable": true
+          },
+          "isDadata": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "cannotDeliver": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "borderCountryISO2": {
+            "type": "string",
+            "nullable": true
+          },
+          "borderCountryISO3": {
+            "type": "string",
+            "nullable": true
+          },
+          "borderCountryCodeDPO": {
+            "type": "string",
+            "nullable": true
+          },
+          "borderNameCountryRU": {
+            "type": "string",
+            "nullable": true
+          },
+          "borderNameCountryEN": {
+            "type": "string",
+            "nullable": true
+          },
+          "statusNSI": {
+            "type": "string",
+            "nullable": true
+          },
+          "isPlanning": {
+            "type": "string",
+            "nullable": true
+          },
+          "isPlan": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "level4CityRU": {
+            "type": "string",
+            "nullable": true
+          },
+          "level4CityEN": {
+            "type": "string",
+            "nullable": true
+          },
+          "level4CityFias": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
+      "LocationsNodesDto": {
+        "required": [
+          "code",
+          "locationTypeIdRu",
+          "locationTypeIdEn",
+          "typeNodeIdRu",
+          "typeNodeIdEn"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "locationsNodesId": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "code": {
+            "type": "string"
+          },
+          "isArchive": {
+            "type": "boolean"
+          },
+          "nameRu": {
+            "type": "string",
+            "nullable": true
+          },
+          "nameEn": {
+            "type": "string",
+            "nullable": true
+          },
+          "locationTypeIdRu": {
+            "$ref": "#/components/schemas/LocationTypeRu"
+          },
+          "locationTypeIdEn": {
+            "$ref": "#/components/schemas/LocationTypeEn"
+          },
+          "typeNodeIdRu": {
+            "$ref": "#/components/schemas/TypeNodeRu"
+          },
+          "typeNodeIdEn": {
+            "$ref": "#/components/schemas/TypeNodeEn"
+          },
+          "regionCode": {
+            "type": "string",
+            "nullable": true
+          },
+          "regionNameRu": {
+            "type": "string",
+            "nullable": true
+          },
+          "regionNameEn": {
+            "type": "string",
+            "nullable": true
+          },
+          "countryNameRu": {
+            "type": "string",
+            "nullable": true
+          },
+          "countryNameEn": {
+            "type": "string",
+            "nullable": true
+          },
+          "creationDate": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "lastChangeDate": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "LocationTypeEn": {
+        "enum": [
+          "Railway_station",
+          "Tie_in_point",
+          "Sea_port",
+          "Truck_hub",
+          "Region",
+          "Airport",
+          "Internal_port",
+          "City"
+        ]
+      },
+      "LocationTypeRu": {
+        "enum": [
+          "Railway_station",
+          "Tie_in_point",
+          "Sea_port",
+          "Truck_hub",
+          "Region",
+          "Airport",
+          "Internal_port",
+          "City"
+        ]
+      },
+      "NullableOfJsonElement": {
+        "nullable": true
+      },
+      "ParityRatesDetailDto": {
+        "required": [
+          "code"
+        ],
+        "type": "object",
+        "properties": {
+          "parityRatesId": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "code": {
+            "type": "string"
+          },
+          "isArchive": {
+            "type": "boolean"
+          },
+          "creationDate": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "lastChangeDate": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "startDate": {
+            "type": "string",
+            "format": "date"
+          },
+          "endDate": {
+            "type": "string",
+            "format": "date"
+          },
+          "relevanceCode": {
+            "type": "string",
+            "nullable": true
+          },
+          "relevanceName": {
+            "type": "string",
+            "nullable": true
+          },
+          "nodeFromCode": {
+            "type": "string",
+            "nullable": true
+          },
+          "nodeFromNameRu": {
+            "type": "string",
+            "nullable": true
+          },
+          "nodeFromNameEn": {
+            "type": "string",
+            "nullable": true
+          },
+          "proxyNode1Code": {
+            "type": "string",
+            "nullable": true
+          },
+          "proxyNode1NameRu": {
+            "type": "string",
+            "nullable": true
+          },
+          "proxyNode1NameEn": {
+            "type": "string",
+            "nullable": true
+          },
+          "proxyNode2Code": {
+            "type": "string",
+            "nullable": true
+          },
+          "proxyNode2NameRu": {
+            "type": "string",
+            "nullable": true
+          },
+          "proxyNode2NameEn": {
+            "type": "string",
+            "nullable": true
+          },
+          "nodeToCode": {
+            "type": "string",
+            "nullable": true
+          },
+          "nodeToNameRu": {
+            "type": "string",
+            "nullable": true
+          },
+          "nodeToNameEn": {
+            "type": "string",
+            "nullable": true
+          },
+          "transportTypeCode": {
+            "type": "string",
+            "nullable": true
+          },
+          "transportTypeNameRu": {
+            "type": "string",
+            "nullable": true
+          },
+          "transportTypeNameEn": {
+            "type": "string",
+            "nullable": true
+          },
+          "productGroupCode": {
+            "type": "string",
+            "nullable": true
+          },
+          "productGroupNameRu": {
+            "type": "string",
+            "nullable": true
+          },
+          "productGroupNameEn": {
+            "type": "string",
+            "nullable": true
+          },
+          "productCode": {
+            "type": "integer",
+            "format": "int64",
+            "nullable": true
+          },
+          "productNameRu": {
+            "type": "string",
+            "nullable": true
+          },
+          "productNameEn": {
+            "type": "string",
+            "nullable": true
+          },
+          "level_Danger_Product": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "dangerous_Cargo": {
+            "type": "boolean"
+          },
+          "totalCostTransport": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "loadOfTransport": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "totalCostTon": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "currencyStandard": {
+            "type": "string",
+            "nullable": true
+          },
+          "comment": {
+            "type": "string",
+            "nullable": true
+          },
+          "dataSource": {
+            "type": "string",
+            "nullable": true
+          },
+          "factRate": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "businessPlanningRate": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "departmentResponsibilityArea": {
+            "type": "string",
+            "nullable": true
+          },
+          "employeeResponsibilityArea": {
+            "type": "string",
+            "nullable": true
+          },
+          "methodology": {
+            "type": "string",
+            "nullable": true
+          },
+          "priorityText": {
+            "type": "string",
+            "nullable": true
+          },
+          "marketingDataStructure": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
+      "ParityRatesDto": {
+        "required": [
+          "code",
+          "relevanceIdRu",
+          "relevanceIdEn",
+          "nodeFromCode",
+          "nodeFromNameRu",
+          "nodeFromNameEn",
+          "nodeToCode",
+          "nodeToNameRu",
+          "nodeToNameEn",
+          "transportTypeCode",
+          "transportTypeIdRu",
+          "transportTypeIdEn",
+          "productGroupCode",
+          "productGroupNameRu",
+          "productGroupNameEn",
+          "currencyId"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "parityRatesId": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "isArchive": {
+            "type": "boolean"
+          },
+          "startDate": {
+            "type": "string",
+            "format": "date"
+          },
+          "endDate": {
+            "type": "string",
+            "format": "date"
+          },
+          "creationDate": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "lastChangeDate": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "code": {
+            "type": "string"
+          },
+          "relevanceIdRu": {
+            "$ref": "#/components/schemas/RelevanceRu"
+          },
+          "relevanceIdEn": {
+            "$ref": "#/components/schemas/RelevanceEn"
+          },
+          "nodeFromCode": {
+            "type": "string"
+          },
+          "nodeFromNameRu": {
+            "type": "string"
+          },
+          "nodeFromNameEn": {
+            "type": "string"
+          },
+          "proxyNode1Code": {
+            "type": "string",
+            "nullable": true
+          },
+          "proxyNode1NameRu": {
+            "type": "string",
+            "nullable": true
+          },
+          "proxyNode1NameEn": {
+            "type": "string",
+            "nullable": true
+          },
+          "proxyNode2Code": {
+            "type": "string",
+            "nullable": true
+          },
+          "proxyNode2NameRu": {
+            "type": "string",
+            "nullable": true
+          },
+          "proxyNode2NameEn": {
+            "type": "string",
+            "nullable": true
+          },
+          "nodeToCode": {
+            "type": "string"
+          },
+          "nodeToNameRu": {
+            "type": "string"
+          },
+          "nodeToNameEn": {
+            "type": "string"
+          },
+          "transportTypeCode": {
+            "type": "string"
+          },
+          "transportTypeIdRu": {
+            "$ref": "#/components/schemas/TransportTypeLevel3Ru"
+          },
+          "transportTypeIdEn": {
+            "$ref": "#/components/schemas/TransportTypeLevel3En"
+          },
+          "productGroupCode": {
+            "type": "string"
+          },
+          "productGroupNameRu": {
+            "type": "string"
+          },
+          "productGroupNameEn": {
+            "type": "string"
+          },
+          "productCode": {
+            "type": "integer",
+            "format": "int64",
+            "nullable": true
+          },
+          "productNameRu": {
+            "type": "string",
+            "nullable": true
+          },
+          "productNameEn": {
+            "type": "string",
+            "nullable": true
+          },
+          "level_Danger_Product": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "totalCostTransport": {
+            "type": "number",
+            "format": "double"
+          },
+          "loadOfTransport": {
+            "type": "number",
+            "format": "double"
+          },
+          "totalCostTon": {
+            "type": "number",
+            "format": "double"
+          },
+          "currencyId": {
+            "$ref": "#/components/schemas/Currency"
+          },
+          "comment": {
+            "type": "string",
+            "nullable": true
+          },
+          "dataSource": {
+            "type": "string",
+            "nullable": true
+          },
+          "factRate": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "businessPlanningRate": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "departmentResponsibilityArea": {
+            "type": "string",
+            "nullable": true
+          },
+          "employeeResponsibilityArea": {
+            "type": "string",
+            "nullable": true
+          },
+          "methodology": {
+            "type": "string",
+            "nullable": true
+          },
+          "priorityText": {
+            "type": "string",
+            "nullable": true
+          },
+          "marketingDataStructure": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
+      "ProblemDetails": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "nullable": true
+          },
+          "title": {
+            "type": "string",
+            "nullable": true
+          },
+          "status": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "detail": {
+            "type": "string",
+            "nullable": true
+          },
+          "instance": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
+      "RateTypeDetailDto": {
+        "required": [
+          "code"
+        ],
+        "type": "object",
+        "properties": {
+          "rateTypeId": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "code": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string",
+            "nullable": true
+          },
+          "isUseNomination": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "isDeflated": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "comment": {
+            "type": "string",
+            "nullable": true
+          },
+          "isIntoSyncClass": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "isArchive": {
+            "type": "boolean"
+          },
+          "creationDate": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "lastChangeDate": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "RateTypeDto": {
+        "required": [
+          "code"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "rateTypeId": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "code": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string",
+            "nullable": true
+          },
+          "isUseNomination": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "isDeflated": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "comment": {
+            "type": "string",
+            "nullable": true
+          },
+          "isIntoSyncClass": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "isArchive": {
+            "type": "boolean"
+          },
+          "creationDate": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "lastChangeDate": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "RateTypeEn": {
+        "enum": [
+          "Tender",
+          "BusinessPlan",
+          "Indicative",
+          "Agreement",
+          "Fact"
+        ]
+      },
+      "RateTypeRu": {
+        "enum": [
+          "Tender",
+          "BusinessPlan",
+          "Indicative",
+          "Agreement",
+          "Fact"
+        ]
+      },
+      "RelevanceEn": {
+        "enum": [
+          "Month",
+          "Quarter",
+          "Year",
+          "Request"
+        ]
+      },
+      "RelevanceRu": {
+        "enum": [
+          "Month",
+          "Quarter",
+          "Year",
+          "Request"
+        ]
+      },
+      "SmartRateLookupMatch": {
+        "required": [
+          "level",
+          "productLiftedToGroup",
+          "destinationLiftedToRegion",
+          "transportTypeLiftedToKind",
+          "departureNodeReplaced",
+          "departureNodeCode",
+          "description"
+        ],
+        "type": "object",
+        "properties": {
+          "level": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "productLiftedToGroup": {
+            "type": "boolean"
+          },
+          "destinationLiftedToRegion": {
+            "type": "boolean"
+          },
+          "transportTypeLiftedToKind": {
+            "type": "boolean"
+          },
+          "departureNodeReplaced": {
+            "type": "boolean"
+          },
+          "departureNodeCode": {
+            "type": "string",
+            "nullable": true
+          },
+          "description": {
+            "type": "string"
+          }
+        },
+        "nullable": true
+      },
+      "SmartRateLookupRate": {
+        "required": [
+          "averageRateLevel3Id",
+          "value",
+          "currencyCode",
+          "originalValue",
+          "originalCurrencyCode",
+          "conversionRate",
+          "conversionDate",
+          "effectiveLoad",
+          "startDate",
+          "endDate",
+          "rateTypeCode",
+          "rateTypeName",
+          "rateTypePriority",
+          "transportTypeCode",
+          "transportTypeName",
+          "nodeFromCode",
+          "nodeToCode",
+          "productCode",
+          "productGroupCode"
+        ],
+        "type": "object",
+        "properties": {
+          "averageRateLevel3Id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "value": {
+            "type": "number",
+            "format": "double"
+          },
+          "currencyCode": {
+            "type": "string"
+          },
+          "originalValue": {
+            "type": "number",
+            "format": "double"
+          },
+          "originalCurrencyCode": {
+            "type": "string"
+          },
+          "conversionRate": {
+            "type": "number",
+            "format": "double"
+          },
+          "conversionDate": {
+            "type": "string",
+            "format": "date",
+            "nullable": true
+          },
+          "effectiveLoad": {
+            "type": "number",
+            "format": "double"
+          },
+          "startDate": {
+            "type": "string",
+            "format": "date"
+          },
+          "endDate": {
+            "type": "string",
+            "format": "date"
+          },
+          "rateTypeCode": {
+            "type": "string"
+          },
+          "rateTypeName": {
+            "type": "string"
+          },
+          "rateTypePriority": {
+            "type": "number",
+            "format": "double"
+          },
+          "transportTypeCode": {
+            "type": "string"
+          },
+          "transportTypeName": {
+            "type": "string"
+          },
+          "nodeFromCode": {
+            "type": "string"
+          },
+          "nodeToCode": {
+            "type": "string"
+          },
+          "productCode": {
+            "type": "string",
+            "nullable": true
+          },
+          "productGroupCode": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "nullable": true
+      },
+      "SmartRateLookupRequest": {
+        "type": "object",
+        "properties": {
+          "nodeFromCode": {
+            "type": "string",
+            "nullable": true
+          },
+          "nodeToCode": {
+            "type": "string",
+            "nullable": true
+          },
+          "productCode": {
+            "type": "string",
+            "nullable": true
+          },
+          "transportTypeCode": {
+            "type": "string",
+            "nullable": true
+          },
+          "currencyCode": {
+            "type": "string",
+            "nullable": true
+          },
+          "date": {
+            "type": "string",
+            "format": "date",
+            "nullable": true
+          },
+          "profile": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
+      "SmartRateLookupResolvedRequest": {
+        "required": [
+          "nodeFromCode",
+          "nodeFromName",
+          "nodeToCode",
+          "nodeToName",
+          "productCode",
+          "productName",
+          "productGroupCode",
+          "productGroupName",
+          "transportTypeCode",
+          "transportTypeName",
+          "transportKindCode",
+          "currencyCode",
+          "date",
+          "profile"
+        ],
+        "type": "object",
+        "properties": {
+          "nodeFromCode": {
+            "type": "string"
+          },
+          "nodeFromName": {
+            "type": "string",
+            "nullable": true
+          },
+          "nodeToCode": {
+            "type": "string"
+          },
+          "nodeToName": {
+            "type": "string",
+            "nullable": true
+          },
+          "productCode": {
+            "type": "string"
+          },
+          "productName": {
+            "type": "string",
+            "nullable": true
+          },
+          "productGroupCode": {
+            "type": "string",
+            "nullable": true
+          },
+          "productGroupName": {
+            "type": "string",
+            "nullable": true
+          },
+          "transportTypeCode": {
+            "type": "string"
+          },
+          "transportTypeName": {
+            "type": "string",
+            "nullable": true
+          },
+          "transportKindCode": {
+            "type": "string",
+            "nullable": true
+          },
+          "currencyCode": {
+            "type": "string"
+          },
+          "date": {
+            "type": "string",
+            "format": "date"
+          },
+          "profile": {
+            "type": "string"
+          }
+        }
+      },
+      "SmartRateLookupResponse": {
+        "required": [
+          "found",
+          "rate",
+          "match",
+          "request"
+        ],
+        "type": "object",
+        "properties": {
+          "found": {
+            "type": "boolean"
+          },
+          "rate": {
+            "$ref": "#/components/schemas/SmartRateLookupRate"
+          },
+          "match": {
+            "$ref": "#/components/schemas/SmartRateLookupMatch"
+          },
+          "request": {
+            "$ref": "#/components/schemas/SmartRateLookupResolvedRequest"
+          }
+        }
+      },
+      "TransportKindEn": {
+        "enum": [
+          "Auto",
+          "Rail",
+          "Mix"
+        ]
+      },
+      "TransportKindRu": {
+        "enum": [
+          "Auto",
+          "Rail",
+          "Mix"
+        ]
+      },
+      "TransportLegDetailDto": {
+        "required": [
+          "code",
+          "transportKindCode",
+          "transportKindIdRu",
+          "transportKindIdEn",
+          "searchTimeT",
+          "loadTimeT",
+          "daysWaitingT",
+          "travelTimeT",
+          "unLoadTimeT",
+          "transportationTimeT",
+          "distance",
+          "leg1_SearchTime",
+          "leg1_LoadTime",
+          "leg1_TravelTime",
+          "leg1_DaysWaiting",
+          "leg1_TransportationTime",
+          "leg1_Distance",
+          "leg2_UpLoadTime",
+          "leg2_TravelTime",
+          "leg2_DaysWaiting",
+          "leg2_TransportationTime",
+          "leg2_Distance",
+          "nodeFromCode",
+          "nodeFromNameRu",
+          "nodeFromNameEn",
+          "nodeToCode",
+          "nodeToNameRu",
+          "nodeToNameEn"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "transportLegId": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "code": {
+            "type": "string"
+          },
+          "isArchive": {
+            "type": "boolean"
+          },
+          "canBeUsed": {
+            "type": "boolean"
+          },
+          "shipmentTypeCodeT": {
+            "type": "string",
+            "nullable": true
+          },
+          "transportKindCode": {
+            "type": "string"
+          },
+          "transportKindIdRu": {
+            "$ref": "#/components/schemas/TransportKindRu"
+          },
+          "transportKindIdEn": {
+            "$ref": "#/components/schemas/TransportKindEn"
+          },
+          "searchTimeT": {
+            "type": "string"
+          },
+          "loadTimeT": {
+            "type": "string"
+          },
+          "daysWaitingT": {
+            "type": "string"
+          },
+          "travelTimeT": {
+            "type": "string"
+          },
+          "unLoadTimeT": {
+            "type": "string"
+          },
+          "transportationTimeT": {
+            "type": "string"
+          },
+          "distance": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "leg1_SearchTime": {
+            "type": "number",
+            "format": "double"
+          },
+          "leg1_LoadTime": {
+            "type": "number",
+            "format": "double"
+          },
+          "leg1_TravelTime": {
+            "type": "number",
+            "format": "double"
+          },
+          "leg1_DaysWaiting": {
+            "type": "number",
+            "format": "double"
+          },
+          "leg1_TransportationTime": {
+            "type": "number",
+            "format": "double"
+          },
+          "leg1_Distance": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "leg2_UpLoadTime": {
+            "type": "number",
+            "format": "double"
+          },
+          "leg2_TravelTime": {
+            "type": "number",
+            "format": "double"
+          },
+          "leg2_DaysWaiting": {
+            "type": "number",
+            "format": "double"
+          },
+          "leg2_TransportationTime": {
+            "type": "number",
+            "format": "double"
+          },
+          "leg2_Distance": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "nodeFromCode": {
+            "type": "string"
+          },
+          "nodeFromNameRu": {
+            "type": "string"
+          },
+          "nodeFromNameEn": {
+            "type": "string"
+          },
+          "regionFromCode": {
+            "type": "string",
+            "nullable": true
+          },
+          "regionFromNameRu": {
+            "type": "string",
+            "nullable": true
+          },
+          "regionFromNameEn": {
+            "type": "string",
+            "nullable": true
+          },
+          "proxyNodeCode": {
+            "type": "string",
+            "nullable": true
+          },
+          "proxyNodeNameRu": {
+            "type": "string",
+            "nullable": true
+          },
+          "proxyNodeNameEn": {
+            "type": "string",
+            "nullable": true
+          },
+          "proxyRegionCode": {
+            "type": "string",
+            "nullable": true
+          },
+          "proxyRegionNameRu": {
+            "type": "string",
+            "nullable": true
+          },
+          "proxyRegionNameEn": {
+            "type": "string",
+            "nullable": true
+          },
+          "nodeToCode": {
+            "type": "string"
+          },
+          "nodeToNameRu": {
+            "type": "string"
+          },
+          "nodeToNameEn": {
+            "type": "string"
+          },
+          "regionToCode": {
+            "type": "string",
+            "nullable": true
+          },
+          "regionToNameRu": {
+            "type": "string",
+            "nullable": true
+          },
+          "regionToNameEn": {
+            "type": "string",
+            "nullable": true
+          },
+          "creationDate": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "lastChangeDate": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "TransportLegDto": {
+        "required": [
+          "code",
+          "transportKindIdRu",
+          "transportKindIdEn",
+          "transportKindCode",
+          "searchTimeT",
+          "loadTimeT",
+          "travelTimeT",
+          "daysWaitingT",
+          "unLoadTimeT",
+          "transportationTimeT",
+          "nodeFromCode",
+          "nodeFromNameRu",
+          "nodeFromNameEn",
+          "nodeToCode",
+          "nodeToNameRu",
+          "nodeToNameEn"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "transportLegId": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "code": {
+            "type": "string"
+          },
+          "isArchive": {
+            "type": "boolean"
+          },
+          "canBeUsed": {
+            "type": "boolean"
+          },
+          "shipmentTypeCodeT": {
+            "type": "string",
+            "nullable": true
+          },
+          "transportKindIdRu": {
+            "$ref": "#/components/schemas/TransportKindRu"
+          },
+          "transportKindIdEn": {
+            "$ref": "#/components/schemas/TransportKindEn"
+          },
+          "transportKindCode": {
+            "type": "string"
+          },
+          "searchTimeT": {
+            "type": "string"
+          },
+          "loadTimeT": {
+            "type": "string"
+          },
+          "travelTimeT": {
+            "type": "string"
+          },
+          "daysWaitingT": {
+            "type": "string"
+          },
+          "unLoadTimeT": {
+            "type": "string"
+          },
+          "transportationTimeT": {
+            "type": "string"
+          },
+          "nodeFromCode": {
+            "type": "string"
+          },
+          "nodeFromNameRu": {
+            "type": "string"
+          },
+          "nodeFromNameEn": {
+            "type": "string"
+          },
+          "regionFromCode": {
+            "type": "string",
+            "nullable": true
+          },
+          "regionFromNameRu": {
+            "type": "string",
+            "nullable": true
+          },
+          "regionFromNameEn": {
+            "type": "string",
+            "nullable": true
+          },
+          "proxyNodeCode": {
+            "type": "string",
+            "nullable": true
+          },
+          "proxyNodeNameRu": {
+            "type": "string",
+            "nullable": true
+          },
+          "proxyNodeNameEn": {
+            "type": "string",
+            "nullable": true
+          },
+          "proxyRegionCode": {
+            "type": "string",
+            "nullable": true
+          },
+          "proxyRegionNameRu": {
+            "type": "string",
+            "nullable": true
+          },
+          "proxyRegionNameEn": {
+            "type": "string",
+            "nullable": true
+          },
+          "nodeToCode": {
+            "type": "string"
+          },
+          "nodeToNameRu": {
+            "type": "string"
+          },
+          "nodeToNameEn": {
+            "type": "string"
+          },
+          "regionToCode": {
+            "type": "string",
+            "nullable": true
+          },
+          "regionToNameRu": {
+            "type": "string",
+            "nullable": true
+          },
+          "regionToNameEn": {
+            "type": "string",
+            "nullable": true
+          },
+          "creationDate": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "lastChangeDate": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "TransportRateDetailDto": {
+        "required": [
+          "code",
+          "averageRateCode",
+          "calcType",
+          "currencyStandard",
+          "typeCode",
+          "typeName",
+          "nodeFromCode",
+          "nodeFromNameRu",
+          "nodeFromNameEn",
+          "nodeToCode",
+          "nodeToNameRu",
+          "nodeToNameEn",
+          "transportKindCode",
+          "transportKindNameRu",
+          "transportKindNameRuEn",
+          "transportTypeCode",
+          "transportTypeNameRu",
+          "transportTypeNameRuEn",
+          "legCode"
+        ],
+        "type": "object",
+        "properties": {
+          "transportRateId": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "code": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "isArchive": {
+            "type": "boolean"
+          },
+          "isDefRate": {
+            "type": "boolean"
+          },
+          "creationDate": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "lastChangeDate": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "averageRateCode": {
+            "type": "string"
+          },
+          "averageRateLevel3TotalCostTon": {
+            "type": "number",
+            "format": "double"
+          },
+          "totalCostTon": {
+            "type": "number",
+            "format": "double"
+          },
+          "totalCostTransport": {
+            "type": "number",
+            "format": "double"
+          },
+          "calcType": {
+            "type": "string"
+          },
+          "currencyStandard": {
+            "type": "string"
+          },
+          "currencyRateMonth": {
+            "type": "string",
+            "format": "date"
+          },
+          "effectiveLoadOfTransportType": {
+            "type": "number",
+            "format": "double"
+          },
+          "startDate": {
+            "type": "string",
+            "format": "date"
+          },
+          "endDate": {
+            "type": "string",
+            "format": "date"
+          },
+          "typeCode": {
+            "type": "string"
+          },
+          "typeName": {
+            "type": "string"
+          },
+          "totalCostTonRUB": {
+            "type": "number",
+            "format": "double"
+          },
+          "totalCostTonEUR": {
+            "type": "number",
+            "format": "double"
+          },
+          "totalCostTonCNY": {
+            "type": "number",
+            "format": "double"
+          },
+          "totalCostTonUSD": {
+            "type": "number",
+            "format": "double"
+          },
+          "totalCostTransportRUB": {
+            "type": "number",
+            "format": "double"
+          },
+          "totalCostTransportEUR": {
+            "type": "number",
+            "format": "double"
+          },
+          "totalCostTransportCNY": {
+            "type": "number",
+            "format": "double"
+          },
+          "totalCostTransportUSD": {
+            "type": "number",
+            "format": "double"
+          },
+          "emptyRFSize": {
+            "type": "number",
+            "format": "double"
+          },
+          "emptyRFCurrency": {
+            "type": "string",
+            "nullable": true
+          },
+          "emptyCISSize": {
+            "type": "number",
+            "format": "double"
+          },
+          "emptyCISCurrency": {
+            "type": "string",
+            "nullable": true
+          },
+          "provisionTransportSize": {
+            "type": "number",
+            "format": "double"
+          },
+          "provisionTransportCurrency": {
+            "type": "string",
+            "nullable": true
+          },
+          "ferryboatSize": {
+            "type": "number",
+            "format": "double"
+          },
+          "ferryboatCurrency": {
+            "type": "string",
+            "nullable": true
+          },
+          "teFromSize": {
+            "type": "number",
+            "format": "double"
+          },
+          "teFromCurrency": {
+            "type": "string",
+            "nullable": true
+          },
+          "ratePNPFromSize": {
+            "type": "number",
+            "format": "double"
+          },
+          "pnpFromCurrency": {
+            "type": "string",
+            "nullable": true
+          },
+          "teToSize": {
+            "type": "number",
+            "format": "double"
+          },
+          "teToCurrency": {
+            "type": "string",
+            "nullable": true
+          },
+          "pnpToSize": {
+            "type": "number",
+            "format": "double"
+          },
+          "pnpToCurrency": {
+            "type": "string",
+            "nullable": true
+          },
+          "drainLoadingSize": {
+            "type": "number",
+            "format": "double"
+          },
+          "drainLoadingCurrency": {
+            "type": "string",
+            "nullable": true
+          },
+          "transshipmentSize": {
+            "type": "number",
+            "format": "double"
+          },
+          "transshipmentCurrency": {
+            "type": "string",
+            "nullable": true
+          },
+          "freightSize": {
+            "type": "number",
+            "format": "double"
+          },
+          "freightCurrency": {
+            "type": "string",
+            "nullable": true
+          },
+          "additionalFeesCISSize": {
+            "type": "number",
+            "format": "double"
+          },
+          "additionalFeesCISCurrency": {
+            "type": "string",
+            "nullable": true
+          },
+          "loadedCISSize": {
+            "type": "number",
+            "format": "double"
+          },
+          "loadedCISCurrency": {
+            "type": "string",
+            "nullable": true
+          },
+          "loadedRFSize": {
+            "type": "number",
+            "format": "double"
+          },
+          "loadedRFCurrency": {
+            "type": "string",
+            "nullable": true
+          },
+          "teFromSize_fix": {
+            "type": "number",
+            "format": "double"
+          },
+          "teFromCurrency_fix": {
+            "type": "string",
+            "nullable": true
+          },
+          "teToSize_fix": {
+            "type": "number",
+            "format": "double"
+          },
+          "teToCurrency_fix": {
+            "type": "string",
+            "nullable": true
+          },
+          "nodeFromCode": {
+            "type": "string"
+          },
+          "nodeFromNameRu": {
+            "type": "string"
+          },
+          "nodeFromNameEn": {
+            "type": "string"
+          },
+          "regionFromCode": {
+            "type": "string",
+            "nullable": true
+          },
+          "regionFromNameRu": {
+            "type": "string",
+            "nullable": true
+          },
+          "regionFromNameEn": {
+            "type": "string",
+            "nullable": true
+          },
+          "proxyNodeCode": {
+            "type": "string",
+            "nullable": true
+          },
+          "proxyNodeNameRu": {
+            "type": "string",
+            "nullable": true
+          },
+          "proxyNodeNameEn": {
+            "type": "string",
+            "nullable": true
+          },
+          "proxyRegionCode": {
+            "type": "string",
+            "nullable": true
+          },
+          "proxyRegionNameRu": {
+            "type": "string",
+            "nullable": true
+          },
+          "proxyRegionNameEn": {
+            "type": "string",
+            "nullable": true
+          },
+          "nodeToCode": {
+            "type": "string"
+          },
+          "nodeToNameRu": {
+            "type": "string"
+          },
+          "nodeToNameEn": {
+            "type": "string"
+          },
+          "regionToCode": {
+            "type": "string",
+            "nullable": true
+          },
+          "regionToNameRu": {
+            "type": "string",
+            "nullable": true
+          },
+          "regionToNameEn": {
+            "type": "string",
+            "nullable": true
+          },
+          "basis": {
+            "type": "string",
+            "nullable": true
+          },
+          "basisNodeCode": {
+            "type": "string",
+            "nullable": true
+          },
+          "basisNodeNameRu": {
+            "type": "string",
+            "nullable": true
+          },
+          "transportKindCode": {
+            "type": "string"
+          },
+          "transportKindNameRu": {
+            "type": "string"
+          },
+          "transportKindNameRuEn": {
+            "type": "string"
+          },
+          "transportTypeCode": {
+            "type": "string"
+          },
+          "transportTypeNameRu": {
+            "type": "string"
+          },
+          "transportTypeNameRuEn": {
+            "type": "string"
+          },
+          "productGroupCode": {
+            "type": "string",
+            "nullable": true
+          },
+          "productGroupNameEnRu": {
+            "type": "string",
+            "nullable": true
+          },
+          "productCode": {
+            "type": "string",
+            "nullable": true
+          },
+          "productNameRu": {
+            "type": "string",
+            "nullable": true
+          },
+          "productNameEn": {
+            "type": "string",
+            "nullable": true
+          },
+          "productDPOCOde": {
+            "type": "string",
+            "nullable": true
+          },
+          "contractorCode": {
+            "type": "string",
+            "nullable": true
+          },
+          "contractorNameSearch": {
+            "type": "string",
+            "nullable": true
+          },
+          "contractorEGRUL": {
+            "type": "string",
+            "nullable": true
+          },
+          "nomination": {
+            "type": "string",
+            "nullable": true
+          },
+          "tenderServicePack": {
+            "type": "string",
+            "nullable": true
+          },
+          "tenderNumber": {
+            "type": "string",
+            "nullable": true
+          },
+          "additionalAgreementNumber": {
+            "type": "string",
+            "nullable": true
+          },
+          "comment": {
+            "type": "string",
+            "nullable": true
+          },
+          "legCode": {
+            "type": "string"
+          },
+          "legChangeDate": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "leadTimeChangeDate": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "leadTimeStartDate": {
+            "type": "string",
+            "format": "date",
+            "nullable": true
+          },
+          "leadTimeEndDate": {
+            "type": "string",
+            "format": "date",
+            "nullable": true
+          },
+          "leadTimeCode": {
+            "type": "string",
+            "nullable": true
+          },
+          "leadTimeSearchTime": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "leadTimeLoadTime": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "leadTimeTravelTime": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "leadTimeDaysWaiting": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "leadTimeUnLoadTime": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "leadTimeTransportationTime": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "leadTimeDistance": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "leg1_TransportTypeCode": {
+            "type": "string",
+            "nullable": true
+          },
+          "leg1_TransportTypeNameRu": {
+            "type": "string",
+            "nullable": true
+          },
+          "leg1_TransportTypeNameRuEn": {
+            "type": "string",
+            "nullable": true
+          },
+          "leg1_EffectiveLoad": {
+            "type": "number",
+            "format": "double"
+          },
+          "leg1_TotalCostTon": {
+            "type": "number",
+            "format": "double"
+          },
+          "leg1_TotalCostTransport": {
+            "type": "number",
+            "format": "double"
+          },
+          "leg1_BaseCurrency": {
+            "type": "string",
+            "nullable": true
+          },
+          "leg1_TotalCostTonRUB": {
+            "type": "number",
+            "format": "double"
+          },
+          "leg1_TotalCostTonUSD": {
+            "type": "number",
+            "format": "double"
+          },
+          "leg1_TotalCostTonEUR": {
+            "type": "number",
+            "format": "double"
+          },
+          "leg1_TotalCostTonCNY": {
+            "type": "number",
+            "format": "double"
+          },
+          "leg1_TotalCostTransportRUB": {
+            "type": "number",
+            "format": "double"
+          },
+          "leg1_TotalCostTransportUSD": {
+            "type": "number",
+            "format": "double"
+          },
+          "leg1_TotalCostTransportEUR": {
+            "type": "number",
+            "format": "double"
+          },
+          "leg1_TotalCostTransportCNY": {
+            "type": "number",
+            "format": "double"
+          },
+          "leadTimeLeg1_SearchTime": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "leadTimeLeg1_LoadTime": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "leadTimeLeg1_TravelTime": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "leadTimeLeg1_DaysWaiting": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "leadTimeLeg1_TransportationTime": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "leadTimeLeg1_Distance": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "leg2_TransportTypeCode": {
+            "type": "string",
+            "nullable": true
+          },
+          "leg2_TransportTypeNameRu": {
+            "type": "string",
+            "nullable": true
+          },
+          "leg2_TransportTypeNameRuEn": {
+            "type": "string",
+            "nullable": true
+          },
+          "leg2_EffectiveLoad": {
+            "type": "number",
+            "format": "double"
+          },
+          "leg2_TotalCostTon": {
+            "type": "number",
+            "format": "double"
+          },
+          "leg2_TotalCostTransport": {
+            "type": "number",
+            "format": "double"
+          },
+          "leg2_BaseCurrency": {
+            "type": "string",
+            "nullable": true
+          },
+          "leg2_TotalCostTonRUB": {
+            "type": "number",
+            "format": "double"
+          },
+          "leg2_TotalCostTonUSD": {
+            "type": "number",
+            "format": "double"
+          },
+          "leg2_TotalCostTonEUR": {
+            "type": "number",
+            "format": "double"
+          },
+          "leg2_TotalCostTonCNY": {
+            "type": "number",
+            "format": "double"
+          },
+          "leg2_TotalCostTransportRUB": {
+            "type": "number",
+            "format": "double"
+          },
+          "leg2_TotalCostTransportUSD": {
+            "type": "number",
+            "format": "double"
+          },
+          "leg2_TotalCostTransportEUR": {
+            "type": "number",
+            "format": "double"
+          },
+          "leg2_TotalCostTransportCNY": {
+            "type": "number",
+            "format": "double"
+          },
+          "leadTimeLeg2_TravelTime": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "leadTimeLeg2_DaysWaiting": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "leadTimeLeg2_UploadTime": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "leadTimeLeg2_TransportationTime": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "leadTimeLeg2_Distance": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          }
+        }
+      },
+      "TransportRateDto": {
+        "required": [
+          "code",
+          "currencyId",
+          "rateTypeIdRu",
+          "rateTypeIdEn",
+          "nodeFromCode",
+          "nodeFromNameRu",
+          "nodeFromNameEn",
+          "nodeToCode",
+          "nodeToNameRu",
+          "nodeToNameEn",
+          "transportKindIdRu",
+          "transportKindIdEn",
+          "transportKindCode",
+          "transportTypeCode",
+          "transportTypeIdRu",
+          "transportTypeIdEn"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "transportRateId": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "isArchive": {
+            "type": "boolean"
+          },
+          "isDefRate": {
+            "type": "boolean"
+          },
+          "startDate": {
+            "type": "string",
+            "format": "date"
+          },
+          "endDate": {
+            "type": "string",
+            "format": "date"
+          },
+          "creationDate": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "lastChangeDate": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "totalCostTon": {
+            "type": "number",
+            "format": "double"
+          },
+          "totalCostTransport": {
+            "type": "number",
+            "format": "double"
+          },
+          "code": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "currencyId": {
+            "$ref": "#/components/schemas/Currency"
+          },
+          "rateTypeIdRu": {
+            "$ref": "#/components/schemas/RateTypeRu"
+          },
+          "rateTypeIdEn": {
+            "$ref": "#/components/schemas/RateTypeEn"
+          },
+          "nodeFromCode": {
+            "type": "string"
+          },
+          "nodeFromNameRu": {
+            "type": "string"
+          },
+          "nodeFromNameEn": {
+            "type": "string"
+          },
+          "proxyNodeCode": {
+            "type": "string",
+            "nullable": true
+          },
+          "proxyNodeNameRu": {
+            "type": "string",
+            "nullable": true
+          },
+          "proxyNodeNameEn": {
+            "type": "string",
+            "nullable": true
+          },
+          "nodeToCode": {
+            "type": "string"
+          },
+          "nodeToNameRu": {
+            "type": "string"
+          },
+          "nodeToNameEn": {
+            "type": "string"
+          },
+          "transportKindIdRu": {
+            "$ref": "#/components/schemas/TransportKindRu"
+          },
+          "transportKindIdEn": {
+            "$ref": "#/components/schemas/TransportKindEn"
+          },
+          "transportKindCode": {
+            "type": "string"
+          },
+          "transportTypeCode": {
+            "type": "string"
+          },
+          "transportTypeIdRu": {
+            "$ref": "#/components/schemas/TransportTypeLevel3Ru"
+          },
+          "transportTypeIdEn": {
+            "$ref": "#/components/schemas/TransportTypeLevel3En"
+          },
+          "productGroupCode": {
+            "type": "string",
+            "nullable": true
+          },
+          "productGroupNameRu": {
+            "type": "string",
+            "nullable": true
+          },
+          "productGroupNameEn": {
+            "type": "string",
+            "nullable": true
+          },
+          "productCode": {
+            "type": "integer",
+            "format": "int64",
+            "nullable": true
+          },
+          "productNameRu": {
+            "type": "string",
+            "nullable": true
+          },
+          "productNameEn": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
+      "TransportTypeLevel3En": {
+        "enum": [
+          "Auto_20",
+          "Auto_10",
+          "Auto_6",
+          "Auto_4",
+          "Auto_1",
+          "Auto_BLK",
+          "Auto_cont_20",
+          "Auto_cont_40",
+          "Auto_C",
+          "Rail_35",
+          "Rail_95",
+          "Rail_VC_other",
+          "Rail_BLK",
+          "Rail_cont_20",
+          "Rail_cont_40",
+          "Rail_KV",
+          "Rail_TK_20",
+          "Rail_TK_30",
+          "Tanker",
+          "Mix_20",
+          "Mix_40",
+          "Auto_TK",
+          "Mix_TK",
+          "Mix_rail_cont_20",
+          "Mix_rail_cont_40",
+          "Mix_auto_cont_20",
+          "Mix_auto_cont_40",
+          "Mix_sea",
+          "Auto_ferryboat_20t",
+          "Auto_polivoz",
+          "Auto_Barrel_20",
+          "Mix_auto_TK",
+          "Mix_rail_TK",
+          "Mix_auto_barrel",
+          "Mix_auto_port"
+        ]
+      },
+      "TransportTypeLevel3Ru": {
+        "enum": [
+          "Auto_20",
+          "Auto_10",
+          "Auto_6",
+          "Auto_4",
+          "Auto_1",
+          "Auto_BLK",
+          "Auto_cont_20",
+          "Auto_cont_40",
+          "Auto_C",
+          "Rail_35",
+          "Rail_95",
+          "Rail_VC_other",
+          "Rail_BLK",
+          "Rail_cont_20",
+          "Rail_cont_40",
+          "Rail_KV",
+          "Rail_TK_20",
+          "Rail_TK_30",
+          "Tanker",
+          "Mix_20",
+          "Mix_40",
+          "Auto_TK",
+          "Mix_TK",
+          "Mix_rail_cont_20",
+          "Mix_rail_cont_40",
+          "Mix_auto_cont_20",
+          "Mix_auto_cont_40",
+          "Mix_sea",
+          "Auto_ferryboat_20t",
+          "Auto_polivoz",
+          "Auto_Barrel_20",
+          "Mix_auto_TK",
+          "Mix_rail_TK",
+          "Mix_auto_barrel",
+          "Mix_auto_port"
+        ]
+      },
+      "TypeNodeEn": {
+        "enum": [
+          "Country",
+          "Federal_district",
+          "Region",
+          "Auto",
+          "Border",
+          "Rail",
+          "Port",
+          "Pipe",
+          "Warehouse",
+          "Airport"
+        ]
+      },
+      "TypeNodeRu": {
+        "enum": [
+          "Country",
+          "Federal_district",
+          "Region",
+          "Auto",
+          "Border",
+          "Rail",
+          "Port",
+          "Pipe",
+          "Warehouse",
+          "Airport"
+        ]
+      }
+    }
+  },
+  "tags": [
+    {
+      "name": "catalogs"
+    },
+    {
+      "name": "rates"
+    },
+    {
+      "name": "transport-rates"
+    },
+    {
+      "name": "parity-rates"
+    },
+    {
+      "name": "average-rates-level3"
+    },
+    {
+      "name": "transport-legs"
+    },
+    {
+      "name": "locations-nodes"
+    },
+    {
+      "name": "rate-types"
+    }
+  ]
+}

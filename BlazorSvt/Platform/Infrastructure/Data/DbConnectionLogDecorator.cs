@@ -29,16 +29,19 @@ public class DbConnectionLogDecorator(IDbConnection connection, ILogger logger, 
     public Task<TDetailItem?> QuerySingleOrDefaultAsync<TDetailItem>(
         string sql,
         DynamicParameters parameters,
-        CommandType commandType)
+        CommandType commandType,
+        CancellationToken cancellationToken = default)
     {
         return LoggedOperation.ExecuteAsync(
             logger,
             sql,
             () => connection.QuerySingleOrDefaultAsync<TDetailItem>(
-                sql,
-                parameters,
-                commandType: commandType,
-                commandTimeout: commandTimeoutSeconds),
+                new CommandDefinition(
+                    sql,
+                    parameters,
+                    commandType: commandType,
+                    commandTimeout: commandTimeoutSeconds,
+                    cancellationToken: cancellationToken)),
             BuildProperties(sql, commandType, parameters));
     }
 

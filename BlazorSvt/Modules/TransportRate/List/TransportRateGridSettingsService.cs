@@ -14,7 +14,7 @@ public class TransportRateGridSettingsService(
 {
     protected override string StorageKey => "TransportRateGridColumnSettings";
 
-    protected override List<GridColumnSetting<TransportRateDto>> GetDefaultSettings(string lang)
+    public override IReadOnlyList<GridColumnSetting<TransportRateDto>> GetDefaultSettings(string lang)
     {
         var isRu = lang == "ru";
         var b = new GridColumnSettingsBuilder<TransportRateDto>(platform);

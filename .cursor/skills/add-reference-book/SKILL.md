@@ -691,6 +691,26 @@ services.AddCatalogMenu(new CatalogMenuContribution(
 
 URL вклада **должен совпадать** с `@page` в `.razor`.
 
+### API для Атласа (обязательно)
+
+Всё, что есть в СВТ 2.0, доступно через `/api/v1`. В том же `{Entity}Module.cs`, сразу после `AddCatalogMenu`:
+
+```csharp
+services.AddCatalogApi<{Entity}Dto, {Entity}DetailDto>(
+    "{kebab-code}",
+    CatalogDomain.{Domain},
+    "HeaderMenu.{Entity}",
+    new CatalogPeriod(nameof({Entity}Dto.StartDate), nameof({Entity}Dto.EndDate)));
+```
+
+- `using BlazorSvt.Platform.Api.Catalogs;`
+- `{kebab-code}` — код в API, стабильный контракт: множественное число в kebab-case (`transport-rates`, `locations-nodes`). Сменить потом — только новой версией API
+- Заголовок — тот же ключ, что у меню (`HeaderMenu.{Entity}`); домен — тот же `CatalogDomain`
+- `period` — только если у справочника есть срок действия (две даты `DateOnly` в list-DTO); иначе не передавать. Даёт фильтр `asOf`
+- `syncEntity` — имя в `v2.SyncState` для `dataAsOf`; по умолчанию имя DTO без `Dto`. У стабильного словаря с enum строки в `SyncState` нет — `dataAsOf` будет `null`, это нормально
+- Коды других справочников в list-DTO (узлы и т.п.) — `[ApiReference("{код справочника}", "code")]` рядом с `[GridColumn]`
+- Схема, фильтры, выгрузка и OpenAPI строятся из тех же `[GridColumn]`, grid- и detail-настроек — отдельного SQL и DTO не нужно
+
 ---
 
 ## Фаза 5 — Тесты
@@ -704,6 +724,8 @@ URL вклада **должен совпадать** с `@page` в `.razor`.
    - `EntityKeyPropertyName` = `{Entity}Id`
 2. Добавить `{Entity}SyncJob` в `SnapshotSyncJobContractTests` (`RegisteredJobs` + `AllJobs`). Для [стабильного словаря с enum](#стабильный-словарь-с-enum-свой-ro-грид) пункт не делать: job нет.
 3. При изменении Platform-логики — тесты в `GridQueryFactoryTests` / `GridColumnMetadataBuilderTests`
+4. `CatalogApiCoverageTests` новых правок не требует, но должен пройти: справочник без `AddCatalogApi` или с несовпадающим ключом меню его валит
+5. Перегенерировать снимок контракта API — в нём появятся маршруты справочника: `$env:UPDATE_OPENAPI_SNAPSHOT=1; dotnet test tests/BlazorSvt.IntegrationTests --filter OpenApiContractTests`, затем убрать переменную и прогнать ещё раз. Изменённый `docs/api/svt-api-v1.openapi.json` — в тот же коммит
 
 ### Integration (обязательно, read-only)
 
@@ -730,6 +752,7 @@ dotnet test --filter "Category=Integration"
 2. `dotnet test`
 3. Страница `/{entity}` открывается, грид загружает данные
 4. Детальный просмотр и экспорт не падают
+5. В Swagger UI (`/api/swagger`, Development) справочник есть в `GET /api/v1/catalogs`; `schema` и `items/search` отвечают
 
 При ошибке — сообщить и спросить дальнейшие действия.
 
@@ -757,6 +780,7 @@ dotnet test --filter "Category=Integration"
 - [ ] README + `Publish-AllSql.ps1` обновлены
 - [ ] Structure / Programmability задеплоены и верифицированы
 - [ ] C# модуль (List/Detail/Sync), DI с `AddCatalogMenu`, resx (у стабильного словаря с enum папки `Sync/` нет)
+- [ ] `AddCatalogApi` (код, домен, период), `[ApiReference]` на кодах чужих справочников; снимок OpenAPI перегенерирован
 - [ ] Общие enum в `Platform/Domain/IdsEnum` (рефакторинг затронутых модулей)
 - [ ] Unit: `GridColumnMetadataBuilderTests` + `SnapshotSyncJobContractTests` (второй — только если есть SyncJob)
 - [ ] Integration: grid + detail smoke + FTS

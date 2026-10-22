@@ -228,6 +228,57 @@ public class UserAccessSynchronizerTests
         await repository.DidNotReceiveWithAnyArgs().GetOrCreateUserAsync(default!, default, default, default);
     }
 
+    [Fact]
+    public async Task SynchronizeOnBehalf_UsesGivenLoginNotCallerIdentity()
+    {
+        var currentUser = new CurrentUser();
+        var identity = Substitute.For<IWindowsIdentityAccessor>();
+        identity.GetLogin().Returns(@"SIBUR\svc-atlas");
+        var directory = Substitute.For<IActiveDirectoryClient>();
+        var repository = Substitute.For<IUserAccessRepository>();
+        repository.FindByLoginAsync(@"SIBUR\ivanov", Arg.Any<CancellationToken>())
+            .Returns(new UserRecord(10, @"SIBUR\ivanov", "Ivanov", null));
+        repository.GetUserRoleNamesAsync(10, Arg.Any<CancellationToken>()).Returns(["Window Users"]);
+        var sut = Create(currentUser, identity, directory, repository, synchronizeUserRoles: true);
+
+        await sut.SynchronizeOnBehalfAsync(@"SIBUR\ivanov");
+
+        currentUser.State.Should().Be(AccessState.Allowed);
+        currentUser.Login.Should().Be(@"SIBUR\ivanov");
+        await repository.DidNotReceive().FindByLoginAsync(@"SIBUR\svc-atlas", Arg.Any<CancellationToken>());
+        await directory.DidNotReceiveWithAnyArgs().GetUserAsync(default!, default);
+    }
+
+    [Fact]
+    public async Task SynchronizeOnBehalf_WhenUserUnknown_DeniesWithNoUserReason()
+    {
+        var currentUser = new CurrentUser();
+        var repository = Substitute.For<IUserAccessRepository>();
+        repository.FindByLoginAsync(@"SIBUR\stranger", Arg.Any<CancellationToken>()).Returns((UserRecord?)null);
+        var sut = Create(currentUser, Substitute.For<IWindowsIdentityAccessor>(), Substitute.For<IActiveDirectoryClient>(), repository);
+
+        await sut.SynchronizeOnBehalfAsync(@"SIBUR\stranger");
+
+        currentUser.State.Should().Be(AccessState.Denied);
+        currentUser.DenialReason.Should().Be(AccessDenialReasons.NoUser);
+    }
+
+    [Fact]
+    public async Task SynchronizeOnBehalf_WhenNoRoles_DeniesWithNoRolesReason()
+    {
+        var currentUser = new CurrentUser();
+        var repository = Substitute.For<IUserAccessRepository>();
+        repository.FindByLoginAsync(@"SIBUR\ivanov", Arg.Any<CancellationToken>())
+            .Returns(new UserRecord(10, @"SIBUR\ivanov", "Ivanov", null));
+        repository.GetUserRoleNamesAsync(10, Arg.Any<CancellationToken>()).Returns([]);
+        var sut = Create(currentUser, Substitute.For<IWindowsIdentityAccessor>(), Substitute.For<IActiveDirectoryClient>(), repository);
+
+        await sut.SynchronizeOnBehalfAsync(@"SIBUR\ivanov");
+
+        currentUser.State.Should().Be(AccessState.Denied);
+        currentUser.DenialReason.Should().Be(AccessDenialReasons.NoRoles);
+    }
+
     private static UserAccessSynchronizer Create(
         CurrentUser currentUser,
         IWindowsIdentityAccessor identity,

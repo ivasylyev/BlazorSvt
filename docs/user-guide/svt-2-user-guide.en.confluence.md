@@ -23,7 +23,7 @@ h2. 1. What SVT 2.0 is and how it differs from the legacy system
 *SVT 2.0* is the new version of the Tariff Management System. At this stage you can *view* the reference books that have already been migrated.
 
 ||Action||Where to do it||
-|View migrated reference books (rates, average rates, parities, transport legs, locations-nodes)|*SVT 2.0*|
+|View migrated reference books (rates, rate type, average rates, parities, transport legs, locations-nodes)|*SVT 2.0*|
 |Load and change data for these reference books|*Legacy* SVT|
 |View reference books that are *not* migrated yet|*Legacy* SVT|
 
@@ -37,6 +37,7 @@ Exceptions:
 
 * Every night from *01:00 to 02:30* updates wait until this window ends. On Saturdays there is an additional pause from *04:00 to 06:00*.
 * A record deleted in the legacy system appears in SVT 2.0 after the nightly reconciliation, *around 02:00*.
+* Constant dictionaries (for example, *Rate type*) are refreshed *once* at deployment, not every ~2 minutes.
 
 ----
 
@@ -74,6 +75,7 @@ At the bottom of the page there is a footer bar: on the left, the load time of t
 |Rates|Average Rate|Average Rate|
 |Rates|Parity rates|Parity rates|
 |Rates|Rates|Rates|
+|Rates|Rate type|Rate type|
 |Routes|Locations-Nodes|Locations-Nodes|
 |Routes|Transport Legs|Transport Legs|
 

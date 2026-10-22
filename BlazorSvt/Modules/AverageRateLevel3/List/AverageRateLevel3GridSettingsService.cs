@@ -14,7 +14,7 @@ public class AverageRateLevel3GridSettingsService(
 {
     protected override string StorageKey => "AverageRateLevel3GridColumnSettings";
 
-    protected override List<GridColumnSetting<AverageRateLevel3Dto>> GetDefaultSettings(string lang)
+    public override IReadOnlyList<GridColumnSetting<AverageRateLevel3Dto>> GetDefaultSettings(string lang)
     {
         var isRu = lang == "ru";
         var b = new GridColumnSettingsBuilder<AverageRateLevel3Dto>(platform);

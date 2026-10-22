@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Components.Forms;
 
 namespace BlazorSvt.Import.Components;
 
-public partial class ExcelLoader : SvtComponentBase
+public partial class ExcelLoader : SvtComponentBase, IDisposable
 {
     private const int MaxFileSize = 10 * 1024 * 1024;
 
@@ -14,6 +14,7 @@ public partial class ExcelLoader : SvtComponentBase
     [Parameter]
     public EventCallback<ExcelFile> OnLoaded { get; set; }
 
+    private readonly CancellationTokenSource _loadCancellationTokenSource = new();
     private bool _isLoading;
 
     public async Task OnFileSelectedAsync(InputFileChangeEventArgs args)
@@ -27,14 +28,19 @@ public partial class ExcelLoader : SvtComponentBase
         _isLoading = true;
         await InvokeAsync(StateHasChanged);
 
+        var cancellationToken = _loadCancellationTokenSource.Token;
         try
         {
             await using var uploadStream = file.OpenReadStream(maxAllowedSize: MaxFileSize);
             using var buffer = new MemoryStream();
-            await uploadStream.CopyToAsync(buffer);
+            await uploadStream.CopyToAsync(buffer, cancellationToken);
 
             var content = buffer.ToArray();
             await OnLoaded.InvokeAsync(new ExcelFile(file.Name, content));
+        }
+        catch (OperationCanceledException) when (cancellationToken.IsCancellationRequested)
+        {
+            // component disposed while uploading
         }
         catch (Exception ex)
         {
@@ -46,5 +52,11 @@ public partial class ExcelLoader : SvtComponentBase
             _isLoading = false;
             await InvokeAsync(StateHasChanged);
         }
+    }
+
+    public void Dispose()
+    {
+        _loadCancellationTokenSource.Cancel();
+        _loadCancellationTokenSource.Dispose();
     }
 }

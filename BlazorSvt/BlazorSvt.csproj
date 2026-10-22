@@ -5,7 +5,7 @@
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <RootNamespace>BlazorSvt</RootNamespace>
-    <VersionPrefix>2.3.46</VersionPrefix>
+    <VersionPrefix>2.3.48</VersionPrefix>
     <GitRevisionCount>0</GitRevisionCount>
     <BuildTimeUtc>$([System.DateTime]::UtcNow.ToString("yyyy-MM-ddTHH:mm:ssZ"))</BuildTimeUtc>
     <!-- Prod already has environment-specific web.config / appsettings; do not overwrite on publish. -->
@@ -17,12 +17,7 @@
   </ItemGroup>
 
   <Target Name="SetGitRevision" BeforeTargets="GetAssemblyVersion">
-    <Exec Command="git rev-list --count HEAD"
-          WorkingDirectory="$(MSBuildProjectDirectory)"
-          ConsoleToMSBuild="true"
-          IgnoreExitCode="true"
-          StandardOutputImportance="Low"
-          StandardErrorImportance="Low">
+    <Exec Command="git rev-list --count HEAD" WorkingDirectory="$(MSBuildProjectDirectory)" ConsoleToMSBuild="true" IgnoreExitCode="true" StandardOutputImportance="Low" StandardErrorImportance="Low">
       <Output TaskParameter="ConsoleOutput" ItemName="_GitRevListLines" />
       <Output TaskParameter="ExitCode" PropertyName="_GitRevListExitCode" />
     </Exec>
@@ -44,11 +39,13 @@
     <PackageReference Include="Dapper" Version="2.1.66" />
     <PackageReference Include="FluentValidation" Version="12.1.1" />
     <PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="12.1.1" />
+    <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="9.0.10" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.4" />
     <PackageReference Include="Serilog.AspNetCore" Version="10.0.0" />
     <PackageReference Include="Serilog.Enrichers.CorrelationId" Version="3.0.1" />
     <PackageReference Include="Serilog.Settings.Configuration" Version="10.0.0" />
     <PackageReference Include="Serilog.Sinks.File" Version="7.0.0" />
+    <PackageReference Include="Swashbuckle.AspNetCore.SwaggerUI" Version="9.0.6" />
     <PackageReference Include="System.Data.SqlClient" Version="4.9.0" />
     <PackageReference Include="System.DirectoryServices.AccountManagement" Version="9.0.8" />
   </ItemGroup>

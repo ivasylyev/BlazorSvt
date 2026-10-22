@@ -25,7 +25,7 @@ description: >-
 
 Корпоративный паспорт действующей ИС (критичность, ИСПДн, СУБД, обновление) — [reference.md](reference.md) §4.6.
 
-**Текущий статус**: фреймворк read-only справочников и отчётов (TransportLeg, TransportRate, AverageRateLevel3, LocationsNodes, ParityRates; в реестре легаси-имена TransportLegs и Rates); watermark-sync; Windows Auth + роли `dbo.Role` (бинарный read); зачаток Import; каркас unit + integration тестов в `tests/`. Прототип домашней сводки (`HomeRatePivot`) читает снимки AverageRateLevel3 и LocationsNodes; правило отбора ставки пока в тексте SQL. Дашборды по дорожной карте остаются на MVP 1.1. Скоуп справочников (63 в скоупе / 38 вне, работы RO/E/L, меню, приоритеты) — [catalogs-scope.md](catalogs-scope.md). Дорожная карта MVP — [roadmap.md](roadmap.md); чеклист работ — [backlog.md](backlog.md).
+**Текущий статус**: фреймворк read-only справочников и выгрузки Excel грида/карточки (не модуль сквозных отчётов MVP 0.3.1). На проде: TransportRate, AverageRateLevel3, LocationsNodes, ParityRates, TransportLeg, RateType (в реестре легаси-имена Rates и TransportLegs; RateType — стабильный словарь без SyncJob). Также в коде: `HomeRatePivot`, `SmartRateLookup`. Watermark-sync; Windows Auth + роли `dbo.Role` (любая роль = read). Пилот read-only API для Атласа (`/api/v1`: все **зарегистрированные** модули справочников + умный подбор ставки; [reference.md](reference.md) §«API для внешних фронтендов»). Прототип Import: Excel + валидаторы + UI; staging не подключён, Import на проде закрыт. Каркас unit + integration тестов в `tests/`. `HomeRatePivot` читает снимки AverageRateLevel3 и LocationsNodes; правило отбора ставки пока в тексте SQL. Дашборды — MVP 1.1. Скоуп — [catalogs-scope.md](catalogs-scope.md); план — [roadmap.md](roadmap.md); чеклист — [backlog.md](backlog.md).
 
 ## Чеклист перед реализацией
 
@@ -38,6 +38,7 @@ description: >-
 7. Покрыты ли изменения тестами? Unit — C#-логика (`GridQueryFactory`, валидаторы, contract DTO); integration — read-only smoke SP/view для нового справочника (см. `svt-development-patterns`, секция «Тестирование»)
 8. Для write: write-through в легаси до cutover; LWW; доменный write-toggle (`V2WriteEnabled_{Домен}`, не единый глобальный); аудит полей — с MVP 1.0 (до этого риск принят)
 9. Если атрибут приходит из АСВ НСИ или ЦБД, не заводить для него редактор и не делать СВТ источником истины. Состав — [catalogs-scope.md](catalogs-scope.md), раздел «Внешние мастера»
+10. Новый справочник или операция доступны Атласу через API (`AddCatalogApi` / `IApiEndpointContribution`)? Правила UI и API — одни (тот же сервис, тот же `IAccessGuard`), контракт не сломан (`OpenApiContractTests`)
 
 ## Требования, которых ещё нет в реестре
 
@@ -64,7 +65,7 @@ description: >-
 | Дублирование правил UI/batch/SQL | 2× трудоёмкость, регрессии | Единый pipeline |
 | Низкая наблюдаемость | Долгие инциденты | Аудит + трассировка |
 
-Эталон СВТ / Атлас (кольцо, П3, документы в `docs/docs/svt-v-atlas/`) — skill `atlas`, не этот файл.
+Эталон СВТ / Атлас (кольцо, П3, документы в `docs/docs/svt-v-atlas/`) — skill `atlas`, не этот файл. Техническое API, через которое фронтенд Атласа читает СВТ, — [reference.md](reference.md) §«API для внешних фронтендов» и правило `svt-development-patterns` («API»).
 
 ## Подробная документация
 

@@ -63,6 +63,7 @@ public sealed class CircuitCorrelationHandler(
             using (LogContext.PushProperty("CircuitId", circuitId))
             using (LogContext.PushProperty("ShortCorrelationId", corrId))
             using (LogContext.PushProperty("UserLogin", currentUser.Login))
+            using (LogContext.PushProperty("Channel", LogChannels.Blazor))
             {
                 await next(context);
             }

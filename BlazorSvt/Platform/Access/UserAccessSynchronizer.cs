@@ -16,9 +16,11 @@ public sealed class UserAccessSynchronizer(
     IHostEnvironment hostEnvironment,
     ILogger<UserAccessSynchronizer> logger)
 {
+    public bool IsBypassActive => options.Value.IgnoreAccessControl && hostEnvironment.IsDevelopment();
+
     public async Task SynchronizeAsync(CancellationToken cancellationToken = default)
     {
-        if (options.Value.IgnoreAccessControl && hostEnvironment.IsDevelopment())
+        if (IsBypassActive)
         {
             var bypassLogin = identityAccessor.GetLogin() ?? AccessDefaults.LocalDevLogin;
             var displayName = SplitSam(bypassLogin);
@@ -32,8 +34,8 @@ public sealed class UserAccessSynchronizer(
         var login = identityAccessor.GetLogin();
         if (string.IsNullOrWhiteSpace(login))
         {
-            currentUser.ApplyDenied(string.Empty, displayName: null);
-            logger.LogWarning("Access denied: {UserLogin} {Reason}", string.Empty, "no_windows_identity");
+            currentUser.ApplyDenied(string.Empty, displayName: null, reason: AccessDenialReasons.NoWindowsIdentity);
+            logger.LogWarning("Access denied: {UserLogin} {Reason}", string.Empty, AccessDenialReasons.NoWindowsIdentity);
             return;
         }
 
@@ -46,13 +48,28 @@ public sealed class UserAccessSynchronizer(
         await LoadExistingRolesAsync(login, cancellationToken);
     }
 
+    /// <summary>
+    /// Права пользователя, от имени которого действует доверенный клиент API.
+    /// Только сохранённые роли <c>dbo.UserRole</c>: AD на каждый запрос не опрашивается.
+    /// </summary>
+    public async Task SynchronizeOnBehalfAsync(string login, CancellationToken cancellationToken = default)
+    {
+        if (IsBypassActive)
+        {
+            currentUser.ApplyBypass(login, SplitSam(login));
+            return;
+        }
+
+        await LoadExistingRolesAsync(login, cancellationToken);
+    }
+
     private async Task LoadExistingRolesAsync(string login, CancellationToken cancellationToken)
     {
         var user = await repository.FindByLoginAsync(login, cancellationToken);
         if (user is null)
         {
-            currentUser.ApplyDenied(login, displayName: null);
-            logger.LogInformation("Access denied: {UserLogin} {Reason}", login, "no_user");
+            currentUser.ApplyDenied(login, displayName: null, reason: AccessDenialReasons.NoUser);
+            logger.LogInformation("Access denied: {UserLogin} {Reason}", login, AccessDenialReasons.NoUser);
             return;
         }
 
@@ -100,8 +117,8 @@ public sealed class UserAccessSynchronizer(
     {
         if (roleNames.Count == 0)
         {
-            currentUser.ApplyDenied(login, displayName);
-            logger.LogInformation("Access denied: {UserLogin} {Reason}", login, "no_roles");
+            currentUser.ApplyDenied(login, displayName, reason: AccessDenialReasons.NoRoles);
+            logger.LogInformation("Access denied: {UserLogin} {Reason}", login, AccessDenialReasons.NoRoles);
             return;
         }
 

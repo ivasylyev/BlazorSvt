@@ -176,7 +176,10 @@ public partial class Grid<TItem> : BlazorBootstrapComponentBase
     /// <summary>
     /// Creates a data provider request that reflects the grid's current filters and sorting.
     /// </summary>
-    public GridDataProviderRequest<TItem> CreateDataProviderRequest(int? pageNumber = null, int? pageSizeOverride = null)
+    public GridDataProviderRequest<TItem> CreateDataProviderRequest(
+        int? pageNumber = null,
+        int? pageSizeOverride = null,
+        CancellationToken cancellationToken = default)
     {
         return new GridDataProviderRequest<TItem>
         {
@@ -184,6 +187,7 @@ public partial class Grid<TItem> : BlazorBootstrapComponentBase
             PageSize = pageSizeOverride ?? (AllowPaging ? pageSize : 0),
             Sorting = AllowSorting ? gridCurrentState.Sorting ?? GetDefaultSorting()! : null!,
             Filters = AllowFiltering ? GetFilters()! : null!,
+            CancellationToken = cancellationToken
         };
     }
 
