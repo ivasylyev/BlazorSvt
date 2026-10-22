@@ -5,12 +5,12 @@
   <resheader name="reader"><value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value></resheader>
   <resheader name="writer"><value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value></resheader>
   <data name="Match.Level1" xml:space="preserve"><value>Exact match of departure node, destination node, transport type and product.</value></data>
-  <data name="Match.Level2" xml:space="preserve"><value>Product lifted to product group.</value></data>
+  <data name="Match.Level2" xml:space="preserve"><value>Product lifted to transport group.</value></data>
   <data name="Match.Level3" xml:space="preserve"><value>Destination node lifted to region.</value></data>
-  <data name="Match.Level4" xml:space="preserve"><value>Destination node lifted to region and product to product group.</value></data>
+  <data name="Match.Level4" xml:space="preserve"><value>Destination node lifted to region and product to transport group.</value></data>
   <data name="Match.Level5" xml:space="preserve"><value>Transport type lifted to transport kind.</value></data>
-  <data name="Match.Level6" xml:space="preserve"><value>Product lifted to product group, transport type to transport kind.</value></data>
+  <data name="Match.Level6" xml:space="preserve"><value>Product lifted to transport group, transport type to transport kind.</value></data>
   <data name="Match.Level7" xml:space="preserve"><value>Destination node lifted to region, transport type to transport kind.</value></data>
-  <data name="Match.Level8" xml:space="preserve"><value>Destination node lifted to region, product to product group, transport type to transport kind.</value></data>
+  <data name="Match.Level8" xml:space="preserve"><value>Destination node lifted to region, product to transport group, transport type to transport kind.</value></data>
   <data name="Match.DepartureReplaced" xml:space="preserve"><value>Departure node replaced with {0}.</value></data>
 </root>

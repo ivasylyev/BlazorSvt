@@ -38,7 +38,7 @@ public sealed class SmartRateLookupRequest
 /// <param name="Found"><c>false</c> — ставка не найдена ни на одном шаге (это не ошибка).</param>
 /// <param name="Rate">Найденная ставка; <c>null</c>, если не найдена.</param>
 /// <param name="Match">Как найдена ставка; <c>null</c>, если не найдена.</param>
-/// <param name="Request">Разрешённые параметры запроса (названия, группа продукта, вид транспорта, дата, профиль).</param>
+/// <param name="Request">Разрешённые параметры запроса (названия, транспортная группа, вид транспорта, дата, профиль).</param>
 public sealed record SmartRateLookupResponse(
     bool Found,
     SmartRateLookupRate? Rate,
@@ -77,7 +77,7 @@ public sealed record SmartRateLookupRate(
     string? ProductGroupCode);
 
 /// <param name="Level">Уровень поиска 1–8: 1 — точное совпадение, далее всё более общие условия.</param>
-/// <param name="ProductLiftedToGroup">Продукт поднят до группы продуктов.</param>
+/// <param name="ProductLiftedToGroup">Продукт поднят до транспортной группы.</param>
 /// <param name="DestinationLiftedToRegion">Узел назначения поднят до региона.</param>
 /// <param name="TransportTypeLiftedToKind">Тип транспорта поднят до вида транспорта.</param>
 /// <param name="DepartureNodeReplaced">Узел отправления заменён дополнительным узлом организации DPO.</param>
