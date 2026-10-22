@@ -337,7 +337,7 @@
           "transport-rates"
         ],
         "summary": "Выгрузка справочника transport-rates в Excel",
-        "description": "Файл .xlsx в ответе. kind=short — колонки грида, kind=full — поля карточки. Все колонки, без пользовательских настроек.",
+        "description": "Файл .xlsx в ответе. kind=Short — колонки грида, kind=Full — поля карточки. Все колонки, без пользовательских настроек.",
         "operationId": "exportTransportRates",
         "parameters": [
           {
@@ -592,7 +592,7 @@
           "parity-rates"
         ],
         "summary": "Выгрузка справочника parity-rates в Excel",
-        "description": "Файл .xlsx в ответе. kind=short — колонки грида, kind=full — поля карточки. Все колонки, без пользовательских настроек.",
+        "description": "Файл .xlsx в ответе. kind=Short — колонки грида, kind=Full — поля карточки. Все колонки, без пользовательских настроек.",
         "operationId": "exportParityRates",
         "parameters": [
           {
@@ -847,7 +847,7 @@
           "average-rates-level3"
         ],
         "summary": "Выгрузка справочника average-rates-level3 в Excel",
-        "description": "Файл .xlsx в ответе. kind=short — колонки грида, kind=full — поля карточки. Все колонки, без пользовательских настроек.",
+        "description": "Файл .xlsx в ответе. kind=Short — колонки грида, kind=Full — поля карточки. Все колонки, без пользовательских настроек.",
         "operationId": "exportAverageRatesLevel3",
         "parameters": [
           {
@@ -1102,7 +1102,7 @@
           "transport-legs"
         ],
         "summary": "Выгрузка справочника transport-legs в Excel",
-        "description": "Файл .xlsx в ответе. kind=short — колонки грида, kind=full — поля карточки. Все колонки, без пользовательских настроек.",
+        "description": "Файл .xlsx в ответе. kind=Short — колонки грида, kind=Full — поля карточки. Все колонки, без пользовательских настроек.",
         "operationId": "exportTransportLegs",
         "parameters": [
           {
@@ -1357,7 +1357,7 @@
           "locations-nodes"
         ],
         "summary": "Выгрузка справочника locations-nodes в Excel",
-        "description": "Файл .xlsx в ответе. kind=short — колонки грида, kind=full — поля карточки. Все колонки, без пользовательских настроек.",
+        "description": "Файл .xlsx в ответе. kind=Short — колонки грида, kind=Full — поля карточки. Все колонки, без пользовательских настроек.",
         "operationId": "exportLocationsNodes",
         "parameters": [
           {
@@ -1612,7 +1612,7 @@
           "rate-types"
         ],
         "summary": "Выгрузка справочника rate-types в Excel",
-        "description": "Файл .xlsx в ответе. kind=short — колонки грида, kind=full — поля карточки. Все колонки, без пользовательских настроек.",
+        "description": "Файл .xlsx в ответе. kind=Short — колонки грида, kind=Full — поля карточки. Все колонки, без пользовательских настроек.",
         "operationId": "exportRateTypes",
         "parameters": [
           {
@@ -4135,27 +4135,29 @@
         "nullable": true
       },
       "SmartRateLookupRequest": {
+        "required": [
+          "nodeFromCode",
+          "nodeToCode",
+          "productCode",
+          "transportTypeCode",
+          "currencyCode"
+        ],
         "type": "object",
         "properties": {
           "nodeFromCode": {
-            "type": "string",
-            "nullable": true
+            "type": "string"
           },
           "nodeToCode": {
-            "type": "string",
-            "nullable": true
+            "type": "string"
           },
           "productCode": {
-            "type": "string",
-            "nullable": true
+            "type": "string"
           },
           "transportTypeCode": {
-            "type": "string",
-            "nullable": true
+            "type": "string"
           },
           "currencyCode": {
-            "type": "string",
-            "nullable": true
+            "type": "string"
           },
           "date": {
             "type": "string",

@@ -1,27 +1,37 @@
+using System.ComponentModel.DataAnnotations;
+
 namespace BlazorSvt.Modules.SmartRateLookup.Contracts;
 
 /// <summary>Запрос умного подбора ставки (аналог запроса CRM в <c>dbo.TransportRateCRM</c>).</summary>
 public sealed class SmartRateLookupRequest
 {
     /// <summary>Код узла отправления.</summary>
-    public string? NodeFromCode { get; init; }
+    [Required]
+    public string NodeFromCode { get; init; } = "";
 
     /// <summary>Код узла назначения.</summary>
-    public string? NodeToCode { get; init; }
+    [Required]
+    public string NodeToCode { get; init; } = "";
 
     /// <summary>Код продукта (МТР).</summary>
-    public string? ProductCode { get; init; }
+    [Required]
+    public string ProductCode { get; init; } = "";
 
     /// <summary>Код типа транспорта 3-го уровня.</summary>
-    public string? TransportTypeCode { get; init; }
+    [Required]
+    public string TransportTypeCode { get; init; } = "";
 
     /// <summary>Код валюты ответа, напр. <c>RUB</c>.</summary>
-    public string? CurrencyCode { get; init; }
+    [Required]
+    public string CurrencyCode { get; init; } = "";
 
     /// <summary>Дата действия ставки и курса пересчёта. По умолчанию — сегодня (время сервера, Москва).</summary>
     public DateOnly? Date { get; init; }
 
-    /// <summary>Профиль приоритетов типов ставок (<c>OperationName</c>). По умолчанию «Импорт в CRM».</summary>
+    /// <summary>
+    /// Профиль приоритетов типов ставок (<c>OperationName</c>).
+    /// В пилоте Атласа не передавать: сервер подставит «Импорт в CRM».
+    /// </summary>
     public string? Profile { get; init; }
 }
 
