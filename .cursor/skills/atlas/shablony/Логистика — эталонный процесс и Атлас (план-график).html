@@ -1,0 +1,897 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Атлас: план первого этапа в логистике</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Golos+Text:wght@400;500;600;700&display=swap">
+<style>
+:root{
+  color-scheme: light;
+  --page:#f9f9f7; --surface:#fcfcfb; --surface2:#f3f2ee;
+  --ink:#0b0b0b; --ink2:#52514e; --muted:#898781;
+  --grid:#e1e0d9; --axis:#c3c2b7; --border:rgba(11,11,11,.10);
+  --done:#0ca30c; --prog:#e0a000; --risk:#d03b3b; --none:#898781;
+  --s1:#2a78d6; --s2:#eb6834; --s3:#1baf7a; --s4:#eda100; --s5:#0e8f9e; --s6:#b0417a;
+  --s7:#008300; --s8:#e87ba4; --s9:#4a3aa7; --s10:#8a5a2b; --s11:#1baf7a; --s12:#6b7280;
+  --pred:#2a78d6; --succ:#eb6834; --crit:#d03b3b;
+  --band:rgba(42,120,214,.05); --after:rgba(137,135,129,.10);
+  --r:10px; --font:"Golos Text",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    color-scheme: dark;
+    --page:#0d0d0d; --surface:#1a1a19; --surface2:#232321;
+    --ink:#fff; --ink2:#c3c2b7; --muted:#898781;
+    --grid:#2c2c2a; --axis:#383835; --border:rgba(255,255,255,.10);
+    --s1:#3987e5; --s2:#d95926; --s3:#199e70; --s4:#c98500; --s5:#15a9ba; --s6:#d05c98;
+    --s7:#1f9a1f; --s8:#d55181; --s9:#9085e9; --s10:#b07a45; --s11:#199e70; --s12:#9ca3af;
+    --pred:#5598e7; --succ:#f08a5d; --crit:#ef5b5b;
+    --band:rgba(85,152,231,.07); --after:rgba(255,255,255,.05);
+  }
+}
+:root[data-theme="dark"]{
+  color-scheme: dark;
+  --page:#0d0d0d; --surface:#1a1a19; --surface2:#232321;
+  --ink:#fff; --ink2:#c3c2b7; --muted:#898781;
+  --grid:#2c2c2a; --axis:#383835; --border:rgba(255,255,255,.10);
+  --s1:#3987e5; --s2:#d95926; --s3:#199e70; --s4:#c98500; --s5:#15a9ba; --s6:#d05c98;
+  --s7:#1f9a1f; --s8:#d55181; --s9:#9085e9; --s10:#b07a45; --s11:#199e70; --s12:#9ca3af;
+  --pred:#5598e7; --succ:#f08a5d; --crit:#ef5b5b;
+  --band:rgba(85,152,231,.07); --after:rgba(255,255,255,.05);
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0; background:var(--page); color:var(--ink); font:14px/1.5 var(--font);
+  padding:env(safe-area-inset-top,0) 0 calc(48px + env(safe-area-inset-bottom,0))}
+.wrap{max-width:1400px; margin:0 auto; padding:0 16px}
+h1,h2,h3{margin:0; font-weight:640; letter-spacing:-.01em; text-wrap:balance}
+h1{font-size:26px} h2{font-size:18px} h3{font-size:14px; margin-bottom:6px}
+p{margin:0 0 8px}
+.sec{margin-top:32px}
+.sec-head{margin-bottom:10px}
+.sec-head p{margin:4px 0 0; color:var(--ink2); font-size:13px; max-width:95ch}
+.card{background:var(--surface); border:1px solid var(--border); border-radius:var(--r)}
+.pad{padding:16px}
+button{font:inherit; color:inherit; cursor:pointer}
+.btn{background:var(--surface); border:1px solid var(--border); border-radius:8px; padding:6px 11px; font-size:13px}
+.btn:hover{background:var(--surface2)}
+.btn.on{background:var(--ink); color:var(--surface); border-color:var(--ink)}
+.muted{color:var(--muted)}
+.linkbtn{background:none; border:none; padding:0; color:var(--s1); text-decoration:underline; text-underline-offset:2px; font-size:inherit; text-align:left}
+
+header.hero{border-bottom:1px solid var(--border); background:var(--surface); padding:22px 0 20px}
+.hero-top{display:flex; justify-content:space-between; gap:16px; flex-wrap:wrap; align-items:flex-start}
+.sub{color:var(--ink2); margin-top:6px; max-width:90ch}
+.meta{color:var(--muted); font-size:12.5px; margin-top:4px}
+.kpis{display:grid; grid-template-columns:repeat(auto-fit,minmax(160px,1fr)); gap:10px; margin-top:18px}
+.kpi{background:var(--surface); border:1px solid var(--border); border-radius:var(--r); padding:12px 14px}
+.kpi .v{font-size:26px; font-weight:660; line-height:1.1; font-variant-numeric:tabular-nums}
+.kpi .l{font-size:12.5px; color:var(--ink2); margin-top:2px}
+
+.intro{display:grid; grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); gap:10px}
+.intro .card{padding:14px 16px; font-size:13.5px}
+.intro ul{margin:0; padding-left:18px} .intro li{margin:2px 0}
+.steps{display:flex; flex-wrap:wrap; gap:6px; margin-top:10px}
+.step{border:1px solid var(--border); border-radius:8px; padding:5px 9px; background:var(--surface); font-size:12.5px}
+.step b{color:var(--muted); font-weight:600; margin-right:4px}
+details.gloss{margin-top:10px}
+details.gloss summary{cursor:pointer; font-weight:600; font-size:13.5px}
+.gl{display:grid; grid-template-columns:repeat(auto-fit,minmax(300px,1fr)); gap:6px 24px; margin-top:10px; font-size:13px}
+.gl b{font-weight:640}
+
+/* лента КТ */
+.rail{padding:18px 16px 14px; overflow-x:auto}
+.rail-in{position:relative; min-width:860px}
+.months{position:relative; height:26px}
+.mband{position:absolute; top:0; height:26px; border-radius:6px; font-size:11.5px; color:var(--ink2); padding:4px 8px; white-space:nowrap; overflow:hidden; background:var(--band); border:1px solid var(--border)}
+.mband.after{background:var(--after)}
+.waxis{position:relative; height:22px; border-bottom:1px solid var(--axis); margin-top:6px}
+.waxis .w{position:absolute; top:0; font-size:10.5px; color:var(--muted); padding-left:4px; border-left:1px solid var(--grid); height:22px; white-space:nowrap; line-height:1.15}
+.ktlane{position:relative}
+.kt{position:absolute; top:0; transform:translateX(-50%); width:122px; text-align:center; background:none; border:none; padding:0}
+.kt .dia{display:block; margin:0 auto; width:13px; height:13px; transform:rotate(45deg); border:2px solid var(--surface)}
+.kt .kl{display:block; border-left:1px dashed var(--axis); margin:0 auto; width:0}
+.kt .kn{display:block; font-size:11px; font-weight:700}
+.kt .kt2{display:block; font-size:11px; line-height:1.2; color:var(--ink2)}
+.kt .kd{display:block; font-size:10.5px; color:var(--muted)}
+.kt:hover .kt2{text-decoration:underline}
+.todayv{position:absolute; top:0; bottom:0; border-left:1.5px dashed var(--risk); pointer-events:none}
+.todayv span{position:absolute; top:-2px; left:3px; font-size:10px; font-weight:700; color:var(--risk); background:var(--surface); padding:0 2px}
+
+.tablewrap{overflow-x:auto; border-radius:var(--r)}
+table{border-collapse:separate; border-spacing:0; width:100%; font-size:13px}
+th,td{padding:8px 10px; text-align:left; border-bottom:1px solid var(--grid); vertical-align:top}
+thead th{background:var(--surface2); font-size:11px; text-transform:uppercase; letter-spacing:.04em; color:var(--ink2); font-weight:600; white-space:nowrap}
+tbody tr:last-child td{border-bottom:none}
+td.num{font-variant-numeric:tabular-nums; white-space:nowrap}
+.pill{display:inline-block; font-size:11px; padding:1px 8px; border-radius:999px; border:1px solid var(--border); white-space:nowrap; color:var(--ink2)}
+.pill.ok{color:var(--done); border-color:var(--done)}
+.pill.mid{color:#a86f00; border-color:var(--prog)}
+.pill.bad{color:var(--risk); border-color:var(--risk)}
+
+/* план работ */
+.toolbar{display:flex; gap:8px; flex-wrap:wrap; align-items:center; margin-bottom:10px}
+.toolbar select,.toolbar input{font:inherit; font-size:13px; padding:6px 9px; border-radius:8px; border:1px solid var(--border); background:var(--surface); color:var(--ink); max-width:100%}
+.dgrid{display:grid; grid-template-columns:minmax(0,36%) 170px 112px 1fr; align-items:center}
+.dhead{border-bottom:1px solid var(--border); padding:0 14px; position:sticky; top:0; z-index:6; background:var(--surface); border-radius:var(--r) var(--r) 0 0}
+.dhead .lbl{font-size:11px; color:var(--muted); text-transform:uppercase; letter-spacing:.05em; padding:8px 0}
+.ax{position:relative; height:34px}
+.ax .w{position:absolute; top:4px; font-size:10px; color:var(--muted); padding-left:3px; border-left:1px solid var(--grid); height:14px; white-space:nowrap}
+.ax .k{position:absolute; top:20px; transform:translateX(-50%); font-size:9.5px; font-weight:700; color:var(--ink2); background:var(--surface); line-height:1.2}
+#acc{position:relative}
+#ovl{position:absolute; inset:0; pointer-events:none; z-index:5}
+.grp{border-bottom:1px solid var(--border)}
+.grp:last-child{border-bottom:none}
+.ghead{padding:10px 14px; cursor:pointer}
+.ghead:hover{background:var(--surface2)}
+.gL{display:flex; align-items:center; gap:9px; min-width:0; padding-right:10px}
+.tw{transition:transform .15s; flex:none; color:var(--muted); font-size:11px}
+.grp.open .tw{transform:rotate(90deg)}
+.swatch{width:4px; height:22px; border-radius:2px; flex:none}
+.gname{font-weight:640}
+.gcount{font-size:12px; color:var(--muted); flex:none}
+.grows{display:none; padding-bottom:6px}
+.grp.open .grows{display:block}
+.track{position:relative; height:22px; border-radius:5px;
+  background:repeating-linear-gradient(to right, var(--grid) 0 1px, transparent 1px calc(100% / var(--nw)))}
+.track .aft{position:absolute; top:0; bottom:0; right:0; background:var(--after)}
+.grp.cp{background:color-mix(in srgb, var(--crit) 4%, var(--surface))}
+.cprow{padding:4px 14px; min-height:30px; cursor:pointer}
+.cprow:hover{background:var(--surface2)}
+.cpn{width:18px; height:18px; border-radius:50%; background:var(--crit); color:#fff; font-size:10.5px; font-weight:700; display:inline-flex; align-items:center; justify-content:center; flex:none; font-variant-numeric:tabular-nums}
+@media (max-width:900px){ .cprow .who,.cprow .due{display:inline-block; padding-left:40px} .cprow .due{padding-left:8px} .cprow .track{margin-top:5px} }
+.trow{padding:4px 14px; min-height:32px; cursor:pointer; border-left:3px solid transparent}
+.trow:hover{background:var(--surface2)}
+.trow.sel{background:var(--surface2); border-left-color:var(--ink)}
+.trow.isPred{border-left-color:var(--pred)}
+.trow.isSucc{border-left-color:var(--succ)}
+.tL{display:flex; align-items:center; gap:8px; min-width:0; padding-right:10px}
+.tid{font-size:11px; color:var(--muted); font-variant-numeric:tabular-nums; flex:none; width:32px}
+.ttl{font-size:13px; line-height:1.35; min-width:0}
+.trow.m .ttl{font-weight:620}
+.tag{font-size:10px; padding:0 6px; border-radius:999px; border:1px solid; white-space:nowrap; margin-left:4px; vertical-align:1px}
+.tag.cr{color:var(--crit); border-color:var(--crit)}
+.tag.tkt{color:var(--ink2); border-color:var(--axis)}
+.tag.q{color:#a86f00; border-color:var(--prog)}
+.who{font-size:12px; color:var(--ink2); line-height:1.3; padding-right:8px}
+.who .tbd{color:var(--risk)}
+.due{font-size:12px; font-variant-numeric:tabular-nums; color:var(--ink2); white-space:nowrap}
+.bar{position:absolute; top:5px; height:12px; border-radius:4px; min-width:5px; box-shadow:0 0 0 2px var(--surface)}
+.bar.done{opacity:.4}
+.bar.crit{box-shadow:0 0 0 2px var(--surface), 0 0 0 3.5px var(--crit)}
+.bar.span{top:8px; height:6px; opacity:.55}
+.dm{position:absolute; top:4px; width:13px; height:13px; transform:translateX(-50%) rotate(45deg); box-shadow:0 0 0 2px var(--surface)}
+.dm.crit{box-shadow:0 0 0 2px var(--surface), 0 0 0 3.5px var(--crit)}
+.tick{position:absolute; top:3px; width:3px; height:16px; border-radius:1px; background:var(--ink); opacity:.5; transform:translateX(-50%)}
+.st{width:11px; height:11px; border-radius:50%; border:2px solid var(--axis); flex:none}
+.st.done{background:var(--done); border-color:var(--done)}
+.st.prog{border-color:var(--prog); border-width:4px}
+.tag.nx{color:var(--ink2); border-color:var(--ink2); border-style:dashed}
+.st.over{border-color:var(--risk); border-width:4px}
+.xrow{display:none; padding:10px 14px 14px 56px; background:var(--surface2); border-bottom:1px solid var(--grid); font-size:13px}
+.xrow.open{display:block}
+.xgrid{display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); gap:10px 24px}
+.xgrid h4{margin:0 0 4px; font-size:11px; text-transform:uppercase; letter-spacing:.05em; color:var(--muted); font-weight:600}
+.chips{display:flex; flex-wrap:wrap; gap:5px}
+.chip{display:inline-flex; gap:5px; font-size:12px; border:1px solid var(--border); border-radius:999px; padding:2px 9px; background:var(--surface); max-width:100%; text-align:left}
+.chip:hover{border-color:var(--ink)}
+.chip .i{color:var(--muted)}
+.chip.p{border-left:3px solid var(--pred)}
+.chip.s{border-left:3px solid var(--succ)}
+.legend{display:flex; gap:16px; flex-wrap:wrap; font-size:12px; color:var(--ink2); margin-top:10px; align-items:center}
+.legend span{display:inline-flex; align-items:center; gap:6px}
+.empty{padding:18px 14px; color:var(--muted)}
+
+.cols{display:grid; grid-template-columns:repeat(auto-fit,minmax(340px,1fr)); gap:10px}
+.cols .card{padding:14px 16px}
+ol.qs{margin:0; padding-left:20px; font-size:13px} ol.qs li{margin:0 0 8px}
+#tip{position:fixed; z-index:99; pointer-events:none; opacity:0; background:var(--surface); color:var(--ink);
+  border:1px solid var(--axis); border-radius:8px; padding:8px 10px; font-size:12px; max-width:320px; box-shadow:0 8px 24px rgba(0,0,0,.18)}
+footer{margin-top:34px; padding-top:14px; border-top:1px solid var(--border); color:var(--muted); font-size:12px}
+
+@media (max-width:900px){
+  .dgrid{grid-template-columns:1fr}
+  .dhead{display:none}
+  .trow .who,.trow .due{display:inline-block; padding-left:40px}
+  .trow .due{padding-left:8px}
+  .trow .track,.ghead .track{margin-top:5px}
+  .ghead .who,.ghead .due{display:none}
+  .xrow{padding-left:14px}
+  h1{font-size:22px}
+}
+@media print{
+  .noprint{display:none!important}
+  .grows{display:block!important}
+  .dhead{position:static}
+  @page{size:A4 landscape; margin:10mm}
+}
+tr.total-row td{font-weight:600;background:var(--surface2)}
+</style>
+</head>
+<body>
+<div id="tip"></div>
+
+<header class="hero">
+  <div class="wrap">
+    <div class="hero-top">
+      <div>
+        <h1>Атлас: план первого этапа в логистике</h1>
+        <div class="sub">Эталонный процесс, первый срез «автотранспорт» · горизонт 27.07 – 27.11.2026</div>
+      </div>
+      <div class="noprint" style="display:flex;gap:8px">
+        <button class="btn" id="theme">Тёмная тема</button>
+        <button class="btn" onclick="window.print()">Печать</button>
+      </div>
+    </div>
+    <div class="kpis" id="kpis"></div>
+  </div>
+</header>
+
+<div class="wrap">
+
+  <section class="sec">
+    <div class="intro">
+      <div class="card">
+        <h3>Что такое Атлас</h3>
+        <p>Одно рабочее окно для сотрудника логистики поверх SAP, Логинет, Siebel и других систем. В нём видно маршрут, отклонения от правил и то, что ждёт решения. Рутинные операции выполняют ИИ-агенты, человек подключается там, где нужно его решение.</p>
+        <p style="margin:0">Системы-источники остаются. Официальные записи хранятся в них, Атлас работает поверх.</p>
+      </div>
+      <div class="card">
+        <h3>Результат первого этапа</h3>
+        <p>К 27.11 готов прототип Атласа для первого среза «автотранспорт»: рабочие места ролей и данные из текущих систем. Первые сценарии — «потребность в перевозке» и «остатки».</p>
+        <p style="margin:0">Прототип охватывает кольцо Ш1–Ш9 и работает на данных из текущих систем. Интеграций с SAP на первом этапе нет. <b>Запуск среза для сотрудников в 2026 году не планируется.</b></p>
+      </div>
+      <div class="card">
+        <h3>Ключевые даты</h3>
+        <ul>
+          <li><b>01.10</b> — правила среза записаны (по плану 25.09)</li>
+          <li><b>09.10</b> — прототип собран и передан</li>
+          <li><b>12.10–06.11</b> — диспетчеры и менеджеры перевозок проверяют прототип</li>
+          <li><b>30.10</b> — эталон утверждён</li>
+          <li><b>20.11</b> — бизнес-кейс, скоуп и бюджет утверждены</li>
+          <li><b>27.11</b> — прототип готов и представлен правлению</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3>Идёт параллельно</h3>
+        <ul>
+          <li><b>Быстрые автоматизации</b>: перезакупка автотранспорта, трекинг через Яндекс Маршрутизатор, остатки ТиУ. Результаты — в разделе 3.</li>
+          <li><b>Трек «Северсталь»</b>: автоматизация рутинных операций сопровождения логистики, потенциал 36–64 FTE. Подробности — в разделе 4.</li>
+        </ul>
+      </div>
+    </div>
+    <div class="card pad" style="margin-top:10px">
+      <h3>Шаги процесса логистики</h3>
+      <p class="muted" style="font-size:12.5px;margin:0">Шаги образуют кольцо и повторяются на каждой перевозке: факты закрытых перевозок переписывают нормативы, ставки, рейтинги и правила. Срезы отличаются только правилами: сначала автотранспорт, затем ж/д, затем прочие виды. Человек подключается строго в четырёх точках: Ш2, Ш4, Ш6, Ш8.</p>
+      <div class="steps" id="steps"></div>
+      <p class="muted" style="font-size:12.5px;margin:10px 0 0">Вокруг кольца — 8 сквозных механизмов, одинаковых для всех шагов: <b>П1</b> НСИ логистики, <b>П2</b> реестр перевозчиков, <b>П3</b> тарифно-нормативная модель, <b>П4</b> событийная шина, <b>П5</b> регуляторный контур ВЭД, <b>П6</b> полномочия и лимиты, <b>П7</b> диспетчеризация людей, <b>П8</b> аналитика и обучение. Внедрение идёт волнами, переход между ними — по готовности:</p>
+      <div class="steps" id="waves"></div>
+      <details class="gloss">
+        <summary>Словарь терминов плана</summary>
+        <div class="gl" id="gloss"></div>
+      </details>
+    </div>
+  </section>
+
+  <section class="sec">
+    <div class="sec-head"><h2>1. Контрольные точки</h2>
+      <p>Двенадцать моментов, когда результат работ должен быть виден и принят. Клик по точке покажет в разделе 2 задачи, которые к ней ведут. Под названием точки указан её номер в предыдущей версии плана логистики (КТ-1…КТ-9).</p></div>
+    <div class="card rail" id="rail"></div>
+    <div class="card tablewrap" style="margin-top:10px"><table id="kttable"></table></div>
+    <div class="card pad" style="margin-top:10px">
+      <h3>Что зафиксировано в КТ3 «Правила записаны» (закрыта 01.10)</h3>
+      <div class="gl" style="margin-top:6px">
+        <div><b>9 шагов Ш1–Ш9</b> — кольцо с тремя контурами: экземпляр перевозки, обучение, исключения.</div>
+        <div><b>8 механизмов П1–П8</b> — владельцы назначены у П2 (категорийный менеджер) и П3 (ФЭС); у П1 и П4–П8 владельца пока нет.</div>
+        <div><b>4 точки решения человека</b> — Ш2 схема дороже лимита, Ш4 спорная классификация ВЭД, Ш6 дорогая перестройка маршрута, Ш8 спорный счёт или крупная претензия.</div>
+        <div><b>14 агентов А-01…А-14</b> — у каждого мандат и граница, что он не решает.</div>
+        <div><b>Пороги шагов</b> — заявка не позднее чем за 36 часов до отгрузки, ТЗ на закупку до 5 рабочих дней, ответ перевозчика около 2 часов, ставка аукциона не более +30% к среднему тарифу, согласование до 200 млн руб., погрузка до 2 часов, ответ на претензию 15 дней.</div>
+        <div><b>13 ролей</b> с целевыми клиентскими путями (документ от 01.10) и <b>ФТТ «Атлас логистики» v1.0</b>.</div>
+        <div><b>39 открытых вопросов</b> владельцу процесса, из них 10 блокирующих (P0). Они вынесены в задачу 5.5.</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec" id="plan-sec">
+    <div class="sec-head"><h2>2. План работ</h2>
+      <p>Работы сгруппированы по направлениям. Под планом показан критический путь: цепочка задач, которая определяет дату готовности прототипа (КТ12). Если любая из них сдвинется, сдвинется и КТ12. Быстрые автоматизации и трек «Северсталь» идут параллельно и в результат КТ12 не входят. Подготовка к следующему этапу собрана в направлении 15: запуск среза для сотрудников в 2026 году не планируется. Такие задачи обведены красным и в своих направлениях. Клик по задаче откроет подробности: результат, от чего она зависит и какие задачи ждут её.</p></div>
+    <div class="toolbar noprint">
+      <select id="fStream" aria-label="Направление"></select>
+      <select id="fOwner" aria-label="Ответственный"></select>
+      <input type="search" id="fQ" placeholder="Поиск по задаче или фамилии" style="min-width:230px">
+      <button class="btn" id="fCrit">Только критический путь</button>
+      <span style="flex:1"></span>
+      <button class="btn" id="expandAll">Развернуть всё</button>
+      <button class="btn" id="collapseAll">Свернуть всё</button>
+    </div>
+    <div class="card">
+      <div class="dhead dgrid"><div class="lbl">Задача</div><div class="lbl">Ответственный</div><div class="lbl">Срок</div><div class="ax" id="dax"></div></div>
+      <div id="acc"><svg id="ovl"></svg><div id="groups"></div></div>
+    </div>
+    <div class="legend" id="legend"></div>
+  </section>
+
+  <section class="sec">
+    <div class="sec-head"><h2>3. Результаты быстрых автоматизаций</h2>
+      <p>Параллельно с эталоном идут точечные автоматизации. Каждая привязана к шагу и агенту эталона, чтобы пилот становился частью среза, а не отдельным роботом. Статусы взяты из отчёта от 25.09, задачи по ним — в направлении 13 раздела 2.</p></div>
+    <div class="card tablewrap"><table>
+      <thead><tr><th>Автоматизация</th><th>Элемент эталона</th><th>Что сделано</th><th>Результат и ожидаемый эффект</th><th>Метрики успеха и следующий шаг</th></tr></thead>
+      <tbody>
+        <tr><td><b>Закупка и перезакупка автотранспорта</b></td><td>Ш3 «Обеспечение мощностей», агент А-03</td><td><span class="pill mid">В работе</span><br>Агент автоформирования ТЗ. По статусу от 25.09 окончание работ — на следующей неделе.</td><td>ТЗ готовится не 5 рабочих дней в Excel, а за 1–2 дня. Цикл «ТЗ → загрузка квот» — с 3–4 недель до 1 недели. Совокупный эффект ~0,5 млрд руб/год.</td><td>ТЗ менее 3 дней, сходимость закупленного и фактического объёма 85%, 80/20 автоматических тендеров, ручных правок номинации не более 20%, спред к цели 12,6%. Далее: контроль план/факт, автотендер, автономинация, материалы для тендерного комитета.</td></tr>
+        <tr><td><b>Непрерывный трекинг через Яндекс Маршрутизатор</b></td><td>Ш6 «Исполнение и трекинг», агент А-07</td><td><span class="pill mid">В работе</span><br>Сбор данных по промежуточным точкам реализован. Белянцев В., 0,5 FTE, 21.09–15.10.</td><td>Вместо двух точечных статусов (погрузка и отгрузка) — непрерывный след по всем машинам в пути. Оповещение об опоздании более чем на сутки — в течение часа.</td><td>Подтверждение уведомлений по ретроспективе 85%, рост доли перевозок с непрерывным следом (сейчас покрытие 85–90%). Далее: добавить данные в дашборды, алерты, порог «слепой зоны» (В-06).</td></tr>
+        <tr><td><b>Аналитика остатков ТиУ (2 фазы)</b></td><td>механизм П8 «Аналитика и обучение»</td><td><span class="pill ok">Фаза 1 сделана</span><br>Решение разработано, демо бизнесу проведено, инструмент опробован на планёрке. Далее — доработки, и очередная планёрка пройдёт с инструментом.</td><td>Сокращение трудозатрат около 100 часов в месяц суммарно; сокращение остатков на складах (оценка будет позже). Для спрямления ориентир ≈1169 руб./т, в отдельные месяцы до 14,5 млн руб.</td><td>Доля проблемных остатков, выявленных агентом до запроса пользователя. Далее: фаза 2 — диалоговый агент по остаткам и проактивные уведомления.</td></tr>
+        <tr><td><b>Автоматизация претензий (робот «Надежда»)</b></td><td>Ш8 «Взаиморасчёты и претензии», агент А-11</td><td><span class="pill ok">Результат подтверждён</span><br>Робот с ИИ-классификатором работает по актам охраны труда и промышленной безопасности, около 700 актов в месяц.</td><td>Срок выставления претензии сокращён с 16 до 3 дней.</td><td>Распространить подход на остальные типы претензий, перенести учёт из файла SharePoint в систему, ввести событийный контроль срока давности, единый ID перевозчика.</td></tr>
+        <tr><td><b>Агент по перетратам</b></td><td>Ш3 и Ш9, контроль К-48</td><td><span class="pill ok">Работает</span><br>Единственный контур, где обратная связь уже переписывает правила.</td><td>Эффект около 5 млн руб. за май–июнь 2026.</td><td>Эффект действующих агентов вычитается из бизнес-кейса, чтобы не посчитать дважды.</td></tr>
+        <tr><td><b>Синхронная корректировка заказов в SAP и Логинет</b></td><td>Ш1, механизм П1</td><td><span class="pill">Не начато</span></td><td>Сейчас до 50–100 ручных операций в день на логиста, около 5–10% времени операционистов.</td><td>Сокращение числа ручных операций и времени правки заказа. Первая версия: единый ввод изменений в обе системы и автописьма.</td></tr>
+        <tr><td><b>Единый интерфейс вместо Excel</b></td><td>сам Атлас</td><td><span class="pill mid">Прототип в сборке</span><br>Первые сценарии «остатки» и «потребность в перевозке».</td><td>Excel и почта сейчас занимают не менее половины рабочего времени.</td><td>Рост доли операций, выполняемых в едином интерфейсе. Прототип собирается к КТ9 (09.10).</td></tr>
+      </tbody></table></div>
+    <div class="card pad" style="margin-top:10px">Направления 1 и 4 требуют единого идентификатора перевозчика — это уже часть реестра данных эталона. Направление 2 напрямую питает данными направление 4. Двухфазная методика ТиУ переносима на смежный процесс остатков. Трек «Северсталь» пересекается с направлениями 1, 2 и 4 и координируется с ними (задача 14.5).</div>
+  </section>
+
+  <section class="sec">
+    <div class="sec-head"><h2>4. Трек «Северсталь»: автоматизация сопровождения логистики</h2>
+      <p>Трек идёт отдельно от эталонного процесса и не входит в результат КТ12, но использует ту же практику фиксации гипотез и эффекта. Он автоматизирует рутинные операции, которые СИБУР передал на аутсорс провайдеру Северсталь: сопровождение договоров и первичных документов (РФ и БЕ SI), складской учёт (РФ и SI), тендеры, трекинг. Основание — анализ «СВС: трудоёмкость и потенциал ИИ» (07.2026) и реестр из 38 инициатив, переданный подрядчикам на оценку (Class 4, порядок величины). Задачи трека — в направлении 14 раздела 2.</p></div>
+    <div class="card pad" style="margin-bottom:10px">
+      <b>Ресурс.</b> С 01.10.2026 выделен аналитик Алексей Васильев. Он ведёт реестр инициатив, собирает оценки подрядчика (трудоёмкость, стоимость, риски) и к концу октября формирует короткий список самых прибыльных гипотез. Куратор трека — Юдаков Д.А. Предварительный состав списка — ниже, точные приоритеты подтверждаются после получения оценок подрядчика.
+    </div>
+    <div class="card pad" style="margin-bottom:10px">Периметр сервиса на 2 кв 2026 — <b>90 FTE</b> (86 операционных + 4 менеджера); с 2021 года численность выросла на 309% (22 → 90 FTE) за счёт роста тоннажа, объёма операций и новых сервисов. Уже реализовано в 2025–2026 без учёта ИИ: <b>3 FTE</b> — макросы (перенос данных ТЭК в Report Location, сверка сроков хранения) и доработка SAP (заполнение полей УПД при регистрации). Оценочный потенциал дальнейшей автоматизации операционного состава — <b>36–64 FTE (41–67%)</b> в течение года с момента выделения ресурсов со стороны СИБУР (СД).</div>
+    <div class="card tablewrap"><table>
+      <thead><tr><th>Домен</th><th>AS IS, FTE</th><th>Потенциал, FTE</th><th>Потенциал, %</th><th>Комментарий</th></tr></thead>
+      <tbody>
+        <tr><td>1. Документооборот и расчёты РФ (сопровождение ДД и ПБД)</td><td class="num">37</td><td class="num">15–22</td><td>40–60%</td><td>крупнейший домен по абсолютному объёму; часть шагов со сроком 31.12.2026</td></tr>
+        <tr><td>2. Документооборот БЕ SI (ПБД, выравнивание)</td><td class="num">10</td><td class="num">3–7</td><td>30–70%</td><td>наименьший домен по объёму</td></tr>
+        <tr><td>3. Складской учёт SI</td><td class="num">19</td><td class="num">6–14</td><td>31–70%</td><td>второй по величине потенциал в абсолюте</td></tr>
+        <tr><td>4. Складской учёт РФ</td><td class="num">13</td><td class="num">7–10,5</td><td>53–80%</td><td>наибольшая доля потенциала; движения по тыловым терминалам — срок 30.09.2026</td></tr>
+        <tr><td>5. Аналитика логистики (тендеры, трекинг)</td><td class="num">7</td><td class="num">4</td><td>53–80%</td><td>почти все шаги — доработка вида «ИИ» без разработки в SAP</td></tr>
+        <tr class="total-row"><td><b>Итого операционный состав</b></td><td class="num"><b>86</b></td><td class="num"><b>36–64</b></td><td><b>41–67%</b></td><td></td></tr>
+      </tbody></table></div>
+    <div class="card pad" style="margin-top:10px">
+      <b>Предварительно наиболее прибыльные гипотезы</b> (итоговый приоритет подтверждает Васильев А. к концу октября):
+      <ol class="qs" style="margin-top:8px">
+        <li><b>Складской учёт РФ</b> (домен 4) — наибольшая доля потенциала (53–80% при 13 FTE AS IS); по части шагов (движения по тыловым терминалам РФ) срок — 30.09.2026.</li>
+        <li><b>Сопровождение ПБД РФ — регистрация и подписание УПД в SAP</b> — крупнейший отдельный процесс реестра (16 FTE AS IS), потенциал 3,5–8 FTE за счёт доработки SAP и ИИ, часть шагов ограничена сроком 31.12.2026.</li>
+        <li><b>Аналитика логистики — тендеры и трекинг</b> (домен 5) — высокая доля потенциала почти без доработки SAP. Пересекается с гипотезой «непрерывный трекинг через Яндекс Маршрутизатор» — нужна координация, чтобы не дублировать разработку.</li>
+        <li><b>Складской учёт SI</b> (домен 3) — второй по абсолютной величине потенциал (6–14 FTE из 19 FTE AS IS), много шагов вида «ИИ» без разработки в SAP.</li>
+      </ol>
+      <p class="muted" style="margin:10px 0 0;font-size:12.5px">Ограничения автоматизации (В-37): согласование автоподписания в ЭДО с экономической безопасностью, дезинтеграция от 1С БКП. Оценка подрядчика по реестру из 38 инициатив ожидается, срок не задан (В-36). Не путать с планом передачи рутинного функционала в Северсталь (4,3 FTE, план 2 пг 2026, эффект ~4,8 млн руб/год по направлению «Альфа Верк») — это отдельная организационная инициатива, в трек автоматизации она не входит.</p>
+    </div>
+  </section>
+
+  <section class="sec">
+    <div class="sec-head"><h2>5. Главные риски и что с ними делаем</h2></div>
+    <div class="card pad"><div id="risks"></div></div>
+  </section>
+
+  <section class="sec">
+    <div class="sec-head"><h2>6. Кто за что отвечает</h2></div>
+    <div class="card tablewrap"><table id="roles"></table></div>
+  </section>
+
+  <footer>
+    План построен по методике Атласа (ред. 6, сентябрь 2026) и структуре плана по закупкам. Источники по логистике: AS-IS процесса автологистики, Executive-документ по управлению логистикой, «Роли и клиентские пути целевого процесса» и ФТТ «Атлас логистики» v1.0 (01.10.2026), «Предложения по автоматизации логистики», «СВС: трудоёмкость и потенциал ИИ» (07.2026). Статус контрольных точек на 03.10.2026. Ведёт план ИТ-лидер Агапов А. Даты задач после 03.10 и даты части выполненных задач плановые или оценочные и подлежат подтверждению владельцем процесса.
+  </footer>
+</div>
+
+<script>
+/* ============================ ДАННЫЕ ============================ */
+const YEAR = 2026, PLAN_START = "27.07", AXIS_END = "18.12", LAUNCH = "K12", UPDATED = "03.10";
+
+const STEPS = [["Ш1","Потребность в перевозке"],["Ш2","Схема доставки"],["Ш3","Обеспечение мощностей"],["Ш4","Документы и разрешения"],
+  ["Ш5","Отгрузка"],["Ш6","Исполнение и трекинг"],["Ш7","Приёмка и закрытие"],["Ш8","Взаиморасчёты и претензии"],["Ш9","Оценка и обучение"]];
+
+const WAVES = [["1","Видимость и сверка (Ш6–Ш8)"],["2","Документный конвейер (Ш4–Ш5)"],["3","Планирование и схема (Ш1–Ш3)"],["4","Автономное закрытие (Ш9, Ш8)"]];
+
+const GLOSS = [
+  ["Срез","Набор параметров правил для конкретного случая. Первый срез логистики — автомобильный транспорт, далее ж/д и прочие виды."],
+  ["Контрольная точка (КТ)","Момент, когда результат работ должен быть виден и принят."],
+  ["Эталон","Утверждённое описание целевого процесса: шаги, правила, контроли, данные, агенты."],
+  ["Механизм (П)","Сквозное правило ядра, одинаковое для всех шагов. Шаги читают его по ссылке: изменили в одном месте — поведение всех шагов меняется сразу."],
+  ["Правило","Записанное условие «если так, то делаем так» с порогом и указанием, к кому идти, если правило не подходит."],
+  ["Контроль (К)","Проверка, встроенная в шаг как пред- или постусловие. Заменяет согласование: если запись в порядке, шаг пройден без подписи."],
+  ["Данные (Д)","Элемент информации кольца с одним владельцем и каноническим местом хранения."],
+  ["Агент (А)","Программа, которая выполняет одну операцию по правилам и передаёт человеку исключения."],
+  ["Точка решения человека","Место, где решение обязательно передаётся человеку. В логистике таких точек четыре: Ш2, Ш4, Ш6, Ш8."],
+  ["Волна","Этап внедрения. Переход между волнами — по готовности, а не по календарю."],
+  ["Прототип","Макет рабочих мест Атласа на данных из текущих систем. На нём сотрудники проверяют, удобно ли работать."],
+  ["X-ray","Анализ журналов систем (TaskMining и ProcessMining). Показывает, как процесс идёт на самом деле, и даёт цифры «до»."],
+  ["Развилка","Место, где ответы участников расходятся. Решается, прежде чем идти дальше."],
+  ["CJ и JTBD","Путь пользователя (Customer Journey) и описание работ, которые делает каждая роль (Jobs To Be Done)."],
+  ["RITE","Короткие итерации проверки прототипа: показал, увидел проблему, исправил, показал снова."],
+  ["Быстрая автоматизация","Точечный пилот, который идёт параллельно эталону и привязан к шагу и агенту эталона."],
+  ["ТиУ","Тара и упаковка."],
+  ["Локальный пилот","Следующий этап. Одна операция агента на реальных данных, не запуск среза."],
+  ["В-NN","Номер вопроса в списке открытых вопросов владельцу процесса."]
+];
+
+const PEOPLE = {
+  "Фролов":   {n:"Фролов И.", r:"Бизнес-лидер, менеджер процесса"},
+  "Аветисов": {n:"Аветисов М.Р.", r:"Владелец процесса"},
+  "Агапов":   {n:"Агапов А.", r:"ИТ-лидер, ведёт методологию и лог решений"},
+  "Белянцев": {n:"Белянцев В.", r:"Трекинг через Яндекс Маршрутизатор, 0,5 FTE, 21.09–15.10"},
+  "Васильев": {n:"Васильев А.", r:"Аналитик трека «Северсталь», с 01.10"},
+  "Юдаков":   {n:"Юдаков Д.А.", r:"Куратор от ИТ, трек «Северсталь»"},
+  "ИТП":      {n:"ИТ-партнёр (TBD)", r:"Архитектор и команда разработки; ещё не назначен", tbd:true},
+  "XRAY":     {n:"Аналитик X-ray", r:"Спорные вопросы по фактам: данные и логи"},
+  "РГП":      {n:"Рабочая группа пилота", r:"Быстрые автоматизации"},
+  "ПФ":       {n:"Представители функций", r:"ИБ, финансы, ВЭД; отвечают за целевую схему реестров П2, П3, П5", tbd:true},
+  "ВМ":       {n:"Владельцы механизмов и контролей", r:"П1 и П4–П8 пока не назначены", tbd:true},
+  "ДИС":      {n:"Диспетчеры и менеджеры перевозок", r:"Участники проверки прототипа"},
+  "ПОДР":     {n:"Подрядчик по оценке", r:"Оценивает реестр из 38 инициатив"},
+  "ФЭС":      {n:"Функция экономики логистики", r:"Методика расчёта эффекта, владелец П3"}
+};
+
+const STREAMS = [
+  {k:"1",  nm:"Организация и роли", c:"--s1"},
+  {k:"2",  nm:"Описание процесса", c:"--s2", note:"Карта процесса, AS IS шагов, роли и клиентские пути, правила в едином формате."},
+  {k:"3",  nm:"Анализ по данным систем (X-ray)", c:"--s3"},
+  {k:"4",  nm:"Архитектура и интеграции", c:"--s4"},
+  {k:"5",  nm:"Данные и реестры", c:"--s5", note:"Реестр данных Д-01…Д-26 собран в черновике. Сначала назначаются владельцы, затем интервью со службами."},
+  {k:"6",  nm:"Прототип и проверка пользователями", c:"--s6", note:"Диспетчеры и менеджеры перевозок проверяют прототип по методике RITE: четыре раунда, замечания со шкалой серьёзности."},
+  {k:"7",  nm:"Правила и контроли", c:"--s7", note:"Правила среза ведутся как документы в git (markdown, изменения через pull request). Отдельная система правил — не раньше второго среза (ж/д)."},
+  {k:"8",  nm:"Сборка прототипа", c:"--s8", note:"Интеграций с SAP на первом этапе нет. Первые сценарии — «потребность в перевозке» и «остатки»."},
+  {k:"9",  nm:"Агенты", c:"--s9"},
+  {k:"10", nm:"Оценка, бизнес-кейс, скоуп и бюджет", c:"--s10"},
+  {k:"11", nm:"Приёмка прототипа и презентация правлению", c:"--s11"},
+  {k:"12", nm:"Еженедельные решения", c:"--s12"},
+  {k:"13", nm:"Быстрые автоматизации", c:"--s5", note:"Идут параллельно эталону и в результат КТ12 не входят. Результаты — в разделе 3."},
+  {k:"14", nm:"Трек «Северсталь»", c:"--s6", note:"Автоматизация рутинных операций сопровождения логистики. Не входит в результат КТ12. Подробности — в разделе 4."},
+  {k:"15", nm:"Подготовка к следующему этапу", c:"--muted", note:"Работы, которые готовят следующий этап: интеграции с SAP, агенты на реальных данных, запуск для сотрудников. Запуск среза в 2026 году не планируется. В результат КТ12 не входят."}
+];
+
+const KTS = [
+  {n:1,  t:"Ответственные определены", d:"31.08", old:"КТ-2", c:"Определены бизнес-лидер, владелец процесса и ИТ-лидер. Первый срез назван: автомобильный транспорт."},
+  {n:2,  t:"Шаги описаны", d:"18.09", old:"КТ-1, КТ-3", c:"Базовая карта процесса согласована, шаги Ш1–Ш9 описаны как работают сейчас, по интервью, шаблонам владельцев и логам."},
+  {n:3,  t:"Правила записаны", d:"01.10", moved:"25.09", old:"КТ-4", c:"Механизмы П1–П8, пороги по шагам, четыре точки решения человека и карта агентов записаны в едином формате. Открытые вопросы переданы владельцу процесса."},
+  {n:9,  t:"Прототип передан", d:"09.10", old:"КТ-6", c:"Есть прототип рабочих мест среза. Описание ролей и путей вычитано владельцем процесса."},
+  {n:6,  t:"Контроли описаны", d:"09.10", moved:"02.10", old:"КТ-5", c:"Видно, какие проверки делаются сейчас и кем, и какие не делает никто. У каждого контроля есть владелец."},
+  {n:4,  t:"Данные систем проанализированы", d:"16.10", c:"Правила сверены с журналами: что соблюдается, что нарушается, что не оставляет следа."},
+  {n:7,  t:"Агенты спроектированы", d:"23.10", c:"Шаги разложены на операции, у каждого агента есть карточка: что запускает, по какому правилу работает, где передаёт человеку."},
+  {n:8,  t:"Эталон утверждён", d:"30.10", c:"Описание процесса подписано, перечни возможностей и интеграций собраны, состав и дата готовности прототипа утверждены."},
+  {n:5,  t:"Данные закрыты", d:"06.11", old:"КТ-5", c:"У каждого реестра есть владелец, схема реестров функций (ИБ, финансы, ВЭД) согласована с ними."},
+  {n:11, t:"Связки спроектированы", d:"06.11", c:"Связки с SAP, Логинет и другими системами спроектированы для следующего этапа, цифры «до» сняты. На первом этапе интеграции не делаются."},
+  {n:10, t:"Прототип проверен, бизнес-кейс, скоуп и бюджет утверждены", d:"20.11", old:"КТ-7, КТ-8", c:"Диспетчеры и менеджеры перевозок прошли рабочий день в прототипе, неудобства исправлены. Бизнес-кейс, скоуп и бюджет орг-проекта развёртывания утверждены."},
+  {n:12, t:"Прототип готов", d:"27.11", old:"КТ-9", c:"Готов прототип Атласа для среза «автотранспорт», представлен правлению вместе с эталоном и планом развёртывания. Интеграций с SAP нет, запуск для сотрудников в 2026 году не планируется."}
+];
+
+/* id, s — направление, t — задача, o — ответственные, a/b — начало и конец (дд.мм),
+   d — от чего зависит (:SS — может начаться вместе, :FF — заканчивается не раньше; K5 — контрольная точка),
+   kt — к какой контрольной точке ведёт, st — статус, m — решение или веха, r — результат, nt — пояснение */
+const TASKS = [
+/* 1 */
+{id:"1.1", s:"1", t:"Запуск работы и согласование методики", o:["Фролов","Агапов"], a:"27.07", b:"09.08", st:"done", kt:1},
+{id:"1.2", s:"1", t:"Зафиксировать роли и зоны ответственности: Фролов — бизнес-лидер, Аветисов — владелец процесса, Агапов — ИТ-лидер", o:["Фролов","Аветисов","Агапов"], a:"24.08", b:"31.08", st:"done", kt:1},
+{id:"1.3", s:"1", t:"Назначить поимённо владельцев шагов Ш1–Ш9", o:["Фролов","Аветисов"], a:"05.10", b:"09.10", kt:8, nt:"Сейчас роль определена по шагам, но не по именам."},
+{id:"1.4", s:"1", t:"Назначить владельцев механизмов П1–П8 и контролей К-xx", o:["Фролов","Аветисов"], a:"05.10", b:"16.10", kt:5, nt:"Владелец назначен у П2 (категорийный менеджер) и П3 (ФЭС). У П1 и П4–П8 владельца нет (В-05, В-06, В-14)."},
+{id:"1.5", s:"1", t:"Назначить представителей функций (ИБ, финансы, ВЭД) для интервью и согласования схемы реестров", o:["Фролов","Аветисов"], a:"05.10", b:"09.10", kt:5},
+{id:"1.6", s:"1", t:"Назначить ИТ-партнёра и техлида разработки прототипа", o:["Агапов","Аветисов"], a:"05.10", b:"09.10", kt:9, nt:"Сейчас ИТ-партнёр не назначен. Без него прототип не соберётся к 09.10."},
+/* 2 */
+{id:"2.1", s:"2", t:"Описать базовую карту процесса: кольцо Ш1–Ш9 и три контура", o:["Фролов","Агапов"], a:"10.08", b:"23.08", st:"done", kt:2, r:"Кольцо из 9 шагов и три параллельных контура: поток экземпляра, поток обучения, поток исключений."},
+{id:"2.2", s:"2", t:"Описать целевое видение в Executive-документе по управлению логистикой", o:["Агапов"], a:"10.08", b:"19.08", st:"done", kt:2},
+{id:"2.3", s:"2", t:"Уточнить описания шагов как работаем сейчас: шаблоны владельцев, интервью с исполнителями, логи", o:["Фролов","Агапов"], a:"01.09", b:"18.09", st:"done", d:["2.1"], kt:2, r:"AS-IS-описание процесса автологистики."},
+{id:"2.4", s:"2", t:"Описать 13 ролей и целевой клиентский путь каждой (CJ и JTBD)", o:["Агапов"], a:"28.09", b:"01.10", st:"done", d:["2.3"], r:"Документ «Роли и клиентские пути целевого процесса» от 01.10: 13 ролей, ветки «сырьевой контур» и «экспорт/ВЭД»."},
+{id:"2.5", s:"2", t:"Вычитать описание ролей и путей пользователей; спорное — на еженедельную сессию", o:["Аветисов","Фролов"], a:"05.10", b:"09.10", d:["2.4"], kt:9, nt:"По каждой роли отметить, верны ли паспорт и целевой путь. Нужно сделать до проектирования экранов и агентов."},
+{id:"2.6", s:"2", t:"Зафиксировать 8 сквозных механизмов П1–П8: владелец, состояние, что читают шаги", o:["Агапов","Фролов"], a:"19.09", b:"25.09", st:"done", d:["2.3"], kt:3},
+{id:"2.7", s:"2", t:"Записать правила шагов в едином формате с порогами: заявка за 36 часов, ТЗ до 5 рабочих дней, ответ перевозчика около 2 часов, аукцион до +30% к среднему тарифу, согласование до 200 млн руб., погрузка до 2 часов, ответ на претензию 15 дней", o:["Агапов","Фролов","Аветисов"], a:"19.09", b:"25.09", st:"done", d:["2.3"], kt:3},
+{id:"2.8", s:"2", t:"Определить четыре точки решения человека: Ш2, Ш4, Ш6, Ш8", o:["Аветисов","Фролов","Агапов"], a:"19.09", b:"25.09", st:"done", d:["2.3"], kt:3},
+{id:"2.9", s:"2", t:"Решить: правила среза ведутся как документы в git, отдельная система правил — не раньше второго среза (ж/д)", o:["Фролов","Агапов"], a:"19.09", b:"25.09", st:"done", kt:3, m:1},
+{id:"2.10", s:"2", t:"Закрыть КТ3: правила среза записаны", o:["Аветисов","Фролов","Агапов"], a:"01.10", b:"01.10", st:"done", d:["2.6","2.7","2.8","2.9","2.4"], kt:3, m:1, r:"Механизмы, пороги, точки решения человека и карта агентов зафиксированы. Вычитка ролей и блокирующие вопросы вынесены в задачи 2.5 и 5.5.", nt:"Срок по плану был 25.09, закрыто 01.10."},
+{id:"2.11", s:"2", t:"Подтвердить правила и пороги владельцами шагов и механизмов; пороги определяются в ходе проработки", o:["Фролов","Аветисов","ВМ"], a:"12.10", b:"16.10", d:["1.3","1.4:SS","2.10"], kt:8},
+{id:"2.12", s:"2", t:"Собрать уточнённое описание целевого процесса (эталон)", o:["Агапов"], a:"26.10", b:"28.10", d:["2.11","3.2","7.4","5.5"]},
+{id:"2.13", s:"2", t:"Подписать эталон", o:["Фролов","Аветисов"], a:"29.10", b:"30.10", d:["2.12"], kt:8, m:1},
+/* 3 */
+{id:"3.1", s:"3", t:"Проанализировать логи TaskMining и ProcessMining по подразделениям «Автологистика», «Закупки логистических услуг», «Претензии»", o:["XRAY"], a:"01.09", b:"18.09", st:"done", kt:2},
+{id:"3.2", s:"3", t:"Проверить правила по журналам: что соблюдается, что нарушается, что не оставляет следа", o:["XRAY"], a:"05.10", b:"16.10", d:["2.10"], kt:4},
+{id:"3.3", s:"3", t:"Снять по логам недостающие цифры для открытых вопросов: В-22, В-24, В-25, В-29–В-31, В-33", o:["XRAY"], a:"05.10", b:"23.10", d:["2.10"], kt:5},
+{id:"3.4", s:"3", t:"Отвечать на вопросы факта (как часто, сколько, какая доля) по журналам", o:["XRAY"], a:"05.10", b:"20.11", d:["3.1"], nt:"Если описание расходится с журналом в вопросе факта, верным считается журнал."},
+{id:"3.5", s:"3", t:"Снять показатели «до»: время операции, число ошибок, срок обработки претензии", o:["XRAY"], a:"26.10", b:"06.11", d:["3.2"], kt:11},
+/* 4 */
+{id:"4.1", s:"4", t:"Определить системы и объекты: SAP (ZSPACETRANS), Логинет, Siebel, Яндекс Маршрутизатор, ОПЭ/СВТ, SharePoint, портал для контрагентов", o:["Агапов","ИТП"], a:"05.10", b:"16.10", d:["2.10"]},
+{id:"4.2", s:"4", t:"Решить, на каких шагах Атлас будет писать в SAP и Логинет на следующем этапе (предложение — начать с Ш1)", o:["Фролов","Аветисов"], a:"16.10", b:"16.10", d:["4.1"], m:1},
+{id:"4.3", s:"4", t:"Составить перечень возможностей Атласа для среза: рабочие места, правила, агенты, проверка операций", o:["Агапов","ИТП"], a:"19.10", b:"23.10", d:["4.1"]},
+{id:"4.4", s:"4", t:"Составить перечень интеграций по шагам среза для следующего этапа", o:["Агапов","ИТП"], a:"19.10", b:"23.10", d:["4.1","4.2"]},
+{id:"4.5", s:"4", t:"Составить перечень данных, которые хранит сам Атлас (например, у кого заявка и до какого числа)", o:["Агапов","ИТП"], a:"19.10", b:"23.10", d:["4.1"], nt:"Всё остальное хранится только в SAP, Логинет и других системах, чтобы не было двух версий данных."},
+{id:"4.6", s:"4", t:"Утвердить состав прототипа (роли, сценарии, поля данных) и дату его готовности — 27.11", o:["Фролов","Аветисов"], a:"30.10", b:"30.10", d:["4.3","4.4","4.5"], kt:8, m:1, nt:"Дата меняется только решением владельцев процесса."},
+{id:"4.7", s:"4", t:"Решить порядок подключения источников событий к шине П4 (предложение: Логинет → Яндекс → SAP → внешние трекеры)", o:["Агапов","Аветисов"], a:"19.10", b:"23.10", d:["4.1"], nt:"Вопрос В-11."},
+{id:"4.8", s:"4", t:"Спроектировать связки Атласа с SAP, Логинет и другими системами по шагам среза", o:["Агапов","ИТП"], a:"19.10", b:"06.11", d:["4.4:SS"], kt:11, nt:"Проектирование для следующего этапа. На первом этапе интеграции не делаются."},
+{id:"4.9", s:"4", t:"Спроектировать целевую техническую схему: Atlas API и событийная шина", o:["Агапов","ИТП"], a:"26.10", b:"06.11", d:["4.3","4.4","4.7"]},
+{id:"4.10", s:"4", t:"Пройти архитектурное ревью и согласование с ИБ", o:["Агапов","ИТП"], a:"09.11", b:"13.11", d:["4.8","4.9"]},
+/* 5 */
+{id:"5.1", s:"5", t:"Собрать черновик реестра данных Д-01…Д-26", o:["Агапов","Фролов"], a:"26.09", b:"01.10", st:"done", r:"26 элементов данных: план отгрузок, заявка, схема доставки, тарифная модель, договор и ставка, матрица квот, события, факт доставки, рейтинг перевозчика, претензионное досье и другие."},
+{id:"5.2", s:"5", t:"Назначить владельца и каноническое место хранения для каждого элемента данных", o:["Фролов","Аветисов"], a:"05.10", b:"16.10", d:["5.1","1.4:SS"], kt:5, nt:"Владелец не определён у Д-20 (код АСНСИ) и Д-24 (платформа «Пульс»)."},
+{id:"5.3", s:"5", t:"Определить набор данных по ролям и системы-источники", o:["Фролов","Аветисов","Агапов"], a:"05.10", b:"09.10", d:["5.1"], kt:9},
+{id:"5.4", s:"5", t:"Провести интервью со службами ИБ, финансов, ВЭД, ЭБ и юристами: какие реестры они готовы вести и при каком качестве данных перестают согласовывать", o:["Агапов","ПФ"], a:"12.10", b:"23.10", d:["1.5","5.1"], kt:5},
+{id:"5.5", s:"5", t:"Закрыть блокирующие вопросы владельца процесса (P0): владелец НСИ, порог «слепой зоны», единый ID перевозчика, матрица полномочий, срок и исход без ответа по 4 точкам, веса рейтинга, регламент версий правил", o:["Аветисов","Фролов","Агапов"], a:"05.10", b:"16.10", d:["2.10"], kt:8, nt:"В-05, В-06, В-09, В-14, В-16, В-17, В-18, В-19. Вопросы В-36 и В-39 по треку «Северсталь» — в направлении 14. Всего 39 вопросов, 10 с приоритетом P0."},
+{id:"5.6", s:"5", t:"Описать реестры других служб: источник, доступ, пример значения, какие правила их используют", o:["ВМ"], a:"19.10", b:"23.10", d:["5.4:SS","5.2"]},
+{id:"5.7", s:"5", t:"Вынести неисправные справочники (НСИ логистики, единый ID перевозчика, код АСНСИ) в отдельные задачи с владельцем и сроком", o:["Агапов","Фролов"], a:"26.10", b:"06.11", d:["5.6"]},
+{id:"5.8", s:"5", t:"Собрать схему реестров других служб на одном листе", o:["Агапов"], a:"26.10", b:"30.10", d:["5.4","5.6"]},
+{id:"5.9", s:"5", t:"Согласовать схему реестров с руководителями функций", o:["Фролов","Аветисов"], a:"02.11", b:"06.11", d:["5.8"], kt:5, m:1},
+{id:"5.10", s:"5", t:"Уточнить данные по ролям по итогам проверки прототипа", o:["Агапов"], a:"02.11", b:"06.11", d:["6.7","5.3"]},
+/* 6 */
+{id:"6.1", s:"6", t:"Подписать лист «что проверка не меняет и что считаем успехом»", o:["Фролов","Аветисов","Агапов"], a:"05.10", b:"09.10", d:["2.10"], nt:"Одна страница, которую владельцы процесса подписывают до первой сессии. В ней записано, что проверка не может изменить, и по каким признакам проверка считается успешной."},
+{id:"6.2", s:"6", t:"Подготовить карточки ролей первого круга и подобрать участников: диспетчеры и менеджеры перевозок", o:["Агапов","Фролов"], a:"05.10", b:"09.10", d:["2.4"]},
+{id:"6.3", s:"6", t:"Загрузить в прототип данные из текущих систем: реальные заявки, перевозчики, схемы доставки", o:["Агапов","ИТП"], a:"07.10", b:"09.10", d:["8.1"], kt:9},
+{id:"6.4", s:"6", t:"Раунд 0: техническая проверка прототипа", o:["Агапов","ДИС"], a:"12.10", b:"13.10", d:["6.1","6.2","6.3","8.2"]},
+{id:"6.5", s:"6", t:"Раунд 1: проверка ролей оператора формирования заказов и оперлогиста", o:["Агапов","ДИС"], a:"14.10", b:"16.10", d:["6.4"]},
+{id:"6.6", s:"6", t:"Раунд 2: проверка ролей спрямления и ФЭС, ЗЛУ, категорийного менеджера и руководителя направления", o:["Агапов","ДИС"], a:"19.10", b:"23.10", d:["6.5"]},
+{id:"6.7", s:"6", t:"Раунд 3: проверка ролей ВЭД, персонала площадки и претензионного процесса", o:["Агапов","ДИС"], a:"26.10", b:"30.10", d:["6.6"]},
+{id:"6.8", s:"6", t:"Раунд 4: итоговые и повторные сессии", o:["Агапов","ДИС"], a:"02.11", b:"06.11", d:["6.7"]},
+{id:"6.9", s:"6", t:"Разбирать записи сессий: черновик замечаний со шкалой серьёзности по Нильсену, после каждой задачи короткий опрос удобства", o:["Агапов"], a:"12.10", b:"06.11", d:["6.4:SS"]},
+{id:"6.10", s:"6", t:"Подвести итоги: отчёт по раундам, оценки удобства, список доработок и тем для обучения", o:["Агапов"], a:"09.11", b:"13.11", d:["6.8","6.9"]},
+{id:"6.11", s:"6", t:"Провести интервью без прототипа со смежными функциями контроля и оператором сервиса «Северсталь»", o:["Агапов","ПФ"], a:"09.11", b:"20.11", d:["6.8"], nt:"У этих ролей нет своего рабочего места в Атласе, поэтому экран они не проверяют."},
+{id:"6.12", s:"6", t:"Решить по просьбам вернуть старое устройство процесса (например, согласующего на шаге)", o:["Фролов","Аветисов"], a:"16.11", b:"18.11", d:["6.10"], kt:10, m:1},
+/* 7 */
+{id:"7.1", s:"7", t:"Завести репозиторий правил в git (markdown, изменения через pull request) и задать единый формат правила и контроля", o:["Агапов","ИТП"], a:"05.10", b:"09.10", d:["2.10"]},
+{id:"7.2", s:"7", t:"Собрать черновик реестра контролей К-01…К-49", o:["Агапов","Фролов"], a:"26.09", b:"01.10", st:"done", r:"49 контролей по шагам Ш1–Ш9. У 10 контролей владелец не назначен: К-01, К-04, К-06, К-11, К-13, К-14, К-19, К-25, К-35, К-36."},
+{id:"7.3", s:"7", t:"Подтвердить контроли с владельцами: что проверяют, реакция на отклонение; отметить проверки, которые не делает никто", o:["ВМ","Фролов"], a:"05.10", b:"09.10", d:["7.2","1.4:SS"], kt:6, nt:"Известные пробелы: К-07 (мощность не проверяется до подтверждения даты), К-12 (закрытие без факта и оценки), К-26 (пропуск и разнарядка не формализованы)."},
+{id:"7.4", s:"7", t:"Занести правила категорий в git; менять только через одобрение владельца", o:["ВМ","Агапов"], a:"12.10", b:"23.10", d:["7.1","2.11:SS"]},
+{id:"7.5", s:"7", t:"Занести контроли и проверить реакцию на отклонение", o:["ВМ","Агапов"], a:"19.10", b:"30.10", d:["7.3","7.4:SS"]},
+{id:"7.6", s:"7", t:"Сделать в прототипе проверку каждой операции на соответствие правилам и журнал отклонений", o:["Агапов","ИТП"], a:"19.10", b:"13.11", d:["7.1"]},
+{id:"7.7", s:"7", t:"Проверить, что правило меняется без выпуска новой версии и изменение видно на всех шагах", o:["ВМ","Агапов"], a:"11.11", b:"13.11", d:["7.4","7.5","7.6:FF"], kt:10},
+/* 8 */
+{id:"8.1", s:"8", t:"Подготовить среду для прототипа логистики", o:["Агапов","ИТП"], a:"05.10", b:"06.10", d:["1.6:SS"]},
+{id:"8.2", s:"8", t:"Собрать первую версию прототипа: сценарии «потребность в перевозке» и «остатки», рабочие места ролей среза", o:["Агапов","ИТП"], a:"05.10", b:"09.10", d:["8.1:SS","5.3:SS"], kt:9, r:"Прототип рабочих мест среза «автотранспорт» на данных из текущих систем."},
+{id:"8.3", s:"8", t:"Вносить правки в прототип по итогам раундов 1–3", o:["Агапов","ИТП"], a:"19.10", b:"06.11", d:["6.5"]},
+{id:"8.4", s:"8", t:"Доработать прототип по итогам проверки", o:["Агапов","ИТП"], a:"16.11", b:"20.11", d:["6.10"]},
+{id:"8.5", s:"8", t:"Опубликовать прототип для среза «автотранспорт»", o:["Агапов","ИТП"], a:"23.11", b:"23.11", d:["8.4","8.3","7.7"], m:1, r:"Прототип готов к приёмке. Данные загружены из текущих систем, интеграций с SAP нет."},
+/* 9 */
+{id:"9.1", s:"9", t:"Описать действующие агенты и их место в эталоне: автоформирование ТЗ (А-03), трекер (А-07), робот «Надежда» (А-11), агент по перетратам", o:["Агапов","РГП"], a:"05.10", b:"09.10", d:["2.10"]},
+{id:"9.2", s:"9", t:"Разложить шаги среза на операции", o:["Агапов","Фролов","Аветисов"], a:"12.10", b:"23.10", d:["2.10"]},
+{id:"9.3", s:"9", t:"Составить карту агентов А-01…А-14: мандат и границы каждого", o:["Агапов"], a:"28.09", b:"01.10", st:"done", kt:7, r:"14 агентов: от консолидатора потребности до ревизора правил. У каждого записано, что он не решает."},
+{id:"9.4", s:"9", t:"Составить карточки агентов: что запускает, по какому правилу работает, какие данные берёт, где передаёт работу человеку", o:["Агапов","Фролов","Аветисов"], a:"12.10", b:"23.10", d:["9.3","9.2:SS"], kt:7},
+{id:"9.5", s:"9", t:"Проверить, что агент общий для всех видов транспорта и правила не зашиты внутрь него", o:["Агапов"], a:"21.10", b:"23.10", d:["9.4:FF","7.1"], kt:7},
+{id:"9.6", s:"9", t:"Составить план встраивания действующих агентов в эталон без пересборки, чтобы не потерять уже полученный эффект", o:["Агапов","РГП"], a:"19.10", b:"23.10", d:["9.1"], kt:7},
+/* 10 */
+{id:"10.1", s:"10", t:"Подготовить функционально-технические требования «Атлас логистики» v1.0", o:["Агапов"], a:"28.09", b:"01.10", st:"done", d:["2.4:SS"], r:"ФТТ v1.0 от 01.10: функциональные требования, состояние «как есть» и «как будет», требования к составу работ."},
+{id:"10.2", s:"10", t:"Согласовать методику расчёта эффекта: спрямление (≈1169 руб./т), перезакупка, претензии", o:["Фролов","Аветисов","ФЭС"], a:"12.10", b:"23.10", nt:"Мастер методики расчёта эффекта спрямления не назначен (В-07)."},
+{id:"10.3", s:"10", t:"Расставить приоритеты задач по создаваемой ценности", o:["Агапов","Фролов","Аветисов"], a:"02.11", b:"06.11", d:["4.3","4.4"]},
+{id:"10.4", s:"10", t:"Записать требования к каждому шагу по проверенному прототипу", o:["Агапов","Фролов"], a:"09.11", b:"16.11", d:["6.8","10.3","5.10"]},
+{id:"10.5", s:"10", t:"Окончательно оценить трудоёмкость и стоимость развёртывания по волнам 1–4", o:["Агапов","ИТП"], a:"16.11", b:"18.11", d:["10.4"]},
+{id:"10.6", s:"10", t:"Собрать бизнес-кейс: эффект по данным X-ray, эффект одобренных направлений автоматизации; эффект действующих агентов вычесть", o:["Агапов","Фролов","Аветисов"], a:"16.11", b:"19.11", d:["3.5","10.2","10.5:FF","6.10"], nt:"Цифры по быстрым автоматизациям берутся из результатов направления 13."},
+{id:"10.7", s:"10", t:"Составить скоуп и бюджет орг-проекта развёртывания на остальные виды транспорта и очерёдность срезов (ж/д, прочие)", o:["Агапов","Фролов","Аветисов"], a:"09.11", b:"19.11", d:["10.3"], nt:"Следующий срез не начинается до готовности инфраструктуры текущего."},
+{id:"10.8", s:"10", t:"Утвердить бизнес-кейс, скоуп и бюджет", o:["Аветисов","Фролов"], a:"20.11", b:"20.11", d:["10.6","10.7","6.12"], kt:10, m:1},
+/* 11 */
+{id:"11.1", s:"11", t:"Подготовить материалы для правления: эталон, прототип, план развёртывания, результаты быстрых автоматизаций", o:["Агапов","Фролов"], a:"23.11", b:"26.11", d:["10.8","8.5","13.6"]},
+{id:"11.2", s:"11", t:"Принять прототип и представить правлению: эталонный процесс, первый срез, план развёртывания, связь с одобренными направлениями", o:["Аветисов","Фролов","Агапов"], a:"27.11", b:"27.11", d:["8.5","11.1","K5","K8","K10","K11"], kt:12, m:1, r:"Результат первого этапа принят. Интеграций с SAP нет, запуск среза для сотрудников в 2026 году не планируется."},
+/* 12 */
+{id:"12.1", s:"12", t:"Еженедельный статус: нормативы и правила, состояние контрольных точек", o:["Фролов","Агапов"], a:"27.07", b:"27.11", nt:"Спорные вопросы по нормативам и правилам решает Фролов на еженедельном статусе."},
+{id:"12.2", s:"12", t:"Двухнедельная сессия по развилкам на стыке с другими функциями", o:["Аветисов","Фролов","Агапов"], a:"27.07", b:"27.11", nt:"Спорные вопросы на стыке с другими функциями решает Аветисов. Вопросы по фактам решает аналитик X-ray."},
+{id:"12.3", s:"12", t:"Вести перечень открытых вопросов В-01…В-39: у каждого ответственный и срок", o:["Агапов"], a:"01.10", b:"27.11"},
+/* 13 */
+{id:"13.1", s:"13", t:"Перезакупка автотранспорта: агент автоформирования ТЗ", o:["РГП"], a:"21.09", b:"02.10", st:"in_progress", r:"Агент формирует черновик ТЗ вместо ручного сведения в Excel. Цель: ТЗ за 1–2 дня вместо 5, цикл «ТЗ → загрузка квот» с 3–4 недель до 1 недели.", nt:"Шаг Ш3, агент А-03. Статус от 25.09: окончание на следующей неделе. Требует подтверждения."},
+{id:"13.2", s:"13", t:"Трекинг через Яндекс Маршрутизатор: сбор данных по промежуточным точкам", o:["Белянцев"], a:"21.09", b:"25.09", st:"done", r:"Данные по промежуточным точкам маршрута собираются."},
+{id:"13.3", s:"13", t:"Трекинг через Яндекс Маршрутизатор: добавить данные в дашборды и проработать алерты", o:["Белянцев"], a:"28.09", b:"15.10", st:"in_progress", d:["13.2"], r:"Оповещение об опоздании более чем на сутки в течение часа, подтверждение по ретроспективе 85%.", nt:"Шаг Ш6, агент А-07. Белянцев В., 0,5 FTE, 21.09–15.10. Порог «слепой зоны» не определён (В-06). Согласовать с направлением 14, чтобы не дублировать разработку."},
+{id:"13.4", s:"13", t:"Остатки ТиУ, фаза 1: решение разработано, демо бизнесу проведено, инструмент опробован на планёрке", o:["РГП"], a:"21.09", b:"25.09", st:"done", r:"Фаза 1 сделана. Ориентир эффекта: около 100 часов в месяц трудозатрат."},
+{id:"13.5", s:"13", t:"Остатки ТиУ: доработки; следующая планёрка пройдёт с использованием инструмента", o:["РГП"], a:"28.09", b:"02.10", st:"in_progress", d:["13.4"], nt:"Механизм П8. Статус от 25.09: доработки на следующей неделе. Требует подтверждения. Фаза 2 — диалоговый агент по остаткам."},
+{id:"13.6", s:"13", t:"Свести результаты быстрых автоматизаций для правления: факт, эффект, метрики, следующие шаги", o:["Агапов","РГП"], a:"09.11", b:"20.11", d:["13.3","13.5"], r:"Таблица результатов по перезакупке, трекингу, ТиУ, претензиям и агенту по перетратам (раздел 3)."},
+/* 14 */
+{id:"14.1", s:"14", t:"Проанализировать трудоёмкость и потенциал ИИ по сервису «Северсталь» (СВС)", o:["Юдаков"], a:"27.07", b:"31.07", st:"done", r:"Периметр 90 FTE (86 операционных). Потенциал автоматизации 36–64 FTE (41–67%).", nt:"Анализ выполнен в июле 2026, точная дата условная."},
+{id:"14.2", s:"14", t:"Передать подрядчикам на оценку реестр из 38 инициатив (Class 4, порядок величины)", o:["Юдаков"], a:"28.09", b:"30.09", st:"done", nt:"Дата ориентировочная."},
+{id:"14.3", s:"14", t:"Выделить на трек аналитика Васильева А.", o:["Юдаков"], a:"01.10", b:"01.10", st:"done", m:1},
+{id:"14.4", s:"14", t:"Вести реестр инициатив и собрать оценки подрядчика: трудоёмкость, стоимость, риски", o:["Васильев","ПОДР"], a:"01.10", b:"23.10", d:["14.2"], nt:"Срок оценки подрядчика не задан (В-36), дата ориентировочная."},
+{id:"14.5", s:"14", t:"Согласовать трек с быстрыми автоматизациями (перезакупка, трекинг, претензии), чтобы не автоматизировать один процесс дважды", o:["Васильев","Юдаков","Агапов"], a:"05.10", b:"16.10", d:["14.3"], nt:"Вопрос В-39."},
+{id:"14.6", s:"14", t:"Снять ограничения автоматизации: автоподписание в ЭДО с ЭБ, дезинтеграция от 1С БКП", o:["Юдаков","Васильев"], a:"12.10", b:"30.10", nt:"Вопрос В-37."},
+{id:"14.7", s:"14", t:"Сформировать короткий список самых прибыльных гипотез", o:["Васильев"], a:"26.10", b:"30.10", d:["14.4","14.5"], r:"Предварительно: складской учёт РФ, сопровождение ПБД РФ (УПД в SAP), аналитика логистики (тендеры и трекинг), складской учёт SI."},
+{id:"14.8", s:"14", t:"Приоритизировать гипотезы и запустить пилоты", o:["Юдаков","Васильев"], a:"02.11", b:"27.11", d:["14.7"]},
+/* 15 */
+{id:"15.1", s:"15", t:"Выбрать операцию для локального пилота (кандидаты: автоформирование ТЗ, трекинг)", o:["Фролов","Аветисов","Агапов"], a:"16.10", b:"16.10", nx:true, d:["2.7"], m:1, nt:"Подготовка к следующему этапу, направление «Агенты». В результат КТ12 не входит."},
+{id:"15.2", s:"15", t:"Заказать сетевые доступы между Атласом и системами", o:["Агапов","ИТП"], a:"12.10", b:"23.10", nx:true, nt:"Подготовка к следующему этапу, направление «Сборка и выпуск Атласа». В результат КТ12 не входит."},
+{id:"15.3", s:"15", t:"Сделать единую точку доступа Атласа к данным (Atlas API): чтение объектов среза", o:["Агапов","ИТП"], a:"26.10", b:"20.11", nx:true, d:["15.2"], nt:"Подготовка к следующему этапу, направление «Сборка и выпуск Атласа». В результат КТ12 не входит."},
+{id:"15.4", s:"15", t:"Получить учётные записи и роли в SAP и Логинет для Атласа и агентов", o:["Агапов","ИТП"], a:"26.10", b:"06.11", nx:true, d:["4.4"], nt:"Подготовка к следующему этапу, направление «Сборка и выпуск Атласа». В результат КТ12 не входит. Согласуют администраторы систем и ИБ."},
+{id:"15.5", s:"15", t:"Сделать запись в SAP и Логинет через Atlas API на выбранных шагах", o:["Агапов","ИТП"], a:"09.11", b:"04.12", nx:true, d:["4.2","15.3:SS","15.4"], nt:"Подготовка к следующему этапу, направление «Сборка и выпуск Атласа». В результат КТ12 не входит."},
+{id:"15.6", s:"15", t:"Собрать агента для выбранной операции", o:["Агапов","ИТП"], a:"02.11", b:"20.11", nx:true, d:["9.5","15.1","15.3:SS"], nt:"Подготовка к следующему этапу, направление «Агенты». В результат КТ12 не входит."},
+{id:"15.7", s:"15", t:"Запустить локальный пилот: агент выполняет одну операцию в рабочей среде на реальных данных", o:["Агапов","ИТП"], a:"30.11", b:"11.12", nx:true, d:["15.6","15.4","8.5"], nt:"Подготовка к следующему этапу, направление «Агенты». Это не запуск среза для сотрудников. В результат КТ12 не входит."},
+{id:"15.8", s:"15", t:"Определить пользователей будущего запуска среза: сколько человек, какие площадки и роли", o:["Фролов","Аветисов"], a:"02.11", b:"06.11", nx:true, d:["6.7"], nt:"Подготовка к следующему этапу, направление «Запуск для сотрудников». В результат КТ12 не входит."},
+{id:"15.9", s:"15", t:"Решить, нужен ли приказ или изменение регламента, чтобы снять согласования, которые заменяют контроли", o:["Фролов","Аветисов"], a:"13.11", b:"13.11", nx:true, d:["5.8"], m:1, nt:"Подготовка к следующему этапу, направление «Запуск для сотрудников». В результат КТ12 не входит."},
+{id:"15.10", s:"15", t:"Зафиксировать показатели для сравнения «до» и «после»: цифры «до» из X-ray и целевые значения из бизнес-кейса", o:["Агапов","XRAY"], a:"23.11", b:"27.11", nx:true, d:["3.5","10.8"], nt:"Подготовка к следующему этапу, направление «Запуск для сотрудников». В результат КТ12 не входит."},
+{id:"15.11", s:"15", t:"Подготовить план обучения и поддержки первых недель для запуска среза в 2027 году", o:["Агапов","Фролов"], a:"30.11", b:"11.12", nx:true, d:["15.8","10.8"], nt:"Подготовка к следующему этапу, направление «Запуск для сотрудников». В результат КТ12 не входит. Запуск среза в 2026 году не планируется."},
+{id:"15.12", s:"15", t:"Предложить сроки запуска среза «автотранспорт» для сотрудников и очерёдность следующих срезов", o:["Аветисов","Фролов"], a:"14.12", b:"18.12", nx:true, d:["15.11","15.10"], nt:"Подготовка к следующему этапу, направление «Запуск для сотрудников». В результат КТ12 не входит."}
+];
+
+const RISKS = [
+  ["Спорный вопрос долго остаётся без решения, и работа стоит","Еженедельный статус и двухнедельная сессия по развилкам, у каждого вопроса ответственный и срок",["12.1","12.2","12.3"]],
+  ["Блокирующие вопросы владельца процесса (10 из 39 с приоритетом P0) остаются открытыми","Вопросы вынесены в отдельную задачу со сроком 16.10, до утверждения эталона",["5.5"]],
+  ["ИТ-партнёр не назначен, а прототип нужно собрать к 09.10","Назначить ИТ-партнёра и техлида в первую неделю октября; состав прототипа ограничен двумя сценариями",["1.6","8.2"]],
+  ["Данные в прототипе не похожи на реальную работу","Данные загружаются из текущих систем: реальные заявки, перевозчики, схемы доставки",["6.3"]],
+  ["Схема реестров других служб согласована поздно (06.11)","Интервью со службами идут с 12.10; схема согласуется до приёмки прототипа",["5.4","5.9"]],
+  ["Ошибки удобства находят слишком поздно","Четыре раунда проверки с диспетчерами и менеджерами перевозок до утверждения бизнес-кейса",["6.5","6.8","6.12"]],
+  ["Лоскутность по срезам: автотранспорт готов, остальные виды транспорта отстают","Явно фиксировать очередность срезов и не начинать следующий до готовности инфраструктуры текущего",["10.7"]],
+  ["«MVP вместо среза»: быстрые автоматизации размножаются, а полный срез не собирается","Каждая автоматизация привязана к шагу и агенту эталона и включена в план встраивания",["9.6","13.6"]],
+  ["Трек «Северсталь» и быстрые автоматизации дублируют друг друга (трекинг, претензии)","Согласовать трек с автоматизациями до формирования короткого списка гипотез",["14.5"]],
+  ["Система правил построена раньше, чем собраны сами правила","Правила первого среза ведутся как документы в git; отдельная система — не раньше второго среза (ж/д)",["2.9","7.1"]]
+];
+
+/* ============================ ЛОГИКА ============================ */
+const $ = s => document.querySelector(s);
+const esc = s => String(s ?? "").replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const pd = s => { const [d,m] = s.split(".").map(Number); return new Date(YEAR, m-1, d); };
+const DAY = 864e5;
+const T0 = pd(PLAN_START), T1 = new Date(pd(AXIS_END).getTime() + DAY);
+const NW = Math.round((T1 - T0) / DAY / 7);
+const TODAY = (() => { const t = new Date(); t.setHours(0,0,0,0); return t; })();
+const X = dt => Math.max(0, Math.min(100, (dt - T0) / (T1 - T0) * 100));
+const XM = dt => (X(dt) + X(new Date(dt.getTime() + DAY))) / 2;
+const fmt = dt => String(dt.getDate()).padStart(2,"0") + "." + String(dt.getMonth()+1).padStart(2,"0");
+const weekNo = dt => Math.floor((dt - T0) / DAY / 7) + 1;
+function wdDiff(a, b){ if (b <= a) return b < a ? -1 : 0; let n = 0; const d = new Date(a);
+  while (d < b){ d.setDate(d.getDate()+1); const w = d.getDay(); if (w && w !== 6) n++; } return n; }
+
+const KTBY = Object.fromEntries(KTS.map(k => [k.n, k]));
+const NODES = {};
+TASKS.forEach(t => { t.A = pd(t.a); t.B = pd(t.b); NODES[t.id] = t; });
+KTS.forEach(k => { NODES["K"+k.n] = {id:"K"+k.n, isKt:true, n:k.n, t:"КТ"+k.n+" «"+k.t+"»", A:pd(k.d), B:pd(k.d), d:[]}; });
+TASKS.forEach(t => { if (t.kt) NODES["K"+t.kt].d.push(t.id); });
+const parseDep = s => { const [id, ty] = s.split(":"); return {id, ty: ty || "FS"}; };
+// SUCC — связи для расчёта сроков, SUCC_ALL — для показа (включая работы следующего этапа)
+const SUCC = {}, SUCC_ALL = {}; Object.keys(NODES).forEach(k => { SUCC[k] = []; SUCC_ALL[k] = []; });
+Object.values(NODES).forEach(n => (n.d||[]).forEach(s => { const p = parseDep(s); if (!NODES[p.id]) return;
+  SUCC_ALL[p.id].push({id:n.id, ty:p.ty}); SUCC[p.id].push({id:n.id, ty:p.ty}); }));
+const gap = (p, s, ty) => ty === "SS" ? wdDiff(p.A, s.A) : ty === "FF" ? wdDiff(p.B, s.B) : Math.max(0, wdDiff(p.B, s.A) - 1);
+const violates = (p, s, ty) => ty === "SS" ? s.A < p.A : ty === "FF" ? s.B < p.B : s.A < p.B;
+const VIOL = [];
+Object.values(NODES).forEach(n => (n.d||[]).forEach(s => { const p = parseDep(s), pn = NODES[p.id];
+  if (!pn || violates(pn, n, p.ty)) VIOL.push(n.id + " ← " + p.id); }));
+if (VIOL.length) console.warn("Нарушены связи:", VIOL);
+
+const FLOAT = {};
+(function(){ const on = {};
+  function f(id){ if (id in FLOAT) return FLOAT[id]; if (id === LAUNCH) return FLOAT[id] = 0; if (on[id]) return Infinity; on[id] = true;
+    let best = Infinity; SUCC[id].forEach(e => { const v = f(e.id); if (v < Infinity) best = Math.min(best, v + gap(NODES[id], NODES[e.id], e.ty)); });
+    on[id] = false; return FLOAT[id] = best; }
+  Object.keys(NODES).forEach(f); })();
+
+const stOf = t => t.st === "done" ? "done" : t.B < TODAY ? "over" : (t.A <= TODAY || t.st === "in_progress") ? "prog" : "plan";
+const ST = {done:"Выполнено", prog:"Идёт", plan:"Впереди", over:"Просрочено"};
+// Критический путь: от запуска (КТ12) назад по задачам, которые определяют его дату
+const CP = (() => { const chain = [], seen = new Set(); let cur = LAUNCH;
+  while (cur && !seen.has(cur)){ seen.add(cur); chain.unshift(cur); let nx = null;
+    (NODES[cur].d||[]).forEach(x => { const p = parseDep(x).id, pn = NODES[p];
+      if (!pn || (!pn.isKt && stOf(pn) === "done")) return;
+      if (!nx || FLOAT[p] < FLOAT[nx] || (FLOAT[p] === FLOAT[nx] && pn.B > NODES[nx].B)) nx = p; });
+    cur = nx; }
+  return chain; })();
+const CPSET = new Set(CP);
+const isCrit = id => CPSET.has(id);
+
+const streamOf = k => STREAMS.find(s => s.k === k);
+const col = k => `var(${streamOf(k).c})`;
+const who = o => o.map(k => { const p = PEOPLE[k] || {n:k};
+  return `<span class="${p.tbd?"tbd":""}" data-tip="${esc(p.n + (p.r ? " — " + p.r : ""))}">${esc(p.n)}</span>`; }).join(", ");
+const whoText = o => o.map(k => (PEOPLE[k]||{n:k}).n).join(", ");
+
+/* ---------- шапка и вводная ---------- */
+function renderTop(){
+  const launch = pd(KTBY[12].d), days = Math.max(0, Math.round((launch - TODAY)/DAY));
+  const ktDone = KTS.filter(k => ktState(k) === "done").length;
+  const open = TASKS.filter(t => stOf(t) !== "done").length;
+  $("#kpis").innerHTML = [
+    [`${UPDATED}.${YEAR}`, "статус контрольных точек, ведёт Агапов А."],
+    [days, `дней до готовности прототипа ${KTBY[12].d}`],
+    [`${ktDone} из 12`, "контрольных точек пройдено"],
+    [open, `открытых задач из ${TASKS.length}`]
+  ].map(([v,l]) => `<div class="kpi"><div class="v">${v}</div><div class="l">${l}</div></div>`).join("");
+  $("#steps").innerHTML = STEPS.map(([k,n]) => `<span class="step"><b>${k}</b>${esc(n)}</span>`).join("");
+  $("#waves").innerHTML = WAVES.map(([k,n]) => `<span class="step"><b>Волна ${k}</b>${esc(n)}</span>`).join("");
+  $("#gloss").innerHTML = GLOSS.map(([k,v]) => `<div><b>${esc(k)}</b> — ${esc(v)}</div>`).join("");
+}
+
+/* ---------- 1. контрольные точки ---------- */
+function ktState(k){
+  const cl = TASKS.filter(t => t.kt === k.n);
+  if (cl.length && cl.every(t => stOf(t) === "done")) return "done";
+  if (cl.some(t => stOf(t) === "over") || pd(k.d) < TODAY) return "over";
+  if (cl.some(t => stOf(t) !== "plan")) return "prog";
+  return "plan";
+}
+function renderKt(){
+  const months = [["Месяц 1: запуск, карта процесса, роли","27.07","31.08"],["Месяц 2: AS IS, правила, прототип","01.09","09.10"],["Месяц 3: проверка прототипа, эталон, бизнес-кейс","12.10","27.11"],["После КТ12","30.11",AXIS_END]];
+  let h = `<div class="rail-in"><div class="months">` + months.map(([l,a,b],i) => { const L = X(pd(a)), W = X(new Date(pd(b).getTime()+DAY)) - L;
+    return `<div class="mband ${i===3?"after":""}" style="left:${L}%;width:calc(${W}% - 3px)">${l}</div>`; }).join("") + `</div>`;
+  h += `<div class="waxis">` + Array.from({length:NW}, (_,i) => `<div class="w" style="left:${i/NW*100}%">${i<NW?"нед. "+(i+1):"&nbsp;"}<br>${fmt(new Date(T0.getTime()+i*7*DAY))}</div>`).join("") + `</div>`;
+  const sorted = [...KTS].sort((a,b) => pd(a.d) - pd(b.d) || a.n - b.n), lanes = []; let maxLane = 0, pins = "";
+  sorted.forEach(k => { const x = XM(pd(k.d)); let lane = 0; while (lanes[lane] !== undefined && x - lanes[lane] < 12.5) lane++; lanes[lane] = x; maxLane = Math.max(maxLane, lane);
+    const s = ktState(k), c = s === "done" ? "var(--done)" : s === "over" ? "var(--risk)" : s === "prog" ? "var(--prog)" : "var(--ink2)";
+    pins += `<button class="kt" data-kt="${k.n}" style="left:${x}%" data-tip="${esc(k.c)}"><span class="dia" style="background:${c}"></span><span class="kl" style="height:${6+lane*58}px"></span><span class="kn">КТ${k.n}</span><span class="kt2">${esc(k.t)}</span><span class="kd">${k.d}</span></button>`; });
+  h += `<div class="ktlane" style="height:${70+(maxLane+1)*58}px">${pins}` + (TODAY >= T0 && TODAY < T1 ? `<div class="todayv" style="left:${X(TODAY)}%"><span>сегодня</span></div>` : "") + `</div></div>`;
+  $("#rail").innerHTML = h;
+  const pill = s => `<span class="pill ${s==="done"?"ok":s==="over"?"bad":s==="prog"?"mid":""}">${s==="plan"?"Впереди":s==="prog"?"Идёт":s==="done"?"Пройдена":"Под угрозой"}</span>`;
+  $("#kttable").innerHTML = `<thead><tr><th>Дата</th><th>Контрольная точка</th><th>Что должно быть готово</th><th>Задачи</th><th>Состояние</th></tr></thead><tbody>` +
+    sorted.map(k => { const cl = TASKS.filter(t => t.kt === k.n), dn = cl.filter(t => stOf(t) === "done").length;
+      return `<tr><td class="num">${k.d}<br><span class="muted">нед. ${weekNo(pd(k.d))}</span>${k.moved?`<br><span class="muted" style="font-size:11px">по плану ${k.moved}</span>`:""}</td><td><b>КТ${k.n}</b> ${esc(k.t)}${k.old?`<br><span class="muted" style="font-size:11px">Прежний план: ${k.old}</span>`:""}</td><td>${esc(k.c)}</td>
+      <td class="num"><button class="linkbtn" data-kt="${k.n}">${dn} из ${cl.length}</button></td><td>${pill(ktState(k))}</td></tr>`; }).join("") + `</tbody>`;
+}
+
+/* ---------- 2. роли ---------- */
+function renderRoles(){
+  const R = [
+    ["Владелец процесса", ["Аветисов"], "Принимает результат на контрольных точках, утверждает эталон, бизнес-кейс, скоуп и бюджет. Решает вопросы на стыке с другими функциями на двухнедельной сессии по развилкам."],
+    ["Бизнес-лидер, менеджер процесса", ["Фролов"], "Описывает процесс как есть и как должно быть, заполняет шаблоны шагов и правил, назначает владельцев механизмов и контролей. Решает спорные вопросы по нормативам и правилам на еженедельном статусе."],
+    ["ИТ-лидер", ["Агапов"], "Ведёт методологию и лог решений, синтезирует результат в структуру Атласа, ведёт план, проектирует агентов, собирает бизнес-кейс."],
+    ["Владельцы шагов", ["Фролов","Аветисов"], "Отвечают за шаги Ш1–Ш9 и их правила. Поимённо будут назначены до 09.10."],
+    ["Владельцы механизмов и контролей", ["ВМ"], "Отвечают за механизмы П1–П8 и контроли К-xx. Сейчас владелец назначен у П2 (категорийный менеджер) и П3 (ФЭС)."],
+    ["ИТ-партнёр", ["ИТП"], "Архитектор и команда разработки прототипа. Ещё не назначен."],
+    ["Аналитик X-ray", ["XRAY"], "Сверяет правила с журналами систем, отвечает на вопросы факта, снимает цифры «до»."],
+    ["Представители функций", ["ПФ"], "ИБ, финансы, ВЭД. Отвечают за целевую схему своих реестров (П2, П3, П5), согласовать до КТ5."],
+    ["Проверка прототипа", ["ДИС","Агапов"], "Диспетчеры и менеджеры перевозок проходят рабочие задачи в прототипе по методике RITE, ИТ-лидер модерирует сессии."],
+    ["Быстрые автоматизации", ["РГП","Белянцев"], "Перезакупка автотранспорта, трекинг через Яндекс Маршрутизатор, остатки ТиУ."],
+    ["Трек «Северсталь»", ["Юдаков","Васильев","ПОДР"], "Куратор — Юдаков Д.А., аналитик — Васильев А. Подрядчик оценивает реестр из 38 инициатив."]
+  ];  $("#roles").innerHTML = `<thead><tr><th>Роль</th><th>Кто</th><th>За что отвечает</th></tr></thead><tbody>` +
+    R.map(([r,o,w]) => `<tr><td><b>${esc(r)}</b></td><td class="who" style="font-size:13px">${who(o)}</td><td>${esc(w)}</td></tr>`).join("") + `</tbody>`;
+}
+
+/* ---------- 3. план работ ---------- */
+const F = {stream:"", owner:"", q:"", crit:false};
+const OPEN = new Set();
+let SEL = null;
+function fillFilters(){
+  $("#fStream").innerHTML = `<option value="">Все направления</option>` + STREAMS.map(s => `<option value="${s.k}">${s.k}. ${esc(s.nm)}</option>`).join("");
+  const owners = [...new Set(TASKS.flatMap(t => t.o))].sort((a,b) => (PEOPLE[a]?.n||a).localeCompare(PEOPLE[b]?.n||b, "ru"));
+  $("#fOwner").innerHTML = `<option value="">Все ответственные</option>` + owners.map(o => `<option value="${esc(o)}">${esc(PEOPLE[o]?.n||o)}</option>`).join("");
+}
+const pass = t => (!F.stream || t.s === F.stream) && (!F.owner || t.o.includes(F.owner)) && (!F.crit || isCrit(t.id)) &&
+  (!F.q || (t.id + " " + t.t + " " + whoText(t.o) + " " + (t.nt||"")).toLowerCase().includes(F.q.toLowerCase()));
+const filtered = () => F.stream || F.owner || F.q || F.crit;
+const track = inner => `<div class="track" style="--nw:${NW}"><span class="aft" style="left:${X(new Date(pd(KTBY[12].d).getTime()+DAY))}%"></span>${inner}</div>`;
+
+function renderAxis(){
+  $("#dax").innerHTML = Array.from({length:NW}, (_,i) => `<span class="w" style="left:${i/NW*100}%">${fmt(new Date(T0.getTime()+i*7*DAY))}</span>`).join("") +
+    KTS.map(k => `<span class="k" style="left:${XM(pd(k.d))}%" data-tip="${esc("КТ"+k.n+" «"+k.t+"» · "+k.d)}">КТ${k.n}</span>`).join("");
+}
+function row(t){
+  const s = stOf(t), cr = isCrit(t.id), L = X(t.A), R = X(new Date(t.B.getTime()+DAY));
+  const mark = t.m && t.a === t.b ? `<span class="dm ${cr?"crit":""}" style="left:${(L+R)/2}%;background:${col(t.s)}"></span>`
+    : `<span class="bar ${cr?"crit":""} ${s==="done"?"done":""}" style="left:${L}%;width:${R-L}%;background:${col(t.s)}"></span>`;
+  const ticks = (t.rec||[]).map(r => `<span class="tick" style="left:${XM(pd(r))}%"></span>`).join("");
+  const tags = (t.kt ? `<span class="tag tkt" data-tip="${esc("Ведёт к КТ"+t.kt+" «"+KTBY[t.kt].t+"»")}">КТ${t.kt}</span>` : "") +
+    (t.nx ? `<span class="tag nx" data-tip="Подготовка к следующему этапу, в результат КТ12 не входит">следующий этап</span>` : "");
+  const preds = (t.d||[]).map(parseDep), succs = SUCC_ALL[t.id] || [];
+  const chip = (e, c) => { const n = NODES[e.id]; const txt = n.isKt ? n.t : n.t;
+    return `<button class="chip ${c}" data-go="${esc(e.id)}"><span class="i">${n.isKt ? "КТ"+n.n : esc(e.id)}</span>${esc(txt.length > 70 ? txt.slice(0,70)+"…" : txt)} · ${fmt(n.B)}</button>`; };
+  const slack = cr ? `<h4 style="margin-top:8px">Критический путь</h4><p>Задача определяет дату готовности прототипа: её сдвиг сдвигает КТ12.</p>` : "";
+  return `<div class="trow dgrid ${t.m?"m":""}" data-id="${esc(t.id)}">
+    <div class="tL"><span class="st ${s}" data-tip="${ST[s]}"></span><span class="tid">${esc(t.id)}</span><span class="ttl">${esc(t.t)}${tags}</span></div>
+    <div class="who">${who(t.o)}</div>
+    <div class="due">${t.a === t.b ? t.a : t.a + " – " + t.b}</div>
+    ${track(mark + ticks)}
+  </div>
+  <div class="xrow" data-x="${esc(t.id)}"><div class="xgrid">
+    <div><h4>Статус</h4><p>${ST[s]}</p>${t.r ? `<h4 style="margin-top:8px">Результат</h4><p>${esc(t.r)}</p>` : ""}${t.nt ? `<h4 style="margin-top:8px">Пояснение</h4><p>${esc(t.nt)}</p>` : ""}${slack}</div>
+    <div><h4>Зависит от</h4><div class="chips">${preds.map(e => chip(e,"p")).join("") || "<span class='muted'>ни от чего, можно начинать</span>"}</div>
+      <h4 style="margin-top:8px">Её ждут</h4><div class="chips">${succs.map(e => chip(e,"s")).join("") || "<span class='muted'>—</span>"}</div></div>
+  </div></div>`;
+}
+function cpRows(){
+  return CP.map((id, i) => { const n = NODES[id], L = X(n.A), R = X(new Date(n.B.getTime()+DAY));
+    const kt = n.isKt, c = kt ? "var(--crit)" : col(n.s);
+    const mark = kt || (n.m && n.a === n.b) ? `<span class="dm crit" data-cp="${i}" style="left:${(L+R)/2}%;background:${c}"></span>`
+      : `<span class="bar crit" data-cp="${i}" style="left:${L}%;width:${R-L}%;background:${c}"></span>`;
+    return `<div class="cprow dgrid" data-go="${esc(id)}" data-tip="Показать задачу в её направлении">
+      <div class="tL"><span class="cpn">${i+1}</span><span class="tid">${kt ? "КТ"+n.n : esc(id)}</span><span class="ttl">${esc(kt ? KTBY[n.n].t : n.t)}</span></div>
+      <div class="who">${kt ? "" : who(n.o)}</div>
+      <div class="due">${fmt(n.A) === fmt(n.B) ? fmt(n.A) : fmt(n.A) + " – " + fmt(n.B)}</div>
+      ${track(mark)}</div>`; }).join("");
+}
+function renderPlan(){
+  let html = "", shown = 0;
+  STREAMS.forEach(s => {
+    const all = TASKS.filter(t => t.s === s.k), ts = all.filter(pass); if (!ts.length) return; shown += ts.length;
+    const dn = all.filter(t => stOf(t) === "done").length;
+    const dated = all;
+    const a = dated.length ? new Date(Math.min(...dated.map(t=>t.A))) : null, b = dated.length ? new Date(Math.max(...dated.map(t=>t.B))) : null;
+    const open = OPEN.has(s.k) || filtered();
+    html += `<div class="grp ${open?"open":""}"><div class="ghead dgrid" data-toggle="${s.k}">
+      <div class="gL"><span class="tw">▶</span><span class="swatch" style="background:${col(s.k)}"></span><span class="gname">${s.k}. ${esc(s.nm)}</span><span class="gcount">${dated.length ? `выполнено ${dn} из ${all.length}` : `${all.length} задач`}</span></div>
+      <div class="who">${s.note ? `<span data-tip="${esc(s.note)}">ⓘ пояснение</span>` : ""}</div><div class="due">${a ? fmt(a) + " – " + fmt(b) : "после КТ12"}</div>
+      ${track(a ? `<span class="bar span" style="left:${X(a)}%;width:${X(new Date(b.getTime()+DAY))-X(a)}%;background:${col(s.k)}"></span>` : "")}
+    </div><div class="grows">${s.note ? `<div class="muted" style="font-size:12.5px;padding:2px 14px 6px 49px">${esc(s.note)}</div>` : ""}${ts.map(row).join("")}</div></div>`;
+  });
+  if (!F.stream && !F.owner && !F.q){
+    const a = NODES[CP[0]].A, b = NODES[CP[CP.length-1]].B, open = OPEN.has("cp");
+    html += `<div class="grp cp ${open?"open":""}"><div class="ghead dgrid" data-toggle="cp">
+      <div class="gL"><span class="tw">▶</span><span class="swatch" style="background:var(--crit)"></span><span class="gname">Критический путь к КТ12</span><span class="gcount">${CP.length - 1} задач</span></div>
+      <div class="who"></div><div class="due">${fmt(a)} – ${fmt(b)}</div>
+      ${track(`<span class="bar span" style="left:${X(a)}%;width:${X(new Date(b.getTime()+DAY))-X(a)}%;background:var(--crit)"></span>`)}
+    </div><div class="grows"><div class="muted" style="font-size:12.5px;padding:2px 14px 6px 49px">Цепочка задач, которая определяет дату готовности прототипа ${KTBY[12].d}. Задачи идут по порядку: каждая начинается, когда закончилась предыдущая. Клик по строке покажет задачу в её направлении.</div>${cpRows()}</div></div>`;
+  }
+  $("#groups").innerHTML = html || `<div class="empty">Под фильтр ничего не попало.</div>`;
+  if (SEL && !document.querySelector(`.trow[data-id="${CSS.escape(SEL)}"]`)) SEL = null;
+  applySel();
+}
+function applySel(){
+  document.querySelectorAll(".trow").forEach(r => r.classList.remove("sel","isPred","isSucc"));
+  document.querySelectorAll(".xrow").forEach(r => r.classList.remove("open"));
+  if (SEL){
+    document.querySelector(`.trow[data-id="${CSS.escape(SEL)}"]`)?.classList.add("sel");
+    document.querySelector(`.xrow[data-x="${CSS.escape(SEL)}"]`)?.classList.add("open");
+    (NODES[SEL].d||[]).forEach(s => document.querySelector(`.trow[data-id="${CSS.escape(parseDep(s).id)}"]`)?.classList.add("isPred"));
+    SUCC_ALL[SEL].forEach(e => document.querySelector(`.trow[data-id="${CSS.escape(e.id)}"]`)?.classList.add("isSucc"));
+  }
+  requestAnimationFrame(drawLinks);
+}
+function rect(id, host){
+  const r = document.querySelector(`.trow[data-id="${CSS.escape(id)}"]`); if (!r || !r.offsetParent) return null;
+  const el = r.querySelector(".bar,.dm"); if (!el) return null; const b = el.getBoundingClientRect();
+  return {l:b.left-host.left, r:b.right-host.left, y:b.top-host.top+b.height/2};
+}
+function drawLinks(){
+  const acc = $("#acc"), svg = $("#ovl"), host = acc.getBoundingClientRect();
+  svg.setAttribute("width", host.width); svg.setAttribute("height", host.height);
+  let h = `<defs>${["pred","succ"].map(c => `<marker id="m-${c}" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L8,4 L0,8 z" fill="var(--${c})"/></marker>`).join("")}</defs>`;
+  const tr = acc.querySelector(".track");
+  if (tr){ const t = tr.getBoundingClientRect(), x0 = t.left-host.left;
+    KTS.forEach(k => { const x = x0 + t.width*XM(pd(k.d))/100; h += `<line x1="${x}" x2="${x}" y1="0" y2="${host.height}" stroke="var(--axis)" stroke-dasharray="2 4"/>`; });
+    if (TODAY >= T0 && TODAY < T1){ const x = x0 + t.width*X(TODAY)/100; h += `<line x1="${x}" x2="${x}" y1="0" y2="${host.height}" stroke="var(--risk)" stroke-dasharray="4 3" stroke-width="1.5"/>`; } }
+  const cpEls = [...acc.querySelectorAll("[data-cp]")].filter(e => e.offsetParent);
+  if (cpEls.length){
+    h += `<defs><marker id="m-crit" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L8,4 L0,8 z" fill="var(--crit)"/></marker></defs>`;
+    const R = cpEls.map(e => { const b = e.getBoundingClientRect(); return {l:b.left-host.left, r:b.right-host.left, y:b.top-host.top+b.height/2}; });
+    for (let i = 1; i < R.length; i++){ const a = R[i-1], b = R[i];
+      const x = Math.max(a.r, b.l - 6);
+      h += `<path d="M${a.r},${a.y} H${x} V${b.y} H${b.l-1}" fill="none" stroke="var(--crit)" stroke-width="1.4" marker-end="url(#m-crit)"/>`; }
+  }
+  if (SEL){ const me = rect(SEL, host);
+    const link = (a, b, c) => { const mx = Math.max(a.r+8, Math.min(b.l-8, (a.r+b.l)/2));
+      const p = b.l - a.r > 16 ? `M${a.r},${a.y} H${mx} V${b.y} H${b.l-1}` : `M${a.r},${a.y} h8 V${(a.y+b.y)/2} H${b.l-10} V${b.y} H${b.l-1}`;
+      return `<path d="${p}" fill="none" stroke="var(--${c})" stroke-width="1.6" marker-end="url(#m-${c})"/>`; };
+    if (me){ (NODES[SEL].d||[]).forEach(s => { const p = rect(parseDep(s).id, host); if (p) h += link(p, me, "pred"); });
+      SUCC_ALL[SEL].forEach(e => { const q = rect(e.id, host); if (q) h += link(me, q, "succ"); }); } }
+  svg.innerHTML = h;
+}
+function renderLegend(){
+  $("#legend").innerHTML = ["done","prog","plan"].map(s => `<span><span class="st ${s}"></span>${ST[s]}</span>`).join("") +
+    `<span><span style="display:inline-block;width:22px;height:9px;border-radius:3px;background:var(--s1);box-shadow:0 0 0 1.5px var(--crit)"></span>критический путь</span>
+     <span><span style="display:inline-block;width:10px;height:10px;transform:rotate(45deg);background:var(--ink2)"></span>решение</span>
+     <span><span style="display:inline-block;width:3px;height:12px;background:var(--ink);opacity:.5"></span>встреча</span>
+     <span style="color:var(--pred)">■ от чего зависит</span><span style="color:var(--succ)">■ что её ждёт</span>
+     <span style="color:var(--risk)">┆ сегодня</span>`;
+}
+
+/* ---------- 3. риски ---------- */
+function renderQR(){
+  $("#risks").innerHTML = `<table><tbody>` + RISKS.map(([r,m,ids]) => `<tr><td style="width:42%"><b>${esc(r)}</b></td><td>${esc(m)}<br><span class="muted">Задачи: </span>${ids.map(i => `<button class="linkbtn" data-go="${i}">${i}</button>`).join(", ")}</td></tr>`).join("") + `</tbody></table>`;
+}
+
+/* ---------- события ---------- */
+function go(id){
+  if (NODES[id]?.isKt){ showKt(NODES[id].n); return; }
+  const t = NODES[id]; if (!t) return;
+  if (!pass(t)){ Object.assign(F, {stream:"", owner:"", q:"", crit:false}); sync(); }
+  OPEN.add(t.s); SEL = id; renderPlan();
+  document.querySelector(`.trow[data-id="${CSS.escape(id)}"]`)?.scrollIntoView({behavior:"smooth", block:"center"});
+}
+function showKt(n){
+  Object.assign(F, {stream:"", owner:"", q:"", crit:false}); sync(); OPEN.clear();
+  TASKS.filter(t => t.kt === n).forEach(t => OPEN.add(t.s)); SEL = null; renderPlan();
+  const first = TASKS.find(t => t.kt === n); if (first) go(first.id); else $("#plan-sec").scrollIntoView({behavior:"smooth"});
+}
+function sync(){ $("#fStream").value = F.stream; $("#fOwner").value = F.owner; $("#fQ").value = F.q; $("#fCrit").classList.toggle("on", F.crit); }
+document.addEventListener("click", e => {
+  const el = e.target.closest("[data-go],[data-kt],[data-toggle],.trow"); if (!el) return;
+  if (el.dataset.go) return go(el.dataset.go);
+  if (el.dataset.kt) return showKt(Number(el.dataset.kt));
+  if (el.dataset.toggle){ const k = el.dataset.toggle; OPEN.has(k) ? OPEN.delete(k) : OPEN.add(k); el.parentElement.classList.toggle("open"); requestAnimationFrame(drawLinks); return; }
+  SEL = SEL === el.dataset.id ? null : el.dataset.id; applySel();
+});
+$("#fStream").onchange = e => { F.stream = e.target.value; renderPlan(); };
+$("#fOwner").onchange = e => { F.owner = e.target.value; renderPlan(); };
+$("#fQ").oninput = e => { F.q = e.target.value.trim(); renderPlan(); };
+$("#fCrit").onclick = () => { F.crit = !F.crit; sync(); renderPlan(); };
+$("#expandAll").onclick = () => { OPEN.add("cp"); STREAMS.forEach(s => OPEN.add(s.k)); renderPlan(); };
+$("#collapseAll").onclick = () => { OPEN.clear(); SEL = null; renderPlan(); };
+(function(){ const root = document.documentElement, b = $("#theme");
+  const cur = () => root.dataset.theme || (matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
+  const lbl = () => b.textContent = cur() === "dark" ? "Светлая тема" : "Тёмная тема";
+  try { const s = localStorage.getItem("atlas-theme"); if (s) root.dataset.theme = s; } catch(e){}
+  lbl(); b.onclick = () => { root.dataset.theme = cur() === "dark" ? "light" : "dark"; try { localStorage.setItem("atlas-theme", root.dataset.theme); } catch(e){} lbl(); }; })();
+(function(){ const tip = $("#tip");
+  document.addEventListener("mouseover", e => { const el = e.target.closest("[data-tip]"); if (!el){ tip.style.opacity = 0; return; } tip.textContent = el.dataset.tip; tip.style.opacity = 1; });
+  document.addEventListener("mousemove", e => { tip.style.left = Math.min(e.clientX+12, innerWidth-tip.offsetWidth-8) + "px"; tip.style.top = (e.clientY+14) + "px"; }); })();
+addEventListener("resize", () => requestAnimationFrame(drawLinks));
+
+// по умолчанию всё раскрыто
+OPEN.add("cp");
+STREAMS.forEach(s => OPEN.add(s.k));
+renderTop(); renderKt(); renderRoles(); fillFilters(); renderAxis(); renderLegend(); renderQR(); renderPlan();
+</script>
+</body>
+</html>
