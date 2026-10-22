@@ -43,7 +43,7 @@ public sealed class CatalogApiEndpoints<TItem, TDetail>(CatalogApiDescriptor des
         group.MapPost("/export", ExportAsync)
             .WithName($"export{name}")
             .WithSummary($"Выгрузка справочника {code} в Excel")
-            .WithDescription("Файл .xlsx в ответе. kind=short — колонки грида, kind=full — поля карточки. Все колонки, без пользовательских настроек.")
+            .WithDescription("Файл .xlsx в ответе. kind=Short — колонки грида, kind=Full — поля карточки. Все колонки, без пользовательских настроек.")
             .Produces(StatusCodes.Status200OK, contentType: XlsxContentType)
             .ProducesValidationProblem();
     }

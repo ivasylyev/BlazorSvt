@@ -81,7 +81,7 @@ Serilog (`Host/Program.cs`, секция `Serilog` в `appsettings.json`). Пр�
 | Описание полей | `GET /api/v1/catalogs/{code}/schema` |
 | Поиск | `POST /api/v1/catalogs/{code}/items/search` |
 | Карточка | `GET /api/v1/catalogs/{code}/items/{id}` (id — свойство `[GridColumn(IsEntityKey = true)]`) |
-| Выгрузка Excel | `POST /api/v1/catalogs/{code}/export` (`kind`: `short` — колонки грида, `full` — поля карточки) |
+| Выгрузка Excel | `POST /api/v1/catalogs/{code}/export` (`kind`: `Short` — колонки грида, `Full` — поля карточки) |
 | Умный подбор ставки | `POST /api/v1/rates/smart-lookup` |
 
 - **Справочник в API** — `AddCatalogApi<TDto, TDetail>(code, domain, titleResourceKey, period, syncEntity)` в модуле. DTO и сервисы те же, что у грида; новых SQL не нужно. Ссылки на другие справочники — `[ApiReference("locations-nodes", "code")]` на свойстве DTO (атрибут из Platform, модульной границы не нарушает)
