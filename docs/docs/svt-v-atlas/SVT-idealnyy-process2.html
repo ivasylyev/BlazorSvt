@@ -55,7 +55,7 @@
   a.code:hover { background:#eaf4fb; }
   a.gloss { color:inherit; text-decoration:none; border-bottom:1px dotted #8eb6d4; }
   a.gloss:hover { background:#eaf4fb; }
-  h2.sec, h3.sub, [id^="sh-"], [id^="g-"], #kak-chitat, #servis, #styki, #princip, #shagi, #kolco, #roli-sh, #proverki, #gloss, #kartina, #obrabotka, #kartochka-p3 { scroll-margin-top:80px; }
+  h2.sec, h3.sub, [id^="sh-"], [id^="g-"], #kak-chitat, #servis, #styki, #princip, #shagi, #roli-sh, #proverki, #gloss, #kartina, #obrabotka, #kartochka-p3 { scroll-margin-top:80px; }
   td.pain { background:#fff8f7; }
   tr:target td { background:#fff3cd; transition:background .3s; }
   @media (max-width: 1000px) { .ring { grid-template-columns:repeat(3,1fr); } }
@@ -125,9 +125,8 @@
         </ul>
       </li>
       <li><a href="#shagi">2. Девять шагов</a></li>
-      <li><a href="#kolco">3. Кольцо ведения модели</a></li>
-      <li><a href="#roli-sh">4. Роли</a></li>
-      <li><a href="#proverki">5. Виды проверок данных</a></li>
+      <li><a href="#roli-sh">3. Роли</a></li>
+      <li><a href="#proverki">4. Виды проверок данных</a></li>
       <li><a href="#gloss">Глоссарий</a></li>
     </ul>
   </nav>
@@ -148,8 +147,9 @@
       <li style="margin-bottom:4px"><a class="code" href="#sh-8">Ш8</a> <b>Контроль целостности</b> — СВТ проверяет, что уже записанные данные корректны и согласованы, а ошибки исправляет администратор ИТ новым циклом.</li>
       <li><a class="code" href="#sh-9">Ш9</a> <b>Сверка план-факт и сигнал источникам</b> — СВТ сравнивает действующие значения с фактом и сообщает о расхождении системе-источнику.</li>
     </ul>
-    <p style="margin:0">Шаги опираются на <a class="gloss" href="#g-checks">единые проверки</a>, <a class="gloss" href="#g-registry">реестр исключений</a>, <a class="gloss" href="#g-journal">журнал загрузок</a>, отчёт о полноте и расхождениях.</p>
+    <p style="margin:0">Шаги опираются на <a class="gloss" href="#g-checks">единые проверки</a>, <a class="gloss" href="#g-registry">реестр исключений</a>, <a class="gloss" href="#g-journal">журнал загрузок</a>, отчёт о <a class="gloss" href="#g-full">полноте</a> и расхождениях.</p>
   </div>
+  <div class="card" style="padding:12px;overflow-x:auto"><div id="svt-ring"></div></div>
   <h3 class="sub" id="princip"><span class="sn">1.2.</span> Источники</h3>
   <div class="box info">
     <p style="margin:0 0 8px">Основной путь — автоматический обмен. Ручной ввод и ручная загрузка для всех потоков, кроме мультимодальных перевозок, — дополнительный путь, его сокращают. Для мультимодальных перевозок ручной файл — основной путь только на первом этапе, дальше он дополнительный.</p>
@@ -273,7 +273,7 @@
             <li><b>Нормативный лидтайм.</b> Считается по схеме с версией.</li>
             <li><b>Округление лидтаймов для ЦБД.</b> «Докручивает» лидтайм мультимодальных перевозок до 32, 63, 93 или 124 суток перед отбором в ЦБД <span class="tag now">есть сегодня</span>. Правило сегодня есть только в руководстве, раздел 1.11. Правила выносятся в настраиваемый справочник, который правит бизнес: права выдаёт владелец продукта. Правила меняются редко, агент здесь не нужен. <span class="tag gap">пробел</span> Оставлять ли это в контуре СВТ — уточнить у Руслана.</li>
           </ul>
-          <span class="tag gap">пробел</span> Лидтайм авто по СНГ, Турции и Китаю: правила от километража и простоя на границе, ручная сезонная корректировка операционной логистикой или корректировка по факту системы отслеживания — решает операционная логистика. Формулы записаны, владелец формул — роль «Владелец продукта» в <a class="code" href="#roli-sh">пункте 4</a>. Расчёт той же величины в Excel у ФЭС и у бизнеса прекращается <span class="tag hyp">гипотеза</span>. Матрица каналов. <span class="tag gap">пробел</span> Что СВТ считает по матрице каналов на этом шаге.</td></tr>
+          <span class="tag gap">пробел</span> Лидтайм авто по СНГ, Турции и Китаю: правила от километража и простоя на границе, ручная сезонная корректировка операционной логистикой или корректировка по факту системы отслеживания — решает операционная логистика. Формулы записаны, владелец формул — роль «Владелец продукта» в <a class="code" href="#roli-sh">пункте 3</a>. Расчёт той же величины в Excel у ФЭС и у бизнеса прекращается <span class="tag hyp">гипотеза</span>. Матрица каналов. <span class="tag gap">пробел</span> Что СВТ считает по матрице каналов на этом шаге.</td></tr>
       <tr id="sh-5"><td class="num">Ш5</td><td>Ввод в действие</td>
         <td>У ставок срок «с … по …» уже есть <span class="tag now">есть сегодня</span>. Единого правила для всех работ нет. История правок не хранится. Маршрут нельзя изменить — только архив и новый. Тендерные пакеты перетирают друг друга, особенно при обмене с SAP TMS <span class="tag fact">факт</span>.</td>
         <td class="pain">Нельзя ответить, по какой ставке считали в сентябре. Новый пакет стирает старый. Перевозка, счёт и план могут разойтись по дате.</td>
@@ -297,11 +297,7 @@
     </tbody>
   </table></div></div>
 
-  <h2 class="sec" id="kolco"><span class="n">3.</span> Кольцо ведения модели</h2>
-  <div class="card" style="padding:12px;overflow-x:auto"><div id="svt-ring"></div></div>
-  <p class="note" style="margin-bottom:16px">Тёмные стрелки по часовой — путь каждого изменения: от прихода данных до передачи читающим системам и контроля после неё. Бирюзовый пунктир против часовой — обратная связь: сверка план-факт подаёт сигнал в систему-источник, СВТ данные не правит. Человек останавливает цикл только на Ш3, и только если возникли исключения. Ш7 и Ш8 начинают новый цикл, Ш9 подаёт сигнал. Если исключения не возникли, изменение проходит полный цикл без выхода на человека.</p>
-
-  <h2 class="sec" id="roli-sh"><span class="n">4.</span> Роли</h2>
+  <h2 class="sec" id="roli-sh"><span class="n">3.</span> Роли</h2>
   <p class="lead">Смотреть все справочники могут все роли. Право менять выдаётся набором по <a class="gloss" href="#g-domen">доменам</a>, а не готовой ролью на каждую комбинацию. Правом менять сегодня пользуются около 50 человек. Владелец маршрутов — Кудрявцев В. <span class="tag gap">пробел</span> Имя владельца лидтаймов в материалах СВТ не названо.</p>
   <div class="card"><div class="table-wrap"><table>
     <thead><tr><th style="width:200px">Роль</th><th>Что доступно</th><th style="width:260px">Где на кольце</th></tr></thead>
@@ -329,7 +325,7 @@
     </tbody>
   </table></div></div>
 
-  <h2 class="sec" id="proverki"><span class="n">5.</span> Виды проверок данных</h2>
+  <h2 class="sec" id="proverki"><span class="n">4.</span> Виды проверок данных</h2>
   <div class="card"><div class="table-wrap"><table>
     <thead><tr><th style="width:170px">Вид</th><th style="width:70px">Шаг</th><th>Что проверяет</th><th style="width:220px">Что происходит</th><th style="width:170px">Кто отвечает</th></tr></thead>
     <tbody>
