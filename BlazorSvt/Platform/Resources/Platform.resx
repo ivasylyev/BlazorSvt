@@ -150,6 +150,12 @@
   <data name="HeaderMenu.Domain.Rates.Hint" xml:space="preserve">
 	  <value>Rates</value>
   </data>
+  <data name="HeaderMenu.Domain.Parities" xml:space="preserve">
+	  <value>Parities</value>
+  </data>
+  <data name="HeaderMenu.Domain.Parities.Hint" xml:space="preserve">
+	  <value>Parities</value>
+  </data>
   <data name="HeaderMenu.Domain.Routes" xml:space="preserve">
 	  <value>Routes</value>
   </data>

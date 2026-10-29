@@ -1,0 +1,1463 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>СВТ: идеальный процесс · версия 2.3</title>
+<style>
+  :root { --navy:#133152; --blue:#1e6aa8; --sky:#eaf4fb; --muted:#5a6b7a; --line:#d9e2ea; --paper:#fff; --bg:#f3f6f9; }
+  * { box-sizing:border-box; }
+  body { margin:0; background:var(--bg); color:#1b2733; font:15px/1.5 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif; }
+  .shell { max-width:1240px; margin:0 auto; padding:28px 20px 60px; }
+  .hero { background:linear-gradient(120deg,var(--navy),#215f91); color:#fff; border-radius:16px; padding:30px 32px 26px; }
+  .eyebrow { margin:0 0 6px; font-size:12px; font-weight:700; letter-spacing:.08em; text-transform:uppercase; color:#bfe1f7; }
+  h1 { margin:0; font-size:29px; line-height:1.2; }
+  .subtitle { margin:10px 0 0; font-size:16px; color:#e2f0fa; }
+  .hero .tag { vertical-align:1px; }
+  h2.sec { margin:36px 0 14px; font-size:21px; color:var(--navy); padding-bottom:8px; border-bottom:2px solid var(--line); }
+  h2.sec .n { font-weight:800; }
+  h3 { margin:22px 0 8px; font-size:16px; color:var(--navy); }
+  h3.sub { margin:28px 0 10px; font-size:17px; padding-bottom:6px; border-bottom:1px solid var(--line); }
+  h3.sub .sn { color:var(--blue); font-weight:800; }
+  p.lead { color:#3d4c59; margin:0 0 14px; }
+  .card { background:var(--paper); border:1px solid var(--line); border-radius:12px; overflow:hidden; margin-bottom:16px; }
+  .table-wrap { overflow-x:auto; }
+  table { width:100%; border-collapse:collapse; min-width:720px; }
+  .wide table { min-width:1040px; }
+  th { text-align:left; padding:10px 12px; background:#f8fbfd; color:#526575; font-size:12px; text-transform:uppercase; letter-spacing:.03em; border-bottom:1px solid var(--line); }
+  td { padding:11px 12px; vertical-align:top; border-bottom:1px solid var(--line); font-size:14px; }
+  tr:last-child td { border-bottom:0; }
+  td ul.plain, .step ul.plain { margin:6px 0 0; padding-left:18px; }
+  td ul.plain li, .step ul.plain li { margin-bottom:6px; }
+  td ul.plain ul.plain, .step ul.plain ul.plain { margin-top:4px; }
+  td p.cm, .step p.cm { margin:0 0 6px; }
+  .steps { display:flex; flex-direction:column; gap:10px; margin:0 0 16px; }
+  .step { background:#fff; border:1px solid var(--line); border-radius:12px; padding:14px 18px 16px; }
+  .step-h { display:flex; align-items:baseline; gap:10px; margin:0 0 10px; }
+  .step-h h4 { margin:0; font-size:16px; line-height:1.3; color:var(--navy); font-weight:800; }
+  .step.stop { background:#fffbeb; border-color:#ead89a; }
+  .step .num { display:inline-block; }
+  .step.stop .num { box-shadow:inset 3px 0 0 #d4a017; padding-left:8px; }
+  .step:target { background:#fff3cd; }
+  details.as-is { border:1px solid var(--line); border-radius:10px; background:#f8fbfd; margin:0 0 12px; }
+  .step.stop details.as-is { background:#fffdf6; }
+  details.as-is > summary {
+    cursor:pointer; list-style:none; display:flex; align-items:center; justify-content:space-between;
+    gap:12px; padding:8px 12px; font-size:13px; font-weight:800; color:var(--navy);
+  }
+  details.as-is > summary::-webkit-details-marker { display:none; }
+  details.as-is > summary:hover { background:#f3f7fb; }
+  details.as-is[open] > summary .chev { transform:rotate(180deg); }
+  details.as-is[open] > summary .acc-label::after { content:"Скрыть"; }
+  .as-is-body { padding:2px 12px 12px; border-top:1px solid var(--line); }
+  .as-is-body h5 { margin:10px 0 4px; font-size:12px; letter-spacing:.03em; text-transform:uppercase; color:#526575; font-weight:800; }
+  .as-is-text { font-size:14px; }
+  .as-is-text.pain { background:#fff8f7; border-radius:8px; padding:8px 10px; }
+  .num { color:var(--blue); font-weight:800; white-space:nowrap; }
+  .tag { display:inline-block; padding:2px 8px; border-radius:999px; font-size:11px; font-weight:800; white-space:nowrap; margin-right:4px; }
+  .fact { background:#e5f5ed; color:#136c4c; }
+  .hyp { background:#eaf4fb; color:#1c4f70; }
+  .gap { background:#fde8e8; color:#9b1c1c; }
+  .now { background:#e3eefb; color:#1e4f8a; }
+  .procs { display:grid; grid-template-columns:repeat(5,1fr); gap:6px; margin:6px 0 10px; }
+  .st { background:#fff; border:1px solid var(--line); border-radius:10px; padding:10px; min-height:96px; }
+  .st .k { font-size:11px; font-weight:800; color:var(--blue); }
+  .st .t { display:block; font-weight:800; font-size:13px; color:var(--navy); margin-top:2px; line-height:1.25; }
+  .st .e { display:block; font-size:11.5px; color:var(--muted); margin-top:6px; line-height:1.3; }
+  a.st { text-decoration:none; color:inherit; display:block; }
+  a.st:hover { border-color:var(--blue); box-shadow:0 0 0 2px #eaf4fb; }
+  .box { background:#fff; border:1px solid var(--line); border-radius:12px; padding:16px 20px; margin-bottom:14px; overflow:hidden; }
+  .box.info { background:var(--sky); border-color:#bfe1f7; }
+  .note { font-size:13px; color:var(--muted); margin:6px 0 0; }
+  .footer { margin-top:28px; color:#728291; font-size:12px; }
+  html { scroll-behavior:smooth; }
+  .stop-link { cursor:pointer; }
+  .stop-link:hover rect { fill:#fdecec; }
+  .go-link { cursor:pointer; }
+  .go-link:hover rect { fill:#fff6d8; }
+  .back { font-size:12px; font-weight:400; white-space:nowrap; }
+  a.code { color:var(--blue); font-weight:400; text-decoration:none; border-bottom:1px dotted #8eb6d4; }
+  a.code:hover { background:#eaf4fb; }
+  a.gloss { color:inherit; text-decoration:none; border-bottom:1px dotted #8eb6d4; }
+  a.gloss:hover { background:#eaf4fb; }
+  h2.sec, h3.sub, [id^="sh-"], [id^="pr-"], [id^="g-"], #kak-chitat, #servis, #styki, #princip, #shagi, #roli-sh, #proverki, #gloss, #kartina, #obrabotka, #kartochka-p3 { scroll-margin-top:80px; }
+  td.pain { background:#fff8f7; }
+  tr.stop td { background:#fffbeb; }
+  tr.stop td.num { box-shadow:inset 3px 0 0 #d4a017; }
+  tr:target td { background:#fff3cd; transition:background .3s; }
+  li:target { background:#fff3cd; transition:background .3s; }
+  @media (max-width: 1000px) { .procs { grid-template-columns:repeat(3,1fr); } }
+  @media (max-width: 800px) {
+    .shell { padding:14px 12px 40px; } .hero { padding:20px 18px; } h1 { font-size:22px; }
+    .procs { grid-template-columns:repeat(2,1fr); }
+  }
+  details.acc { background:#fff; border:0; border-bottom:1px solid #e6edf2; margin:0; overflow:hidden; }
+  details.acc.sec-acc { border:1px solid var(--line); border-radius:12px; margin-bottom:8px; }
+  details.acc.sub-acc { border-radius:0; }
+  details.acc > summary {
+    cursor:pointer; list-style:none; display:flex; align-items:center; justify-content:space-between;
+    gap:16px; padding:16px 18px; color:#1b2733;
+  }
+  details.acc > summary::-webkit-details-marker { display:none; }
+  details.acc > summary:hover { background:#fafcfe; }
+  .acc-text { min-width:0; }
+  details.acc > summary h2.sec,
+  details.acc > summary h3.sub { margin:0; padding:0; border:0; }
+  .acc-hint { display:block; font-size:13px; font-weight:400; color:#8a95a0; margin-top:3px; line-height:1.35; }
+  .acc-action { display:flex; align-items:center; gap:8px; flex-shrink:0; color:#6b7785; font-size:14px; font-weight:500; }
+  .acc-action .chev {
+    width:28px; height:28px; border:1px solid #d5dde5; border-radius:50%;
+    display:inline-flex; align-items:center; justify-content:center; color:#5a6b7a;
+  }
+  .acc-action .chev svg { width:12px; height:12px; display:block; }
+  details.acc[open] > summary .chev { transform:rotate(180deg); }
+  .acc-label::after { content:"Показать"; }
+  details.acc[open] > summary .acc-label::after { content:"Скрыть"; }
+  .acc-body { padding:4px 12px 14px; border-top:1px solid #eef3f7; }
+  .doc-toc { background:#fff; border:1px solid var(--line); border-radius:12px; padding:16px 20px 12px; margin:16px 0; }
+  .doc-toc h2 { margin:0 0 10px; font-size:21px; color:var(--navy); }
+  .doc-toc ul { list-style:none; margin:0; padding-left:0; }
+  .doc-toc ul ul { margin:4px 0 8px; padding-left:22px; }
+  .doc-toc li { font-size:14px; margin:0 0 5px; }
+  .doc-toc ul ul li { font-size:13px; color:#3d4c59; }
+  .doc-toc a { color:var(--navy); text-decoration:none; }
+  .doc-toc a:hover { text-decoration:underline; }
+  @media print {
+    body { background:#fff; }
+    details.acc { border:0; }
+    details.acc > summary .acc-action { display:none; }
+    details.acc > .acc-body { display:block !important; }
+    details.as-is > summary .acc-action { display:none; }
+    details.as-is:not([open]) > .as-is-body { display:block !important; content-visibility:visible !important; }
+  }
+</style>
+</head>
+<body>
+<main class="shell">
+
+  <header class="hero">
+    <p class="eyebrow">Материал для Кудрявцева В.</p>
+    <h1>СВТ: идеальный процесс</h1>
+    <p class="subtitle">Система ведения ставок, паритетов, маршрутов, плеч и лидтаймов, складских ограничений и матрицы каналов · как значение модели появляется, проверяется, обрабатывается, вступает в силу, уходит потребителям и сверяется с фактом</p>
+    <p class="subtitle" style="font-size:13px;opacity:.85;margin-top:4px;">Бизнес-лидер — Кудрявцев В. · владелец сервиса — Подоплелова Е. · версия 2.3, 29.10.2026</p>
+  </header>
+
+  <nav class="doc-toc" id="oglavlenie" aria-label="Содержание">
+    <h2>Содержание</h2>
+    <ul>
+      <li><a href="#kartina">1. Картина процесса</a>
+        <ul>
+          <li><a href="#kak-chitat">1.1. Модель</a></li>
+          <li><a href="#princip">1.2. Источники</a></li>
+          <li><a href="#obrabotka">1.3. Обработка данных</a></li>
+          <li><a href="#servis">1.4. Сервисы</a></li>
+          <li><a href="#kartochka-p3">1.5. Потребители</a></li>
+        </ul>
+      </li>
+      <li><a href="#shagi">2. Процессы доменов</a>
+        <ul>
+          <li><a href="#pr-all">2.1. Общее для всех процессов</a></li>
+          <li><a href="#pr-rate">2.2. Ставки</a></li>
+          <li><a href="#pr-par">2.3. Паритеты</a></li>
+          <li><a href="#pr-route">2.4. Маршруты, плечи и лидтаймы</a></li>
+          <li><a href="#pr-wh">2.5. Складские ограничения</a></li>
+          <li><a href="#pr-mx">2.6. Матрица каналов</a></li>
+        </ul>
+      </li>
+      <li><a href="#roli-sh">3. Роли</a></li>
+      <li><a href="#proverki">4. Виды проверок данных</a></li>
+      <li><a href="#gloss">Глоссарий</a></li>
+    </ul>
+  </nav>
+
+  <h2 class="sec" id="kartina"><span class="n">1.</span> Картина процесса</h2>
+  <h3 class="sub" id="kak-chitat"><span class="sn">1.1.</span> Модель</h3>
+  <div class="box">
+    <p style="margin:0 0 8px"><b>СВТ ведёт: <a class="gloss" href="#g-rate">ставки</a>, <a class="gloss" href="#g-parity">паритеты</a>, <a class="gloss" href="#g-route">маршруты</a>, <a class="gloss" href="#g-leg">плечи</a> и <a class="gloss" href="#g-leadtime">лидтаймы</a>, <a class="gloss" href="#g-warehouse">складские ограничения</a>, <a class="gloss" href="#g-matrix">матрицу каналов</a>.</b></p>
+    <p style="margin:0 0 8px">Каждое изменение проходит полный цикл — шаги <b>Ш1…Ш9</b>: получение данных, обработка, передача потребителям и контроль. Детали шагов для каждого домена описаны в <a class="code" href="#shagi">разделе 2</a>.</p>
+    <ul style="margin:0 0 8px; padding-left:18px">
+      <li id="sh-1" style="margin-bottom:4px"><a class="code" href="#sh-1">Ш1</a> <b>Получение данных</b> — СВТ получает данные из систем-источников. Данные, отсутствующие в системах-источниках, человек вводит вручную. Формат авто-ставок СВТ приводится в соответствие с форматом ставок Логинета.</li>
+      <li id="sh-2" style="margin-bottom:4px"><a class="code" href="#sh-2">Ш2</a> <b>Проверка данных</b> — СВТ проверяет данные по одним и тем же правилам, откуда бы они ни пришли. Данные делятся на три потока: строки без нарушений сразу идут на Ш4 и не ждут Ш3; строки с отклонениями ждут утверждения на Ш3; строки с ошибками заносятся в лог и исключаются из дальнейшей обработки.</li>
+      <li id="sh-3" style="margin-bottom:4px"><a class="code" href="#sh-3">Ш3</a> <b>Утверждение исключений</b> — человек решает, пропустить или отвергнуть строку с отклонениями, которую проверка посчитала подозрительной. Это единственный шаг, на котором движение данных может остановиться, и только для строк с исключениями.</li>
+      <li id="sh-4" style="margin-bottom:4px"><a class="code" href="#sh-4">Ш4</a> <b>Расчёт производных значений</b> — СВТ рассчитывает дефлированные ставки типов, кроме бизнес-плановых и спотовых; средневзвешенные, бизнес-плановые и спотовые ставки; паритеты; лидтаймы. Бизнес-плановые и спотовые ставки дефлятором не умножаются.</li>
+      <li id="sh-5" style="margin-bottom:4px"><a class="code" href="#sh-5">Ш5</a> <b>Ввод в действие</b> — новые данные начинают действовать с указанной даты, прежние уходят в архив. Справочник паритетов накопительный, старые записи не архивируются. Складские ограничения в архив не списываются и на одну дату не пересекаются.</li>
+      <li id="sh-6" style="margin-bottom:4px"><a class="code" href="#sh-6">Ш6</a> <b>Передача потребителям</b> — СВТ сама отдаёт действующие значения системам-потребителям. Вступившее в силу значение уходит с задержкой порядка 5 минут; ночью идёт полная синхронизация с потребителями.</li>
+      <li id="sh-7" style="margin-bottom:4px"><a class="code" href="#sh-7">Ш7</a> <b>Контроль полноты</b> — СВТ показывает, каких данных не хватает, и пользователь их дозаводит или даёт сигнал источнику: так начинается новый цикл.</li>
+      <li id="sh-8" style="margin-bottom:4px"><a class="code" href="#sh-8">Ш8</a> <b>Контроль целостности</b> — СВТ проверяет корректность и консистентность существующих данных. Ошибки исправляет администратор ИТ новым циклом с Ш1 для изменённых данных.</li>
+      <li id="sh-9"><a class="code" href="#sh-9">Ш9</a> <b>Сверка план-факт и сигнал источникам</b> — СВТ сравнивает действующие значения с фактом и сообщает о расхождении системе-источнику.</li>
+    </ul>
+    <p style="margin:0 0 8px">На Ш7, Ш8 и Ш9 цикл не останавливается: человек разбирает нехватку, ошибки и расхождения, а данные тем временем продолжают действовать и уходить потребителям.</p>
+    <p style="margin:0">Шаги опираются на <a class="gloss" href="#g-checks">единые проверки</a>, <a class="gloss" href="#g-registry">реестр исключений</a>, <a class="gloss" href="#g-journal">журнал загрузок</a>, отчёт о <a class="gloss" href="#g-full">полноте</a> и расхождениях, передачу потребителям онлайн и ночную синхронизацию.</p>
+  </div>
+  <div class="card" style="padding:12px;overflow-x:auto"><div id="svt-ring"></div></div>
+  <h3 class="sub" id="princip"><span class="sn">1.2.</span> Источники</h3>
+  <div class="box info">
+    <p style="margin:0 0 8px">Основной путь — автоматический обмен. Ручной ввод и ручная загрузка для всех потоков, кроме мультимодальных перевозок, — дополнительный путь, его сокращают. Для мультимодальных перевозок ручной файл — основной путь только на первом этапе, дальше он дополнительный.</p>
+    <ul style="margin:0; padding-left:18px">
+      <li style="margin-bottom:4px"><b>Логинет</b>. Отдаёт <a class="gloss" href="#g-rate-tender">тендерные ставки</a> авто с номинациями, <a class="gloss" href="#g-rate-fact">фактические ставки</a> и фактическую цену спотового аукциона. Модель данных авто-ставок Логинета, около 30 столбцов, переносится в СВТ.</li>
+      <li style="margin-bottom:4px"><b>ATI через Озеро данных</b> (где хранятся данные — <span class="tag gap">пробел</span>). Отдаёт <a class="gloss" href="#g-indicative">индикативные ставки</a> авто.</li>
+      <li style="margin-bottom:4px"><b>Умная логистика</b> (как получать данные — <span class="tag gap">пробел</span>, контакт — Мария Бамбина). Система, в которой запрашивают индикативные ставки авто. В Озере данных её нет. Есть API и договор. Сначала посмотреть, как выглядит система, затем договориться о получении данных.</li>
+      <li style="margin-bottom:4px"><b>Калькулятор НХТК</b> (как получать данные — <span class="tag gap">пробел</span>, контакт — Настя Сироткина). Отдаёт железнодорожные ставки и расстояния.</li>
+      <li style="margin-bottom:4px"><b>Картографический сервис</b> (какой именно — <span class="tag gap">пробел</span>). Отдаёт расстояние между отправлением и назначением плеча для авто по России.</li>
+      <li style="margin-bottom:4px"><b>Система отслеживания машин</b> (как получать данные — <span class="tag gap">пробел</span>, контакт — Иван Фролов). Отдельная система со своим индексом, не Логинет и не Озеро данных. Отдаёт фактический лидтайм авто.</li>
+      <li style="margin-bottom:4px"><b>Внешние порталы.</b> Teustat, MSC, Феско, CMA, Maersk, Drewry и другие. Отдают данные для <a class="gloss" href="#g-parity">паритетов</a>. Teustat — через интерфейс (как получать данные — <span class="tag gap">пробел</span>). Данные иностранных порталов, возможно, придётся загружать через Excel.</li>
+      <li style="margin-bottom:4px"><b>Почта</b> (согласовать с бизнесом — <span class="tag gap">пробел</span>). Еженедельный файл складских ограничений. Образец файла получен; как автоматизировать его разбор, ещё нужно изучить. Пока <a class="gloss" href="#g-agent">агент</a> не подключён, файл разбирает алгоритм в коде. Агент — по правилу второго этапа в <a class="code" href="#obrabotka">пункте 1.3</a>.</li>
+      <li style="margin-bottom:4px"><b>Ручной ввод бизнеса.</b> <a class="gloss" href="#g-rate-contract">Договорные ставки</a>, дефляторы и период факта для бизнес-плана, коэффициенты <a class="gloss" href="#g-rasputica">распутицы</a>, ручная корректировка бизнес-плановых ставок.</li>
+      <li><b>АСВ и ERP.</b> Отдают контрагентов, узлы, продукты, курсы и склады.</li>
+    </ul>
+  </div>
+  <h3 class="sub" id="obrabotka"><span class="sn">1.3.</span> Обработка данных</h3>
+  <div class="box">
+    <p style="margin:0 0 8px">Данные в СВТ приходят в виде независимых друг от друга строк. Пришедшие данные проходят одинаковые проверки вне зависимости от источника (интеграции, ручного ввода и загрузки файла).</p>
+    <p style="margin:0 0 8px">Список проверок составляется совместно с бизнесом и реализуется в коде.</p>
+    <p style="margin:0 0 8px"><a class="gloss" href="#g-agent">Агент</a> подключается вторым этапом, только если бизнес признает это целесообразным. Когда правила меняются часто и данных много, агент нужен: бизнес сам меняет правила, а данные обрабатываются автоматически. Когда правила меняются редко и данных мало, агент не внедряется: правила меняет техническая поддержка в коде системы, данные вносит бизнес вручную.</p>
+    <ul style="margin:0 0 8px; padding-left:18px">
+      <li style="margin-bottom:4px"><a class="gloss" href="#g-hard">Жёсткая проверка</a> отклоняет строку: например, у ставки не указана стоимость или загрузка транспортного средства;</li>
+      <li><a class="gloss" href="#g-soft">Мягкая проверка</a> отправляет её человеку на утверждение, только если возникло отклонение: например, стоимость на 50% выше прежней.</li>
+    </ul>
+    <p style="margin:0 0 8px">Строки без отклонений идут дальше, не дожидаясь разбора отклонений.</p>
+    <p style="margin:0 0 8px">Новое значение действует с указанной даты, прежнее уходит в архив. Паритеты копятся без архивации. Складские ограничения на одну дату не пересекаются.</p>
+    <p style="margin:0 0 8px">СВТ рассчитывает:</p>
+    <ul style="margin:0 0 8px; padding-left:18px">
+      <li style="margin-bottom:4px">ставки, кроме бизнес-плановых и спотовых, — с коэффициентами <a class="gloss" href="#g-deflator">дефлирования</a>; ставки авто — ещё и с коэффициентами <a class="gloss" href="#g-rasputica">распутицы</a>;</li>
+      <li style="margin-bottom:4px"><a class="gloss" href="#g-bp">бизнес-плановые</a> ставки — из других типов ставок, без дефлятора;</li>
+      <li style="margin-bottom:4px"><a class="gloss" href="#g-rate-spot">спотовые</a> ставки — из других типов ставок с корректировкой по факту, без дефлятора;</li>
+      <li style="margin-bottom:4px"><a class="gloss" href="#g-weighted">средневзвешенные ставки</a> — из всех типов ставок. Расчёт идёт в различной гранулярности, усредняя по контрагентам, по регионам и т. д.;</li>
+      <li style="margin-bottom:4px">паритеты;</li>
+      <li style="margin-bottom:4px">лидтаймы авто — с корректировкой по факту;</li>
+      <li>лидтаймы ЖД.</li>
+    </ul>
+    <p style="margin:0 0 8px">Подробности — в шаге Ш4 процессов <a class="code" href="#sh-rate-4">«Ставки»</a>, <a class="code" href="#sh-par-4">«Паритеты»</a> и <a class="code" href="#sh-route-4">«Маршруты, плечи и лидтаймы»</a>.</p>
+    <p style="margin:0">После этого данные уходят потребителям почти онлайн после вступления в силу, а также выполняется полная ночная синхронизация.</p>
+  </div>
+  <h3 class="sub" id="servis"><span class="sn">1.4.</span> Сервисы</h3>
+  <div class="box">
+    <p style="margin:0 0 8px">Кроме ведения модели, в СВТ есть сервисы.</p>
+    <p style="margin:0 0 8px"><b>Сервис заявок.</b> По <a class="gloss" href="#g-request">заявке на расчёт ставки</a> СВТ подбирает ставку из модели, то есть из справочника средневзвешенных ставок или паритетов при помощи «умного подбора». Заявка бывает на обычную ставку и на массовую. Заявки не входят в модель: это запрос к данным модели, а не данные. Это отдельный порядок работы со своими шагами, а не шаг кольца. <span class="tag gap">пробел</span> Модуль заявок переработать: упростить порядок работы с заявкой и связать её со справочником паритетов.</p>
+    <p style="margin:0 0 8px" id="servis-sync"><b>Сервис синхронизации ставок.</b> На одном направлении СВТ заменяет устаревшую ставку группы продуктов актуальной ставкой другой группы: подставляется значение той группы, которая уже обновлена. Правила синхронизации расширяются на большее число продуктов и становятся настраиваемыми. Если подставилась не та ставка, правку правила вносит владелец продукта. Результат синхронизации — новое значение ставки, оно проходит проверки, вводится в действие и уходит потребителям, как любое другое.</p>
+    <p style="margin:0 0 8px"><b>Сервис подбора для CRM.</b> Когда в CRM подбирают тариф, CRM отправляет запрос в СВТ, и умный подбор срабатывает сразу. Если ставка найдена, она уходит в CRM и используется там. Если не найдена, пользователь в CRM сам нажимает кнопку «Запросить тариф СВТ»: так запрос остаётся осознанным, а одинаковые повторные запросы не превращаются в заявки. Заявка с предзаполненными полями автоматически уходит в СВТ, пользователь получает уведомление, что ответ придёт на почту. Переходить в СВТ и подтверждать заявку ему не нужно.</p>
+    <p style="margin:0">Цель — 95% заявок закрываются автоматически, 5% — действительно новые ставки. Если подбор ставку не нашёл, она проходит шаги <a class="code" href="#sh-rate-1">Ш1–Ш6 процесса «Ставки»</a> и становится значением справочника для всех, а не только для инициатора. <span class="tag gap">пробел</span> Правила умного подбора обсуждаются отдельно.</p>
+  </div>
+  <h3 class="sub" id="kartochka-p3"><span class="sn">1.5.</span> Потребители</h3>
+  <div class="box info">
+    <p style="margin:0 0 8px">СВТ — мастер-система по ставкам, паритетам, маршрутам, плечам и лидтаймам, складским ограничениям и матрице каналов. Системы-потребители получают данные через автоматическую интеграцию без ручного вмешательства: почти онлайн после вступления значения в силу и полной ночной синхронизацией. Планирование читает маршруты как схему доставки, логистика — чтобы обеспечить мощности.</p>
+    <ul style="margin:0; padding-left:18px">
+      <li style="margin-bottom:4px"><b>CRM и E-Com.</b> Получают средневзвешенную ставку, подобранную <a class="code" href="#servis">умным подбором</a>. Нужна для расчёта цены клиенту. Если ставка ниже рынка, Сибуру приходится доплачивать за перевозку. Если выше, Сибур рискует потерять клиента.</li>
+      <li style="margin-bottom:4px"><b><a class="gloss" href="#g-ssp">ССП</a>.</b> Получает ставки вместе с привязанными к ним маршрутами, плечами и лидтаймами. Также получает складские ограничения. Нужны, чтобы добавить логистику в цену <a class="gloss" href="#g-demand">планируемого спроса</a>: затем спрос уходит в ЦБД. <span class="tag gap">пробел</span> Нужны ли данные СВТ в ССП ещё и для составления ППР — уточнить.</li>
+      <li style="margin-bottom:4px"><b><a class="gloss" href="#g-cbd">ЦБД</a>.</b> Получает ставки и лидтаймы в горизонте 15 месяцев. Лидтаймы нужны, чтобы оценить срок заморозки рабочего капитала. Ставки нужны для оптимизационной модели: она выбирает клиентов и поставки так, чтобы максимизировать EBITDA компании.</li>
+      <li style="margin-bottom:4px"><b>Маркетинг.</b> Получает паритеты. Забирает данные из Озера данных и строит на них витрину. Своей системы и подключения к шине у маркетинга нет. Нужны для ценообразования, расчёта доходности продаж продукта по заводам и оценки конкурентов на смежных рынках.</li>
+      <li style="margin-bottom:4px"><b><a class="gloss" href="#g-esd">ЕСД</a>,</b> программа <a class="gloss" href="#g-optimacros">Оптимакрос</a>. Получает ставки, лидтаймы, параметры складов и складские ограничения. Они нужны для календарного планирования, диспетчеризации потоков и учёта загрузки складов.</li>
+      <li style="margin-bottom:4px"><b><a class="gloss" href="#g-esd-si">ЕСД SI</a></b> (что получает ЕСД, а что ЕСД SI, — уточнить у бизнеса, <span class="tag gap">пробел</span>). Получает складские ограничения вместе с ЕСД и КПО. Нужны, чтобы проверять исполнимость плана и использовать закупленные мощности.</li>
+      <li style="margin-bottom:4px"><b><a class="gloss" href="#g-kpo">КПО</a></b> (уточнить у бизнеса — <span class="tag gap">пробел</span>). Получает складские ограничения, плановый лидтайм доставки и матрицу каналов: квоты, ставки и плановые лидтаймы уходят через программу Оптимакрос. Нужны, чтобы учитывать ограничения отправки железнодорожным и автомобильным транспортом по каналам и направлениям. Рейтинг складов получает из <a class="gloss" href="#g-mls">MLS</a>.</li>
+      <li style="margin-bottom:4px"><b><a class="gloss" href="#g-mls">MLS</a>.</b> Получает ставки 3 уровня из Озера данных. Они нужны, чтобы рассчитать рейтинг складов: с какого склада выгоднее отгружать продукт клиентам региона. MLS — модуль СВТ <span class="tag hyp">гипотеза</span>.</li>
+      <li style="margin-bottom:4px"><b>SAP ERP.</b> Получает маршруты и лидтаймы. По маршруту создаёт разнарядки на отгрузку: без маршрута отгрузка клиенту не выполняется. По лидтайму планирует отгрузки — нормативные плановые даты.</li>
+      <li style="margin-bottom:4px"><b>SAP TMS.</b> Получает ставки с <a class="gloss" href="#g-nomination">номинацией</a> для мультимодальных перевозок. Ставки нужны, чтобы заказывать контейнерные поезда и вести мультимодальные перевозки.</li>
+      <li style="margin-bottom:4px"><b>Озеро данных.</b> Получает сырые данные. Нужны для дашбордов и Контрольной среды.</li>
+      <li><b>Атлас.</b> Получает все данные, по которым СВТ — мастер-система: ставки, паритеты, маршруты, плечи и лидтаймы, складские ограничения и матрицу каналов. Через интерфейс Атласа выполняются действия этого процесса. Значение — на дату, своей копии Атлас не ведёт.</li>
+    </ul>
+  </div>
+
+  <h2 class="sec" id="shagi"><span class="n">2.</span> Процессы доменов</h2>
+  <p class="lead">Каждый <a class="gloss" href="#g-domen">домен</a> ведёт свои данные по одному и тому же кольцу Ш1…Ш9, поэтому у каждого домена свои девять шагов. Механизмы, общие для всех доменов, в каждом процессе повторены кратко и подробно описаны в <a class="code" href="#pr-all">пункте 2.1</a>. Нажмите плитку — откроется процесс.</p>
+  <div class="procs">
+    <a class="st" href="#pr-rate"><span class="k">2.2</span><span class="t">Ставки</span><span class="e">все типы ставок авто, ЖД и мультимодальных перевозок, номинации и бизнес-план для ЦБД</span></a>
+    <a class="st" href="#pr-par"><span class="k">2.3</span><span class="t">Паритеты</span><span class="e">ставки доставки от конкурентов до наших рынков сбыта по данным внешних порталов</span></a>
+    <a class="st" href="#pr-route"><span class="k">2.4</span><span class="t">Маршруты, плечи и лидтаймы</span><span class="e">схема доставки из плеч и нормативный срок перевозки по ней</span></a>
+    <a class="st" href="#pr-wh"><span class="k">2.5</span><span class="t">Складские ограничения</span><span class="e">ёмкость, пропускная способность и тариф складов на интервал времени</span></a>
+    <a class="st" href="#pr-mx"><span class="k">2.6</span><span class="t">Матрица каналов</span><span class="e">каналы и квоты отгрузки, чтобы выбрать самый выгодный завод-канал</span></a>
+  </div>
+
+  <h3 class="sub" id="pr-all"><span class="sn">2.1.</span> Общее для всех процессов</h3>
+  <div class="steps">
+<article class="step" id="sh-all-1">
+  <header class="step-h"><span class="num">Ш1</span><h4>Получение данных</h4></header>
+  <details class="as-is">
+    <summary><span>Как сейчас</span><span class="acc-action"><span class="chev" aria-hidden="true"><svg viewBox="0 0 12 12"><path d="M2 4l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="acc-label"></span></span></summary>
+    <div class="as-is-body">
+      <h5>Мнение владельца продукта</h5>
+      <div class="as-is-text">Отдельной записи о загрузке в СВТ нет: об изменении узнают, когда данные уже в системе. Ключевой пользователь видит большие пачки постфактум и сам сверяет даты загрузок специалистов «Северсталь» с утверждённым графиком. Нагрузка специалистов «Северсталь»: номинации 1,1 FTE, ставки 0,3, лидтаймы 0,1, паритеты 1,3. Автоматически приходят контрагенты, узлы, продукты и курсы из АСВ НСИ, склады из АСВ и ERP <span class="tag fact">факт</span>.</div>
+      <h5>К чему приводит</h5>
+      <div class="as-is-text pain">Пока файл не загрузили, планирование и CRM считают по предыдущему значению. Ошибка в файле входит как факт.</div>
+    </div>
+  </details>
+  <div class="propose"><ul class="plain">
+            <li><b>Автоматический импорт.</b> Процесс начинается с изменения в системе-источнике. Это основной путь. Ручной ввод и загрузка файла — дополнительный путь. Пока СВТ не приняла данные, действуют прежние значения. Специалисты «Северсталь» в процессах СВТ участвуют минимально.</li>
+            <li><b>Файл и ручной ввод.</b> Загрузка файлом добавляет массовые данные, ручной ввод — единичные. Для всех потоков, кроме мультимодальных перевозок, это дополнительный путь, его сокращают. Для мультимодальных перевозок ручной файл — основной путь только на первом этапе, дальше он дополнительный. Так заводят уникальные данные, которых нет ни в одной системе, вручную дополняют или корректируют то, что пришло автоматически, и вносят ставку при подписании ДС. Этот путь проходит те же проверки <a class="code" href="#sh-all-2">Ш2</a>.</li>
+            <li><b>Журнал загрузок.</b> Каждая загрузка пишется в журнал: что, когда, откуда и куда загружено, сколько строк прошло, ушло в исключения и отклонено. Ключевой пользователь видит журнал почти в реальном времени, сверяет загрузки с утверждённым графиком и раньше замечает ошибку, например, пакет в сто раз меньше обычного. На журнале строится аналитика.</li>
+            <li><b>Справочные данные.</b> Контрагенты, узлы, продукты, курсы и склады приходят из АСВ НСИ и ERP, как сегодня. Склады — WarehouseASVERP и WarehouseERP. Продукты приходят по внешней интеграции; это вспомогательный справочник для ставок и паритетов, отдельного процесса у него нет.</li>
+          </ul></div>
+</article>
+<article class="step" id="sh-all-2">
+  <header class="step-h"><span class="num">Ш2</span><h4>Проверка данных</h4></header>
+  <details class="as-is">
+    <summary><span>Как сейчас</span><span class="acc-action"><span class="chev" aria-hidden="true"><svg viewBox="0 0 12 12"><path d="M2 4l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="acc-label"></span></span></summary>
+    <div class="as-is-body">
+      <h5>Мнение владельца продукта</h5>
+      <div class="as-is-text">Редактор и загрузчик проверяют по-разному. Ошибок качества 6–10 в сутки при цели 5. Около половины инцидентов — система приняла то, что бизнес считает ошибкой <span class="tag fact">факт</span>.</div>
+      <h5>К чему приводит</h5>
+      <div class="as-is-text pain">Ошибку ловят глазами после того, как строка уже в системе. Старые проверки мешают новым.</div>
+    </div>
+  </details>
+  <div class="propose">Обмен, редактор и загрузчик проходят одни и те же проверки: результат не зависит от того, откуда пришла строка. Проверки разделены по категориям.
+          <ul class="plain">
+            <li><b>Жёсткие</b> — нарушен бизнес-инвариант, строка отклоняется.</li>
+            <li><b>Мягкие</b> — это предупреждение, а не ошибка, строка уходит на <a class="code" href="#sh-all-3">Ш3</a>.</li>
+          </ul>
+          Строки без предупреждений сразу идут дальше, на <a class="code" href="#sh-all-4">Ш4</a>. Примеры проверок — в процессах доменов. Все величины — примеры, пороги задаёт бизнес. <span class="tag gap">пробел</span> Итоговый список проверок собирается с бизнесом по каждому потоку загрузки; неактуальные нынешние проверки уходят. Затем по каждой проверке бизнес решает, жёсткая она или мягкая. Проверка данных, которые уже записаны в систему, — отдельный шаг <a class="code" href="#sh-all-8">Ш8</a>.</div>
+</article>
+<article class="step stop" id="sh-all-3">
+  <header class="step-h"><span class="num">Ш3</span><h4>Утверждение исключений</h4></header>
+  <details class="as-is">
+    <summary><span>Как сейчас</span><span class="acc-action"><span class="chev" aria-hidden="true"><svg viewBox="0 0 12 12"><path d="M2 4l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="acc-label"></span></span></summary>
+    <div class="as-is-body">
+      <h5>Мнение владельца продукта</h5>
+      <div class="as-is-text">Шага нет. В руководстве справочники меняет роль «Единое окно». Регламента утверждения нет. Строку, которую загрузчик не пустил, видит только тот, кто загружал <span class="tag fact">факт</span>.</div>
+      <h5>К чему приводит</h5>
+      <div class="as-is-text pain">При автоматическом потоке строки, которые не прошли проверку, теряются.</div>
+    </div>
+  </details>
+  <div class="propose">Все строки, которые не прошли <a class="code" href="#sh-all-2">Ш2</a>, попадают в реестр исключений с причиной.
+          <ul class="plain">
+            <li>Строка, отклонённая жёсткой проверкой, содержит ошибку. Её исправляют в источнике и загружают заново.</li>
+            <li>Строка, отклонённая мягкой проверкой, содержит предупреждение. Её пропускает или отвергает сотрудник, ответственный за данные этого справочника.</li>
+            <li>Если данные верны, а ошибается проверка, ответственный из реестра запрашивает правку проверки. После правки проверка действует сразу для всех входов.</li>
+          </ul>
+          Реестр ведёт подробный лог по всем исходам: прошло, предупреждение, отклонено. Без реестра данные из автоматического потока будут теряться.
+          <ul class="plain">
+            <li><b>Два потока.</b> Строки без исключений сразу идут на <a class="code" href="#sh-all-4">Ш4</a> и не ждут этого шага. Ждут только строки с исключениями: из тысячи пришедших ставок задержатся, например, три.</li>
+            <li><b>Срок разбора.</b> У каждого исключения есть ответственный и срок разбора. Исключение назначается на ответственного автоматически, его можно переназначить или перехватить, как заявку. Если срок вышел, СВТ подаёт сигнал: исключения не должны копиться, пока ответственный, например, в отпуске. <span class="tag gap">пробел</span> Механизм назначения, сроки и уведомления продумать с бизнесом.</li>
+          </ul></div>
+</article>
+<article class="step" id="sh-all-4">
+  <header class="step-h"><span class="num">Ш4</span><h4>Расчёт производных значений</h4></header>
+  <details class="as-is">
+    <summary><span>Как сейчас</span><span class="acc-action"><span class="chev" aria-hidden="true"><svg viewBox="0 0 12 12"><path d="M2 4l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="acc-label"></span></span></summary>
+    <div class="as-is-body">
+      <h5>Мнение владельца продукта</h5>
+      <div class="as-is-text">Средняя за 3 месяца для ТЗ, спрямление — в Excel у ФЭС без версий. Расчёты внутри базы СВТ формулами не описаны <span class="tag fact">факт</span>.</div>
+      <h5>К чему приводит</h5>
+      <div class="as-is-text pain">Формула ничья. Один и тот же расчёт в Excel и в ночном задании может разойтись, и это увидят только у потребителя.</div>
+    </div>
+  </details>
+  <div class="propose">Расчёт идёт из принятых системой данных. Формулы расчёта реализованы в коде. Их владелец — роль «Владелец продукта» в <a class="code" href="#roli-sh">пункте 3</a>. Расчёт той же величины в Excel у ФЭС и у бизнеса прекращается <span class="tag hyp">гипотеза</span>. Что именно считается в каждом домене — в шаге Ш4 процесса.</div>
+</article>
+<article class="step" id="sh-all-5">
+  <header class="step-h"><span class="num">Ш5</span><h4>Ввод в действие</h4></header>
+  <details class="as-is">
+    <summary><span>Как сейчас</span><span class="acc-action"><span class="chev" aria-hidden="true"><svg viewBox="0 0 12 12"><path d="M2 4l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="acc-label"></span></span></summary>
+    <div class="as-is-body">
+      <h5>Мнение владельца продукта</h5>
+      <div class="as-is-text">Единого правила для всех работ нет. История правок не хранится <span class="tag fact">факт</span>.</div>
+      <h5>К чему приводит</h5>
+      <div class="as-is-text pain">Перевозка, счёт и план могут разойтись по дате.</div>
+    </div>
+  </details>
+  <div class="propose">Новый пакет не стирает предыдущий. Значение действует с указанной даты; у старой записи появляется дата окончания, и она уходит в архив. На выбранную дату в СВТ одно действующее значение. Паритеты — исключение по архиву: справочник накопительный (<a class="code" href="#sh-par-5">2.3, Ш5</a>). Складские ограничения в архив не списываются, но на одну дату не пересекаются: это ловит жёсткая проверка на загрузке и контроль целостности (<a class="code" href="#sh-wh-2">2.5, Ш2</a>, <a class="code" href="#sh-wh-8">2.5, Ш8</a>). <span class="tag gap">пробел</span> История правок: кто, что и когда поменял.</div>
+</article>
+<article class="step" id="sh-all-6">
+  <header class="step-h"><span class="num">Ш6</span><h4>Передача потребителям</h4></header>
+  <details class="as-is">
+    <summary><span>Как сейчас</span><span class="acc-action"><span class="chev" aria-hidden="true"><svg viewBox="0 0 12 12"><path d="M2 4l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="acc-label"></span></span></summary>
+    <div class="as-is-body">
+      <h5>Мнение владельца продукта</h5>
+      <div class="as-is-text">Интеграции с восемью системами есть <span class="tag now">есть сегодня</span>. Озеро данных забирает сырые данные автоматически. Копии живут в Логинете, SAP TMS, частично в SAP. В порядке подключения к шине Атласа СВТ пока нет <span class="tag fact">факт</span>.</div>
+      <h5>К чему приводит</h5>
+      <div class="as-is-text pain"><span class="tag gap">пробел</span></div>
+    </div>
+  </details>
+  <div class="propose">СВТ — мастер-система по ставкам, паритетам, маршрутам, плечам и лидтаймам, складским ограничениям и матрице каналов. История значения хранится в СВТ. Читающая система своё значение не ведёт. После вступления в силу значение помечается к передаче и автоматически уходит потребителям почти онлайн, с задержкой порядка 5 минут. Ночью идёт полная синхронизация с потребителями. Кто что получает — в <a class="code" href="#kartochka-p3">пункте 1.5</a> и в шаге Ш6 процесса. Дошло ли значение до систем, смотрит техническая поддержка; это не шаг бизнес-процесса.</div>
+</article>
+<article class="step" id="sh-all-7">
+  <header class="step-h"><span class="num">Ш7</span><h4>Контроль полноты</h4></header>
+  <details class="as-is">
+    <summary><span>Как сейчас</span><span class="acc-action"><span class="chev" aria-hidden="true"><svg viewBox="0 0 12 12"><path d="M2 4l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="acc-label"></span></span></summary>
+    <div class="as-is-body">
+      <h5>Мнение владельца продукта</h5>
+      <div class="as-is-text">Списка направлений без ставки, лидтайма или квоты в СВТ нет. Даты загрузок специалистов «Северсталь» ключевой пользователь контролирует вручную <span class="tag fact">факт</span>.</div>
+      <h5>К чему приводит</h5>
+      <div class="as-is-text pain">Опоздавший пакет замечают по косвенным признакам.</div>
+    </div>
+  </details>
+  <div class="propose">СВТ ведёт индивидуальный по каждому домену отчёт о нехватке данных, описанный в шаге Ш7 процесса. У каждой позиции отчёта есть ответственный, срок (KPI) и эскалация. Цикл на этом шаге не останавливается. По результату контроля пользователь вручную вводит недостающие данные — загрузкой Excel в справочник или точечной правкой карточки — либо даёт сигнал системам-источникам. Так начинается новый цикл для тех данных, которых не хватает. За полноту отвечает бизнес. Нехватка и ошибки с предупреждениями <a class="code" href="#sh-all-3">Ш3</a> могут выводиться в одном интерфейсе двумя категориями <span class="tag hyp">гипотеза</span>.</div>
+</article>
+<article class="step" id="sh-all-8">
+  <header class="step-h"><span class="num">Ш8</span><h4>Контроль целостности</h4></header>
+  <details class="as-is">
+    <summary><span>Как сейчас</span><span class="acc-action"><span class="chev" aria-hidden="true"><svg viewBox="0 0 12 12"><path d="M2 4l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="acc-label"></span></span></summary>
+    <div class="as-is-body">
+      <h5>Мнение владельца продукта</h5>
+      <div class="as-is-text">Проверки данных, уже записанных в СВТ, есть <span class="tag now">есть сегодня</span>. Часть из них появилась после инцидентов, когда некорректные данные прошли мимо входа <span class="tag fact">факт</span>.</div>
+      <h5>К чему приводит</h5>
+      <div class="as-is-text pain">Неконсистентные данные уходят потребителям. Проверки перемешаны, часть неактуальна.</div>
+    </div>
+  </details>
+  <div class="propose">СВТ регулярно проверяет корректность и консистентность существующих в системе данных на наличие технических ошибок и нарушений бизнес-инвариантов. Цикл на этом шаге не останавливается. Администратор ИТ может задавать бизнесу вопросы, чтобы разобрать инцидент. Администратор ИТ корректирует необходимые данные или исправляет ошибки в системе. Коррекция начинается новым циклом с Ш1 своего процесса исключительно для изменённых данных. Требуется пересмотр существующих проверок: часть из них потеряет актуальность, остальные будут переформулированы.</div>
+</article>
+<article class="step" id="sh-all-9">
+  <header class="step-h"><span class="num">Ш9</span><h4>Сверка план-факт и сигнал источникам</h4></header>
+  <details class="as-is">
+    <summary><span>Как сейчас</span><span class="acc-action"><span class="chev" aria-hidden="true"><svg viewBox="0 0 12 12"><path d="M2 4l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="acc-label"></span></span></summary>
+    <div class="as-is-body">
+      <h5>Мнение владельца продукта</h5>
+      <div class="as-is-text">В СВТ нет сверки действующих значений с фактом <span class="tag gap">пробел</span>.</div>
+      <h5>К чему приводит</h5>
+      <div class="as-is-text pain">Системы-источники не узнают, что их данные не соответствуют реальности.</div>
+    </div>
+  </details>
+  <div class="propose">СВТ сравнивает действующее значение с фактом; с чем именно — в шаге Ш9 процесса. На этом шаге СВТ данные не правит. Расхождение сверх допуска — сигнал системе-источнику и ответственным. В Атласе виден дашборд «красное / зелёное»; на следующем цикле видно, ушло ли расхождение. Этот шаг замыкает кольцо. <span class="tag gap">пробел</span> Как устроить сверку, ещё предстоит продумать: допуск задаёт бизнес, формат данных для сверки нужно определить.</div>
+</article>
+</div>
+
+  <h3 class="sub" id="pr-rate"><span class="sn">2.2.</span> Ставки</h3>
+  <div class="steps">
+<article class="step" id="sh-rate-1">
+  <header class="step-h"><span class="num">Ш1</span><h4>Получение данных</h4></header>
+  <details class="as-is">
+    <summary><span>Как сейчас</span><span class="acc-action"><span class="chev" aria-hidden="true"><svg viewBox="0 0 12 12"><path d="M2 4l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="acc-label"></span></span></summary>
+    <div class="as-is-body">
+      <h5>Мнение владельца продукта</h5>
+      <div class="as-is-text"><ul class="plain">
+            <li><b>Авто.</b> Фактические ставки авто выгружают из Логинета раз в две недели, Python-скрипт переводит файл в формат СВТ. Добавлять столбцы в выгрузку Логинета дорого. Индикативные ставки авто запрашивают у ТЭК или собирают со сторонних ресурсов, например, с Умной логистики. Договорных ставок мало: Суриков присылает их письмом, их вносят вручную. Факты перевозок по договорным ставкам есть в Логинете. Сейчас ставок с типом «договорные» в СВТ много: под этим типом временно загружен бизнес-план, потому что не успели поменять приоритет типов, а данные должны были сойтись с другими системами. Позже их перегрузят как бизнес-плановые.</li>
+            <li><b>ЖД.</b> 27 файлов НХТК и конвертер.</li>
+            <li><b>Мультимодальные.</b> Итоги тендера анализируют и расставляют номинации вручную.</li>
+          </ul>
+          Нагрузка специалистов «Северсталь»: номинации 1,1 FTE, ставки 0,3 FTE <span class="tag fact">факт</span>. Общие факты о загрузке — <a class="code" href="#sh-all-1">2.1, Ш1</a>.</div>
+      <h5>К чему приводит</h5>
+      <div class="as-is-text pain">Пока файл не загрузили, планирование и CRM считают по предыдущему значению: фактические ставки авто отстают до 15 дней. Тендерные пакеты перетирают до 2 100 ставок в месяц. Ошибка в файле входит как факт.</div>
+    </div>
+  </details>
+  <div class="propose"><p class="cm"><b>Общее для всех процессов.</b> Триггер — изменение в системе-источнике. Основной путь — автоматический обмен, ручной ввод и файл — дополнительный. Каждая загрузка пишется в журнал загрузок. Пока СВТ не приняла данные, действуют прежние значения. Подробно — <a class="code" href="#sh-all-1">2.1, Ш1</a>.</p>
+          <p class="cm"><b>Для всех ставок.</b> Специалисты «Северсталь» в процессах СВТ участвуют минимально. Ручным вводом вносят ставку при подписании ДС, а также уникальные ставки, которых нет ни в одной системе.</p>
+          <p class="cm"><a class="gloss" href="#g-bp">Бизнес-плановые</a> ставки из внешних систем не приходят: их рассчитывает СВТ на <a class="code" href="#sh-rate-4">Ш4</a>, без дефлятора. <a class="gloss" href="#g-rate-spot">Спотовые</a> ставки СВТ тоже рассчитывает на <a class="code" href="#sh-rate-4">Ш4</a> из других типов ставок, без дефлятора, а затем корректирует по фактической цене спотового аукциона из Логинета. Если рассчитанное или скорректированное значение пользователей не устраивает, правка — новый цикл с Ш1. Параметры расчётов — период факта, дефляторы, коэффициенты распутицы, коэффициент спотовой ставки — бизнес вводит вручную.</p>
+          <ul class="plain">
+            <li><b>Авто логистика.</b> Формат авто-ставок СВТ приводится в соответствие с форматом ставок Логинета, около 30 столбцов.
+              <ul class="plain">
+                <li><b><a class="gloss" href="#g-rate-tender">Тендерные</a>.</b> Приходят из Логинета вместе с согласованными <a class="gloss" href="#g-nomination">номинациями</a>.</li>
+                <li><b><a class="gloss" href="#g-rate-fact">Фактические</a>.</b> Приходят из Логинета каждый день, на следующий день после утверждённой перевозки. В момент прихода работают правила отбора: всплески и малотоннажные перевозки отсеиваются, чтобы одна дорогая машина не исказила среднюю. Логика Python-скрипта Ромы Гордеева переносится в СВТ и дополняется; средневзвешенные ставки считаются на <a class="code" href="#sh-rate-4">Ш4</a>.</li>
+                <li><b><a class="gloss" href="#g-indicative">Индикативные</a>.</b> Приходят из ATI через Озеро данных: данные выливаются в Озеро, СВТ забирает их оттуда, чтобы индикатив был максимально актуальным. <span class="tag gap">пробел</span> Где в Озере хранятся данные ATI — уточнить у Егора Зайцева. <span class="tag gap">пробел</span> С Умной логистикой есть договор и API: нужно ли забирать индикатив и оттуда — уточнить у бизнеса. <span class="tag gap">пробел</span> Как актуализировать, архивировать и сравнивать с рынком ATI — описать с бизнесом.</li>
+                <li><b><a class="gloss" href="#g-rate-contract">Договорные</a>.</b> Вводятся вручную из писем экономики логистики. Это ставки по тендерам, зафиксированные на год и больше, например, перевозка с месторождений до станций. Их мало. <span class="tag hyp">гипотеза</span> Агент разбирает письмо и вводит ставку сам, только если бизнес признает второй этап целесообразным (<a class="code" href="#obrabotka">пункт 1.3</a>).</li>
+                <li><b>Бизнес-плановые.</b> Рассчитываются на <a class="code" href="#sh-rate-4">Ш4</a>; ручная корректировка — по общему правилу выше.</li>
+                <li><b>Спотовые.</b> Рассчитываются на <a class="code" href="#sh-rate-4">Ш4</a> из других типов ставок, затем корректируются по фактической цене спотового аукциона из Логинета. Ручная корректировка — по общему правилу выше.</li>
+              </ul></li>
+            <li><b>ЖД логистика.</b> Ставки и расстояния приходят с калькулятором НХТК. <span class="tag gap">пробел</span> В каком состоянии калькулятор, как к нему подключиться, какие типы ЖД-ставок заводить и к какому типу относятся ставки НХТК — уточнить у Насти Сироткиной.
+              <ul class="plain">
+                <li><b>Тендерные.</b> <span class="tag gap">пробел</span> Заводятся ли и откуда приходят — уточнить у Насти Сироткиной.</li>
+                <li><b>Фактические.</b> <span class="tag gap">пробел</span> Заводятся ли и откуда приходят — уточнить у Насти Сироткиной.</li>
+                <li><b>Индикативные.</b> <span class="tag gap">пробел</span> Заводятся ли и откуда приходят — уточнить у Насти Сироткиной.</li>
+                <li><b>Договорные.</b> <span class="tag gap">пробел</span> Заводятся ли и откуда приходят — уточнить у Насти Сироткиной.</li>
+                <li><b>Бизнес-плановые.</b> Рассчитываются на <a class="code" href="#sh-rate-4">Ш4</a> без дефлятора; ручная корректировка — новый цикл с Ш1. Порядок типов задаёт справочник «Приоритеты типов ставок»; для ЖД этот порядок в документе не назван.</li>
+                <li><b>Спотовые.</b> <span class="tag gap">пробел</span> Заводятся ли для ЖД — уточнить у бизнеса.</li>
+              </ul></li>
+            <li><b>Мультимодальная логистика.</b> На первом этапе ручной файл — основной путь, дальше он дополнительный. <span class="tag gap">пробел</span> Переработать ли формат данных, чтобы первое авто-плечо мультимодальной перевозки бралось из авто-ставок, а не заполнялось вручную, или мультимодальная ставка остаётся единой — уточнить у Руслана.
+              <ul class="plain">
+                <li><b>Тендерные.</b> Пока ручной файл — основной путь, итоги тендера приходят этим файлом. <a class="gloss" href="#g-nomination">Номинация</a> — доля перевозок, которую поручают перевозчику; её считают в Excel вне СВТ. Когда файл перестаёт быть основным путём, номинации ведёт СВТ: туда же переносятся обработка данных и другие недостающие атрибуты мультимодальной ставки. Номинации уходят в SAP TMS. <span class="tag gap">пробел</span> Откуда приходят итоги тендера — уточнить у Руслана и Айгуль.</li>
+                <li><b>Фактические.</b> Факт приходит из Логинета через 3–6 месяцев.</li>
+                <li><b>Индикативные.</b> <span class="tag gap">пробел</span> Заводятся ли и откуда приходят — уточнить у Руслана.</li>
+                <li><b>Договорные.</b> <span class="tag gap">пробел</span> Заводятся ли и откуда приходят — уточнить у Руслана.</li>
+                <li><b>Бизнес-плановые.</b> Рассчитываются на <a class="code" href="#sh-rate-4">Ш4</a> без дефлятора; ручная корректировка — новый цикл с Ш1. Порядок типов задаёт справочник «Приоритеты типов ставок»; для мультимодальных перевозок этот порядок в документе не назван.</li>
+                <li><b>Спотовые.</b> <span class="tag gap">пробел</span> Заводятся ли для мультимодальных перевозок — уточнить у бизнеса.</li>
+              </ul></li>
+          </ul></div>
+</article>
+<article class="step" id="sh-rate-2">
+  <header class="step-h"><span class="num">Ш2</span><h4>Проверка данных</h4></header>
+  <details class="as-is">
+    <summary><span>Как сейчас</span><span class="acc-action"><span class="chev" aria-hidden="true"><svg viewBox="0 0 12 12"><path d="M2 4l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="acc-label"></span></span></summary>
+    <div class="as-is-body">
+      <h5>Мнение владельца продукта</h5>
+      <div class="as-is-text">В загрузчике мультимодальных ставок перемешаны проверки старого формата (две строки, склеенные по ключам) и нового (одна строка). Старого формата, по наблюдению ИТ, за последний год не было <span class="tag fact">факт</span>. Общие факты о проверках — <a class="code" href="#sh-all-2">2.1, Ш2</a>.</div>
+      <h5>К чему приводит</h5>
+      <div class="as-is-text pain">Подозрительную ставку ловят глазами после того, как строка уже в системе. Старые проверки мешают новым.</div>
+    </div>
+  </details>
+  <div class="propose"><p class="cm"><b>Общее для всех процессов.</b> Обмен, редактор и загрузчик проходят одни и те же проверки. Жёсткая проверка отклоняет строку, мягкая отправляет её на Ш3. Пороги задаёт бизнес. Подробно — <a class="code" href="#sh-all-2">2.1, Ш2</a>.</p>
+          <p class="cm">Ручная корректировка бизнес-плановых и спотовых ставок проходит те же проверки, что и другие ставки.</p>
+          <p class="cm"><b>Для всех ставок.</b> Выполняются следующие типы проверок.</p>
+          <ul class="plain">
+            <li><b>Жёсткие.</b> Не указана стоимость или загрузка транспортного средства; абсурдная величина — меньше 300 руб./т или больше 1 млн руб./т; отклонение от рынка в десятки раз.</li>
+            <li><b>Мягкие.</b> Ставка на 50% выше ставки с теми же ключевыми полями за предыдущий период; резкий скачок значения.</li>
+          </ul>
+          <p class="cm">Для каждого типа ставки и каждого вида транспорта есть свои дополнительные индивидуальные проверки. Все величины — примеры. <span class="tag gap">пробел</span> Итоговый список проверок собирается с бизнесом по каждому потоку загрузки ставок; неактуальные нынешние проверки уходят.</p>
+          <ul class="plain">
+            <li><b>Авто логистика.</b> Мягкая проверка: для авто по России спред от рынка <a class="gloss" href="#g-ati">ATI</a> больше 25–30%.</li>
+            <li><b>ЖД логистика.</b> <span class="tag gap">пробел</span> Особые проверки — уточнить у Насти Сироткиной.</li>
+            <li><b>Мультимодальная логистика.</b> <span class="tag gap">пробел</span> Нужны ли проверки старого формата из двух строк, если его за год не было, — уточнить у Руслана.</li>
+          </ul></div>
+</article>
+<article class="step stop" id="sh-rate-3">
+  <header class="step-h"><span class="num">Ш3</span><h4>Утверждение исключений</h4></header>
+  <details class="as-is">
+    <summary><span>Как сейчас</span><span class="acc-action"><span class="chev" aria-hidden="true"><svg viewBox="0 0 12 12"><path d="M2 4l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="acc-label"></span></span></summary>
+    <div class="as-is-body">
+      <h5>Мнение владельца продукта</h5>
+      <div class="as-is-text">Ставку по заявке вносит логист по виду транспорта <span class="tag fact">факт</span>. Общие факты — <a class="code" href="#sh-all-3">2.1, Ш3</a>.</div>
+      <h5>К чему приводит</h5>
+      <div class="as-is-text pain">Подозрительная ставка либо проходит незамеченной, либо её нельзя пропустить, даже если она верна.</div>
+    </div>
+  </details>
+  <div class="propose"><p class="cm"><b>Общее для всех процессов.</b> Строки, не прошедшие Ш2, попадают в реестр исключений с причиной. Строку с предупреждением ответственный пропускает или отвергает. Если ошибается проверка, ответственный запрашивает её правку. Подробно — <a class="code" href="#sh-all-3">2.1, Ш3</a>.</p>
+          <p class="cm"><b>Для всех ставок.</b> Исключения по ставкам разбирает ответственный своего поддомена: авто, ЖД или мультимодальной логистики. <span class="tag gap">пробел</span> Кто именно отвечает в каждом поддомене.</p></div>
+</article>
+<article class="step" id="sh-rate-4">
+  <header class="step-h"><span class="num">Ш4</span><h4>Расчёт производных значений</h4></header>
+  <details class="as-is">
+    <summary><span>Как сейчас</span><span class="acc-action"><span class="chev" aria-hidden="true"><svg viewBox="0 0 12 12"><path d="M2 4l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="acc-label"></span></span></summary>
+    <div class="as-is-body">
+      <h5>Мнение владельца продукта</h5>
+      <div class="as-is-text">В СВТ уже считаются средневзвешенные, <a class="gloss" href="#g-deflator">дефлятор</a>, синхронизация ставок — внутри базы, формулы не описаны <span class="tag fact">факт</span> <span class="tag now">есть сегодня</span>. Средняя ставка по региону — простое среднее по городам, без учёта объёмов. Бизнес-плановые ставки для ЦБД Кудрявцев В. считает в Excel: к фактическим ставкам применяет дефляторы. Дефлятор СВТ он не использует: дефляторы приходят за 1–2 дня до внесения данных, и в Excel получается быстрее. Распутицу считает в Excel: базу ставок на апрель–май умножает на нужные коэффициенты. Ставки, нужные маркетингу, дублируют в справочнике паритетов, связи между справочниками нет <span class="tag fact">факт</span>.</div>
+      <h5>К чему приводит</h5>
+      <div class="as-is-text pain">Формула ничья. Один и тот же расчёт в Excel и в ночном задании может разойтись, и это увидят только у потребителя.</div>
+    </div>
+  </details>
+  <div class="propose"><p class="cm"><b>Общее для всех процессов.</b> Расчёт идёт из принятых системой данных. Формулы расчёта реализованы в коде. Подробно — <a class="code" href="#sh-all-4">2.1, Ш4</a>.</p>
+          <p class="cm"><b>Для всех ставок.</b> Ставку, пришедшую из Логинета или НХТК, СВТ не пересчитывает. СВТ считает производные ставки.</p>
+          <ul class="plain">
+            <li><b>Параметры расчётов.</b> Бизнес вручную задаёт период факта, дефляторы, коэффициенты распутицы и коэффициент спотовой ставки.</li>
+            <li><b>Дефлятор.</b> Коэффициент <a class="gloss" href="#g-deflator">дефлятора</a> умножает ставки тех типов и видов транспорта, для которых коэффициенты заведены. Бизнес-плановые и спотовые ставки дефлятором не умножаются. Коэффициент ни к чему не применился — сигнал владельцу коэффициента <span class="tag hyp">гипотеза</span>. <span class="tag gap">пробел</span> Сейчас дефлятор с несуществующим условием «никогда не будет применён», и система молчит. <span class="tag gap">пробел</span> Дефляторы приходят за 1–2 дня до внесения данных: как вносить их так же быстро, как в Excel, например, по заранее подготовленным заготовкам.</li>
+            <li><b><a class="gloss" href="#g-bp">Бизнес-плановые ставки</a>.</b> Считаются автоматически, без дефлятора. Какой тип ставки брать, задаёт справочник <a class="gloss" href="#g-priority">«Приоритеты типов ставок»</a>: для каждого вида транспорта в нём указан порядок типов. Справочник ведёт владелец продукта. Для авто порядок такой: фактическая, договорная, индикативная. СВТ берёт ставку первого доступного типа из этого порядка и средневзвешивает её до регионов. Для авто на март, апрель и май применяется распутица. Расчёт идёт помесячно на 15 месяцев вперёд. Ставки ведутся в двух срезах: ежедневно обновляемый и зафиксированный на дату для ЦБД. В ЦБД уходит зафиксированный срез. <span class="tag gap">пробел</span> Годовые и месячные циклы бизнес-планирования и ППР описать вместе с бизнесом.</li>
+            <li><b><a class="gloss" href="#g-rate-spot">Спотовые ставки</a>.</b> Считаются без дефлятора. Сначала берётся ставка первого доступного типа по тому же справочнику приоритетов и умножается на редактируемый коэффициент, по умолчанию 1,3. Затем СВТ корректирует спотовую ставку по фактической цене спотового аукциона из Логинета: из Логинета приходит, за какую реально цену поехали по результатам аукциона. Корректировка по факту аукциона — правило расчёта на этом шаге, а не правка сверкой на <a class="code" href="#sh-rate-9">Ш9</a>.</li>
+            <li><b>Ручная корректировка бизнес-плановых и спотовых ставок.</b> Правка — новый цикл с <a class="code" href="#sh-rate-1">Ш1</a>. Значение, внесённое вручную, приоритетнее расчёта и при пересчёте не перезаписывается. Значение, рассчитанное автоматически, пересчитывается на следующем цикле, если изменились исходные данные. Если исходные данные изменились у ставки с ручной корректировкой, СВТ сообщает пользователю, что его правка, возможно, устарела. <span class="tag gap">пробел</span> Какое изменение исходных данных считать поводом для сообщения и куда оно приходит — уточнить у бизнеса.</li>
+            <li><b>Синхронизация ставок.</b> Выделена в отдельный сервис — <a class="code" href="#servis-sync">пункт 1.4</a>.</li>
+            <li><b>Связь с паритетами.</b> Если загруженный паритет совпадает со ставкой справочника средневзвешенных ставок 3 уровня, паритет берёт значение из справочника 3 уровня: оно считается более актуальным. Отдельный алгоритм может выдавать из справочника 3 уровня одну ставку на месяц по направлению, как в паритетах; тогда дублировать ставки в паритетах не нужно <span class="tag hyp">гипотеза</span>. Сторона паритетов — <a class="code" href="#sh-par-4">2.3, Ш4</a>.</li>
+          </ul>
+          <ul class="plain">
+            <li><b>Авто логистика.</b>
+              <ul class="plain">
+                <li><b>Фактические средневзвешенные ставки.</b> Считаются по логике Python-скрипта Ромы Гордеева, дополненной. Ставка за период — <a class="gloss" href="#g-moving">скользящее среднее</a>: окно, например, неделя или две назад от текущей даты, сдвигается со временем. Перевозки ближе к текущей дате могут весить больше. Средневзвешенные считаются в разной гранулярности, в том числе до региона. Слагаемые — ставки до городов региона, веса — по объёмам отгрузок на каждый город. Простое среднее по городам искажает ставку региона: объёмный город с низкими ставками весит столько же, сколько город с редкими перевозками. <span class="tag gap">пробел</span> Формулу и веса выбрать, изучив принятые модели расчёта.</li>
+                <li><b>Тендерные средневзвешенные ставки.</b> Средневзвешиваются по контрагентам (перевозчикам) и считаются в разной гранулярности, в том числе до региона.</li>
+                <li><b>Средневзвешенные ставки остальных типов.</b> Считаются в разной гранулярности.</li>
+                <li><b>Распутица.</b> Сезонный коэффициент внутри года, отдельно от дефлятора. На март, апрель и май СВТ автоматически применяет коэффициенты к ставкам авто по выделенным направлениям: с каких заводов и складов до каких регионов. База — ставки на эти месяцы, рассчитанные для бизнес-плана или фактические. Сторона лидтаймов — <a class="code" href="#sh-route-4">2.4, Ш4</a>.</li>
+              </ul></li>
+            <li><b>ЖД логистика.</b> <span class="tag gap">пробел</span> Что СВТ считает по ЖД-ставкам кроме общего — уточнить у Насти Сироткиной.</li>
+            <li><b>Мультимодальная логистика.</b> <span class="tag gap">пробел</span> Применять ли распутицу к первому авто-плечу мультимодальной перевозки — уточнить у Руслана.</li>
+          </ul></div>
+</article>
+<article class="step" id="sh-rate-5">
+  <header class="step-h"><span class="num">Ш5</span><h4>Ввод в действие</h4></header>
+  <details class="as-is">
+    <summary><span>Как сейчас</span><span class="acc-action"><span class="chev" aria-hidden="true"><svg viewBox="0 0 12 12"><path d="M2 4l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="acc-label"></span></span></summary>
+    <div class="as-is-body">
+      <h5>Мнение владельца продукта</h5>
+      <div class="as-is-text">У ставок срок «с … по …» уже есть <span class="tag now">есть сегодня</span>. Тендерные пакеты перетирают друг друга, особенно при обмене с SAP TMS <span class="tag fact">факт</span>.</div>
+      <h5>К чему приводит</h5>
+      <div class="as-is-text pain">Нельзя ответить, по какой ставке считали в сентябре. Новый пакет стирает старый.</div>
+    </div>
+  </details>
+  <div class="propose"><p class="cm"><b>Общее для всех процессов.</b> Новое значение действует с указанной даты, прежнее уходит в архив; на выбранную дату одно действующее значение. Подробно — <a class="code" href="#sh-all-5">2.1, Ш5</a>.</p>
+          <p class="cm"><b>Для всех ставок.</b> Новый пакет ставок, в том числе тендерный, не стирает предыдущий: ставка действует с указанной даты, у старой ставки появляется дата окончания, и она уходит в архив.</p></div>
+</article>
+<article class="step" id="sh-rate-6">
+  <header class="step-h"><span class="num">Ш6</span><h4>Передача потребителям</h4></header>
+  <details class="as-is">
+    <summary><span>Как сейчас</span><span class="acc-action"><span class="chev" aria-hidden="true"><svg viewBox="0 0 12 12"><path d="M2 4l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="acc-label"></span></span></summary>
+    <div class="as-is-body">
+      <h5>Мнение владельца продукта</h5>
+      <div class="as-is-text">Ставки в ССП уходят раз в 5 минут. В ЦБД и ЕСД передачу запускает «Единое окно»; в ЦБД указывают версию плана. В SAP TMS передачу запускают по кнопке. ЖД-ставки в ЦБД вносят вручную 2 раза в год, и они идут в обход СВТ. Копии ставок живут в Логинете и SAP TMS <span class="tag fact">факт</span>.</div>
+      <h5>К чему приводит</h5>
+      <div class="as-is-text pain">ССП не получили 2 500 ставок и 29 часов простоя без оповещения. В CRM нет до 400 ЖД-ставок.</div>
+    </div>
+  </details>
+  <div class="propose"><p class="cm"><b>Общее для всех процессов.</b> После вступления в силу значение уходит потребителям автоматически, без кнопок. Подробно — <a class="code" href="#sh-all-6">2.1, Ш6</a>.</p>
+          <p class="cm"><b>Для всех ставок.</b> Ставки получают CRM и E-Com, ССП, ЦБД, ЕСД, КПО (через матрицу каналов, <a class="code" href="#sh-mx-6">2.6, Ш6</a>), SAP TMS, Озеро данных и Атлас. Ставки 3 уровня нужны и MLS (<a class="code" href="#kartochka-p3">пункт 1.5</a>). Маркетинг получает ставки через справочник паритетов (<a class="code" href="#sh-par-6">2.3, Ш6</a>). В ЦБД уходит срез бизнес-плановых ставок, зафиксированный на дату.</p>
+          <ul class="plain">
+            <li><b>Мультимодальная логистика.</b> Ставки и номинации уходят в SAP TMS. <span class="tag gap">пробел</span> Обмен с SAP TMS пересмотреть, возможно готовить данные в формате SAP TMS — уточнить у Руслана.</li>
+          </ul></div>
+</article>
+<article class="step" id="sh-rate-7">
+  <header class="step-h"><span class="num">Ш7</span><h4>Контроль полноты</h4></header>
+  <details class="as-is">
+    <summary><span>Как сейчас</span><span class="acc-action"><span class="chev" aria-hidden="true"><svg viewBox="0 0 12 12"><path d="M2 4l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="acc-label"></span></span></summary>
+    <div class="as-is-body">
+      <h5>Мнение владельца продукта</h5>
+      <div class="as-is-text">В CRM нет до 400 ЖД-ставок. Автоподбор и «Умный подбор ставки» — 90 тыс. запросов за 2025 год; каждый месяц приходит 500–700 направлений, около 5% остаются без ставки. ССП каждую ночь сверяет слепок ЦБД со ставками и плечами СВТ и присылает отчёт о недостающих ставках. Списка направлений без ставки в СВТ нет <span class="tag fact">факт</span>.</div>
+      <h5>К чему приводит</h5>
+      <div class="as-is-text pain">Расчёт клиенту идёт по неверной цене, пока не заметили, что ставки нет.</div>
+    </div>
+  </details>
+  <div class="propose"><p class="cm"><b>Общее для всех процессов.</b> СВТ ведёт индивидуальный по каждому домену отчёт о нехватке данных с ответственным, сроком и эскалацией; пользователь дозаводит данные или даёт сигнал источнику, и начинается новый цикл. Подробно — <a class="code" href="#sh-all-7">2.1, Ш7</a>.</p>
+          <p class="cm"><b>Для всех ставок.</b> В отчёте видны направления без ставки, пакеты ставок, не загруженные к утверждённой дате, необработанные запросы CRM и «каталог пуст». Ночная сверка ССП используется как один из источников отчёта. Позицию отчёта разбирает ответственный своего поддомена.</p></div>
+</article>
+<article class="step" id="sh-rate-8">
+  <header class="step-h"><span class="num">Ш8</span><h4>Контроль целостности</h4></header>
+  <details class="as-is">
+    <summary><span>Как сейчас</span><span class="acc-action"><span class="chev" aria-hidden="true"><svg viewBox="0 0 12 12"><path d="M2 4l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="acc-label"></span></span></summary>
+    <div class="as-is-body">
+      <h5>Мнение владельца продукта</h5>
+      <div class="as-is-text">Часть проверок записанных данных появилась после инцидентов: например, система пропустила ставки с нулевой стоимостью <span class="tag fact">факт</span>.</div>
+      <h5>К чему приводит</h5>
+      <div class="as-is-text pain">Неконсистентные ставки уходят потребителям.</div>
+    </div>
+  </details>
+  <div class="propose"><p class="cm"><b>Общее для всех процессов.</b> СВТ регулярно проверяет корректность и консистентность существующих данных; администратор ИТ корректирует данные или исправляет ошибки новым циклом с Ш1 для изменённых данных. Подробно — <a class="code" href="#sh-all-8">2.1, Ш8</a>.</p>
+          <p class="cm"><b>Для всех ставок.</b> Примеры проверок:</p>
+          <ul class="plain">
+            <li>ставки с нулевой стоимостью или загрузкой транспортного средства;</li>
+            <li>ставки с архивным продуктом или архивным узлом назначения;</li>
+            <li>пакет тендерных ставок с суммой номинаций, не равной 100%.</li>
+          </ul></div>
+</article>
+<article class="step" id="sh-rate-9">
+  <header class="step-h"><span class="num">Ш9</span><h4>Сверка план-факт и сигнал источникам</h4></header>
+  <details class="as-is">
+    <summary><span>Как сейчас</span><span class="acc-action"><span class="chev" aria-hidden="true"><svg viewBox="0 0 12 12"><path d="M2 4l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="acc-label"></span></span></summary>
+    <div class="as-is-body">
+      <h5>Мнение владельца продукта</h5>
+      <div class="as-is-text"><span class="tag gap">пробел</span> В СВТ нет сверки действующих ставок с фактом.</div>
+      <h5>К чему приводит</h5>
+      <div class="as-is-text pain">Расхождение тендера и факта никто не видит системно. Системы-источники не узнают, что их данные не соответствуют реальности.</div>
+    </div>
+  </details>
+  <div class="propose"><p class="cm"><b>Общее для всех процессов.</b> СВТ сравнивает действующее значение с фактом и сообщает о расхождении сверх допуска источнику и ответственным; данные на этом шаге не правит. Подробно — <a class="code" href="#sh-all-9">2.1, Ш9</a>.</p>
+          <ul class="plain">
+            <li><b>Авто логистика.</b> Тендер сравнивается с фактом перевозок из Логинета.</li>
+            <li><b>ЖД логистика.</b> <span class="tag gap">пробел</span> С каким фактом сверять — уточнить у Насти Сироткиной.</li>
+            <li><b>Мультимодальная логистика.</b> Сравнение с фактом, который приходит через 3–6 месяцев.</li>
+          </ul></div>
+</article>
+</div>
+
+  <h3 class="sub" id="pr-par"><span class="sn">2.3.</span> Паритеты</h3>
+  <div class="steps">
+<article class="step" id="sh-par-1">
+  <header class="step-h"><span class="num">Ш1</span><h4>Получение данных</h4></header>
+  <details class="as-is">
+    <summary><span>Как сейчас</span><span class="acc-action"><span class="chev" aria-hidden="true"><svg viewBox="0 0 12 12"><path d="M2 4l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="acc-label"></span></span></summary>
+    <div class="as-is-body">
+      <h5>Мнение владельца продукта</h5>
+      <div class="as-is-text">Паритеты специалисты «Северсталь» собирают с внешних порталов вручную по своей методологии, на это уходит 1,3 FTE. Бизнес экспертно проверяет и загружает <span class="tag fact">факт</span>.</div>
+      <h5>К чему приводит</h5>
+      <div class="as-is-text pain"><span class="tag gap">пробел</span></div>
+    </div>
+  </details>
+  <div class="propose"><p class="cm"><b>Общее для всех процессов.</b> Триггер — изменение в системе-источнике. Основной путь — автоматический обмен, ручной ввод и файл — дополнительный. Каждая загрузка пишется в журнал загрузок. Подробно — <a class="code" href="#sh-all-1">2.1, Ш1</a>.</p>
+          <p class="cm">Данные приходят из разных источников: Teustat, MSC, Феско, CMA, Maersk, Drewry и другие порталы. Teustat отдаёт данные через интерфейс, с него СВТ забирает ставки. Возможно, по ним останется загрузка Excel. Специалисты «Северсталь» в сборе участвуют минимально. <span class="tag gap">пробел</span> Как забирать данные Teustat, MSC, CMA, Maersk и Drewry и можно ли это делать автоматически — уточнить у Дмитрия Журова.</p></div>
+</article>
+<article class="step" id="sh-par-2">
+  <header class="step-h"><span class="num">Ш2</span><h4>Проверка данных</h4></header>
+  <details class="as-is">
+    <summary><span>Как сейчас</span><span class="acc-action"><span class="chev" aria-hidden="true"><svg viewBox="0 0 12 12"><path d="M2 4l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="acc-label"></span></span></summary>
+    <div class="as-is-body">
+      <h5>Мнение владельца продукта</h5>
+      <div class="as-is-text"><span class="tag gap">пробел</span> Отдельных фактов по паритетам нет; общее — <a class="code" href="#sh-all-2">2.1, Ш2</a>.</div>
+      <h5>К чему приводит</h5>
+      <div class="as-is-text pain"><span class="tag gap">пробел</span></div>
+    </div>
+  </details>
+  <div class="propose"><p class="cm"><b>Общее для всех процессов.</b> Обмен, редактор и загрузчик проходят одни и те же проверки. Жёсткая проверка отклоняет строку, мягкая отправляет её на Ш3. Пороги задаёт бизнес. Подробно — <a class="code" href="#sh-all-2">2.1, Ш2</a>.</p>
+          <p class="cm">Экспертная проверка бизнеса идёт через мягкие проверки. Паритеты с мультимодальными ставками не сравниваются: это разные рынки. <span class="tag gap">пробел</span> Список проверок паритетов собирается с бизнесом.</p></div>
+</article>
+<article class="step stop" id="sh-par-3">
+  <header class="step-h"><span class="num">Ш3</span><h4>Утверждение исключений</h4></header>
+  <details class="as-is">
+    <summary><span>Как сейчас</span><span class="acc-action"><span class="chev" aria-hidden="true"><svg viewBox="0 0 12 12"><path d="M2 4l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="acc-label"></span></span></summary>
+    <div class="as-is-body">
+      <h5>Мнение владельца продукта</h5>
+      <div class="as-is-text"><span class="tag gap">пробел</span> Отдельных фактов по паритетам нет; общее — <a class="code" href="#sh-all-3">2.1, Ш3</a>.</div>
+      <h5>К чему приводит</h5>
+      <div class="as-is-text pain"><span class="tag gap">пробел</span></div>
+    </div>
+  </details>
+  <div class="propose"><p class="cm"><b>Общее для всех процессов.</b> Строки, не прошедшие Ш2, попадают в реестр исключений с причиной. Строку с предупреждением ответственный пропускает или отвергает. Подробно — <a class="code" href="#sh-all-3">2.1, Ш3</a>.</p>
+          <p class="cm">Экспертная проверка бизнеса завершается здесь: подозрительную паритетную ставку ответственный домена пропускает или отвергает в реестре исключений.</p></div>
+</article>
+<article class="step" id="sh-par-4">
+  <header class="step-h"><span class="num">Ш4</span><h4>Расчёт производных значений</h4></header>
+  <details class="as-is">
+    <summary><span>Как сейчас</span><span class="acc-action"><span class="chev" aria-hidden="true"><svg viewBox="0 0 12 12"><path d="M2 4l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="acc-label"></span></span></summary>
+    <div class="as-is-body">
+      <h5>Мнение владельца продукта</h5>
+      <div class="as-is-text">Ставки, нужные маркетингу, дублируют в справочнике паритетов, связи между справочниками нет <span class="tag fact">факт</span>.</div>
+      <h5>К чему приводит</h5>
+      <div class="as-is-text pain"><span class="tag gap">пробел</span></div>
+    </div>
+  </details>
+  <div class="propose"><p class="cm"><b>Общее для всех процессов.</b> Расчёт идёт из принятых системой данных. Формулы расчёта реализованы в коде. Подробно — <a class="code" href="#sh-all-4">2.1, Ш4</a>.</p>
+          <p class="cm">Данные разных источников дополняют друг друга, статистические всплески отбрасываются, при наложении считается средневзвешенное. Это делает система в коде. Агент подключается, если бизнес признает второй этап целесообразным (<a class="code" href="#obrabotka">пункт 1.3</a>). Если загруженный паритет совпадает со ставкой справочника средневзвешенных ставок 3 уровня, паритет берёт значение из справочника 3 уровня: оно считается более актуальным. Так дублирующие ставки не расходятся. Это вынужденное исключение: в нормальном мире паритеты и наши ставки живут в разных плоскостях, но маркетинг не может определить, какую ставку из справочника 3 уровня брать на месяц, а из паритетов забирает. Сторона ставок — <a class="code" href="#sh-rate-4">2.2, Ш4</a>.</p></div>
+</article>
+<article class="step" id="sh-par-5">
+  <header class="step-h"><span class="num">Ш5</span><h4>Ввод в действие</h4></header>
+  <details class="as-is">
+    <summary><span>Как сейчас</span><span class="acc-action"><span class="chev" aria-hidden="true"><svg viewBox="0 0 12 12"><path d="M2 4l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="acc-label"></span></span></summary>
+    <div class="as-is-body">
+      <h5>Мнение владельца продукта</h5>
+      <div class="as-is-text"><span class="tag gap">пробел</span> Отдельных фактов по паритетам нет; общее — <a class="code" href="#sh-all-5">2.1, Ш5</a>.</div>
+      <h5>К чему приводит</h5>
+      <div class="as-is-text pain"><span class="tag gap">пробел</span></div>
+    </div>
+  </details>
+  <div class="propose"><p class="cm"><b>Общее для всех процессов.</b> Новое значение действует с указанной даты. Подробно — <a class="code" href="#sh-all-5">2.1, Ш5</a>.</p>
+          <p class="cm">Справочник паритетов — накопительный, старые записи в нём не архивируются.</p></div>
+</article>
+<article class="step" id="sh-par-6">
+  <header class="step-h"><span class="num">Ш6</span><h4>Передача потребителям</h4></header>
+  <details class="as-is">
+    <summary><span>Как сейчас</span><span class="acc-action"><span class="chev" aria-hidden="true"><svg viewBox="0 0 12 12"><path d="M2 4l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="acc-label"></span></span></summary>
+    <div class="as-is-body">
+      <h5>Мнение владельца продукта</h5>
+      <div class="as-is-text">Маркетинг забирает ставки из справочника паритетов. Забрать нужную ставку из справочника средневзвешенных ставок 3 уровня маркетинг не может <span class="tag fact">факт</span>.</div>
+      <h5>К чему приводит</h5>
+      <div class="as-is-text pain"><span class="tag gap">пробел</span></div>
+    </div>
+  </details>
+  <div class="propose"><p class="cm"><b>Общее для всех процессов.</b> После вступления в силу значение уходит потребителям автоматически, без кнопок. Подробно — <a class="code" href="#sh-all-6">2.1, Ш6</a>.</p>
+          <p class="cm">Паритеты получают маркетинг, Озеро данных и Атлас. Маркетинг забирает паритеты сам из витрины в Озере данных: отдельных выгрузок для маркетинга СВТ не настраивает. Паритеты нужны маркетингу для ценообразования, расчёта доходности продаж по заводам и оценки конкурентов на смежных рынках.</p></div>
+</article>
+<article class="step" id="sh-par-7">
+  <header class="step-h"><span class="num">Ш7</span><h4>Контроль полноты</h4></header>
+  <details class="as-is">
+    <summary><span>Как сейчас</span><span class="acc-action"><span class="chev" aria-hidden="true"><svg viewBox="0 0 12 12"><path d="M2 4l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="acc-label"></span></span></summary>
+    <div class="as-is-body">
+      <h5>Мнение владельца продукта</h5>
+      <div class="as-is-text"><span class="tag gap">пробел</span> Отдельных фактов по паритетам нет; общее — <a class="code" href="#sh-all-7">2.1, Ш7</a>.</div>
+      <h5>К чему приводит</h5>
+      <div class="as-is-text pain"><span class="tag gap">пробел</span></div>
+    </div>
+  </details>
+  <div class="propose"><p class="cm"><b>Общее для всех процессов.</b> СВТ ведёт индивидуальный по каждому домену отчёт о нехватке данных с ответственным, сроком и эскалацией; пользователь дозаводит данные или даёт сигнал источнику. Подробно — <a class="code" href="#sh-all-7">2.1, Ш7</a>.</p>
+          <p class="cm"><span class="tag gap">пробел</span> Что считать нехваткой по паритетам.</p></div>
+</article>
+<article class="step" id="sh-par-8">
+  <header class="step-h"><span class="num">Ш8</span><h4>Контроль целостности</h4></header>
+  <details class="as-is">
+    <summary><span>Как сейчас</span><span class="acc-action"><span class="chev" aria-hidden="true"><svg viewBox="0 0 12 12"><path d="M2 4l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="acc-label"></span></span></summary>
+    <div class="as-is-body">
+      <h5>Мнение владельца продукта</h5>
+      <div class="as-is-text">Если в АСВ НСИ архивируют узел, паритетные ставки на этом узле становятся неконсистентными <span class="tag fact">факт</span>.</div>
+      <h5>К чему приводит</h5>
+      <div class="as-is-text pain">Неконсистентные паритеты уходят потребителям.</div>
+    </div>
+  </details>
+  <div class="propose"><p class="cm"><b>Общее для всех процессов.</b> СВТ регулярно проверяет корректность и консистентность существующих данных; администратор ИТ корректирует данные или исправляет ошибки новым циклом с Ш1 для изменённых данных. Подробно — <a class="code" href="#sh-all-8">2.1, Ш8</a>.</p>
+          <p class="cm">Паритетные ставки на заархивированном узле уходят в архив, а на действующий узел заводятся новые — новым циклом с <a class="code" href="#sh-par-1">Ш1</a>.</p></div>
+</article>
+<article class="step" id="sh-par-9">
+  <header class="step-h"><span class="num">Ш9</span><h4>Сверка план-факт и сигнал источникам</h4></header>
+  <details class="as-is">
+    <summary><span>Как сейчас</span><span class="acc-action"><span class="chev" aria-hidden="true"><svg viewBox="0 0 12 12"><path d="M2 4l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="acc-label"></span></span></summary>
+    <div class="as-is-body">
+      <h5>Мнение владельца продукта</h5>
+      <div class="as-is-text"><span class="tag gap">пробел</span></div>
+      <h5>К чему приводит</h5>
+      <div class="as-is-text pain"><span class="tag gap">пробел</span></div>
+    </div>
+  </details>
+  <div class="propose"><span class="tag gap">пробел</span> С чем сверять паритеты и куда уходит сигнал — уточнить у бизнеса.</div>
+</article>
+</div>
+
+  <h3 class="sub" id="pr-route"><span class="sn">2.4.</span> Маршруты, плечи и лидтаймы</h3>
+  <div class="steps">
+<article class="step" id="sh-route-1">
+  <header class="step-h"><span class="num">Ш1</span><h4>Получение данных</h4></header>
+  <details class="as-is">
+    <summary><span>Как сейчас</span><span class="acc-action"><span class="chev" aria-hidden="true"><svg viewBox="0 0 12 12"><path d="M2 4l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="acc-label"></span></span></summary>
+    <div class="as-is-body">
+      <h5>Мнение владельца продукта</h5>
+      <div class="as-is-text"><ul class="plain">
+            <li><b>Авто.</b> Лидтайм авто по России считают в Excel: расстояние из картографического сервиса подставляют в формулу и вносят в СВТ. Система отслеживания машин сегодня не используется: лидтайм корректируют вручную. По СНГ, Турции и Китаю лидтайм вносит операционная логистика по своей оценке: зимой на Турцию увеличивает до 21 дня, летом снижает.</li>
+          </ul>
+          Нагрузка специалистов «Северсталь» на лидтаймы — 0,1 FTE <span class="tag fact">факт</span>.</div>
+      <h5>К чему приводит</h5>
+      <div class="as-is-text pain"><span class="tag gap">пробел</span></div>
+    </div>
+  </details>
+  <div class="propose"><p class="cm"><b>Общее для всех процессов.</b> Триггер — изменение в системе-источнике. Основной путь — автоматический обмен, ручной ввод и файл — дополнительный. Каждая загрузка пишется в журнал загрузок. Пока СВТ не приняла данные, действуют прежние значения. Подробно — <a class="code" href="#sh-all-1">2.1, Ш1</a>.</p>
+          <p class="cm"><b>Для всех сущностей.</b></p>
+          <ul class="plain">
+            <li><b>Плечи.</b> Их вносят вручную через редактирование или загрузку Excel. <span class="tag gap">пробел</span> Откуда именно?</li>
+            <li><b>Маршруты.</b> При заведении плеча автоматически создаётся одноплечевой маршрут, содержащий это плечо. Многоплечевые маршруты заводят вручную. Связь с матрицей каналов: одному завод-каналу соответствуют несколько маршрутов — по узлам назначения направления (<a class="code" href="#sh-mx-1">2.6, Ш1</a>).</li>
+            <li><b>Плановый лидтайм.</b> Рассчитывается на <a class="code" href="#sh-route-4">Ш4</a>. Лидтаймы между нашими предприятиями и другие незаведённые лидтаймы выявляет <a class="code" href="#sh-route-7">Ш7</a>; их заводят вручную новым циклом на этом шаге.</li>
+          </ul>
+          <ul class="plain">
+            <li><b>Авто логистика.</b>
+              <ul class="plain">
+                <li><b>Плечи.</b> На этом шаге создаётся только плечо; расстояние и лидтайм запрашиваются на <a class="code" href="#sh-route-4">Ш4</a>.</li>
+                <li><b>Маршруты.</b> По общему правилу выше.</li>
+                <li><b>Плановый лидтайм.</b> Для авто по России рассчитывается на <a class="code" href="#sh-route-4">Ш4</a> по расстоянию от картографического сервиса. <span class="tag gap">пробел</span> По СНГ, Турции и Китаю — см. <a class="code" href="#sh-route-4">Ш4</a>.</li>
+                <li><b>Фактический лидтайм.</b> Приходит из «Системы отслеживания машин» из данных по отгрузкам; плановый лидтайм корректируется по нему на <a class="code" href="#sh-route-4">Ш4</a>. <span class="tag gap">пробел</span> Как получать её данные — уточнить у Ивана Фролова.</li>
+              </ul></li>
+            <li><b>ЖД логистика.</b>
+              <ul class="plain">
+                <li><b>Плечи.</b> Расстояния приходят с калькулятором НХТК. <span class="tag gap">пробел</span> Откуда приходят сами плечи.</li>
+                <li><b>Маршруты.</b> По общему правилу выше.</li>
+                <li><b>Плановый лидтайм.</b> Рассчитывается на <a class="code" href="#sh-route-4">Ш4</a> и зависит от <a class="gloss" href="#g-rail-type">типа отправки</a>.</li>
+                <li><b>Фактический лидтайм.</b> <span class="tag gap">пробел</span> Откуда приходит.</li>
+              </ul></li>
+            <li><b>Мультимодальная логистика.</b>
+              <ul class="plain">
+                <li><b>Плечи.</b> Плечо может состоять из трёх узлов: отправление, промежуточный узел (обычно пограничный переход) и назначение. <span class="tag gap">пробел</span> Откуда приходят.</li>
+                <li><b>Маршруты.</b> По общему правилу выше.</li>
+                <li><b>Плановый лидтайм.</b> Его вносят вручную. <span class="tag gap">пробел</span> Откуда вносят?</li>
+                <li><b>Фактический лидтайм.</b> <span class="tag gap">пробел</span> Откуда приходит.</li>
+              </ul></li>
+          </ul></div>
+</article>
+<article class="step" id="sh-route-2">
+  <header class="step-h"><span class="num">Ш2</span><h4>Проверка данных</h4></header>
+  <details class="as-is">
+    <summary><span>Как сейчас</span><span class="acc-action"><span class="chev" aria-hidden="true"><svg viewBox="0 0 12 12"><path d="M2 4l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="acc-label"></span></span></summary>
+    <div class="as-is-body">
+      <h5>Мнение владельца продукта</h5>
+      <div class="as-is-text"><span class="tag gap">пробел</span> Отдельных фактов по маршрутам, плечам и лидтаймам нет; общее — <a class="code" href="#sh-all-2">2.1, Ш2</a>.</div>
+      <h5>К чему приводит</h5>
+      <div class="as-is-text pain">Стажёр в марте 2025 внёс норматив плеча 37 тыс. вместо 17 тыс.; риск одной ошибки в ППР — до 608 тыс. $. Ловят глазами после того, как строка уже в системе.</div>
+    </div>
+  </details>
+  <div class="propose"><p class="cm"><b>Общее для всех процессов.</b> Обмен, редактор и загрузчик проходят одни и те же проверки. Жёсткая проверка отклоняет строку, мягкая отправляет её на Ш3. Пороги задаёт бизнес. Подробно — <a class="code" href="#sh-all-2">2.1, Ш2</a>.</p>
+          <p class="cm"><b>Для всех сущностей.</b></p>
+          <ul class="plain">
+            <li><b>Жёсткая проверка.</b> У плеча не заполнен узел отправления или назначения. При заведении маршрута проверяется согласованность вида транспорта маршрута с видами транспорта плеч, входящих в его состав.</li>
+            <li><b>Мягкая проверка.</b> Резкий скачок значений лидтаймов.</li>
+          </ul>
+          <p class="cm"><span class="tag gap">пробел</span> Итоговый список проверок собирается с бизнесом.</p>
+          <ul class="plain">
+            <li><b>Авто логистика.</b> <span class="tag gap">пробел</span></li>
+            <li><b>ЖД логистика.</b> <span class="tag gap">пробел</span></li>
+            <li><b>Мультимодальная логистика.</b> <span class="tag gap">пробел</span></li>
+          </ul></div>
+</article>
+<article class="step stop" id="sh-route-3">
+  <header class="step-h"><span class="num">Ш3</span><h4>Утверждение исключений</h4></header>
+  <details class="as-is">
+    <summary><span>Как сейчас</span><span class="acc-action"><span class="chev" aria-hidden="true"><svg viewBox="0 0 12 12"><path d="M2 4l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="acc-label"></span></span></summary>
+    <div class="as-is-body">
+      <h5>Мнение владельца продукта</h5>
+      <div class="as-is-text"><span class="tag gap">пробел</span> Отдельных фактов нет; общее — <a class="code" href="#sh-all-3">2.1, Ш3</a>.</div>
+      <h5>К чему приводит</h5>
+      <div class="as-is-text pain"><span class="tag gap">пробел</span></div>
+    </div>
+  </details>
+  <div class="propose"><p class="cm"><b>Общее для всех процессов.</b> Строки, не прошедшие Ш2, попадают в реестр исключений с причиной. Строку с предупреждением ответственный пропускает или отвергает. Подробно — <a class="code" href="#sh-all-3">2.1, Ш3</a>.</p>
+          <p class="cm"><b>Для всех сущностей.</b> Исключения по плечам, маршрутам и лидтаймам разбирает ответственный своего поддомена. <span class="tag gap">пробел</span> Кто именно отвечает в каждом поддомене.</p></div>
+</article>
+<article class="step" id="sh-route-4">
+  <header class="step-h"><span class="num">Ш4</span><h4>Расчёт производных значений</h4></header>
+  <details class="as-is">
+    <summary><span>Как сейчас</span><span class="acc-action"><span class="chev" aria-hidden="true"><svg viewBox="0 0 12 12"><path d="M2 4l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="acc-label"></span></span></summary>
+    <div class="as-is-body">
+      <h5>Мнение владельца продукта</h5>
+      <div class="as-is-text">Лидтайм авто по России считают в Excel. Округление лидтаймов для ЦБД делается внутри базы, формула не описана <span class="tag fact">факт</span> <span class="tag now">есть сегодня</span>.</div>
+      <h5>К чему приводит</h5>
+      <div class="as-is-text pain">Формула ничья. Один и тот же расчёт в Excel и в ночном задании может разойтись, и это увидят только у потребителя.</div>
+    </div>
+  </details>
+  <div class="propose"><p class="cm"><b>Общее для всех процессов.</b> Расчёт идёт из принятых системой данных. Формулы расчёта реализованы в коде. Подробно — <a class="code" href="#sh-all-4">2.1, Ш4</a>.</p>
+          <ul class="plain">
+            <li><b>Авто логистика.</b>
+              <ul class="plain">
+                <li><b>Плановый лидтайм по России.</b> СВТ запрашивает расстояние между отправлением и назначением плеча у картографического сервиса, по возможности с учётом типа трассы, и считает плановый лидтайм по формуле. Так плановый лидтайм можно рассчитать для любых двух точек.</li>
+                <li><b>Плановый лидтайм по СНГ, Турции и Китаю.</b> <span class="tag gap">пробел</span> Правила от километража и простоя на границе, ручная сезонная корректировка операционной логистикой или корректировка по факту системы отслеживания — решает операционная логистика.</li>
+                <li><b>Корректировка по факту.</b> Когда между этими точками появляется факт из системы отслеживания машин, СВТ корректирует плановый лидтайм по правилам корректировки, без ручной правки. Правила учитывают скользящее среднее, объём отгрузок по направлению и сезонность. <span class="tag gap">пробел</span> Правила корректировки задать с бизнесом.</li>
+                <li><b>Распутица.</b> На март, апрель и май СВТ автоматически применяет коэффициенты к лидтаймам авто по выделенным направлениям. Сторона ставок — <a class="code" href="#sh-rate-4">2.2, Ш4</a>.</li>
+              </ul></li>
+            <li><b>ЖД логистика.</b> Плановый лидтайм ЖД считается здесь и зависит от <a class="gloss" href="#g-rail-type">типа отправки</a>: твёрдая (по умолчанию), повагонная, групповая, маршрутная, жёсткая нитка.</li>
+            <li><b>Мультимодальная логистика.</b> Округление лидтаймов для ЦБД «докручивает» лидтайм мультимодальных перевозок до 32, 63, 93 или 124 суток перед отбором в ЦБД <span class="tag now">есть сегодня</span>. Правило сегодня есть только в руководстве, раздел 1.11. Правила выносятся в настраиваемый справочник, который правит бизнес: права выдаёт владелец продукта. Правила меняются редко, поэтому агент здесь не нужен (<a class="code" href="#obrabotka">пункт 1.3</a>). <span class="tag gap">пробел</span> Оставлять ли это в контуре СВТ — уточнить у Руслана.</li>
+          </ul></div>
+</article>
+<article class="step" id="sh-route-5">
+  <header class="step-h"><span class="num">Ш5</span><h4>Ввод в действие</h4></header>
+  <details class="as-is">
+    <summary><span>Как сейчас</span><span class="acc-action"><span class="chev" aria-hidden="true"><svg viewBox="0 0 12 12"><path d="M2 4l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="acc-label"></span></span></summary>
+    <div class="as-is-body">
+      <h5>Мнение владельца продукта</h5>
+      <div class="as-is-text">Маршрут нельзя изменить — только архив и новый <span class="tag fact">факт</span>.</div>
+      <h5>К чему приводит</h5>
+      <div class="as-is-text pain"><span class="tag gap">пробел</span></div>
+    </div>
+  </details>
+  <div class="propose"><p class="cm"><b>Общее для всех процессов.</b> Новое значение действует с указанной даты, прежнее уходит в архив; на выбранную дату одно действующее значение. Подробно — <a class="code" href="#sh-all-5">2.1, Ш5</a>.</p>
+          <p class="cm"><b>Для всех сущностей.</b> Маршрут, плечо и лидтайм действуют с указанной даты; у старой записи появляется дата окончания, и она уходит в архив.</p></div>
+</article>
+<article class="step" id="sh-route-6">
+  <header class="step-h"><span class="num">Ш6</span><h4>Передача потребителям</h4></header>
+  <details class="as-is">
+    <summary><span>Как сейчас</span><span class="acc-action"><span class="chev" aria-hidden="true"><svg viewBox="0 0 12 12"><path d="M2 4l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="acc-label"></span></span></summary>
+    <div class="as-is-body">
+      <h5>Мнение владельца продукта</h5>
+      <div class="as-is-text">Маршруты, плечи и лидтаймы уходят в SAP ERP автоматически примерно за 10 минут. В ЦБД передачу запускает «Единое окно» <span class="tag fact">факт</span>.</div>
+      <h5>К чему приводит</h5>
+      <div class="as-is-text pain"><span class="tag gap">пробел</span></div>
+    </div>
+  </details>
+  <div class="propose"><p class="cm"><b>Общее для всех процессов.</b> После вступления в силу значение уходит потребителям автоматически, без кнопок. Подробно — <a class="code" href="#sh-all-6">2.1, Ш6</a>.</p>
+          <p class="cm"><b>Для всех сущностей.</b> Планирование читает маршруты как схему доставки, логистика — чтобы обеспечить мощности. SAP ERP получает маршруты и лидтаймы: по маршруту создаёт разнарядки на отгрузку, по лидтайму планирует нормативные плановые даты. ССП получает маршруты, плечи и лидтаймы. ЦБД получает лидтаймы, чтобы оценить срок заморозки рабочего капитала: уходит только лидтайм, активный на момент отправки, независимо от периода действия ставки. MLS нужны плечи и лидтаймы до клиента (<a class="code" href="#kartochka-p3">пункт 1.5</a>). ЕСД получает лидтаймы, КПО — плановый лидтайм доставки через матрицу каналов (<a class="code" href="#sh-mx-6">2.6, Ш6</a>). Данные получают также Озеро данных и Атлас. <span class="tag gap">пробел</span> Особенности поддоменов в материалах не названы.</p></div>
+</article>
+<article class="step" id="sh-route-7">
+  <header class="step-h"><span class="num">Ш7</span><h4>Контроль полноты</h4></header>
+  <details class="as-is">
+    <summary><span>Как сейчас</span><span class="acc-action"><span class="chev" aria-hidden="true"><svg viewBox="0 0 12 12"><path d="M2 4l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="acc-label"></span></span></summary>
+    <div class="as-is-body">
+      <h5>Мнение владельца продукта</h5>
+      <div class="as-is-text">ССП каждую ночь сверяет слепок ЦБД со ставками и плечами СВТ. Списка направлений без лидтайма в СВТ нет <span class="tag fact">факт</span>.</div>
+      <h5>К чему приводит</h5>
+      <div class="as-is-text pain"><span class="tag gap">пробел</span></div>
+    </div>
+  </details>
+  <div class="propose"><p class="cm"><b>Общее для всех процессов.</b> СВТ ведёт индивидуальный по каждому домену отчёт о нехватке данных с ответственным, сроком и эскалацией; пользователь дозаводит данные или даёт сигнал источнику, и начинается новый цикл. Подробно — <a class="code" href="#sh-all-7">2.1, Ш7</a>.</p>
+          <p class="cm"><b>Для всех сущностей.</b> В отчёте видны направления без лидтайма, лидтаймы между нашими предприятиями и другие незаведённые лидтаймы. Ночная сверка ССП по плечам используется как один из источников отчёта. <span class="tag gap">пробел</span> Особенности поддоменов в материалах не названы.</p></div>
+</article>
+<article class="step" id="sh-route-8">
+  <header class="step-h"><span class="num">Ш8</span><h4>Контроль целостности</h4></header>
+  <details class="as-is">
+    <summary><span>Как сейчас</span><span class="acc-action"><span class="chev" aria-hidden="true"><svg viewBox="0 0 12 12"><path d="M2 4l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="acc-label"></span></span></summary>
+    <div class="as-is-body">
+      <h5>Мнение владельца продукта</h5>
+      <div class="as-is-text"><span class="tag gap">пробел</span> Отдельных фактов нет; общее — <a class="code" href="#sh-all-8">2.1, Ш8</a>.</div>
+      <h5>К чему приводит</h5>
+      <div class="as-is-text pain"><span class="tag gap">пробел</span></div>
+    </div>
+  </details>
+  <div class="propose"><p class="cm"><b>Общее для всех процессов.</b> СВТ регулярно проверяет корректность и консистентность существующих данных; администратор ИТ корректирует данные или исправляет ошибки новым циклом с Ш1 для изменённых данных. Подробно — <a class="code" href="#sh-all-8">2.1, Ш8</a>.</p>
+          <p class="cm"><b>Для всех сущностей.</b> Примеры проверок:</p>
+          <ul class="plain">
+            <li>у лидтайма, который не относится к кругорейсам, не заполнено значение «в пути»;</li>
+            <li>у лидтайма, который относится к кругорейсам, заполнено значение «в пути».</li>
+          </ul></div>
+</article>
+<article class="step" id="sh-route-9">
+  <header class="step-h"><span class="num">Ш9</span><h4>Сверка план-факт и сигнал источникам</h4></header>
+  <details class="as-is">
+    <summary><span>Как сейчас</span><span class="acc-action"><span class="chev" aria-hidden="true"><svg viewBox="0 0 12 12"><path d="M2 4l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="acc-label"></span></span></summary>
+    <div class="as-is-body">
+      <h5>Мнение владельца продукта</h5>
+      <div class="as-is-text"><span class="tag gap">пробел</span> В СВТ нет сверки норматива с фактическим лидтаймом.</div>
+      <h5>К чему приводит</h5>
+      <div class="as-is-text pain">Расхождение норматива и фактического лидтайма никто не видит системно.</div>
+    </div>
+  </details>
+  <div class="propose"><p class="cm"><b>Общее для всех процессов.</b> СВТ сравнивает действующее значение с фактом и сообщает о расхождении сверх допуска источнику и ответственным; данные на этом шаге не правит. Подробно — <a class="code" href="#sh-all-9">2.1, Ш9</a>.</p>
+          <p class="cm"><b>Для всех сущностей.</b> Плановый лидтайм сравнивается с фактическим.</p>
+          <ul class="plain">
+            <li><b>Авто логистика.</b> Факт — из системы отслеживания машин. Корректировка планового лидтайма авто по этому факту — правило расчёта на <a class="code" href="#sh-route-4">Ш4</a>, а не правка сверкой.</li>
+            <li><b>ЖД логистика.</b> <span class="tag gap">пробел</span> Откуда брать фактический лидтайм.</li>
+            <li><b>Мультимодальная логистика.</b> <span class="tag gap">пробел</span> Откуда брать фактический лидтайм.</li>
+          </ul></div>
+</article>
+</div>
+
+  <h3 class="sub" id="pr-wh"><span class="sn">2.5.</span> Складские ограничения</h3>
+  <div class="steps">
+<article class="step" id="sh-wh-1">
+  <header class="step-h"><span class="num">Ш1</span><h4>Получение данных</h4></header>
+  <details class="as-is">
+    <summary><span>Как сейчас</span><span class="acc-action"><span class="chev" aria-hidden="true"><svg viewBox="0 0 12 12"><path d="M2 4l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="acc-label"></span></span></summary>
+    <div class="as-is-body">
+      <h5>Мнение владельца продукта</h5>
+      <div class="as-is-text">Складские ограничения приходят файлом Excel каждую пятницу, сотрудник экономики логистики переносит их руками <span class="tag fact">факт</span>. Склады приходят автоматически из АСВ НСИ и SAP ERP. Мастер внешних складов, МОХ, заводов России и Казахстана и складов SI — АСВ НСИ, справочник «Организации DPO». Организации с типом «поставщик» не загружаются. Мастер внутризаводских складов и их типов — SAP ERP. СВТ собирает одну запись справочника «Склады АСВ — ERP» из организации DPO и склада ERP. Для России и Казахстана это организация НСИ и склад ERP внутри завода или внешнего склада. Для SI склад берётся из организации НСИ, завод в СВТ для этих складов общий. У внешнего склада чаще один склад ERP, реже несколько. Вид склада, внешний или внутренний, приходит из НСИ. Если вид склада из НСИ не определён, запись не собирается. Из НСИ же приходят страна, федеральный округ, дирекции, узлы, признак плановой организации и склад-фаворит. Человек задаёт у склада только график работы, в редакторе или в загрузчике. Ошибочную запись архивируют только в экстренном случае. Ограничение ведётся в СВТ на собранный склад. Кроме значений из еженедельного файла, в ограничении есть «затраты фикс на хранение (в месяц)»: фиксированный платёж за месяц по модели закупки «затраты плюс» <span class="tag fact">факт, ТТ и ФТ по складам</span>.</div>
+      <h5>К чему приводит</h5>
+      <div class="as-is-text pain"><span class="tag gap">пробел</span></div>
+    </div>
+  </details>
+  <div class="propose"><p class="cm"><b>Общее для всех процессов.</b> Триггер — изменение в системе-источнике. Основной путь — автоматический обмен, ручной ввод и файл — дополнительный. Каждая загрузка пишется в журнал загрузок. Подробно — <a class="code" href="#sh-all-1">2.1, Ш1</a>.</p>
+          <p class="cm">Еженедельный файл приходит на общий почтовый ящик СВТ: в нём меняются ёмкость, мощность и тариф склада. Пока агент не подключён, файл разбирает алгоритм в коде и проводит через кольцо. Агент подключается по правилу второго этапа в <a class="code" href="#obrabotka">пункте 1.3</a>. То, что алгоритм не разобрал, вносит бизнес вручную. Сами склады — WarehouseASVERP и WarehouseERP — приходят из АСВ и ERP: СВТ — мастер складских ограничений к ним, не самих складов <span class="tag fact">реестр СВТ 2.0</span>. <span class="tag gap">пробел</span> Почту как источник согласовать с бизнесом. <span class="tag gap">пробел</span> Как вносить ограничения, чтобы это было удобно и оперативно, без заполнения и загрузки Excel, — уточнить у Кати Миназовой и Нины Мялиной.</p></div>
+</article>
+<article class="step" id="sh-wh-2">
+  <header class="step-h"><span class="num">Ш2</span><h4>Проверка данных</h4></header>
+  <details class="as-is">
+    <summary><span>Как сейчас</span><span class="acc-action"><span class="chev" aria-hidden="true"><svg viewBox="0 0 12 12"><path d="M2 4l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="acc-label"></span></span></summary>
+    <div class="as-is-body">
+      <h5>Мнение владельца продукта</h5>
+      <div class="as-is-text">При сборке склада создать запись вручную нельзя. При правке графика работы график обязателен. Тип пункта отгрузки — только «ПЗ», «ОЗ», «ТС» или «МОХ». Не заполнены код пункта отгрузки, код склада, код организации DPO, страна или основной узел — ошибка. В тексте ошибки сказано, куда обращаться: в АСВ НСИ или в SAP ERP <span class="tag fact">факт, ТТ и ФТ по складам</span>.</div>
+      <h5>К чему приводит</h5>
+      <div class="as-is-text pain"><span class="tag gap">пробел</span></div>
+    </div>
+  </details>
+  <div class="propose"><p class="cm"><b>Общее для всех процессов.</b> Обмен, редактор и загрузчик проходят одни и те же проверки. Жёсткая проверка отклоняет строку, мягкая отправляет её на Ш3. Пороги задаёт бизнес. Подробно — <a class="code" href="#sh-all-2">2.1, Ш2</a>.</p>
+          <p class="cm">Строки, которые разобрал из файла алгоритм или агент, проходят те же проверки, что и ручной ввод. Жёсткая проверка отклоняет строку, чей интервал пересекается с уже действующим ограничением того же склада на ту же дату. <span class="tag gap">пробел</span> Остальной список проверок складских ограничений собирается с бизнесом.</p></div>
+</article>
+<article class="step stop" id="sh-wh-3">
+  <header class="step-h"><span class="num">Ш3</span><h4>Утверждение исключений</h4></header>
+  <details class="as-is">
+    <summary><span>Как сейчас</span><span class="acc-action"><span class="chev" aria-hidden="true"><svg viewBox="0 0 12 12"><path d="M2 4l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="acc-label"></span></span></summary>
+    <div class="as-is-body">
+      <h5>Мнение владельца продукта</h5>
+      <div class="as-is-text">Ошибка сборки склада остаётся на записи. Исправление делают в АСВ НСИ или в SAP ERP, после этого запись собирается снова <span class="tag fact">факт, ТТ и ФТ по складам</span>.</div>
+      <h5>К чему приводит</h5>
+      <div class="as-is-text pain"><span class="tag gap">пробел</span></div>
+    </div>
+  </details>
+  <div class="propose"><p class="cm"><b>Общее для всех процессов.</b> Строки, не прошедшие Ш2, попадают в реестр исключений с причиной. Строку с предупреждением ответственный пропускает или отвергает. Подробно — <a class="code" href="#sh-all-3">2.1, Ш3</a>.</p>
+          <p class="cm">Исключения по складским ограничениям разбирают Катя Миназова и Нина Мялина.</p></div>
+</article>
+<article class="step" id="sh-wh-4">
+  <header class="step-h"><span class="num">Ш4</span><h4>Расчёт производных значений</h4></header>
+  <details class="as-is">
+    <summary><span>Как сейчас</span><span class="acc-action"><span class="chev" aria-hidden="true"><svg viewBox="0 0 12 12"><path d="M2 4l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="acc-label"></span></span></summary>
+    <div class="as-is-body">
+      <h5>Мнение владельца продукта</h5>
+      <div class="as-is-text">Карта складов — в Excel у ФЭС без версий <span class="tag fact">факт</span>. Запись склада собирается из АСВ НСИ и SAP ERP при получении данных. Отдельной расчётной величины по ограничениям в этих документах нет <span class="tag fact">факт, ТТ и ФТ по складам</span>.</div>
+      <h5>К чему приводит</h5>
+      <div class="as-is-text pain"><span class="tag gap">пробел</span></div>
+    </div>
+  </details>
+  <div class="propose"><span class="tag gap">пробел</span> Что СВТ считает по складским ограничениям на этом шаге.</div>
+</article>
+<article class="step" id="sh-wh-5">
+  <header class="step-h"><span class="num">Ш5</span><h4>Ввод в действие</h4></header>
+  <details class="as-is">
+    <summary><span>Как сейчас</span><span class="acc-action"><span class="chev" aria-hidden="true"><svg viewBox="0 0 12 12"><path d="M2 4l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="acc-label"></span></span></summary>
+    <div class="as-is-body">
+      <h5>Мнение владельца продукта</h5>
+      <div class="as-is-text">Запись склада архивируется сама, если в АСВ НСИ она в архиве или если пары «организация DPO — склад ERP» больше нет в очередной загрузке. Ошибочную запись человек архивирует только в экстренном случае <span class="tag fact">факт, ТТ и ФТ по складам</span>.</div>
+      <h5>К чему приводит</h5>
+      <div class="as-is-text pain"><span class="tag gap">пробел</span></div>
+    </div>
+  </details>
+  <div class="propose"><p class="cm"><b>Общее для всех процессов.</b> Новое значение действует с указанной даты. Подробно — <a class="code" href="#sh-all-5">2.1, Ш5</a>.</p>
+          <p class="cm">Прежняя запись хранится со своим интервалом и в архив не списывается. На одну дату у склада одно ограничение: интервалы не пересекаются.</p></div>
+</article>
+<article class="step" id="sh-wh-6">
+  <header class="step-h"><span class="num">Ш6</span><h4>Передача потребителям</h4></header>
+  <details class="as-is">
+    <summary><span>Как сейчас</span><span class="acc-action"><span class="chev" aria-hidden="true"><svg viewBox="0 0 12 12"><path d="M2 4l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="acc-label"></span></span></summary>
+    <div class="as-is-body">
+      <h5>Мнение владельца продукта</h5>
+      <div class="as-is-text">Складские ограничения уходят в КПО автоматически, рейтинг складов — файлом xls и в обход СВТ <span class="tag fact">факт</span>. Ограничения уходят 24-м потоком в Хорду и в Озеро данных. Вместе с ограничением уходят код и идентификатор организации DPO, тип склада SAP, тип склада из АСВ НСИ и затраты фикс на хранение за месяц. Получатель потока — ЕСД: изменённые записи после загрузки и полная выгрузка по записи «ЕСД: Склады». Структуру собранных складов СВТ отдаёт в Озеро данных. Организации DPO и ограничения тоже уходят в Озеро <span class="tag fact">факт, ТТ и ФТ по складам</span>.</div>
+      <h5>К чему приводит</h5>
+      <div class="as-is-text pain"><span class="tag gap">пробел</span></div>
+    </div>
+  </details>
+  <div class="propose"><p class="cm"><b>Общее для всех процессов.</b> После вступления в силу значение уходит потребителям автоматически, без кнопок. Подробно — <a class="code" href="#sh-all-6">2.1, Ш6</a>.</p>
+          <p class="cm">Складские ограничения получают ССП, ЕСД (вместе с параметрами складов), ЕСД SI, КПО, Озеро данных и Атлас. СВТ отдаёт ограничения оптимизатору, в том числе стоимость хранения. ППР и складской рейтинг читают то значение, которое вступило в силу в СВТ. Складские данные нужны MLS: в идеальном процессе рейтинг складов считает модуль MLS внутри СВТ (<a class="code" href="#kartochka-p3">пункт 1.5</a>) <span class="tag hyp">гипотеза</span>.</p></div>
+</article>
+<article class="step" id="sh-wh-7">
+  <header class="step-h"><span class="num">Ш7</span><h4>Контроль полноты</h4></header>
+  <details class="as-is">
+    <summary><span>Как сейчас</span><span class="acc-action"><span class="chev" aria-hidden="true"><svg viewBox="0 0 12 12"><path d="M2 4l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="acc-label"></span></span></summary>
+    <div class="as-is-body">
+      <h5>Мнение владельца продукта</h5>
+      <div class="as-is-text">В списке видны склады, которые не собрались: в SAP ERP нет склада для кода пункта отгрузки, не заполнены код пункта отгрузки, код организации, страна или основной узел, либо тип пункта отгрузки недопустимый. В тексте указано, куда обратиться — в АСВ НСИ или в SAP ERP <span class="tag fact">факт, ТТ и ФТ по складам</span>.</div>
+      <h5>К чему приводит</h5>
+      <div class="as-is-text pain"><span class="tag gap">пробел</span></div>
+    </div>
+  </details>
+  <div class="propose"><p class="cm"><b>Общее для всех процессов.</b> СВТ ведёт индивидуальный по каждому домену отчёт о нехватке данных с ответственным, сроком и эскалацией; пользователь дозаводит данные или даёт сигнал источнику. В отчёте видны пакеты, не загруженные к утверждённой дате. Подробно — <a class="code" href="#sh-all-7">2.1, Ш7</a>.</p>
+          <p class="cm"><span class="tag gap">пробел</span> Что ещё считать нехваткой по складским ограничениям.</p></div>
+</article>
+<article class="step" id="sh-wh-8">
+  <header class="step-h"><span class="num">Ш8</span><h4>Контроль целостности</h4></header>
+  <details class="as-is">
+    <summary><span>Как сейчас</span><span class="acc-action"><span class="chev" aria-hidden="true"><svg viewBox="0 0 12 12"><path d="M2 4l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="acc-label"></span></span></summary>
+    <div class="as-is-body">
+      <h5>Мнение владельца продукта</h5>
+      <div class="as-is-text"><span class="tag gap">пробел</span> Отдельных фактов нет; общее — <a class="code" href="#sh-all-8">2.1, Ш8</a>.</div>
+      <h5>К чему приводит</h5>
+      <div class="as-is-text pain"><span class="tag gap">пробел</span></div>
+    </div>
+  </details>
+  <div class="propose"><p class="cm"><b>Общее для всех процессов.</b> СВТ регулярно проверяет корректность и консистентность существующих данных; администратор ИТ корректирует данные или исправляет ошибки новым циклом с Ш1 для изменённых данных. Подробно — <a class="code" href="#sh-all-8">2.1, Ш8</a>.</p>
+          <p class="cm">Проверка целостности находит пересечение интервалов одного склада на одну дату. <span class="tag gap">пробел</span> Какие ещё проверки целостности относятся к складским ограничениям.</p></div>
+</article>
+<article class="step" id="sh-wh-9">
+  <header class="step-h"><span class="num">Ш9</span><h4>Сверка план-факт и сигнал источникам</h4></header>
+  <details class="as-is">
+    <summary><span>Как сейчас</span><span class="acc-action"><span class="chev" aria-hidden="true"><svg viewBox="0 0 12 12"><path d="M2 4l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="acc-label"></span></span></summary>
+    <div class="as-is-body">
+      <h5>Мнение владельца продукта</h5>
+      <div class="as-is-text"><span class="tag gap">пробел</span></div>
+      <h5>К чему приводит</h5>
+      <div class="as-is-text pain"><span class="tag gap">пробел</span></div>
+    </div>
+  </details>
+  <div class="propose"><span class="tag gap">пробел</span> С чем сверять складские ограничения и куда уходит сигнал — уточнить у бизнеса.</div>
+</article>
+</div>
+
+  <h3 class="sub" id="pr-mx"><span class="sn">2.6.</span> Матрица каналов</h3>
+  <div class="steps">
+<article class="step" id="sh-mx-1">
+  <header class="step-h"><span class="num">Ш1</span><h4>Получение данных</h4></header>
+  <details class="as-is">
+    <summary><span>Как сейчас</span><span class="acc-action"><span class="chev" aria-hidden="true"><svg viewBox="0 0 12 12"><path d="M2 4l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="acc-label"></span></span></summary>
+    <div class="as-is-body">
+      <h5>Мнение владельца продукта</h5>
+      <div class="as-is-text">Квоты вводит ЗЛУ руками. Данные о станциях, погранпереходах и направлениях частично «зашиты» в Оптимакрос. Логисты переносят данные СВТ → Excel → Оптимакрос. Каналы в Оптимакрос не связаны с маршрутами СВТ; при изменении маршрута матрицу правят вручную. Общую квоту считали суммой авто и контейнерных поездов, хотя складывать их нельзя. Загрузку справочников матрицы сегодня делает роль «Единое окно» <span class="tag fact">факт</span>.</div>
+      <h5>К чему приводит</h5>
+      <div class="as-is-text pain">Ошибки переноса, рассинхрон с маршрутами СВТ, доработки Оптимакроса у подрядчика при каждом изменении узлов и направлений.</div>
+    </div>
+  </details>
+  <div class="propose"><p class="cm"><b>Общее для всех процессов.</b> Триггер — изменение в системе-источнике. Основной путь — автоматический обмен, ручной ввод и файл — дополнительный. Каждая загрузка пишется в журнал загрузок. Подробно — <a class="code" href="#sh-all-1">2.1, Ш1</a>.</p>
+          <p class="cm">СВТ — мастер матрицы каналов для календарного планирования и диспетчеризации отгрузок. Цель — выбрать самый выгодный завод-канал. Ведутся восемь сущностей цепочки:</p>
+          <ul class="plain">
+            <li><b>Завод отгрузки</b> и <b>узел отправления</b> — из АСВ НСИ по интеграции.</li>
+            <li><b>Направление</b> (зона узлов назначения), <b>направление-канал</b>, <b>завод-канал</b> — ведёт ЗЛУ загрузчиком или редактором.</li>
+            <li><b>Три уровня квот</b> — общая по узлам отправления, общая по направлениям-каналам, по заводам-каналам: ведёт ЗЛУ, он первоисточник. Помесячно на 12–15 месяцев вперёд, не реже раза в месяц. Единица измерения — КП, КТК, КВ или Авто: квоты авто и КП не суммируются.</li>
+            <li><b>Плечи, ставки и плановые лидтаймы</b> для завод-канала заводит аналитика операций; сами данные ведутся в процессах <a class="code" href="#sh-rate-1">2.2</a> и <a class="code" href="#sh-route-1">2.4</a>.</li>
+          </ul>
+          <p class="cm">Одному завод-каналу соответствуют несколько маршрутов — по одному на каждый узел назначения направления; узлы и виды транспорта маршрута должны совпадать с завод-каналом. Канал может начинаться с тылового терминала, а не с завода. <span class="tag gap">пробел</span> Как вводить квоты удобно и оперативно — уточнить у Кати Миназовой и Нины Мялиной. <span class="tag gap">пробел</span> Наценка на доп. услуги экспедитора к ставке завод-канала.</p></div>
+</article>
+<article class="step" id="sh-mx-2">
+  <header class="step-h"><span class="num">Ш2</span><h4>Проверка данных</h4></header>
+  <details class="as-is">
+    <summary><span>Как сейчас</span><span class="acc-action"><span class="chev" aria-hidden="true"><svg viewBox="0 0 12 12"><path d="M2 4l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="acc-label"></span></span></summary>
+    <div class="as-is-body">
+      <h5>Мнение владельца продукта</h5>
+      <div class="as-is-text"><span class="tag gap">пробел</span> Отдельных фактов нет; общее — <a class="code" href="#sh-all-2">2.1, Ш2</a>.</div>
+      <h5>К чему приводит</h5>
+      <div class="as-is-text pain"><span class="tag gap">пробел</span></div>
+    </div>
+  </details>
+  <div class="propose"><p class="cm"><b>Общее для всех процессов.</b> Обмен, редактор и загрузчик проходят одни и те же проверки. Жёсткая проверка отклоняет строку, мягкая отправляет её на Ш3. Пороги задаёт бизнес. Подробно — <a class="code" href="#sh-all-2">2.1, Ш2</a>.</p>
+          <p class="cm">Примеры проверок матрицы:</p>
+          <ul class="plain">
+            <li><b>Жёсткая.</b> Дубли бизнес-ключей; ссылка на неактивную запись; нормативная загрузка равна нулю; у завод-канала нет маршрутов под все узлы назначения направления; квота не на календарный месяц с 1-го числа.</li>
+            <li><b>Мягкая.</b> Квота может быть равна нулю — это запрет отгрузки, строку не отклоняют.</li>
+            <li><b>Жёсткая.</b> Декады квоты завод-канала выходят за месячный максимум ТС.</li>
+          </ul>
+          <p class="cm"><span class="tag gap">пробел</span> Какие ещё правила ФТТ жёсткие, а какие мягкие.</p></div>
+</article>
+<article class="step stop" id="sh-mx-3">
+  <header class="step-h"><span class="num">Ш3</span><h4>Утверждение исключений</h4></header>
+  <details class="as-is">
+    <summary><span>Как сейчас</span><span class="acc-action"><span class="chev" aria-hidden="true"><svg viewBox="0 0 12 12"><path d="M2 4l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="acc-label"></span></span></summary>
+    <div class="as-is-body">
+      <h5>Мнение владельца продукта</h5>
+      <div class="as-is-text"><span class="tag gap">пробел</span> Отдельных фактов нет; общее — <a class="code" href="#sh-all-3">2.1, Ш3</a>.</div>
+      <h5>К чему приводит</h5>
+      <div class="as-is-text pain"><span class="tag gap">пробел</span></div>
+    </div>
+  </details>
+  <div class="propose"><p class="cm"><b>Общее для всех процессов.</b> Строки, не прошедшие Ш2, попадают в реестр исключений с причиной. Строку с предупреждением ответственный пропускает или отвергает. Подробно — <a class="code" href="#sh-all-3">2.1, Ш3</a>.</p>
+          <p class="cm">То, что ЗЛУ — первоисточник квот, не избавляет от ошибок ввода: исключения по матрице каналов разбирает ЗЛУ.</p></div>
+</article>
+<article class="step" id="sh-mx-4">
+  <header class="step-h"><span class="num">Ш4</span><h4>Расчёт производных значений</h4></header>
+  <details class="as-is">
+    <summary><span>Как сейчас</span><span class="acc-action"><span class="chev" aria-hidden="true"><svg viewBox="0 0 12 12"><path d="M2 4l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="acc-label"></span></span></summary>
+    <div class="as-is-body">
+      <h5>Мнение владельца продукта</h5>
+      <div class="as-is-text"><span class="tag gap">пробел</span></div>
+      <h5>К чему приводит</h5>
+      <div class="as-is-text pain"><span class="tag gap">пробел</span></div>
+    </div>
+  </details>
+  <div class="propose"><p class="cm"><b>Общее для всех процессов.</b> Расчёт идёт из принятых системой данных. Формулы расчёта реализованы в коде. Подробно — <a class="code" href="#sh-all-4">2.1, Ш4</a>.</p>
+          <p class="cm">СВТ не агрегирует квоты между уровнями — это делает Оптимакрос. На этом шаге СВТ подбирает к завод-каналу ставку и плановый лидтайм из модели процессов <a class="code" href="#sh-rate-4">2.2</a> и <a class="code" href="#sh-route-4">2.4</a> по транспортной группе и маршрутам завод-канала: лидтайм собирается по плечам маршрутов. <span class="tag gap">пробел</span> Нужна ли наценка на доп. услуги экспедитора отдельным полем после базовой ставки.</p></div>
+</article>
+<article class="step" id="sh-mx-5">
+  <header class="step-h"><span class="num">Ш5</span><h4>Ввод в действие</h4></header>
+  <details class="as-is">
+    <summary><span>Как сейчас</span><span class="acc-action"><span class="chev" aria-hidden="true"><svg viewBox="0 0 12 12"><path d="M2 4l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="acc-label"></span></span></summary>
+    <div class="as-is-body">
+      <h5>Мнение владельца продукта</h5>
+      <div class="as-is-text"><span class="tag gap">пробел</span> Отдельных фактов нет; общее — <a class="code" href="#sh-all-5">2.1, Ш5</a>.</div>
+      <h5>К чему приводит</h5>
+      <div class="as-is-text pain"><span class="tag gap">пробел</span></div>
+    </div>
+  </details>
+  <div class="propose"><p class="cm"><b>Общее для всех процессов.</b> Новое значение действует с указанной даты, прежнее уходит в архив; на выбранную дату одно действующее значение. Подробно — <a class="code" href="#sh-all-5">2.1, Ш5</a>.</p>
+          <p class="cm">Квота действует на календарный месяц: дата начала — первое число месяца, дата окончания — последнее. Запись не удаляют — архивируют. Узел отправления или направление-канал нельзя заархивировать, пока активна связанная квота: сначала архивируют квоту. Историю прошлых помесячных квот хранят.</p></div>
+</article>
+<article class="step" id="sh-mx-6">
+  <header class="step-h"><span class="num">Ш6</span><h4>Передача потребителям</h4></header>
+  <details class="as-is">
+    <summary><span>Как сейчас</span><span class="acc-action"><span class="chev" aria-hidden="true"><svg viewBox="0 0 12 12"><path d="M2 4l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="acc-label"></span></span></summary>
+    <div class="as-is-body">
+      <h5>Мнение владельца продукта</h5>
+      <div class="as-is-text">Для матрицы каналов в ФТТ названа шина SAP PI. Обмен матрицы идёт через «Хорду»; в программе Оптимакрос лежит копия, история остаётся в СВТ <span class="tag fact">факт</span>.</div>
+      <h5>К чему приводит</h5>
+      <div class="as-is-text pain"><span class="tag gap">пробел</span></div>
+    </div>
+  </details>
+  <div class="propose"><p class="cm"><b>Общее для всех процессов.</b> После вступления в силу значение уходит потребителям автоматически, без кнопок. Подробно — <a class="code" href="#sh-all-6">2.1, Ш6</a>.</p>
+          <p class="cm">В КПО через Оптимакрос уходят четыре потока: общая квота по узлам отправления; общая квота по направлениям-каналам; квота по завод-каналу; ставки и плановые лидтаймы для завод-каналов. Передача — автоматически ночью раз в сутки или по требованию. Данные получают также Озеро данных и Атлас. <span class="tag gap">пробел</span> Нужен ли отдельный ручной запуск передачи ЗЛУ помимо автоматической ночной.</p></div>
+</article>
+<article class="step" id="sh-mx-7">
+  <header class="step-h"><span class="num">Ш7</span><h4>Контроль полноты</h4></header>
+  <details class="as-is">
+    <summary><span>Как сейчас</span><span class="acc-action"><span class="chev" aria-hidden="true"><svg viewBox="0 0 12 12"><path d="M2 4l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="acc-label"></span></span></summary>
+    <div class="as-is-body">
+      <h5>Мнение владельца продукта</h5>
+      <div class="as-is-text">Списка направлений без квоты в СВТ нет <span class="tag fact">факт</span>.</div>
+      <h5>К чему приводит</h5>
+      <div class="as-is-text pain"><span class="tag gap">пробел</span></div>
+    </div>
+  </details>
+  <div class="propose"><p class="cm"><b>Общее для всех процессов.</b> СВТ ведёт индивидуальный по каждому домену отчёт о нехватке данных с ответственным, сроком и эскалацией; пользователь дозаводит данные или даёт сигнал источнику. Подробно — <a class="code" href="#sh-all-7">2.1, Ш7</a>.</p>
+          <p class="cm">Отчёты о заполнении квот по узлам отправления, по направлениям-каналам и по заводам-каналам: горизонт 15 месяцев от текущего; пустой месяц подсвечивается. Также видны завод-каналы без обязательных маршрутов. Дозаведение квот — зона ЗЛУ.</p></div>
+</article>
+<article class="step" id="sh-mx-8">
+  <header class="step-h"><span class="num">Ш8</span><h4>Контроль целостности</h4></header>
+  <details class="as-is">
+    <summary><span>Как сейчас</span><span class="acc-action"><span class="chev" aria-hidden="true"><svg viewBox="0 0 12 12"><path d="M2 4l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="acc-label"></span></span></summary>
+    <div class="as-is-body">
+      <h5>Мнение владельца продукта</h5>
+      <div class="as-is-text"><span class="tag gap">пробел</span> Отдельных фактов нет; общее — <a class="code" href="#sh-all-8">2.1, Ш8</a>.</div>
+      <h5>К чему приводит</h5>
+      <div class="as-is-text pain"><span class="tag gap">пробел</span></div>
+    </div>
+  </details>
+  <div class="propose"><p class="cm"><b>Общее для всех процессов.</b> СВТ регулярно проверяет корректность и консистентность существующих данных; администратор ИТ корректирует данные или исправляет ошибки новым циклом с Ш1 для изменённых данных. Подробно — <a class="code" href="#sh-all-8">2.1, Ш8</a>.</p>
+          <p class="cm">Примеры проверок:</p>
+          <ul class="plain">
+            <li>в активном направлении-канале или завод-канале ссылка на архивный узел, направление или тип транспорта;</li>
+            <li>у завод-канала нет маршрутов под все узлы назначения направления;</li>
+            <li>нет действующей квоты на текущий месяц у узла отправления, направления-канала или завод-канала.</li>
+          </ul></div>
+</article>
+<article class="step" id="sh-mx-9">
+  <header class="step-h"><span class="num">Ш9</span><h4>Сверка план-факт и сигнал источникам</h4></header>
+  <details class="as-is">
+    <summary><span>Как сейчас</span><span class="acc-action"><span class="chev" aria-hidden="true"><svg viewBox="0 0 12 12"><path d="M2 4l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="acc-label"></span></span></summary>
+    <div class="as-is-body">
+      <h5>Мнение владельца продукта</h5>
+      <div class="as-is-text"><span class="tag gap">пробел</span></div>
+      <h5>К чему приводит</h5>
+      <div class="as-is-text pain"><span class="tag gap">пробел</span></div>
+    </div>
+  </details>
+  <div class="propose"><span class="tag gap">пробел</span> С чем сверять квоты и каналы и куда уходит сигнал — уточнить у бизнеса.</div>
+</article>
+</div>
+
+  <h2 class="sec" id="roli-sh"><span class="n">3.</span> Роли</h2>
+  <p class="lead">Смотреть все справочники могут все роли. Право менять выдаётся набором по <a class="gloss" href="#g-domen">доменам</a>, а не готовой ролью на каждую комбинацию. Правом менять сегодня пользуются около 50 человек. Владелец маршрутов — Кудрявцев В. <span class="tag gap">пробел</span> Имя владельца лидтаймов в материалах СВТ не названо.</p>
+  <div class="card"><div class="table-wrap"><table>
+    <thead><tr><th style="width:200px">Роль</th><th>Что доступно</th><th style="width:260px">Где на кольце</th></tr></thead>
+    <tbody>
+      <tr>
+        <td class="num">Владелец продукта</td>
+        <td>Все бизнес-права по всем доменам, кроме ИТ. Видит журнал загрузок, реестр исключений, отчёт о полноте и расхождения план-факт. Ведёт справочник <a class="gloss" href="#g-priority">«Приоритеты типов ставок»</a>. Владелец формул и порогов проверок <span class="tag hyp">гипотеза</span>. Номинации и квоты утверждает ЗЛУ, сумму свыше 200 млн — тендерный комитет <span class="tag fact">факт</span>: это решения вне СВТ</td>
+        <td>Исключения по всем справочникам на <a class="code" href="#sh-3">Ш3</a>; нехватка данных на <a class="code" href="#sh-7">Ш7</a>; расхождения на <a class="code" href="#sh-9">Ш9</a><br><a class="back" href="#svt-ring">↑ к кольцу</a></td>
+      </tr>
+      <tr>
+        <td class="num">Сотрудник с правами на домен</td>
+        <td>Меняет данные в выбранных доменах: ставки; паритеты; маршруты, плечи и лидтаймы; продукты; склады и ограничения; матрица каналов; интеграция с ЦБД. Домены отмечаются галочками в любом сочетании. Права выдаются и сотрудникам компании, и аутсорсу, сегодня это специалисты «Северсталь». Загрузка файлом и ручной ввод — у узкого круга таких сотрудников</td>
+        <td>Ручной ввод и файл на <a class="code" href="#sh-1">Ш1</a>; исключения своего домена на <a class="code" href="#sh-3">Ш3</a>; задачи своего домена на <a class="code" href="#sh-7">Ш7</a></td>
+      </tr>
+      <tr>
+        <td class="num">Инициатор заявок</td>
+        <td>Создаёт заявки на расчёт ставки и смотрит данные. Заявку на ставку, которую не нашёл умный подбор, создаёт кнопкой в CRM, без перехода в СВТ; ответ приходит на почту. Данные в СВТ не вносит</td>
+        <td>Заявка на <a class="code" href="#sh-1">Ш1</a>; ответ даёт умный подбор или ответственный на <a class="code" href="#sh-7">Ш7</a></td>
+      </tr>
+      <tr>
+        <td class="num">Администратор ИТ</td>
+        <td>Все права, включая служебные справочники: пользователи и роли, настройки, интеграции. Эта же роль — техническая поддержка: одни и те же люди администрируют СВТ и исправляют технические ошибки</td>
+        <td>Целостность на <a class="code" href="#sh-8">Ш8</a>; доставка до систем на <a class="code" href="#sh-6">Ш6</a>; включение правки проверки, запрошенной на <a class="code" href="#sh-3">Ш3</a></td>
+      </tr>
+    </tbody>
+  </table></div></div>
+
+  <h2 class="sec" id="proverki"><span class="n">4.</span> Виды проверок данных</h2>
+  <div class="card"><div class="table-wrap"><table>
+    <thead><tr><th style="width:170px">Вид</th><th style="width:70px">Шаг</th><th>Что проверяет</th><th style="width:220px">Что происходит</th><th style="width:170px">Кто отвечает</th></tr></thead>
+    <tbody>
+      <tr><td>Жёсткая проверка данных</td><td><a class="code" href="#sh-2">Ш2</a></td><td>Нарушен бизнес-инвариант: пустой узел у плеча, абсурдная величина, отклонение от рынка в десятки раз, пересечение интервалов складского ограничения на одну дату</td><td>Строка отклоняется и видна в реестре исключений с причиной</td><td>Тот, кто загружает, или система-источник</td></tr>
+      <tr><td>Мягкая проверка данных</td><td><a class="code" href="#sh-2">Ш2</a> → <a class="code" href="#sh-3">Ш3</a></td><td>Значение похоже на ошибку, но может быть верным: заметно выше прошлого периода, далеко от рынка, резкий скачок</td><td>Предупреждение; ответственный пропускает или отвергает строку</td><td>Сотрудник домена</td></tr>
+      <tr><td>Проверка полноты</td><td><a class="code" href="#sh-7">Ш7</a></td><td>Всё ли есть: направления без ставки, лидтайма или квоты; пакет не пришёл к дате; необработанные запросы CRM</td><td>Задача ответственному со сроком и эскалацией</td><td>Бизнес</td></tr>
+      <tr><td>Проверка целостности</td><td><a class="code" href="#sh-8">Ш8</a></td><td>Корректность и консистентность уже записанных данных: нулевые стоимости, ссылки на узлы, заархивированные во внешней системе, пересекающиеся интервалы складских ограничений</td><td>Задача технической поддержке</td><td>Администратор ИТ</td></tr>
+    </tbody>
+  </table></div></div>
+
+  <h2 class="sec" id="gloss">Глоссарий</h2>
+  <div class="card"><div class="table-wrap"><table>
+    <thead><tr><th style="width:280px">Слово</th><th>Что это</th></tr></thead>
+    <tbody>
+      <tr id="g-domen"><td>Домен</td><td>Группа справочников одной предметной области: <a class="gloss" href="#g-rate">ставки</a>; <a class="gloss" href="#g-parity">паритеты</a>; <a class="gloss" href="#g-route">маршруты</a>, <a class="gloss" href="#g-leg">плечи</a> и <a class="gloss" href="#g-leadtime">лидтаймы</a>; продукты; <a class="gloss" href="#g-warehouse">склады и ограничения</a>; <a class="gloss" href="#g-matrix">матрица каналов</a>; интеграция с <a class="gloss" href="#g-cbd">ЦБД</a>. Право менять выдаётся по доменам. Паритеты — отдельный домен. Интеграция с ЦБД в описании процесса входит в процесс «Ставки», продукты — вспомогательный справочник без своего процесса.</td></tr>
+      <tr id="g-checks"><td>Единые проверки</td><td>Одни и те же проверки для обмена, редактора и загрузчика. Делятся на <a class="gloss" href="#g-hard">жёсткие</a> и <a class="gloss" href="#g-soft">мягкие</a>.</td></tr>
+      <tr id="g-hard"><td>Жёсткая проверка</td><td>Нарушен бизнес-инвариант, например, у <a class="gloss" href="#g-leg">плеча</a> пустой узел. Строка отклоняется.</td></tr>
+      <tr id="g-soft"><td>Мягкая проверка</td><td>Значение похоже на ошибку, но может быть верным, например, <a class="gloss" href="#g-rate">ставка</a> на 50% выше прошлого периода. Это предупреждение: строку пропускает или отвергает человек на <a class="code" href="#sh-3">Ш3</a>.</td></tr>
+      <tr id="g-registry"><td>Реестр исключений</td><td>Список строк, которые не прошли <a class="code" href="#sh-2">проверку данных</a>, с причиной. Из реестра строку пропускают, отвергают или запрашивают правку проверки.</td></tr>
+      <tr id="g-journal"><td>Журнал загрузок</td><td>Что, когда, откуда и куда загружено в СВТ и с каким результатом. Нужен ключевому пользователю для контроля загрузок.</td></tr>
+      <tr id="g-full"><td>Полнота</td><td>Все ли нужные данные есть в СВТ. Отвечает бизнес, шаг <a class="code" href="#sh-7">Ш7</a>.</td></tr>
+      <tr id="g-integrity"><td>Целостность</td><td>Корректность и консистентность уже записанных данных. Отвечает техническая поддержка, шаг <a class="code" href="#sh-8">Ш8</a>.</td></tr>
+      <tr id="g-planfact"><td>Сверка план-факт</td><td>Сравнение действующего значения с фактом исполнения. СВТ только подсвечивает расхождение источнику и ответственным, шаг <a class="code" href="#sh-9">Ш9</a>.</td></tr>
+      <tr id="g-nomination"><td>Номинация</td><td>Распределение объёма между перевозчиками по итогам <a class="gloss" href="#g-rate-tender">тендера</a>.</td></tr>
+      <tr id="g-weighted"><td>Средневзвешенные ставки</td><td>Средние <a class="gloss" href="#g-rate">ставки</a> разных перевозчиков. Вес перевозчика — его <a class="gloss" href="#g-nomination">номинация</a>.</td></tr>
+      <tr id="g-avg3"><td>Средневзвешенная ставка 3 уровня</td><td>Справочник СВТ. Умный подбор берёт <a class="gloss" href="#g-weighted">ставку</a> из него. Формула расчёта в руководстве пользователя не описана.</td></tr>
+      <tr id="g-rate"><td>Ставка</td><td>Логистический тариф.</td></tr>
+      <tr id="g-rate-fact"><td>Фактическая ставка</td><td><a class="gloss" href="#g-rate">Ставка</a>, по которой перевозка фактически выполнена.</td></tr>
+      <tr id="g-rate-contract"><td>Договорная ставка</td><td><a class="gloss" href="#g-rate">Ставка</a> перевозчика, зафиксированная в договоре по итогам <a class="gloss" href="#g-rate-tender">тендера</a> на год или больше. Это тип ставки в справочнике ставок СВТ. Таких ставок мало, их вводят вручную.</td></tr>
+      <tr id="g-indicative"><td>Индикативная ставка</td><td>Запрашивается без торгов у перевозчиков на период 1–3 месяца или собирается со сторонних ресурсов. По авто — данные <a class="gloss" href="#g-ati">ATI</a> из Озера данных. Умный подбор её не берёт. Формула в руководстве не описана.</td></tr>
+      <tr id="g-priority"><td>Приоритеты типов ставок</td><td>Справочник: для каждого вида транспорта задан порядок, в каком типе брать ставку. Его ведёт владелец продукта. Для авто порядок такой: фактическая, договорная, индикативная. По этому порядку считаются бизнес-плановые и спотовые ставки. Бизнес-плановые и спотовые ставки дефлятором не умножаются.</td></tr>
+      <tr id="g-bp"><td>Бизнес-плановая ставка</td><td><a class="gloss" href="#g-rate">Ставка</a> для передачи в <a class="gloss" href="#g-cbd">ЦБД</a> при бизнес-планировании. Считается без дефлятора из ставки первого доступного типа по справочнику <a class="gloss" href="#g-priority">«Приоритеты типов ставок»</a>: для авто это фактическая, затем договорная, затем индикативная. Ставка средневзвешивается до регионов. Для авто на март, апрель и май применяется <a class="gloss" href="#g-rasputica">распутица</a>. Расчёт помесячный на 15 месяцев. Два среза: ежедневно обновляемый и зафиксированный на дату. В ЦБД уходит зафиксированный срез. Ручная корректировка — новый цикл с Ш1, при пересчёте не перезаписывается.</td></tr>
+      <tr id="g-rate-spot"><td>Спотовая ставка</td><td><a class="gloss" href="#g-rate">Ставка</a> на срочный заказ, берётся на аукционе. В СВТ сначала рассчитывается без дефлятора: ставка первого доступного типа по справочнику <a class="gloss" href="#g-priority">«Приоритеты типов ставок»</a>, умноженная на редактируемый коэффициент, по умолчанию 1,3. Затем корректируется по фактической цене спотового аукциона из Логинета. Ручная корректировка — новый цикл с Ш1 и приоритетнее расчёта.</td></tr>
+      <tr id="g-moving"><td>Скользящее среднее</td><td>Средняя <a class="gloss" href="#g-weighted">ставка</a> за окно, например, за неделю или две до текущей даты. Окно сдвигается со временем. Более свежие перевозки могут весить больше.</td></tr>
+      <tr id="g-rasputica"><td>Распутица</td><td>Сезонное ухудшение дорог в марте, апреле и мае. В СВТ — коэффициенты к <a class="gloss" href="#g-rate">ставкам</a> и <a class="gloss" href="#g-leadtime">лидтаймам</a> авто по выделенным направлениям. Это сезонный коэффициент внутри года, отдельно от <a class="gloss" href="#g-deflator">дефлятора</a>: бизнес-плановые и спотовые ставки дефлятором не умножаются.</td></tr>
+      <tr id="g-rate-tender"><td>Тендерная ставка</td><td><a class="gloss" href="#g-rate">Ставка</a> по итогам торгов. В тендере несколько перевозчиков. Ставка связана с <a class="gloss" href="#g-nomination">номинацией</a> и содержит номер лота.</td></tr>
+      <tr id="g-parity"><td>Паритетная ставка</td><td><a class="gloss" href="#g-rate">Ставка</a> доставки от конкурентов до наших рынков сбыта, например, из Китая в Турцию. Считается по методологии из данных внешних порталов. С нашими мультимодальными ставками не сравнивается: это разные рынки. Исключение: маркетинг берёт данные из паритетов, поэтому в паритетах есть ставки, дублирующие <a class="gloss" href="#g-avg3">справочник 3 уровня</a>, и такие паритеты берут значение из него.</td></tr>
+      <tr id="g-ati"><td>ATI</td><td>Источник рыночных <a class="gloss" href="#g-indicative">ставок</a> авто по России. Нужен для <a class="gloss" href="#g-soft">мягкой проверки</a> отклонения от рынка.</td></tr>
+      <tr id="g-rail-type"><td>Тип отправки ЖД</td><td>Твёрдая (по умолчанию), повагонная, групповая, маршрутная, жёсткая нитка. От типа зависит <a class="gloss" href="#g-leadtime">лидтайм</a>.</td></tr>
+      <tr id="g-optimacros"><td>Оптимакрос</td><td>Программа, в которой работают <a class="gloss" href="#g-esd">ЕСД</a> и <a class="gloss" href="#g-kpo">КПО</a>. Отдельным потребителем не является.</td></tr>
+      <tr id="g-esd"><td>ЕСД</td><td>Единая система диспетчеризации: раскладывает отгрузки по календарю, какая отгрузка в какой день. Работает в программе <a class="gloss" href="#g-optimacros">Оптимакрос</a>.</td></tr>
+      <tr id="g-esd-si"><td>ЕСД SI</td><td>Единая система диспетчеризации Sibur International, международный филиал Сибура.</td></tr>
+      <tr id="g-cbd"><td>ЦБД</td><td>Центральная база данных.</td></tr>
+      <tr id="g-ssp"><td>ССП</td><td>Система планирования спроса.</td></tr>
+      <tr id="g-demand"><td>Планируемый спрос</td><td>Вся воронка продаж, которую продажи заводят в <a class="gloss" href="#g-ssp">ССП</a>. К нему добавляется логистика, затем он передаётся в <a class="gloss" href="#g-cbd">ЦБД</a>, где часть спроса отсеивается по ограничениям сырья и логистики.</td></tr>
+      <tr id="g-mls"><td>MLS</td><td>Модель логистической сети. Рассчитывает рейтинг складов: с какого склада выгоднее отгружать продукт клиентам региона, по стоимости доставки до склада и со склада до клиента, хранения и ПРР. Сегодня — отчёт вне СВТ на данных СВТ; в идеальном процессе — модуль внутри СВТ.</td></tr>
+      <tr id="g-kpo"><td>КПО</td><td>Календарное планирование отгрузок. Работает в программе <a class="gloss" href="#g-optimacros">Оптимакрос</a>.</td></tr>
+      <tr id="g-deflated"><td>Дефлированные ставки</td><td>Прогнозные <a class="gloss" href="#g-rate">ставки</a> с коэффициентом <a class="gloss" href="#g-deflator">дефлятора</a>. Считаются от действующей ставки типа, который не является бизнес-плановым и не является спотовым.</td></tr>
+      <tr id="g-deflator"><td>Дефлятор</td><td>Коэффициенты к <a class="gloss" href="#g-rate">ставкам</a>, кроме бизнес-плановых и спотовых. Коэффициенты вводит бизнес вручную.</td></tr>
+      <tr id="g-leg"><td>Плечо</td><td>Транспортное плечо. Состоит из двух узлов, отправления и назначения, или из трёх: отправление, промежуточный узел и назначение. Промежуточный узел используется, как правило, в мультимодальных перевозках на экспорт и обычно является пограничным переходом.</td></tr>
+      <tr id="g-route"><td>Маршрут</td><td>Транспортный маршрут. Состоит из одного <a class="gloss" href="#g-leg">плеча</a> или из нескольких <a class="gloss" href="#g-leg">плеч</a>, соединённых последовательно.</td></tr>
+      <tr id="g-warehouse"><td>Складские ограничения</td><td>Ёмкость склада для разных видов продукции, пропускная способность погрузочно-разгрузочных работ и тариф склада. Задаются на интервал времени. На одну дату интервалы одного склада не пересекаются: это отклоняет жёсткая проверка на загрузке и находит контроль целостности. Прежняя запись хранится со своим интервалом и в архив не списывается. СВТ отдаёт ограничения оптимизатору, в том числе стоимость хранения. Склад, к которому относится ограничение, СВТ собирает из АСВ НСИ и SAP ERP. Человек задаёт у склада только график работы. В ограничении, кроме ёмкости, пропускной способности и тарифа, есть затраты фикс на хранение за месяц.</td></tr>
+      <tr id="g-matrix"><td>Матрица каналов</td><td>Восемь сущностей для календарного планирования: завод отгрузки, узел отправления, направление (зона узлов назначения), направление-канал, завод-канал и три уровня квот (по узлам отправления, по направлениям-каналам, по заводам-каналам). Направление-канал связывает тыловой терминал (необязательно), погранпереход и направление. Завод-канал связывает завод с направлением-каналом; ему соответствуют несколько <a class="gloss" href="#g-route">маршрутов</a> — по узлам назначения. Квоты — помесячно, с единицей измерения КП, КТК, КВ или Авто; авто и КП не суммируются. Потребитель — <a class="gloss" href="#g-kpo">КПО</a> через <a class="gloss" href="#g-optimacros">Оптимакрос</a>.</td></tr>
+      <tr id="g-request"><td>Заявка на расчёт ставки</td><td>Заявка конечного пользователя на подбор <a class="gloss" href="#g-rate">ставки</a> транспортировки заданной продукции по заданному <a class="gloss" href="#g-route">маршруту</a> определённым типом транспорта, обычная или массовая. Это сервис СВТ, а не данные модели. Ставку подбирает система. Если подбор неоднозначен, заявку обрабатывают вручную.</td></tr>
+      <tr id="g-leadtime"><td>Лидтайм</td><td>Нормативный срок перевозки.</td></tr>
+      <tr id="g-agent"><td>ИИ-агент</td><td>Программа второго этапа. Подключается, только если бизнес признает это целесообразным: правила меняются часто и данных много, тогда бизнес сам меняет правила, а данные обрабатываются автоматически. Когда правила меняются редко и данных мало, агент не внедряется: правила меняет техническая поддержка в коде, данные вносит бизнес вручную.</td></tr>
+    </tbody>
+  </table></div></div>
+
+  <p class="footer">СВТ · идеальный процесс · версия 2.3, 29.10.2026 · для Кудрявцева В. · владелец сервиса Подоплелова Е. · источники: «Логистика: создание эталонного процесса и запуск Атласа» (25.09.2026), протокол «Встреча с бизнесом. Что такое Атлас», ФТТ SVT-3716, ТТ SVT-3782 (матрица каналов), руководство пользователя СВТ ред. 32, «СВТ для ИТБК» V15, «Проверки СВТ», ТТ «Целевая структура складов» (НСИ и ERP), ФТ «Склады ERP», замечания Кудрявцева В. к первой версии, встреча с ним по её обсуждению, вторая и третья встречи по идеальному процессу</p>
+</main>
+<script>
+(function () {
+  var chev = '<span class="chev" aria-hidden="true"><svg viewBox="0 0 12 12"><path d="M2 4l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="acc-label"></span>';
+  function hintFrom(h) {
+    var p = h.nextElementSibling;
+    if (!p || !p.classList || !p.classList.contains('lead')) return '';
+    var t = (p.textContent || '').replace(/\s+/g, ' ').trim();
+    return t.length > 110 ? t.slice(0, 107) + '…' : t;
+  }
+  function wrapHeadings(selector, stopSel, extraClass) {
+    var heads = Array.prototype.slice.call(document.querySelectorAll(selector));
+    heads.forEach(function (h) {
+      if (h.closest('details.acc')) return;
+      if (h.id === 's-process' || h.id === 'shagi') return;
+      var hint = hintFrom(h);
+      var body = document.createElement('div');
+      body.className = 'acc-body';
+      var n = h.nextSibling;
+      while (n) {
+        if (n.nodeType === 1) {
+          if (n.matches && n.matches(stopSel)) break;
+          if (n.classList && n.classList.contains('footer')) break;
+        }
+        var next = n.nextSibling;
+        body.appendChild(n);
+        n = next;
+      }
+      var parent = h.parentNode;
+      var place = h.nextSibling;
+      var d = document.createElement('details');
+      d.className = 'acc ' + extraClass;
+      d.open = true;
+      var sum = document.createElement('summary');
+      var text = document.createElement('span');
+      text.className = 'acc-text';
+      text.appendChild(h);
+      if (hint) {
+        var hi = document.createElement('span');
+        hi.className = 'acc-hint';
+        hi.textContent = hint;
+        text.appendChild(hi);
+      }
+      var act = document.createElement('span');
+      act.className = 'acc-action';
+      act.innerHTML = chev;
+      sum.appendChild(text);
+      sum.appendChild(act);
+      d.appendChild(sum);
+      d.appendChild(body);
+      parent.insertBefore(d, place);
+    });
+  }
+  wrapHeadings('h3.sub', 'h2.sec, h3.sub', 'sub-acc');
+  wrapHeadings('h2.sec', 'h2.sec', 'sec-acc');
+  function openHash() {
+    var id = (location.hash || '').slice(1);
+    if (!id) return;
+    var el = document.getElementById(id);
+    if (!el) return;
+    var node = el;
+    while (node) {
+      if (node.tagName === 'DETAILS') node.open = true;
+      node = node.parentElement;
+    }
+    requestAnimationFrame(function () { el.scrollIntoView({ block: 'start' }); });
+  }
+  document.addEventListener('click', function (e) {
+    var a = e.target.closest ? e.target.closest('a[href^="#"]') : null;
+    if (!a) return;
+    setTimeout(openHash, 0);
+  });
+  window.addEventListener('hashchange', openHash);
+  openHash();
+})();
+(function () {
+  var el = document.getElementById('svt-ring'); if (!el) return;
+  var NAVY = '#0f3b4c', TEAL = '#14868c', RED = '#e05a47', GOLD = '#8a6a00';
+  var W = 1400, H = 1000, cx = 700, cy = 505, rx = 400, ry = 355, bw = 200, bh = 66;
+  var steps = [
+    ['Ш1 · Получение', 'данных'], ['Ш2 · Проверка', 'данных'], ['Ш3 · Утверждение', 'исключений'],
+    ['Ш4 · Расчёт', 'производных'], ['Ш5 · Ввод', 'в действие с даты'], ['Ш6 · Передача', 'потребителям'],
+    ['Ш7 · Контроль', 'полноты'], ['Ш8 · Контроль', 'целостности'], ['Ш9 · Сверка план-факт', 'и сигнал источникам']
+  ];
+  var waitStops = { 2: 'Строка ждёт' };
+  var goStops = { 6: 'Нехватка, данные идут', 7: 'Целостность, данные идут', 8: 'Расхождение, данные идут' };
+  var core = ['Единые проверки', 'Реестр исключений', 'Журнал загрузок', 'Полнота и расхождения', 'Передача: онлайн и ночью'];
+  function rad(a) { return a * Math.PI / 180; }
+  function pt(a, kx, ky) { return [cx + (kx || rx) * Math.cos(rad(a)), cy + (ky || ry) * Math.sin(rad(a))]; }
+  function esc(s) { return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;'); }
+  function t(x, y, s, size, weight, color, anchor) {
+    return '<text x="' + x + '" y="' + y + '" font-size="' + size + '" font-weight="' + (weight || 400) + '" fill="' + (color || NAVY) +
+      '" text-anchor="' + (anchor || 'middle') + '" dominant-baseline="middle">' + esc(s) + '</text>';
+  }
+  var o = [];
+  o.push('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ' + W + ' ' + H + '" style="width:100%;height:auto;min-width:900px" font-family="Segoe UI, Arial, sans-serif">');
+  o.push('<defs>' +
+    '<marker id="rn" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="' + NAVY + '"/></marker>' +
+    '<marker id="rt" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="' + TEAL + '"/></marker>' +
+    '<marker id="rr" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="' + RED + '"/></marker>' +
+    '<marker id="rg" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="' + GOLD + '"/></marker></defs>');
+  o.push(t(cx, 26, 'СВТ: целевое кольцо ведения модели', 22, 800));
+  var lg = 62, lx = 110;
+  o.push('<line x1="' + lx + '" y1="' + lg + '" x2="' + (lx + 40) + '" y2="' + lg + '" stroke="' + NAVY + '" stroke-width="3"/>' + t(lx + 48, lg, 'путь изменения (по часовой)', 13, 400, NAVY, 'start'));
+  o.push('<line x1="' + (lx + 280) + '" y1="' + lg + '" x2="' + (lx + 320) + '" y2="' + lg + '" stroke="' + TEAL + '" stroke-width="2.5" stroke-dasharray="7 5"/>' + t(lx + 328, lg, 'обратная связь (против часовой)', 13, 400, NAVY, 'start'));
+  o.push('<line x1="' + (lx + 590) + '" y1="' + lg + '" x2="' + (lx + 630) + '" y2="' + lg + '" stroke="' + RED + '" stroke-width="2.5" stroke-dasharray="6 4"/>' + t(lx + 638, lg, 'Ш3: строка ждёт человека', 13, 400, NAVY, 'start'));
+  var lg2 = lg + 24;
+  o.push('<line x1="' + lx + '" y1="' + lg2 + '" x2="' + (lx + 40) + '" y2="' + lg2 + '" stroke="' + GOLD + '" stroke-width="2.5" stroke-dasharray="6 4"/>' + t(lx + 48, lg2, 'Ш7–Ш9: сигнал человеку, данные идут дальше', 13, 400, NAVY, 'start'));
+  o.push('<circle cx="' + (lx + 520) + '" cy="' + lg2 + '" r="6" fill="#3cc49b"/>' + t(lx + 534, lg2, 'полный цикл без выходов к человеку', 13, 400, NAVY, 'start'));
+
+  var step = 360 / steps.length;
+  var ang = steps.map(function (_, i) { return -90 + i * step; });
+  for (var i = 0; i < steps.length; i++) {
+    var a1 = ang[i] + 12, a2 = ang[(i + 1) % steps.length] - 12 + (i === steps.length - 1 ? 360 : 0);
+    var p1 = pt(a1), p2 = pt(a2);
+    o.push('<path d="M' + p1[0] + ',' + p1[1] + ' A' + rx + ',' + ry + ' 0 0 1 ' + p2[0] + ',' + p2[1] + '" fill="none" stroke="' + NAVY + '" stroke-width="3" marker-end="url(#rn)"/>');
+  }
+  var ix = 280, iy = 245, s1 = pt(250, ix, iy), s2 = pt(-60, ix, iy);
+  o.push('<path d="M' + s1[0] + ',' + s1[1] + ' A' + ix + ',' + iy + ' 0 1 0 ' + s2[0] + ',' + s2[1] + '" fill="none" stroke="' + TEAL + '" stroke-width="2.5" stroke-dasharray="8 6" marker-end="url(#rt)"/>');
+  o.push(t(cx, cy - iy + 48, 'расхождение план-факт —', 13, 700, TEAL));
+  o.push(t(cx, cy - iy + 66, 'сигнал источникам и владельцам', 13, 700, TEAL));
+
+  var kw = 440, kh = 192, kx = cx - kw / 2, ky = cy - kh / 2;
+  o.push('<rect x="' + kx + '" y="' + ky + '" width="' + kw + '" height="' + kh + '" rx="14" fill="#e9f5f5" stroke="' + TEAL + '" stroke-width="2"/>');
+  o.push(t(cx, ky + 24, 'Ядро · механизмы', 16, 800));
+  core.forEach(function (c, j) {
+    var col = j % 2, row = Math.floor(j / 2), x = kx + 16 + col * 208, y = ky + 46 + row * 45;
+    var cw = (j === core.length - 1 && core.length % 2 === 1) ? 404 : 196;
+    o.push('<rect x="' + x + '" y="' + y + '" width="' + cw + '" height="36" rx="8" fill="#fff" stroke="' + TEAL + '" stroke-width="1.4"/>');
+    o.push(t(x + cw / 2, y + 18, c, 13, 700));
+  });
+
+  steps.forEach(function (s, i) {
+    var p = pt(ang[i]), x = p[0] - bw / 2, y = p[1] - bh / 2;
+    o.push('<a href="#sh-' + (i + 1) + '" class="stop-link"><title>' + s[0] + ' — открыть описание шага</title>');
+    o.push('<rect x="' + x + '" y="' + y + '" width="' + bw + '" height="' + bh + '" rx="10" fill="#fff" stroke="' + NAVY + '" stroke-width="2"/>');
+    o.push(t(p[0], p[1] - 11, s[0], 14, 800));
+    o.push(t(p[0], p[1] + 12, s[1], 14, 800));
+    o.push('</a>');
+    if (waitStops[i] || goStops[i]) {
+      var label = waitStops[i] || goStops[i];
+      var color = waitStops[i] ? RED : GOLD;
+      var marker = waitStops[i] ? 'rr' : 'rg';
+      var css = waitStops[i] ? 'stop-link' : 'go-link';
+      var pw = Math.ceil(label.length * 7.2 + 18);
+      var dx = Math.cos(rad(ang[i])), dy = Math.sin(rad(ang[i]));
+      var hx = p[0] + dx * (bw / 2 + 30 + pw / 2), hy = p[1] + dy * (bh / 2 + 40);
+      hx = Math.max(pw / 2 + 8, Math.min(W - pw / 2 - 8, hx));
+      var ex = p[0] + dx * (bw / 2 + 6), ey = p[1] + dy * (bh / 2 + 6);
+      o.push('<line x1="' + ex + '" y1="' + ey + '" x2="' + (hx - dx * (pw / 2)) + '" y2="' + (hy - dy * 14) + '" stroke="' + color + '" stroke-width="2" stroke-dasharray="6 4" marker-end="url(#' + marker + ')"/>');
+      o.push('<a href="#sh-' + (i + 1) + '" class="' + css + '"><title>' + label + ': открыть шаг</title>');
+      o.push('<rect x="' + (hx - pw / 2) + '" y="' + (hy - 14) + '" width="' + pw + '" height="28" rx="14" fill="#fff" stroke="' + color + '" stroke-width="1.8"/>');
+      o.push(t(hx, hy, label, 12, 800, color));
+      o.push('</a>');
+    }
+  });
+  o.push('</svg>');
+  el.innerHTML = o.join('');
+})();
+</script>
+</body>
+</html>

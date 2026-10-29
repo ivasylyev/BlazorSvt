@@ -150,6 +150,12 @@
   <data name="HeaderMenu.Domain.Rates.Hint" xml:space="preserve">
     <value>Ставки</value>
   </data>
+  <data name="HeaderMenu.Domain.Parities" xml:space="preserve">
+    <value>Паритеты</value>
+  </data>
+  <data name="HeaderMenu.Domain.Parities.Hint" xml:space="preserve">
+    <value>Паритеты</value>
+  </data>
   <data name="HeaderMenu.Domain.Routes" xml:space="preserve">
     <value>Маршруты</value>
   </data>

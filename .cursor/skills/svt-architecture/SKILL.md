@@ -25,7 +25,7 @@ description: >-
 
 Корпоративный паспорт действующей ИС (критичность, ИСПДн, СУБД, обновление) — [reference.md](reference.md) §4.6.
 
-**Текущий статус**: фреймворк read-only справочников и выгрузки Excel грида/карточки (не модуль сквозных отчётов MVP 0.3.1). На проде: TransportRate, AverageRateLevel3, LocationsNodes, ParityRates, TransportLeg, RateType (в реестре легаси-имена Rates и TransportLegs; RateType — стабильный словарь без SyncJob). Также в коде: `HomeRatePivot`, `SmartRateLookup`. Watermark-sync; Windows Auth + роли `dbo.Role` (любая роль = read). Пилот read-only API для Атласа (`/api/v1`: все **зарегистрированные** модули справочников + умный подбор ставки; [reference.md](reference.md) §«API для внешних фронтендов»). Прототип Import: Excel + валидаторы + UI; staging не подключён, Import на проде закрыт. Каркас unit + integration тестов в `tests/`. `HomeRatePivot` читает снимки AverageRateLevel3 и LocationsNodes; правило отбора ставки пока в тексте SQL. Дашборды — MVP 1.1. Скоуп — [catalogs-scope.md](catalogs-scope.md); план — [roadmap.md](roadmap.md); чеклист — [backlog.md](backlog.md).
+**Текущий статус**: фреймворк read-only справочников и выгрузки Excel грида/карточки (не модуль сквозных отчётов MVP 0.3.1). На проде: TransportRate, AverageRateLevel3, LocationsNodes, ParityRates, TransportLeg, RateType (в реестре легаси-имена Rates и TransportLegs; RateType — стабильный словарь, разовый снимок, без watermark-sync). Также в коде: `HomeRatePivot`, `SmartRateLookup`. Watermark-sync; Windows Auth + роли `dbo.Role` (любая роль = read). Пилот read-only API для Атласа (`/api/v1`: все **зарегистрированные** модули справочников + умный подбор ставки; [reference.md](reference.md) §«API для внешних фронтендов»). Прототип Import: Excel + валидаторы + UI; staging не подключён, Import на проде закрыт. Каркас unit + integration тестов в `tests/`. `HomeRatePivot` читает снимки AverageRateLevel3 и LocationsNodes; правило отбора ставки пока в тексте SQL. Дашборды — MVP 1.1. Скоуп — [catalogs-scope.md](catalogs-scope.md); план — [roadmap.md](roadmap.md); чеклист — [backlog.md](backlog.md).
 
 ## Чеклист перед реализацией
 
@@ -36,7 +36,7 @@ description: >-
 5. Read через snapshot/CQRS; write отделён?
 6. Без Elastic/RabbitMQ/распределённого монолита?
 7. Покрыты ли изменения тестами? Unit — C#-логика (`GridQueryFactory`, валидаторы, contract DTO); integration — read-only smoke SP/view для нового справочника (см. `svt-development-patterns`, секция «Тестирование»)
-8. Для write: write-through в легаси до cutover; LWW; доменный write-toggle (`V2WriteEnabled_{Домен}`, не единый глобальный); аудит полей — с MVP 1.0 (до этого риск принят)
+8. Для write: write-through в легаси до cutover; LWW; доменный write-toggle (`V2WriteEnabled_{Домен}`, не единый глобальный); field-level аудит — с MVP 1.0, до этого отсутствие аудита — принятый риск
 9. Если атрибут приходит из АСВ НСИ или ЦБД, не заводить для него редактор и не делать СВТ источником истины. Состав — [catalogs-scope.md](catalogs-scope.md), раздел «Внешние мастера»
 10. Новый справочник или операция доступны Атласу через API (`AddCatalogApi` / `IApiEndpointContribution`)? Правила UI и API — одни (тот же сервис, тот же `IAccessGuard`), контракт не сломан (`OpenApiContractTests`)
 
@@ -77,3 +77,4 @@ description: >-
 - Реестр справочников (SoT скоупа: состав доменов, RO/E/L, меню, приоритеты) — [catalogs-scope.md](catalogs-scope.md). Канон при изменении — этот файл в репозитории; Excel на Confluence — только исходный дамп легаси
 - Диаграммы для архитектурного ревью —
   [docs/architecture/README.md](../../../docs/architecture/README.md)
+- Пакет для передачи на ревью собирается по [docs/architecture/output-review-package/README.md](../../../docs/architecture/output-review-package/README.md): четыре markdown-файла этого навыка, диаграммы и `SVT-idealnyy-process2.html`. Канон — файлы навыка; пакет только снимок

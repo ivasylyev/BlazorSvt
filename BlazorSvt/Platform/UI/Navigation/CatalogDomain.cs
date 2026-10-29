@@ -6,10 +6,11 @@ namespace BlazorSvt.Platform.UI.Navigation;
 public enum CatalogDomain
 {
     Rates = 1,
-    Routes = 2,
-    Products = 3,
-    Warehouses = 4,
-    MK = 5,
-    Cbd = 6,
-    Other = 7
+    Parities = 2,
+    Routes = 3,
+    Products = 4,
+    Warehouses = 5,
+    MK = 6,
+    Cbd = 7,
+    Other = 8
 }
