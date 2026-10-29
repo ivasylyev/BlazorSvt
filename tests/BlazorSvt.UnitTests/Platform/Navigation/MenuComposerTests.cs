@@ -21,6 +21,7 @@ public class MenuComposerTests
     {
         CatalogDomains.All.Select(domain => domain.Domain).Should().Equal(
             CatalogDomain.Rates,
+            CatalogDomain.Parities,
             CatalogDomain.Routes,
             CatalogDomain.Products,
             CatalogDomain.Warehouses,
@@ -130,6 +131,8 @@ public class MenuComposerTests
     [Theory]
     [InlineData("en-US", "HeaderMenu.Domain.Rates", "Rates")]
     [InlineData("en-US", "HeaderMenu.Domain.Rates.Hint", "Rates")]
+    [InlineData("en-US", "HeaderMenu.Domain.Parities", "Parities")]
+    [InlineData("en-US", "HeaderMenu.Domain.Parities.Hint", "Parities")]
     [InlineData("en-US", "HeaderMenu.Domain.Routes", "Routes")]
     [InlineData("en-US", "HeaderMenu.Domain.Routes.Hint", "Routes")]
     [InlineData("en-US", "HeaderMenu.Domain.Products", "Products")]
@@ -144,6 +147,8 @@ public class MenuComposerTests
     [InlineData("en-US", "HeaderMenu.Domain.Other.Hint", "Auxiliary catalogs")]
     [InlineData("ru-RU", "HeaderMenu.Domain.Rates", "Ставки")]
     [InlineData("ru-RU", "HeaderMenu.Domain.Rates.Hint", "Ставки")]
+    [InlineData("ru-RU", "HeaderMenu.Domain.Parities", "Паритеты")]
+    [InlineData("ru-RU", "HeaderMenu.Domain.Parities.Hint", "Паритеты")]
     [InlineData("ru-RU", "HeaderMenu.Domain.Routes", "Маршруты")]
     [InlineData("ru-RU", "HeaderMenu.Domain.Routes.Hint", "Маршруты")]
     [InlineData("ru-RU", "HeaderMenu.Domain.Products", "Продукты")]
@@ -181,7 +186,7 @@ public class MenuComposerTests
         [
             new CatalogMenuContribution(CatalogDomain.Rates, "transportrate", "HeaderMenu.TransportRate", true),
             new CatalogMenuContribution(CatalogDomain.Rates, "averageratelevel3", "HeaderMenu.AverageRateLevel3", true),
-            new CatalogMenuContribution(CatalogDomain.Rates, "parityrates", "HeaderMenu.ParityRates", true),
+            new CatalogMenuContribution(CatalogDomain.Parities, "parityrates", "HeaderMenu.ParityRates", true),
             new CatalogMenuContribution(CatalogDomain.Routes, "transportleg", "HeaderMenu.TransportLeg", true),
             new CatalogMenuContribution(CatalogDomain.Routes, "locationsnodes", "HeaderMenu.LocationsNodes", true)
         ]);
@@ -190,19 +195,27 @@ public class MenuComposerTests
             contributions,
             key => Resources.GetString(key, CultureInfo.GetCultureInfo("ru-RU"))!,
             CultureInfo.GetCultureInfo("ru-RU"));
-        ru.Select(group => group.Domain).Should().Equal(CatalogDomain.Rates, CatalogDomain.Routes);
+        ru.Select(group => group.Domain).Should().Equal(
+            CatalogDomain.Rates,
+            CatalogDomain.Parities,
+            CatalogDomain.Routes);
         ru[0].Items.Select(item => item.Text).Should().Equal(
-            "Паритетные ставки",
             "Средневзвешенные ставки",
             "Ставки");
-        ru[1].Items.Select(item => item.Text).Should().Equal("Местоположения-Узлы", "Транспортные плечи");
+        ru[1].Items.Select(item => item.Text).Should().Equal("Паритетные ставки");
+        ru[2].Items.Select(item => item.Text).Should().Equal("Местоположения-Узлы", "Транспортные плечи");
 
         var en = MenuComposer.Compose(
             contributions,
             key => Resources.GetString(key, CultureInfo.GetCultureInfo("en-US"))!,
             CultureInfo.GetCultureInfo("en-US"));
-        en[0].Items.Select(item => item.Text).Should().Equal("Average Rate", "Parity rates", "Rates");
-        en[1].Items.Select(item => item.Text).Should().Equal("Locations-Nodes", "Transport Legs");
+        en.Select(group => group.Domain).Should().Equal(
+            CatalogDomain.Rates,
+            CatalogDomain.Parities,
+            CatalogDomain.Routes);
+        en[0].Items.Select(item => item.Text).Should().Equal("Average Rate", "Rates");
+        en[1].Items.Select(item => item.Text).Should().Equal("Parity rates");
+        en[2].Items.Select(item => item.Text).Should().Equal("Locations-Nodes", "Transport Legs");
     }
 
     private static readonly ResourceManager Resources = new(

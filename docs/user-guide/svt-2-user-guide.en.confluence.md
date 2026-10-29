@@ -73,9 +73,9 @@ At the bottom of the page there is a footer bar: on the left, the load time of t
 ||Domain||Menu item||Page title (as shown in the system)||
 |—|Home|Summary «Average rates by direction»|
 |Rates|Average Rate|Average Rate|
-|Rates|Parity rates|Parity rates|
 |Rates|Rates|Rates|
 |Rates|Rate type|Rate type|
+|Parities|Parity rates|Parity rates|
 |Routes|Locations-Nodes|Locations-Nodes|
 |Routes|Transport Legs|Transport Legs|
 

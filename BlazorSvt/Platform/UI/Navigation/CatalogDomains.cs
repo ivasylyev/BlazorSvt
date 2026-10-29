@@ -10,6 +10,7 @@ public static class CatalogDomains
     public static IReadOnlyList<CatalogDomainDefinition> All { get; } =
     [
         new(CatalogDomain.Rates, "HeaderMenu.Domain.Rates", "HeaderMenu.Domain.Rates.Hint"),
+        new(CatalogDomain.Parities, "HeaderMenu.Domain.Parities", "HeaderMenu.Domain.Parities.Hint"),
         new(CatalogDomain.Routes, "HeaderMenu.Domain.Routes", "HeaderMenu.Domain.Routes.Hint"),
         new(CatalogDomain.Products, "HeaderMenu.Domain.Products", "HeaderMenu.Domain.Products.Hint"),
         new(CatalogDomain.Warehouses, "HeaderMenu.Domain.Warehouses", "HeaderMenu.Domain.Warehouses.Hint"),

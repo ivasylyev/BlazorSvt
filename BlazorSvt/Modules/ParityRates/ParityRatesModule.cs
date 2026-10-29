@@ -16,13 +16,13 @@ public static class ParityRatesModule
 
         services.AddSingleton<ISnapshotSyncJob, ParityRatesSyncJob>();
         services.AddCatalogMenu(new CatalogMenuContribution(
-            CatalogDomain.Rates,
+            CatalogDomain.Parities,
             "parityrates",
             "HeaderMenu.ParityRates",
             VisibleToEditor: true));
         services.AddCatalogApi<ParityRatesDto, ParityRatesDetailDto>(
             "parity-rates",
-            CatalogDomain.Rates,
+            CatalogDomain.Parities,
             "HeaderMenu.ParityRates",
             new CatalogPeriod(nameof(ParityRatesDto.StartDate), nameof(ParityRatesDto.EndDate)));
 
