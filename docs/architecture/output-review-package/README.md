@@ -1,10 +1,11 @@
 # Пакет документов для архитектурного ревью СВТ 2.0
 
 > Плоская копия-снэпшот для передачи на ревью (все файлы в одной папке).
-> **Снимок обновлён:** 2026-10-21 (из `.cursor/skills/svt-architecture/`). Не источник истины —
+> **Снимок обновлён:** 2026-10-29 (из `.cursor/skills/svt-architecture/` и `docs/docs/svt-v-atlas/SVT-idealnyy-process2.html`). Не источник истины —
 > канон всегда skills; при расхождении править skills и переснять пакет.
 > Канон в репозитории: `.cursor/skills/svt-architecture/` (`reference.md`, `roadmap.md`,
-> `backlog.md`, `catalogs-scope.md`) и `docs/architecture/`.
+> `backlog.md`, `catalogs-scope.md`), `docs/docs/svt-v-atlas/SVT-idealnyy-process2.html`
+> и `docs/architecture/`.
 > В копии пакета перекрёстные ссылки между этими четырьмя документами заменены на страницы
 > Confluence (ревьюер ходит по опубликованным страницам, а не по соседним файлам папки).
 
@@ -21,9 +22,11 @@
 | `backlog.md` | [03. Бэклог трансформации СВТ](https://confluence.sibur.local/pages/viewpage.action?pageId=583080778) |
 | `catalogs-scope.md` | [04. Список справочников для трансформации СВТ](https://confluence.sibur.local/pages/viewpage.action?pageId=573822390) |
 
-3. Диаграммы, `review-current-state.html` и это оглавление не переписывать на Confluence.
+3. Скопировать `docs/docs/svt-v-atlas/SVT-idealnyy-process2.html` в эту папку как есть.
+   Ссылки на соседние файлы Атласа внутри пакета не открываются: в пакет входит только этот HTML.
+4. Диаграммы, `review-current-state.html` и это оглавление не переписывать на Confluence.
    Skills в `.cursor/skills/` не менять.
-4. Заархивировать папку `output-review-package` в `docs/architecture/output-review-package.zip`
+5. Заархивировать папку `output-review-package` в `docs/architecture/output-review-package.zip`
    (рядом с папкой, не внутри неё). В корне архива — сама папка `output-review-package/`.
    Старый zip перезаписать.
 
@@ -37,6 +40,7 @@
 миграции, метрики пилотов, протокол нагрузки) — [`roadmap.md`](roadmap.md).  
 Чеклист работ, таблица этапов и оценки — [`backlog.md`](backlog.md).  
 Реестр справочников (скоуп, домены, RO/E/L, меню, приоритеты) — [`catalogs-scope.md`](catalogs-scope.md).  
+Идеальный процесс СВТ, версия 2.3 — [`SVT-idealnyy-process2.html`](SVT-idealnyy-process2.html).  
 Снимок повторного architecture review — [`review-current-state.html`](review-current-state.html).
 
 Отдельные файлы под каждый артефакт митигации **не ведутся** — всё в [02. План трансформации СВТ](https://confluence.sibur.local/pages/viewpage.action?pageId=573815766) §2б.

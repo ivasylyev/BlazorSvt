@@ -13,6 +13,9 @@
   [`../../.cursor/skills/svt-architecture/catalogs-scope.md`](../../.cursor/skills/svt-architecture/catalogs-scope.md)
   (в пакете для передачи — [`output-review-package/catalogs-scope.md`](output-review-package/catalogs-scope.md))
 - Снимок повторного architecture review: [`review-current-state.html`](review-current-state.html)
+- В пакете для передачи также идеальный процесс, версия 2.3:
+  [`output-review-package/SVT-idealnyy-process2.html`](output-review-package/SVT-idealnyy-process2.html)
+  (канон — [`../docs/svt-v-atlas/SVT-idealnyy-process2.html`](../docs/svt-v-atlas/SVT-idealnyy-process2.html))
 
 Отдельные файлы под каждый артефакт митигации **не ведутся** — всё в `roadmap.md` §2б,
 чтобы занятому ревьюеру не прыгать по папке.

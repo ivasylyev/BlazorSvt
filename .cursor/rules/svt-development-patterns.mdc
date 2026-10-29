@@ -63,7 +63,7 @@ Serilog (`Host/Program.cs`, секция `Serilog` в `appsettings.json`). Пр�
 - **Корреляция**: HTTP — `MiddlewareDecorator` (`ShortCorrelationId`, `UserLogin`, `Channel`; входящий `X-Correlation-ID` принимается и возвращается в ответе); Blazor circuit — `CircuitCorrelationHandler` (`CircuitId` + `ShortCorrelationId` + `UserLogin`, `Channel = Blazor`); sync — `SyncCycleId` на цикл в `SnapshotSyncScheduler`
 - **API**: `Channel = Api`, `UserLogin` — конечный пользователь из `X-On-Behalf-Of`, `ApiClient` — служебная учётка. На вызов — одна строка `API {операция} {справочник} for {пользователь} via {клиент}: {статус}, rows, ms` (`ApiAccessMiddleware`; файловый шаблон выводит только текст сообщения). Тела запросов не логировать
 - **Sync health**: duration, cursor lag / affected в `SnapshotSyncExecutor`; ошибки entity изолированы в scheduler
-- **Аудит изменений данных** (кто/что/когда) — ещё не реализован; при write/batch/редакторах обязателен (чеклист architecture skill)
+- **Аудит изменений данных** (кто/что/когда) — field-level аудит с MVP 1.0, до этого отсутствие аудита — принятый риск (чеклист architecture skill)
 
 ## Доступ (Windows Auth + роли)
 
