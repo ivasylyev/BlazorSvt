@@ -3,19 +3,19 @@
 Диаграммы развёртывания, обоснование и дорожная карта для **условного** архитектурного
 одобрения.
 
-- Обоснование и альтернативы: [`../../.cursor/skills/svt-architecture/reference.md`](../../.cursor/skills/svt-architecture/reference.md) (в т.ч. §6.9)
+- Обоснование и альтернативы: [`reference.md`](reference.md) (в т.ч. §6.9)
 - План, Gate A/B/C/D, **отложенная митигация рисков §2б** (реестр D-* + приложения: модель угроз,
   SoD, миграции, SLI/SLO, метрики пилотов, протокол нагрузки):
-  [`../../.cursor/skills/svt-architecture/roadmap.md`](../../.cursor/skills/svt-architecture/roadmap.md)
+  [`roadmap.md`](roadmap.md)
 - Чеклист работ, таблица этапов и оценки:
-  [`../../.cursor/skills/svt-architecture/backlog.md`](../../.cursor/skills/svt-architecture/backlog.md)
+  [`backlog.md`](backlog.md)
 - Реестр справочников (скоуп, домены, RO/E/L):
-  [`../../.cursor/skills/svt-architecture/catalogs-scope.md`](../../.cursor/skills/svt-architecture/catalogs-scope.md)
-  (в пакете для передачи — [`output-review-package/catalogs-scope.md`](output-review-package/catalogs-scope.md))
-- Снимок повторного architecture review: [`review-current-state.html`](review-current-state.html)
+  [`catalogs-scope.md`](catalogs-scope.md)
+  (в пакете для передачи — [`catalogs-scope.md`](../../../docs/output-review-package/catalogs-scope.md))
+- Снимок повторного architecture review: [`review-current-state.html`](../../../docs/output-review-package/review-current-state.html)
 - В пакете для передачи также идеальный процесс, версия 2.3:
-  [`output-review-package/SVT-idealnyy-process2.html`](output-review-package/SVT-idealnyy-process2.html)
-  (канон — [`../docs/svt-v-atlas/SVT-idealnyy-process2.html`](../docs/svt-v-atlas/SVT-idealnyy-process2.html))
+  [`SVT-idealnyy-process2.html`](../../../docs/output-review-package/SVT-idealnyy-process2.html)
+  (канон — [`SVT-idealnyy-process2.html`](../../../docs/docs/svt-v-atlas/SVT-idealnyy-process2.html))
 
 Отдельные файлы под каждый артефакт митигации **не ведутся** — всё в `roadmap.md` §2б,
 чтобы занятому ревьюеру не прыгать по папке.
@@ -24,9 +24,9 @@
 
 | № | Файл | Состояние | Статус |
 |---|---|---|---|
-| 1 | [`diagrams/01-as-is-legacy.png`](diagrams/01-as-is-legacy.png) | Легаси (As-Is): распределённый монолит, Elastic, RabbitMQ, Angular | Текущее состояние прод |
-| 2 | [`diagrams/02-to-be-current-program.png`](diagrams/02-to-be-current-program.png) | Целевая архитектура **текущей программы** трансформации (итог MVP 2.0 / Gate D): та же ВМ и Windows Server 2016/IIS, модульный монолит .NET Blazor, без Elastic/RabbitMQ | Согласуется в рамках этого ревью |
-| 3 | [`diagrams/03-future-containers-out-of-scope.png`](diagrams/03-future-containers-out-of-scope.png) | Возможное будущее состояние — контейнеризация (Docker/Kubernetes) | **Вне скоупа текущей программы**; отдельная будущая инициатива с отдельным бизнес-кейсом |
+| 1 | [`01-as-is-legacy.png`](01-as-is-legacy.png) | Легаси (As-Is): распределённый монолит, Elastic, RabbitMQ, Angular | Текущее состояние прод |
+| 2 | [`02-to-be-current-program.png`](02-to-be-current-program.png) | Целевая архитектура **текущей программы** трансформации (итог MVP 2.0 / Gate D): та же ВМ и Windows Server 2016/IIS, модульный монолит .NET Blazor, без Elastic/RabbitMQ | Согласуется в рамках этого ревью |
+| 3 | [`03-future-containers-out-of-scope.png`](03-future-containers-out-of-scope.png) | Возможное будущее состояние — контейнеризация (Docker/Kubernetes) | **Вне скоупа текущей программы**; отдельная будущая инициатива с отдельным бизнес-кейсом |
 
 ## Почему три, а не одна схема
 
@@ -43,5 +43,5 @@
 (sticky/affinity, см. `reference.md` §6.1) не должен архитектурно исключать последующий переход
 на многоузловой/K8s-деплой.
 
-Пакет для передачи: [`output-review-package/`](output-review-package/)
-и архив [`output-review-package.zip`](output-review-package.zip) (рядом с папкой).
+Пакет для передачи: [`output-review-package/`](../../../docs/output-review-package/)
+и архив [`output-review-package.zip`](../../../docs/output-review-package.zip) (рядом с папкой).

@@ -277,7 +277,7 @@ Read-only справочник из [catalogs-scope.md](catalogs-scope.md) пр�
 всех нефункциональных требований (NFR) и не разрешение массового тиража / контура записи «как есть».
 
 **Принцип.** Жёлтые зоны повторного архитектурного ревью (architecture review)
-(`docs/architecture/review-current-state.html`, условия 3–7) — не скрытые пробелы,
+(`docs/output-review-package/review-current-state.html`, условия 3–7) — не скрытые пробелы,
 а **осознанный остаточный риск (residual risk)** с владельцем, сроком (Gate / MVP) и проверяемым
 критерием «стало зелёным». Документация не выдаёт план за факт: закрытие условия —
 либо **артефакт** (анализ/согласование), либо **исполнение** (код/CI/замер/drill).
@@ -350,7 +350,7 @@ Read-only справочник из [catalogs-scope.md](catalogs-scope.md) пр�
 ### Правило обновления статуса
 
 При закрытии митигации: в таблице выше меняется формулировка пробела на «закрыто (дата, ссылка
-на приложение/протокол)» и обновляется зеркало в `docs/architecture/output-review-package/`.
+на приложение/протокол)» и обновляется зеркало в `docs/output-review-package/`.
 Повторный architecture review должен видеть трассировку: условие HTML ↔ ID D-* ↔ Gate ↔ приложение §2б.
 
 ---
@@ -675,17 +675,17 @@ Read-only справочник из [catalogs-scope.md](catalogs-scope.md) пр�
 Нумерация пунктов: `{MVP}.{пакет}.{пункт}`. Не путать с номерами MVP и с `reference.md` §6.9
 (условное архитектурное одобрение): нагрузочный PoC — пакет **0.2.1**.
 
-### Трассировка задач (docs/docs/svt-tasks)
+### Трассировка задач (docs/tasks)
 
 Параллельный поток RO для API Атласа (выше остатка «Ставок») и постановка API:
 
 | Задача | Backlog | Содержание |
 |---|---|---|
-| [SVT-5254](../../../docs/docs/svt-tasks/SVT-5254.md) | 0.3.2 (пилот 0.3.2.1–0.3.2.6 ✓) | API Атласа, только чтение |
-| [SVT-5255](../../../docs/docs/svt-tasks/SVT-5255.md) | 0.2.3.61 | RO Currency (Атлас=1) |
-| [SVT-5256](../../../docs/docs/svt-tasks/SVT-5256.md) | 0.2.3.32 | RO ProductGroup / транспортные группы (Атлас=2) |
-| [SVT-5257](../../../docs/docs/svt-tasks/SVT-5257.md) | 0.2.3.33 | RO MTR (Атлас=3) |
-| [SVT-5258](../../../docs/docs/svt-tasks/SVT-5258.md) | 0.2.3.27 | RO TransportType_level_3 (Атлас=4) |
+| [SVT-5254](../../../docs/tasks/SVT-5254-atlas-api.md) | 0.3.2 (пилот 0.3.2.1–0.3.2.6 ✓) | API Атласа, только чтение |
+| [SVT-5255](../../../docs/tasks/SVT-5255-currency.md) | 0.2.3.61 | RO Currency (Атлас=1) |
+| [SVT-5256](../../../docs/tasks/SVT-5256-product-group.md) | 0.2.3.32 | RO ProductGroup / транспортные группы (Атлас=2) |
+| [SVT-5257](../../../docs/tasks/SVT-5257-mtr.md) | 0.2.3.33 | RO MTR (Атлас=3) |
+| [SVT-5258](../../../docs/tasks/SVT-5258-transport-type-level-3.md) | 0.2.3.27 | RO TransportType_level_3 (Атлас=4) |
 
 Детальный расчёт — `docs/estimation/`
 (`python docs/estimation/generate_effort_estimate.py`).

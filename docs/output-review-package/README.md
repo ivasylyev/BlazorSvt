@@ -4,15 +4,17 @@
 > **Снимок обновлён:** 2026-10-29 (из `.cursor/skills/svt-architecture/` и `docs/docs/svt-v-atlas/SVT-idealnyy-process2.html`). Не источник истины —
 > канон всегда skills; при расхождении править skills и переснять пакет.
 > Канон в репозитории: `.cursor/skills/svt-architecture/` (`reference.md`, `roadmap.md`,
-> `backlog.md`, `catalogs-scope.md`), `docs/docs/svt-v-atlas/SVT-idealnyy-process2.html`
-> и `docs/architecture/`.
+> `backlog.md`, `catalogs-scope.md`, диаграммы `01-as-is-legacy.png`,
+> `02-to-be-current-program.png`, `03-future-containers-out-of-scope.png`)
+> и `docs/docs/svt-v-atlas/SVT-idealnyy-process2.html`.
 > В копии пакета перекрёстные ссылки между этими четырьмя документами заменены на страницы
 > Confluence (ревьюер ходит по опубликованным страницам, а не по соседним файлам папки).
 
 **Как готовить пакет**
 
 1. Скопировать актуальные `reference.md`, `roadmap.md`, `backlog.md`, `catalogs-scope.md`
-   из `.cursor/skills/svt-architecture/` в эту папку.
+   и диаграммы `01-as-is-legacy.png`, `02-to-be-current-program.png`,
+   `03-future-containers-out-of-scope.png` из `.cursor/skills/svt-architecture/` в эту папку.
 2. Заменить ссылки и явные упоминания этих файлов (включая самоссылки) на Confluence:
 
 | Файл канона | Страница Confluence |
@@ -26,7 +28,7 @@
    Ссылки на соседние файлы Атласа внутри пакета не открываются: в пакет входит только этот HTML.
 4. Диаграммы, `review-current-state.html` и это оглавление не переписывать на Confluence.
    Skills в `.cursor/skills/` не менять.
-5. Заархивировать папку `output-review-package` в `docs/architecture/output-review-package.zip`
+5. Заархивировать папку `output-review-package` в `docs/output-review-package.zip`
    (рядом с папкой, не внутри неё). В корне архива — сама папка `output-review-package/`.
    Старый zip перезаписать.
 
