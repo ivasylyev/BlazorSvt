@@ -148,7 +148,7 @@ SoT значений остаётся в системах-источниках. 
 
 | Файл | Что это |
 |------|---------|
-| `docs/docs/svt-v-atlas/SVT-idealnyy-process2.html` | Идеальный процесс СВТ, версия 2.3 (материал для Кудрявцева). Роли — раздел 3 |
+| `docs/docs/svt-v-atlas/SVT-idealnyy-process2.html` | Идеальный процесс СВТ, версия 2.4 (материал для Кудрявцева). Роли — раздел 3 |
 | `docs/docs/svt-v-atlas/SVT-idealnyy-process.html` | Первая версия с комментариями Кудрявцева. Не править |
 | `docs/docs/svt-v-atlas/SVT-roli-i-puti.html` / `.docx` | Роли и клиентские пути, матрица «роль × шаг» (`.docx` собирается из HTML) |
 | `docs/docs/svt-v-atlas/SVT-roli-celevogo-processa.html` | Четыре роли пользователей и права по доменам |
