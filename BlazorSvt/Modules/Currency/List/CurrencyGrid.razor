@@ -1,0 +1,16 @@
+@page "/currency"
+@using BlazorSvt.Modules.Currency.Detail
+@inherits BaseGridPage<CurrencyDto, CurrencyDetailDto>
+
+<GenericGrid TItem="CurrencyDto"
+             TDetailItem="CurrencyDetailDto"
+             PageTitle="@EL["CurrencyGrid.Title"]"
+             AllowDetailView="true"
+             DataProvider="DataProvider"
+             DetailDataProvider="DetailDataProvider"
+             DetailKeySelector="DetailKeySelector">
+
+    <DetailViewTemplate Context="detail">
+    </DetailViewTemplate>
+
+</GenericGrid>

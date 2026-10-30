@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <resheader name="resmimetype"><value>text/microsoft-resx</value></resheader>
+  <resheader name="version"><value>2.0</value></resheader>
+  <resheader name="reader"><value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value></resheader>
+  <resheader name="writer"><value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value></resheader>
+  <data name="CurrencyGrid.Title" xml:space="preserve"><value>Валюты</value></data>
+  <data name="CurrencyDto.Code" xml:space="preserve"><value>Код</value></data>
+  <data name="CurrencyDto.Name" xml:space="preserve"><value>Название</value></data>
+  <data name="CurrencyDto.Symbolic" xml:space="preserve"><value>Обозначение</value></data>
+  <data name="CurrencyDto.Digital" xml:space="preserve"><value>Цифр. код</value></data>
+  <data name="CurrencyDto.Code_NSI" xml:space="preserve"><value>Код НСИ</value></data>
+  <data name="CurrencyDto.IsArchive" xml:space="preserve"><value>Архив</value></data>
+  <data name="CurrencyDto.CreationDate" xml:space="preserve"><value>Создано</value></data>
+  <data name="CurrencyDto.LastChangeDate" xml:space="preserve"><value>Изменено</value></data>
+  <data name="CurrencyDetailDto.Code" xml:space="preserve"><value>Код (Code)</value></data>
+  <data name="CurrencyDetailDto.Name" xml:space="preserve"><value>Название (Наименование валюты)</value></data>
+  <data name="CurrencyDetailDto.Symbolic" xml:space="preserve"><value>Обозначение (Обозначение валюты)</value></data>
+  <data name="CurrencyDetailDto.Digital" xml:space="preserve"><value>Цифр. код (Код валюты)</value></data>
+  <data name="CurrencyDetailDto.Code_NSI" xml:space="preserve"><value>Код НСИ</value></data>
+  <data name="CurrencyDetailDto.IsArchive" xml:space="preserve"><value>Архив</value></data>
+  <data name="CurrencyDetailDto.CreationDate" xml:space="preserve"><value>Создано</value></data>
+  <data name="CurrencyDetailDto.LastChangeDate" xml:space="preserve"><value>Изменено</value></data>
+  <data name="CurrencyDetailDto.Group.0.Default" xml:space="preserve"><value>По умолчанию</value></data>
+</root>

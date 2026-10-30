@@ -40,7 +40,7 @@ public class AverageRateLevel3Dto
     public required long Code { get; set; }
 
     [GridColumn]
-    public required Currency CurrencyId { get; set; }
+    public required CurrencyRuEn CurrencyId { get; set; }
 
     [GridColumn(SqlColumn = "RateTypeId")]
     public required RateTypeRu RateTypeIdRu { get; set; }

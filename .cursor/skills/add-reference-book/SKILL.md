@@ -327,7 +327,7 @@ WHERE DRu.[Value] = (
 
 **Исключения:**
 
-- `vw_Currency` — один enum `Currency` в `Platform/Domain/IdsEnum/` с `[Display(Name = "RUB"|"EUR"|…)]` (коды валют); **без** разделения на Ru/En.
+- `vw_Currency` — один enum `CurrencyRuEn` в `Platform/Domain/IdsEnum/` с `[Display(Name = "RUB"|"EUR"|…)]` (коды валют); **без** разделения на Ru/En.
 - `vw_ShipmentType` — если когда-либо понадобится enum: имена полей **всегда** из `Code` (`TVD`, `PVG`, …). У TransportLeg enum **не** используется: в snapshot/grid лежит сырой `ShipmentTypeCodeT` (1–много кодов через `/`).
 
 **Общие короткие словари** (`RateType`, `TransportTypeLevel3`, `TransportKind`, `Currency`, …) — сразу в
@@ -335,7 +335,7 @@ WHERE DRu.[Value] = (
 использующие модули (часть задачи). Модульный `List/IdsEnum/` — только если словарь **уникален** для
 этого справочника и не переиспользуется.
 
-Два файла: `{Dictionary}Ru.cs`, `{Dictionary}En.cs` (кроме `Currency`) — в Platform или в модуле по правилу выше.
+Два файла: `{Dictionary}Ru.cs`, `{Dictionary}En.cs` (кроме `CurrencyRuEn`) — в Platform или в модуле по правилу выше.
 
 **Значение каждого члена enum** = `Id` из `vw_{Dictionary}`.
 
@@ -370,7 +370,7 @@ WHERE DRu.[Value] = (
 | RateType | `Platform/Domain/IdsEnum/RateTypeRu`, `RateTypeEn` |
 | TransportKind | `TransportKindRu`, `TransportKindEn` |
 | TransportTypeLevel3 | `TransportTypeLevel3Ru`, `TransportTypeLevel3En` |
-| Currency | `Currency` (один файл, без пары Ru/En) |
+| Currency | `CurrencyRuEn` (один файл, без пары Ru/En) |
 | Relevance | `RelevanceRu`, `RelevanceEn` |
 | TypeNode | `Modules/LocationsNodes/List/IdsEnum/TypeNodeRu`, `TypeNodeEn` |
 | TypePlace (LocationType) | `LocationTypeRu`, `LocationTypeEn` |
