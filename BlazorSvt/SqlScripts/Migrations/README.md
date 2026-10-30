@@ -12,7 +12,9 @@ Migrations/
 │   └── 001.…037.…
 ├── 2.0.1/             ← upgrade с 2.0.0 (immutable после выката)
 │   └── 038.…054.…
-└── 2.3.46/            ← текущий VersionPrefix (ещё не архив)
+├── 2.3.46/            ← RateType (не править)
+│   └── 001.…005.…
+└── 2.3.48/            ← текущий VersionPrefix
     └── 001.…005.…
 ```
 
@@ -35,16 +37,16 @@ Migrations/
 | **Programmability** | views, SP, fn (`CREATE OR ALTER`) | идемпотентно, всегда latest | SoT для локального наката; в папке версии — последний файл `All_Programmability.sql` |
 
 Накат на **уже развёрнутую** БД: скрипты ещё не применённой папки версии по порядку номеров (снимок programmability — последний).
-Greenfield: `2.0.0` → `2.0.1` → `2.3.46`.
+Greenfield: `2.0.0` → `2.0.1` → `2.3.46` → `2.3.48`.
 
 Рекомендуется (пока вручную) вести учёт: какая версия уже на стенде (хотя бы запись в wiki / будущая `v2.SchemaVersion`).
 
 ## Правила текущего релиза
 
-Имя папки — `VersionPrefix` из `BlazorSvt/BlazorSvt.csproj` (сейчас `2.3.46`), без суффикса числа коммитов. Это не «следующий номер после 2.0.1» и не пункт бэклога `2.0.2`.
+Имя папки — `VersionPrefix` из `BlazorSvt/BlazorSvt.csproj` (сейчас `2.3.48`), без суффикса числа коммитов. Это не «следующий номер после 2.0.1» и не пункт бэклога `2.0.2`.
 
 1. **Папка уже выкаченного релиза — read-only.** Пока `VersionPrefix` не сменился, скрипты дописываются в текущую папку. После смены версии старую папку не правят: баг уходит новым скриптом в папку новой версии.
-2. В папке версии — дельта схемы (Structure, `ALTER`, индексы, data fix), затем **последним файлом полный снимок** всей programmability `v2` (`All_Programmability.sql`). В текущем релизе это `2.3.46/005`. В `2.0.1` такой пакет стоял дважды: `045` и `052`.
+2. В папке версии — дельта схемы (Structure, `ALTER`, индексы, data fix), затем **последним файлом полный снимок** всей programmability `v2` (`All_Programmability.sql`). В текущем релизе это `2.3.48/005`. В `2.3.46` это `005`. В `2.0.1` такой пакет стоял дважды: `045` и `052`.
 3. Нумерация **внутри релиза** с `001`. Исторические `038…` в `2.0.1` не переименовываем.
 4. SoT остаётся в `Platform/` и `Modules/`: локальный `Create-Programmability.ps1` читает его, а не `Migrations/`. В папку версии попадает копия дельты и снимок programmability.
 5. Публикация в `C:\publish` этим правилом не требуется.
@@ -68,9 +70,9 @@ Greenfield: `2.0.0` → `2.0.1` → `2.3.46`.
 
 Полный снимок programmability в конце папки версии — штатный артефакт, не повторное переиздание одного модуля.
 
-## Текущий релиз 2.3.46
+## Релиз 2.3.46
 
-Папка ещё пишется. После выката и смены `VersionPrefix` она становится архивом: файлы не правят, правки уходят новым скриптом в папку следующей версии.
+Папка RateType. `VersionPrefix` сменился на `2.3.48`: файлы `2.3.46` не править.
 
 | Файл | Что это |
 |------|---------|
@@ -80,7 +82,19 @@ Greenfield: `2.0.0` → `2.0.1` → `2.3.46`.
 | `004.03.RateType_CreateIndexes.sql` | Уникальный индекс, фильтрующие индексы, full-text по `Name` и `Comment` |
 | `005.All_Programmability.sql` | Полный снимок programmability, 26 скриптов (2026-09-25) |
 
-RateType — стабильный словарь с enum. В миграции нет `sp_RateType_PopulateAffectedKeys`, `RowVer` и `SyncState`. В снимке `005` у RateType только `vw_RateType_Detail` и `vw_RateType_SnapshotSource`. Карточка отдельным файлом не вынесена: заливка её не требует, она попадает в пакете. Предыдущий пакет `2.0.1/052` содержал 24 скрипта; два новых — эти view. Проекция `002` повторяется внутри `005` (`CREATE OR ALTER`) — так же, как у остальных модулей.
+RateType — стабильный словарь с enum. В миграции нет `sp_RateType_PopulateAffectedKeys`, `RowVer` и `SyncState`. В снимке `005` у RateType только `vw_RateType_Detail` и `vw_RateType_SnapshotSource`.
+
+## Текущий релиз 2.3.48
+
+| Файл | Что это |
+|------|---------|
+| `001.01.Currency_CreateTable.sql` | Первое появление `v2.Currency_Snapshot`: partition function/scheme, sequence, таблица |
+| `002.vw_Currency_SnapshotSource.sql` | Проекция из `dbo.vw_Currency`; выполняется до заливки |
+| `003.02.Currency_Insert.sql` | Разовая заливка из этой проекции. `SyncState` не создаётся |
+| `004.03.Currency_CreateIndexes.sql` | Уникальный индекс, фильтрующие индексы, full-text по `Name`, `Symbolic`, `Code`, `Code_NSI` |
+| `005.All_Programmability.sql` | Полный снимок programmability, 28 скриптов (2026-10-29) |
+
+Currency — стабильный словарь с enum. В миграции нет `sp_Currency_PopulateAffectedKeys`, `RowVer` и `SyncState`. В снимке `005` у Currency только `vw_Currency_Detail` и `vw_Currency_SnapshotSource`.
 
 ## Чеклист нового релиза
 

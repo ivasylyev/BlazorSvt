@@ -26,13 +26,17 @@ SqlScripts/
 │   ├── LocationsNodes/
 │   │   ├── Structure/
 │   │   └── Programmability/
-│   └── RateType/
+│   ├── RateType/
+│   │   ├── Structure/
+│   │   └── Programmability/   # без PopulateAffectedKeys: разовая заливка
+│   └── Currency/
 │       ├── Structure/
 │       └── Programmability/   # без PopulateAffectedKeys: разовая заливка
 ├── Migrations/             # Релизные артефакты наката (immutable после выката)
 │   ├── 2.0.0/              # baseline
 │   ├── 2.0.1/              # upgrade
-│   ├── 2.3.46/             # текущий VersionPrefix: дельта RateType + снимок programmability
+│   ├── 2.3.46/             # дельта RateType + снимок programmability
+│   ├── 2.3.48/             # текущий VersionPrefix: дельта Currency + снимок programmability
 │   └── README.md           # конвенция релизов / два контура
 └── Translations_info.txt   # Справочник переводов полей (не для деплоя)
 ```
@@ -121,7 +125,17 @@ SqlScripts/
 | 2 | `Modules/RateType/Programmability/vw_RateType_SnapshotSource.sql` |
 | 3 | `Modules/RateType/Structure/02.RateType_Insert.sql` |
 | 4 | `Modules/RateType/Structure/03.RateType_CreateIndexes.sql` |
-| 5 | `Modules/RateType/Programmability/vw_RateType_Detail.sql` | |
+| 5 | `Modules/RateType/Programmability/vw_RateType_Detail.sql` |
+
+**Currency** (стабильный словарь: без RowVer, SyncJob и PopulateAffectedKeys; проекция до Insert)
+
+| # | Скрипт |
+|---|--------|
+| 1 | `Modules/Currency/Structure/01.Currency_CreateTable.sql` |
+| 2 | `Modules/Currency/Programmability/vw_Currency_SnapshotSource.sql` |
+| 3 | `Modules/Currency/Structure/02.Currency_Insert.sql` |
+| 4 | `Modules/Currency/Structure/03.Currency_CreateIndexes.sql` |
+| 5 | `Modules/Currency/Programmability/vw_Currency_Detail.sql` |
 
 ## Grid read-модель
 

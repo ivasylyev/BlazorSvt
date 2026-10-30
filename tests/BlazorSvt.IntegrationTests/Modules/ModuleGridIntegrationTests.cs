@@ -1,5 +1,7 @@
 using BlazorSvt.IntegrationTests.Infrastructure;
 using BlazorSvt.Modules.AverageRateLevel3.Detail;
+using BlazorSvt.Modules.Currency.Detail;
+using BlazorSvt.Modules.Currency.List;
 using BlazorSvt.Modules.AverageRateLevel3.List;
 using BlazorSvt.Modules.LocationsNodes.Detail;
 using BlazorSvt.Modules.LocationsNodes.List;
@@ -260,6 +262,43 @@ public class ModuleGridIntegrationTests(DatabaseFixture fixture) : IntegrationTe
 
         detail.Should().NotBeNull();
         detail!.RateTypeId.Should().Be(entityKey);
+        detail.Code.Should().NotBeNullOrWhiteSpace();
+    }
+
+    [SkippableFact]
+    public async Task CurrencyGrid_ReturnsRows()
+    {
+        var connectionString = RequireConnectionString();
+
+        var (rows, totalCount) = await GridSpTestHelper.ExecuteGetBlazorGridDataAsync<CurrencyDto>(
+            connectionString,
+            typeof(CurrencyDto),
+            GridSpTestHelper.CreateDefaultQuery());
+
+        rows.Should().NotBeEmpty();
+        totalCount.Should().BeGreaterThan(0);
+    }
+
+    [SkippableFact]
+    public async Task CurrencyDetailView_ReturnsRowForGridEntityKey()
+    {
+        var connectionString = RequireConnectionString();
+
+        var (rows, _) = await GridSpTestHelper.ExecuteGetBlazorGridDataAsync<CurrencyDto>(
+            connectionString,
+            typeof(CurrencyDto),
+            GridSpTestHelper.CreateDefaultQuery(pageSize: 1));
+
+        var entityKey = rows[0].CurrencyId;
+
+        var detail = await GridSpTestHelper.QueryDetailViewAsync<CurrencyDetailDto>(
+            connectionString,
+            "v2.vw_Currency_Detail",
+            "CurrencyId",
+            entityKey);
+
+        detail.Should().NotBeNull();
+        detail!.CurrencyId.Should().Be(entityKey);
         detail.Code.Should().NotBeNullOrWhiteSpace();
     }
 }
