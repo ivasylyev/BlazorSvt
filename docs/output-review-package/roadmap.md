@@ -675,17 +675,17 @@ Read-only справочник из [04. Список справочников �
 Нумерация пунктов: `{MVP}.{пакет}.{пункт}`. Не путать с номерами MVP и с `[01. Архитектура трансформации СВТ: проблемы и решение](https://confluence.sibur.local/pages/viewpage.action?pageId=573815762)` §6.9
 (условное архитектурное одобрение): нагрузочный PoC — пакет **0.2.1**.
 
-### Трассировка задач (docs/docs/svt-tasks)
+### Трассировка задач (docs/tasks)
 
 Параллельный поток RO для API Атласа (выше остатка «Ставок») и постановка API:
 
 | Задача | Backlog | Содержание |
 |---|---|---|
-| [SVT-5254](../../../docs/docs/svt-tasks/SVT-5254.md) | 0.3.2 (пилот 0.3.2.1–0.3.2.6 ✓) | API Атласа, только чтение |
-| [SVT-5255](../../../docs/docs/svt-tasks/SVT-5255.md) | 0.2.3.61 | RO Currency (Атлас=1) |
-| [SVT-5256](../../../docs/docs/svt-tasks/SVT-5256.md) | 0.2.3.32 | RO ProductGroup / транспортные группы (Атлас=2) |
-| [SVT-5257](../../../docs/docs/svt-tasks/SVT-5257.md) | 0.2.3.33 | RO MTR (Атлас=3) |
-| [SVT-5258](../../../docs/docs/svt-tasks/SVT-5258.md) | 0.2.3.27 | RO TransportType_level_3 (Атлас=4) |
+| [SVT-5254](../../tasks/SVT-5254-atlas-api.md) | 0.3.2 (пилот 0.3.2.1–0.3.2.6 ✓) | API Атласа, только чтение |
+| [SVT-5255](../../tasks/SVT-5255-currency.md) | 0.2.3.61 | RO Currency (Атлас=1) |
+| [SVT-5256](../../tasks/SVT-5256-product-group.md) | 0.2.3.32 | RO ProductGroup / транспортные группы (Атлас=2) |
+| [SVT-5257](../../tasks/SVT-5257-mtr.md) | 0.2.3.33 | RO MTR (Атлас=3) |
+| [SVT-5258](../../tasks/SVT-5258-transport-type-level-3.md) | 0.2.3.27 | RO TransportType_level_3 (Атлас=4) |
 
 Детальный расчёт — `docs/estimation/`
 (`python docs/estimation/generate_effort_estimate.py`).
