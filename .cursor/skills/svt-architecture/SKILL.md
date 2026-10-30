@@ -76,5 +76,5 @@ description: >-
 - Чеклист работ, таблица этапов и оценка трудоёмкости — [backlog.md](backlog.md)
 - Реестр справочников (SoT скоупа: состав доменов, RO/E/L, меню, приоритеты) — [catalogs-scope.md](catalogs-scope.md). Канон при изменении — этот файл в репозитории; Excel на Confluence — только исходный дамп легаси
 - Диаграммы для архитектурного ревью —
-  [docs/architecture/README.md](../../../docs/architecture/README.md)
-- Пакет для передачи на ревью собирается по [docs/architecture/output-review-package/README.md](../../../docs/architecture/output-review-package/README.md): четыре markdown-файла этого навыка, диаграммы и `SVT-idealnyy-process2.html`. Канон — файлы навыка; пакет только снимок
+  [README.md](README.md) (файлы `01-as-is-legacy.png`, `02-to-be-current-program.png`, `03-future-containers-out-of-scope.png` лежат в этой же папке)
+- Пакет для передачи на ревью собирается по [docs/output-review-package/README.md](../../../docs/output-review-package/README.md): четыре markdown-файла этого навыка, диаграммы из этой папки и `SVT-idealnyy-process2.html`. Канон — файлы навыка; пакет только снимок

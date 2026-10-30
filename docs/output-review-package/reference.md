@@ -45,7 +45,7 @@
 
 ### Диаграмма развёртывания (As-Is)
 
-![Легаси-архитектура As-Is](../../../docs/architecture/diagrams/01-as-is-legacy.png)
+![Легаси-архитектура As-Is](01-as-is-legacy.png)
 
 Общая БД (MS SQL + Elastic-индекс), единый процесс IIS с пятью условно-независимыми службами
 (REST API / MasterData / BusinessRule / AverageRate / Workflow / Notification), связанными частично
@@ -89,7 +89,7 @@
 
 #### Диаграмма развёртывания — целевая архитектура текущей программы (итог MVP 2.0 / Gate D)
 
-![Целевая архитектура текущей программы](../../../docs/architecture/diagrams/02-to-be-current-program.png)
+![Целевая архитектура текущей программы](02-to-be-current-program.png)
 
 Та же ВМ и тот же Windows Server 2016/IIS, что и в легаси (см. [02. План трансформации СВТ](https://confluence.sibur.local/pages/viewpage.action?pageId=573815766) §1.3 — «дочернее
 приложение в том же IIS-сайте»), — инфраструктура сознательно не меняется ради бесшовности
@@ -115,7 +115,7 @@
 
 #### Возможное будущее состояние (вне скоупа текущей программы)
 
-![Возможное будущее состояние — контейнеризация](../../../docs/architecture/diagrams/03-future-containers-out-of-scope.png)
+![Возможное будущее состояние — контейнеризация](03-future-containers-out-of-scope.png)
 
 Контейнеризация (Docker/Kubernetes) **не входит** в текущую программу трансформации
 (MVP 0.0–2.0) и нигде не фигурирует в бэклоге. Показана здесь как возможный
@@ -191,7 +191,7 @@
 в том, что она независимо разделяет два разных эффекта: эффект новой архитектуры (легаси →
 новый контур) и эффект инструментов ИИ (с ИИ / без ИИ), что напрямую отвечает на требование
 архитектурного ревью разделить эффект ИИ на разработку кода и на программу в целом
-(см. `docs/architecture/review-current-state.html`, условие №6).
+(см. `docs/output-review-package/review-current-state.html`, условие №6).
 
 | Задача | Режим | Легаси (СВТ 1.0) | Новый контур (СВТ 2.0) |
 |---|---|---|---|
@@ -476,7 +476,7 @@
 
 **Зачем так:** остаточные риски (residual risk) не «под ковром», а связаны с Gate и текстом
 в `[02. План трансформации СВТ](https://confluence.sibur.local/pages/viewpage.action?pageId=573815766)` §2б. Закрытие риска = артефакт (приложение) или факт исполнения, не
-переформулировка текста. Снимок повторного ревью — `docs/architecture/review-current-state.html`.
+переформулировка текста. Снимок повторного ревью — `docs/output-review-package/review-current-state.html`.
 
 ## 7. Дорожная карта реализации (текущий проект)
 
@@ -503,13 +503,15 @@ BlazorSvt/
 docs/
 ├── api/            — svt-api-v1.openapi.json (снимок контракта, сверяется тестом);
 │                    svt-api-v1.vasilevivv-local-tests.postman.json (локальный smoke, не контракт)
-└── architecture/
-    ├── README.md   — индекс диаграмм для подачи на архитектурное ревью
-    ├── diagrams/   — 01-as-is-legacy.png, 02-to-be-current-program.png,
-    │                  03-future-containers-out-of-scope.png (см. §2, §4.2)
-    └── review-current-state.html — снимок повторного architecture review
-    # отложенная митигация (threat model, SoD, SLI/SLO, …) — в [02. План трансформации СВТ](https://confluence.sibur.local/pages/viewpage.action?pageId=573815766) §2б,
-    # не отдельными файлами
+└── output-review-package/ — плоский снимок для передачи на ревью
+                             (review-current-state.html и копии markdown);
+                             архив docs/output-review-package.zip — рядом с папкой
+.cursor/skills/svt-architecture/
+├── README.md       — индекс диаграмм для подачи на архитектурное ревью
+├── 01-as-is-legacy.png, 02-to-be-current-program.png,
+│   03-future-containers-out-of-scope.png (см. §2, §4.2)
+# отложенная митигация (threat model, SoD, SLI/SLO, …) — в [02. План трансформации СВТ](https://confluence.sibur.local/pages/viewpage.action?pageId=573815766) §2б,
+# не отдельными файлами
 ```
 
 Принцип: новый справочник = модуль в `Modules/{Name}/` + `SqlScripts/Modules/{Name}/`, регистрация в `Host/Program.cs`.
