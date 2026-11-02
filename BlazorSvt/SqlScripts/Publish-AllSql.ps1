@@ -95,6 +95,12 @@ $fullManifest = @(
   'Modules\Currency\Structure\02.Currency_Insert.sql'
   'Modules\Currency\Structure\03.Currency_CreateIndexes.sql'
   'Modules\Currency\Programmability\vw_Currency_Detail.sql'
+  'Modules\ProductGroup\Structure\01.ProductGroup_CreateTable.sql'
+  'Modules\ProductGroup\Programmability\vw_ProductGroup_SnapshotSource.sql'
+  'Modules\ProductGroup\Structure\02.ProductGroup_Insert.sql'
+  'Modules\ProductGroup\Structure\03.ProductGroup_CreateIndexes.sql'
+  'Modules\ProductGroup\Programmability\vw_ProductGroup_Detail.sql'
+  'Modules\ProductGroup\Programmability\sp_ProductGroup_PopulateAffectedKeys.sql'
 )
 
 $programmabilityManifest = $fullManifest | Where-Object {

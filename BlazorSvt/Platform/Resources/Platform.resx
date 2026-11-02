@@ -144,6 +144,9 @@
   <data name="HeaderMenu.Currency" xml:space="preserve">
 	  <value>Currencies</value>
   </data>
+  <data name="HeaderMenu.ProductGroup" xml:space="preserve">
+	  <value>Transport groups</value>
+  </data>
   <data name="HeaderMenu.Load" xml:space="preserve">
 	  <value>Load</value>
   </data>

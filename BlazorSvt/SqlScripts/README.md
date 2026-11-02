@@ -29,14 +29,17 @@ SqlScripts/
 │   ├── RateType/
 │   │   ├── Structure/
 │   │   └── Programmability/   # без PopulateAffectedKeys: разовая заливка
-│   └── Currency/
+│   ├── Currency/
+│   │   ├── Structure/
+│   │   └── Programmability/   # без PopulateAffectedKeys: разовая заливка
+│   └── ProductGroup/
 │       ├── Structure/
-│       └── Programmability/   # без PopulateAffectedKeys: разовая заливка
+│       └── Programmability/
 ├── Migrations/             # Релизные артефакты наката (immutable после выката)
 │   ├── 2.0.0/              # baseline
 │   ├── 2.0.1/              # upgrade
 │   ├── 2.3.46/             # дельта RateType + снимок programmability
-│   ├── 2.3.48/             # текущий VersionPrefix: дельта Currency + снимок programmability
+│   ├── 2.3.48/             # текущий VersionPrefix: дельта Currency, ProductGroup + снимок programmability
 │   └── README.md           # конвенция релизов / два контура
 └── Translations_info.txt   # Справочник переводов полей (не для деплоя)
 ```
@@ -136,6 +139,17 @@ SqlScripts/
 | 3 | `Modules/Currency/Structure/02.Currency_Insert.sql` |
 | 4 | `Modules/Currency/Structure/03.Currency_CreateIndexes.sql` |
 | 5 | `Modules/Currency/Programmability/vw_Currency_Detail.sql` |
+
+**ProductGroup** (проекция до Insert; RowVer на `dbo.PrimitiveEntityData_1013` уже есть — источник каскада ставок)
+
+| # | Скрипт |
+|---|--------|
+| 1 | `Modules/ProductGroup/Structure/01.ProductGroup_CreateTable.sql` |
+| 2 | `Modules/ProductGroup/Programmability/vw_ProductGroup_SnapshotSource.sql` |
+| 3 | `Modules/ProductGroup/Structure/02.ProductGroup_Insert.sql` |
+| 4 | `Modules/ProductGroup/Structure/03.ProductGroup_CreateIndexes.sql` |
+| 5 | `Modules/ProductGroup/Programmability/vw_ProductGroup_Detail.sql` |
+| 6 | `Modules/ProductGroup/Programmability/sp_ProductGroup_PopulateAffectedKeys.sql` |
 
 ## Grid read-модель
 

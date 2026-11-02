@@ -6,6 +6,8 @@ using BlazorSvt.Modules.AverageRateLevel3.List;
 using BlazorSvt.Modules.LocationsNodes.Detail;
 using BlazorSvt.Modules.LocationsNodes.List;
 using BlazorSvt.Modules.ParityRates.Detail;
+using BlazorSvt.Modules.ProductGroup.Detail;
+using BlazorSvt.Modules.ProductGroup.List;
 using BlazorSvt.Modules.RateType.Detail;
 using BlazorSvt.Modules.RateType.List;
 using BlazorSvt.Modules.ParityRates.List;
@@ -299,6 +301,43 @@ public class ModuleGridIntegrationTests(DatabaseFixture fixture) : IntegrationTe
 
         detail.Should().NotBeNull();
         detail!.CurrencyId.Should().Be(entityKey);
+        detail.Code.Should().NotBeNullOrWhiteSpace();
+    }
+
+    [SkippableFact]
+    public async Task ProductGroupGrid_ReturnsRows()
+    {
+        var connectionString = RequireConnectionString();
+
+        var (rows, totalCount) = await GridSpTestHelper.ExecuteGetBlazorGridDataAsync<ProductGroupDto>(
+            connectionString,
+            typeof(ProductGroupDto),
+            GridSpTestHelper.CreateDefaultQuery());
+
+        rows.Should().NotBeEmpty();
+        totalCount.Should().BeGreaterThan(0);
+    }
+
+    [SkippableFact]
+    public async Task ProductGroupDetailView_ReturnsRowForGridEntityKey()
+    {
+        var connectionString = RequireConnectionString();
+
+        var (rows, _) = await GridSpTestHelper.ExecuteGetBlazorGridDataAsync<ProductGroupDto>(
+            connectionString,
+            typeof(ProductGroupDto),
+            GridSpTestHelper.CreateDefaultQuery(pageSize: 1));
+
+        var entityKey = rows[0].ProductGroupId;
+
+        var detail = await GridSpTestHelper.QueryDetailViewAsync<ProductGroupDetailDto>(
+            connectionString,
+            "v2.vw_ProductGroup_Detail",
+            "ProductGroupId",
+            entityKey);
+
+        detail.Should().NotBeNull();
+        detail!.ProductGroupId.Should().Be(entityKey);
         detail.Code.Should().NotBeNullOrWhiteSpace();
     }
 }

@@ -14,7 +14,8 @@
     { "key": "parityRatesId", "value": "0" },
     { "key": "locationsNodesId", "value": "0" },
     { "key": "rateTypeId", "value": "0" },
-    { "key": "currencyId", "value": "0" }
+    { "key": "currencyId", "value": "0" },
+    { "key": "productGroupId", "value": "0" }
   ],
   "protocolProfileBehavior": {
     "strictSSL": false
@@ -605,6 +606,78 @@
               "raw": "{ \"kind\": \"Full\" }"
             },
             "url": "{{baseUrl}}/api/v1/catalogs/currencies/export"
+          }
+        }
+      ]
+    },
+    {
+      "name": "product-groups",
+      "item": [
+        {
+          "name": "Schema",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/api/v1/catalogs/product-groups/schema"
+          }
+        },
+        {
+          "name": "Search first page",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const json = pm.response.json();",
+                  "if (json.items && json.items.length) {",
+                  "  pm.collectionVariables.set('productGroupId', String(json.items[0].productGroupId));",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"page\": 1,\n  \"pageSize\": 10\n}"
+            },
+            "url": "{{baseUrl}}/api/v1/catalogs/product-groups/items/search"
+          }
+        },
+        {
+          "name": "Get item",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/api/v1/catalogs/product-groups/items/{{productGroupId}}",
+            "description": "Сначала Search first page."
+          }
+        },
+        {
+          "name": "Export short",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{ \"kind\": \"Short\" }"
+            },
+            "url": "{{baseUrl}}/api/v1/catalogs/product-groups/export"
+          }
+        },
+        {
+          "name": "Export full",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{ \"kind\": \"Full\" }"
+            },
+            "url": "{{baseUrl}}/api/v1/catalogs/product-groups/export"
           }
         }
       ]

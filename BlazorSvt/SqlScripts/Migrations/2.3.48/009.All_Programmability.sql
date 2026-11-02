@@ -1,13 +1,13 @@
 ﻿/*
   Auto-generated: All v2 Programmability
-  Generated: 2026-10-29 21:57:14
-  Scripts: 28
+  Generated: 2026-11-02 17:01:21
+  Scripts: 31
   Order: Create-Programmability.ps1 (Platform -> Modules by name)
 */
 GO
 
 --------------------------------------------------------------------------------
--- [1/28] Platform :: fn_GetDateSqlOperator.sql
+-- [1/31] Platform :: fn_GetDateSqlOperator.sql
 -- Source: Platform\Programmability\fn_GetDateSqlOperator.sql
 --------------------------------------------------------------------------------
 GO
@@ -39,7 +39,7 @@ END
 GO
 
 --------------------------------------------------------------------------------
--- [2/28] Platform :: sp_ExportBlazorGridDetail.sql
+-- [2/31] Platform :: sp_ExportBlazorGridDetail.sql
 -- Source: Platform\Programmability\sp_ExportBlazorGridDetail.sql
 --------------------------------------------------------------------------------
 GO
@@ -160,7 +160,7 @@ END
 GO
 
 --------------------------------------------------------------------------------
--- [3/28] Platform :: sp_GetBlazorGridData.sql
+-- [3/31] Platform :: sp_GetBlazorGridData.sql
 -- Source: Platform\Programmability\sp_GetBlazorGridData.sql
 --------------------------------------------------------------------------------
 GO
@@ -631,7 +631,7 @@ END
 GO
 
 --------------------------------------------------------------------------------
--- [4/28] Platform :: sp_Sync_GetHighWatermark.sql
+-- [4/31] Platform :: sp_Sync_GetHighWatermark.sql
 -- Source: Platform\Programmability\sp_Sync_GetHighWatermark.sql
 --------------------------------------------------------------------------------
 GO
@@ -658,7 +658,7 @@ END
 GO
 
 --------------------------------------------------------------------------------
--- [5/28] Platform :: sp_Sync_Reconcile.sql
+-- [5/31] Platform :: sp_Sync_Reconcile.sql
 -- Source: Platform\Programmability\sp_Sync_Reconcile.sql
 --------------------------------------------------------------------------------
 GO
@@ -709,7 +709,7 @@ END
 GO
 
 --------------------------------------------------------------------------------
--- [6/28] Platform :: sp_Sync_UpsertAffected.sql
+-- [6/31] Platform :: sp_Sync_UpsertAffected.sql
 -- Source: Platform\Programmability\sp_Sync_UpsertAffected.sql
 --------------------------------------------------------------------------------
 GO
@@ -825,7 +825,7 @@ END
 GO
 
 --------------------------------------------------------------------------------
--- [7/28] Platform :: sp_SyncState_Get.sql
+-- [7/31] Platform :: sp_SyncState_Get.sql
 -- Source: Platform\Programmability\sp_SyncState_Get.sql
 --------------------------------------------------------------------------------
 GO
@@ -852,7 +852,7 @@ END
 GO
 
 --------------------------------------------------------------------------------
--- [8/28] Platform :: sp_SyncState_MarkReconciled.sql
+-- [8/31] Platform :: sp_SyncState_MarkReconciled.sql
 -- Source: Platform\Programmability\sp_SyncState_MarkReconciled.sql
 --------------------------------------------------------------------------------
 GO
@@ -878,7 +878,7 @@ END
 GO
 
 --------------------------------------------------------------------------------
--- [9/28] Platform :: sp_SyncState_Upsert.sql
+-- [9/31] Platform :: sp_SyncState_Upsert.sql
 -- Source: Platform\Programmability\sp_SyncState_Upsert.sql
 --------------------------------------------------------------------------------
 GO
@@ -914,7 +914,7 @@ END
 GO
 
 --------------------------------------------------------------------------------
--- [10/28] AverageRateLevel3 :: vw_AverageRateLevel3_Detail.sql
+-- [10/31] AverageRateLevel3 :: vw_AverageRateLevel3_Detail.sql
 -- Source: Modules\AverageRateLevel3\Programmability\vw_AverageRateLevel3_Detail.sql
 --------------------------------------------------------------------------------
 GO
@@ -1220,7 +1220,7 @@ AS
 GO
 
 --------------------------------------------------------------------------------
--- [11/28] AverageRateLevel3 :: vw_AverageRateLevel3_SnapshotSource.sql
+-- [11/31] AverageRateLevel3 :: vw_AverageRateLevel3_SnapshotSource.sql
 -- Source: Modules\AverageRateLevel3\Programmability\vw_AverageRateLevel3_SnapshotSource.sql
 --------------------------------------------------------------------------------
 GO
@@ -1303,7 +1303,7 @@ AS
 GO
 
 --------------------------------------------------------------------------------
--- [12/28] AverageRateLevel3 :: sp_AverageRateLevel3_PopulateAffectedKeys.sql
+-- [12/31] AverageRateLevel3 :: sp_AverageRateLevel3_PopulateAffectedKeys.sql
 -- Source: Modules\AverageRateLevel3\Programmability\sp_AverageRateLevel3_PopulateAffectedKeys.sql
 --------------------------------------------------------------------------------
 GO
@@ -1411,7 +1411,7 @@ END
 GO
 
 --------------------------------------------------------------------------------
--- [13/28] Currency :: vw_Currency_Detail.sql
+-- [13/31] Currency :: vw_Currency_Detail.sql
 -- Source: Modules\Currency\Programmability\vw_Currency_Detail.sql
 --------------------------------------------------------------------------------
 GO
@@ -1439,7 +1439,7 @@ AS
 GO
 
 --------------------------------------------------------------------------------
--- [14/28] Currency :: vw_Currency_SnapshotSource.sql
+-- [14/31] Currency :: vw_Currency_SnapshotSource.sql
 -- Source: Modules\Currency\Programmability\vw_Currency_SnapshotSource.sql
 --------------------------------------------------------------------------------
 GO
@@ -1473,7 +1473,7 @@ AS
 GO
 
 --------------------------------------------------------------------------------
--- [15/28] LocationsNodes :: vw_LocationsNodes_Detail.sql
+-- [15/31] LocationsNodes :: vw_LocationsNodes_Detail.sql
 -- Source: Modules\LocationsNodes\Programmability\vw_LocationsNodes_Detail.sql
 --------------------------------------------------------------------------------
 GO
@@ -1628,7 +1628,7 @@ AS
 GO
 
 --------------------------------------------------------------------------------
--- [16/28] LocationsNodes :: vw_LocationsNodes_SnapshotSource.sql
+-- [16/31] LocationsNodes :: vw_LocationsNodes_SnapshotSource.sql
 -- Source: Modules\LocationsNodes\Programmability\vw_LocationsNodes_SnapshotSource.sql
 --------------------------------------------------------------------------------
 GO
@@ -1693,7 +1693,7 @@ AS
 GO
 
 --------------------------------------------------------------------------------
--- [17/28] LocationsNodes :: sp_LocationsNodes_PopulateAffectedKeys.sql
+-- [17/31] LocationsNodes :: sp_LocationsNodes_PopulateAffectedKeys.sql
 -- Source: Modules\LocationsNodes\Programmability\sp_LocationsNodes_PopulateAffectedKeys.sql
 --------------------------------------------------------------------------------
 GO
@@ -1769,7 +1769,7 @@ END
 GO
 
 --------------------------------------------------------------------------------
--- [18/28] ParityRates :: vw_ParityRates_Detail.sql
+-- [18/31] ParityRates :: vw_ParityRates_Detail.sql
 -- Source: Modules\ParityRates\Programmability\vw_ParityRates_Detail.sql
 --------------------------------------------------------------------------------
 GO
@@ -1858,7 +1858,7 @@ AS
 GO
 
 --------------------------------------------------------------------------------
--- [19/28] ParityRates :: vw_ParityRates_SnapshotSource.sql
+-- [19/31] ParityRates :: vw_ParityRates_SnapshotSource.sql
 -- Source: Modules\ParityRates\Programmability\vw_ParityRates_SnapshotSource.sql
 --------------------------------------------------------------------------------
 GO
@@ -1970,7 +1970,7 @@ AS
 GO
 
 --------------------------------------------------------------------------------
--- [20/28] ParityRates :: sp_ParityRates_PopulateAffectedKeys.sql
+-- [20/31] ParityRates :: sp_ParityRates_PopulateAffectedKeys.sql
 -- Source: Modules\ParityRates\Programmability\sp_ParityRates_PopulateAffectedKeys.sql
 --------------------------------------------------------------------------------
 GO
@@ -2063,7 +2063,141 @@ END
 GO
 
 --------------------------------------------------------------------------------
--- [21/28] RateType :: vw_RateType_Detail.sql
+-- [21/31] ProductGroup :: vw_ProductGroup_Detail.sql
+-- Source: Modules\ProductGroup\Programmability\vw_ProductGroup_Detail.sql
+--------------------------------------------------------------------------------
+GO
+USE [mdm];
+GO
+
+/*
+    Карточка ProductGroup. Поля совпадают с длинным списком атрибутов MDM
+    плюс системные. Источник — та же проекция, что и снимок.
+*/
+
+CREATE OR ALTER VIEW v2.vw_ProductGroup_Detail
+AS
+    SELECT
+        ProductGroupId,
+        IsArchive,
+        Code,
+        Name,
+        ShortName,
+        GroupCode,
+        ProductGroupCBD,
+        NameEnCode,
+        NameEnRu,
+        Code_NSI,
+        SVTUseProductGroupWhenNoProductRateExists,
+        NameEn,
+        RateSyncClassId AS RateSyncClassIdRu,
+        RateSyncClassId AS RateSyncClassIdEn,
+        CreationDate,
+        LastChangeDate
+    FROM v2.vw_ProductGroup_SnapshotSource;
+GO
+
+--------------------------------------------------------------------------------
+-- [22/31] ProductGroup :: vw_ProductGroup_SnapshotSource.sql
+-- Source: Modules\ProductGroup\Programmability\vw_ProductGroup_SnapshotSource.sql
+--------------------------------------------------------------------------------
+GO
+USE [mdm];
+GO
+
+/*
+    Проекция snapshot ProductGroup из legacy-вью — единый источник истины
+    для read-модели. Используется:
+      1) первичной полной заливкой (02.ProductGroup_Insert.sql);
+      2) инкрементальной синхронизацией (MERGE в SnapshotSyncExecutor).
+
+    Набор и имена колонок ДОЛЖНЫ совпадать с v2.ProductGroup_Snapshot
+    (без суррогатного Id — он выдаётся SEQUENCE при вставке).
+
+    RateSyncClass (dbo.PrimitiveEntityData_2127) — короткий словарь, в гриде enum
+    по RateSyncClassId; в каскад синхронизации не входит.
+*/
+
+CREATE OR ALTER VIEW v2.vw_ProductGroup_SnapshotSource
+AS
+    SELECT
+        CAST(pg.Id AS BIGINT)                                                    AS ProductGroupId,
+        LEFT(pg.Code, 50)                                                        AS Code,
+        CASE WHEN ISNULL(pg.PrimitiveEntityDataStateId, 2) = 2 THEN 1 ELSE 0 END AS IsArchive,
+
+        LEFT(pg.Name, 4000)                                                      AS Name,
+        LEFT(pg.ShortName, 4000)                                                 AS ShortName,
+        LEFT(pg.GroupCode, 4000)                                                 AS GroupCode,
+        LEFT(pg.ProductGroupCBD, 4000)                                           AS ProductGroupCBD,
+        LEFT(pg.NameEnCode, 4000)                                                AS NameEnCode,
+        LEFT(pg.NameEnRu, 4000)                                                  AS NameEnRu,
+        LEFT(pg.Code_NSI, 50)                                                    AS Code_NSI,
+        pg.SVTUseProductGroupWhenNoProductRateExists                             AS SVTUseProductGroupWhenNoProductRateExists,
+        LEFT(pg.NameEn, 4000)                                                    AS NameEn,
+
+        CAST(pg.RateSyncClass AS BIGINT)                                         AS RateSyncClassId,
+        LEFT(rsc.Code, 50)                                                       AS RateSyncClassCode,
+        LEFT(rsc.Name, 2000)                                                     AS RateSyncClassNameRu,
+
+        pg.CreationDate                                                          AS CreationDate,
+        ISNULL(pg.LastChangeDate, pg.CreationDate)                               AS LastChangeDate
+
+    FROM dbo.vw_ProductGroup pg (NOLOCK)
+    LEFT JOIN dbo.vw_RateSyncClass rsc (NOLOCK) ON pg.RateSyncClass = rsc.Id;
+GO
+
+--------------------------------------------------------------------------------
+-- [23/31] ProductGroup :: sp_ProductGroup_PopulateAffectedKeys.sql
+-- Source: Modules\ProductGroup\Programmability\sp_ProductGroup_PopulateAffectedKeys.sql
+--------------------------------------------------------------------------------
+GO
+USE [mdm];
+GO
+
+/*
+    Детекция изменившихся транспортных групп ProductGroup по одному источнику
+    за вызов. По границам курсора @Lo (эксклюзивно) и @Hi (инклюзивно)
+    добавляет в #AffectedKeys бизнес-ключи (ProductGroupId).
+
+    Требует, чтобы вызывающая сессия предварительно создала
+    #AffectedKeys(EntityKey BIGINT). Идемпотентно в рамках цикла: уже
+    добавленные ключи пропускаются (NOT EXISTS по #AffectedKeys).
+
+    Источники (@Source = имя базовой legacy-таблицы, оно же ключ v2.SyncState):
+      dbo.PrimitiveEntityData_1013 — ProductGroup (основная): сами изменившиеся Id.
+
+    RateSyncClass (2127) в гриде — enum по RateSyncClassId, не отслеживается.
+
+    Каскады ставок на эту же таблицу (TransportRate, AverageRateLevel3,
+    ParityRates) живут в их собственных PopulateAffectedKeys.
+
+    Вызывается из Platform/Sync/SnapshotSyncExecutor (per-source).
+*/
+CREATE OR ALTER PROCEDURE v2.ProductGroup_PopulateAffectedKeys
+    @Source NVARCHAR(200),
+    @Lo     BINARY(8),
+    @Hi     BINARY(8)
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    -- ProductGroup (основная): изменившиеся PrimitiveEntityItemId и есть бизнес-ключи групп.
+    IF @Source = N'dbo.PrimitiveEntityData_1013' -- ProductGroup (основная)
+    BEGIN
+        INSERT INTO #AffectedKeys (EntityKey)
+        SELECT d.PrimitiveEntityItemId
+        FROM dbo.PrimitiveEntityData_1013 d WITH (NOLOCK) -- ProductGroup (основная)
+        WHERE d.RowVer > @Lo AND d.RowVer <= @Hi
+          AND NOT EXISTS (SELECT 1 FROM #AffectedKeys a WHERE a.EntityKey = d.PrimitiveEntityItemId);
+        RETURN;
+    END
+
+    ;THROW 50000, 'Unknown ProductGroup sync source.', 1;
+END
+GO
+
+--------------------------------------------------------------------------------
+-- [24/31] RateType :: vw_RateType_Detail.sql
 -- Source: Modules\RateType\Programmability\vw_RateType_Detail.sql
 --------------------------------------------------------------------------------
 GO
@@ -2092,7 +2226,7 @@ AS
 GO
 
 --------------------------------------------------------------------------------
--- [22/28] RateType :: vw_RateType_SnapshotSource.sql
+-- [25/31] RateType :: vw_RateType_SnapshotSource.sql
 -- Source: Modules\RateType\Programmability\vw_RateType_SnapshotSource.sql
 --------------------------------------------------------------------------------
 GO
@@ -2128,7 +2262,7 @@ AS
 GO
 
 --------------------------------------------------------------------------------
--- [23/28] TransportLeg :: vw_TransportLeg_Detail.sql
+-- [26/31] TransportLeg :: vw_TransportLeg_Detail.sql
 -- Source: Modules\TransportLeg\Programmability\vw_TransportLeg_Detail.sql
 --------------------------------------------------------------------------------
 GO
@@ -2237,7 +2371,7 @@ AS
 GO
 
 --------------------------------------------------------------------------------
--- [24/28] TransportLeg :: vw_TransportLeg_SnapshotSource.sql
+-- [27/31] TransportLeg :: vw_TransportLeg_SnapshotSource.sql
 -- Source: Modules\TransportLeg\Programmability\vw_TransportLeg_SnapshotSource.sql
 --------------------------------------------------------------------------------
 GO
@@ -2329,7 +2463,7 @@ AS
 GO
 
 --------------------------------------------------------------------------------
--- [25/28] TransportLeg :: sp_TransportLeg_PopulateAffectedKeys.sql
+-- [28/31] TransportLeg :: sp_TransportLeg_PopulateAffectedKeys.sql
 -- Source: Modules\TransportLeg\Programmability\sp_TransportLeg_PopulateAffectedKeys.sql
 --------------------------------------------------------------------------------
 GO
@@ -2432,7 +2566,7 @@ END
 GO
 
 --------------------------------------------------------------------------------
--- [26/28] TransportRate :: vw_TransportRate_Detail.sql
+-- [29/31] TransportRate :: vw_TransportRate_Detail.sql
 -- Source: Modules\TransportRate\Programmability\vw_TransportRate_Detail.sql
 --------------------------------------------------------------------------------
 GO
@@ -2762,7 +2896,7 @@ AS
 GO
 
 --------------------------------------------------------------------------------
--- [27/28] TransportRate :: vw_TransportRate_SnapshotSource.sql
+-- [30/31] TransportRate :: vw_TransportRate_SnapshotSource.sql
 -- Source: Modules\TransportRate\Programmability\vw_TransportRate_SnapshotSource.sql
 --------------------------------------------------------------------------------
 GO
@@ -2866,7 +3000,7 @@ AS
 GO
 
 --------------------------------------------------------------------------------
--- [28/28] TransportRate :: sp_TransportRate_PopulateAffectedKeys.sql
+-- [31/31] TransportRate :: sp_TransportRate_PopulateAffectedKeys.sql
 -- Source: Modules\TransportRate\Programmability\sp_TransportRate_PopulateAffectedKeys.sql
 --------------------------------------------------------------------------------
 GO

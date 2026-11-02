@@ -15,7 +15,7 @@ Migrations/
 ├── 2.3.46/            ← RateType (не править)
 │   └── 001.…005.…
 └── 2.3.48/            ← текущий VersionPrefix
-    └── 001.…005.…
+    └── 001.…009.…
 ```
 
 Публикация наружу (для DBA):
@@ -46,7 +46,7 @@ Greenfield: `2.0.0` → `2.0.1` → `2.3.46` → `2.3.48`.
 Имя папки — `VersionPrefix` из `BlazorSvt/BlazorSvt.csproj` (сейчас `2.3.48`), без суффикса числа коммитов. Это не «следующий номер после 2.0.1» и не пункт бэклога `2.0.2`.
 
 1. **Папка уже выкаченного релиза — read-only.** Пока `VersionPrefix` не сменился, скрипты дописываются в текущую папку. После смены версии старую папку не правят: баг уходит новым скриптом в папку новой версии.
-2. В папке версии — дельта схемы (Structure, `ALTER`, индексы, data fix), затем **последним файлом полный снимок** всей programmability `v2` (`All_Programmability.sql`). В текущем релизе это `2.3.48/005`. В `2.3.46` это `005`. В `2.0.1` такой пакет стоял дважды: `045` и `052`.
+2. В папке версии — дельта схемы (Structure, `ALTER`, индексы, data fix), затем **последним файлом полный снимок** всей programmability `v2` (`All_Programmability.sql`). В текущем релизе это `2.3.48/009`. В `2.3.46` это `005`. В `2.0.1` такой пакет стоял дважды: `045` и `052`.
 3. Нумерация **внутри релиза** с `001`. Исторические `038…` в `2.0.1` не переименовываем.
 4. SoT остаётся в `Platform/` и `Modules/`: локальный `Create-Programmability.ps1` читает его, а не `Migrations/`. В папку версии попадает копия дельты и снимок programmability.
 5. Публикация в `C:\publish` этим правилом не требуется.
@@ -92,9 +92,15 @@ RateType — стабильный словарь с enum. В миграции н
 | `002.vw_Currency_SnapshotSource.sql` | Проекция из `dbo.vw_Currency`; выполняется до заливки |
 | `003.02.Currency_Insert.sql` | Разовая заливка из этой проекции. `SyncState` не создаётся |
 | `004.03.Currency_CreateIndexes.sql` | Уникальный индекс, фильтрующие индексы, full-text по `Name`, `Symbolic`, `Code`, `Code_NSI` |
-| `005.All_Programmability.sql` | Полный снимок programmability, 28 скриптов (2026-10-29) |
+| `005.01.ProductGroup_CreateTable.sql` | Первое появление `v2.ProductGroup_Snapshot`: partition function/scheme, sequence, таблица |
+| `006.vw_ProductGroup_SnapshotSource.sql` | Проекция из `dbo.vw_ProductGroup`; выполняется до заливки |
+| `007.02.ProductGroup_Insert.sql` | Полная заливка из этой проекции и курсор `v2.SyncState` по `dbo.PrimitiveEntityData_1013` |
+| `008.03.ProductGroup_CreateIndexes.sql` | Уникальный индекс, фильтрующие индексы по `Code` и `RateSyncClassId`, индекс по ключу, full-text по текстовым полям |
+| `009.All_Programmability.sql` | Полный снимок programmability, 31 скрипт (2026-11-02) |
 
-Currency — стабильный словарь с enum. В миграции нет `sp_Currency_PopulateAffectedKeys`, `RowVer` и `SyncState`. В снимке `005` у Currency только `vw_Currency_Detail` и `vw_Currency_SnapshotSource`.
+Currency — стабильный словарь с enum. В миграции нет `sp_Currency_PopulateAffectedKeys`, `RowVer` и `SyncState`. В снимке `009` у Currency только `vw_Currency_Detail` и `vw_Currency_SnapshotSource`.
+
+ProductGroup — справочник с watermark-sync. `RowVer` на `dbo.PrimitiveEntityData_1013` уже добавлен в `2.0.0/004` (источник каскада ставок), отдельного скрипта нет. `vw_ProductGroup_Detail` и `sp_ProductGroup_PopulateAffectedKeys` — в снимке `009`.
 
 ## Чеклист нового релиза
 

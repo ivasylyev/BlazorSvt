@@ -117,6 +117,14 @@
 | Обозначение валюты | `Symbolic` | Обозначение | — | Symbol | — |
 | Цифровой код валюты | `Digital` | Цифр. код | — | Num. code | — |
 | Код НСИ | `Code_NSI` | Код НСИ | — | NSI code | — |
+| Сокращённое наименование | `ShortName` | Кратк. назв. | — | Short name | — |
+| Код транспортной группы | `GroupCode` | Код группы | — | Group code | — |
+| Транспортная группа ЦБД | `ProductGroupCBD` | Группа ЦБД | — | CBD group | — |
+| Наименование (EN) | `NameEn` (отдельная колонка, не пара к `Name`) | Название (EN) | — | Name (EN) | — |
+| Сокращённое наименование (EN) | `NameEnCode` | Кратк. назв. (EN) | — | Short name (EN) | — |
+| Наименование EN-RU | `NameEnRu` | Назв. EN-RU | — | Name EN-RU | — |
+| Подниматься до группы | `SVTUseProductGroupWhenNoProductRateExists` | До группы | — | Group fallback | — |
+| Класс синхронизации ставок | `RateSyncClass` (`RateSyncClassIdRu`/`En`) | Класс синхр. | — | Sync class | — |
 | Страна | `CountryName` / `CountryCode` | Страна | Код страны | Country | Country code |
 | Регион | `RegionName` / `RegionCode` | Регион | Код региона | Region | Region code |
 | Тип узла | `TypeNodeName` / `TypeNodeCode` | Тип узла | Код тип узла | Node type | Type code |
@@ -148,3 +156,5 @@
 | `IsDeflated` | Дефлируется | Deflated | Дефлируется | Deflated |
 | `IsIntoSyncClass` | Использовать синхронизацию | Use synchronization | Синхронизация | Sync |
 | `Code_NSI` | Код НСИ | NSI code | Код НСИ | NSI code |
+| `SVTUseProductGroupWhenNoProductRateExists` | Подниматься до группы если ставка для продукта не найдена | Fall back to group if no product rate found | До группы | Group fallback |
+| `RateSyncClass` | Класс синхронизации | Rate synchronization class | Класс синхр. | Sync class |

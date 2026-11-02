@@ -1,5 +1,6 @@
 using BlazorSvt.Modules.AverageRateLevel3.List;
 using BlazorSvt.Modules.Currency.List;
+using BlazorSvt.Modules.ProductGroup.List;
 using BlazorSvt.Modules.RateType.List;
 using BlazorSvt.Modules.ParityRates.List;
 using BlazorSvt.Modules.TransportLeg.List;
@@ -95,6 +96,15 @@ public class GridColumnMetadataBuilderTests
 
         metadata.TableName.Should().Be("v2.Currency_Snapshot");
         metadata.EntityKeyPropertyName.Should().Be(nameof(CurrencyDto.CurrencyId));
+    }
+
+    [Fact]
+    public void GetMetadata_ProductGroup_UsesSnapshotTableAndEntityKey()
+    {
+        var metadata = GridColumnMetadataBuilder.GetMetadata(typeof(ProductGroupDto));
+
+        metadata.TableName.Should().Be("v2.ProductGroup_Snapshot");
+        metadata.EntityKeyPropertyName.Should().Be(nameof(ProductGroupDto.ProductGroupId));
     }
 
     [Fact]

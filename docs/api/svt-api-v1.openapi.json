@@ -1923,6 +1923,261 @@
           }
         }
       }
+    },
+    "/api/v1/catalogs/product-groups/schema": {
+      "get": {
+        "tags": [
+          "product-groups"
+        ],
+        "summary": "Описание полей справочника product-groups",
+        "description": "Поля, типы, заголовки (по Accept-Language), операторы фильтра, значения enum, ссылки, период, ключ. Поддерживает ETag.",
+        "operationId": "getProductGroupsSchema",
+        "parameters": [
+          {
+            "name": "X-On-Behalf-Of",
+            "in": "header",
+            "description": "Пользователь, от имени которого выполняется запрос: DOMAIN\\user. Права определяются его ролями в СВТ.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "X-Correlation-ID",
+            "in": "header",
+            "description": "Идентификатор корреляции; возвращается в ответе. Если не передан — генерируется.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "description": "ru-RU (по умолчанию) или en-US: язык заголовков полей и текстов ошибок. Данные RU/EN возвращаются как есть.",
+            "schema": {
+              "type": "string"
+            },
+            "example": "ru-RU"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CatalogSchemaResponse"
+                }
+              }
+            }
+          },
+          "304": {
+            "description": "Not Modified"
+          }
+        }
+      }
+    },
+    "/api/v1/catalogs/product-groups/items/search": {
+      "post": {
+        "tags": [
+          "product-groups"
+        ],
+        "summary": "Поиск записей справочника product-groups",
+        "description": "Фильтры объединяются через И; сортировка по одному полю; pageSize 1–1000. По умолчанию без архивных записей. asOf — записи, действующие на дату.",
+        "operationId": "searchProductGroups",
+        "parameters": [
+          {
+            "name": "X-On-Behalf-Of",
+            "in": "header",
+            "description": "Пользователь, от имени которого выполняется запрос: DOMAIN\\user. Права определяются его ролями в СВТ.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "X-Correlation-ID",
+            "in": "header",
+            "description": "Идентификатор корреляции; возвращается в ответе. Если не передан — генерируется.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "description": "ru-RU (по умолчанию) или en-US: язык заголовков полей и текстов ошибок. Данные RU/EN возвращаются как есть.",
+            "schema": {
+              "type": "string"
+            },
+            "example": "ru-RU"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CatalogSearchRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CatalogSearchResponseOfProductGroupDto"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HttpValidationProblemDetails"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/catalogs/product-groups/items/{id}": {
+      "get": {
+        "tags": [
+          "product-groups"
+        ],
+        "summary": "Карточка записи справочника product-groups",
+        "description": "id — ключ записи (поле entityKey из /schema). Поля — как в карточке СВТ.",
+        "operationId": "getProductGroupsItem",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          },
+          {
+            "name": "X-On-Behalf-Of",
+            "in": "header",
+            "description": "Пользователь, от имени которого выполняется запрос: DOMAIN\\user. Права определяются его ролями в СВТ.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "X-Correlation-ID",
+            "in": "header",
+            "description": "Идентификатор корреляции; возвращается в ответе. Если не передан — генерируется.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "description": "ru-RU (по умолчанию) или en-US: язык заголовков полей и текстов ошибок. Данные RU/EN возвращаются как есть.",
+            "schema": {
+              "type": "string"
+            },
+            "example": "ru-RU"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProductGroupDetailDto"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/catalogs/product-groups/export": {
+      "post": {
+        "tags": [
+          "product-groups"
+        ],
+        "summary": "Выгрузка справочника product-groups в Excel",
+        "description": "Файл .xlsx в ответе. kind=Short — колонки грида, kind=Full — поля карточки. Все колонки, без пользовательских настроек.",
+        "operationId": "exportProductGroups",
+        "parameters": [
+          {
+            "name": "X-On-Behalf-Of",
+            "in": "header",
+            "description": "Пользователь, от имени которого выполняется запрос: DOMAIN\\user. Права определяются его ролями в СВТ.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "X-Correlation-ID",
+            "in": "header",
+            "description": "Идентификатор корреляции; возвращается в ответе. Если не передан — генерируется.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "description": "ru-RU (по умолчанию) или en-US: язык заголовков полей и текстов ошибок. Данные RU/EN возвращаются как есть.",
+            "schema": {
+              "type": "string"
+            },
+            "example": "ru-RU"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CatalogExportRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HttpValidationProblemDetails"
+                }
+              }
+            }
+          }
+        }
+      }
     }
   },
   "components": {
@@ -3066,6 +3321,31 @@
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/ParityRatesDto"
+            }
+          },
+          "totalCount": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "dataAsOf": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          }
+        }
+      },
+      "CatalogSearchResponseOfProductGroupDto": {
+        "required": [
+          "items",
+          "totalCount",
+          "dataAsOf"
+        ],
+        "type": "object",
+        "properties": {
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ProductGroupDto"
             }
           },
           "totalCount": {
@@ -4400,6 +4680,165 @@
             "nullable": true
           }
         }
+      },
+      "ProductGroupDetailDto": {
+        "required": [
+          "code",
+          "rateSyncClassIdRu",
+          "rateSyncClassIdEn"
+        ],
+        "type": "object",
+        "properties": {
+          "productGroupId": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "isArchive": {
+            "type": "boolean"
+          },
+          "creationDate": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "lastChangeDate": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "code": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string",
+            "nullable": true
+          },
+          "shortName": {
+            "type": "string",
+            "nullable": true
+          },
+          "groupCode": {
+            "type": "string",
+            "nullable": true
+          },
+          "productGroupCBD": {
+            "type": "string",
+            "nullable": true
+          },
+          "nameEnCode": {
+            "type": "string",
+            "nullable": true
+          },
+          "nameEnRu": {
+            "type": "string",
+            "nullable": true
+          },
+          "code_NSI": {
+            "type": "string",
+            "nullable": true
+          },
+          "svtUseProductGroupWhenNoProductRateExists": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "nameEn": {
+            "type": "string",
+            "nullable": true
+          },
+          "rateSyncClassIdRu": {
+            "$ref": "#/components/schemas/RateSyncClassRu"
+          },
+          "rateSyncClassIdEn": {
+            "$ref": "#/components/schemas/RateSyncClassEn"
+          }
+        }
+      },
+      "ProductGroupDto": {
+        "required": [
+          "code",
+          "rateSyncClassIdRu",
+          "rateSyncClassIdEn"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "productGroupId": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "code": {
+            "type": "string"
+          },
+          "isArchive": {
+            "type": "boolean"
+          },
+          "name": {
+            "type": "string",
+            "nullable": true
+          },
+          "shortName": {
+            "type": "string",
+            "nullable": true
+          },
+          "groupCode": {
+            "type": "string",
+            "nullable": true
+          },
+          "productGroupCBD": {
+            "type": "string",
+            "nullable": true
+          },
+          "nameEnCode": {
+            "type": "string",
+            "nullable": true
+          },
+          "nameEnRu": {
+            "type": "string",
+            "nullable": true
+          },
+          "code_NSI": {
+            "type": "string",
+            "nullable": true
+          },
+          "svtUseProductGroupWhenNoProductRateExists": {
+            "type": "boolean"
+          },
+          "nameEn": {
+            "type": "string",
+            "nullable": true
+          },
+          "rateSyncClassIdRu": {
+            "$ref": "#/components/schemas/RateSyncClassRu"
+          },
+          "rateSyncClassIdEn": {
+            "$ref": "#/components/schemas/RateSyncClassEn"
+          },
+          "creationDate": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "lastChangeDate": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "RateSyncClassEn": {
+        "enum": [
+          "DryHazardous",
+          "DryNonHazardous",
+          "LiquidHazardous",
+          "LiquidNonHazardous"
+        ]
+      },
+      "RateSyncClassRu": {
+        "enum": [
+          "DryHazardous",
+          "DryNonHazardous",
+          "LiquidHazardous",
+          "LiquidNonHazardous"
+        ]
       },
       "RateTypeDetailDto": {
         "required": [
@@ -6080,6 +6519,9 @@
     },
     {
       "name": "currencies"
+    },
+    {
+      "name": "product-groups"
     }
   ]
 }

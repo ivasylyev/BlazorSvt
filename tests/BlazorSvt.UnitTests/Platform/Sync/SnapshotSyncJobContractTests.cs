@@ -4,6 +4,8 @@ using BlazorSvt.Modules.LocationsNodes.List;
 using BlazorSvt.Modules.LocationsNodes.Sync;
 using BlazorSvt.Modules.ParityRates.List;
 using BlazorSvt.Modules.ParityRates.Sync;
+using BlazorSvt.Modules.ProductGroup.List;
+using BlazorSvt.Modules.ProductGroup.Sync;
 using BlazorSvt.Modules.TransportLeg.List;
 using BlazorSvt.Modules.TransportLeg.Sync;
 using BlazorSvt.Modules.TransportRate.List;
@@ -76,6 +78,15 @@ public class SnapshotSyncJobContractTests
                 nameof(AverageRateLevel3Dto.AverageRateLevel3Id),
                 "v2.vw_AverageRateLevel3_SnapshotSource",
                 "v2.AverageRateLevel3_PopulateAffectedKeys"
+            },
+            {
+                new ProductGroupSyncJob(),
+                typeof(ProductGroupDto),
+                "ProductGroup",
+                "v2.ProductGroup_Snapshot",
+                nameof(ProductGroupDto.ProductGroupId),
+                "v2.vw_ProductGroup_SnapshotSource",
+                "v2.ProductGroup_PopulateAffectedKeys"
             },
         };
 
