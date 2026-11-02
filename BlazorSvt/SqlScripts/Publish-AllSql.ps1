@@ -101,6 +101,12 @@ $fullManifest = @(
   'Modules\ProductGroup\Structure\03.ProductGroup_CreateIndexes.sql'
   'Modules\ProductGroup\Programmability\vw_ProductGroup_Detail.sql'
   'Modules\ProductGroup\Programmability\sp_ProductGroup_PopulateAffectedKeys.sql'
+  'Modules\MTR\Structure\01.MTR_CreateTable.sql'
+  'Modules\MTR\Programmability\vw_MTR_SnapshotSource.sql'
+  'Modules\MTR\Structure\02.MTR_Insert.sql'
+  'Modules\MTR\Structure\03.MTR_CreateIndexes.sql'
+  'Modules\MTR\Programmability\vw_MTR_Detail.sql'
+  'Modules\MTR\Programmability\sp_MTR_PopulateAffectedKeys.sql'
 )
 
 $programmabilityManifest = $fullManifest | Where-Object {

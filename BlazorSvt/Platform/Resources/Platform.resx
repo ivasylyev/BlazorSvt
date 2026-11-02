@@ -147,6 +147,9 @@
   <data name="HeaderMenu.ProductGroup" xml:space="preserve">
 	  <value>Transport groups</value>
   </data>
+  <data name="HeaderMenu.MTR" xml:space="preserve">
+	  <value>Materials and equipment</value>
+  </data>
   <data name="HeaderMenu.Load" xml:space="preserve">
 	  <value>Load</value>
   </data>

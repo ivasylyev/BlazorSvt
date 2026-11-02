@@ -4,6 +4,8 @@ using BlazorSvt.Modules.LocationsNodes.List;
 using BlazorSvt.Modules.LocationsNodes.Sync;
 using BlazorSvt.Modules.ParityRates.List;
 using BlazorSvt.Modules.ParityRates.Sync;
+using BlazorSvt.Modules.MTR.List;
+using BlazorSvt.Modules.MTR.Sync;
 using BlazorSvt.Modules.ProductGroup.List;
 using BlazorSvt.Modules.ProductGroup.Sync;
 using BlazorSvt.Modules.TransportLeg.List;
@@ -87,6 +89,15 @@ public class SnapshotSyncJobContractTests
                 nameof(ProductGroupDto.ProductGroupId),
                 "v2.vw_ProductGroup_SnapshotSource",
                 "v2.ProductGroup_PopulateAffectedKeys"
+            },
+            {
+                new MTRSyncJob(),
+                typeof(MTRDto),
+                "MTR",
+                "v2.MTR_Snapshot",
+                nameof(MTRDto.MTRId),
+                "v2.vw_MTR_SnapshotSource",
+                "v2.MTR_PopulateAffectedKeys"
             },
         };
 

@@ -32,14 +32,17 @@ SqlScripts/
 │   ├── Currency/
 │   │   ├── Structure/
 │   │   └── Programmability/   # без PopulateAffectedKeys: разовая заливка
-│   └── ProductGroup/
+│   ├── ProductGroup/
+│   │   ├── Structure/
+│   │   └── Programmability/
+│   └── MTR/
 │       ├── Structure/
 │       └── Programmability/
 ├── Migrations/             # Релизные артефакты наката (immutable после выката)
 │   ├── 2.0.0/              # baseline
 │   ├── 2.0.1/              # upgrade
 │   ├── 2.3.46/             # дельта RateType + снимок programmability
-│   ├── 2.3.48/             # текущий VersionPrefix: дельта Currency, ProductGroup + снимок programmability
+│   ├── 2.3.48/             # текущий VersionPrefix: дельта Currency, ProductGroup, MTR + снимок programmability
 │   └── README.md           # конвенция релизов / два контура
 └── Translations_info.txt   # Справочник переводов полей (не для деплоя)
 ```
@@ -150,6 +153,17 @@ SqlScripts/
 | 4 | `Modules/ProductGroup/Structure/03.ProductGroup_CreateIndexes.sql` |
 | 5 | `Modules/ProductGroup/Programmability/vw_ProductGroup_Detail.sql` |
 | 6 | `Modules/ProductGroup/Programmability/sp_ProductGroup_PopulateAffectedKeys.sql` |
+
+**MTR** (проекция до Insert; RowVer на `dbo.PrimitiveEntityData_1015` уже есть — источник каскада ставок)
+
+| # | Скрипт |
+|---|--------|
+| 1 | `Modules/MTR/Structure/01.MTR_CreateTable.sql` |
+| 2 | `Modules/MTR/Programmability/vw_MTR_SnapshotSource.sql` |
+| 3 | `Modules/MTR/Structure/02.MTR_Insert.sql` |
+| 4 | `Modules/MTR/Structure/03.MTR_CreateIndexes.sql` |
+| 5 | `Modules/MTR/Programmability/vw_MTR_Detail.sql` |
+| 6 | `Modules/MTR/Programmability/sp_MTR_PopulateAffectedKeys.sql` |
 
 ## Grid read-модель
 

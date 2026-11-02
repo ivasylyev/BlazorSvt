@@ -2178,6 +2178,261 @@
           }
         }
       }
+    },
+    "/api/v1/catalogs/products/schema": {
+      "get": {
+        "tags": [
+          "products"
+        ],
+        "summary": "Описание полей справочника products",
+        "description": "Поля, типы, заголовки (по Accept-Language), операторы фильтра, значения enum, ссылки, период, ключ. Поддерживает ETag.",
+        "operationId": "getProductsSchema",
+        "parameters": [
+          {
+            "name": "X-On-Behalf-Of",
+            "in": "header",
+            "description": "Пользователь, от имени которого выполняется запрос: DOMAIN\\user. Права определяются его ролями в СВТ.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "X-Correlation-ID",
+            "in": "header",
+            "description": "Идентификатор корреляции; возвращается в ответе. Если не передан — генерируется.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "description": "ru-RU (по умолчанию) или en-US: язык заголовков полей и текстов ошибок. Данные RU/EN возвращаются как есть.",
+            "schema": {
+              "type": "string"
+            },
+            "example": "ru-RU"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CatalogSchemaResponse"
+                }
+              }
+            }
+          },
+          "304": {
+            "description": "Not Modified"
+          }
+        }
+      }
+    },
+    "/api/v1/catalogs/products/items/search": {
+      "post": {
+        "tags": [
+          "products"
+        ],
+        "summary": "Поиск записей справочника products",
+        "description": "Фильтры объединяются через И; сортировка по одному полю; pageSize 1–1000. По умолчанию без архивных записей. asOf — записи, действующие на дату.",
+        "operationId": "searchProducts",
+        "parameters": [
+          {
+            "name": "X-On-Behalf-Of",
+            "in": "header",
+            "description": "Пользователь, от имени которого выполняется запрос: DOMAIN\\user. Права определяются его ролями в СВТ.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "X-Correlation-ID",
+            "in": "header",
+            "description": "Идентификатор корреляции; возвращается в ответе. Если не передан — генерируется.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "description": "ru-RU (по умолчанию) или en-US: язык заголовков полей и текстов ошибок. Данные RU/EN возвращаются как есть.",
+            "schema": {
+              "type": "string"
+            },
+            "example": "ru-RU"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CatalogSearchRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CatalogSearchResponseOfMTRDto"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HttpValidationProblemDetails"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/catalogs/products/items/{id}": {
+      "get": {
+        "tags": [
+          "products"
+        ],
+        "summary": "Карточка записи справочника products",
+        "description": "id — ключ записи (поле entityKey из /schema). Поля — как в карточке СВТ.",
+        "operationId": "getProductsItem",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          },
+          {
+            "name": "X-On-Behalf-Of",
+            "in": "header",
+            "description": "Пользователь, от имени которого выполняется запрос: DOMAIN\\user. Права определяются его ролями в СВТ.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "X-Correlation-ID",
+            "in": "header",
+            "description": "Идентификатор корреляции; возвращается в ответе. Если не передан — генерируется.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "description": "ru-RU (по умолчанию) или en-US: язык заголовков полей и текстов ошибок. Данные RU/EN возвращаются как есть.",
+            "schema": {
+              "type": "string"
+            },
+            "example": "ru-RU"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MTRDetailDto"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/catalogs/products/export": {
+      "post": {
+        "tags": [
+          "products"
+        ],
+        "summary": "Выгрузка справочника products в Excel",
+        "description": "Файл .xlsx в ответе. kind=Short — колонки грида, kind=Full — поля карточки. Все колонки, без пользовательских настроек.",
+        "operationId": "exportProducts",
+        "parameters": [
+          {
+            "name": "X-On-Behalf-Of",
+            "in": "header",
+            "description": "Пользователь, от имени которого выполняется запрос: DOMAIN\\user. Права определяются его ролями в СВТ.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "X-Correlation-ID",
+            "in": "header",
+            "description": "Идентификатор корреляции; возвращается в ответе. Если не передан — генерируется.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "description": "ru-RU (по умолчанию) или en-US: язык заголовков полей и текстов ошибок. Данные RU/EN возвращаются как есть.",
+            "schema": {
+              "type": "string"
+            },
+            "example": "ru-RU"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CatalogExportRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HttpValidationProblemDetails"
+                }
+              }
+            }
+          }
+        }
+      }
     }
   },
   "components": {
@@ -3309,6 +3564,31 @@
           }
         }
       },
+      "CatalogSearchResponseOfMTRDto": {
+        "required": [
+          "items",
+          "totalCount",
+          "dataAsOf"
+        ],
+        "type": "object",
+        "properties": {
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/MTRDto"
+            }
+          },
+          "totalCount": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "dataAsOf": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          }
+        }
+      },
       "CatalogSearchResponseOfParityRatesDto": {
         "required": [
           "items",
@@ -4269,7 +4549,367 @@
           "City"
         ]
       },
+      "MTRDetailDto": {
+        "required": [
+          "code"
+        ],
+        "type": "object",
+        "properties": {
+          "mtrId": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "isArchive": {
+            "type": "boolean"
+          },
+          "creationDate": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "lastChangeDate": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "code": {
+            "type": "string"
+          },
+          "nameFullRu": {
+            "type": "string",
+            "nullable": true
+          },
+          "nameShortRu": {
+            "type": "string",
+            "nullable": true
+          },
+          "nameFullEn": {
+            "type": "string",
+            "nullable": true
+          },
+          "nameShortEn": {
+            "type": "string",
+            "nullable": true
+          },
+          "productGroupCode": {
+            "type": "string",
+            "nullable": true
+          },
+          "productGroupNameRu": {
+            "type": "string",
+            "nullable": true
+          },
+          "productGroupNameEn": {
+            "type": "string",
+            "nullable": true
+          },
+          "etsngNameRu": {
+            "type": "string",
+            "nullable": true
+          },
+          "etsngNameEn": {
+            "type": "string",
+            "nullable": true
+          },
+          "gngCode": {
+            "type": "string",
+            "nullable": true
+          },
+          "unitIdRu": {
+            "$ref": "#/components/schemas/NullableOfUnitRu"
+          },
+          "unitIdEn": {
+            "$ref": "#/components/schemas/NullableOfUnitEn"
+          },
+          "dpoCode": {
+            "type": "string",
+            "nullable": true
+          },
+          "mtrType": {
+            "type": "string",
+            "nullable": true
+          },
+          "dangerClassIdRu": {
+            "$ref": "#/components/schemas/NullableOfDangerClassRu"
+          },
+          "dangerClassIdEn": {
+            "$ref": "#/components/schemas/NullableOfDangerClassEn"
+          },
+          "statusIdRu": {
+            "$ref": "#/components/schemas/NullableOfStatusElementRu"
+          },
+          "statusIdEn": {
+            "$ref": "#/components/schemas/NullableOfStatusElementEn"
+          },
+          "productCode": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
+      "MTRDto": {
+        "required": [
+          "code"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "mtrId": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "code": {
+            "type": "string"
+          },
+          "isArchive": {
+            "type": "boolean"
+          },
+          "nameFullRu": {
+            "type": "string",
+            "nullable": true
+          },
+          "nameShortEn": {
+            "type": "string",
+            "nullable": true
+          },
+          "productGroupCode": {
+            "type": "string",
+            "nullable": true
+          },
+          "productGroupNameRu": {
+            "type": "string",
+            "nullable": true
+          },
+          "productGroupNameEn": {
+            "type": "string",
+            "nullable": true
+          },
+          "etsngNameRu": {
+            "type": "string",
+            "nullable": true
+          },
+          "etsngNameEn": {
+            "type": "string",
+            "nullable": true
+          },
+          "gngCode": {
+            "type": "string",
+            "nullable": true
+          },
+          "unitIdRu": {
+            "$ref": "#/components/schemas/NullableOfUnitRu"
+          },
+          "unitIdEn": {
+            "$ref": "#/components/schemas/NullableOfUnitEn"
+          },
+          "dpoCode": {
+            "type": "string",
+            "nullable": true
+          },
+          "mtrType": {
+            "type": "string",
+            "nullable": true
+          },
+          "dangerClassIdRu": {
+            "$ref": "#/components/schemas/NullableOfDangerClassRu"
+          },
+          "dangerClassIdEn": {
+            "$ref": "#/components/schemas/NullableOfDangerClassEn"
+          },
+          "creationDate": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "lastChangeDate": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "NullableOfDangerClassEn": {
+        "enum": [
+          "Explosives",
+          "Gases",
+          "FlammableLiquids",
+          "FlammableSolids",
+          "Oxidizers",
+          "ToxicAndInfectious",
+          "Radioactive",
+          "Corrosives",
+          "MiscellaneousDangerous",
+          null
+        ],
+        "nullable": true
+      },
+      "NullableOfDangerClassRu": {
+        "enum": [
+          "Explosives",
+          "Gases",
+          "FlammableLiquids",
+          "FlammableSolids",
+          "Oxidizers",
+          "ToxicAndInfectious",
+          "Radioactive",
+          "Corrosives",
+          "MiscellaneousDangerous",
+          null
+        ],
+        "nullable": true
+      },
       "NullableOfJsonElement": {
+        "nullable": true
+      },
+      "NullableOfStatusElementEn": {
+        "enum": [
+          "Active",
+          "Archived",
+          null
+        ],
+        "nullable": true
+      },
+      "NullableOfStatusElementRu": {
+        "enum": [
+          "Active",
+          "Archived",
+          null
+        ],
+        "nullable": true
+      },
+      "NullableOfUnitEn": {
+        "enum": [
+          "Piece",
+          "Ton",
+          "Kilogram",
+          "Meter",
+          "Kilometer",
+          "Liter",
+          "Pack",
+          "Sheet",
+          "Wagon",
+          "Set",
+          "Ruble",
+          "CubicMeter",
+          "SquareMeter",
+          "Kilowatt",
+          "Couple",
+          "Chunk",
+          "PrePacking",
+          "Kit",
+          "Shell",
+          "Flask",
+          "ConventionalUnit",
+          "Box",
+          "Bank",
+          "Container",
+          "LinearMeter",
+          "Bottle",
+          "Package",
+          "Roll",
+          "Hour",
+          "Bight",
+          "ThousandPieces",
+          "Bag",
+          "Pan",
+          "ThousandSquareMeters",
+          "Packing",
+          "Ampoule",
+          "ThousandLinearMeters",
+          "Balloon",
+          "Jerrycan",
+          "OneSheets",
+          "Tube",
+          "Barrel",
+          "Bucket",
+          "Milliliter",
+          "Gram",
+          "ThousandRubles",
+          "ThousandMeters",
+          "ThousandCubicMeters",
+          "HalfSet",
+          "TonsOfEquivalentFuel",
+          "KilogramOfFuelEquivalent",
+          "Millimeter",
+          "SoftContainer",
+          "GigaCalorie",
+          "Megacalorie",
+          "KilowattHour",
+          "Megawatt",
+          "Decaliter",
+          "Milligram",
+          "GigacaloriePerHour",
+          "Pound",
+          "MegawattHour",
+          null
+        ],
+        "nullable": true
+      },
+      "NullableOfUnitRu": {
+        "enum": [
+          "Piece",
+          "Ton",
+          "Kilogram",
+          "Meter",
+          "Kilometer",
+          "Liter",
+          "Pack",
+          "Sheet",
+          "Wagon",
+          "Set",
+          "Ruble",
+          "CubicMeter",
+          "SquareMeter",
+          "Kilowatt",
+          "Couple",
+          "Chunk",
+          "PrePacking",
+          "Kit",
+          "Shell",
+          "Flask",
+          "ConventionalUnit",
+          "Box",
+          "Bank",
+          "Container",
+          "LinearMeter",
+          "Bottle",
+          "Package",
+          "Roll",
+          "Hour",
+          "Bight",
+          "ThousandPieces",
+          "Bag",
+          "Pan",
+          "ThousandSquareMeters",
+          "Packing",
+          "Ampoule",
+          "ThousandLinearMeters",
+          "Balloon",
+          "Jerrycan",
+          "OneSheets",
+          "Tube",
+          "Barrel",
+          "Bucket",
+          "Milliliter",
+          "Gram",
+          "ThousandRubles",
+          "ThousandMeters",
+          "ThousandCubicMeters",
+          "HalfSet",
+          "TonsOfEquivalentFuel",
+          "KilogramOfFuelEquivalent",
+          "Millimeter",
+          "SoftContainer",
+          "GigaCalorie",
+          "Megacalorie",
+          "KilowattHour",
+          "Megawatt",
+          "Decaliter",
+          "Milligram",
+          "GigacaloriePerHour",
+          "Pound",
+          "MegawattHour",
+          null
+        ],
         "nullable": true
       },
       "ParityRatesDetailDto": {
@@ -6522,6 +7162,9 @@
     },
     {
       "name": "product-groups"
+    },
+    {
+      "name": "products"
     }
   ]
 }

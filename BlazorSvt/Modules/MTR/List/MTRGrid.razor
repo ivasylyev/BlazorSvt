@@ -1,0 +1,16 @@
+@page "/mtr"
+@using BlazorSvt.Modules.MTR.Detail
+@inherits BaseGridPage<MTRDto, MTRDetailDto>
+
+<GenericGrid TItem="MTRDto"
+             TDetailItem="MTRDetailDto"
+             PageTitle="@EL["MTRGrid.Title"]"
+             AllowDetailView="true"
+             DataProvider="DataProvider"
+             DetailDataProvider="DetailDataProvider"
+             DetailKeySelector="DetailKeySelector">
+
+    <DetailViewTemplate Context="detail">
+    </DetailViewTemplate>
+
+</GenericGrid>

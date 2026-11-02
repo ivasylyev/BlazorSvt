@@ -140,7 +140,14 @@
 | ЗоО отдел | `DepartmentResponsibilityArea` | ЗоО отдел | — | Dept area | — |
 | ЗоО сотрудник | `EmployeeResponsibilityArea` | ЗоО сотр. | — | Emp. area | — |
 | Методология | `Methodology` | Методология | — | Methodology | — |
-| Приоритет | `PriorityText` | Приоритет | — | Priority | — |
+| Класс опасности | `DangerClass` (`DangerClassIdRu`/`En`) | Класс оп. | — | Hazard | — |
+| Единица измерения | `Unit` (`UnitIdRu`/`En`) | Ед. изм. | — | Unit | — |
+| Код ЕТСНГ | `EtsngName` | Код ЕТСНГ | — | ETSNG code | — |
+| Код ГНГ | `GngCode` | Код ГНГ | — | GNG code | — |
+| Основной код DPO | `DpoCode` | Код DPO | — | DPO code | — |
+| Вид МТР | `MtrType` | Вид МТР | — | MTR type | — |
+| Полное наименование (RU) | `NameFullRu` | Полное (RU) | — | Full (RU) | — |
+| Краткое наименование (EN) | `NameShortEn` | Кратк. (EN) | — | Short (EN) | — |
 
 `RateTypeCode` в grid settings может отсутствовать — short применяют только если ключ реально используется в гриде; иначе ключ считается мёртвым для правки.
 
@@ -158,3 +165,4 @@
 | `Code_NSI` | Код НСИ | NSI code | Код НСИ | NSI code |
 | `SVTUseProductGroupWhenNoProductRateExists` | Подниматься до группы если ставка для продукта не найдена | Fall back to group if no product rate found | До группы | Group fallback |
 | `RateSyncClass` | Класс синхронизации | Rate synchronization class | Класс синхр. | Sync class |
+| `ProductCode` | Код продукта | Product code | Код продукта | Product code |

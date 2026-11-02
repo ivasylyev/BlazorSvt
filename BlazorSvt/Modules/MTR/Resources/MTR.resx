@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <resheader name="resmimetype"><value>text/microsoft-resx</value></resheader>
+  <resheader name="version"><value>2.0</value></resheader>
+  <resheader name="reader"><value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value></resheader>
+  <resheader name="writer"><value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value></resheader>
+  <data name="MTRGrid.Title" xml:space="preserve"><value>Materials and equipment</value></data>
+  <data name="MTRDto.Code" xml:space="preserve"><value>Code</value></data>
+  <data name="MTRDto.NameFullRu" xml:space="preserve"><value>Full (RU)</value></data>
+  <data name="MTRDto.NameShortEn" xml:space="preserve"><value>Short (EN)</value></data>
+  <data name="MTRDto.ProductGroupName" xml:space="preserve"><value>Group</value></data>
+  <data name="MTRDto.ProductGroupCode" xml:space="preserve"><value>Group code</value></data>
+  <data name="MTRDto.EtsngName" xml:space="preserve"><value>ETSNG code</value></data>
+  <data name="MTRDto.GngCode" xml:space="preserve"><value>GNG code</value></data>
+  <data name="MTRDto.Unit" xml:space="preserve"><value>Unit</value></data>
+  <data name="MTRDto.DpoCode" xml:space="preserve"><value>DPO code</value></data>
+  <data name="MTRDto.MtrType" xml:space="preserve"><value>MTR type</value></data>
+  <data name="MTRDto.DangerClass" xml:space="preserve"><value>Hazard</value></data>
+  <data name="MTRDto.IsArchive" xml:space="preserve"><value>Archive</value></data>
+  <data name="MTRDto.CreationDate" xml:space="preserve"><value>Created</value></data>
+  <data name="MTRDto.LastChangeDate" xml:space="preserve"><value>Changed</value></data>
+  <data name="MTRDetailDto.Code" xml:space="preserve"><value>Code</value></data>
+  <data name="MTRDetailDto.NameFullRu" xml:space="preserve"><value>Full (RU) (Full name (RU))</value></data>
+  <data name="MTRDetailDto.NameShortRu" xml:space="preserve"><value>Short name (RU)</value></data>
+  <data name="MTRDetailDto.NameFullEn" xml:space="preserve"><value>Full name (EN)</value></data>
+  <data name="MTRDetailDto.NameShortEn" xml:space="preserve"><value>Short (EN) (Short name (EN))</value></data>
+  <data name="MTRDetailDto.ProductGroupName" xml:space="preserve"><value>Group (Transport group)</value></data>
+  <data name="MTRDetailDto.ProductGroupCode" xml:space="preserve"><value>Group code (Transport group code)</value></data>
+  <data name="MTRDetailDto.EtsngName" xml:space="preserve"><value>ETSNG code (ETSNG (Classes of Transport Rates) code)</value></data>
+  <data name="MTRDetailDto.GngCode" xml:space="preserve"><value>GNG code (GNG (Harmonised Nomenclature of Cargoes) code)</value></data>
+  <data name="MTRDetailDto.Unit" xml:space="preserve"><value>Unit (Unit of measurement)</value></data>
+  <data name="MTRDetailDto.DpoCode" xml:space="preserve"><value>DPO code (Main DPO code)</value></data>
+  <data name="MTRDetailDto.MtrType" xml:space="preserve"><value>MTR type (Type of materials and equipment (SAP))</value></data>
+  <data name="MTRDetailDto.DangerClass" xml:space="preserve"><value>Hazard (Hazard class)</value></data>
+  <data name="MTRDetailDto.Status" xml:space="preserve"><value>Record status</value></data>
+  <data name="MTRDetailDto.ProductCode" xml:space="preserve"><value>Product code</value></data>
+  <data name="MTRDetailDto.IsArchive" xml:space="preserve"><value>Archive</value></data>
+  <data name="MTRDetailDto.CreationDate" xml:space="preserve"><value>Created</value></data>
+  <data name="MTRDetailDto.LastChangeDate" xml:space="preserve"><value>Changed</value></data>
+  <data name="MTRDetailDto.Group.0.Default" xml:space="preserve"><value>Default</value></data>
+</root>
