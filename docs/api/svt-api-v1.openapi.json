@@ -1668,6 +1668,261 @@
           }
         }
       }
+    },
+    "/api/v1/catalogs/currencies/schema": {
+      "get": {
+        "tags": [
+          "currencies"
+        ],
+        "summary": "Описание полей справочника currencies",
+        "description": "Поля, типы, заголовки (по Accept-Language), операторы фильтра, значения enum, ссылки, период, ключ. Поддерживает ETag.",
+        "operationId": "getCurrenciesSchema",
+        "parameters": [
+          {
+            "name": "X-On-Behalf-Of",
+            "in": "header",
+            "description": "Пользователь, от имени которого выполняется запрос: DOMAIN\\user. Права определяются его ролями в СВТ.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "X-Correlation-ID",
+            "in": "header",
+            "description": "Идентификатор корреляции; возвращается в ответе. Если не передан — генерируется.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "description": "ru-RU (по умолчанию) или en-US: язык заголовков полей и текстов ошибок. Данные RU/EN возвращаются как есть.",
+            "schema": {
+              "type": "string"
+            },
+            "example": "ru-RU"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CatalogSchemaResponse"
+                }
+              }
+            }
+          },
+          "304": {
+            "description": "Not Modified"
+          }
+        }
+      }
+    },
+    "/api/v1/catalogs/currencies/items/search": {
+      "post": {
+        "tags": [
+          "currencies"
+        ],
+        "summary": "Поиск записей справочника currencies",
+        "description": "Фильтры объединяются через И; сортировка по одному полю; pageSize 1–1000. По умолчанию без архивных записей. asOf — записи, действующие на дату.",
+        "operationId": "searchCurrencies",
+        "parameters": [
+          {
+            "name": "X-On-Behalf-Of",
+            "in": "header",
+            "description": "Пользователь, от имени которого выполняется запрос: DOMAIN\\user. Права определяются его ролями в СВТ.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "X-Correlation-ID",
+            "in": "header",
+            "description": "Идентификатор корреляции; возвращается в ответе. Если не передан — генерируется.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "description": "ru-RU (по умолчанию) или en-US: язык заголовков полей и текстов ошибок. Данные RU/EN возвращаются как есть.",
+            "schema": {
+              "type": "string"
+            },
+            "example": "ru-RU"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CatalogSearchRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CatalogSearchResponseOfCurrencyDto"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HttpValidationProblemDetails"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/catalogs/currencies/items/{id}": {
+      "get": {
+        "tags": [
+          "currencies"
+        ],
+        "summary": "Карточка записи справочника currencies",
+        "description": "id — ключ записи (поле entityKey из /schema). Поля — как в карточке СВТ.",
+        "operationId": "getCurrenciesItem",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          },
+          {
+            "name": "X-On-Behalf-Of",
+            "in": "header",
+            "description": "Пользователь, от имени которого выполняется запрос: DOMAIN\\user. Права определяются его ролями в СВТ.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "X-Correlation-ID",
+            "in": "header",
+            "description": "Идентификатор корреляции; возвращается в ответе. Если не передан — генерируется.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "description": "ru-RU (по умолчанию) или en-US: язык заголовков полей и текстов ошибок. Данные RU/EN возвращаются как есть.",
+            "schema": {
+              "type": "string"
+            },
+            "example": "ru-RU"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CurrencyDetailDto"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/catalogs/currencies/export": {
+      "post": {
+        "tags": [
+          "currencies"
+        ],
+        "summary": "Выгрузка справочника currencies в Excel",
+        "description": "Файл .xlsx в ответе. kind=Short — колонки грида, kind=Full — поля карточки. Все колонки, без пользовательских настроек.",
+        "operationId": "exportCurrencies",
+        "parameters": [
+          {
+            "name": "X-On-Behalf-Of",
+            "in": "header",
+            "description": "Пользователь, от имени которого выполняется запрос: DOMAIN\\user. Права определяются его ролями в СВТ.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "X-Correlation-ID",
+            "in": "header",
+            "description": "Идентификатор корреляции; возвращается в ответе. Если не передан — генерируется.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "description": "ru-RU (по умолчанию) или en-US: язык заголовков полей и текстов ошибок. Данные RU/EN возвращаются как есть.",
+            "schema": {
+              "type": "string"
+            },
+            "example": "ru-RU"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CatalogExportRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HttpValidationProblemDetails"
+                }
+              }
+            }
+          }
+        }
+      }
     }
   },
   "components": {
@@ -2347,7 +2602,7 @@
             "format": "int64"
           },
           "currencyId": {
-            "$ref": "#/components/schemas/Currency"
+            "$ref": "#/components/schemas/CurrencyRuEn"
           },
           "rateTypeIdRu": {
             "$ref": "#/components/schemas/RateTypeRu"
@@ -2749,6 +3004,31 @@
           }
         }
       },
+      "CatalogSearchResponseOfCurrencyDto": {
+        "required": [
+          "items",
+          "totalCount",
+          "dataAsOf"
+        ],
+        "type": "object",
+        "properties": {
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/CurrencyDto"
+            }
+          },
+          "totalCount": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "dataAsOf": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          }
+        }
+      },
       "CatalogSearchResponseOfLocationsNodesDto": {
         "required": [
           "items",
@@ -2888,12 +3168,263 @@
         },
         "nullable": true
       },
-      "Currency": {
+      "CurrencyDetailDto": {
+        "required": [
+          "code"
+        ],
+        "type": "object",
+        "properties": {
+          "currencyId": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "code": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string",
+            "nullable": true
+          },
+          "symbolic": {
+            "type": "string",
+            "nullable": true
+          },
+          "digital": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "code_NSI": {
+            "type": "string",
+            "nullable": true
+          },
+          "isArchive": {
+            "type": "boolean"
+          },
+          "creationDate": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "lastChangeDate": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "CurrencyDto": {
+        "required": [
+          "code"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "currencyId": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "code": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string",
+            "nullable": true
+          },
+          "symbolic": {
+            "type": "string",
+            "nullable": true
+          },
+          "digital": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "code_NSI": {
+            "type": "string",
+            "nullable": true
+          },
+          "isArchive": {
+            "type": "boolean"
+          },
+          "creationDate": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "lastChangeDate": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "CurrencyRuEn": {
         "enum": [
+          "AUD",
+          "ATS",
+          "AZN",
+          "ALL",
+          "DZD",
+          "GBP",
+          "AOA",
+          "ARS",
+          "AMD",
+          "AFN",
+          "BSD",
+          "BDT",
+          "BBD",
+          "BHD",
+          "BZD",
+          "BYR",
+          "BEF",
+          "BMD",
+          "MMK",
+          "BGN",
+          "BOB",
+          "BWP",
+          "BRL",
+          "BND",
+          "BIF",
+          "BTN",
+          "VUV",
+          "HUF",
+          "VEF",
+          "XCD",
+          "VND",
+          "HTG",
+          "GYD",
+          "GMD",
+          "GHS",
+          "GNF",
+          "GIP",
+          "HKD",
+          "GRD",
+          "GEL",
+          "DKK",
+          "AED",
+          "STD",
+          "ZWD",
+          "KYD",
+          "NAD",
           "USD",
+          "SBD",
+          "TTD",
+          "FJD",
+          "DOP",
           "EUR",
+          "EGP",
+          "ZMK",
+          "ILS",
+          "INR",
+          "IDR",
+          "JOD",
+          "IQD",
+          "IRR",
+          "IEP",
+          "ISK",
+          "ESP",
+          "ITL",
+          "YER",
+          "KZT",
+          "KHR",
+          "CAD",
+          "QAR",
+          "KES",
+          "GTQ",
+          "PGK",
+          "LAK",
+          "CYP",
+          "KGS",
           "CNY",
-          "RUB"
+          "COP",
+          "CDF",
+          "CRC",
+          "CUP",
+          "KWD",
+          "LVL",
+          "HNL",
+          "LBP",
+          "LYD",
+          "LTL",
+          "LUF",
+          "MUR",
+          "MRO",
+          "MKD",
+          "MWK",
+          "MGA",
+          "MYR",
+          "MVR",
+          "MTL",
+          "MAD",
+          "MXN",
+          "MZN",
+          "MDL",
+          "MNT",
+          "DEM",
+          "NPR",
+          "NGN",
+          "NLG",
+          "NIO",
+          "TRY",
+          "NZD",
+          "RON",
+          "TWD",
+          "NOK",
+          "OMR",
+          "TOP",
+          "PKR",
+          "PYG",
+          "PEN",
+          "PLN",
+          "PTE",
+          "RUB",
+          "SAR",
+          "SZL",
+          "KPW",
+          "SCR",
+          "RSD",
+          "SGD",
+          "SYP",
+          "SKK",
+          "SIT",
+          "SOS",
+          "SDG",
+          "SRD",
+          "SLL",
+          "TJS",
+          "THB",
+          "WST",
+          "TZS",
+          "TND",
+          "TMM",
+          "UGX",
+          "UZS",
+          "UAH",
+          "UYU",
+          "PHP",
+          "FIM",
+          "DJF",
+          "XAF",
+          "KMF",
+          "RWF",
+          "FRF",
+          "HRK",
+          "CZK",
+          "CLP",
+          "SEK",
+          "CHF",
+          "LKR",
+          "ECS",
+          "CVE",
+          "EEK",
+          "ETB",
+          "ZAR",
+          "KRW",
+          "JMD",
+          "JPY",
+          "TMT",
+          "XDR",
+          "BYN"
         ]
       },
       "HttpValidationProblemDetails": {
@@ -3802,7 +4333,7 @@
             "format": "double"
           },
           "currencyId": {
-            "$ref": "#/components/schemas/Currency"
+            "$ref": "#/components/schemas/CurrencyRuEn"
           },
           "comment": {
             "type": "string",
@@ -5331,7 +5862,7 @@
             "format": "int64"
           },
           "currencyId": {
-            "$ref": "#/components/schemas/Currency"
+            "$ref": "#/components/schemas/CurrencyRuEn"
           },
           "rateTypeIdRu": {
             "$ref": "#/components/schemas/RateTypeRu"
@@ -5546,6 +6077,9 @@
     },
     {
       "name": "rate-types"
+    },
+    {
+      "name": "currencies"
     }
   ]
 }

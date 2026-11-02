@@ -114,6 +114,9 @@
 | Время разгрузки | `UnLoadTime` | Разгрузка | — | Unload | — |
 | Время транспортировки | `TransportationTime` | Транспортировка | — | Transportation | — |
 | Наименование (grid) | `Name` | Название | — | Name | — |
+| Обозначение валюты | `Symbolic` | Обозначение | — | Symbol | — |
+| Цифровой код валюты | `Digital` | Цифр. код | — | Num. code | — |
+| Код НСИ | `Code_NSI` | Код НСИ | — | NSI code | — |
 | Страна | `CountryName` / `CountryCode` | Страна | Код страны | Country | Country code |
 | Регион | `RegionName` / `RegionCode` | Регион | Код региона | Region | Region code |
 | Тип узла | `TypeNodeName` / `TypeNodeCode` | Тип узла | Код тип узла | Node type | Type code |
@@ -144,3 +147,4 @@
 | `IsUseNomination` | Используется номинация | Uses nomination | Номинация | Nomination |
 | `IsDeflated` | Дефлируется | Deflated | Дефлируется | Deflated |
 | `IsIntoSyncClass` | Использовать синхронизацию | Use synchronization | Синхронизация | Sync |
+| `Code_NSI` | Код НСИ | NSI code | Код НСИ | NSI code |

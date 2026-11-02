@@ -112,7 +112,7 @@ public class ParityRatesDto
     public decimal TotalCostTon { get; set; }
 
     [GridColumn]
-    public required Currency CurrencyId { get; set; }
+    public required CurrencyRuEn CurrencyId { get; set; }
 
     [GridColumn]
     public string? Comment { get; set; }

@@ -141,6 +141,9 @@
   <data name="HeaderMenu.RateType" xml:space="preserve">
     <value>Тип ставки</value>
   </data>
+  <data name="HeaderMenu.Currency" xml:space="preserve">
+    <value>Валюты</value>
+  </data>
   <data name="HeaderMenu.Load" xml:space="preserve">
     <value>Загрузка</value>
   </data>

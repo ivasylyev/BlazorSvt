@@ -236,7 +236,7 @@ public sealed class ApiHttpTests : IClassFixture<ApiTestFactory>
                 ProductId = 10,
                 TransportTypeId = 7,
                 TransportKindId = 70,
-                CurrencyId = (long)Currency.RUB,
+                CurrencyId = (long)CurrencyRuEn.RUB,
                 ProfileExists = true
             });
 
@@ -253,7 +253,7 @@ public sealed class ApiHttpTests : IClassFixture<ApiTestFactory>
             StartDate = new DateTime(2026, 10, 1),
             EndDate = new DateTime(2026, 12, 31),
             RateLevel3 = 100,
-            CurrencyId = (long)Currency.USD,
+            CurrencyId = (long)CurrencyRuEn.USD,
             CurrencyCode = "USD"
         };
 
@@ -261,7 +261,7 @@ public sealed class ApiHttpTests : IClassFixture<ApiTestFactory>
     {
         var rate = (TransportRateDto)Activator.CreateInstance(typeof(TransportRateDto))!;
         rate.TransportRateId = 7;
-        rate.CurrencyId = Currency.RUB;
+        rate.CurrencyId = CurrencyRuEn.RUB;
         rate.StartDate = new DateOnly(2026, 10, 1);
         rate.EndDate = new DateOnly(2026, 12, 31);
         rate.NodeFromCode = "A1";

@@ -17,7 +17,7 @@ public class ApiJsonTests
             new Sample(
                 new DateOnly(2026, 10, 20),
                 new DateTime(2026, 10, 20, 7, 59, 59, 123, DateTimeKind.Utc),
-                Currency.RUB,
+                CurrencyRuEn.RUB,
                 null,
                 1234.50m),
             Options);
@@ -40,7 +40,7 @@ public class ApiJsonTests
     [Fact]
     public void Deserialize_EnumIsCaseInsensitive()
     {
-        JsonSerializer.Deserialize<Currency>("\"rub\"", Options).Should().Be(Currency.RUB);
+        JsonSerializer.Deserialize<CurrencyRuEn>("\"rub\"", Options).Should().Be(CurrencyRuEn.RUB);
     }
 
     private static JsonSerializerOptions Create()
@@ -50,5 +50,5 @@ public class ApiJsonTests
         return options;
     }
 
-    private sealed record Sample(DateOnly DateValue, DateTime Stamp, Currency Currency, string? Optional, decimal Amount);
+    private sealed record Sample(DateOnly DateValue, DateTime Stamp, CurrencyRuEn Currency, string? Optional, decimal Amount);
 }
