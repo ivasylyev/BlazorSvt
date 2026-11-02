@@ -1,6 +1,6 @@
 using BlazorSvt.IntegrationTests.Infrastructure;
 using BlazorSvt.Modules.ProductGroup.List;
-using BlazorSvt.Modules.ProductGroup.List.IdsEnum;
+using BlazorSvt.Platform.Domain.IdsEnum;
 using FluentAssertions;
 
 namespace BlazorSvt.IntegrationTests.Modules.ProductGroup;

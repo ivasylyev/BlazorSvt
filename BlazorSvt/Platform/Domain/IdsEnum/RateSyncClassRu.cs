@@ -1,6 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace BlazorSvt.Modules.ProductGroup.List.IdsEnum;
+namespace BlazorSvt.Platform.Domain.IdsEnum;
 
 /// <summary>
 /// Класс синхронизации ставок (ru). Значения = ItemId из legacy <c>dbo.vw_RateSyncClass (dbo.PrimitiveEntityData_2127)</c>.

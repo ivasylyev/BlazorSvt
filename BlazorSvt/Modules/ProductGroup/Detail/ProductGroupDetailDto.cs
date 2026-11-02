@@ -1,4 +1,4 @@
-using BlazorSvt.Modules.ProductGroup.List.IdsEnum;
+using BlazorSvt.Platform.Domain.IdsEnum;
 
 namespace BlazorSvt.Modules.ProductGroup.Detail;
 

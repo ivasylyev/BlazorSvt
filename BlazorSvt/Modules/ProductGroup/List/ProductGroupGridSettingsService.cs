@@ -1,5 +1,5 @@
 using Blazored.LocalStorage;
-using BlazorSvt.Modules.ProductGroup.List.IdsEnum;
+using BlazorSvt.Platform.Domain.IdsEnum;
 using Microsoft.Extensions.Localization;
 
 namespace BlazorSvt.Modules.ProductGroup.List;
