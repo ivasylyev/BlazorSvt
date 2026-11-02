@@ -40,7 +40,7 @@ public class TransportRateGridSettingsService(
         b.AddDateOnly(x => x.EndDate, L["TransportRateDto.EndDate"]);
         b.Add(x => x.TotalCostTon, L["TransportRateDto.TotalCostTon"]);
         b.Add(x => x.TotalCostTransport, L["TransportRateDto.TotalCostTransport"]);
-        b.AddEnum(x => x.CurrencyId, L["TransportRateDto.Currency"]);
+        b.AddEnum(x => x.CurrencyId, L["TransportRateDto.Currency"], filterValues: CurrencyRuEnSets.Main);
         b.AddSystemColumns(
             x => x.CreationDate,
             x => x.LastChangeDate,

@@ -12,6 +12,8 @@ public class GridColumnSetting<T> : IGridColumnSetting
 
     public string FilterValue { get; set; } = null!;
 
+    public IReadOnlyList<Enum>? FilterEnumValues { get; set; }
+
 
     public required Func<T, object> DisplaySelector { get; set; }
 
