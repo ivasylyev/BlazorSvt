@@ -1,6 +1,6 @@
 ﻿/*
   Auto-generated: All v2 Programmability
-  Generated: 2026-11-02 18:05:18
+  Generated: 2026-11-02 18:27:55
   Scripts: 34
   Order: Create-Programmability.ps1 (Platform -> Modules by name)
 */
@@ -1832,9 +1832,9 @@ GO
 
     TransportName — ссылка на ProductGroup (whitelist: код + имена).
     ETSNGCode — ссылка на длинный словарь: в снимке имя. У ETSNG нет английского
-    имени, EtsngNameEn повторяет Name. Таблица ETSNG в sync не входит.
+    имени, EtsngNameEn повторяет Name.
     Unit и DangerClass — короткие словари, в гриде enum по Id.
-    В каскад sync входит ProductGroup.
+    В каскад sync входят ProductGroup и ETSNG.
 
     Локальный PrimitiveEntityInfo.Id = 1015, таблица dbo.PrimitiveEntityData_1015.
     В реестре скоупа URL masterdata/2005.
@@ -1903,6 +1903,7 @@ GO
     Источники (@Source = имя базовой legacy-таблицы, оно же ключ v2.SyncState):
       dbo.PrimitiveEntityData_1015 — MTR (основная): сами изменившиеся Id.
       dbo.PrimitiveEntityData_1013 — ProductGroup (каскад через ProductGroupId).
+      dbo.PrimitiveEntityData_2019 — ETSNG (каскад через EtsngId).
 
     Unit (1011), DangerClass (2018) и StatusElement (1010) в гриде — enum,
     не отслеживаются.
@@ -1938,6 +1939,18 @@ BEGIN
         SELECT DISTINCT s.MTRId
         FROM dbo.PrimitiveEntityData_1013 r WITH (NOLOCK) -- ProductGroup
         JOIN v2.MTR_Snapshot s ON s.ProductGroupId = r.PrimitiveEntityItemId
+        WHERE r.RowVer > @Lo AND r.RowVer <= @Hi
+          AND NOT EXISTS (SELECT 1 FROM #AffectedKeys a WHERE a.EntityKey = s.MTRId);
+        RETURN;
+    END
+
+    -- ETSNG: затронутые продукты через EtsngId.
+    IF @Source = N'dbo.PrimitiveEntityData_2019' -- ETSNG
+    BEGIN
+        INSERT INTO #AffectedKeys (EntityKey)
+        SELECT DISTINCT s.MTRId
+        FROM dbo.PrimitiveEntityData_2019 r WITH (NOLOCK) -- ETSNG
+        JOIN v2.MTR_Snapshot s ON s.EtsngId = r.PrimitiveEntityItemId
         WHERE r.RowVer > @Lo AND r.RowVer <= @Hi
           AND NOT EXISTS (SELECT 1 FROM #AffectedKeys a WHERE a.EntityKey = s.MTRId);
         RETURN;

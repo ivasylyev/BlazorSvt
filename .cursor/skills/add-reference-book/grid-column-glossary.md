@@ -140,9 +140,10 @@
 | ЗоО отдел | `DepartmentResponsibilityArea` | ЗоО отдел | — | Dept area | — |
 | ЗоО сотрудник | `EmployeeResponsibilityArea` | ЗоО сотр. | — | Emp. area | — |
 | Методология | `Methodology` | Методология | — | Methodology | — |
+| Приоритет | `PriorityText` | Приоритет | — | Priority | — |
 | Класс опасности | `DangerClass` (`DangerClassIdRu`/`En`) | Класс оп. | — | Hazard | — |
 | Единица измерения | `Unit` (`UnitIdRu`/`En`) | Ед. изм. | — | Unit | — |
-| Код ЕТСНГ | `EtsngName` | Код ЕТСНГ | — | ETSNG code | — |
+| ЕТСНГ (наименование груза, не код) | `EtsngName` | ЕТСНГ | — | ETSNG | — |
 | Код ГНГ | `GngCode` | Код ГНГ | — | GNG code | — |
 | Основной код DPO | `DpoCode` | Код DPO | — | DPO code | — |
 | Вид МТР | `MtrType` | Вид МТР | — | MTR type | — |

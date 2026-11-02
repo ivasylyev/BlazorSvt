@@ -179,6 +179,17 @@ public class SnapshotSyncJobContractTests
     }
 
     [Fact]
+    public void MTRJob_TracksProductGroupAndEtsngCascade()
+    {
+        var sources = new MTRSyncJob().Sources.Select(s => s.Name);
+
+        sources.Should().Equal(
+            "dbo.PrimitiveEntityData_1015", // MTR (основная)
+            "dbo.PrimitiveEntityData_1013", // ProductGroup
+            "dbo.PrimitiveEntityData_2019"); // ETSNG
+    }
+
+    [Fact]
     public void SnapshotSyncJob_DerivesObjectNamesFromEntity()
     {
         ISnapshotSyncJob job = new NamingConventionJob();

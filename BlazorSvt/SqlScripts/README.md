@@ -154,7 +154,7 @@ SqlScripts/
 | 5 | `Modules/ProductGroup/Programmability/vw_ProductGroup_Detail.sql` |
 | 6 | `Modules/ProductGroup/Programmability/sp_ProductGroup_PopulateAffectedKeys.sql` |
 
-**MTR** (проекция до Insert; RowVer на `dbo.PrimitiveEntityData_1015` уже есть — источник каскада ставок)
+**MTR** (проекция до Insert; RowVer на `dbo.PrimitiveEntityData_1015` уже есть — источник каскада ставок; на `dbo.PrimitiveEntityData_2019` (ETSNG) — из `Sync/01.Legacy_AddRowVersion.sql`)
 
 | # | Скрипт |
 |---|--------|

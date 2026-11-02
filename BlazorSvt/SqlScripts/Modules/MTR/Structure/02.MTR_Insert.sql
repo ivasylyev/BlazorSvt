@@ -98,6 +98,7 @@ BEGIN
     ;WITH Sources (SourceName) AS (
         SELECT N'dbo.PrimitiveEntityData_1015'   -- MTR (основная)
         UNION ALL SELECT N'dbo.PrimitiveEntityData_1013'  -- ProductGroup
+        UNION ALL SELECT N'dbo.PrimitiveEntityData_2019'  -- ETSNG
     )
     MERGE v2.SyncState AS tgt
     USING (SELECT N'MTR' AS Entity, SourceName FROM Sources) AS src

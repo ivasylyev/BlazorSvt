@@ -12,9 +12,9 @@ GO
 
     TransportName — ссылка на ProductGroup (whitelist: код + имена).
     ETSNGCode — ссылка на длинный словарь: в снимке имя. У ETSNG нет английского
-    имени, EtsngNameEn повторяет Name. Таблица ETSNG в sync не входит.
+    имени, EtsngNameEn повторяет Name.
     Unit и DangerClass — короткие словари, в гриде enum по Id.
-    В каскад sync входит ProductGroup.
+    В каскад sync входят ProductGroup и ETSNG.
 
     Локальный PrimitiveEntityInfo.Id = 1015, таблица dbo.PrimitiveEntityData_1015.
     В реестре скоупа URL masterdata/2005.

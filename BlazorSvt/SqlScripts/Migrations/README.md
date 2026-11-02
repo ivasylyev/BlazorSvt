@@ -46,7 +46,7 @@ Greenfield: `2.0.0` → `2.0.1` → `2.3.46` → `2.3.48`.
 Имя папки — `VersionPrefix` из `BlazorSvt/BlazorSvt.csproj` (сейчас `2.3.48`), без суффикса числа коммитов. Это не «следующий номер после 2.0.1» и не пункт бэклога `2.0.2`.
 
 1. **Папка уже выкаченного релиза — read-only.** Пока `VersionPrefix` не сменился, скрипты дописываются в текущую папку. После смены версии старую папку не правят: баг уходит новым скриптом в папку новой версии.
-2. В папке версии — дельта схемы (Structure, `ALTER`, индексы, data fix), затем **последним файлом полный снимок** всей programmability `v2` (`All_Programmability.sql`). В текущем релизе это `2.3.48/014`. В `2.3.46` это `005`. В `2.0.1` такой пакет стоял дважды: `045` и `052`.
+2. В папке версии — дельта схемы (Structure, `ALTER`, индексы, data fix), затем **последним файлом полный снимок** всей programmability `v2` (`All_Programmability.sql`). В текущем релизе это `2.3.48/015`. В `2.3.46` это `005`. В `2.0.1` такой пакет стоял дважды: `045` и `052`.
 3. Нумерация **внутри релиза** с `001`. Исторические `038…` в `2.0.1` не переименовываем.
 4. SoT остаётся в `Platform/` и `Modules/`: локальный `Create-Programmability.ps1` читает его, а не `Migrations/`. В папку версии попадает копия дельты и снимок programmability.
 5. Публикация в `C:\publish` этим правилом не требуется.
@@ -100,13 +100,14 @@ RateType — стабильный словарь с enum. В миграции н
 | `011.vw_MTR_SnapshotSource.sql` | Проекция из `dbo.vw_MTR`; выполняется до заливки |
 | `012.02.MTR_Insert.sql` | Полная заливка из этой проекции и курсор `v2.SyncState` по `dbo.PrimitiveEntityData_1015` и `dbo.PrimitiveEntityData_1013` |
 | `013.03.MTR_CreateIndexes.sql` | Уникальный индекс, фильтрующие индексы по `Code`, `UnitId` и `DangerClassId`, индексы по ключу и `ProductGroupId`, full-text |
-| `014.All_Programmability.sql` | Полный снимок programmability, 34 скрипта (2026-11-02) |
+| `014.MTR_EtsngSync.sql` | Каскад ETSNG: `RowVer` на `dbo.PrimitiveEntityData_2019`, индекс по `EtsngId`, курсор `v2.SyncState` |
+| `015.All_Programmability.sql` | Полный снимок programmability, 34 скрипта (2026-11-02) |
 
-Currency — стабильный словарь с enum. В миграции нет `sp_Currency_PopulateAffectedKeys`, `RowVer` и `SyncState`. В снимке `014` у Currency только `vw_Currency_Detail` и `vw_Currency_SnapshotSource`.
+Currency — стабильный словарь с enum. В миграции нет `sp_Currency_PopulateAffectedKeys`, `RowVer` и `SyncState`. В снимке `015` у Currency только `vw_Currency_Detail` и `vw_Currency_SnapshotSource`.
 
-ProductGroup — справочник с watermark-sync. `RowVer` на `dbo.PrimitiveEntityData_1013` уже добавлен в `2.0.0/004` (источник каскада ставок), отдельного скрипта нет. `vw_ProductGroup_Detail` и `sp_ProductGroup_PopulateAffectedKeys` — в снимке `014`.
+ProductGroup — справочник с watermark-sync. `RowVer` на `dbo.PrimitiveEntityData_1013` уже добавлен в `2.0.0/004` (источник каскада ставок), отдельного скрипта нет. `vw_ProductGroup_Detail` и `sp_ProductGroup_PopulateAffectedKeys` — в снимке `015`.
 
-MTR — справочник с watermark-sync. `RowVer` на `dbo.PrimitiveEntityData_1015` уже был (источник каскада ставок). В каскад своего job входят основная таблица и ProductGroup. `vw_MTR_Detail` и `sp_MTR_PopulateAffectedKeys` — в снимке `014`.
+MTR — справочник с watermark-sync. `RowVer` на `dbo.PrimitiveEntityData_1015` уже был (источник каскада ставок). В каскад своего job входят основная таблица, ProductGroup и ETSNG. `RowVer` на ETSNG и курсор по нему добавляет `014`, поэтому `012` инициализирует курсоры только для 1015 и 1013. `vw_MTR_Detail` и `sp_MTR_PopulateAffectedKeys` — в снимке `015`.
 
 ## Чеклист нового релиза
 

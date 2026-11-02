@@ -10,7 +10,7 @@
   <data name="MTRDto.NameShortEn" xml:space="preserve"><value>Short (EN)</value></data>
   <data name="MTRDto.ProductGroupName" xml:space="preserve"><value>Group</value></data>
   <data name="MTRDto.ProductGroupCode" xml:space="preserve"><value>Group code</value></data>
-  <data name="MTRDto.EtsngName" xml:space="preserve"><value>ETSNG code</value></data>
+  <data name="MTRDto.EtsngName" xml:space="preserve"><value>ETSNG</value></data>
   <data name="MTRDto.GngCode" xml:space="preserve"><value>GNG code</value></data>
   <data name="MTRDto.Unit" xml:space="preserve"><value>Unit</value></data>
   <data name="MTRDto.DpoCode" xml:space="preserve"><value>DPO code</value></data>
@@ -26,7 +26,7 @@
   <data name="MTRDetailDto.NameShortEn" xml:space="preserve"><value>Short (EN) (Short name (EN))</value></data>
   <data name="MTRDetailDto.ProductGroupName" xml:space="preserve"><value>Group (Transport group)</value></data>
   <data name="MTRDetailDto.ProductGroupCode" xml:space="preserve"><value>Group code (Transport group code)</value></data>
-  <data name="MTRDetailDto.EtsngName" xml:space="preserve"><value>ETSNG code (ETSNG (Classes of Transport Rates) code)</value></data>
+  <data name="MTRDetailDto.EtsngName" xml:space="preserve"><value>ETSNG (Classes of Transport Rates)</value></data>
   <data name="MTRDetailDto.GngCode" xml:space="preserve"><value>GNG code (GNG (Harmonised Nomenclature of Cargoes) code)</value></data>
   <data name="MTRDetailDto.Unit" xml:space="preserve"><value>Unit (Unit of measurement)</value></data>
   <data name="MTRDetailDto.DpoCode" xml:space="preserve"><value>DPO code (Main DPO code)</value></data>

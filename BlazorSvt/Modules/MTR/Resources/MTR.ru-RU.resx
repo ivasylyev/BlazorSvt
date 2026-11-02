@@ -10,7 +10,7 @@
   <data name="MTRDto.NameShortEn" xml:space="preserve"><value>Кратк. (EN)</value></data>
   <data name="MTRDto.ProductGroupName" xml:space="preserve"><value>Группа прод.</value></data>
   <data name="MTRDto.ProductGroupCode" xml:space="preserve"><value>Код гр. пр.</value></data>
-  <data name="MTRDto.EtsngName" xml:space="preserve"><value>Код ЕТСНГ</value></data>
+  <data name="MTRDto.EtsngName" xml:space="preserve"><value>ЕТСНГ</value></data>
   <data name="MTRDto.GngCode" xml:space="preserve"><value>Код ГНГ</value></data>
   <data name="MTRDto.Unit" xml:space="preserve"><value>Ед. изм.</value></data>
   <data name="MTRDto.DpoCode" xml:space="preserve"><value>Код DPO</value></data>
@@ -26,7 +26,7 @@
   <data name="MTRDetailDto.NameShortEn" xml:space="preserve"><value>Кратк. (EN) (Краткое наименование (EN))</value></data>
   <data name="MTRDetailDto.ProductGroupName" xml:space="preserve"><value>Группа прод. (Транспортная группа)</value></data>
   <data name="MTRDetailDto.ProductGroupCode" xml:space="preserve"><value>Код гр. пр. (Код транспортной группы)</value></data>
-  <data name="MTRDetailDto.EtsngName" xml:space="preserve"><value>Код ЕТСНГ</value></data>
+  <data name="MTRDetailDto.EtsngName" xml:space="preserve"><value>ЕТСНГ</value></data>
   <data name="MTRDetailDto.GngCode" xml:space="preserve"><value>Код ГНГ</value></data>
   <data name="MTRDetailDto.Unit" xml:space="preserve"><value>Ед. изм. (Единица измерения)</value></data>
   <data name="MTRDetailDto.DpoCode" xml:space="preserve"><value>Код DPO (Основной код DPO)</value></data>
