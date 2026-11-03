@@ -1,6 +1,6 @@
 ﻿/*
   Auto-generated: All v2 Programmability
-  Generated: 2026-11-03 20:05:19
+  Generated: 2026-11-03 20:47:59
   Scripts: 36
   Order: Create-Programmability.ps1 (Platform -> Modules by name)
 */
@@ -3296,32 +3296,30 @@ GO
 
 /*
     Карточка TransportTypeLevel3. Поля совпадают с длинным списком атрибутов MDM
-    плюс системные. Источник — та же проекция, что и снимок; Status (только в карточке)
-    берётся из legacy-вью по ключу.
+    плюс системные. Источник — та же проекция, что и снимок.
 */
 
 CREATE OR ALTER VIEW v2.vw_TransportTypeLevel3_Detail
 AS
     SELECT
-        s.TransportTypeLevel3Id,
-        s.IsArchive,
-        s.IsBasic_forCBD,
-        s.Code,
-        s.TransportKindId           AS TransportKindIdRu,
-        s.TransportKindId           AS TransportKindIdEn,
-        s.TransportTypeId           AS TransportTypeIdRu,
-        s.TransportTypeId           AS TransportTypeIdEn,
-        s.Name,
-        s.NameEnRu,
-        s.TypeCode,
-        s.SAPCode,
-        s.OrionCode,
-        CAST(t.Status AS INT)       AS StatusIdRu,
-        CAST(t.Status AS INT)       AS StatusIdEn,
-        s.CreationDate,
-        s.LastChangeDate
-    FROM v2.vw_TransportTypeLevel3_SnapshotSource s
-    JOIN dbo.vw_TransportType_level_3 t ON t.Id = s.TransportTypeLevel3Id;
+        TransportTypeLevel3Id,
+        IsArchive,
+        IsBasic_forCBD,
+        Code,
+        TransportKindId AS TransportKindIdRu,
+        TransportKindId AS TransportKindIdEn,
+        TransportTypeId AS TransportTypeIdRu,
+        TransportTypeId AS TransportTypeIdEn,
+        Name,
+        NameEnRu,
+        TypeCode,
+        SAPCode,
+        OrionCode,
+        StatusId        AS StatusIdRu,
+        StatusId        AS StatusIdEn,
+        CreationDate,
+        LastChangeDate
+    FROM v2.vw_TransportTypeLevel3_SnapshotSource;
 GO
 
 --------------------------------------------------------------------------------
@@ -3339,8 +3337,8 @@ GO
     TransportTypeLevel3 — стабильный словарь с enum: инкрементальной синхронизации нет,
     RowVer на dbo.PrimitiveEntityData_2023 не добавляется.
 
-    TransportKindId (ParentCode_1) и TransportTypeId (ParentCode_2) — Id enum
-    TransportKind и TransportType; в гриде показываются через enum, без JOIN.
+    TransportKindId (ParentCode_1), TransportTypeId (ParentCode_2) и StatusId (Status) —
+    Id enum TransportKind, TransportType и StatusElement; в гриде показываются через enum, без JOIN.
 
     Набор и имена колонок ДОЛЖНЫ совпадать с v2.TransportTypeLevel3_Snapshot
     (без суррогатного Id — он выдаётся SEQUENCE при вставке).
@@ -3360,6 +3358,7 @@ AS
         LEFT(t.TypeCode, 4000)                                                   AS TypeCode,
         LEFT(t.SAPCode, 4000)                                                    AS SAPCode,
         LEFT(t.OrionCode, 4000)                                                  AS OrionCode,
+        CAST(t.Status AS INT)                                                    AS StatusId,
         t.CreationDate                                                           AS CreationDate,
         ISNULL(t.LastChangeDate, t.CreationDate)                                 AS LastChangeDate
     FROM dbo.vw_TransportType_level_3 t;

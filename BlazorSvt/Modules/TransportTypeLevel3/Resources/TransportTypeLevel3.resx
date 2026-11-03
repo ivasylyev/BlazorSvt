@@ -14,6 +14,7 @@
   <data name="TransportTypeLevel3Dto.TypeCode" xml:space="preserve"><value>Type code</value></data>
   <data name="TransportTypeLevel3Dto.SAPCode" xml:space="preserve"><value>SAP code</value></data>
   <data name="TransportTypeLevel3Dto.OrionCode" xml:space="preserve"><value>Orion code</value></data>
+  <data name="TransportTypeLevel3Dto.Status" xml:space="preserve"><value>Status</value></data>
   <data name="TransportTypeLevel3Dto.IsArchive" xml:space="preserve"><value>Archive</value></data>
   <data name="TransportTypeLevel3Dto.CreationDate" xml:space="preserve"><value>Created</value></data>
   <data name="TransportTypeLevel3Dto.LastChangeDate" xml:space="preserve"><value>Changed</value></data>
@@ -26,7 +27,7 @@
   <data name="TransportTypeLevel3DetailDto.TypeCode" xml:space="preserve"><value>Type code (Means of transport code)</value></data>
   <data name="TransportTypeLevel3DetailDto.SAPCode" xml:space="preserve"><value>SAP code (SAP code of means of transport)</value></data>
   <data name="TransportTypeLevel3DetailDto.OrionCode" xml:space="preserve"><value>Orion code (Orion code of means of transport)</value></data>
-  <data name="TransportTypeLevel3DetailDto.Status" xml:space="preserve"><value>Record status</value></data>
+  <data name="TransportTypeLevel3DetailDto.Status" xml:space="preserve"><value>Status (Record status)</value></data>
   <data name="TransportTypeLevel3DetailDto.IsArchive" xml:space="preserve"><value>Archive</value></data>
   <data name="TransportTypeLevel3DetailDto.CreationDate" xml:space="preserve"><value>Created</value></data>
   <data name="TransportTypeLevel3DetailDto.LastChangeDate" xml:space="preserve"><value>Changed</value></data>

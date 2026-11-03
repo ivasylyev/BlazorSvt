@@ -19,6 +19,7 @@ INSERT INTO v2.TransportTypeLevel3_Snapshot (
     ,TypeCode
     ,SAPCode
     ,OrionCode
+    ,StatusId
     ,CreationDate
     ,LastChangeDate
 )
@@ -34,6 +35,7 @@ SELECT
     ,TypeCode
     ,SAPCode
     ,OrionCode
+    ,StatusId
     ,CreationDate
     ,LastChangeDate
 FROM v2.vw_TransportTypeLevel3_SnapshotSource;

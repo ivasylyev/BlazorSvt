@@ -44,6 +44,12 @@ public class TransportTypeLevel3Dto
     [GridColumn]
     public string? OrionCode { get; set; }
 
+    [GridColumn(SqlColumn = "StatusId")]
+    public required StatusElementRu StatusIdRu { get; set; }
+
+    [GridColumn(SqlColumn = "StatusId")]
+    public required StatusElementEn StatusIdEn { get; set; }
+
     [GridColumn]
     public bool IsArchive { get; set; }
 

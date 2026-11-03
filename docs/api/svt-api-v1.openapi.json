@@ -6154,6 +6154,18 @@
           }
         }
       },
+      "StatusElementEn": {
+        "enum": [
+          "Active",
+          "Archived"
+        ]
+      },
+      "StatusElementRu": {
+        "enum": [
+          "Active",
+          "Archived"
+        ]
+      },
       "TransportKindEn": {
         "enum": [
           "Auto",
@@ -7353,7 +7365,9 @@
           "transportKindIdRu",
           "transportKindIdEn",
           "transportTypeIdRu",
-          "transportTypeIdEn"
+          "transportTypeIdEn",
+          "statusIdRu",
+          "statusIdEn"
         ],
         "type": "object",
         "properties": {
@@ -7401,10 +7415,10 @@
             "nullable": true
           },
           "statusIdRu": {
-            "$ref": "#/components/schemas/NullableOfStatusElementRu"
+            "$ref": "#/components/schemas/StatusElementRu"
           },
           "statusIdEn": {
-            "$ref": "#/components/schemas/NullableOfStatusElementEn"
+            "$ref": "#/components/schemas/StatusElementEn"
           },
           "isArchive": {
             "type": "boolean"
@@ -7425,7 +7439,9 @@
           "transportKindIdRu",
           "transportKindIdEn",
           "transportTypeIdRu",
-          "transportTypeIdEn"
+          "transportTypeIdEn",
+          "statusIdRu",
+          "statusIdEn"
         ],
         "type": "object",
         "properties": {
@@ -7475,6 +7491,12 @@
           "orionCode": {
             "type": "string",
             "nullable": true
+          },
+          "statusIdRu": {
+            "$ref": "#/components/schemas/StatusElementRu"
+          },
+          "statusIdEn": {
+            "$ref": "#/components/schemas/StatusElementEn"
           },
           "isArchive": {
             "type": "boolean"

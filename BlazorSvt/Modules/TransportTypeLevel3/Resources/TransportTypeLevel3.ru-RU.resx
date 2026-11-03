@@ -14,6 +14,7 @@
   <data name="TransportTypeLevel3Dto.TypeCode" xml:space="preserve"><value>Код типа</value></data>
   <data name="TransportTypeLevel3Dto.SAPCode" xml:space="preserve"><value>Код SAP</value></data>
   <data name="TransportTypeLevel3Dto.OrionCode" xml:space="preserve"><value>Код Orion</value></data>
+  <data name="TransportTypeLevel3Dto.Status" xml:space="preserve"><value>Статус</value></data>
   <data name="TransportTypeLevel3Dto.IsArchive" xml:space="preserve"><value>Архив</value></data>
   <data name="TransportTypeLevel3Dto.CreationDate" xml:space="preserve"><value>Создано</value></data>
   <data name="TransportTypeLevel3Dto.LastChangeDate" xml:space="preserve"><value>Изменено</value></data>
@@ -26,7 +27,7 @@
   <data name="TransportTypeLevel3DetailDto.TypeCode" xml:space="preserve"><value>Код типа (Код типа транспорта)</value></data>
   <data name="TransportTypeLevel3DetailDto.SAPCode" xml:space="preserve"><value>Код SAP (SAP код типа транспорта)</value></data>
   <data name="TransportTypeLevel3DetailDto.OrionCode" xml:space="preserve"><value>Код Orion (Orion код типа транспорта)</value></data>
-  <data name="TransportTypeLevel3DetailDto.Status" xml:space="preserve"><value>Статус записи</value></data>
+  <data name="TransportTypeLevel3DetailDto.Status" xml:space="preserve"><value>Статус (Статус записи)</value></data>
   <data name="TransportTypeLevel3DetailDto.IsArchive" xml:space="preserve"><value>Архив</value></data>
   <data name="TransportTypeLevel3DetailDto.CreationDate" xml:space="preserve"><value>Создано</value></data>
   <data name="TransportTypeLevel3DetailDto.LastChangeDate" xml:space="preserve"><value>Изменено</value></data>

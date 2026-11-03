@@ -61,6 +61,7 @@ CREATE TABLE v2.TransportTypeLevel3_Snapshot (
     TypeCode                NVARCHAR(4000) NULL,
     SAPCode                 NVARCHAR(4000) NULL,
     OrionCode               NVARCHAR(4000) NULL,
+    StatusId                INT NOT NULL,
     CreationDate            DATETIME NOT NULL,
     LastChangeDate          DATETIME NOT NULL,
 

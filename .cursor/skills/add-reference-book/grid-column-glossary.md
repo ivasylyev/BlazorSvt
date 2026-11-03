@@ -153,6 +153,7 @@
 | Код типа транспорта (3 ур.) | `TypeCode` | Код типа | — | Type code | — |
 | Код SAP | `SAPCode` | Код SAP | — | SAP code | — |
 | Код Orion | `OrionCode` | Код Orion | — | Orion code | — |
+| Статус записи | `Status` (`StatusIdRu`/`En`) | Статус | — | Status | — |
 
 `RateTypeCode` в grid settings может отсутствовать — short применяют только если ключ реально используется в гриде; иначе ключ считается мёртвым для правки.
 

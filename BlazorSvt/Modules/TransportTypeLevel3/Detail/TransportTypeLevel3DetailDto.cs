@@ -29,9 +29,9 @@ public class TransportTypeLevel3DetailDto
 
     public string? OrionCode { get; set; }
 
-    public StatusElementRu? StatusIdRu { get; set; }
+    public required StatusElementRu StatusIdRu { get; set; }
 
-    public StatusElementEn? StatusIdEn { get; set; }
+    public required StatusElementEn StatusIdEn { get; set; }
 
     public bool IsArchive { get; set; }
 

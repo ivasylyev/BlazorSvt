@@ -8,8 +8,8 @@ GO
     TransportTypeLevel3 — стабильный словарь с enum: инкрементальной синхронизации нет,
     RowVer на dbo.PrimitiveEntityData_2023 не добавляется.
 
-    TransportKindId (ParentCode_1) и TransportTypeId (ParentCode_2) — Id enum
-    TransportKind и TransportType; в гриде показываются через enum, без JOIN.
+    TransportKindId (ParentCode_1), TransportTypeId (ParentCode_2) и StatusId (Status) —
+    Id enum TransportKind, TransportType и StatusElement; в гриде показываются через enum, без JOIN.
 
     Набор и имена колонок ДОЛЖНЫ совпадать с v2.TransportTypeLevel3_Snapshot
     (без суррогатного Id — он выдаётся SEQUENCE при вставке).
@@ -29,6 +29,7 @@ AS
         LEFT(t.TypeCode, 4000)                                                   AS TypeCode,
         LEFT(t.SAPCode, 4000)                                                    AS SAPCode,
         LEFT(t.OrionCode, 4000)                                                  AS OrionCode,
+        CAST(t.Status AS INT)                                                    AS StatusId,
         t.CreationDate                                                           AS CreationDate,
         ISNULL(t.LastChangeDate, t.CreationDate)                                 AS LastChangeDate
     FROM dbo.vw_TransportType_level_3 t;
