@@ -149,6 +149,10 @@
 | Вид МТР | `MtrType` | Вид МТР | — | MTR type | — |
 | Полное наименование (RU) | `NameFullRu` | Полное (RU) | — | Full (RU) | — |
 | Краткое наименование (EN) | `NameShortEn` | Краткое имя (EN) | — | Short (EN) | — |
+| Основной тип транспорта для ЦБД | `IsBasic_forCBD` | Осн. ЦБД | — | CBD basic | — |
+| Код типа транспорта (3 ур.) | `TypeCode` | Код типа | — | Type code | — |
+| Код SAP | `SAPCode` | Код SAP | — | SAP code | — |
+| Код Orion | `OrionCode` | Код Orion | — | Orion code | — |
 
 `RateTypeCode` в grid settings может отсутствовать — short применяют только если ключ реально используется в гриде; иначе ключ считается мёртвым для правки.
 
@@ -167,3 +171,4 @@
 | `SVTUseProductGroupWhenNoProductRateExists` | Подниматься до группы если ставка для продукта не найдена | Fall back to group if no product rate found | До группы | Group fallback |
 | `RateSyncClass` | Класс синхронизации | Rate synchronization class | Класс синхр. | Sync class |
 | `ProductCode` | Код продукта | Product code | Код продукта | Product code |
+| `IsBasic_forCBD` | Основной тип транспорта для ЦБД | Basic transport type for CBD | Осн. ЦБД | CBD basic |

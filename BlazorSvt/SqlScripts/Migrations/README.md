@@ -15,7 +15,7 @@ Migrations/
 ├── 2.3.46/            ← RateType (не править)
 │   └── 001.…005.…
 └── 2.3.48/            ← текущий VersionPrefix
-    └── 001.…015.…
+    └── 001.…020.…
 ```
 
 Публикация наружу (для DBA):
@@ -46,7 +46,7 @@ Greenfield: `2.0.0` → `2.0.1` → `2.3.46` → `2.3.48`.
 Имя папки — `VersionPrefix` из `BlazorSvt/BlazorSvt.csproj` (сейчас `2.3.48`), без суффикса числа коммитов. Это не «следующий номер после 2.0.1» и не пункт бэклога `2.0.2`.
 
 1. **Папка уже выкаченного релиза — read-only.** Пока `VersionPrefix` не сменился, скрипты дописываются в текущую папку. После смены версии старую папку не правят: баг уходит новым скриптом в папку новой версии.
-2. В папке версии — дельта схемы (Structure, `ALTER`, индексы, data fix), затем **последним файлом полный снимок** всей programmability `v2` (`All_Programmability.sql`). В текущем релизе это `2.3.48/015`. В `2.3.46` это `005`. В `2.0.1` такой пакет стоял дважды: `045` и `052`.
+2. В папке версии — дельта схемы (Structure, `ALTER`, индексы, data fix), затем **последним файлом полный снимок** всей programmability `v2` (`All_Programmability.sql`). В текущем релизе это `2.3.48/020`. В `2.3.46` это `005`. В `2.0.1` такой пакет стоял дважды: `045` и `052`.
 3. Нумерация **внутри релиза** с `001`. Исторические `038…` в `2.0.1` не переименовываем.
 4. SoT остаётся в `Platform/` и `Modules/`: локальный `Create-Programmability.ps1` читает его, а не `Migrations/`. В папку версии попадает копия дельты и снимок programmability.
 5. Публикация в `C:\publish` этим правилом не требуется.
@@ -100,13 +100,21 @@ RateType — стабильный словарь с enum. В миграции н
 | `011.vw_MTR_SnapshotSource.sql` | Проекция из `dbo.vw_MTR`; выполняется до заливки |
 | `012.02.MTR_Insert.sql` | Полная заливка из этой проекции и курсор `v2.SyncState` по `dbo.PrimitiveEntityData_1015` и `dbo.PrimitiveEntityData_1013` |
 | `013.03.MTR_CreateIndexes.sql` | Уникальный индекс, фильтрующие индексы по `Code`, `UnitId` и `DangerClassId`, индексы по ключу и `ProductGroupId`, full-text |
-| `015.All_Programmability.sql` | Полный снимок programmability, 34 скрипта (2026-11-02) |
+| `016.01.TransportTypeLevel3_CreateTable.sql` | Первое появление `v2.TransportTypeLevel3_Snapshot`: partition function/scheme, sequence, таблица |
+| `017.vw_TransportTypeLevel3_SnapshotSource.sql` | Проекция из `dbo.vw_TransportType_level_3`; выполняется до заливки |
+| `018.02.TransportTypeLevel3_Insert.sql` | Разовая заливка из этой проекции. `SyncState` не создаётся |
+| `019.03.TransportTypeLevel3_CreateIndexes.sql` | Уникальный индекс, фильтрующие индексы по `Code`, виду и типу транспорта, ключу; full-text по текстовым полям |
+| `020.All_Programmability.sql` | Полный снимок programmability, 36 скриптов (2026-11-03) |
 
-Currency — стабильный словарь с enum. В миграции нет `sp_Currency_PopulateAffectedKeys`, `RowVer` и `SyncState`. В снимке `015` у Currency только `vw_Currency_Detail` и `vw_Currency_SnapshotSource`.
+Файлы `009`, `014` и `015` — прежние имена снимка programmability: после каждой новой дельты его переименовывали в следующий номер.
 
-ProductGroup — справочник с watermark-sync. `RowVer` на `dbo.PrimitiveEntityData_1013` уже добавлен в `2.0.0/004` (источник каскада ставок), отдельного скрипта нет. `vw_ProductGroup_Detail` и `sp_ProductGroup_PopulateAffectedKeys` — в снимке `015`.
+Currency — стабильный словарь с enum. В миграции нет `sp_Currency_PopulateAffectedKeys`, `RowVer` и `SyncState`. В снимке `020` у Currency только `vw_Currency_Detail` и `vw_Currency_SnapshotSource`.
 
-MTR — справочник с watermark-sync. `RowVer` на `dbo.PrimitiveEntityData_1015` уже был (источник каскада ставок). В каскад своего job входят основная таблица и ProductGroup; `012` инициализирует курсоры для 1015 и 1013. ETSNG — легаси-справочник, не меняется и не отслеживается. `vw_MTR_Detail` и `sp_MTR_PopulateAffectedKeys` — в снимке `015`.
+ProductGroup — справочник с watermark-sync. `RowVer` на `dbo.PrimitiveEntityData_1013` уже добавлен в `2.0.0/004` (источник каскада ставок), отдельного скрипта нет. `vw_ProductGroup_Detail` и `sp_ProductGroup_PopulateAffectedKeys` — в снимке `020`.
+
+MTR — справочник с watermark-sync. `RowVer` на `dbo.PrimitiveEntityData_1015` уже был (источник каскада ставок). В каскад своего job входят основная таблица и ProductGroup; `012` инициализирует курсоры для 1015 и 1013. ETSNG — легаси-справочник, не меняется и не отслеживается. `vw_MTR_Detail` и `sp_MTR_PopulateAffectedKeys` — в снимке `020`.
+
+TransportTypeLevel3 — стабильный словарь с enum. В миграции нет `sp_TransportTypeLevel3_PopulateAffectedKeys`, `RowVer` и `SyncState`. В снимке `020` у TransportTypeLevel3 только `vw_TransportTypeLevel3_Detail` и `vw_TransportTypeLevel3_SnapshotSource`.
 
 ## Чеклист нового релиза
 

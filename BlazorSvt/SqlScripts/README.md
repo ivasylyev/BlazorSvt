@@ -35,14 +35,17 @@ SqlScripts/
 │   ├── ProductGroup/
 │   │   ├── Structure/
 │   │   └── Programmability/
-│   └── MTR/
+│   ├── MTR/
+│   │   ├── Structure/
+│   │   └── Programmability/
+│   └── TransportTypeLevel3/
 │       ├── Structure/
-│       └── Programmability/
+│       └── Programmability/   # без PopulateAffectedKeys: разовая заливка
 ├── Migrations/             # Релизные артефакты наката (immutable после выката)
 │   ├── 2.0.0/              # baseline
 │   ├── 2.0.1/              # upgrade
 │   ├── 2.3.46/             # дельта RateType + снимок programmability
-│   ├── 2.3.48/             # текущий VersionPrefix: дельта Currency, ProductGroup, MTR + снимок programmability
+│   ├── 2.3.48/             # текущий VersionPrefix: дельта Currency, ProductGroup, MTR, TransportTypeLevel3 + снимок programmability
 │   └── README.md           # конвенция релизов / два контура
 └── Translations_info.txt   # Справочник переводов полей (не для деплоя)
 ```
@@ -164,6 +167,16 @@ SqlScripts/
 | 4 | `Modules/MTR/Structure/03.MTR_CreateIndexes.sql` |
 | 5 | `Modules/MTR/Programmability/vw_MTR_Detail.sql` |
 | 6 | `Modules/MTR/Programmability/sp_MTR_PopulateAffectedKeys.sql` |
+
+**TransportTypeLevel3** (стабильный словарь: без RowVer, SyncJob и PopulateAffectedKeys; проекция до Insert)
+
+| # | Скрипт |
+|---|--------|
+| 1 | `Modules/TransportTypeLevel3/Structure/01.TransportTypeLevel3_CreateTable.sql` |
+| 2 | `Modules/TransportTypeLevel3/Programmability/vw_TransportTypeLevel3_SnapshotSource.sql` |
+| 3 | `Modules/TransportTypeLevel3/Structure/02.TransportTypeLevel3_Insert.sql` |
+| 4 | `Modules/TransportTypeLevel3/Structure/03.TransportTypeLevel3_CreateIndexes.sql` |
+| 5 | `Modules/TransportTypeLevel3/Programmability/vw_TransportTypeLevel3_Detail.sql` |
 
 ## Grid read-модель
 

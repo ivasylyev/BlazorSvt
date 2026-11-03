@@ -1,0 +1,16 @@
+@page "/transporttypelevel3"
+@using BlazorSvt.Modules.TransportTypeLevel3.Detail
+@inherits BaseGridPage<TransportTypeLevel3Dto, TransportTypeLevel3DetailDto>
+
+<GenericGrid TItem="TransportTypeLevel3Dto"
+             TDetailItem="TransportTypeLevel3DetailDto"
+             PageTitle="@EL["TransportTypeLevel3Grid.Title"]"
+             AllowDetailView="true"
+             DataProvider="DataProvider"
+             DetailDataProvider="DetailDataProvider"
+             DetailKeySelector="DetailKeySelector">
+
+    <DetailViewTemplate Context="detail">
+    </DetailViewTemplate>
+
+</GenericGrid>

@@ -125,6 +125,24 @@ public class GridColumnSettingsBuilderTests
         column.FilterEnumValues.Should().Equal(CurrencyRuEn.USD, CurrencyRuEn.RUB);
     }
 
+    [Theory]
+    [InlineData(true)]
+    [InlineData(false)]
+    public void AddEnum_WhenLocalizedPairHasFilterValues_UsesRequestedLanguage(bool isRu)
+    {
+        var column = new GridColumnSettingsBuilder<ColumnFixture>(platform)
+            .AddEnum(isRu, x => x.KindRu, x => x.KindEn, "Kind",
+                filterValuesRu: [TransportKindRu.Rail, TransportKindRu.Auto],
+                filterValuesEn: [TransportKindEn.Rail, TransportKindEn.Auto])
+            .Build()
+            .Single();
+
+        if (isRu)
+            column.FilterEnumValues.Should().Equal(TransportKindRu.Rail, TransportKindRu.Auto);
+        else
+            column.FilterEnumValues.Should().Equal(TransportKindEn.Rail, TransportKindEn.Auto);
+    }
+
     [Fact]
     public void AddEnum_WhenFilterValuesOmitted_OffersAllValues()
     {

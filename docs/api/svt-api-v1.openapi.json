@@ -2433,6 +2433,261 @@
           }
         }
       }
+    },
+    "/api/v1/catalogs/transport-types-level-3/schema": {
+      "get": {
+        "tags": [
+          "transport-types-level-3"
+        ],
+        "summary": "Описание полей справочника transport-types-level-3",
+        "description": "Поля, типы, заголовки (по Accept-Language), операторы фильтра, значения enum, ссылки, период, ключ. Поддерживает ETag.",
+        "operationId": "getTransportTypesLevel3Schema",
+        "parameters": [
+          {
+            "name": "X-On-Behalf-Of",
+            "in": "header",
+            "description": "Пользователь, от имени которого выполняется запрос: DOMAIN\\user. Права определяются его ролями в СВТ.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "X-Correlation-ID",
+            "in": "header",
+            "description": "Идентификатор корреляции; возвращается в ответе. Если не передан — генерируется.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "description": "ru-RU (по умолчанию) или en-US: язык заголовков полей и текстов ошибок. Данные RU/EN возвращаются как есть.",
+            "schema": {
+              "type": "string"
+            },
+            "example": "ru-RU"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CatalogSchemaResponse"
+                }
+              }
+            }
+          },
+          "304": {
+            "description": "Not Modified"
+          }
+        }
+      }
+    },
+    "/api/v1/catalogs/transport-types-level-3/items/search": {
+      "post": {
+        "tags": [
+          "transport-types-level-3"
+        ],
+        "summary": "Поиск записей справочника transport-types-level-3",
+        "description": "Фильтры объединяются через И; сортировка по одному полю; pageSize 1–1000. По умолчанию без архивных записей. asOf — записи, действующие на дату.",
+        "operationId": "searchTransportTypesLevel3",
+        "parameters": [
+          {
+            "name": "X-On-Behalf-Of",
+            "in": "header",
+            "description": "Пользователь, от имени которого выполняется запрос: DOMAIN\\user. Права определяются его ролями в СВТ.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "X-Correlation-ID",
+            "in": "header",
+            "description": "Идентификатор корреляции; возвращается в ответе. Если не передан — генерируется.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "description": "ru-RU (по умолчанию) или en-US: язык заголовков полей и текстов ошибок. Данные RU/EN возвращаются как есть.",
+            "schema": {
+              "type": "string"
+            },
+            "example": "ru-RU"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CatalogSearchRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CatalogSearchResponseOfTransportTypeLevel3Dto"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HttpValidationProblemDetails"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/catalogs/transport-types-level-3/items/{id}": {
+      "get": {
+        "tags": [
+          "transport-types-level-3"
+        ],
+        "summary": "Карточка записи справочника transport-types-level-3",
+        "description": "id — ключ записи (поле entityKey из /schema). Поля — как в карточке СВТ.",
+        "operationId": "getTransportTypesLevel3Item",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          },
+          {
+            "name": "X-On-Behalf-Of",
+            "in": "header",
+            "description": "Пользователь, от имени которого выполняется запрос: DOMAIN\\user. Права определяются его ролями в СВТ.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "X-Correlation-ID",
+            "in": "header",
+            "description": "Идентификатор корреляции; возвращается в ответе. Если не передан — генерируется.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "description": "ru-RU (по умолчанию) или en-US: язык заголовков полей и текстов ошибок. Данные RU/EN возвращаются как есть.",
+            "schema": {
+              "type": "string"
+            },
+            "example": "ru-RU"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TransportTypeLevel3DetailDto"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/catalogs/transport-types-level-3/export": {
+      "post": {
+        "tags": [
+          "transport-types-level-3"
+        ],
+        "summary": "Выгрузка справочника transport-types-level-3 в Excel",
+        "description": "Файл .xlsx в ответе. kind=Short — колонки грида, kind=Full — поля карточки. Все колонки, без пользовательских настроек.",
+        "operationId": "exportTransportTypesLevel3",
+        "parameters": [
+          {
+            "name": "X-On-Behalf-Of",
+            "in": "header",
+            "description": "Пользователь, от имени которого выполняется запрос: DOMAIN\\user. Права определяются его ролями в СВТ.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "X-Correlation-ID",
+            "in": "header",
+            "description": "Идентификатор корреляции; возвращается в ответе. Если не передан — генерируется.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "description": "ru-RU (по умолчанию) или en-US: язык заголовков полей и текстов ошибок. Данные RU/EN возвращаются как есть.",
+            "schema": {
+              "type": "string"
+            },
+            "example": "ru-RU"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CatalogExportRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HttpValidationProblemDetails"
+                }
+              }
+            }
+          }
+        }
+      }
     }
   },
   "components": {
@@ -3701,6 +3956,31 @@
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/TransportRateDto"
+            }
+          },
+          "totalCount": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "dataAsOf": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          }
+        }
+      },
+      "CatalogSearchResponseOfTransportTypeLevel3Dto": {
+        "required": [
+          "items",
+          "totalCount",
+          "dataAsOf"
+        ],
+        "type": "object",
+        "properties": {
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/TransportTypeLevel3Dto"
             }
           },
           "totalCount": {
@@ -5878,14 +6158,24 @@
         "enum": [
           "Auto",
           "Rail",
-          "Mix"
+          "Sea",
+          "Mix",
+          "Transshipment_land",
+          "Transshipment_sea",
+          "Transshipment_TK",
+          "Pipe"
         ]
       },
       "TransportKindRu": {
         "enum": [
           "Auto",
           "Rail",
-          "Mix"
+          "Sea",
+          "Mix",
+          "Transshipment_land",
+          "Transshipment_sea",
+          "Transshipment_TK",
+          "Pipe"
         ]
       },
       "TransportLegDetailDto": {
@@ -7024,6 +7314,181 @@
           }
         }
       },
+      "TransportTypeEn": {
+        "enum": [
+          "Auto",
+          "Auto_BLK",
+          "Auto_cont",
+          "Auto_C",
+          "Rail_35",
+          "Rail_95",
+          "Rail_VC_other",
+          "Rail_BLK",
+          "Rail_cont",
+          "Rail_KV",
+          "Rail_TK",
+          "Loading_Rack",
+          "Sea",
+          "Tanker",
+          "Mix",
+          "Auto_TK",
+          "Transshipment_land",
+          "Transshipment_sea",
+          "Transshipment_TK",
+          "Pipe",
+          "Mix_rail_cont",
+          "Mix_auto_cont",
+          "Mix_sea",
+          "Auto_ferryboat",
+          "Auto_polivoz",
+          "Auto_Barrel",
+          "Mix_auto_barrel",
+          "Mix_auto_port",
+          "Mix_sea_ref"
+        ]
+      },
+      "TransportTypeLevel3DetailDto": {
+        "required": [
+          "code",
+          "transportKindIdRu",
+          "transportKindIdEn",
+          "transportTypeIdRu",
+          "transportTypeIdEn"
+        ],
+        "type": "object",
+        "properties": {
+          "transportTypeLevel3Id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "isBasic_forCBD": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "code": {
+            "type": "string"
+          },
+          "transportKindIdRu": {
+            "$ref": "#/components/schemas/TransportKindRu"
+          },
+          "transportKindIdEn": {
+            "$ref": "#/components/schemas/TransportKindEn"
+          },
+          "transportTypeIdRu": {
+            "$ref": "#/components/schemas/TransportTypeRu"
+          },
+          "transportTypeIdEn": {
+            "$ref": "#/components/schemas/TransportTypeEn"
+          },
+          "name": {
+            "type": "string",
+            "nullable": true
+          },
+          "nameEnRu": {
+            "type": "string",
+            "nullable": true
+          },
+          "typeCode": {
+            "type": "string",
+            "nullable": true
+          },
+          "sapCode": {
+            "type": "string",
+            "nullable": true
+          },
+          "orionCode": {
+            "type": "string",
+            "nullable": true
+          },
+          "statusIdRu": {
+            "$ref": "#/components/schemas/NullableOfStatusElementRu"
+          },
+          "statusIdEn": {
+            "$ref": "#/components/schemas/NullableOfStatusElementEn"
+          },
+          "isArchive": {
+            "type": "boolean"
+          },
+          "creationDate": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "lastChangeDate": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "TransportTypeLevel3Dto": {
+        "required": [
+          "code",
+          "transportKindIdRu",
+          "transportKindIdEn",
+          "transportTypeIdRu",
+          "transportTypeIdEn"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "transportTypeLevel3Id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "isBasic_forCBD": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "code": {
+            "type": "string"
+          },
+          "transportKindIdRu": {
+            "$ref": "#/components/schemas/TransportKindRu"
+          },
+          "transportKindIdEn": {
+            "$ref": "#/components/schemas/TransportKindEn"
+          },
+          "transportTypeIdRu": {
+            "$ref": "#/components/schemas/TransportTypeRu"
+          },
+          "transportTypeIdEn": {
+            "$ref": "#/components/schemas/TransportTypeEn"
+          },
+          "name": {
+            "type": "string",
+            "nullable": true
+          },
+          "nameEnRu": {
+            "type": "string",
+            "nullable": true
+          },
+          "typeCode": {
+            "type": "string",
+            "nullable": true
+          },
+          "sapCode": {
+            "type": "string",
+            "nullable": true
+          },
+          "orionCode": {
+            "type": "string",
+            "nullable": true
+          },
+          "isArchive": {
+            "type": "boolean"
+          },
+          "creationDate": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "lastChangeDate": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
       "TransportTypeLevel3En": {
         "enum": [
           "Auto_20",
@@ -7044,11 +7509,20 @@
           "Rail_KV",
           "Rail_TK_20",
           "Rail_TK_30",
+          "Loading_Rack",
+          "Sea",
+          "Tanker_ECO",
+          "Tanker_HS",
+          "Tanker_MGC",
           "Tanker",
           "Mix_20",
           "Mix_40",
           "Auto_TK",
+          "Transshipment_land",
+          "Transshipment_sea",
+          "Transshipment_TK",
           "Mix_TK",
+          "Pipe",
           "Mix_rail_cont_20",
           "Mix_rail_cont_40",
           "Mix_auto_cont_20",
@@ -7060,7 +7534,21 @@
           "Mix_auto_TK",
           "Mix_rail_TK",
           "Mix_auto_barrel",
-          "Mix_auto_port"
+          "Mix_auto_port",
+          "Mix_sea_ref",
+          "Mix_sea_1",
+          "Mix_sea_2",
+          "Mix_sea_3",
+          "Mix_sea_4",
+          "Mix_sea_5",
+          "Mix_sea_6",
+          "Mix_rail_cont_40_1",
+          "Mix_rail_cont_40_2",
+          "Mix_rail_cont_40_3",
+          "Mix_rail_cont_40_4",
+          "Mix_rail_cont_40_5",
+          "Mix_rail_cont_40_6",
+          "Mix_sea_SMP"
         ]
       },
       "TransportTypeLevel3Ru": {
@@ -7083,11 +7571,20 @@
           "Rail_KV",
           "Rail_TK_20",
           "Rail_TK_30",
+          "Loading_Rack",
+          "Sea",
+          "Tanker_ECO",
+          "Tanker_HS",
+          "Tanker_MGC",
           "Tanker",
           "Mix_20",
           "Mix_40",
           "Auto_TK",
+          "Transshipment_land",
+          "Transshipment_sea",
+          "Transshipment_TK",
           "Mix_TK",
+          "Pipe",
           "Mix_rail_cont_20",
           "Mix_rail_cont_40",
           "Mix_auto_cont_20",
@@ -7099,7 +7596,54 @@
           "Mix_auto_TK",
           "Mix_rail_TK",
           "Mix_auto_barrel",
-          "Mix_auto_port"
+          "Mix_auto_port",
+          "Mix_sea_ref",
+          "Mix_sea_1",
+          "Mix_sea_2",
+          "Mix_sea_3",
+          "Mix_sea_4",
+          "Mix_sea_5",
+          "Mix_sea_6",
+          "Mix_rail_cont_40_1",
+          "Mix_rail_cont_40_2",
+          "Mix_rail_cont_40_3",
+          "Mix_rail_cont_40_4",
+          "Mix_rail_cont_40_5",
+          "Mix_rail_cont_40_6",
+          "Mix_sea_SMP"
+        ]
+      },
+      "TransportTypeRu": {
+        "enum": [
+          "Auto",
+          "Auto_BLK",
+          "Auto_cont",
+          "Auto_C",
+          "Rail_35",
+          "Rail_95",
+          "Rail_VC_other",
+          "Rail_BLK",
+          "Rail_cont",
+          "Rail_KV",
+          "Rail_TK",
+          "Loading_Rack",
+          "Sea",
+          "Tanker",
+          "Mix",
+          "Auto_TK",
+          "Transshipment_land",
+          "Transshipment_sea",
+          "Transshipment_TK",
+          "Pipe",
+          "Mix_rail_cont",
+          "Mix_auto_cont",
+          "Mix_sea",
+          "Auto_ferryboat",
+          "Auto_polivoz",
+          "Auto_Barrel",
+          "Mix_auto_barrel",
+          "Mix_auto_port",
+          "Mix_sea_ref"
         ]
       },
       "TypeNodeEn": {
@@ -7165,6 +7709,9 @@
     },
     {
       "name": "products"
+    },
+    {
+      "name": "transport-types-level-3"
     }
   ]
 }

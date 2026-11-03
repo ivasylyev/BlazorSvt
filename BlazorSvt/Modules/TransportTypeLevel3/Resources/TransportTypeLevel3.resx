@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <resheader name="resmimetype"><value>text/microsoft-resx</value></resheader>
+  <resheader name="version"><value>2.0</value></resheader>
+  <resheader name="reader"><value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value></resheader>
+  <resheader name="writer"><value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value></resheader>
+  <data name="TransportTypeLevel3Grid.Title" xml:space="preserve"><value>Means of transport (level 3)</value></data>
+  <data name="TransportTypeLevel3Dto.IsBasic_forCBD" xml:space="preserve"><value>CBD basic</value></data>
+  <data name="TransportTypeLevel3Dto.Code" xml:space="preserve"><value>Code</value></data>
+  <data name="TransportTypeLevel3Dto.TransportKindName" xml:space="preserve"><value>Transport kind</value></data>
+  <data name="TransportTypeLevel3Dto.TransportTypeName" xml:space="preserve"><value>Transport type</value></data>
+  <data name="TransportTypeLevel3Dto.Name" xml:space="preserve"><value>Name</value></data>
+  <data name="TransportTypeLevel3Dto.NameEnRu" xml:space="preserve"><value>Name EN-RU</value></data>
+  <data name="TransportTypeLevel3Dto.TypeCode" xml:space="preserve"><value>Type code</value></data>
+  <data name="TransportTypeLevel3Dto.SAPCode" xml:space="preserve"><value>SAP code</value></data>
+  <data name="TransportTypeLevel3Dto.OrionCode" xml:space="preserve"><value>Orion code</value></data>
+  <data name="TransportTypeLevel3Dto.IsArchive" xml:space="preserve"><value>Archive</value></data>
+  <data name="TransportTypeLevel3Dto.CreationDate" xml:space="preserve"><value>Created</value></data>
+  <data name="TransportTypeLevel3Dto.LastChangeDate" xml:space="preserve"><value>Changed</value></data>
+  <data name="TransportTypeLevel3DetailDto.IsBasic_forCBD" xml:space="preserve"><value>CBD basic (Basic transport type for CBD)</value></data>
+  <data name="TransportTypeLevel3DetailDto.Code" xml:space="preserve"><value>Code (Record Code)</value></data>
+  <data name="TransportTypeLevel3DetailDto.TransportKindName" xml:space="preserve"><value>Transport kind (Means of transport)</value></data>
+  <data name="TransportTypeLevel3DetailDto.TransportTypeName" xml:space="preserve"><value>Transport type (Level 2 means of transport)</value></data>
+  <data name="TransportTypeLevel3DetailDto.Name" xml:space="preserve"><value>Name (Means of transport)</value></data>
+  <data name="TransportTypeLevel3DetailDto.NameEnRu" xml:space="preserve"><value>Name EN-RU (Means of transport RU-EN)</value></data>
+  <data name="TransportTypeLevel3DetailDto.TypeCode" xml:space="preserve"><value>Type code (Means of transport code)</value></data>
+  <data name="TransportTypeLevel3DetailDto.SAPCode" xml:space="preserve"><value>SAP code (SAP code of means of transport)</value></data>
+  <data name="TransportTypeLevel3DetailDto.OrionCode" xml:space="preserve"><value>Orion code (Orion code of means of transport)</value></data>
+  <data name="TransportTypeLevel3DetailDto.Status" xml:space="preserve"><value>Record status</value></data>
+  <data name="TransportTypeLevel3DetailDto.IsArchive" xml:space="preserve"><value>Archive</value></data>
+  <data name="TransportTypeLevel3DetailDto.CreationDate" xml:space="preserve"><value>Created</value></data>
+  <data name="TransportTypeLevel3DetailDto.LastChangeDate" xml:space="preserve"><value>Changed</value></data>
+  <data name="TransportTypeLevel3DetailDto.Group.0.Default" xml:space="preserve"><value>Default</value></data>
+</root>

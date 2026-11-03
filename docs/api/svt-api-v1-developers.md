@@ -125,10 +125,11 @@ OpenAPI/Swagger UI: TrustedClients обязателен; **`X-On-Behalf-Of` дл
 | `products` | Продукты |
 | `locations-nodes` | Узлы / локации |
 | `transport-legs` | Транспортные плечи |
+| `transport-types-level-3` | Типы транспорта (3 уровень) |
 
 Актуальный список всегда берите из `GET /catalogs` или из OpenAPI. Новый справочник появляется после регистрации в СВТ 2.0 — отдельный «второй» контракт не нужен.
 
-**Очередь RO для кодов smart-lookup:** `Currency` доступен как `currencies`, `ProductGroup` — как `product-groups`, `MTR` — как `products`. Ещё не перенесён `TransportType_level_3`. До появления этого модуля в API — разовые выгрузки от архитектора СВТ **по запросу** (для первого smoke на TEST обычно не нужны, если коды уже есть у Атласа).
+**Очередь RO для кодов smart-lookup:** `Currency` доступен как `currencies`, `ProductGroup` — как `product-groups`, `MTR` — как `products`, `TransportType_level_3` — как `transport-types-level-3`. Все справочники очереди доступны в API.
 
 Неизвестный `{code}` → **404** `catalog_not_found`. Нет записи → **404** `item_not_found`.
 

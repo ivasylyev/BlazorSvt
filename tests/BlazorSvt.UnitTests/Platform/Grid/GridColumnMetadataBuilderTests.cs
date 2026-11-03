@@ -6,6 +6,7 @@ using BlazorSvt.Modules.RateType.List;
 using BlazorSvt.Modules.ParityRates.List;
 using BlazorSvt.Modules.TransportLeg.List;
 using BlazorSvt.Modules.TransportRate.List;
+using BlazorSvt.Modules.TransportTypeLevel3.List;
 using BlazorSvt.Platform.Grid.Models;
 using BlazorSvt.Platform.Grid.Services;
 using BlazorSvt.Platform.Infrastructure.Config;
@@ -115,6 +116,15 @@ public class GridColumnMetadataBuilderTests
 
         metadata.TableName.Should().Be("v2.MTR_Snapshot");
         metadata.EntityKeyPropertyName.Should().Be(nameof(MTRDto.MTRId));
+    }
+
+    [Fact]
+    public void GetMetadata_TransportTypeLevel3_UsesSnapshotTableAndEntityKey()
+    {
+        var metadata = GridColumnMetadataBuilder.GetMetadata(typeof(TransportTypeLevel3Dto));
+
+        metadata.TableName.Should().Be("v2.TransportTypeLevel3_Snapshot");
+        metadata.EntityKeyPropertyName.Should().Be(nameof(TransportTypeLevel3Dto.TransportTypeLevel3Id));
     }
 
     [Fact]
