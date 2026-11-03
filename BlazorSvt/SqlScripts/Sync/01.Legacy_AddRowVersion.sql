@@ -23,7 +23,7 @@ GO
     (подзапросы к dbo.PrimitiveEntityData_*).
 
     Стабильные справочники (TypePlace, TypeNode, TransportKind, ShipmentType,
-    RateType, TransportType, Currency) не включены — их изменения не отслеживаются.
+    RateType, TransportType, Currency, ETSNG) не включены — их изменения не отслеживаются.
 */
 
 DECLARE @tables TABLE (TableName SYSNAME, Comment NVARCHAR(100));
@@ -40,8 +40,6 @@ VALUES
     (N'dbo.PrimitiveEntityData_2012', N'TransportRate (основная)'),
     (N'dbo.PrimitiveEntityData_1013', N'ProductGroup'),
     (N'dbo.PrimitiveEntityData_1015', N'MTR (Product)'),
-    -- MTR
-    (N'dbo.PrimitiveEntityData_2019', N'ETSNG'),
     -- AverageRateLevel3
     (N'dbo.PrimitiveEntityData_2057', N'AverageRateLevel3 (основная)'),
     -- ParityRates

@@ -13,10 +13,10 @@ GO
     Источники (@Source = имя базовой legacy-таблицы, оно же ключ v2.SyncState):
       dbo.PrimitiveEntityData_1015 — MTR (основная): сами изменившиеся Id.
       dbo.PrimitiveEntityData_1013 — ProductGroup (каскад через ProductGroupId).
-      dbo.PrimitiveEntityData_2019 — ETSNG (каскад через EtsngId).
 
     Unit (1011), DangerClass (2018) и StatusElement (1010) в гриде — enum,
-    не отслеживаются.
+    не отслеживаются. ETSNG (2019) — легаси-справочник, не меняется,
+    не отслеживается.
 
     Каскады ставок на PrimitiveEntityData_1015 живут в PopulateAffectedKeys
     TransportRate, AverageRateLevel3 и ParityRates. Этот job их не меняет.
@@ -49,18 +49,6 @@ BEGIN
         SELECT DISTINCT s.MTRId
         FROM dbo.PrimitiveEntityData_1013 r WITH (NOLOCK) -- ProductGroup
         JOIN v2.MTR_Snapshot s ON s.ProductGroupId = r.PrimitiveEntityItemId
-        WHERE r.RowVer > @Lo AND r.RowVer <= @Hi
-          AND NOT EXISTS (SELECT 1 FROM #AffectedKeys a WHERE a.EntityKey = s.MTRId);
-        RETURN;
-    END
-
-    -- ETSNG: затронутые продукты через EtsngId.
-    IF @Source = N'dbo.PrimitiveEntityData_2019' -- ETSNG
-    BEGIN
-        INSERT INTO #AffectedKeys (EntityKey)
-        SELECT DISTINCT s.MTRId
-        FROM dbo.PrimitiveEntityData_2019 r WITH (NOLOCK) -- ETSNG
-        JOIN v2.MTR_Snapshot s ON s.EtsngId = r.PrimitiveEntityItemId
         WHERE r.RowVer > @Lo AND r.RowVer <= @Hi
           AND NOT EXISTS (SELECT 1 FROM #AffectedKeys a WHERE a.EntityKey = s.MTRId);
         RETURN;

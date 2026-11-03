@@ -117,12 +117,12 @@
 | Обозначение валюты | `Symbolic` | Обозначение | — | Symbol | — |
 | Цифровой код валюты | `Digital` | Цифр. код | — | Num. code | — |
 | Код НСИ | `Code_NSI` | Код НСИ | — | NSI code | — |
-| Сокращённое наименование | `ShortName` | Кратк. назв. | — | Short name | — |
+| Сокращённое наименование | `ShortName` | Краткое имя | — | Short name | — |
 | Код транспортной группы | `GroupCode` | Код группы | — | Group code | — |
 | Транспортная группа ЦБД | `ProductGroupCBD` | Группа ЦБД | — | CBD group | — |
 | Наименование (EN) | `NameEn` (отдельная колонка, не пара к `Name`) | Название (EN) | — | Name (EN) | — |
-| Сокращённое наименование (EN) | `NameEnCode` | Кратк. назв. (EN) | — | Short name (EN) | — |
-| Наименование EN-RU | `NameEnRu` | Назв. EN-RU | — | Name EN-RU | — |
+| Сокращённое наименование (EN) | `NameEnCode` | Краткое имя (EN) | — | Short name (EN) | — |
+| Наименование EN-RU | `NameEnRu` | Имя EN-RU | — | Name EN-RU | — |
 | Подниматься до группы | `SVTUseProductGroupWhenNoProductRateExists` | До группы | — | Group fallback | — |
 | Класс синхронизации ставок | `RateSyncClass` (`RateSyncClassIdRu`/`En`) | Класс синхр. | — | Sync class | — |
 | Страна | `CountryName` / `CountryCode` | Страна | Код страны | Country | Country code |
@@ -141,14 +141,14 @@
 | ЗоО сотрудник | `EmployeeResponsibilityArea` | ЗоО сотр. | — | Emp. area | — |
 | Методология | `Methodology` | Методология | — | Methodology | — |
 | Приоритет | `PriorityText` | Приоритет | — | Priority | — |
-| Класс опасности | `DangerClass` (`DangerClassIdRu`/`En`) | Класс оп. | — | Hazard | — |
+| Класс опасности | `DangerClass` (`DangerClassIdRu`/`En`) | Класс оп-ти | — | Hazard | — |
 | Единица измерения | `Unit` (`UnitIdRu`/`En`) | Ед. изм. | — | Unit | — |
 | ЕТСНГ (наименование груза, не код) | `EtsngName` | ЕТСНГ | — | ETSNG | — |
 | Код ГНГ | `GngCode` | Код ГНГ | — | GNG code | — |
 | Основной код DPO | `DpoCode` | Код DPO | — | DPO code | — |
 | Вид МТР | `MtrType` | Вид МТР | — | MTR type | — |
 | Полное наименование (RU) | `NameFullRu` | Полное (RU) | — | Full (RU) | — |
-| Краткое наименование (EN) | `NameShortEn` | Кратк. (EN) | — | Short (EN) | — |
+| Краткое наименование (EN) | `NameShortEn` | Краткое имя (EN) | — | Short (EN) | — |
 
 `RateTypeCode` в grid settings может отсутствовать — short применяют только если ключ реально используется в гриде; иначе ключ считается мёртвым для правки.
 

@@ -31,6 +31,7 @@ public class SnapshotSyncJobContractTests
         "dbo.PrimitiveEntityData_2023", // TransportType
         "dbo.PrimitiveEntityData_2016", // Currency
         "dbo.PrimitiveEntityData_2108", // Relevance
+        "dbo.PrimitiveEntityData_2019", // ETSNG
     ];
 
     public static TheoryData<ISnapshotSyncJob, Type, string, string, string, string, string> RegisteredJobs =>
@@ -179,14 +180,13 @@ public class SnapshotSyncJobContractTests
     }
 
     [Fact]
-    public void MTRJob_TracksProductGroupAndEtsngCascade()
+    public void MTRJob_TracksProductGroupCascade()
     {
         var sources = new MTRSyncJob().Sources.Select(s => s.Name);
 
         sources.Should().Equal(
             "dbo.PrimitiveEntityData_1015", // MTR (основная)
-            "dbo.PrimitiveEntityData_1013", // ProductGroup
-            "dbo.PrimitiveEntityData_2019"); // ETSNG
+            "dbo.PrimitiveEntityData_1013"); // ProductGroup
     }
 
     [Fact]

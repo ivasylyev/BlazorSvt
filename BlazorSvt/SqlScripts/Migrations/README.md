@@ -15,7 +15,7 @@ Migrations/
 ├── 2.3.46/            ← RateType (не править)
 │   └── 001.…005.…
 └── 2.3.48/            ← текущий VersionPrefix
-    └── 001.…009.…
+    └── 001.…015.…
 ```
 
 Публикация наружу (для DBA):
@@ -100,14 +100,13 @@ RateType — стабильный словарь с enum. В миграции н
 | `011.vw_MTR_SnapshotSource.sql` | Проекция из `dbo.vw_MTR`; выполняется до заливки |
 | `012.02.MTR_Insert.sql` | Полная заливка из этой проекции и курсор `v2.SyncState` по `dbo.PrimitiveEntityData_1015` и `dbo.PrimitiveEntityData_1013` |
 | `013.03.MTR_CreateIndexes.sql` | Уникальный индекс, фильтрующие индексы по `Code`, `UnitId` и `DangerClassId`, индексы по ключу и `ProductGroupId`, full-text |
-| `014.MTR_EtsngSync.sql` | Каскад ETSNG: `RowVer` на `dbo.PrimitiveEntityData_2019`, индекс по `EtsngId`, курсор `v2.SyncState` |
 | `015.All_Programmability.sql` | Полный снимок programmability, 34 скрипта (2026-11-02) |
 
 Currency — стабильный словарь с enum. В миграции нет `sp_Currency_PopulateAffectedKeys`, `RowVer` и `SyncState`. В снимке `015` у Currency только `vw_Currency_Detail` и `vw_Currency_SnapshotSource`.
 
 ProductGroup — справочник с watermark-sync. `RowVer` на `dbo.PrimitiveEntityData_1013` уже добавлен в `2.0.0/004` (источник каскада ставок), отдельного скрипта нет. `vw_ProductGroup_Detail` и `sp_ProductGroup_PopulateAffectedKeys` — в снимке `015`.
 
-MTR — справочник с watermark-sync. `RowVer` на `dbo.PrimitiveEntityData_1015` уже был (источник каскада ставок). В каскад своего job входят основная таблица, ProductGroup и ETSNG. `RowVer` на ETSNG и курсор по нему добавляет `014`, поэтому `012` инициализирует курсоры только для 1015 и 1013. `vw_MTR_Detail` и `sp_MTR_PopulateAffectedKeys` — в снимке `015`.
+MTR — справочник с watermark-sync. `RowVer` на `dbo.PrimitiveEntityData_1015` уже был (источник каскада ставок). В каскад своего job входят основная таблица и ProductGroup; `012` инициализирует курсоры для 1015 и 1013. ETSNG — легаси-справочник, не меняется и не отслеживается. `vw_MTR_Detail` и `sp_MTR_PopulateAffectedKeys` — в снимке `015`.
 
 ## Чеклист нового релиза
 

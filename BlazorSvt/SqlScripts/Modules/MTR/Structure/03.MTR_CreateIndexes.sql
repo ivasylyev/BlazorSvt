@@ -98,12 +98,5 @@ ON v2.MTR_Snapshot (ProductGroupId)
 WHERE ProductGroupId IS NOT NULL;
 GO
 
-DROP INDEX IF EXISTS [ix_MTR_Snapshot_EtsngId] ON [v2].[MTR_Snapshot];
-GO
-CREATE NONCLUSTERED INDEX [ix_MTR_Snapshot_EtsngId]
-ON v2.MTR_Snapshot (EtsngId)
-WHERE EtsngId IS NOT NULL;
-GO
-
 UPDATE STATISTICS v2.MTR_Snapshot WITH FULLSCAN;
 GO

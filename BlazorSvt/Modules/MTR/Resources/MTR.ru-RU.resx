@@ -7,7 +7,7 @@
   <data name="MTRGrid.Title" xml:space="preserve"><value>Продукты</value></data>
   <data name="MTRDto.Code" xml:space="preserve"><value>Код</value></data>
   <data name="MTRDto.NameFullRu" xml:space="preserve"><value>Полное (RU)</value></data>
-  <data name="MTRDto.NameShortEn" xml:space="preserve"><value>Кратк. (EN)</value></data>
+  <data name="MTRDto.NameShortEn" xml:space="preserve"><value>Краткое имя (EN)</value></data>
   <data name="MTRDto.ProductGroupName" xml:space="preserve"><value>Группа прод.</value></data>
   <data name="MTRDto.ProductGroupCode" xml:space="preserve"><value>Код гр. пр.</value></data>
   <data name="MTRDto.EtsngName" xml:space="preserve"><value>ЕТСНГ</value></data>
@@ -15,7 +15,7 @@
   <data name="MTRDto.Unit" xml:space="preserve"><value>Ед. изм.</value></data>
   <data name="MTRDto.DpoCode" xml:space="preserve"><value>Код DPO</value></data>
   <data name="MTRDto.MtrType" xml:space="preserve"><value>Вид МТР</value></data>
-  <data name="MTRDto.DangerClass" xml:space="preserve"><value>Класс оп.</value></data>
+  <data name="MTRDto.DangerClass" xml:space="preserve"><value>Класс оп-ти</value></data>
   <data name="MTRDto.IsArchive" xml:space="preserve"><value>Архив</value></data>
   <data name="MTRDto.CreationDate" xml:space="preserve"><value>Создано</value></data>
   <data name="MTRDto.LastChangeDate" xml:space="preserve"><value>Изменено</value></data>
@@ -23,7 +23,7 @@
   <data name="MTRDetailDto.NameFullRu" xml:space="preserve"><value>Полное (RU) (Наименование полное (RU))</value></data>
   <data name="MTRDetailDto.NameShortRu" xml:space="preserve"><value>Краткое наименование (RU)</value></data>
   <data name="MTRDetailDto.NameFullEn" xml:space="preserve"><value>Наименование полное (EN)</value></data>
-  <data name="MTRDetailDto.NameShortEn" xml:space="preserve"><value>Кратк. (EN) (Краткое наименование (EN))</value></data>
+  <data name="MTRDetailDto.NameShortEn" xml:space="preserve"><value>Краткое имя (EN) (Краткое наименование (EN))</value></data>
   <data name="MTRDetailDto.ProductGroupName" xml:space="preserve"><value>Группа прод. (Транспортная группа)</value></data>
   <data name="MTRDetailDto.ProductGroupCode" xml:space="preserve"><value>Код гр. пр. (Код транспортной группы)</value></data>
   <data name="MTRDetailDto.EtsngName" xml:space="preserve"><value>ЕТСНГ</value></data>
@@ -31,7 +31,7 @@
   <data name="MTRDetailDto.Unit" xml:space="preserve"><value>Ед. изм. (Единица измерения)</value></data>
   <data name="MTRDetailDto.DpoCode" xml:space="preserve"><value>Код DPO (Основной код DPO)</value></data>
   <data name="MTRDetailDto.MtrType" xml:space="preserve"><value>Вид МТР (Вид МТР (SAP))</value></data>
-  <data name="MTRDetailDto.DangerClass" xml:space="preserve"><value>Класс оп. (Класс опасности)</value></data>
+  <data name="MTRDetailDto.DangerClass" xml:space="preserve"><value>Класс оп-ти (Класс опасности)</value></data>
   <data name="MTRDetailDto.Status" xml:space="preserve"><value>Статус записи</value></data>
   <data name="MTRDetailDto.ProductCode" xml:space="preserve"><value>Код продукта</value></data>
   <data name="MTRDetailDto.IsArchive" xml:space="preserve"><value>Архив</value></data>
