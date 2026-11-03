@@ -2,7 +2,7 @@
 
 Читать этот файл перед правкой ролей, кольца и текстов в `docs/docs/svt-v-atlas/`. Факты ниже взяты из этих HTML. Чего в файле нет — пробел, не догадка.
 
-Живой материал для Кудрявцева — `SVT-idealnyy-process2.html` (версия 2.5, 30.10.2026). Она собрана из первой версии, 28 комментариев Кудрявцева В. и транскрипта встречи `SVT-transcript_idealnyy-process-Kudryavcev.md`; комментариев и выдержек со встречи в ней нет. Первая версия `SVT-idealnyy-process.html` осталась с комментариями как источник; её не править. Кольцо Ш1…Ш9. Файл `SVT-kak-seychas.html` в одном месте пишет «целевое кольцо С1–С9»: это старая подпись, в новые тексты букву С не возвращать.
+Живой материал для Кудрявцева — `SVT-idealnyy-process2.html` (версия 2.5, 30.10.2026). Она собрана из первой версии, 28 комментариев Кудрявцева В. и транскриптов встреч в `docs/meetings/`: `SVT-transcript_idealnyy-process-1-Kudryavcev.md`, `SVT-transcript_idealnyy-process-2-Kudryavcev.md`, `SVT-transcript_idealnyy-process-3-Kudryavcev.md`, `SVT-transcript_idealnyy-process-4-Sirotkina.md`, `SVT-transcript_idealnyy-process-5-Kudryavcev.md`. Комментариев и выдержек со встреч в ней нет. Первая версия `SVT-idealnyy-process.html` осталась с комментариями как источник; её не править. Кольцо Ш1…Ш9. Файл `SVT-kak-seychas.html` в одном месте пишет «целевое кольцо С1–С9»: это старая подпись, в новые тексты букву С не возвращать.
 
 ## Какие файлы живые
 
