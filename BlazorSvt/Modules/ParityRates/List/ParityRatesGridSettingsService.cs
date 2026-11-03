@@ -33,7 +33,7 @@ public class ParityRatesGridSettingsService(
         b.Add(x => x.NodeToCode, L["ParityRatesDto.NodeToCode"], visible: false);
         b.AddLocalized(isRu, x => x.NodeToNameRu, x => x.NodeToNameEn, L["ParityRatesDto.NodeToName"]);
         b.Add(x => x.TransportTypeCode, L["ParityRatesDto.TransportTypeCode"], visible: false);
-        b.AddEnum(isRu, x => x.TransportTypeIdRu, x => x.TransportTypeIdEn, L["ParityRatesDto.TransportTypeName"]);
+        b.AddEnum(isRu, x => x.TransportTypeIdRu, x => x.TransportTypeIdEn, L["ParityRatesDto.TransportTypeName"], filterValuesRu: TransportTypeLevel3Sets.MainRu, filterValuesEn: TransportTypeLevel3Sets.MainEn);
         b.Add(x => x.ProductGroupCode, L["ParityRatesDto.ProductGroupCode"], visible: false);
         b.AddLocalized(isRu, x => x.ProductGroupNameRu, x => x.ProductGroupNameEn, L["ParityRatesDto.ProductGroupName"]);
         b.Add(x => x.ProductCode, L["ParityRatesDto.ProductCode"], visible: false);

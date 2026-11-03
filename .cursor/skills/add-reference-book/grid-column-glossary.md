@@ -117,6 +117,14 @@
 | Обозначение валюты | `Symbolic` | Обозначение | — | Symbol | — |
 | Цифровой код валюты | `Digital` | Цифр. код | — | Num. code | — |
 | Код НСИ | `Code_NSI` | Код НСИ | — | NSI code | — |
+| Сокращённое наименование | `ShortName` | Краткое имя | — | Short name | — |
+| Код транспортной группы | `GroupCode` | Код группы | — | Group code | — |
+| Транспортная группа ЦБД | `ProductGroupCBD` | Группа ЦБД | — | CBD group | — |
+| Наименование (EN) | `NameEn` (отдельная колонка, не пара к `Name`) | Название (EN) | — | Name (EN) | — |
+| Сокращённое наименование (EN) | `NameEnCode` | Краткое имя (EN) | — | Short name (EN) | — |
+| Наименование EN-RU | `NameEnRu` | Имя EN-RU | — | Name EN-RU | — |
+| Подниматься до группы | `SVTUseProductGroupWhenNoProductRateExists` | До группы | — | Group fallback | — |
+| Класс синхронизации ставок | `RateSyncClass` (`RateSyncClassIdRu`/`En`) | Класс синхр. | — | Sync class | — |
 | Страна | `CountryName` / `CountryCode` | Страна | Код страны | Country | Country code |
 | Регион | `RegionName` / `RegionCode` | Регион | Код региона | Region | Region code |
 | Тип узла | `TypeNodeName` / `TypeNodeCode` | Тип узла | Код тип узла | Node type | Type code |
@@ -133,6 +141,19 @@
 | ЗоО сотрудник | `EmployeeResponsibilityArea` | ЗоО сотр. | — | Emp. area | — |
 | Методология | `Methodology` | Методология | — | Methodology | — |
 | Приоритет | `PriorityText` | Приоритет | — | Priority | — |
+| Класс опасности | `DangerClass` (`DangerClassIdRu`/`En`) | Класс оп-ти | — | Hazard | — |
+| Единица измерения | `Unit` (`UnitIdRu`/`En`) | Ед. изм. | — | Unit | — |
+| ЕТСНГ (наименование груза, не код) | `EtsngName` | ЕТСНГ | — | ETSNG | — |
+| Код ГНГ | `GngCode` | Код ГНГ | — | GNG code | — |
+| Основной код DPO | `DpoCode` | Код DPO | — | DPO code | — |
+| Вид МТР | `MtrType` | Вид МТР | — | MTR type | — |
+| Полное наименование (RU) | `NameFullRu` | Полное (RU) | — | Full (RU) | — |
+| Краткое наименование (EN) | `NameShortEn` | Краткое имя (EN) | — | Short (EN) | — |
+| Основной тип транспорта для ЦБД | `IsBasic_forCBD` | Осн. ЦБД | — | CBD basic | — |
+| Код типа транспорта (3 ур.) | `TypeCode` | Код типа | — | Type code | — |
+| Код SAP | `SAPCode` | Код SAP | — | SAP code | — |
+| Код Orion | `OrionCode` | Код Orion | — | Orion code | — |
+| Статус записи | `Status` (`StatusIdRu`/`En`) | Статус | — | Status | — |
 
 `RateTypeCode` в grid settings может отсутствовать — short применяют только если ключ реально используется в гриде; иначе ключ считается мёртвым для правки.
 
@@ -148,3 +169,7 @@
 | `IsDeflated` | Дефлируется | Deflated | Дефлируется | Deflated |
 | `IsIntoSyncClass` | Использовать синхронизацию | Use synchronization | Синхронизация | Sync |
 | `Code_NSI` | Код НСИ | NSI code | Код НСИ | NSI code |
+| `SVTUseProductGroupWhenNoProductRateExists` | Подниматься до группы если ставка для продукта не найдена | Fall back to group if no product rate found | До группы | Group fallback |
+| `RateSyncClass` | Класс синхронизации | Rate synchronization class | Класс синхр. | Sync class |
+| `ProductCode` | Код продукта | Product code | Код продукта | Product code |
+| `IsBasic_forCBD` | Основной тип транспорта для ЦБД | Basic transport type for CBD | Осн. ЦБД | CBD basic |

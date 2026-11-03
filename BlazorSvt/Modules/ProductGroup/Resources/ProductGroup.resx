@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <resheader name="resmimetype"><value>text/microsoft-resx</value></resheader>
+  <resheader name="version"><value>2.0</value></resheader>
+  <resheader name="reader"><value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value></resheader>
+  <resheader name="writer"><value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value></resheader>
+  <data name="ProductGroupGrid.Title" xml:space="preserve"><value>Transport groups</value></data>
+  <data name="ProductGroupDto.Code" xml:space="preserve"><value>Code</value></data>
+  <data name="ProductGroupDto.Name" xml:space="preserve"><value>Name</value></data>
+  <data name="ProductGroupDto.ShortName" xml:space="preserve"><value>Short name</value></data>
+  <data name="ProductGroupDto.GroupCode" xml:space="preserve"><value>Group code</value></data>
+  <data name="ProductGroupDto.ProductGroupCBD" xml:space="preserve"><value>CBD group</value></data>
+  <data name="ProductGroupDto.NameEnCode" xml:space="preserve"><value>Short name (EN)</value></data>
+  <data name="ProductGroupDto.NameEnRu" xml:space="preserve"><value>Name EN-RU</value></data>
+  <data name="ProductGroupDto.Code_NSI" xml:space="preserve"><value>NSI code</value></data>
+  <data name="ProductGroupDto.SVTUseProductGroupWhenNoProductRateExists" xml:space="preserve"><value>Group fallback</value></data>
+  <data name="ProductGroupDto.NameEn" xml:space="preserve"><value>Name (EN)</value></data>
+  <data name="ProductGroupDto.RateSyncClass" xml:space="preserve"><value>Sync class</value></data>
+  <data name="ProductGroupDto.IsArchive" xml:space="preserve"><value>Archive</value></data>
+  <data name="ProductGroupDto.CreationDate" xml:space="preserve"><value>Created</value></data>
+  <data name="ProductGroupDto.LastChangeDate" xml:space="preserve"><value>Changed</value></data>
+  <data name="ProductGroupDetailDto.Code" xml:space="preserve"><value>Code</value></data>
+  <data name="ProductGroupDetailDto.Name" xml:space="preserve"><value>Name (Full name of the transport group)</value></data>
+  <data name="ProductGroupDetailDto.ShortName" xml:space="preserve"><value>Short name (Short name of the transport group)</value></data>
+  <data name="ProductGroupDetailDto.GroupCode" xml:space="preserve"><value>Group code (Transport group code)</value></data>
+  <data name="ProductGroupDetailDto.ProductGroupCBD" xml:space="preserve"><value>CBD group (CDB transport group)</value></data>
+  <data name="ProductGroupDetailDto.NameEnCode" xml:space="preserve"><value>Short name (EN) (Short name of the transport group (EN))</value></data>
+  <data name="ProductGroupDetailDto.NameEnRu" xml:space="preserve"><value>Name EN-RU (Name (EN-RU))</value></data>
+  <data name="ProductGroupDetailDto.Code_NSI" xml:space="preserve"><value>NSI code</value></data>
+  <data name="ProductGroupDetailDto.SVTUseProductGroupWhenNoProductRateExists" xml:space="preserve"><value>Group fallback (Fall back to group if no product rate found)</value></data>
+  <data name="ProductGroupDetailDto.NameEn" xml:space="preserve"><value>Name (EN) (Full name of the transport group (EN))</value></data>
+  <data name="ProductGroupDetailDto.RateSyncClass" xml:space="preserve"><value>Sync class (Rate synchronization class)</value></data>
+  <data name="ProductGroupDetailDto.IsArchive" xml:space="preserve"><value>Archive</value></data>
+  <data name="ProductGroupDetailDto.CreationDate" xml:space="preserve"><value>Created</value></data>
+  <data name="ProductGroupDetailDto.LastChangeDate" xml:space="preserve"><value>Changed</value></data>
+  <data name="ProductGroupDetailDto.Group.0.Default" xml:space="preserve"><value>Default</value></data>
+</root>

@@ -132,6 +132,7 @@ Serilog (`Host/Program.cs`, секция `Serilog` в `appsettings.json`). Пр�
 | RateType | `dbo.PrimitiveEntityData_2048` | TransportRate, AverageRateLevel3; свой RO-модуль `RateType` |
 | TransportType | `dbo.PrimitiveEntityData_2023` | TransportRate, AverageRateLevel3 |
 | Currency | `dbo.PrimitiveEntityData_2016` | TransportRate, AverageRateLevel3 |
+| ETSNG | `dbo.PrimitiveEntityData_2019` | MTR (легаси, скрыт от пользователей, не меняется с 2019 г.) |
 
 При добавлении нового справочника к синхронизации: `vw_{Entity}_SnapshotSource`,
 `sp_{Entity}_PopulateAffectedKeys`, `{Entity}SyncJob` → `AddSingleton<ISnapshotSyncJob, …>()`,

@@ -278,6 +278,9 @@ public partial class GridColumn<TItem> : BlazorBootstrapComponentBase
     [Parameter]
     public string FilterValue { get; set; } = default!;
 
+    [Parameter]
+    public IReadOnlyList<Enum>? FilterEnumValues { get; set; }
+
     /// <summary>
     /// Indicates whether the column is frozen.
     /// </summary>

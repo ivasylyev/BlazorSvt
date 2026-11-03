@@ -1,0 +1,16 @@
+@page "/productgroup"
+@using BlazorSvt.Modules.ProductGroup.Detail
+@inherits BaseGridPage<ProductGroupDto, ProductGroupDetailDto>
+
+<GenericGrid TItem="ProductGroupDto"
+             TDetailItem="ProductGroupDetailDto"
+             PageTitle="@EL["ProductGroupGrid.Title"]"
+             AllowDetailView="true"
+             DataProvider="DataProvider"
+             DetailDataProvider="DetailDataProvider"
+             DetailKeySelector="DetailKeySelector">
+
+    <DetailViewTemplate Context="detail">
+    </DetailViewTemplate>
+
+</GenericGrid>

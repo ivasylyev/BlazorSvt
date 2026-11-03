@@ -144,6 +144,15 @@
   <data name="HeaderMenu.Currency" xml:space="preserve">
     <value>Валюты</value>
   </data>
+  <data name="HeaderMenu.ProductGroup" xml:space="preserve">
+    <value>Транспортные группы</value>
+  </data>
+  <data name="HeaderMenu.MTR" xml:space="preserve">
+    <value>Продукты</value>
+  </data>
+  <data name="HeaderMenu.TransportTypeLevel3" xml:space="preserve">
+    <value>Типы транспорта (3 уровень)</value>
+  </data>
   <data name="HeaderMenu.Load" xml:space="preserve">
     <value>Загрузка</value>
   </data>

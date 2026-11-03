@@ -372,6 +372,7 @@ WHERE DRu.[Value] = (
 | TransportTypeLevel3 | `TransportTypeLevel3Ru`, `TransportTypeLevel3En` |
 | Currency | `CurrencyRuEn` (один файл, без пары Ru/En) |
 | Relevance | `RelevanceRu`, `RelevanceEn` |
+| RateSyncClass | `RateSyncClassRu`, `RateSyncClassEn` |
 | TypeNode | `Modules/LocationsNodes/List/IdsEnum/TypeNodeRu`, `TypeNodeEn` |
 | TypePlace (LocationType) | `LocationTypeRu`, `LocationTypeEn` |
 

@@ -29,14 +29,23 @@ SqlScripts/
 │   ├── RateType/
 │   │   ├── Structure/
 │   │   └── Programmability/   # без PopulateAffectedKeys: разовая заливка
-│   └── Currency/
+│   ├── Currency/
+│   │   ├── Structure/
+│   │   └── Programmability/   # без PopulateAffectedKeys: разовая заливка
+│   ├── ProductGroup/
+│   │   ├── Structure/
+│   │   └── Programmability/
+│   ├── MTR/
+│   │   ├── Structure/
+│   │   └── Programmability/
+│   └── TransportTypeLevel3/
 │       ├── Structure/
 │       └── Programmability/   # без PopulateAffectedKeys: разовая заливка
 ├── Migrations/             # Релизные артефакты наката (immutable после выката)
 │   ├── 2.0.0/              # baseline
 │   ├── 2.0.1/              # upgrade
 │   ├── 2.3.46/             # дельта RateType + снимок programmability
-│   ├── 2.3.48/             # текущий VersionPrefix: дельта Currency + снимок programmability
+│   ├── 2.3.48/             # текущий VersionPrefix: дельта Currency, ProductGroup, MTR, TransportTypeLevel3 + снимок programmability
 │   └── README.md           # конвенция релизов / два контура
 └── Translations_info.txt   # Справочник переводов полей (не для деплоя)
 ```
@@ -136,6 +145,38 @@ SqlScripts/
 | 3 | `Modules/Currency/Structure/02.Currency_Insert.sql` |
 | 4 | `Modules/Currency/Structure/03.Currency_CreateIndexes.sql` |
 | 5 | `Modules/Currency/Programmability/vw_Currency_Detail.sql` |
+
+**ProductGroup** (проекция до Insert; RowVer на `dbo.PrimitiveEntityData_1013` уже есть — источник каскада ставок)
+
+| # | Скрипт |
+|---|--------|
+| 1 | `Modules/ProductGroup/Structure/01.ProductGroup_CreateTable.sql` |
+| 2 | `Modules/ProductGroup/Programmability/vw_ProductGroup_SnapshotSource.sql` |
+| 3 | `Modules/ProductGroup/Structure/02.ProductGroup_Insert.sql` |
+| 4 | `Modules/ProductGroup/Structure/03.ProductGroup_CreateIndexes.sql` |
+| 5 | `Modules/ProductGroup/Programmability/vw_ProductGroup_Detail.sql` |
+| 6 | `Modules/ProductGroup/Programmability/sp_ProductGroup_PopulateAffectedKeys.sql` |
+
+**MTR** (проекция до Insert; RowVer на `dbo.PrimitiveEntityData_1015` уже есть — источник каскада ставок; ETSNG — легаси, не отслеживается)
+
+| # | Скрипт |
+|---|--------|
+| 1 | `Modules/MTR/Structure/01.MTR_CreateTable.sql` |
+| 2 | `Modules/MTR/Programmability/vw_MTR_SnapshotSource.sql` |
+| 3 | `Modules/MTR/Structure/02.MTR_Insert.sql` |
+| 4 | `Modules/MTR/Structure/03.MTR_CreateIndexes.sql` |
+| 5 | `Modules/MTR/Programmability/vw_MTR_Detail.sql` |
+| 6 | `Modules/MTR/Programmability/sp_MTR_PopulateAffectedKeys.sql` |
+
+**TransportTypeLevel3** (стабильный словарь: без RowVer, SyncJob и PopulateAffectedKeys; проекция до Insert)
+
+| # | Скрипт |
+|---|--------|
+| 1 | `Modules/TransportTypeLevel3/Structure/01.TransportTypeLevel3_CreateTable.sql` |
+| 2 | `Modules/TransportTypeLevel3/Programmability/vw_TransportTypeLevel3_SnapshotSource.sql` |
+| 3 | `Modules/TransportTypeLevel3/Structure/02.TransportTypeLevel3_Insert.sql` |
+| 4 | `Modules/TransportTypeLevel3/Structure/03.TransportTypeLevel3_CreateIndexes.sql` |
+| 5 | `Modules/TransportTypeLevel3/Programmability/vw_TransportTypeLevel3_Detail.sql` |
 
 ## Grid read-модель
 

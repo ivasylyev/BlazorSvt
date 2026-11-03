@@ -12,10 +12,16 @@ public enum TransportKindRu
     Auto = 543760, //	Автомобильный транспорт / Truck transport
     [Display(Name = "Железнодорожный")]
     Rail = 543761, //	Железнодорожный транспорт / Railway transport
-    //[Display(Name = "Водный транспорт")]
-    //Sea = 543762, //	Водный транспорт / Sea transport
+    [Display(Name = "Водный")]
+    Sea = 543762, //	Водный транспорт / Sea transport
     [Display(Name = "Мультимодальный")]
     Mix = 543763, //	Комбинированная перевозка / Multimodal transport
-    //[Display(Name = "Трубопровод")]
-    //Pipe = 2612363 //	Трубопровод / Pipe
+    [Display(Name = "Перевалка: сухопутная перевалка СУГ и ЖХ")]
+    Transshipment_land = 543765,
+    [Display(Name = "Перевалка: Морская перевалка")]
+    Transshipment_sea = 543766,
+    [Display(Name = "Перевалка: Перевалка танк-контейнеров в АРА")]
+    Transshipment_TK = 543767,
+    [Display(Name = "Трубопровод")]
+    Pipe = 2612363 //	Трубопровод / Pipe
 }

@@ -23,9 +23,9 @@ public class AverageRateLevel3GridSettingsService(
         b.AddYesNo(x => x.IsDefRate, L["AverageRateLevel3Dto.IsDefRate"]);
         b.AddEnum(isRu, x => x.RateTypeIdRu, x => x.RateTypeIdEn, L["AverageRateLevel3Dto.RateTypeName"]);
         b.Add(x => x.TransportKindCode, L["AverageRateLevel3Dto.TransportKindCode"], visible: false);
-        b.AddEnum(isRu, x => x.TransportKindIdRu, x => x.TransportKindIdEn, L["AverageRateLevel3Dto.TransportKindName"]);
+        b.AddEnum(isRu, x => x.TransportKindIdRu, x => x.TransportKindIdEn, L["AverageRateLevel3Dto.TransportKindName"], filterValuesRu: TransportKindSets.MainRu, filterValuesEn: TransportKindSets.MainEn);
         b.Add(x => x.TransportTypeCode, L["AverageRateLevel3Dto.TransportTypeCode"], visible: false);
-        b.AddEnum(isRu, x => x.TransportTypeIdRu, x => x.TransportTypeIdEn, L["AverageRateLevel3Dto.TransportTypeName"]);
+        b.AddEnum(isRu, x => x.TransportTypeIdRu, x => x.TransportTypeIdEn, L["AverageRateLevel3Dto.TransportTypeName"], filterValuesRu: TransportTypeLevel3Sets.MainRu, filterValuesEn: TransportTypeLevel3Sets.MainEn);
         b.Add(x => x.NodeFromCode, L["AverageRateLevel3Dto.NodeFromCode"], visible: false);
         b.AddLocalized(isRu, x => x.NodeFromNameRu, x => x.NodeFromNameEn, L["AverageRateLevel3Dto.NodeFromName"]);
         b.Add(x => x.ProxyNodeCode, L["AverageRateLevel3Dto.ProxyNodeCode"], visible: false);
@@ -40,7 +40,7 @@ public class AverageRateLevel3GridSettingsService(
         b.AddDateOnly(x => x.EndDate, L["AverageRateLevel3Dto.EndDate"]);
         b.Add(x => x.RateLevel3, L["AverageRateLevel3Dto.RateLevel3"]);
         b.Add(x => x.EffectiveLoadOfTransportType, L["AverageRateLevel3Dto.EffectiveLoadOfTransportType"]);
-        b.AddEnum(x => x.CurrencyId, L["AverageRateLevel3Dto.Currency"]);
+        b.AddEnum(x => x.CurrencyId, L["AverageRateLevel3Dto.Currency"], filterValues: CurrencyRuEnSets.Main);
         b.AddSystemColumns(
             x => x.CreationDate,
             x => x.LastChangeDate,

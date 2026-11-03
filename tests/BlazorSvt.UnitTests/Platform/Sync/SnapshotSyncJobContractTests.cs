@@ -4,6 +4,10 @@ using BlazorSvt.Modules.LocationsNodes.List;
 using BlazorSvt.Modules.LocationsNodes.Sync;
 using BlazorSvt.Modules.ParityRates.List;
 using BlazorSvt.Modules.ParityRates.Sync;
+using BlazorSvt.Modules.MTR.List;
+using BlazorSvt.Modules.MTR.Sync;
+using BlazorSvt.Modules.ProductGroup.List;
+using BlazorSvt.Modules.ProductGroup.Sync;
 using BlazorSvt.Modules.TransportLeg.List;
 using BlazorSvt.Modules.TransportLeg.Sync;
 using BlazorSvt.Modules.TransportRate.List;
@@ -27,6 +31,7 @@ public class SnapshotSyncJobContractTests
         "dbo.PrimitiveEntityData_2023", // TransportType
         "dbo.PrimitiveEntityData_2016", // Currency
         "dbo.PrimitiveEntityData_2108", // Relevance
+        "dbo.PrimitiveEntityData_2019", // ETSNG
     ];
 
     public static TheoryData<ISnapshotSyncJob, Type, string, string, string, string, string> RegisteredJobs =>
@@ -76,6 +81,24 @@ public class SnapshotSyncJobContractTests
                 nameof(AverageRateLevel3Dto.AverageRateLevel3Id),
                 "v2.vw_AverageRateLevel3_SnapshotSource",
                 "v2.AverageRateLevel3_PopulateAffectedKeys"
+            },
+            {
+                new ProductGroupSyncJob(),
+                typeof(ProductGroupDto),
+                "ProductGroup",
+                "v2.ProductGroup_Snapshot",
+                nameof(ProductGroupDto.ProductGroupId),
+                "v2.vw_ProductGroup_SnapshotSource",
+                "v2.ProductGroup_PopulateAffectedKeys"
+            },
+            {
+                new MTRSyncJob(),
+                typeof(MTRDto),
+                "MTR",
+                "v2.MTR_Snapshot",
+                nameof(MTRDto.MTRId),
+                "v2.vw_MTR_SnapshotSource",
+                "v2.MTR_PopulateAffectedKeys"
             },
         };
 
@@ -154,6 +177,16 @@ public class SnapshotSyncJobContractTests
 
         sources.Should().Contain("dbo.PrimitiveEntityData_1015");
         sources.Should().NotContain("dbo.PrimitiveEntityData_2048");
+    }
+
+    [Fact]
+    public void MTRJob_TracksProductGroupCascade()
+    {
+        var sources = new MTRSyncJob().Sources.Select(s => s.Name);
+
+        sources.Should().Equal(
+            "dbo.PrimitiveEntityData_1015", // MTR (основная)
+            "dbo.PrimitiveEntityData_1013"); // ProductGroup
     }
 
     [Fact]

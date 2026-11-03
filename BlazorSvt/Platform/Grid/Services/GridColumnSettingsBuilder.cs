@@ -50,44 +50,53 @@ public sealed class GridColumnSettingsBuilder<T>(IStringLocalizer<PlatformResour
         Expression<Func<T, TEn>> enProperty,
         string header,
         bool visible = true,
-        bool filterable = true)
+        bool filterable = true,
+        IReadOnlyList<TRu>? filterValuesRu = null,
+        IReadOnlyList<TEn>? filterValuesEn = null)
         where TRu : Enum
         where TEn : Enum
     {
         if (isRu)
         {
             var compiled = ruProperty.Compile();
-            return Add(
+            Add(
                 ruProperty,
                 header,
                 visible,
                 filterable,
                 dto => typeof(TRu).GetDisplayName(compiled(dto).ToString()) ?? string.Empty);
+            columns[^1].FilterEnumValues = filterValuesRu?.Cast<Enum>().ToList();
+            return this;
         }
 
         var compiledEn = enProperty.Compile();
-        return Add(
+        Add(
             enProperty,
             header,
             visible,
             filterable,
             dto => typeof(TEn).GetDisplayName(compiledEn(dto).ToString()) ?? string.Empty);
+        columns[^1].FilterEnumValues = filterValuesEn?.Cast<Enum>().ToList();
+        return this;
     }
 
     public GridColumnSettingsBuilder<T> AddEnum<TEnum>(
         Expression<Func<T, TEnum>> property,
         string header,
         bool visible = true,
-        bool filterable = true)
+        bool filterable = true,
+        IReadOnlyList<TEnum>? filterValues = null)
         where TEnum : Enum
     {
         var compiled = property.Compile();
-        return Add(
+        Add(
             property,
             header,
             visible,
             filterable,
             dto => typeof(TEnum).GetDisplayName(compiled(dto).ToString()) ?? string.Empty);
+        columns[^1].FilterEnumValues = filterValues?.Cast<Enum>().ToList();
+        return this;
     }
 
     public GridColumnSettingsBuilder<T> AddYesNo(
