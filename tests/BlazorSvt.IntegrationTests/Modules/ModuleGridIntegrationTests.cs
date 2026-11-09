@@ -6,6 +6,10 @@ using BlazorSvt.Modules.AverageRateLevel3.List;
 using BlazorSvt.Modules.LocationsNodes.Detail;
 using BlazorSvt.Modules.LocationsNodes.List;
 using BlazorSvt.Modules.ParityRates.Detail;
+using BlazorSvt.Modules.MTR.Detail;
+using BlazorSvt.Modules.MTR.List;
+using BlazorSvt.Modules.ProductGroup.Detail;
+using BlazorSvt.Modules.ProductGroup.List;
 using BlazorSvt.Modules.RateType.Detail;
 using BlazorSvt.Modules.RateType.List;
 using BlazorSvt.Modules.ParityRates.List;
@@ -13,6 +17,8 @@ using BlazorSvt.Modules.TransportLeg.Detail;
 using BlazorSvt.Modules.TransportLeg.List;
 using BlazorSvt.Modules.TransportRate.Detail;
 using BlazorSvt.Modules.TransportRate.List;
+using BlazorSvt.Modules.TransportTypeLevel3.Detail;
+using BlazorSvt.Modules.TransportTypeLevel3.List;
 using BlazorSvt.Platform.Grid.Models;
 using FluentAssertions;
 
@@ -299,6 +305,117 @@ public class ModuleGridIntegrationTests(DatabaseFixture fixture) : IntegrationTe
 
         detail.Should().NotBeNull();
         detail!.CurrencyId.Should().Be(entityKey);
+        detail.Code.Should().NotBeNullOrWhiteSpace();
+    }
+
+    [SkippableFact]
+    public async Task ProductGroupGrid_ReturnsRows()
+    {
+        var connectionString = RequireConnectionString();
+
+        var (rows, totalCount) = await GridSpTestHelper.ExecuteGetBlazorGridDataAsync<ProductGroupDto>(
+            connectionString,
+            typeof(ProductGroupDto),
+            GridSpTestHelper.CreateDefaultQuery());
+
+        rows.Should().NotBeEmpty();
+        totalCount.Should().BeGreaterThan(0);
+    }
+
+    [SkippableFact]
+    public async Task ProductGroupDetailView_ReturnsRowForGridEntityKey()
+    {
+        var connectionString = RequireConnectionString();
+
+        var (rows, _) = await GridSpTestHelper.ExecuteGetBlazorGridDataAsync<ProductGroupDto>(
+            connectionString,
+            typeof(ProductGroupDto),
+            GridSpTestHelper.CreateDefaultQuery(pageSize: 1));
+
+        var entityKey = rows[0].ProductGroupId;
+
+        var detail = await GridSpTestHelper.QueryDetailViewAsync<ProductGroupDetailDto>(
+            connectionString,
+            "v2.vw_ProductGroup_Detail",
+            "ProductGroupId",
+            entityKey);
+
+        detail.Should().NotBeNull();
+        detail!.ProductGroupId.Should().Be(entityKey);
+        detail.Code.Should().NotBeNullOrWhiteSpace();
+    }
+
+    [SkippableFact]
+    public async Task MTRGrid_ReturnsRows()
+    {
+        var connectionString = RequireConnectionString();
+
+        var (rows, totalCount) = await GridSpTestHelper.ExecuteGetBlazorGridDataAsync<MTRDto>(
+            connectionString,
+            typeof(MTRDto),
+            GridSpTestHelper.CreateDefaultQuery());
+
+        rows.Should().NotBeEmpty();
+        totalCount.Should().BeGreaterThan(0);
+    }
+
+    [SkippableFact]
+    public async Task MTRDetailView_ReturnsRowForGridEntityKey()
+    {
+        var connectionString = RequireConnectionString();
+
+        var (rows, _) = await GridSpTestHelper.ExecuteGetBlazorGridDataAsync<MTRDto>(
+            connectionString,
+            typeof(MTRDto),
+            GridSpTestHelper.CreateDefaultQuery(pageSize: 1));
+
+        var entityKey = rows[0].MTRId;
+
+        var detail = await GridSpTestHelper.QueryDetailViewAsync<MTRDetailDto>(
+            connectionString,
+            "v2.vw_MTR_Detail",
+            "MTRId",
+            entityKey);
+
+        detail.Should().NotBeNull();
+        detail!.MTRId.Should().Be(entityKey);
+        detail.Code.Should().NotBeNullOrWhiteSpace();
+    }
+
+    [SkippableFact]
+    public async Task TransportTypeLevel3Grid_ReturnsRows()
+    {
+        var connectionString = RequireConnectionString();
+
+        var (rows, totalCount) = await GridSpTestHelper.ExecuteGetBlazorGridDataAsync<TransportTypeLevel3Dto>(
+            connectionString,
+            typeof(TransportTypeLevel3Dto),
+            GridSpTestHelper.CreateDefaultQuery());
+
+        rows.Should().NotBeEmpty();
+        totalCount.Should().BeGreaterThan(0);
+    }
+
+    [SkippableFact]
+    public async Task TransportTypeLevel3DetailView_ReturnsRowForGridEntityKey()
+    {
+        var connectionString = RequireConnectionString();
+
+        var (rows, _) = await GridSpTestHelper.ExecuteGetBlazorGridDataAsync<TransportTypeLevel3Dto>(
+            connectionString,
+            typeof(TransportTypeLevel3Dto),
+            GridSpTestHelper.CreateDefaultQuery(pageSize: 1));
+
+        var entityKey = rows[0].TransportTypeLevel3Id;
+
+        var detail = await GridSpTestHelper.QueryDetailViewAsync<TransportTypeLevel3DetailDto>(
+            connectionString,
+            "v2.vw_TransportTypeLevel3_Detail",
+            "TransportTypeLevel3Id",
+            entityKey);
+
+        detail.Should().NotBeNull();
+        detail!.TransportTypeLevel3Id.Should().Be(entityKey);
         detail.Code.Should().NotBeNullOrWhiteSpace();
     }
 }

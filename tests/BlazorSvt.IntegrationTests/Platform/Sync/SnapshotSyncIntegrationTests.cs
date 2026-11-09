@@ -2,6 +2,8 @@ using System.Data;
 using System.Data.SqlClient;
 using BlazorSvt.IntegrationTests.Infrastructure;
 using BlazorSvt.Modules.LocationsNodes.Sync;
+using BlazorSvt.Modules.MTR.Sync;
+using BlazorSvt.Modules.ProductGroup.Sync;
 using BlazorSvt.Modules.TransportLeg.Sync;
 using BlazorSvt.Modules.TransportRate.Sync;
 using BlazorSvt.Platform.Infrastructure.Config;
@@ -41,6 +43,32 @@ public sealed class SnapshotSyncIntegrationTests(DatabaseFixture fixture) : Inte
             LegacyTable: "dbo.PrimitiveEntityData_1014",
             LegacyColumn: "a_1020", // vw_LocationsNodes.Name_ru
             SnapshotColumn: "NameRu",
+            CreateStimulusValue: original => $"SVT_TST_{Random.Shared.Next(100_000, 999_999)}",
+            ParseLegacyValue: value => (string)value!,
+            FormatLegacyValue: value => (string)value));
+    }
+
+    [SkippableFact]
+    public async Task ProductGroup_IncrementalSync_PropagatesLegacyChange()
+    {
+        await RunCommitStimulusScenarioAsync(new SyncStimulusCase(
+            new ProductGroupSyncJob(),
+            LegacyTable: "dbo.PrimitiveEntityData_1013",
+            LegacyColumn: "a_2002", // vw_ProductGroup.ShortName
+            SnapshotColumn: "ShortName",
+            CreateStimulusValue: original => $"SVT_TST_{Random.Shared.Next(100_000, 999_999)}",
+            ParseLegacyValue: value => (string)value!,
+            FormatLegacyValue: value => (string)value));
+    }
+
+    [SkippableFact]
+    public async Task MTR_IncrementalSync_PropagatesLegacyChange()
+    {
+        await RunCommitStimulusScenarioAsync(new SyncStimulusCase(
+            new MTRSyncJob(),
+            LegacyTable: "dbo.PrimitiveEntityData_1015",
+            LegacyColumn: "a_1033", // vw_MTR.NameFull_ru
+            SnapshotColumn: "NameFullRu",
             CreateStimulusValue: original => $"SVT_TST_{Random.Shared.Next(100_000, 999_999)}",
             ParseLegacyValue: value => (string)value!,
             FormatLegacyValue: value => (string)value));

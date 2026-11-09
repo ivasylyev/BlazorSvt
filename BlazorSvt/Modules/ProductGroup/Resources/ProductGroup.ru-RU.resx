@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <resheader name="resmimetype"><value>text/microsoft-resx</value></resheader>
+  <resheader name="version"><value>2.0</value></resheader>
+  <resheader name="reader"><value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value></resheader>
+  <resheader name="writer"><value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value></resheader>
+  <data name="ProductGroupGrid.Title" xml:space="preserve"><value>Транспортные группы</value></data>
+  <data name="ProductGroupDto.Code" xml:space="preserve"><value>Код</value></data>
+  <data name="ProductGroupDto.Name" xml:space="preserve"><value>Название</value></data>
+  <data name="ProductGroupDto.ShortName" xml:space="preserve"><value>Краткое имя</value></data>
+  <data name="ProductGroupDto.GroupCode" xml:space="preserve"><value>Код группы</value></data>
+  <data name="ProductGroupDto.ProductGroupCBD" xml:space="preserve"><value>Группа ЦБД</value></data>
+  <data name="ProductGroupDto.NameEnCode" xml:space="preserve"><value>Краткое имя (EN)</value></data>
+  <data name="ProductGroupDto.NameEnRu" xml:space="preserve"><value>Имя EN-RU</value></data>
+  <data name="ProductGroupDto.Code_NSI" xml:space="preserve"><value>Код НСИ</value></data>
+  <data name="ProductGroupDto.SVTUseProductGroupWhenNoProductRateExists" xml:space="preserve"><value>До группы</value></data>
+  <data name="ProductGroupDto.NameEn" xml:space="preserve"><value>Название (EN)</value></data>
+  <data name="ProductGroupDto.RateSyncClass" xml:space="preserve"><value>Класс синхр.</value></data>
+  <data name="ProductGroupDto.IsArchive" xml:space="preserve"><value>Архив</value></data>
+  <data name="ProductGroupDto.CreationDate" xml:space="preserve"><value>Создано</value></data>
+  <data name="ProductGroupDto.LastChangeDate" xml:space="preserve"><value>Изменено</value></data>
+  <data name="ProductGroupDetailDto.Code" xml:space="preserve"><value>Код (Code)</value></data>
+  <data name="ProductGroupDetailDto.Name" xml:space="preserve"><value>Название (Полное наименование транспортной группы)</value></data>
+  <data name="ProductGroupDetailDto.ShortName" xml:space="preserve"><value>Краткое имя (Сокращенное наименование транспортной группы)</value></data>
+  <data name="ProductGroupDetailDto.GroupCode" xml:space="preserve"><value>Код группы (Код транспортной группы)</value></data>
+  <data name="ProductGroupDetailDto.ProductGroupCBD" xml:space="preserve"><value>Группа ЦБД (Транспортная группа ЦБД)</value></data>
+  <data name="ProductGroupDetailDto.NameEnCode" xml:space="preserve"><value>Краткое имя (EN) (Сокращенное наименование транспортной группы (EN))</value></data>
+  <data name="ProductGroupDetailDto.NameEnRu" xml:space="preserve"><value>Имя EN-RU (Наименование транспортной группы (EN-RU))</value></data>
+  <data name="ProductGroupDetailDto.Code_NSI" xml:space="preserve"><value>Код НСИ</value></data>
+  <data name="ProductGroupDetailDto.SVTUseProductGroupWhenNoProductRateExists" xml:space="preserve"><value>До группы (Подниматься до группы если ставка для продукта не найдена)</value></data>
+  <data name="ProductGroupDetailDto.NameEn" xml:space="preserve"><value>Название (EN) (Полное наименование транспортной группы (EN))</value></data>
+  <data name="ProductGroupDetailDto.RateSyncClass" xml:space="preserve"><value>Класс синхр. (Класс синхронизации)</value></data>
+  <data name="ProductGroupDetailDto.IsArchive" xml:space="preserve"><value>Архив</value></data>
+  <data name="ProductGroupDetailDto.CreationDate" xml:space="preserve"><value>Создано</value></data>
+  <data name="ProductGroupDetailDto.LastChangeDate" xml:space="preserve"><value>Изменено</value></data>
+  <data name="ProductGroupDetailDto.Group.0.Default" xml:space="preserve"><value>По умолчанию</value></data>
+</root>

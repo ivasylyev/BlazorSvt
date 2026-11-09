@@ -114,8 +114,49 @@ public class GridColumnSettingsBuilderTests
         }).ToString().Should().Be(display);
     }
 
+    [Fact]
+    public void AddEnum_WhenFilterValuesSet_KeepsGivenOrder()
+    {
+        var column = new GridColumnSettingsBuilder<ColumnFixture>(platform)
+            .AddEnum(x => x.Currency, "Currency", filterValues: [CurrencyRuEn.USD, CurrencyRuEn.RUB])
+            .Build()
+            .Single();
+
+        column.FilterEnumValues.Should().Equal(CurrencyRuEn.USD, CurrencyRuEn.RUB);
+    }
+
+    [Theory]
+    [InlineData(true)]
+    [InlineData(false)]
+    public void AddEnum_WhenLocalizedPairHasFilterValues_UsesRequestedLanguage(bool isRu)
+    {
+        var column = new GridColumnSettingsBuilder<ColumnFixture>(platform)
+            .AddEnum(isRu, x => x.KindRu, x => x.KindEn, "Kind",
+                filterValuesRu: [TransportKindRu.Rail, TransportKindRu.Auto],
+                filterValuesEn: [TransportKindEn.Rail, TransportKindEn.Auto])
+            .Build()
+            .Single();
+
+        if (isRu)
+            column.FilterEnumValues.Should().Equal(TransportKindRu.Rail, TransportKindRu.Auto);
+        else
+            column.FilterEnumValues.Should().Equal(TransportKindEn.Rail, TransportKindEn.Auto);
+    }
+
+    [Fact]
+    public void AddEnum_WhenFilterValuesOmitted_OffersAllValues()
+    {
+        var column = new GridColumnSettingsBuilder<ColumnFixture>(platform)
+            .AddEnum(x => x.Currency, "Currency")
+            .Build()
+            .Single();
+
+        column.FilterEnumValues.Should().BeNull();
+    }
+
     private sealed class ColumnFixture
     {
+        public CurrencyRuEn Currency { get; set; }
         public string? Name { get; set; }
         public bool Flag { get; set; }
         public DateOnly StartDate { get; set; }

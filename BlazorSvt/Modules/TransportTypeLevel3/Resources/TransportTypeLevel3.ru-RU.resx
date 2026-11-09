@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <resheader name="resmimetype"><value>text/microsoft-resx</value></resheader>
+  <resheader name="version"><value>2.0</value></resheader>
+  <resheader name="reader"><value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value></resheader>
+  <resheader name="writer"><value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value></resheader>
+  <data name="TransportTypeLevel3Grid.Title" xml:space="preserve"><value>Типы транспорта (3 уровень)</value></data>
+  <data name="TransportTypeLevel3Dto.IsBasic_forCBD" xml:space="preserve"><value>Осн. ЦБД</value></data>
+  <data name="TransportTypeLevel3Dto.Code" xml:space="preserve"><value>Код</value></data>
+  <data name="TransportTypeLevel3Dto.TransportKindName" xml:space="preserve"><value>Вид ТС</value></data>
+  <data name="TransportTypeLevel3Dto.TransportTypeName" xml:space="preserve"><value>Тип ТС</value></data>
+  <data name="TransportTypeLevel3Dto.Name" xml:space="preserve"><value>Название</value></data>
+  <data name="TransportTypeLevel3Dto.NameEnRu" xml:space="preserve"><value>Имя EN-RU</value></data>
+  <data name="TransportTypeLevel3Dto.TypeCode" xml:space="preserve"><value>Код типа</value></data>
+  <data name="TransportTypeLevel3Dto.SAPCode" xml:space="preserve"><value>Код SAP</value></data>
+  <data name="TransportTypeLevel3Dto.OrionCode" xml:space="preserve"><value>Код Orion</value></data>
+  <data name="TransportTypeLevel3Dto.Status" xml:space="preserve"><value>Статус</value></data>
+  <data name="TransportTypeLevel3Dto.IsArchive" xml:space="preserve"><value>Архив</value></data>
+  <data name="TransportTypeLevel3Dto.CreationDate" xml:space="preserve"><value>Создано</value></data>
+  <data name="TransportTypeLevel3Dto.LastChangeDate" xml:space="preserve"><value>Изменено</value></data>
+  <data name="TransportTypeLevel3DetailDto.IsBasic_forCBD" xml:space="preserve"><value>Осн. ЦБД (Основной тип транспорта для ЦБД)</value></data>
+  <data name="TransportTypeLevel3DetailDto.Code" xml:space="preserve"><value>Код (Код записи)</value></data>
+  <data name="TransportTypeLevel3DetailDto.TransportKindName" xml:space="preserve"><value>Вид ТС (Вид транспорта)</value></data>
+  <data name="TransportTypeLevel3DetailDto.TransportTypeName" xml:space="preserve"><value>Тип ТС (Тип транспорта 2-го уровня)</value></data>
+  <data name="TransportTypeLevel3DetailDto.Name" xml:space="preserve"><value>Название (Наименование типа транспорта)</value></data>
+  <data name="TransportTypeLevel3DetailDto.NameEnRu" xml:space="preserve"><value>Имя EN-RU (Наименование транспорта RU-EN)</value></data>
+  <data name="TransportTypeLevel3DetailDto.TypeCode" xml:space="preserve"><value>Код типа (Код типа транспорта)</value></data>
+  <data name="TransportTypeLevel3DetailDto.SAPCode" xml:space="preserve"><value>Код SAP (SAP код типа транспорта)</value></data>
+  <data name="TransportTypeLevel3DetailDto.OrionCode" xml:space="preserve"><value>Код Orion (Orion код типа транспорта)</value></data>
+  <data name="TransportTypeLevel3DetailDto.Status" xml:space="preserve"><value>Статус (Статус записи)</value></data>
+  <data name="TransportTypeLevel3DetailDto.IsArchive" xml:space="preserve"><value>Архив</value></data>
+  <data name="TransportTypeLevel3DetailDto.CreationDate" xml:space="preserve"><value>Создано</value></data>
+  <data name="TransportTypeLevel3DetailDto.LastChangeDate" xml:space="preserve"><value>Изменено</value></data>
+  <data name="TransportTypeLevel3DetailDto.Group.0.Default" xml:space="preserve"><value>По умолчанию</value></data>
+</root>

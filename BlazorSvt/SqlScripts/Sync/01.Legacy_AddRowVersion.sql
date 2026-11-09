@@ -23,7 +23,7 @@ GO
     (подзапросы к dbo.PrimitiveEntityData_*).
 
     Стабильные справочники (TypePlace, TypeNode, TransportKind, ShipmentType,
-    RateType, TransportType, Currency) не включены — их изменения не отслеживаются.
+    RateType, TransportType, Currency, ETSNG) не включены — их изменения не отслеживаются.
 */
 
 DECLARE @tables TABLE (TableName SYSNAME, Comment NVARCHAR(100));

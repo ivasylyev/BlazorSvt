@@ -173,6 +173,12 @@ public partial class GridColumnFilter : BlazorBootstrapComponentBase
     [Parameter]
     public string? EnumFilterSelectText { get; set; }
 
+    [Parameter]
+    public IReadOnlyList<Enum>? FilterEnumValues { get; set; }
+
+    private IEnumerable<object> EnumFilterItems =>
+        FilterEnumValues ?? Enum.GetValues(PropertyType!).Cast<object>();
+
     /// <summary>
     /// Gets or sets the filter button color.
     /// </summary>
