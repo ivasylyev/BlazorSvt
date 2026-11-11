@@ -249,6 +249,7 @@ OpenAPI/Swagger UI: TrustedClients обязателен; **`X-On-Behalf-Of` дл
 | `on_behalf_of_required` / `on_behalf_of_invalid` | 400 |
 | `user_not_registered` / `user_has_no_roles` / `access_denied` | 403 |
 | `not_found` / `catalog_not_found` / `item_not_found` | 404 |
+| `mcp_disabled` | 404 (только `/api/mcp`, флаг выключен) |
 | `currency_rate_missing` | 422 |
 | `service_unavailable` | 503 |
 | `internal_error` | 500 |
@@ -265,9 +266,51 @@ OpenAPI/Swagger UI: TrustedClients обязателен; **`X-On-Behalf-Of` дл
 | `operator_not_allowed` | Оператор не из `operators` поля в schema |
 | `invalid_value` | Неверный тип, формат, enum или `sort.direction` |
 | `value_too_short` | Текст для `contains` после очистки короче 3 символов |
-| `out_of_range` | `page` &lt; 1 или `pageSize` вне 1–1000 |
+| `out_of_range` | `page` &lt; 1 или `pageSize` вне 1–1000 (в MCP — вне 1–25) |
 | `not_supported` | `asOf` у справочника без периода |
 | `not_found` | **Только smart-lookup:** код в поле запроса не найден в справочниках подбора |
+
+## MCP (для агентного рантайма)
+
+Второй протокол поверх тех же сервисов и прав. Основной контракт — HTTP API выше. Постановка: [`SVT-5285-mcp.md`](../tasks/SVT-5285-mcp.md).
+
+**Включение.** Флаг `Api:McpEnabled`, по умолчанию выключен; читается при старте приложения. При выключенном флаге доверенный клиент получает **404** `mcp_disabled`. На PROD не включается до согласования класса данных (T6).
+
+**Адрес и транспорт.**
+
+```text
+POST https://{host}/v2/api/mcp
+```
+
+- Streamable HTTP **без сессий**: каждый POST самодостаточен, GET-потока нет. Ответ может прийти как `application/json` или как `text/event-stream` с одним сообщением. Заголовок `Accept: application/json, text/event-stream`.
+- Протокол MCP **2025-06-18 и новее** (сервер на SDK 2.4.0 поддерживает и 2026-07-28).
+- Пакеты JSON-RPC (тело-массив) отклоняются: **400** `invalid_request`.
+- В OpenAPI маршрута нет.
+
+**Доступ** — как у `/api/v1`: служебная учётка в `TrustedClients` и **`X-On-Behalf-Of` на каждом POST**, включая `initialize`. Отказы до разбора JSON-RPC приходят обычным Problem Details с теми же кодами (раздел «Аутентификация и права»). Заголовок выставляет рантайм из сессии человека, не модель; одно MCP-соединение не используется для разных пользователей. `X-Correlation-ID` и `Accept-Language` работают как в REST.
+
+**Инструменты** (только чтение, пометки `readOnlyHint` / `idempotentHint`, `openWorldHint=false`):
+
+| Инструмент | Аргументы | Аналог в REST |
+|---|---|---|
+| `list_catalogs` | — | `GET /catalogs`; в `capabilities` нет `export` |
+| `get_catalog_schema` | `catalog` | `GET .../schema` |
+| `search_catalog` | `catalog`, `filters`, `sort`, `page`, `pageSize`, `asOf`, `includeArchived`, `fields` | `POST .../items/search`; `pageSize` по умолчанию 25, максимум **25** |
+| `get_catalog_item` | `catalog`, `id`, `fields` | `GET .../items/{id}` |
+| `smart_rate_lookup` | `nodeFromCode`, `nodeToCode`, `productCode`, `transportTypeCode`, `currencyCode`, `date?` | `POST /rates/smart-lookup` без `profile` |
+
+- `fields` — необязательный список имён из `schema.fields` (поиск) или `schema.detailFields` (карточка). Регистр не важен, ключ записи возвращается всегда.
+- Входные схемы закрыты (`additionalProperties: false`): лишний, пропущенный или неверный аргумент даёт `validation_failed` с кодами `unknown_field` / `required` / `invalid_value` по имени аргумента.
+
+**Ответ.** Успех — `structuredContent` по `outputSchema` и тот же JSON в `content[0].text`. Ошибка — `isError: true`, без `structuredContent`; в `content[0].text`:
+
+```json
+{ "code": "validation_failed", "message": "…", "status": 400, "traceId": "00-…", "errors": { "pageSize": ["out_of_range"] } }
+```
+
+`code` и `errors` — те же коды, что в REST; `status` — HTTP-статус, который вернул бы REST. Ветвиться по `code`. Ошибкой протокола JSON-RPC приходит только неизвестное имя инструмента.
+
+**Журнал СВТ.** Строки MCP начинаются с `MCP`, операция — имя инструмента (`search_catalog`) или служебного метода (`mcp_initialize`, `mcp_tools_list`, …).
 
 ## Рекомендуемый порядок интеграции
 

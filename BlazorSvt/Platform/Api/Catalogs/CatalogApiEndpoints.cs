@@ -48,75 +48,36 @@ public sealed class CatalogApiEndpoints<TItem, TDetail>(CatalogApiDescriptor des
             .ProducesValidationProblem();
     }
 
-    private IResult GetSchema(
-        HttpContext context,
-        IGridSettingsService<TItem> gridSettings,
-        IDetailSettingsService<TDetail> detailSettings)
+    private IResult GetSchema(HttpContext context, CatalogApiReader reader)
     {
         ApiCallLog.SetOperation(context, "schema", descriptor.Code);
-
-        var listTitles = new Dictionary<string, string>();
-        foreach (var lang in LangsCurrentFirst())
-        {
-            foreach (var column in gridSettings.GetDefaultSettings(lang))
-            {
-                listTitles.TryAdd(column.Name, column.Header);
-            }
-        }
-
-        var detailTitles = new Dictionary<string, (string, string?)>();
-        foreach (var lang in LangsCurrentFirst())
-        {
-            foreach (var (groupHeader, settings) in detailSettings.GetGridDetailSettings(lang).GroupSettings)
-            {
-                foreach (var setting in settings)
-                {
-                    detailTitles.TryAdd(setting.Name, (setting.Header, groupHeader));
-                }
-            }
-        }
-
-        var schema = CatalogSchemaBuilder.Build(
-            descriptor,
-            CatalogTitles.GetCurrent(descriptor.TitleResourceKey),
-            listTitles,
-            detailTitles);
-
-        return ApiHttp.JsonWithETag(context, schema);
+        return ApiHttp.JsonWithETag(context, reader.GetSchema(descriptor.Code));
     }
 
     private async Task<IResult> SearchAsync(
         HttpContext context,
         [FromBody] CatalogSearchRequest request,
-        IGridDataService<TItem, TDetail> dataService,
-        ICatalogFreshnessReader freshness,
+        CatalogApiReader reader,
         CancellationToken cancellationToken)
     {
         ApiCallLog.SetOperation(context, "search", descriptor.Code);
 
-        var query = CatalogQueryTranslator.Translate(
-            typeof(TItem), request, descriptor.Period, request.Page, request.PageSize);
+        var response = await reader.SearchAsync(
+            descriptor.Code, request, request.Page, request.PageSize, cancellationToken);
 
-        var page = await dataService.GetPageAsync(query, cancellationToken);
-        var dataAsOf = await freshness.GetDataAsOfAsync(descriptor.SyncEntity, cancellationToken);
-
-        ApiCallLog.SetRowCount(context, page.Items.Count);
-        return Results.Ok(new CatalogSearchResponse<TItem>(page.Items, page.TotalCount, dataAsOf));
+        ApiCallLog.SetRowCount(context, response.Items.Count);
+        return Results.Ok(response);
     }
 
     private async Task<IResult> GetItemAsync(
         HttpContext context,
         long id,
-        IGridDataService<TItem, TDetail> dataService,
+        CatalogApiReader reader,
         CancellationToken cancellationToken)
     {
         ApiCallLog.SetOperation(context, "item", descriptor.Code);
 
-        var item = await dataService.FindDetailAsync(id, cancellationToken);
-        if (item is null)
-        {
-            throw ApiException.NotFound(ApiErrorCodes.ItemNotFound, id);
-        }
+        var item = await reader.GetItemAsync(descriptor.Code, id, cancellationToken);
 
         ApiCallLog.SetRowCount(context, 1);
         return Results.Ok(item);
@@ -175,13 +136,6 @@ public sealed class CatalogApiEndpoints<TItem, TDetail>(CatalogApiDescriptor des
     }
 
     private static string CurrentLang() => CultureInfo.CurrentUICulture.TwoLetterISOLanguageName;
-
-    private static IEnumerable<string> LangsCurrentFirst()
-    {
-        var current = CurrentLang() == "en" ? "en" : "ru";
-        yield return current;
-        yield return current == "ru" ? "en" : "ru";
-    }
 
     internal static string ToPascal(string code) =>
         string.Concat(code.Split('-', StringSplitOptions.RemoveEmptyEntries)

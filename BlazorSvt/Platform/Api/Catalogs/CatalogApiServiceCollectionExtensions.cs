@@ -31,6 +31,7 @@ public static class CatalogApiServiceCollectionExtensions
             period);
 
         services.AddSingleton(descriptor);
+        services.AddSingleton<ICatalogApiSource>(new CatalogApiSource<TItem, TDetail>(descriptor));
         services.AddSingleton<IApiEndpointContribution>(new CatalogApiEndpoints<TItem, TDetail>(descriptor));
         return services;
     }

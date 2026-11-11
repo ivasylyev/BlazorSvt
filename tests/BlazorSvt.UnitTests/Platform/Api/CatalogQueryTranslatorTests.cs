@@ -188,6 +188,42 @@ public class CatalogQueryTranslatorTests
         errors.Should().ContainKeys("filters[0].field", "filters[1].value");
     }
 
+    [Theory]
+    [InlineData(0)]
+    [InlineData(26)]
+    public void Translate_McpPageLimit_RejectsOutOfRange(int pageSize)
+    {
+        var act = () => CatalogQueryTranslator.Translate(
+            typeof(TransportRateDto), new CatalogSearchRequest(), Period, 1, pageSize, maxPageSize: 25);
+
+        act.Should().Throw<ApiException>().Which.Errors.Should().ContainKey("pageSize")
+            .WhoseValue.Should().Equal(CatalogValidationCodes.OutOfRange);
+    }
+
+    [Fact]
+    public void Translate_McpPageLimit_PassesMaximum()
+    {
+        var query = CatalogQueryTranslator.Translate(
+            typeof(TransportRateDto), new CatalogSearchRequest(), Period, 1, 25, maxPageSize: 25);
+
+        query.PageSize.Should().Be(25);
+    }
+
+    [Fact]
+    public void Translate_PriorErrors_ReturnedTogetherWithRequestErrors()
+    {
+        var prior = new Dictionary<string, string[]> { ["fields[0]"] = [CatalogValidationCodes.UnknownField] };
+        var act = () => CatalogQueryTranslator.Translate(
+            typeof(TransportRateDto),
+            new CatalogSearchRequest { Filters = [Filter("nope", "eq", 1)] },
+            Period,
+            1,
+            10,
+            priorErrors: prior);
+
+        act.Should().Throw<ApiException>().Which.Errors.Should().ContainKeys("fields[0]", "filters[0].field");
+    }
+
     private static GridQuery Translate(CatalogSearchRequest request) =>
         CatalogQueryTranslator.Translate(typeof(TransportRateDto), request, Period, 1, 100);
 

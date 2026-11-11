@@ -24,12 +24,13 @@ public static class ApiProblems
         var problem = new ProblemDetails
         {
             Status = statusCode,
-            Title = Localize(context, code, messageArgs),
+            Title = Message(context, code, messageArgs),
             Instance = context.Request.Path
         };
 
         problem.Extensions[CodeKey] = code;
         problem.Extensions[TraceIdKey] = TraceId(context);
+        ApiCallLog.SetErrorCode(context, code);
         if (errors is { Count: > 0 })
         {
             problem.Extensions[ErrorsKey] = errors;
@@ -71,16 +72,21 @@ public static class ApiProblems
                 _ => ApiErrorCodes.InternalError
             };
             extensions[CodeKey] = code;
-            context.ProblemDetails.Title = Localize(context.HttpContext, code, []);
+            context.ProblemDetails.Title = Message(context.HttpContext, code, []);
         }
 
         extensions[TraceIdKey] = TraceId(context.HttpContext);
+        if (extensions[CodeKey] is string finalCode)
+        {
+            ApiCallLog.SetErrorCode(context.HttpContext, finalCode);
+        }
     }
 
-    private static string TraceId(HttpContext context) =>
+    public static string TraceId(HttpContext context) =>
         Activity.Current?.Id ?? context.TraceIdentifier;
 
-    private static string Localize(HttpContext context, string code, object[] messageArgs)
+    /// <summary>Локализованный текст <c>Api.Error.{code}</c> на языке запроса; без ресурса — сам код.</summary>
+    public static string Message(HttpContext context, string code, object[] messageArgs)
     {
         var localizer = context.RequestServices.GetService<IStringLocalizer<PlatformResources>>();
         if (localizer is null)

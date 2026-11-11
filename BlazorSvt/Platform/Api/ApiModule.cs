@@ -40,6 +40,7 @@ public static class ApiModule
         });
 
         services.AddScoped<ICatalogFreshnessReader, CatalogFreshnessReader>();
+        services.AddScoped<CatalogApiReader>();
 
         services.AddOpenApi(OpenApiDocumentName, options => SvtOpenApi.Configure(options, configuration));
 
@@ -76,20 +77,10 @@ public static class ApiModule
 
         var api = endpoints.MapGroup(V1Prefix);
 
-        api.MapGet("/catalogs", (HttpContext context, IEnumerable<CatalogApiDescriptor> catalogs) =>
+        api.MapGet("/catalogs", (HttpContext context, CatalogApiReader reader) =>
             {
                 ApiCallLog.SetOperation(context, "catalogs");
-                var items = catalogs
-                    .OrderBy(c => c.Domain)
-                    .ThenBy(c => c.Code, StringComparer.Ordinal)
-                    .Select(c => new CatalogInfo(
-                        c.Code,
-                        CatalogTitles.GetRu(c.TitleResourceKey),
-                        CatalogTitles.GetEn(c.TitleResourceKey),
-                        ApiJson.EnumCode(c.Domain.ToString()),
-                        Capabilities(c)))
-                    .ToList();
-                return ApiHttp.JsonWithETag(context, new CatalogListResponse(items));
+                return ApiHttp.JsonWithETag(context, reader.List(includeExport: true));
             })
             .WithTags("catalogs")
             .WithName("listCatalogs")
@@ -116,9 +107,4 @@ public static class ApiModule
     }
 
     public static bool IsApi(PathString path) => path.StartsWithSegments(ApiPrefix, StringComparison.OrdinalIgnoreCase);
-
-    private static IReadOnlyList<string> Capabilities(CatalogApiDescriptor descriptor) =>
-        descriptor.Period is null
-            ? ["schema", "search", "item", "export"]
-            : ["schema", "search", "item", "export", "asOf"];
 }

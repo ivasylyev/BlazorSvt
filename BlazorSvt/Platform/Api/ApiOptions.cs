@@ -14,4 +14,10 @@ public sealed class ApiOptions
 
     /// <summary>Swagger UI по адресу <c>/api/swagger</c>. На проде — по решению при релизе.</summary>
     public bool SwaggerUiEnabled { get; set; }
+
+    /// <summary>
+    /// MCP-надстройка над API (<c>/api/mcp</c>). Читается при старте: после смены нужен перезапуск пула.
+    /// На PROD не включать до согласования класса данных (пробел T6).
+    /// </summary>
+    public bool McpEnabled { get; set; }
 }
