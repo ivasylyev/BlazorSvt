@@ -36,21 +36,27 @@ public static class CatalogQueryTranslator
     private const string IsArchiveProperty = "IsArchive";
     private static readonly char[] FullTextNoise = ['"', '*', '(', ')', '&', '|'];
 
+    /// <param name="maxPageSize">Предел страницы: REST — <see cref="MaxPageSize"/>, MCP — свой, меньший.</param>
+    /// <param name="priorErrors">Ошибки, найденные вызывающим до перевода; возвращаются вместе с ошибками запроса.</param>
     public static GridQuery Translate(
         Type itemType,
         ICatalogQueryRequest request,
         CatalogPeriod? period,
         int page,
-        int pageSize)
+        int pageSize,
+        int maxPageSize = MaxPageSize,
+        IReadOnlyDictionary<string, string[]>? priorErrors = null)
     {
-        var errors = new Dictionary<string, string[]>();
+        var errors = priorErrors is null
+            ? new Dictionary<string, string[]>()
+            : new Dictionary<string, string[]>(priorErrors);
 
         if (page < 1)
         {
             errors["page"] = [CatalogValidationCodes.OutOfRange];
         }
 
-        if (pageSize is < 1 or > MaxPageSize)
+        if (pageSize < 1 || pageSize > maxPageSize)
         {
             errors["pageSize"] = [CatalogValidationCodes.OutOfRange];
         }

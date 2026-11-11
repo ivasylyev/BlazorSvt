@@ -2,6 +2,7 @@ using BlazorSvt.Modules.SmartRateLookup.Api;
 using BlazorSvt.Modules.SmartRateLookup.Data;
 using BlazorSvt.Modules.SmartRateLookup.Services;
 using BlazorSvt.Platform.Api;
+using BlazorSvt.Platform.Api.Mcp;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 
 namespace BlazorSvt.Modules.SmartRateLookup;
@@ -15,6 +16,7 @@ public static class SmartRateLookupModule
         services.AddScoped<ISmartRateLookupRepository, SmartRateLookupRepository>();
         services.AddScoped<SmartRateLookupService>();
         services.AddSingleton<IApiEndpointContribution, SmartRateLookupEndpoint>();
+        services.AddMcpTool<SmartRateLookupMcpTool>();
 
         return services;
     }

@@ -387,4 +387,5 @@
   <data name="Api.Error.currency_rate_missing" xml:space="preserve"><value>Не найден курс валют на дату запроса.</value></data>
   <data name="Api.Error.service_unavailable" xml:space="preserve"><value>Сервис временно недоступен. Повторите позже.</value></data>
   <data name="Api.Error.internal_error" xml:space="preserve"><value>Внутренняя ошибка. Сообщите traceId в поддержку.</value></data>
+  <data name="Api.Error.mcp_disabled" xml:space="preserve"><value>MCP отключён на этом стенде (флаг Api:McpEnabled).</value></data>
 </root>

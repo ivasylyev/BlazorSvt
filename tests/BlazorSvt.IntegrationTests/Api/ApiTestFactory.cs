@@ -21,7 +21,7 @@ namespace BlazorSvt.IntegrationTests.Api;
 /// <summary>
 /// Хост СВТ в памяти без БД: доступ, данные и подбор подменены, Windows-учётка — из заголовка <see cref="UserHeader"/>.
 /// </summary>
-public sealed class ApiTestFactory : WebApplicationFactory<Program>
+public class ApiTestFactory : WebApplicationFactory<Program>
 {
     public const string UserHeader = "X-Test-User";
     public const string TrustedClient = @"TEST\svc-atlas";
@@ -49,6 +49,9 @@ public sealed class ApiTestFactory : WebApplicationFactory<Program>
         UserAccess.GetUserRoleNamesAsync(11, Arg.Any<CancellationToken>()).Returns([]);
     }
 
+    /// <summary>Флаг <c>Api:McpEnabled</c>; по умолчанию выключен, как на стендах.</summary>
+    protected virtual bool McpEnabled => false;
+
     public HttpClient CreateApiClient(string? caller = TrustedClient, string? onBehalfOf = RegisteredUser)
     {
         var client = CreateClient();
@@ -74,6 +77,7 @@ public sealed class ApiTestFactory : WebApplicationFactory<Program>
         builder.UseSetting("Auth:SynchronizeUserRoles", "false");
         builder.UseSetting("Api:TrustedClients:0", TrustedClient);
         builder.UseSetting("Api:SwaggerUiEnabled", "false");
+        builder.UseSetting("Api:McpEnabled", McpEnabled ? "true" : "false");
         builder.UseSetting("Serilog:WriteTo:1:Args:path", Path.Combine(logDirectory, "api-.txt"));
 
         builder.ConfigureServices(services =>

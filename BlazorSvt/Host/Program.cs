@@ -16,6 +16,7 @@ using BlazorSvt.Modules.TransportRate;
 using BlazorSvt.Modules.TransportTypeLevel3;
 using BlazorSvt.Platform;
 using BlazorSvt.Platform.Api;
+using BlazorSvt.Platform.Api.Mcp;
 using BlazorSvt.Platform.Infrastructure.Data;
 using BlazorSvt.Platform.Sync;
 using Dapper;
@@ -59,6 +60,7 @@ builder.Services.AddTransportTypeLevel3Module();
 builder.Services.AddHomeRatePivotModule();
 builder.Services.AddSmartRateLookupModule();
 builder.Services.AddSvtApi(builder.Configuration);
+builder.Services.AddSvtMcp(builder.Configuration);
 
 var supportedCultures = new[] { "ru-RU", "en-US" };
 var localizationOptions = new RequestLocalizationOptions()
@@ -128,6 +130,7 @@ app.UseSerilogRequestLogging(options =>
 app.UseSvtApi();
 app.MapControllers();
 app.MapSvtApi();
+app.MapSvtMcp();
 app.MapStaticAssets();
 
 // Liveness: публичный URL /v2/hc (PathBase). Без БД и Blazor circuit.

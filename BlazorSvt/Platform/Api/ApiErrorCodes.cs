@@ -20,5 +20,6 @@ public static class ApiErrorCodes
     public const string ItemNotFound = "item_not_found";
     public const string CurrencyRateMissing = "currency_rate_missing";
     public const string ServiceUnavailable = "service_unavailable";
+    public const string McpDisabled = "mcp_disabled";
     public const string InternalError = "internal_error";
 }

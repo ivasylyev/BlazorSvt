@@ -1,6 +1,7 @@
 using System.Diagnostics;
 using System.Text.RegularExpressions;
 using BlazorSvt.Platform.Access;
+using BlazorSvt.Platform.Api.Mcp;
 using BlazorSvt.Platform.Infrastructure;
 using Microsoft.Extensions.Options;
 using Microsoft.Net.Http.Headers;
@@ -16,9 +17,11 @@ namespace BlazorSvt.Platform.Api;
 /// <list type="bullet">
 /// <item>Вызывающий (Windows-учётка) должен быть в <see cref="ApiOptions.TrustedClients"/>, иначе 403 на весь <c>/api</c>.
 /// Браузер пользователя не в списке — это и защита от CSRF.</item>
-/// <item><c>/api/v1/*</c>: обязателен <c>X-On-Behalf-Of: DOMAIN\user</c>; права — только роли этого пользователя
+/// <item><c>/api/v1/*</c> и <c>/api/mcp</c>: обязателен <c>X-On-Behalf-Of: DOMAIN\user</c>; права — только роли этого пользователя
 /// (<c>dbo.User</c>/<c>dbo.UserRole</c>), не служебной учётки.</item>
-/// <item>Лог: <c>UserLogin</c> = конечный пользователь, <c>ApiClient</c> = служебная учётка, <c>Channel</c> = Api.</item>
+/// <item><c>/api/mcp</c> при выключенном <see cref="ApiOptions.McpEnabled"/> — 404 <c>mcp_disabled</c> (после проверки клиента).
+/// Пакет JSON-RPC (массив) — 400 <c>invalid_request</c> до SDK.</item>
+/// <item>Лог: <c>UserLogin</c> = конечный пользователь, <c>ApiClient</c> = служебная учётка, <c>Channel</c> = Api или Mcp.</item>
 /// <item>Development + <c>Auth:IgnoreAccessControl</c>: проверка доверенного клиента и ролей пропускается.</item>
 /// </list>
 /// </remarks>
@@ -38,7 +41,8 @@ public sealed partial class ApiAccessMiddleware(
         HttpContext context,
         UserAccessSynchronizer synchronizer,
         CurrentUser currentUser,
-        IDiagnosticContext diagnostics)
+        IDiagnosticContext diagnostics,
+        McpEndpointState mcp)
     {
         context.Response.OnStarting(() =>
         {
@@ -80,7 +84,14 @@ public sealed partial class ApiAccessMiddleware(
                 }
             }
 
-            if (!context.Request.Path.StartsWithSegments("/api/v1", StringComparison.OrdinalIgnoreCase))
+            var isMcp = McpModule.IsMcp(context.Request.Path);
+            if (isMcp && !mcp.Enabled)
+            {
+                await ApiProblems.WriteAsync(context, StatusCodes.Status404NotFound, ApiErrorCodes.McpDisabled);
+                return;
+            }
+
+            if (!isMcp && !context.Request.Path.StartsWithSegments(ApiModule.V1Prefix, StringComparison.OrdinalIgnoreCase))
             {
                 await RunAsync(context);
                 return;
@@ -105,6 +116,11 @@ public sealed partial class ApiAccessMiddleware(
                 var started = Stopwatch.GetTimestamp();
                 try
                 {
+                    if (isMcp && !await AcceptMcpMessageAsync(context))
+                    {
+                        return;
+                    }
+
                     await synchronizer.SynchronizeOnBehalfAsync(onBehalfOf, context.RequestAborted);
 
                     if (currentUser.State == AccessState.Denied)
@@ -121,18 +137,42 @@ public sealed partial class ApiAccessMiddleware(
                 finally
                 {
                     // Файловый шаблон лога выводит только текст сообщения — ключевые поля вызова держим в нём.
+                    // MCP отдаёт ошибку инструмента с HTTP 200 — исход различает только код.
                     logger.LogInformation(
-                        "API {ApiOperation} {Catalog} for {UserLogin} via {ApiClient}: {StatusCode}, rows {ApiRowCount}, {ElapsedMs} ms",
+                        "{ApiChannel} {ApiOperation} {Catalog} for {UserLogin} via {ApiClient}: {StatusCode} {ApiErrorCode}, rows {ApiRowCount}, {ElapsedMs} ms",
+                        isMcp ? "MCP" : "API",
                         ApiCallLog.Operation(context) ?? context.Request.Path.Value,
                         ApiCallLog.Catalog(context),
                         onBehalfOf,
                         client,
                         context.Response.StatusCode,
+                        ApiCallLog.ErrorCode(context) ?? "-",
                         ApiCallLog.RowCount(context),
                         (long)Stopwatch.GetElapsedTime(started).TotalMilliseconds);
                 }
             }
         }
+    }
+
+    /// <summary>Пакет JSON-RPC отклоняется: журнал и <see cref="ApiCallLog"/> рассчитаны на один вызов на запрос.</summary>
+    private static async Task<bool> AcceptMcpMessageAsync(HttpContext context)
+    {
+        if (!HttpMethods.IsPost(context.Request.Method))
+        {
+            ApiCallLog.SetOperation(context, McpRequestInspector.OperationFor(null));
+            return true;
+        }
+
+        var message = await McpRequestInspector.InspectAsync(context.Request, context.RequestAborted);
+        if (message.IsBatch)
+        {
+            ApiCallLog.SetOperation(context, "mcp_batch");
+            await ApiProblems.WriteAsync(context, StatusCodes.Status400BadRequest, ApiErrorCodes.InvalidRequest);
+            return false;
+        }
+
+        ApiCallLog.SetOperation(context, McpRequestInspector.OperationFor(message.Method));
+        return true;
     }
 
     private bool IsTrusted(string client) =>
