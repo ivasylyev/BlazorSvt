@@ -154,12 +154,14 @@ public partial class HomeRatePivotWidget : SvtComponentBase, IDisposable
         options.Scales.X!.Title = new ChartAxesTitle
         {
             Text = EL["HomeRatePivotWidget.Month"].Value,
-            Display = true
+            Display = true,
+            Font = new ChartFont { Family = "Roboto" }
         };
         options.Scales.Y!.Title = new ChartAxesTitle
         {
             Text = EL["HomeRatePivotWidget.AverageRate"].Value,
-            Display = true
+            Display = true,
+            Font = new ChartFont { Family = "Roboto" }
         };
         options.Plugins.Legend.Display = false;
 
