@@ -293,7 +293,7 @@ Read-only справочник из [catalogs-scope.md](catalogs-scope.md) пр�
 - план работ и реестр отложенных митигаций как обязательная часть программы.
 
 **Что явно не одобряется «вперёд» этим же решением:**
-- старт массового тиража оставшихся read-only (backlog 0.2 / MVP 0.2; 6 RO уже на проде, на тираж — 57 из 63) — до закрытия D-PERF
+- старт массового тиража оставшихся read-only (backlog 0.2 / MVP 0.2; 10 RO уже на проде, на тираж — 53 из 63) — до закрытия D-PERF
   (минимум 0.2.1.10) и D-ARCH (0.2.2.6);
 - пилот записи / загрузчик (MVP 0.5–0.6) — до закрытия D-SEC-RO (0.2.2.7) и наличия
   черновиков D-SEC-TM / D-SEC-SOD / D-DATA-MIG (приложения §2б; формальное согласование ИБ —
@@ -682,10 +682,10 @@ Read-only справочник из [catalogs-scope.md](catalogs-scope.md) пр�
 | Задача | Backlog | Содержание |
 |---|---|---|
 | [SVT-5254](../../../docs/tasks/SVT-5254-atlas-api.md) | 0.3.2 (пилот 0.3.2.1–0.3.2.6 ✓) | API Атласа, только чтение |
-| [SVT-5255](../../../docs/tasks/SVT-5255-currency.md) | 0.2.3.61 | RO Currency (Атлас=1) |
-| [SVT-5256](../../../docs/tasks/SVT-5256-product-group.md) | 0.2.3.32 | RO ProductGroup / транспортные группы (Атлас=2) |
-| [SVT-5257](../../../docs/tasks/SVT-5257-mtr.md) | 0.2.3.33 | RO MTR (Атлас=3) |
-| [SVT-5258](../../../docs/tasks/SVT-5258-transport-type-level-3.md) | 0.2.3.27 | RO TransportType_level_3 (Атлас=4) |
+| [SVT-5255](../../../docs/tasks/SVT-5255-currency.md) | 0.2.3.61 | RO Currency (Атлас=1), сделано, релиз 2.3.48 |
+| [SVT-5256](../../../docs/tasks/SVT-5256-product-group.md) | 0.2.3.32 | RO ProductGroup / транспортные группы (Атлас=2), сделано, релиз 2.3.48 |
+| [SVT-5257](../../../docs/tasks/SVT-5257-mtr.md) | 0.2.3.33 | RO MTR (Атлас=3), сделано, релиз 2.3.48 |
+| [SVT-5258](../../../docs/tasks/SVT-5258-transport-type-level-3.md) | 0.2.3.27 | RO TransportType_level_3 (Атлас=4), сделано, релиз 2.3.48 |
 
 Детальный расчёт — `docs/estimation/`
 (`python docs/estimation/generate_effort_estimate.py`).

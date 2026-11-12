@@ -1,7 +1,7 @@
 # Пакет документов для архитектурного ревью СВТ 2.0
 
 > Плоская копия-снэпшот для передачи на ревью (все файлы в одной папке).
-> **Снимок обновлён:** 2026-10-29 (из `.cursor/skills/svt-architecture/` и `docs/docs/svt-v-atlas/SVT-idealnyy-process2.html`). Не источник истины —
+> **Снимок обновлён:** 2026-11-12 (из `.cursor/skills/svt-architecture/` и `docs/docs/svt-v-atlas/SVT-idealnyy-process2.html`). Не источник истины —
 > канон всегда skills; при расхождении править skills и переснять пакет.
 > Канон в репозитории: `.cursor/skills/svt-architecture/` (`reference.md`, `roadmap.md`,
 > `backlog.md`, `catalogs-scope.md`, диаграммы `01-as-is-legacy.png`,
