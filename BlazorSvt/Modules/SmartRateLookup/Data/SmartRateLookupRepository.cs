@@ -100,9 +100,10 @@ public interface ISmartRateLookupRepository
 }
 
 /// <summary>
-/// Данные умного подбора. Кандидаты — из snapshot <c>v2.AverageRateLevel3_Snapshot</c>;
-/// справочники запроса (узлы, регион, МТР, группа, тип/вид транспорта, DPO, приоритеты, курсы) —
-/// из легаси-view <c>dbo.vw_*</c>: их snapshot ещё нет (техдолг, заменить при переносе справочников).
+/// Данные умного подбора. Кандидаты — из snapshot <c>v2.AverageRateLevel3_Snapshot</c>.
+/// Справочники запроса (узлы, регион, МТР, группа, тип/вид транспорта, валюта, DPO, приоритеты, курсы) —
+/// из легаси-view <c>dbo.vw_*</c>. Снимки узлов, валюты, МТР, группы, типа 3 уровня и типа ставки уже есть;
+/// нет снимков региона, вида транспорта, приоритетов и DPO (backlog 0.3.2.15).
 /// </summary>
 public sealed class SmartRateLookupRepository(
     IOptions<DatabaseOptions> options,

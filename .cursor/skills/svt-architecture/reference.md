@@ -399,7 +399,7 @@
 | Авторизация | Только роли конечного пользователя из `X-On-Behalf-Of` (любая роль = Read, в т.ч. smart-lookup) | Служебная учётка не расширяет права; журнал показывает человека; доменная ACL — MVP 0.4 |
 | Версия | `v1` в пути, `Sunset`; снимок OpenAPI в репозитории | Изменение контракта видно в ревью и валит тест |
 
-**Отклонение от принципов (осознанное):** справочные данные подбора — из живых легаси-view, а не из снимков (снимков регионов, продуктов, групп, типов транспорта 3 ур., DPO и приоритетов в СВТ 2.0 ещё нет). Перевод на снимки — при переносе этих справочников (backlog 0.3.2).
+**Отклонение от принципов (осознанное):** справочные данные подбора — из живых легаси-view, а не из снимков. Снимки Currency, ProductGroup, MTR, TransportTypeLevel3, LocationsNodes и RateType уже есть; нет снимков Region, TransportKind, Priority_Rate и организаций DPO. Подбор их не читает (backlog 0.3.2.15).
 
 **Принятые риски пилота:**
 
@@ -418,9 +418,9 @@
 - ставка 0 не пересчитывается в другую валюту (легаси падает с ошибкой);
 - курс — на дату запроса (в легаси — на момент расчёта);
 - порядок доп. узлов в процедуре не определён; в API — по уровню, затем по узлу;
-- справочные данные (узлы, регионы, продукты, приоритеты, DPO) читаются из легаси-view — техдолг, перевод на снимки в backlog.
+- справочные данные (узлы, регионы, продукты, группы, валюта, тип транспорта 3 уровня, приоритеты, DPO) читаются из легаси-view, хотя снимки узлов, продуктов, групп, валюты, типа 3 уровня и типа ставки уже есть — техдолг, перевод на снимки в backlog 0.3.2.15.
 
-**Согласовано с Атласом (пилот):** NTLM; gMSA создаёт инфра по запросу Атласа (TEST/PROD, DEV по необходимости) → TrustedClients (архитектор на DEV/TEST, заявка ВКУС на PROD); конечные пользователи — штатный доступ к СВТ (ЕСУИД на TEST/PROD, DEV — архитектор); smoke на TEST — та же TEST gMSA в `X-On-Behalf-Of` (должна быть в `dbo.User` с ролями); изменения контракта — почта архитектору СВТ; очередь RO для кодов smart-lookup (параллельный поток, выше остатка «Ставок», колонка «Атлас» в [catalogs-scope.md](catalogs-scope.md)): 1 `Currency` → 2 `ProductGroup` → 3 `MTR` → 4 `TransportType_level_3` (порядок для обобщения); до их RO — разовые выгрузки по запросу; профиль smart-lookup в пилоте — «Импорт в CRM»; OIDC — вне пилота.
+**Согласовано с Атласом (пилот):** NTLM; gMSA создаёт инфра по запросу Атласа (TEST/PROD, DEV по необходимости) → TrustedClients (архитектор на DEV/TEST, заявка ВКУС на PROD); конечные пользователи — штатный доступ к СВТ (ЕСУИД на TEST/PROD, DEV — архитектор); smoke на TEST — та же TEST gMSA в `X-On-Behalf-Of` (должна быть в `dbo.User` с ролями); изменения контракта — почта архитектору СВТ; очередь RO для кодов smart-lookup (параллельный поток, выше остатка «Ставок», колонка «Атлас» в [catalogs-scope.md](catalogs-scope.md)): 1 `Currency` → 2 `ProductGroup` → 3 `MTR` → 4 `TransportType_level_3` (порядок для обобщения); эти четыре RO в СВТ 2.0 есть (релиз 2.3.48); профиль smart-lookup в пилоте — «Импорт в CRM»; OIDC — вне пилота.
 
 **MCP-надстройка (сделано, SVT-5285, флаг выключен).** Агентный рантайм Атласа подключает инструменты только по MCP, поэтому поверх `/api/v1` есть `POST /api/mcp`:
 
@@ -512,7 +512,7 @@
 BlazorSvt/
 ├── Host/           — composition root, Blazor host
 ├── Platform/       — cross-cutting: Grid, Reporting, UI, Access, Api (/api/v1, OpenAPI), Infrastructure
-├── Modules/        — vertical slices (TransportRate, TransportLeg, AverageRateLevel3, LocationsNodes, ParityRates, RateType, HomeRatePivot, SmartRateLookup, …)
+├── Modules/        — vertical slices (TransportRate, TransportLeg, AverageRateLevel3, LocationsNodes, ParityRates, RateType, Currency, ProductGroup, MTR, TransportTypeLevel3, HomeRatePivot, SmartRateLookup, …)
 ├── Import/         — Excel + validators + UI prototype; staging not wired yet
 ├── SqlScripts/
 │   ├── Platform/   — schema, full-text, GetBlazorGridData

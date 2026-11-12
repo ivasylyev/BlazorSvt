@@ -19,5 +19,5 @@ Loader complex	7.0 / 3.0	Высокая
 Человек с ИИ	MVP 0.0=25; MVP 0.1=60; иначе —	вариант A
 Skills без агента	0	время на skills только в колонке «с агентом»
 Gate A/B/C	чел.-дни сопровождения, не календарь ОПЭ	критический путь — текст backlog.md
-Факт по коду: сделано	Host/Platform/Sync + 5 RO + skill RO + tests; Import stub; прод dual-run 0.1	
+Факт по коду: сделано	Host/Platform/Sync + 10 RO + skill RO + API/MCP + tests; Import stub; прод dual-run 0.1	
 Факт по коду: не сделано	полный тираж RO, роли, write-CQRS, целевые loaders, отчёты вне RO, заявки, аудит, дашборды, оркестрация, CI SCA	

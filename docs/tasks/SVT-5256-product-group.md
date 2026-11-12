@@ -44,13 +44,13 @@
 
 ### Критерии готовности
 
-- [ ] Модуль `BlazorSvt\Modules\ProductGroup\` (List/Detail/Sync/Module/Resources), меню в домене Продукты, видимость по реестру
-- [ ] SQL в `BlazorSvt\SqlScripts\Modules\ProductGroup\` (Structure + Programmability SnapshotSource/Detail/PopulateAffectedKeys)
-- [ ] SyncJob зарегистрирован; инкрементальный sync работает; снимок заполняется
-- [ ] Грид/карточка/Excel работают локально
-- [ ] `AddCatalogApi` зарегистрирован; API отдаёт каталог (список/схема/поиск/карточка/export)
-- [ ] Тесты по образцу LocationsNodes / skill; покрытие API не красное
-- [ ] В backlog можно отметить **0.2.3.32** (после ревью)
+- [x] Модуль `BlazorSvt\Modules\ProductGroup\` (List/Detail/Sync/Module/Resources), меню в домене Продукты, видимость по реестру
+- [x] SQL в `BlazorSvt\SqlScripts\Modules\ProductGroup\` (Structure + Programmability SnapshotSource/Detail/PopulateAffectedKeys)
+- [x] SyncJob зарегистрирован; инкрементальный sync работает; снимок заполняется
+- [x] Грид/карточка/Excel работают локально
+- [x] `AddCatalogApi` зарегистрирован; API отдаёт каталог (список/схема/поиск/карточка/export)
+- [x] Тесты по образцу LocationsNodes / skill; покрытие API не красное
+- [x] В backlog можно отметить **0.2.3.32** (после ревью)
 
 ### Документы «прочитать до кода» (по порядку)
 

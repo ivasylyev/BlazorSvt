@@ -1,5 +1,9 @@
 # -*- coding: utf-8 -*-
-"""Emit backlog.md from WBS rows + package narrative. Run after generate_effort_estimate.py."""
+"""Emit backlog.md from WBS rows + package narrative. Run after generate_effort_estimate.py.
+
+Канон backlog.md содержит ручной нарратив (очередь Атласа, домен «Паритеты», примечания
+пунктов), который этот скрипт воспроизводит не полностью. Перед запуском сверить вывод.
+"""
 from __future__ import annotations
 
 import sys
@@ -34,7 +38,7 @@ STAGES = {
     ),
     "0.2": (
         "Тираж 63 справочников только для чтения",
-        "Все скоуповые RO на проде с watermark-sync. 5 пилотов уже на проде, на тираж — 58. Блокер: 0.2.1.10 (D-PERF) и 0.2.2.6/0.2.2.7.",
+        "Все скоуповые RO на проде с watermark-sync (стабильные словари — разовый снимок). 10 RO уже на проде (6 прежних + очередь Атласа), на тираж — 53. Блокер: 0.2.1.10 (D-PERF) и 0.2.2.6/0.2.2.7.",
     ),
     "0.3": (
         "Модуль отчётов вне справочников; API для Атласа",
@@ -211,8 +215,9 @@ INTROS = {
         "Интеграция с ЦБД → Вспомогательные. Состав — [catalogs-scope.md](catalogs-scope.md)."
     ),
     "0.2.3": (
-        "Один пункт на справочник. Rates — MVP 0.1, здесь **62** (4 уже на проде: AverageRateLevel3, "
-        "ParityRates, TransportLegs, LocationsNodes). Порядок: домен, затем пр. RO из "
+        "Один пункт на справочник. Rates — MVP 0.1, здесь **62** (9 уже на проде: AverageRateLevel3, "
+        "ParityRates, RateType, TransportLegs, LocationsNodes, Currency, ProductGroup, MTR, "
+        "TransportType_level_3). Порядок: домен, затем пр. RO из "
         "[catalogs-scope.md](catalogs-scope.md).\n\n"
         "Шаблон на пункт (не отдельные id): требования → структура БД → процедуры чтения → "
         "C# DTO → грид/карточка/отчёты → watermark-sync → уникальные доработки. "
