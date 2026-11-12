@@ -1,31 +1,13 @@
 # publish_all_sql
 
-Опубликовать все SQL-скрипты деплоя (Structure + Programmability) в плоскую папку `C:\publish\v2` с трёхзначными префиксами.
+Опубликовать SQL-скрипты деплоя в `C:\publish\v2` (или `-TargetPath`).
 
-## Действия
+**Канон:** skill `publish-all-sql` (`.cursor/skills/publish-all-sql/SKILL.md`). Прочитай его и выполни.
 
-1. Запусти скрипт из корня репозитория:
+Кратко (по умолчанию):
 
 ```powershell
-& ".\BlazorSvt\SqlScripts\Publish-AllSql.ps1"
+& ".\BlazorSvt\SqlScripts\Publish-AllSql.ps1" -Mode All
 ```
 
-2. Скрипт копирует 17 файлов в порядке из `BlazorSvt/SqlScripts/README.md`:
-   - Platform (Structure → Programmability)
-   - TransportRate, TransportLeg, LocationsNodes (у каждого: Structure → Programmability)
-
-3. Имена в `C:\publish\v2`: `001.00.Create_Schema.sql`, `002.01.Create_Fulltext_Catalog.sql`, …
-
-4. Перед копированием удаляются старые `*.sql` в целевой папке.
-
-5. При успехе — кратко сообщи количество опубликованных файлов и путь назначения.
-
-## Ограничения
-
-- Только копирование; исходники в `SqlScripts/` не изменять.
-- Runner для наката в `C:\publish\v2` не создавать — накат вручную, скрипт за скриптом.
-- Сценарий: полный re-deploy v2 (CreateTable пересоздаёт snapshot-таблицы).
-
-## При добавлении справочника
-
-Обновить манифест в `Publish-AllSql.ps1` и порядок в `SqlScripts/README.md`.
+Из корня репозитория. Режимы `All` / `Release` / `Programmability` / `FromSource` — в skill. Исходники в `SqlScripts/` не менять.
