@@ -45,6 +45,6 @@
 ## Что куда не класть
 
 - Длинный статус прода и полный MVP — в `svt-architecture` (`SKILL.md` — статус, `roadmap.md` — план), не раздувать alwaysApply
-- Человеческий индекс документов — `docs/README.md`. Пакет architecture review собирает `docs/output-review-package/Build-ReviewPackage.ps1`; копии markdown и zip в git не хранятся
+- Человеческий индекс документов — `docs/README.md`. Пакет architecture review собирает `docs/output-review-package/Build-ReviewPackage.ps1`: zip рядом с папкой, сгенерированные копии из папки скрипт удаляет. Zip в git не коммитится
 - Алгоритм нового справочника — в `add-reference-book`, rule только указывает
 - Методология эталона / кольцо / промпты Атласа — в `atlas`, не смешивать с разработкой кода

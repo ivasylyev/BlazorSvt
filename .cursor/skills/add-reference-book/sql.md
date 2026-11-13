@@ -28,10 +28,10 @@ BlazorSvt/SqlScripts/Modules/{Entity}/
 └── Programmability/
     ├── vw_{Entity}_SnapshotSource.sql
     ├── vw_{Entity}_Detail.sql
-    └── sp_{Entity}_PopulateAffectedKeys.sql
+    └── sp_{Entity}_PopulateAffectedKeys.sql   # нет у стабильного словаря с enum
 ```
 
-Обновить также `SqlScripts/Publish-AllSql.ps1` (порядок: CreateTable → SnapshotSource → Insert → Indexes → Detail → PopulateAffectedKeys).
+`sp_{Entity}_PopulateAffectedKeys.sql` не создавать для стабильного словаря с enum и не добавлять его в `Publish-AllSql.ps1`. Для остальных обновить манифест в порядке: CreateTable → SnapshotSource → Insert → Indexes → Detail → PopulateAffectedKeys.
 
 Релизная копия — `SqlScripts/Migrations/{VersionPrefix}/`, где `{VersionPrefix}` берётся из `BlazorSvt/BlazorSvt.csproj`. Нумерация с `001`: дельта схемы, последним файлом полный снимок programmability `All_Programmability.sql`. В `C:\publish` само по себе не копировать. Конвенция — `SqlScripts/Migrations/README.md`.
 
@@ -136,8 +136,8 @@ sqlcmd -S localhost -d mdm -U <User ID> -P <Password> -i "BlazorSvt\SqlScripts\M
 
 ### Верификация SQL (обязательна)
 
-1. `EXEC v2.GetBlazorGridData` с примерами `@TableName`, `@AllowedColumnsJson`, `@SelectList` из атрибутов DTO (простой и сложный FTS, если применимо)
-2. `EXEC v2.ExportBlazorGridDetail` с `@DetailViewName` / `@EntityKeyColumn` из detail-DTO
+1. `EXEC v2.GetBlazorGridData`: `@TableName` = `v2.{Entity}_Snapshot`, `@AllowedColumnsJson` и `@SelectList` собрать по короткому списку discovery §1 и системным полям снимка (простой и сложный FTS, если применимо). Атрибутов DTO ещё нет — из них параметры не брать
+2. `EXEC v2.ExportBlazorGridDetail`: `@DetailViewName` = `v2.vw_{Entity}_Detail`, `@EntityKeyColumn` = `{Entity}Id` (имена из [SKILL.md](SKILL.md), не из detail-DTO)
 3. `SELECT TOP 1 * FROM v2.{Entity}_Snapshot`
 4. `SELECT TOP 1 * FROM v2.vw_{Entity}_Detail`
 

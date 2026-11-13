@@ -46,13 +46,14 @@ description: >-
 
 | | |
 |---|---|
-| Контур | Read-only справочники, грид, карточка, выгрузка Excel. Сквозные отчёты — MVP 0.3.1. Дашборды — MVP 1.1 |
+| Контур | Read-only справочники, грид, карточка, выгрузка Excel. Сквозные отчёты (MVP 0.3.1) и дашборды (MVP 1.1) ещё не сделаны |
 | На проде | TransportRate, AverageRateLevel3, LocationsNodes, ParityRates, TransportLeg, RateType, Currency, ProductGroup, MTR, TransportTypeLevel3 |
 | Имена в реестре | `Rates` → `TransportRate`, `TransportLegs` → `TransportLeg`, `TransportType_level_3` → `TransportTypeLevel3` |
-| Без watermark-sync | RateType, Currency, TransportTypeLevel3: разовый снимок. Очередь Атласа, релиз 2.3.48 |
+| Без watermark-sync | RateType, Currency, TransportTypeLevel3: разовый снимок |
+| Очередь Атласа | Релиз 2.3.48, все четыре на проде. Currency и TransportTypeLevel3 — разовый снимок. ProductGroup и MTR — watermark-sync |
 | Ещё в коде | `HomeRatePivot`, `SmartRateLookup`. `HomeRatePivot` читает снимки AverageRateLevel3 и LocationsNodes; отбор ставки — в тексте SQL |
 | Доступ и sync | Windows Auth, роли `dbo.Role` (любая роль = read). Watermark-sync для остальных справочников на проде |
-| API | Пилот `/api/v1`, только чтение: все зарегистрированные модули и умный подбор. [reference.md](reference.md) §«API для внешних фронтендов» |
+| API | Пилот `/api/v1`, только чтение: все зарегистрированные модули и умный подбор. Код едет с приложением. Вызов Атласом с PROD не открыт, пока не закрыты [backlog.md](backlog.md) 0.3.2.7 и 0.3.2.8. [reference.md](reference.md) §«API для внешних фронтендов» |
 | MCP | `/api/mcp`. Флаг `Api:McpEnabled` по умолчанию выключен; на PROD — после T6 |
 | Import | Прототип Excel, валидаторы и UI. Staging не подключён. На проде Import закрыт |
 | Тесты | Каркас unit и integration в `tests/` |
@@ -63,11 +64,11 @@ description: >-
 2. Бизнес-логика в C#, а не в SP?
 3. Один pipeline для UI и batch (общие валидаторы/команды)?
 4. Типизированная таблица + constraints, не мета-описание?
-5. Грид из snapshot, карточка из проекции легаси, write отделён?
+5. Грид из snapshot (watermark-sync; стабильный словарь с enum — разовый снимок), карточка из проекции легаси, write отделён?
 6. Без Elastic/RabbitMQ/распределённого монолита?
 7. Покрыты ли изменения тестами? Unit — C#-логика (`GridQueryFactory`, валидаторы, contract DTO); integration — read-only smoke SP/view для нового справочника (см. `svt-development-patterns`, секция «Тестирование»)
 8. Для write: write-through в легаси до cutover; LWW; доменный write-toggle (`V2WriteEnabled_{Домен}`, не единый глобальный); field-level аудит — с MVP 1.0, до этого отсутствие аудита — принятый риск
-9. Если атрибут приходит из АСВ НСИ или ЦБД, не заводить для него редактор и не делать СВТ источником истины. Состав — [catalogs-scope.md](catalogs-scope.md), раздел «Внешние мастера»
+9. Редактор и загрузчик заводить только где в [catalogs-scope.md](catalogs-scope.md) колонки E и L не `—`. Комментарий строки — пометка для человека, состав работ не меняет. Строка с E = `—` после SoT flip источником истины в СВТ не становится
 10. Новый справочник или операция доступны Атласу через API (`AddCatalogApi` / `IApiEndpointContribution`)? Правила UI и API — одни (тот же сервис, тот же `IAccessGuard`), контракт не сломан (`OpenApiContractTests`)
 
 ## Требования, которых ещё нет в реестре
@@ -107,4 +108,4 @@ description: >-
 - Реестр справочников (SoT скоупа: состав доменов, RO/E/L, меню, приоритеты) — [catalogs-scope.md](catalogs-scope.md). Канон при изменении — этот файл в репозитории; Excel на Confluence — только исходный дамп легаси
 - Диаграммы для архитектурного ревью —
   [README.md](README.md) (файлы `01-as-is-legacy.png`, `02-to-be-current-program.png`, `03-future-containers-out-of-scope.png` лежат в этой же папке)
-- Пакет для передачи на ревью собирает [Build-ReviewPackage.ps1](../../../docs/output-review-package/Build-ReviewPackage.ps1) по [README](../../../docs/output-review-package/README.md): четыре markdown этого навыка, диаграммы из этой папки и `SVT-idealnyy-process-2.7.html`. Канон — файлы навыка; собранные копии и zip в git не хранятся
+- Пакет для передачи на ревью собирает [Build-ReviewPackage.ps1](../../../docs/output-review-package/Build-ReviewPackage.ps1) по [README](../../../docs/output-review-package/README.md): четыре markdown этого навыка, диаграммы из этой папки и `SVT-idealnyy-process-2.7.html` попадают в zip, затем скрипт удаляет эти копии из папки пакета. Канон — файлы навыка. Zip в git не коммитится

@@ -27,7 +27,7 @@ MDM логистических маршрутов, тарифов и склад�
 
 ## Миграция
 
-**Strangler Fig**, общая БД. Чтение: watermark-sync → snapshot. Запись (с MVP 0.5+): write-through в легаси до cutover. Детали Gate A/B/C/D — `roadmap.md`.
+**Strangler Fig**, общая БД. Чтение: watermark-sync → snapshot; стабильный словарь с enum — разовый снимок (skill `add-reference-book`). Запись (с MVP 0.5+): write-through в легаси до cutover. Детали Gate A/B/C/D — `roadmap.md`.
 
 ## Структура репозитория
 

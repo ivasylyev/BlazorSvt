@@ -73,7 +73,7 @@ description: >-
 
 ### Партиционирование (по умолчанию)
 
-Как `Legs`/`Rates`: partition function/scheme по `IsArchive`, PK `(IsArchive, Id)`, SEQUENCE для `Id`.
+Как у `TransportLeg` и `TransportRate`: partition function/scheme по `IsArchive`, PK `(IsArchive, Id)`, SEQUENCE для `Id`.
 
 ## Порядок фаз (progressive disclosure)
 
@@ -100,7 +100,9 @@ description: >-
 | Relevance | `RelevanceRu`, `RelevanceEn` |
 | TypeNode | `Modules/LocationsNodes/List/IdsEnum/TypeNodeRu`, `TypeNodeEn` |
 
-`TransportType` и `ShipmentType` в класс не входят: отдельного enum нет. У TransportLeg тип отправки — сырой `ShipmentTypeCodeT`. Справочники «хранит константы» без enum не входят, пока enum не появится.
+`TransportType` в этот класс не входит. Enum уже есть: `Platform/Domain/IdsEnum/TransportTypeRu`, `TransportTypeEn`. Собственный RO-грид делается со watermark-sync: `RowVer`, `TransportTypeSyncJob`, `sp_TransportType_PopulateAffectedKeys`, инициализация `v2.SyncState`. Чужие гриды этот справочник в каскад не включают и показывают enum. То, что чужой грид не каскадит на справочник, разовый снимок для его собственного грида не задаёт.
+
+`ShipmentType` в класс не входит: отдельного enum нет. У TransportLeg тип отправки — сырой `ShipmentTypeCodeT`. Справочники «хранит константы» без enum не входят, пока enum не появится.
 
 `RateSyncClass` в этот класс не входит: в реестре это обычный RO со sync (backlog 0.2.3.7). Enum сам по себе класс не задаёт. `TypePlace` вне скоупа (исторический, вместо него TypeNode): свой RO-грид не делать; enum `LocationType*` остаётся для LocationsNodes.
 

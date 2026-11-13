@@ -1,6 +1,8 @@
-# Builds a flat review snapshot and docs/output-review-package.zip.
+# Builds docs/output-review-package.zip for architecture review.
 # Canon stays in .cursor/skills/svt-architecture/ and docs/docs/svt-v-atlas/.
-# Generated markdown, diagrams, ideal-process HTML and the zip are gitignored.
+# After a successful zip, generated markdown, diagrams and ideal-process HTML
+# are removed from this folder. README, this script and review-current-state.html stay.
+# -NoZip leaves the generated files in -Destination.
 #
 #   .\docs\output-review-package\Build-ReviewPackage.ps1
 #   .\docs\output-review-package\Build-ReviewPackage.ps1 -NoZip -Destination D:\tmp\pkg
@@ -103,5 +105,23 @@ try {
 finally {
     Remove-Item -LiteralPath $stagingParent -Recurse -Force
 }
-Write-Output "Package written to $destinationPath"
+
+$generatedNames = @($pages | ForEach-Object { $_.Name }) + $pngs + @(
+    "SVT-idealnyy-process-2.7.html",
+    "SVT-idealnyy-process2.html"
+)
+foreach ($name in $generatedNames) {
+    $generatedPath = Join-Path $packageDir $name
+    if (Test-Path -LiteralPath $generatedPath) {
+        Remove-Item -LiteralPath $generatedPath -Force
+    }
+}
+
 Write-Output "Zip: $zipPath"
+if ($destinationPath.TrimEnd('\') -eq $packageDir.TrimEnd('\')) {
+    Write-Output "Generated copies removed from $packageDir"
+}
+else {
+    Write-Output "Package written to $destinationPath"
+    Write-Output "Generated copies removed from $packageDir"
+}

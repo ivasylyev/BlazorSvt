@@ -86,7 +86,7 @@ public required RateTypeEn RateTypeIdEn { get; set; }
 @inherits BaseGridPage<{Entity}Dto, {Entity}DetailDto>
 ```
 
-- `GenericGrid` + заглушка `DetailViewTemplate` (как `LegsGrid.razor`)
+- `GenericGrid` + заглушка `DetailViewTemplate` (как `TransportLegGrid.razor`)
 - `DetailKeySelector` → `{Entity}Id`
 
 ### Локализация
@@ -120,12 +120,13 @@ public required RateTypeEn RateTypeIdEn { get; set; }
 ```csharp
 services.AddScoped<IGridSettingsService<{Entity}Dto>, {Entity}GridSettingsService>();
 services.AddScoped<IDetailSettingsService<{Entity}DetailDto>, {Entity}DetailSettingsService>();
+// Строку SyncJob не добавлять, если {Entity} — стабильный словарь с enum (SKILL.md).
 services.AddSingleton<ISnapshotSyncJob, {Entity}SyncJob>();
 services.AddCatalogMenu(new CatalogMenuContribution(
     CatalogDomain.{Domain},
     "{entity}",
     "HeaderMenu.{Entity}",
-    VisibleToEditor: true));
+    VisibleToEditor: true)); // колонка «Меню ЕО»: да → true, нет → false
 ```
 
 `{entity}` — сегмент `@page` без ведущего слэша. В файле модуля нужен `using BlazorSvt.Platform.UI.Navigation;`. `{Domain}` — член `CatalogDomain` по домену справочника в [catalogs-scope.md](../svt-architecture/catalogs-scope.md):
@@ -141,7 +142,7 @@ services.AddCatalogMenu(new CatalogMenuContribution(
 | Интеграция с ЦБД | `Cbd` |
 | Вспомогательные | `Other` |
 
-`VisibleToEditor` — колонка «Меню ЕО» (`да` → `true`, `нет` → `false`). До MVP 0.4 шапка по этому флагу не фильтрует. Порядок пункта не задаётся: шапка сортирует подписи по алфавиту текущего языка. `HeaderMenu` для нового справочника не менять.
+`VisibleToEditor` — колонка «Меню ЕО» (`да` → `true`, `нет` → `false`). До MVP 0.4 шапка по этому флагу не фильтрует. Порядок пункта не задаётся: шапка сортирует подписи по алфавиту текущего языка. Ключ `HeaderMenu.{Entity}` добавляется в Platform.resx и равен заголовку грида; порядком пункта меню он не управляет.
 
 **`{Entity}SyncJob`:** эталон `TransportRateSyncJob` / `AverageRateLevel3SyncJob` — consts `PrimitiveEntityData_*` с комментариями имён справочников; Sources = основная + каскад (узлы / ProductGroup / MTR и т.д. по проекции). Стабильные словари (RateType, Currency, …) **не** включать. Если сам `{Entity}` — стабильный словарь с enum, SyncJob нет: только разовая заливка.
 
@@ -157,8 +158,9 @@ URL вклада **должен совпадать** с `@page` в `.razor`.
 services.AddCatalogApi<{Entity}Dto, {Entity}DetailDto>(
     "{kebab-code}",
     CatalogDomain.{Domain},
-    "HeaderMenu.{Entity}",
-    new CatalogPeriod(nameof({Entity}Dto.StartDate), nameof({Entity}Dto.EndDate)));
+    "HeaderMenu.{Entity}");
+// CatalogPeriod добавлять только если в list-DTO есть срок действия (две даты DateOnly):
+// new CatalogPeriod(nameof({Entity}Dto.StartDate), nameof({Entity}Dto.EndDate))
 ```
 
 - `using BlazorSvt.Platform.Api.Catalogs;`
@@ -207,12 +209,17 @@ dotnet test --filter "Category=Integration"
 3. Страница `/{entity}` открывается, грид загружает данные
 4. Детальный просмотр и экспорт не падают
 5. В Swagger UI (`/api/swagger`, Development) справочник есть в `GET /api/v1/catalogs`; `schema` и `items/search` отвечают
+6. Повторить `EXEC v2.GetBlazorGridData` и `EXEC v2.ExportBlazorGridDetail` уже с параметрами из атрибутов модуля: `@AllowedColumnsJson` / `@SelectList` из `[GridColumn]` list-DTO, `@DetailViewName` / `@EntityKeyColumn` из `[DetailSource]` detail-DTO. Расхождение с проверкой фазы 3 — стоп и вопрос
 
 При ошибке — сообщить и спросить дальнейшие действия.
 
-## Рефакторинг legacy
+## Переименование модуля
 
-- Для legacy-модулей (`Legs`, `Rates`) использовать только `git mv` для папок и файлов, затем правки содержимого in-place.
+`Legs` → `TransportLeg` и `Rates` → `TransportRate` уже выполнены. Папок `Legs` и `Rates` нет: повторно их не создавать и не переносить.
+
+Если имя модуля меняется снова:
+
+- Только `git mv` для папок и файлов, затем правки содержимого in-place.
 - Не удалять и не пересоздавать файлы/папки через copy+delete, чтобы сохранить git-history.
 - При rename SQL сохранять существующие комментарии и нумерованные шаги; добавлять новые `DROP`-блоки в начало, а не заменять ими текущие блоки.
 - В dev-среде wrapper'ы и миграции данных не требуются: удалять legacy и предыдущие имена объектов прямо в скриптах.
