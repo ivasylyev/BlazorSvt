@@ -14,7 +14,7 @@
 - Снимок повторного architecture review (07.08.2026, статус прода не обновляется): [`review-current-state.html`](../../../docs/output-review-package/review-current-state.html)
 - Идеальный процесс, версия 2.7 (канон, в пакет копируется скриптом):
   [`SVT-idealnyy-process-2.7.html`](../../../docs/docs/svt-v-atlas/SVT-idealnyy-process-2.7.html)
-
+ 
 Отдельные файлы под каждый артефакт митигации **не ведутся** — всё в `roadmap.md` §2б,
 чтобы занятому ревьюеру не прыгать по папке.
 
