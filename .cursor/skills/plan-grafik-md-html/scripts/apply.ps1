@@ -78,8 +78,18 @@ function FindRelObject([string]$json, [string]$code) {
   $codePat = '"code"\s*:\s*"' + [regex]::Escape($code) + '"'
   $cm = [regex]::Match($json, $codePat)
   if (-not $cm.Success) { return $null }
-  $start = $cm.Index
-  while ($start -gt 0 -and $json[$start] -ne '{') { $start-- }
+  # Walk back past nested objects (e.g. "mt":{...}) to the enclosing '{'
+  $start = -1
+  $depth = 0
+  for ($i = $cm.Index; $i -ge 0; $i--) {
+    $ch = $json[$i]
+    if ($ch -eq '}') { $depth++ }
+    elseif ($ch -eq '{') {
+      if ($depth -eq 0) { $start = $i; break }
+      $depth--
+    }
+  }
+  if ($start -lt 0) { return $null }
   $depth = 0; $end = -1
   for ($i = $start; $i -lt $json.Length; $i++) {
     if ($json[$i] -eq '{') { $depth++ }
@@ -156,7 +166,7 @@ function ApplyV12 {
       Write-Host "v12 rel updated: $code"
     }
 
-    $met = [regex]::Match($sec, '(?ms)####\s*`' + [regex]::Escape($code) + '`[^\n]*\r?\n+(?:- [^\r\n]+\r?\n+)*?-\s*Критерий/метрика:\s*(.+?)(?=\r?\n\s*- |\r?\n\s*\r?\n|\r?\n####|\r?\n</details>)')
+    $met = [regex]::Match($sec, '(?ms)####\s*`' + [regex]::Escape($code) + '`[^\n]*\r?\n+\s*-\s*Критерий/метрика:\s*(.+?)(?=\r?\n\s*\r?\n|\r?\n####|\r?\n</details>)')
     if ($met.Success) {
       $metric = $met.Groups[1].Value.Trim()
       $rel2 = FindRelObject $updated $code
@@ -164,9 +174,33 @@ function ApplyV12 {
         $r = ReplaceJsonStringProp $rel2.Text 'metric' $metric
         if ($r.Ok -and $r.Text -ne $rel2.Text) {
           $updated = $updated.Substring(0, $rel2.Start) + $r.Text + $updated.Substring($rel2.End + 1)
+          $script:Stats.v12++
           Write-Host "v12 metric updated: $code"
+        } elseif (-not $r.Ok) {
+          Write-Warning "metric field missing for $code"
         }
       }
+    }
+  }
+
+  # stream-level mtgoal from "- Цель метрик: ..."
+  foreach ($sm in [regex]::Matches($sec, '(?ms)^### Стрим `([^`]+)`:.*?(?=^### Стрим `|^## |\z)')) {
+    $code = $sm.Groups[1].Value.Trim()
+    $goal = [regex]::Match($sm.Groups[0].Value, '(?m)^- Цель метрик:\s*(.+)$')
+    if (-not $goal.Success) { continue }
+    $goalText = $goal.Groups[1].Value.Trim()
+    # find stream object by "code":"<code>" at stream level — first code match that has mtgoal nearby
+    $rel = FindRelObject $updated $code
+    if (-not $rel) { Write-Warning "stream not in V12_SPEC: $code"; continue }
+    # Prefer stream object: must contain "mtgoal" or "rels"
+    if ($rel.Text -notmatch '"mtgoal"|"rels"\s*:') {
+      Write-Warning "code $code matched non-stream object for mtgoal"; continue
+    }
+    $r = ReplaceJsonStringProp $rel.Text 'mtgoal' $goalText
+    if ($r.Ok -and $r.Text -ne $rel.Text) {
+      $updated = $updated.Substring(0, $rel.Start) + $r.Text + $updated.Substring($rel.End + 1)
+      $script:Stats.v12++
+      Write-Host "v12 mtgoal updated: $code"
     }
   }
 
