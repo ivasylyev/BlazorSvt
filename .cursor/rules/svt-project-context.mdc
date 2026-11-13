@@ -1,51 +1,33 @@
 ---
-description: Контекст проекта СВТ — домен, статус, дорожная карта
+description: Контекст проекта СВТ — домен, пути, указатели на skill
 alwaysApply: true
 ---
 
 # СВТ (Система Ведения Тарифов)
 
-MDM-система логистических маршрутов, тарифов и складских ограничений. Переписывание легаси «коробочной» MDM (Angular + распределённый монолит) на **Blazor Server + MS SQL**.
+MDM логистических маршрутов, тарифов и складских ограничений. Замещение легаси MDM (Angular + распределённый монолит) на **Blazor Server + MS SQL**.
 
-## Масштаб домена
+## Масштаб
 
-- 101 сущность в легаси; **63** в скоупе СВТ 2.0, **38** вне скоупа; 10–100 полей, до 2 млн записей (цель — 10 млн)
-- Пакетная загрузка до 30 тыс. строк
-- 300 читателей, 10 редакторов; 30 интеграционных потоков
-- Состав доменов, работы (RO / RO+E / RO+E+L), меню и приоритеты — skill `svt-architecture` → `catalogs-scope.md` (источник истины по скоупу)
+- 101 сущность в легаси; **63** в скоупе СВТ 2.0, **38** вне скоупа; до 2 млн записей (цель — 10 млн)
+- Пакеты до 30 тыс. строк; ~300 читателей, ~10 редакторов; ~30 интеграционных потоков
+- Скоуп доменов (RO / RO+E / RO+E+L), меню, приоритеты — skill `svt-architecture` → `catalogs-scope.md` (**канон скоупа**)
 
-## Текущее состояние
+## Статус и план
 
-Реализован **фреймворк read-only справочников и выгрузки Excel** (short/full по гриду и карточке; это не модуль сквозных отчётов MVP 0.3.1). На проде: TransportRate, AverageRateLevel3, LocationsNodes, ParityRates, TransportLeg, RateType, Currency, ProductGroup, MTR, TransportTypeLevel3 (в реестре легаси-имена Rates, TransportLegs и TransportType_level_3; RateType, Currency и TransportTypeLevel3 — стабильные словари без watermark-sync; очередь Атласа — релиз 2.3.48). Также в коде: прототип домашней сводки `HomeRatePivot` (снимки AverageRateLevel3 и LocationsNodes; правило отбора ставки пока в SQL; дашборды — MVP 1.1) и модуль `SmartRateLookup`. Пилот **API для Атласа** (`/api/v1`, только чтение): все **зарегистрированные** модули справочников (список, схема, поиск, карточка, выгрузка Excel) и умный подбор ставки по эталону `CalcTransportRateCRM`; доступ — доверенная служебная учётка + пользователь в `X-On-Behalf-Of`. Это второй вход в монолит рядом с Blazor (те же сервисы и права). Поверх него — **MCP-надстройка** `/api/mcp` для агентного рантайма Атласа (5 инструментов только для чтения, те же сервисы и проверки доступа, страница ≤ 25 строк); флаг `Api:McpEnabled` по умолчанию выключен, на PROD — после согласования класса данных (T6). Осознанное отклонение: справочные данные подбора пока читаются из легаси-view, а не из снимков (снимки узлов, валюты, продуктов, групп, типа 3 уровня и типа ставки уже есть; backlog 0.3.2.15). Прототип **Import**: Excel + FluentValidation + UI `/load`; staging не подключён; `AccessAction.Import` на проде закрыт. Каркас **unit + integration** тестов в `tests/`. Значительная часть функционала отсутствует.
+Полная таблица — skill `svt-architecture`, раздел «Канон». Кратко:
 
-## Дорожная карта (MVP)
+| Вопрос | Канон |
+|---|---|
+| Статус прода, API, MCP, Import | `SKILL.md` |
+| Скоуп; Gate и план; чеклист | `catalogs-scope.md`; `roadmap.md`; `backlog.md` |
+| Код; новый RO-справочник; HTTP | правило `svt-development-patterns`; skill `add-reference-book`; контракт — `docs/api/svt-api-v1.openapi.json`, вызов — `svt-api-v1-developers.md`, решения — `reference.md` §6.6.1 |
 
-Порядок групп справочников: **Ставки → Паритеты → Маршруты → Продукты → Склады и ограничения → Матрица каналов → Интеграция с ЦБД → Вспомогательные**.
+Принципы — правило `svt-architecture-principles`. Постановки `docs/tasks`, транскрипты, бюджет и план для руководства — снимки, не процедуры.
 
-Пилот редактора/загрузчика TransportLegs (0.5/0.6) **не** равен первому Gate C (домен Ставки).
+## Миграция
 
-| MVP | Результат |
-|-----|-----------|
-| 0.0 | Исследование, архитектура, план, готовность сред |
-| 0.1 | Пилот read-only «Ставки» + sync |
-| 0.2 | 63 read-only + sync (6 уже на проде) |
-| 0.3 | Модуль отчётов (~10), в т.ч. выгрузка конструктора отчётов ставок; API для Атласа (пилот read-only) |
-| 0.4 | Ролевая модель (ЕО упраздняется → редакторы доменов) |
-| 0.5 | Пилот редактора «Транспортные плечи» (фреймворк, не Gate C) |
-| 0.6 | Пилот загрузчика «Транспортные плечи» |
-| 0.7 | Тираж записи 7 доменов (не всем E+L: см. реестр; «Паритеты» сразу после «Ставок») + инкрементальный SoT flip |
-| 0.8 | Вспомогательные (5 справочников) + последний SoT flip |
-| 0.9 | Заявки на расчёт ставки (workflow; RO-грид уже в 0.2) |
-| 1.0 | Аудит изменений |
-| 1.1 | Дашборды (не конструктор отчётов ставок) |
-| 1.2 | Оркестрация интеграций + отчёты; замена CurrencyRateActual на плановые курсы |
-| 2.0 | Отключение легаси; затем схлопывание Вид/Тип/Тип 3 ур. транспорта |
-
-Полный план — skill `svt-architecture` → `roadmap.md`; чеклист работ — `backlog.md`.
-
-## Стратегия миграции
-
-**Strangler Fig** — эволюционное замещение, общая БД на переходный период, параллельная работа систем. Не Big Bang. Чтение: watermark-sync легаси → snapshot. Запись (с MVP 0.5+): write-through нового контура в легаси-таблицы до cutover.
+**Strangler Fig**, общая БД. Чтение: watermark-sync → snapshot. Запись (с MVP 0.5+): write-through в легаси до cutover. Детали Gate A/B/C/D — `roadmap.md`.
 
 ## Структура репозитория
 
@@ -54,17 +36,19 @@ MDM-система логистических маршрутов, тарифов
 | Папка | Назначение |
 |-------|------------|
 | `BlazorSvt/Host/` | Точка входа, layout, маршруты, локализация |
-| `BlazorSvt/Platform/` | Общий фреймворк: Grid, Reporting (Excel грида), UI, Access, Api, Infrastructure |
-| `BlazorSvt/Modules/{Name}/` | Вертикальный срез справочника (List, Detail, Module) |
-| `BlazorSvt/Import/` | Прототип массовой загрузки Excel и валидаторы; staging ещё не подключён |
-| `BlazorSvt/SqlScripts/Platform/` | Схема v2, full-text, `GetBlazorGridData` |
-| `BlazorSvt/SqlScripts/Modules/{Name}/` | DDL и SP конкретного справочника |
-| `BlazorSvt/SqlScripts/Migrations/` | Скрипты миграций схемы |
-| `tests/BlazorSvt.UnitTests/` | Unit-тесты Platform, `GridQueryFactory`, contract DTO |
-| `tests/BlazorSvt.IntegrationTests/` | Read-only integration-тесты SP/view на локальной `mdm` (`localhost`) |
-| `docs/user-guide/` | Руководство пользователя СВТ 2.0 (RU/EN, Confluence Wiki Markup) |
-| `docs/api/` | Снимок контракта API (`svt-api-v1.openapi.json`, сверяется тестом) и локальная Postman-коллекция для ручного smoke (`svt-api-v1.vasilevivv-local-tests.postman.json`; стенд и учётка в переменных, это не контракт) |
+| `BlazorSvt/Platform/` | Grid, Reporting, UI, Access, Api, Infrastructure |
+| `BlazorSvt/Modules/{Name}/` | Вертикальный срез справочника |
+| `BlazorSvt/Import/` | Прототип Excel-загрузки; staging не подключён |
+| `BlazorSvt/SqlScripts/Platform/` | Схема v2, FTS, `GetBlazorGridData` |
+| `BlazorSvt/SqlScripts/Modules/{Name}/` | DDL и SP справочника |
+| `BlazorSvt/SqlScripts/Migrations/` | Релизные SQL-артефакты |
+| `tests/BlazorSvt.UnitTests/` | Unit: Platform, GridQueryFactory, contract DTO |
+| `tests/BlazorSvt.IntegrationTests/` | Read-only SP/view на `localhost` / `mdm` |
+| `docs/user-guide/` | Руководство пользователя (RU/EN) |
+| `docs/api/` | OpenAPI-снимок и локальная Postman-коллекция (не контракт) |
 
-Подробная архитектура — в skill `svt-architecture` и правиле `svt-architecture-principles`.
+## БД для агента
 
-Команды агента, которым нужна БД (discovery, sqlcmd, накат Programmability, integration-тесты), подключаются к `localhost`, база `mdm`. Логин и пароль — из `Database:MdmDb`. Поле Server из этой строки не использовать. `appsettings.json` не менять: приложение ходит на сервер, записанный там. Перед integration-тестами задать `BLAZORSVT_TEST_CONNECTION` той же строкой с `Server=localhost`.
+Discovery, sqlcmd, Programmability, integration-тесты: сервер **`localhost`**, база **`mdm`**. Логин/пароль — из `Database:MdmDb`. Поле Server из строки **не** использовать. `appsettings.json` не менять. Перед integration-тестами: `BLAZORSVT_TEST_CONNECTION` с `Server=localhost`.
+
+Slash-команды SQL (`publish_all_sql`, `create_programmability`) — канон в одноимённых skills; см. `.cursor/README.md`.

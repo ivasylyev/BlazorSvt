@@ -28,7 +28,8 @@ public class SnapshotSyncJobContractTests
         "dbo.PrimitiveEntityData_2008", // TransportKind
         "dbo.PrimitiveEntityData_2142", // ShipmentType
         "dbo.PrimitiveEntityData_2048", // RateType
-        "dbo.PrimitiveEntityData_2023", // TransportType
+        "dbo.PrimitiveEntityData_2009", // TransportType
+        "dbo.PrimitiveEntityData_2023", // TransportTypeLevel3
         "dbo.PrimitiveEntityData_2016", // Currency
         "dbo.PrimitiveEntityData_2108", // Relevance
         "dbo.PrimitiveEntityData_2019", // ETSNG

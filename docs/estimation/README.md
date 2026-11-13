@@ -14,7 +14,7 @@ python docs/estimation/generate_effort_estimate.py
 python docs/estimation/generate_backlog_md.py
 ```
 
-Первый скрипт пишет TSV и Wiki Markup. Второй пересобирает `backlog.md` (нарратив пакетов в скрипте + цифры из `build_rows()`).
+Первый скрипт пишет TSV и Wiki Markup. Второй собирает черновик `backlog.md` и не воспроизводит ручной нарратив (очередь Атласа, примечания пунктов). Канон чеклиста — сам `backlog.md`. Перед запуском сверить вывод и не затирать ручные формулировки.
 
 | Файл | Назначение |
 |------|------------|
