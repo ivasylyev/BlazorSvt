@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<title>СВТ: Идеальный процесс для Атласа</title>
+<style>
+body { font-family: Arial, sans-serif; max-width: 1100px; margin: 0 auto; padding: 30px; background: #f0f4f5; color: #222; line-height: 1.5; }
+header { background: #003D4C; color: #fff; padding: 30px; border-radius: 8px; margin-bottom: 25px; }
+header h1 { margin: 0 0 10px 0; font-size: 28px; }
+header .sub { font-style: italic; opacity: 0.9; font-size: 15px; }
+header .meta { margin-top: 12px; font-size: 13px; opacity: 0.8; }
+h2 { color: #003D4C; border-bottom: 3px solid #77E2C3; padding-bottom: 8px; margin-top: 0; }
+h3 { color: #008C95; margin-top: 22px; }
+section { background: #fff; padding: 25px; margin-bottom: 20px; border-radius: 8px; box-shadow: 0 1px 4px rgba(0,0,0,0.08); }
+table { width: 100%; border-collapse: collapse; margin: 15px 0; font-size: 14px; }
+th { background: #003D4C; color: #fff; padding: 10px; text-align: left; font-weight: 600; }
+td { padding: 10px; border-bottom: 1px solid #e0e0e0; vertical-align: top; }
+tr:nth-child(even) { background: #f7fafa; }
+.now { color: #555; font-style: italic; }
+.pain { background: #fde8e4; color: #a03020; padding: 8px; border-left: 3px solid #E04E39; }
+.fix { background: #e6f7f1; color: #003D4C; padding: 8px; border-left: 3px solid #77E2C3; }
+.hypo { color: #008C95; font-weight: bold; }
+.gap { color: #E04E39; font-weight: bold; }
+nav { background: #fff; padding: 15px; border-radius: 8px; margin-bottom: 20px; box-shadow: 0 1px 4px rgba(0,0,0,0.08); }
+nav a { color: #008C95; text-decoration: none; margin: 0 8px 8px 0; font-size: 14px; display: inline-block; }
+nav a:hover { color: #003D4C; text-decoration: underline; }
+footer { text-align: center; padding: 20px; color: #666; font-size: 12px; }
+.domain { border: 2px solid #77E2C3; border-radius: 8px; padding: 15px; margin: 15px 0; }
+.domain h4 { background: #77E2C3; color: #003D4C; padding: 8px 12px; margin: -15px -15px 12px -15px; border-radius: 6px 6px 0 0; }
+.ring { text-align: center; margin: 20px 0; background: #f7fafa; padding: 15px; border-radius: 8px; }
+.ring svg { max-width: 100%; height: auto; }
+.note { font-size: 13px; color: #555; }
+</style>
+</head>
+<body>
+
+<header>
+<h1>Система ведения тарифов (СВТ)</h1>
+<div class="sub">Целевое видение процесса для встраивания в Атлас</div>
+<div class="meta">Для логистики это целиком П3 (тарифно-нормативная модель) · Владелец сервиса: Подоплелова Е. · Бизнес-лидер: Кудрявцев В. · Обзор по живому эталону, не канон</div>
+</header>
+
+<nav>
+<a href="#notation">Обозначения</a>
+<a href="#vision">Видение</a>
+<a href="#ring">Кольцо</a>
+<a href="#interfaces">Стыки</a>
+<a href="#steps">Шаги</a>
+<a href="#cores">Ядро</a>
+<a href="#domains">Домены</a>
+<a href="#control">Контроль</a>
+<a href="#impl">Что не закрыто</a>
+</nav>
+
+<section id="notation">
+<h2>Как читать обозначения</h2>
+<p><b>Ш</b> — шаг на ободе. Каждое изменение значения проходит Ш1–Ш9.</p>
+<p><b>П</b> — механизм ядра. На него ссылаются несколько шагов. Буквы П3 в ядре этого кольца нет: в эталоне логистики П3 — это СВТ целиком.</p>
+<p><b>Ч</b> — человек на шаге, не агент.</p>
+<p><span class="now">[факт]</span> — из материалов СВТ.</p>
+<p><span class="hypo">[гипотеза]</span> — целевое, не подтверждено Кудрявцевым.</p>
+<p><span class="gap">[вопрос к бизнесу]</span> — в материалах нет ответа.</p>
+</section>
+
+<section id="vision">
+<h2>1. Целевое видение процесса</h2>
+<p>СВТ — мастер-система по ставкам, паритетам, маршрутам, плечам и лидтаймам, складским ограничениям и матрице каналов. Экземпляр — изменение значения модели, не перевозка. Оно проходит шаги Ш1–Ш9. Кольцо замыкается на Ш9: расхождение уходит источнику и владельцам, СВТ данные на этом шаге не правит.</p>
+
+<h3>Три потока</h3>
+<ul>
+<li><b>Поток экземпляра</b> — по часовой, от получения значения до сверки с фактом.</li>
+<li><b>Поток обучения</b> — против часовой, с Ш9 в ядро: факт переписывает правила.</li>
+<li><b>К человеку</b> — только где решение дорогое или окончательное. На схеме: Ш3 (строка ждёт); Ш6, Ш8 и Ш9 — сигнал человеку, данные идут дальше.</li>
+</ul>
+
+<h3>Ш2 → Ш3</h3>
+<p>Сегодня редактор и загрузчик проверяют по-разному, ошибки ловят глазами после записи. Целевое: одни проверки для обмена, редактора и файла (П1). Жёсткая (К-01) отклоняет строку. Мягкая (К-02) не блокирует цикл: строка идёт в реестр исключений (П2), человек на Ш3 пропускает или отвергает. Пороги задаёт владелец продукта вне операционного кольца.</p>
+</section>
+
+<section id="ring">
+<h2>2. Кольцевая карта СВТ</h2>
+<p class="note">На ободе — шаги цикла. Система на шаге — в живом эталоне на общей карте и в легенде. Нажмите круг — к таблице шагов.</p>
+<div class="ring">
+<svg viewBox="0 0 800 800" xmlns="http://www.w3.org/2000/svg" style="max-width: 700px;">
+<circle cx="400" cy="400" r="380" fill="#f7fafa" stroke="#e0e0e0" stroke-width="2"/>
+<a href="#cores"><circle cx="400" cy="400" r="130" fill="#003D4C"/>
+<text x="400" y="390" text-anchor="middle" fill="#fff" font-size="18" font-weight="bold">Атлас</text>
+<text x="400" y="415" text-anchor="middle" fill="#77E2C3" font-size="14">СВТ</text></a>
+
+<rect x="340" y="280" width="120" height="30" rx="4" fill="#008C95"/>
+<text x="400" y="300" text-anchor="middle" fill="#fff" font-size="12">П1: Проверки</text>
+<rect x="450" y="330" width="120" height="30" rx="4" fill="#008C95"/>
+<text x="510" y="350" text-anchor="middle" fill="#fff" font-size="12">П2: Реестр</text>
+<rect x="450" y="420" width="120" height="30" rx="4" fill="#008C95"/>
+<text x="510" y="440" text-anchor="middle" fill="#fff" font-size="12">П4: Журнал</text>
+<rect x="340" y="470" width="120" height="30" rx="4" fill="#008C95"/>
+<text x="400" y="490" text-anchor="middle" fill="#fff" font-size="12">П5: Полнота</text>
+<rect x="230" y="420" width="120" height="30" rx="4" fill="#008C95"/>
+<text x="290" y="440" text-anchor="middle" fill="#fff" font-size="12">П6: Передача</text>
+
+<a href="#s1"><circle cx="400" cy="70" r="55" fill="#77E2C3" stroke="#003D4C" stroke-width="3"/>
+<text x="400" y="62" text-anchor="middle" fill="#003D4C" font-size="15" font-weight="bold">Ш1</text>
+<text x="400" y="80" text-anchor="middle" fill="#003D4C" font-size="10">Пришло в модель</text></a>
+
+<a href="#s2"><circle cx="640" cy="155" r="55" fill="#77E2C3" stroke="#003D4C" stroke-width="3"/>
+<text x="640" y="147" text-anchor="middle" fill="#003D4C" font-size="15" font-weight="bold">Ш2</text>
+<text x="640" y="165" text-anchor="middle" fill="#003D4C" font-size="10">Можно ли принять</text></a>
+
+<a href="#s3"><circle cx="730" cy="400" r="55" fill="#E04E39" stroke="#003D4C" stroke-width="3"/>
+<text x="730" y="392" text-anchor="middle" fill="#fff" font-size="15" font-weight="bold">Ш3</text>
+<text x="730" y="410" text-anchor="middle" fill="#fff" font-size="10">Человек решает</text></a>
+
+<a href="#s4"><circle cx="640" cy="645" r="55" fill="#77E2C3" stroke="#003D4C" stroke-width="3"/>
+<text x="640" y="637" text-anchor="middle" fill="#003D4C" font-size="15" font-weight="bold">Ш4</text>
+<text x="640" y="655" text-anchor="middle" fill="#003D4C" font-size="10">Посчитано</text></a>
+
+<a href="#s5"><circle cx="400" cy="730" r="55" fill="#77E2C3" stroke="#003D4C" stroke-width="3"/>
+<text x="400" y="722" text-anchor="middle" fill="#003D4C" font-size="15" font-weight="bold">Ш5</text>
+<text x="400" y="740" text-anchor="middle" fill="#003D4C" font-size="10">С этой даты</text></a>
+
+<a href="#s6"><circle cx="160" cy="645" r="55" fill="#E04E39" stroke="#003D4C" stroke-width="3"/>
+<text x="160" y="637" text-anchor="middle" fill="#fff" font-size="15" font-weight="bold">Ш6</text>
+<text x="160" y="655" text-anchor="middle" fill="#fff" font-size="10">Не хватает</text></a>
+
+<a href="#s7"><circle cx="70" cy="400" r="55" fill="#77E2C3" stroke="#003D4C" stroke-width="3"/>
+<text x="70" y="392" text-anchor="middle" fill="#003D4C" font-size="15" font-weight="bold">Ш7</text>
+<text x="70" y="410" text-anchor="middle" fill="#003D4C" font-size="10">Ушло в план</text></a>
+
+<a href="#s8"><circle cx="160" cy="155" r="55" fill="#77E2C3" stroke="#003D4C" stroke-width="3"/>
+<text x="160" y="147" text-anchor="middle" fill="#003D4C" font-size="15" font-weight="bold">Ш8</text>
+<text x="160" y="165" text-anchor="middle" fill="#003D4C" font-size="10">Не разъехалась</text></a>
+
+<a href="#s9"><circle cx="400" cy="200" r="40" fill="#E04E39" stroke="#003D4C" stroke-width="3"/>
+<text x="400" y="194" text-anchor="middle" fill="#fff" font-size="13" font-weight="bold">Ш9</text>
+<text x="400" y="210" text-anchor="middle" fill="#fff" font-size="9">С фактом</text></a>
+
+<defs>
+<marker id="arr" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+<polygon points="0 0, 10 3, 0 6" fill="#003D4C"/>
+</marker>
+</defs>
+<path d="M 455 90 Q 550 110 600 140" stroke="#003D4C" stroke-width="2" fill="none" marker-end="url(#arr)"/>
+<path d="M 685 195 Q 720 280 725 345" stroke="#003D4C" stroke-width="2" fill="none" marker-end="url(#arr)"/>
+<path d="M 725 455 Q 720 540 685 605" stroke="#003D4C" stroke-width="2" fill="none" marker-end="url(#arr)"/>
+<path d="M 600 680 Q 520 720 455 720" stroke="#003D4C" stroke-width="2" fill="none" marker-end="url(#arr)"/>
+<path d="M 345 720 Q 260 720 200 680" stroke="#003D4C" stroke-width="2" fill="none" marker-end="url(#arr)"/>
+<path d="M 115 605 Q 80 520 75 455" stroke="#003D4C" stroke-width="2" fill="none" marker-end="url(#arr)"/>
+<path d="M 75 345 Q 80 260 115 195" stroke="#003D4C" stroke-width="2" fill="none" marker-end="url(#arr)"/>
+<path d="M 200 120 Q 280 95 360 85" stroke="#003D4C" stroke-width="2" fill="none" marker-end="url(#arr)"/>
+<path d="M 400 240 L 400 270" stroke="#E04E39" stroke-width="2" stroke-dasharray="6,4" fill="none" marker-end="url(#arr)"/>
+<text x="410" y="260" fill="#E04E39" font-size="11">С Ш9 в ядро</text>
+</svg>
+</div>
+<p class="note"><b>Логинет</b> Ш1 · <b>НХТК</b> Ш1, Ш9 · <b>АСВ НСИ</b> Ш1 · <b>SAP ERP</b> Ш1, Ш7 · <b>ССП</b> Ш6, Ш7 · <b>ЦБД</b> Ш7 · <b>CRM</b> Ш7 · <b>ЕСД</b> Ш7 · <b>SAP TMS</b> Ш7 · <b>КПО</b> Ш7 · <b>RailTariff</b> Ш4 · <b>Озеро</b> Ш7</p>
+</section>
+
+<section id="interfaces">
+<h2>3. Стыки</h2>
+<table>
+<thead><tr><th>Система</th><th>Вход в СВТ</th><th>Выход из СВТ</th><th>Правило стыка</th></tr></thead>
+<tbody>
+<tr><td><b>АСВ НСИ / SAP ERP</b></td><td>Контрагенты, узлы, продукты, курсы, склады. Обмен есть сегодня.</td><td>Маршруты и лидтаймы в SAP ERP, автоматически примерно за 10 минут.</td><td>СВТ не правит мастер НСИ. Читающая система копию-мастер не ведёт.</td></tr>
+<tr><td><b>Логинет</b></td><td>Сейчас: Excel раз в две недели, фактические ставки авто до города. Автоматической интеграции нет.</td><td>Копии ставок живут в Логинете.</td><td><span class="hypo">Гипотеза:</span> факт каждый день, тендер с номинациями.</td></tr>
+<tr><td><b>НХТК</b></td><td>Excel разной структуры почтой. Человек преобразует и загружает.</td><td>Сигнал о расхождении лидтайма ЖД с фактом из рассылок (Ш9).</td><td>Калькулятор НХТК — <span class="gap">вопрос к бизнесу</span> (Сироткина).</td></tr>
+<tr><td><b>ССП / ЦБД / ЕСД</b></td><td>—</td><td>Ставки, маршруты, плечи, лидтаймы, склады. ССП — раз в 5 минут. ЦБД и ЕСД — «Единое окно»; ЖД в ЦБД вручную 2 раза в год в обход СВТ.</td><td><span class="hypo">Гипотеза:</span> передача без кнопок. ЖД-ставки — из СВТ.</td></tr>
+<tr><td><b>CRM / E-Com</b></td><td>Заявка на расчёт ставки (сервис, не шаг кольца модели).</td><td>Средневзвешенная ставка умным подбором.</td><td>Если ставки нет — она проходит Ш1–Ш7 и становится значением для всех. <span class="hypo">Гипотеза.</span></td></tr>
+<tr><td><b>КПО</b></td><td>—</td><td>Складские ограничения, плановый лидтайм, матрица каналов через Оптимакрос.</td><td>Что именно получает ЕСД, что ЕСД SI и КПО — <span class="gap">вопрос к бизнесу</span>.</td></tr>
+<tr><td><b>Озеро / Атлас</b></td><td>—</td><td>Все данные, по которым СВТ — мастер. Атлас своей копии не ведёт.</td><td>Обмен СВТ с фронтендом Атласа на прод ещё не вышел.</td></tr>
+</tbody>
+</table>
+</section>
+
+<section id="steps">
+<h2>4. Шаги</h2>
+<table>
+<thead><tr><th>Этап</th><th>Как сейчас</th><th>К чему приводит</th><th>Целевое</th></tr></thead>
+<tbody>
+<tr id="s1"><td><b>Ш1. Значение пришло в модель</b></td><td class="now">Отдельной записи о загрузке нет. Ключевой пользователь сверяет даты загрузок «Северсталь» с графиком. Нагрузка: номинации 1,1 FTE, ставки 0,3, лидтаймы 0,1, паритеты 1,3. Файл Excel, ручной ввод. АСВ НСИ и SAP ERP — обмен есть.</td><td class="pain">Пока файл не загрузили, планирование и CRM считают по предыдущему значению. Ошибка в файле входит как факт.</td><td class="fix">Основной путь — обмен. Файл и ручной ввод — дополнительный. Каждая загрузка в журнале (П4). Пока СВТ не приняла, действуют прежние значения.</td></tr>
+<tr id="s2"><td><b>Ш2. Можно ли принять</b></td><td class="now">Редактор и загрузчик проверяют по-разному. 6–10 ошибок качества в сутки при цели 5. Около половины инцидентов — система приняла то, что бизнес считает ошибкой.</td><td class="pain">Ошибку ловят глазами, когда строка уже в системе. Старые проверки мешают новым.</td><td class="fix">Одни проверки для обмена, редактора и файла (П1). Жёсткая отклоняет. Мягкая — на Ш3. Без предупреждений — сразу на Ш4.</td></tr>
+<tr id="s3"><td><b>Ш3. Человек решает спорную строку</b></td><td class="now">Шага нет. Строку, которую загрузчик не пустил, видит только тот, кто загружал. Регламента утверждения нет.</td><td class="pain">При автоматическом потоке строки, которые не прошли проверку, теряются.</td><td class="fix">Реестр исключений (П2): причина, ответственный, срок. Строки без исключений Ш3 не ждут. Срок и назначение — <span class="gap">вопрос к бизнесу</span>.</td></tr>
+<tr id="s4"><td><b>Ш4. Посчитано то, чего не пришло</b></td><td class="now">Средняя за 3 месяца для ТЗ, спрямление — в Excel у ФЭС без версий. Расчёты внутри базы формулами не описаны. Лидтайм авто по России считают в Excel.</td><td class="pain">Формула ничья. Расчёт в Excel и в ночном задании может разойтись, увидят у потребителя.</td><td class="fix">Формулы в коде. Владелец — владелец продукта. Расчёт в Excel у ФЭС прекращается <span class="hypo">гипотеза</span>. ЖД: расстояние и время — RailTariff.</td></tr>
+<tr id="s5"><td><b>Ш5. С этой даты действует</b></td><td class="now">Единого правила нет. История правок не хранится.</td><td class="pain">Перевозка, счёт и план могут разойтись по дате.</td><td class="fix">Новый пакет не стирает предыдущий. На дату одно действующее значение. Паритеты накопительные. Склады на одну дату не пересекаются. История правок — <span class="gap">вопрос к бизнесу</span>.</td></tr>
+<tr id="s6"><td><b>Ш6. Чего не хватает для плана</b></td><td class="now">Списка направлений без ставки, лидтайма или квоты нет. Даты загрузок «Северсталь» контролируют вручную. ССП ночью сверяет слепок ЦБД со ставками и плечами.</td><td class="pain">Опоздавший пакет замечают по косвенным признакам.</td><td class="fix">Отчёт о нехватке по домену: ответственный, срок, эскалация. Цикл не останавливается. За полноту отвечает бизнес. Недостающее — новый цикл с Ш1.</td></tr>
+<tr id="s7"><td><b>Ш7. Ушло в планирование и CRM</b></td><td class="now">Интеграции с восемью системами есть. Ставки в ССП — раз в 5 минут. ЦБД и ЕСД — «Единое окно». SAP TMS — по кнопке. ЖД в ЦБД вручную 2 раза в год. Копии в Логинете и SAP TMS. В порядке шины Атласа СВТ пока нет.</td><td class="pain">ССП не получили 2 500 ставок и 29 часов простоя без оповещения. В CRM нет до 400 ЖД-ставок.</td><td class="fix">СВТ отдаёт сама, без кнопок, задержка порядка 5 минут, ночью полная синхронизация <span class="hypo">гипотеза</span>. Читающая система мастер не ведёт.</td></tr>
+<tr id="s8"><td><b>Ш8. Модель не разъехалась</b></td><td class="now">Проверки записанных данных есть. 163 проверки, срабатывали около 35. Письмо поддержке, затем к автору данных.</td><td class="pain">Неконсистентные данные уходят потребителям. Проверки перемешаны, часть неактуальна.</td><td class="fix">Регулярная проверка инвариантов. Цикл не останавливается. Правка — новый цикл с Ш1. Пересмотр списка — с бизнесом.</td></tr>
+<tr id="s9"><td><b>Ш9. Сходится с фактом перевозки</b></td><td class="now">В СВТ нет сверки действующих значений с фактом.</td><td class="pain">Источники не узнают, что их данные не соответствуют реальности.</td><td class="fix">СВТ сравнивает с фактом и не правит. Сверх допуска — сигнал источнику. Дашборд в Атласе. Допуск и формат — <span class="gap">вопрос к бизнесу</span>.</td></tr>
+</tbody>
+</table>
+</section>
+
+<section id="cores">
+<h2>5. Механизмы ядра</h2>
+<table>
+<thead><tr><th>Механизм</th><th>Как сейчас</th><th>Целевое</th></tr></thead>
+<tbody>
+<tr><td><b>П1 Проверки</b></td><td class="now">Редактор и загрузчик проверяют по-разному.</td><td class="fix">Одно правило на обмен, редактор и файл. К-01 блокирует. К-02 — на Ш3.</td></tr>
+<tr><td><b>П2 Реестр исключений</b></td><td class="now">Шага нет.</td><td class="fix">Все строки, не прошедшие Ш2, в реестре. Без реестра автоматический поток теряет строки.</td></tr>
+<tr><td><b>П4 Журнал загрузок</b></td><td class="now">Отдельной записи нет.</td><td class="fix">Что, когда, откуда, сколько прошло, в исключениях и отклонено. Видят владелец продукта и администратор ИТ.</td></tr>
+<tr><td><b>П5 Полнота и расхождения</b></td><td class="now">Списка нехватки нет. Сверки с фактом нет.</td><td class="fix">Отчёт о нехватке. Расхождение — сигнал источнику. Как устроить сверку — <span class="gap">вопрос к бизнесу</span>.</td></tr>
+<tr><td><b>П6 Передача</b></td><td class="now">Интеграции есть. Озеро забирает сырые данные. Копии в Логинете, SAP TMS, частично в SAP. В шине Атласа СВТ пока нет.</td><td class="fix">СВТ сама передаёт, задержка порядка 5 минут, ночью полная синхронизация. Читающая система копию не ведёт.</td></tr>
+</tbody>
+</table>
+</section>
+
+<section id="domains">
+<h2>6. Домены</h2>
+<p>Девять типовых шагов — на каждый процесс. Наполнение разное. Нажмите домен в живом эталоне — своё кольцо шагов.</p>
+<div class="domain">
+<h4>Ставки</h4>
+<p>Логистический тариф. Вход: Логинет (Excel), НХТК (почта, Excel), письма Цурикова. Уходит: ССП, ЦБД, CRM, ЕСД, SAP TMS, КПО.</p>
+</div>
+<div class="domain">
+<h4>Паритеты</h4>
+<p>Ставки конкурентов до наших рынков. Сейчас собирают вручную с порталов, 1,3 FTE. Маркетинг забирает из Озера.</p>
+</div>
+<div class="domain">
+<h4>Маршруты, плечи и лидтаймы</h4>
+<p>Схема перевозки и нормативный срок. Уходит: SAP ERP, ССП, ЦБД, ЕСД, КПО. Система отслеживания машин сегодня не используется.</p>
+</div>
+<div class="domain">
+<h4>Складские ограничения</h4>
+<p>Ёмкость, мощность и тариф склада. Еженедельный файл. Уходит: ССП, ЕСД, ЕСД SI, КПО.</p>
+</div>
+<div class="domain">
+<h4>Матрица каналов</h4>
+<p>Квоты и каналы для календарного планирования. В КПО через Оптимакрос, ночью или по требованию.</p>
+</div>
+</section>
+
+<section id="control">
+<h2>7. Контроль</h2>
+<p>Проверки на входе — Ш2. Проверки уже записанных данных — Ш8, сейчас 163 строки, срабатывали около 35. Какая жёсткая и какая мягкая участвует в каждом расчёте — в материалах не сказано, <span class="gap">вопрос к бизнесу</span>.</p>
+<p>Экономическая безопасность, экономика и внутренний аудит в материалах СВТ не названы.</p>
+</section>
+
+<section id="impl">
+<h2>8. Что не закрыто</h2>
+<p>Календарь внедрения, волны и даты запуска Атласа для СВТ в этом обзоре не ставим: в материалах эталона их нет.</p>
+<ul>
+<li>Итоговый список проверок по потокам загрузки — с бизнесом.</li>
+<li>Срок разбора исключений на Ш3 — с бизнесом.</li>
+<li>Как устроить сверку план-факт и допуск — с бизнесом.</li>
+<li>Какие первые роли в прототипе — с бизнесом.</li>
+<li>Калькулятор НХТК — Сироткина. Картографический сервис — какой именно, в материалах нет.</li>
+<li>Отслеживание машин — Фролов, сегодня не используется.</li>
+</ul>
+<p>Полный свод — пункт 14 живого эталона <code>SVT-правки-от-Кати.html</code>.</p>
+</section>
+
+<footer>СВТ · обзор для Атласа · собран из живого эталона · не заменяет SVT-правки-от-Кати.html и канон 2.5</footer>
+</body>
+</html>

@@ -18,9 +18,10 @@ OUT = Path(__file__).resolve().parent
 # Variant A: human-with-AI only at completed MVP totals (Ivan retrospective).
 HUMAN_BY_STAGE = {"0.0": 25.0, "0.1": 60.0}
 
+# Порядок исполнения, не числовой порядок номеров. 0.9 — сразу после тиража RO.
 STAGE_ORDER = [
-    "0.0", "0.1", "0.2", "0.3", "0.4", "0.5", "0.6", "0.7",
-    "0.8", "0.9", "1.0", "1.1", "1.2", "2.0",
+    "0.0", "0.1", "0.2", "0.9", "0.3", "0.4", "0.5", "0.6",
+    "0.7", "0.8", "1.0", "1.1", "1.2", "2.0",
 ]
 
 
@@ -190,6 +191,11 @@ CATALOGS = [Cat(*row) for row in _CATALOG_ROWS]
 assert len(CATALOGS) == 63
 
 RO_SKIP = {"Rates"}  # RO already in MVP 0.1
+# Stay in the registry and keep WBS ids, but are not part of the RO rollout.
+RO_OUT_OF_ROLLOUT = {
+    "TransportRequest": "не входит в тираж RO: грид заранее не делается, модуль заявок 0.9",
+    "MassiveRequest": "не входит в тираж RO: грид заранее не делается, модуль заявок 0.9",
+}
 RO_DONE = {
     "AverageRateLevel3",
     "ParityRates",
@@ -353,6 +359,16 @@ def build_rows() -> list[Row]:
     ro_leaves: list[Row] = []
     for c in CATALOGS:
         if c.name in RO_SKIP:
+            continue
+        if c.name in RO_OUT_OF_ROLLOUT:
+            ro_leaves.append(
+                R(
+                    S, "0.2.3", nid_ro(),
+                    f"RO {c.name}: {c.title}",
+                    "Out", 0.0, 0.0, 0.0,
+                    RO_OUT_OF_ROLLOUT[c.name],
+                )
+            )
             continue
         n, w = ro_norm(c)
         done = c.name in RO_DONE
@@ -627,17 +643,17 @@ def build_rows() -> list[Row]:
     # ========== MVP 0.9 ==========
     S = "0.9"
     rows += [
-        R(S, "0.9.1", "0.9.1.1", "Аналитика (модель заявки, статусы workflow)", "Todo", 6.0, 3.5, 0.0),
-        R(S, "0.9.1", "0.9.1.2", "UI модуля заявок на платформе + CQRS", "Todo", 10.0, 5.0, 0.0),
+        R(S, "0.9.1", "0.9.1.1", "Аналитика (модель заявки, статусы workflow, пробел потребителей легаси-таблиц)", "Todo", 6.0, 3.5, 0.0),
+        R(S, "0.9.1", "0.9.1.2", "UI модуля заявок на платформе + хранение в новом контуре", "Todo", 10.0, 5.0, 0.0, "не каркас persist из 0.5"),
         R(S, "0.9.1", "0.9.1.3", "Workflow заявок", "Todo", 8.0, 4.0, 0.0),
-        R(S, "0.9.1", "0.9.1.4", "Права: Инициатор / оператор заявок", "Todo", 3.0, 1.5, 0.0, "ЕО упраздняется в 0.4"),
-        R(S, "0.9.1", "0.9.1.5", "Автоподбор ставки по ключевым полям", "Todo", 10.0, 5.0, 0.0),
-        R(S, "0.9.1", "0.9.1.6", "Связь с подобранной ставкой (в т.ч. A–B+B–C)", "Todo", 8.0, 4.0, 0.0),
-        R(S, "0.9.1", "0.9.1.7", "E-mail уведомления при смене статуса", "Todo", 4.0, 2.0, 0.0),
+        R(S, "0.9.1", "0.9.1.4", "Права: создание — любая роль dbo.Role; обработка — Window Users", "Todo", 3.0, 1.5, 0.0, "кому передать обработку после упразднения ЕО в 0.4, решает 0.9.1.1"),
+        R(S, "0.9.1", "0.9.1.5", "Автоподбор ставки по ключевым полям", "Todo", 10.0, 5.0, 0.0, "ориентир, состав подтверждает 0.9.1.1"),
+        R(S, "0.9.1", "0.9.1.6", "Связь с подобранной ставкой (в т.ч. A–B+B–C)", "Todo", 8.0, 4.0, 0.0, "новую ставку заводят в легаси"),
+        R(S, "0.9.1", "0.9.1.7", "E-mail уведомления при смене статуса", "Todo", 4.0, 2.0, 0.0, "ориентир, состав подтверждает 0.9.1.1"),
         R(S, "0.9.1", "0.9.1.8", "Внутреннее функциональное тестирование", "Todo", 5.0, 3.0, 0.0),
         R(S, "0.9.1", "0.9.1.9", "Исправление дефектов", "Todo", 5.0, 3.0, 0.0),
         R(S, "0.9.1", "0.9.1.10", "UAT", "Todo", 4.0, 3.5, 0.0),
-        R(S, "0.9.1", "0.9.1.11", "Релиз на продуктив", "Todo", 3.0, 2.5, 0.0),
+        R(S, "0.9.1", "0.9.1.11", "Релиз на продуктив", "Todo", 3.0, 2.5, 0.0, "очередь легаси пуста; создание и обработка в легаси выключены"),
     ]
 
     # ========== MVP 1.0 ==========
@@ -731,7 +747,12 @@ def _wiki_cell(value: object) -> str:
 
 
 def _status_wiki(status: str) -> str:
-    return {"Done": "✅ Done", "Partial": "🔶 Partial", "Todo": "⬜ Todo"}.get(status, status)
+    return {
+        "Done": "✅ Done",
+        "Partial": "🔶 Partial",
+        "Todo": "⬜ Todo",
+        "Out": "⛔ Вне тиража",
+    }.get(status, status)
 
 
 def write_confluence_part_iii(
@@ -761,7 +782,8 @@ def write_confluence_part_iii(
         "в *человеко-днях* для senior .NET + MS SQL. Три слота: без ИИ (оценка ИИ); "
         "с ИИ (оценка ИИ); с ИИ (оценка человеком — только итоги MVP 0.0=25 и 0.1=60). "
         f"Дата фиксации: {date.today().isoformat()}. "
-        "Канон WBS — backlog.md; нормы — docs/estimation.\n"
+        "Канон WBS — backlog.md; нормы — docs/estimation. "
+        "Порядок исполнения этапов: 0.2, затем заявки 0.9, затем 0.3. Номера MVP не перенумерованы.\n"
         "{info}"
     )
     a("")
@@ -876,6 +898,8 @@ def write_backlog_estimate_sidecar(path: Path, rows: list[Row]) -> None:
 
 def main() -> None:
     rows = build_rows()
+    stage_index = {stage: index for index, stage in enumerate(STAGE_ORDER)}
+    rows.sort(key=lambda row: stage_index[row.stage])
     OUT.mkdir(parents=True, exist_ok=True)
 
     detail_headers = [
@@ -1006,7 +1030,7 @@ def main() -> None:
         ["Skills без агента", "0", "время на skills только в колонке «с агентом»"],
         ["Gate A/B/C", "чел.-дни сопровождения, не календарь ОПЭ", "критический путь — текст backlog.md"],
         ["Факт по коду: сделано", "Host/Platform/Sync + 10 RO + skill RO + API/MCP + tests; Import stub; прод dual-run 0.1", ""],
-        ["Факт по коду: не сделано", "полный тираж RO, роли, write-CQRS, целевые loaders, отчёты вне RO, заявки, аудит, дашборды, оркестрация, CI SCA", ""],
+        ["Факт по коду: не сделано", "полный тираж RO, затем заявки, роли, отчёты вне RO, write-CQRS, целевые loaders, аудит, дашборды, оркестрация, CI SCA", ""],
     ]
     write_tsv(OUT / "03_assumptions_and_norms.tsv", norms[0], norms[1:])
 
