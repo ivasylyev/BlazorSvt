@@ -54,19 +54,19 @@ Serilog (`Host/Program.cs`, секция `Serilog` в `appsettings.json`). Пр�
 
 ## Доступ (Windows Auth + роли)
 
-Каркас: `Platform/Access/`. IIS Windows Authentication, `hostingModel="inprocess"`. На circuit: Windows-логин → роли из `dbo.User`/`dbo.UserRole`. Сверка с AD (`UserRole` add/delete по прямым группам `DOMAIN\Group`) — только если `Auth:SynchronizeUserRoles=true`; иначе AD не вызывается. Любая роль → read (`IAccessGuard.Ensure(AccessAction.Read)`). `/load` закрыт (`AccessAction.Import`, только `Auth:IgnoreAccessControl` в Development). Без ролей — `access-denied`; сбой AD при включённой сверке — `auth-unavailable`. Write по домену — MVP 0.4+: не флаги на `ICurrentUser`, а новый `AccessAction` + `RoleNames`.
+Каркас: `Platform/Access/`. IIS Windows Authentication, `hostingModel="inprocess"`. На circuit: Windows-логин → роли из `dbo.User`/`dbo.UserRole`. Сверка с AD (`UserRole` add/delete по прямым группам `DOMAIN\Group`) — только если `Auth:SynchronizeUserRoles=true`; иначе AD не вызывается. Любая роль → read (`IAccessGuard.Ensure(AccessAction.Read)`). `/load` закрыт (`AccessAction.Import`, только `Auth:IgnoreAccessControl` в Development). Без ролей — `access-denied`; сбой AD при включённой сверке — `auth-unavailable`. Доменная запись в модели прав — с MVP 0.4: не флаги на `ICurrentUser`, а новый `AccessAction` и `RoleNames`. Сам write-through, редактор и загрузчик — с MVP 0.5.
 
 **API (`/api`)** — та же Windows-аутентификация IIS. Вызывающий должен быть в `Api:TrustedClients` (список учёток `DOMAIN\svc`), иначе 403 `client_not_trusted` на весь `/api`, включая OpenAPI. На `/api/v1` обязателен `X-On-Behalf-Of: DOMAIN\user`; права — **только** по ролям этого пользователя (`UserAccessSynchronizer.SynchronizeOnBehalfAsync`: сохранённые роли `dbo.UserRole`, AD не опрашивается): нет в `dbo.User` → 403 `user_not_registered`, нет ролей → 403 `user_has_no_roles`. Права служебной учётки не используются. Сервисы проверяют `IAccessGuard` так же, как для Blazor.
 
 ## API и MCP
 
-Контракт, маршруты, решения и риски — `reference.md` §6.6.1 (skill `svt-architecture`). Статус пилота — `SKILL.md` того же навыка. Постановки: `docs/tasks/SVT-5254-atlas-api.md`, `docs/tasks/SVT-5285-mcp.md`.
+Контракт, маршруты, решения и риски — `reference.md` §6.6.1 (skill `svt-architecture`). Статус пилота — `SKILL.md` того же навыка.
 
 При правке кода:
 
 - Новый справочник в API — `AddCatalogApi` в модуле. Без регистрации падает `CatalogApiCoverageTests`. Ссылки на чужие справочники — `[ApiReference]`.
 - Снимок контракта — `docs/api/svt-api-v1.openapi.json`. Изменение валит `OpenApiContractTests`. Осознанное обновление — `UPDATE_OPENAPI_SNAPSHOT=1`, затем согласование с Атласом.
-- Подбор ставки: шаги и ранжирование в C# (`LookupStepBuilder`, `SmartRateRanker`). SQL только кандидаты из `v2.AverageRateLevel3_Snapshot`.
+- Подбор ставки: шаги и ранжирование в C# (`LookupStepBuilder`, `SmartRateRanker`). Строки берутся из уже существующего представления, где есть все поля шага. Если они есть в снимке `v2.*_Snapshot`, читать снимок: он быстрее. Если в снимке полей не хватает — читать детальное представление `v2.vw_*_Detail`.
 - MCP: флаг `Api:McpEnabled` по умолчанию выключен. На PROD не включать до T6. Имена инструментов не менять; новые аргументы — только необязательные.
 
 ## Синхронизация legacy → snapshot

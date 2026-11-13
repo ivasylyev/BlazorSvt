@@ -2,6 +2,8 @@
 
 Читать после [SKILL.md](SKILL.md) (шаг 0 и именование). Дальше — [sql.md](sql.md).
 
+`{LegacyName}` — `PrimitiveEntityInfo.Name` и легаси-view `vw_{LegacyName}`. `{Entity}` — имя модуля, DTO и resx. Как они соотносятся — шаг 0 в SKILL.md.
+
 Подключение: сервер `localhost`, база `mdm`. Логин и пароль — из `Database:MdmDb` в `BlazorSvt/appsettings.json`. Поле Server из этой строки не использовать: там адрес удалённого стенда. `appsettings.json` не менять.  
 Legacy DDL/views: `C:\Work\SVT\DB\SVT.DB.MDM\dbo\Views` и `dbo\Tables`.  
 **Нет доступа** — спросить пользователя путь к репозиторию.
@@ -21,7 +23,7 @@ Legacy DDL/views: `C:\Work\SVT\DB\SVT.DB.MDM\dbo\Views` и `dbo\Tables`.
     FROM AttributeInfo ai
     JOIN AttributeSettings s ON ai.Id = s.AttributeInfoId
     WHERE ai.PrimitiveEntityInfoId = (
-        SELECT TOP 1 Id FROM PrimitiveEntityInfo WHERE [name] = '{Entity}'
+        SELECT TOP 1 Id FROM PrimitiveEntityInfo WHERE [name] = '{LegacyName}'
     )
     AND s.IsMain = 1
 )
@@ -33,7 +35,7 @@ ORDER BY AttributeRank;
 
 ## 2. Типы атрибутов
 
-Сопоставить короткий список с `vw_{Entity}` (скрипт создания во legacy `dbo\Views`).  
+Сопоставить короткий список с `vw_{LegacyName}` (скрипт создания во legacy `dbo\Views`).  
 Колонки view, которых нет в коротком списке — **игнорировать**.  
 Длины `NVARCHAR` — из `dbo\Tables` legacy + `LEFT(..., N)` в Insert.
 
@@ -42,7 +44,7 @@ ORDER BY AttributeRank;
 Для **каждого** атрибута короткого списка:
 
 ```sql
-SELECT COUNT(*) FROM vw_{Entity}
+SELECT COUNT(*) FROM vw_{LegacyName}
 WHERE [{AttributeSystemName}] IS NOT NULL
   AND [{AttributeSystemName}] <> ''
   AND PrimitiveEntityDataStateId = 1;
@@ -78,7 +80,7 @@ WHERE [{AttributeSystemName}] IS NOT NULL
         GROUP BY LOWER([Key])
     ) xx
     WHERE ai.PrimitiveEntityInfoId = (
-        SELECT TOP 1 Id FROM PrimitiveEntityInfo WHERE [name] = '{Entity}'
+        SELECT TOP 1 Id FROM PrimitiveEntityInfo WHERE [name] = '{LegacyName}'
     )
 )
 SELECT * FROM DetailCTE
@@ -89,7 +91,7 @@ ORDER BY GroupRank, AttributeRank;
 
 ## 5. Переводы заголовков колонок (resx)
 
-Приоритет — **Dictionary** (`Context.Name = 'pei/' + {Entity} + '/ai'`).  
+Приоритет — **Dictionary** (`Context.Name = 'pei/' + {LegacyName} + '/ai'`).  
 В таблице `Locale`: **Id 1 = en**, **Id 2 = ru** (проверено по `dbo.Locale`).
 
 | Файл | Источник |
@@ -106,7 +108,7 @@ Fallback для **ru-RU** — `AttributeInfo.Description` (обычно русс
 
 ```sql
 DECLARE
-    @PrimitiveEntityInfoName NVARCHAR(100) = '{Entity}',
+    @PrimitiveEntityInfoName NVARCHAR(100) = '{LegacyName}',
     @AttributeSystemName NVARCHAR(100) = '{AttributeSystemName}',
     @AttributeNameTranslationEn NVARCHAR(100),
     @AttributeNameTranslationRu NVARCHAR(100),
@@ -130,7 +132,7 @@ SELECT @AttributeNameTranslationRu, @AttributeNameTranslationEn;
 
 ```sql
 DECLARE @ContextID INT;
-SELECT @ContextID = [Id] FROM [dbo].[Context] WHERE [Name] = 'pei/{Entity}/ai';
+SELECT @ContextID = [Id] FROM [dbo].[Context] WHERE [Name] = 'pei/{LegacyName}/ai';
 
 SELECT
     ai.[Name] AS AttributeSystemName,
@@ -140,7 +142,7 @@ SELECT
 FROM AttributeInfo ai
 LEFT JOIN Dictionary dEn ON dEn.[key] = ai.[Name] AND dEn.ContextId = @ContextID AND dEn.LocaleId = 1
 LEFT JOIN Dictionary dRu ON dRu.[key] = ai.[Name] AND dRu.ContextId = @ContextID AND dRu.LocaleId = 2
-WHERE ai.PrimitiveEntityInfoId = (SELECT TOP 1 Id FROM PrimitiveEntityInfo WHERE [name] = '{Entity}')
+WHERE ai.PrimitiveEntityInfoId = (SELECT TOP 1 Id FROM PrimitiveEntityInfo WHERE [name] = '{LegacyName}')
 ORDER BY ai.[Name];
 ```
 
@@ -153,13 +155,15 @@ python .cursor/skills/add-reference-book/scripts/generate-module-resx.py `
   --platform-resources-dir BlazorSvt/Platform/Resources
 ```
 
+`--entity` — `{Entity}` (ключи resx и имя файла). Если `{LegacyName}` отличается, добавь `--legacy-name {LegacyName}`: этим именем скрипт ищет строку в `PrimitiveEntityInfo`.
+
 Требования к генерации:
 - `sqlcmd -f o:65001`, вывод в файл (не stdout) — иначе ломается кодировка на Windows
 - **Не путать** колонки En/Ru при записи в resx
 - Ключи resx — имена свойств DTO (`{Entity}DetailDto.{Field}`), для переименованных полей — маппинг в скрипте
 - После генерации spot-check: `Pobox` → en=`Pobox`, ru=`Адрес: Индекс`
 
-> В скрипте групп detail (ContextId 258) маппинг LocaleId **другой**: `1` → ValueEn, `2` → ValueRu — не смешивать с `pei/{Entity}/ai`.
+> В скрипте групп detail (ContextId 258) маппинг LocaleId **другой**: `1` → ValueEn, `2` → ValueRu — не смешивать с `pei/{LegacyName}/ai`.
 
 **Пост-обработка коротких имён грида (обязательно):** скрипт пишет **длинные** подписи из MDM. Сразу после генерации (и при правках локализации) примени глоссарий:
 
@@ -171,12 +175,12 @@ python .cursor/skills/add-reference-book/scripts/generate-module-resx.py `
 
 Оба ключа получают одно и то же значение из MDM (ниже). Пункт меню совпадает с заголовком страницы, без сокращений.
 
-Русский title — из MDM (`PrimitiveEntityInfo.Name` = системное имя `{Entity}`):
+Русский title — `Description` из MDM по `{LegacyName}`:
 
 ```sql
 SELECT TOP 1 [Description]
 FROM PrimitiveEntityInfo
-WHERE [Name] = '{Entity}';
+WHERE [Name] = '{LegacyName}';
 ```
 
 → `{Entity}.ru-RU.resx` (`{Entity}Grid.Title`) и то же значение → `Platform.ru-RU.resx` (`HeaderMenu.{Entity}`).
@@ -193,7 +197,7 @@ INNER JOIN Dictionary DRu
 WHERE DRu.[Value] = (
     SELECT TOP 1 [Description]
     FROM PrimitiveEntityInfo
-    WHERE [Name] = '{Entity}'
+    WHERE [Name] = '{LegacyName}'
 )
   AND DEn.LocaleId = 1
   AND DRu.LocaleId = 2;
@@ -294,7 +298,7 @@ WHERE DRu.[Value] = (
 
 Пополнять по мере выявления. Перед JOIN проверять эту таблицу, если имя поля ≠ имени `vw_*`.
 
-| Поле во `vw_{Entity}` | Целевой справочник / view |
+| Поле во `vw_{LegacyName}` | Целевой справочник / view |
 |-----------------------|---------------------------|
 | `NodeFrom` | `vw_LocationsNodes` |
 | `NodeTo` | `vw_LocationsNodes` |

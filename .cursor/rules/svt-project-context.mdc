@@ -45,7 +45,7 @@ MDM логистических маршрутов, тарифов и склад�
 | `tests/BlazorSvt.UnitTests/` | Unit: Platform, GridQueryFactory, contract DTO |
 | `tests/BlazorSvt.IntegrationTests/` | Read-only SP/view на `localhost` / `mdm` |
 | `docs/user-guide/` | Руководство пользователя (RU/EN) |
-| `docs/api/` | OpenAPI-снимок и локальная Postman-коллекция (не контракт) |
+| `docs/api/` | Контракт HTTP — `svt-api-v1.openapi.json`. Рядом руководство и локальная Postman-коллекция; коллекция контрактом не является |
 
 ## БД для агента
 

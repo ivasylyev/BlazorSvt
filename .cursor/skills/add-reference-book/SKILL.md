@@ -24,11 +24,21 @@ description: >-
 
 ## Шаг 0 — имя справочника
 
-1. Если пользователь не указал имя — **уточни** системное имя (`PrimitiveEntityInfo.Name`).
+1. Если пользователь не указал имя — **уточни** системное имя легаси (`PrimitiveEntityInfo.Name`).
 2. Без имени дальнейшие шаги **не выполнять**.
-3. Имя всегда **системное** (например `TransportLeg`, не «Транспортные плечи»).
+3. Имя легаси всегда **системное** (например `TransportLeg`, не «Транспортные плечи»).
 
-Обозначение в навыке: `{Entity}` = `PrimitiveEntityInfo.Name`.
+Два обозначения:
+
+- `{LegacyName}` — `PrimitiveEntityInfo.Name`. Им пользоваться в discovery-SQL, в `pei/{LegacyName}/ai` и в легаси-view `vw_{LegacyName}`.
+- `{Entity}` — имя модуля, папки, DTO, снимка `v2.{Entity}_Snapshot` и маршрута. Если в `{LegacyName}` нет `_` и нет строки в таблице ниже, имена совпадают. Если `_` есть, убрать его и поднять первую букву каждого сегмента, остальное не менять: `TransportType_level_3` → `TransportTypeLevel3`, `Priority_Rate` → `PriorityRate`, `Federal_Districts` → `FederalDistricts`, `OrganizationDPO_type` → `OrganizationDPOType`, `MTR_DPO` → `MTRDPO`.
+
+Отдельные переименования (подчёркивания нет):
+
+| Легаси `{LegacyName}` | Модуль `{Entity}` |
+|---|---|
+| `Rates` | `TransportRate` |
+| `TransportLegs` | `TransportLeg` |
 
 ## Соглашения об именовании (новые справочники)
 
@@ -54,7 +64,7 @@ description: >-
 Добавлять **вне зависимости** от короткого списка атрибутов:
 
 - `Id` (SEQUENCE + DEFAULT)
-- `{Entity}Id` (бизнес-ключ, `CAST(Id AS …)` из `vw_{Entity}`)
+- `{Entity}Id` (бизнес-ключ, `CAST(Id AS …)` из `vw_{LegacyName}`)
 - `Code`
 - `IsArchive` (`CASE WHEN ISNULL(PrimitiveEntityDataStateId, 2) = 2 THEN 1 ELSE 0 END`)
 - `CreationDate`, `LastChangeDate`
@@ -98,14 +108,14 @@ description: >-
 
 1. Снимок заполняется один раз из `v2.vw_{Entity}_SnapshotSource` (`02.{Entity}_Insert.sql`). `RowVer` на его `PrimitiveEntityData_*` не добавлять. `{Entity}SyncJob` не создавать и не регистрировать. `sp_{Entity}_PopulateAffectedKeys` не создавать. `v2.SyncState` для этого справочника не инициализировать. В каскад чужих справочников не включать: их гриды показывают enum, не живое имя из этого снимка.
 2. Объём навыка — только RO-грид и карточка. Редактор и загрузчик остаются своими пунктами бэклога.
-3. Перед генерацией сверить неархивные строки `vw_{Entity}` (`PrimitiveEntityDataStateId = 1`) с существующим enum: `Id` и состав членов. Расхождение — стоп и вопрос. Enum не перегенерировать.
+3. Перед генерацией сверить неархивные строки `vw_{LegacyName}` (`PrimitiveEntityDataStateId = 1`) с существующим enum: `Id` и состав членов. Расхождение — стоп и вопрос. Enum не перегенерировать.
 4. Английский из Dictionary, если это системное имя поля, в resx не копировать. Человеко-читаемый EN — по [grid-column-glossary.md](grid-column-glossary.md); если перевода там нет — согласовать и дописать глоссарий.
 
 Остальной вертикальный срез (Structure 01–03, SnapshotSource, Detail, C#-модуль без `Sync/`, грид, карточка, тесты DTO) — по фазам ниже.
 
 ## Чеклист
 
-- [ ] Имя `{Entity}` получено
+- [ ] Имена `{LegacyName}` и `{Entity}` получены
 - [ ] Короткий и длинный списки + фильтрация неиспользуемых ([discovery.md](discovery.md))
 - [ ] Переводы из Dictionary в `Modules/{Entity}/Resources/{Entity}.resx` + `HeaderMenu.{Entity}` в Platform.resx
 - [ ] SQL Structure 01–03 + SnapshotSource + Detail + PopulateAffectedKeys (у стабильного словаря с enum PopulateAffectedKeys нет) ([sql.md](sql.md))
