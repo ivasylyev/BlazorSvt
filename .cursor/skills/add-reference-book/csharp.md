@@ -86,7 +86,7 @@ public required RateTypeEn RateTypeIdEn { get; set; }
 @inherits BaseGridPage<{Entity}Dto, {Entity}DetailDto>
 ```
 
-- `GenericGrid` + заглушка `DetailViewTemplate` (как `LegsGrid.razor`)
+- `GenericGrid` + заглушка `DetailViewTemplate` (как `TransportLegGrid.razor`)
 - `DetailKeySelector` → `{Entity}Id`
 
 ### Локализация
@@ -212,9 +212,13 @@ dotnet test --filter "Category=Integration"
 
 При ошибке — сообщить и спросить дальнейшие действия.
 
-## Рефакторинг legacy
+## Переименование модуля
 
-- Для legacy-модулей (`Legs`, `Rates`) использовать только `git mv` для папок и файлов, затем правки содержимого in-place.
+`Legs` → `TransportLeg` и `Rates` → `TransportRate` уже выполнены. Папок `Legs` и `Rates` нет: повторно их не создавать и не переносить.
+
+Если имя модуля меняется снова:
+
+- Только `git mv` для папок и файлов, затем правки содержимого in-place.
 - Не удалять и не пересоздавать файлы/папки через copy+delete, чтобы сохранить git-history.
 - При rename SQL сохранять существующие комментарии и нумерованные шаги; добавлять новые `DROP`-блоки в начало, а не заменять ими текущие блоки.
 - В dev-среде wrapper'ы и миграции данных не требуются: удалять legacy и предыдущие имена объектов прямо в скриптах.
