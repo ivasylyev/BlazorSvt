@@ -209,6 +209,7 @@ dotnet test --filter "Category=Integration"
 3. Страница `/{entity}` открывается, грид загружает данные
 4. Детальный просмотр и экспорт не падают
 5. В Swagger UI (`/api/swagger`, Development) справочник есть в `GET /api/v1/catalogs`; `schema` и `items/search` отвечают
+6. Повторить `EXEC v2.GetBlazorGridData` и `EXEC v2.ExportBlazorGridDetail` уже с параметрами из атрибутов модуля: `@AllowedColumnsJson` / `@SelectList` из `[GridColumn]` list-DTO, `@DetailViewName` / `@EntityKeyColumn` из `[DetailSource]` detail-DTO. Расхождение с проверкой фазы 3 — стоп и вопрос
 
 При ошибке — сообщить и спросить дальнейшие действия.
 

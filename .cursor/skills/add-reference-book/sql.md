@@ -136,8 +136,8 @@ sqlcmd -S localhost -d mdm -U <User ID> -P <Password> -i "BlazorSvt\SqlScripts\M
 
 ### Верификация SQL (обязательна)
 
-1. `EXEC v2.GetBlazorGridData` с примерами `@TableName`, `@AllowedColumnsJson`, `@SelectList` из атрибутов DTO (простой и сложный FTS, если применимо)
-2. `EXEC v2.ExportBlazorGridDetail` с `@DetailViewName` / `@EntityKeyColumn` из detail-DTO
+1. `EXEC v2.GetBlazorGridData`: `@TableName` = `v2.{Entity}_Snapshot`, `@AllowedColumnsJson` и `@SelectList` собрать по короткому списку discovery §1 и системным полям снимка (простой и сложный FTS, если применимо). Атрибутов DTO ещё нет — из них параметры не брать
+2. `EXEC v2.ExportBlazorGridDetail`: `@DetailViewName` = `v2.vw_{Entity}_Detail`, `@EntityKeyColumn` = `{Entity}Id` (имена из [SKILL.md](SKILL.md), не из detail-DTO)
 3. `SELECT TOP 1 * FROM v2.{Entity}_Snapshot`
 4. `SELECT TOP 1 * FROM v2.vw_{Entity}_Detail`
 
