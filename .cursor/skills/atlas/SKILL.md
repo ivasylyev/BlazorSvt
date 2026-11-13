@@ -148,13 +148,9 @@ SoT значений остаётся в системах-источниках. 
 
 | Файл | Что это |
 |------|---------|
-<<<<<<< HEAD
 | `docs/docs/svt-v-atlas/SVT-idealnyy-process-2.7.html` | Эталон для дальнейших правок. Роли — раздел 5. В центре кольца — «Ядро · механизмы», обод Ш1…Ш6 |
 | `docs/docs/svt-v-atlas/SVT-правки-от-Кати.html` | Не эталон. Не править |
 | `docs/docs/svt-v-atlas/SVT-idealnyy-process2.html` | Предыдущая версия 2.5, 30.10.2026. Не править |
-=======
-| `docs/docs/svt-v-atlas/SVT-idealnyy-process-2.7.html` | Идеальный процесс СВТ, версия 2.7 (материал для Кудрявцева). Роли — раздел 3 |
->>>>>>> origin/Atlas.svt
 | `docs/docs/svt-v-atlas/SVT-idealnyy-process.html` | Первая версия с комментариями Кудрявцева. Не править |
 | `docs/docs/svt-v-atlas/SVT-roli-i-puti.html` / `.docx` | Роли и клиентские пути, матрица «роль × шаг» (`.docx` собирается из HTML) |
 | `docs/docs/svt-v-atlas/SVT-roli-celevogo-processa.html` | Четыре роли пользователей и права по доменам |
