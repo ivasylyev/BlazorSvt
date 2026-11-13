@@ -49,7 +49,8 @@ description: >-
 | Контур | Read-only справочники, грид, карточка, выгрузка Excel. Сквозные отчёты — MVP 0.3.1. Дашборды — MVP 1.1 |
 | На проде | TransportRate, AverageRateLevel3, LocationsNodes, ParityRates, TransportLeg, RateType, Currency, ProductGroup, MTR, TransportTypeLevel3 |
 | Имена в реестре | `Rates` → `TransportRate`, `TransportLegs` → `TransportLeg`, `TransportType_level_3` → `TransportTypeLevel3` |
-| Без watermark-sync | RateType, Currency, TransportTypeLevel3: разовый снимок. Очередь Атласа, релиз 2.3.48 |
+| Без watermark-sync | RateType, Currency, TransportTypeLevel3: разовый снимок |
+| Очередь Атласа | Релиз 2.3.48, все четыре на проде. Currency и TransportTypeLevel3 — разовый снимок. ProductGroup и MTR — watermark-sync |
 | Ещё в коде | `HomeRatePivot`, `SmartRateLookup`. `HomeRatePivot` читает снимки AverageRateLevel3 и LocationsNodes; отбор ставки — в тексте SQL |
 | Доступ и sync | Windows Auth, роли `dbo.Role` (любая роль = read). Watermark-sync для остальных справочников на проде |
 | API | Пилот `/api/v1`, только чтение: все зарегистрированные модули и умный подбор. [reference.md](reference.md) §«API для внешних фронтендов» |

@@ -142,7 +142,7 @@ services.AddCatalogMenu(new CatalogMenuContribution(
 | Интеграция с ЦБД | `Cbd` |
 | Вспомогательные | `Other` |
 
-`VisibleToEditor` — колонка «Меню ЕО» (`да` → `true`, `нет` → `false`). До MVP 0.4 шапка по этому флагу не фильтрует. Порядок пункта не задаётся: шапка сортирует подписи по алфавиту текущего языка. `HeaderMenu` для нового справочника не менять.
+`VisibleToEditor` — колонка «Меню ЕО» (`да` → `true`, `нет` → `false`). До MVP 0.4 шапка по этому флагу не фильтрует. Порядок пункта не задаётся: шапка сортирует подписи по алфавиту текущего языка. Ключ `HeaderMenu.{Entity}` добавляется в Platform.resx и равен заголовку грида; порядком пункта меню он не управляет.
 
 **`{Entity}SyncJob`:** эталон `TransportRateSyncJob` / `AverageRateLevel3SyncJob` — consts `PrimitiveEntityData_*` с комментариями имён справочников; Sources = основная + каскад (узлы / ProductGroup / MTR и т.д. по проекции). Стабильные словари (RateType, Currency, …) **не** включать. Если сам `{Entity}` — стабильный словарь с enum, SyncJob нет: только разовая заливка.
 
