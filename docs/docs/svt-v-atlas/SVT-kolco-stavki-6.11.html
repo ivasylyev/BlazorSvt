@@ -1,0 +1,124 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>СВТ: кольцо процесса ставок · 6.11.2026</title>
+<style>
+  :root { --navy:#133152; --blue:#1e6aa8; --line:#d9e2ea; --paper:#fff; --bg:#f3f6f9; }
+  * { box-sizing:border-box; }
+  body { margin:0; background:var(--bg); color:#1b2733; font:15px/1.5 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif; }
+  .shell { max-width:1100px; margin:0 auto; padding:28px 20px 60px; }
+  .hero { background:linear-gradient(120deg,var(--navy),#215f91); color:#fff; border-radius:16px; padding:28px 30px; }
+  .eyebrow { margin:0 0 6px; font-size:12px; font-weight:700; letter-spacing:.08em; text-transform:uppercase; color:#bfe1f7; }
+  h1 { margin:0; font-size:26px; line-height:1.2; }
+  .subtitle { margin:10px 0 0; font-size:15px; color:#e2f0fa; }
+  h2 { margin:32px 0 12px; font-size:20px; color:var(--navy); padding-bottom:8px; border-bottom:2px solid var(--line); }
+  .box, .card { background:var(--paper); border:1px solid var(--line); border-radius:12px; padding:16px 18px; margin:0 0 14px; }
+  table { width:100%; border-collapse:collapse; }
+  th { text-align:left; padding:8px 10px; background:#f8fbfd; color:#526575; font-size:12px; text-transform:uppercase; border-bottom:1px solid var(--line); }
+  td { padding:10px; vertical-align:top; border-bottom:1px solid var(--line); font-size:14px; }
+  .num { font-weight:800; color:var(--navy); white-space:nowrap; }
+  .tag { display:inline-block; font-size:11px; font-weight:700; padding:1px 7px; border-radius:999px; }
+  .tag.fact { background:#e8f5e9; color:#1b5e20; }
+  .tag.hyp { background:#fff3e0; color:#e65100; }
+  .tag.gap { background:#eceff1; color:#37474f; }
+  .step { background:#fff; border:1px solid var(--line); border-radius:12px; padding:14px 16px; margin:0 0 10px; }
+  .step h3 { margin:0 0 8px; font-size:16px; color:var(--navy); }
+  ul.plain { margin:0; padding-left:18px; }
+  ul.plain li { margin-bottom:6px; }
+</style>
+</head>
+<body>
+<main class="shell">
+  <header class="hero">
+    <p class="eyebrow">Одно кольцо · процесс ставок</p>
+    <h1>Кольцо процесса ставок</h1>
+    <p class="subtitle">Набока, 05.11 16:00: если не помещается в одно кольцо — разные кольца; девять типовых шагов, наполнение своё. Паритеты, маршруты, ограничения — другие кольца, в этом файле их нет. 6.11.2026</p>
+  </header>
+
+  <h2>1. Как сведено</h2>
+  <div class="box">
+    <ul class="plain">
+      <li>Экземпляр — изменение <b>ставки</b>, не перевозка и не вся СВТ.</li>
+      <li>Обод — те же девять типовых шагов, что в каноне. Название шага — действие. Системы — не имя шага. Человек — точка на шаге, не имя шага.</li>
+      <li>Ставку берут не с пустого места: сначала НСИ из других мастер-систем (узлы, контрагенты, продукты, курсы, склады). Ставку пользователь собирает вне СВТ и грузит в СВТ. RailTariff в этом кольце не считают.</li>
+    </ul>
+  </div>
+
+  <h2>2. Шаги: вход, действие, выход</h2>
+  <div class="card" style="overflow-x:auto; padding:0;">
+    <table>
+      <thead>
+        <tr><th>Шаг</th><th>Вход</th><th>Действие</th><th>Выход</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="num">Ш1 Получение данных</td>
+          <td>НСИ из АСВ НСИ и SAP ERP: контрагенты, узлы, продукты, курсы, склады. Ставка — файл Excel, собранный вне СВТ (выгрузка Логинета, рассылка НХТК), с привязкой к узлам. Номинации считают вне СВТ.</td>
+          <td>Принять ставку в модель. Маршруты из SAP ERP не приходят.</td>
+          <td>Строка ставки в СВТ, на Ш2. Пока не приняли — действуют прежние значения.</td>
+        </tr>
+        <tr>
+          <td class="num">Ш2 Проверка данных</td>
+          <td>Строка ставки с Ш1.</td>
+          <td>Одни проверки на обмен, карточку и файл. Жёсткая отклоняет. Мягкая — предупреждение.</td>
+          <td>Принята — дальше. Исключение — точка человека на Ш3.</td>
+        </tr>
+        <tr>
+          <td class="num">Ш3 Утверждение исключений</td>
+          <td>Строка с предупреждением или отклонением.</td>
+          <td>Точка человека. Большинство исключений ловят здесь; это не «люди вместо процесса».</td>
+          <td>Пропущена — дальше. Отвергнута — правят в источнике и грузят заново. Строки без исключений шаг не ждут.</td>
+        </tr>
+        <tr>
+          <td class="num">Ш4 Расчёт производных</td>
+          <td>Уже принятая ставка. Не вызов RailTariff: ЖД-тариф считают вне СВТ.</td>
+          <td>Ставку из Логинета или НХТК не пересчитывают. Считают производные, которых во входе нет как готовой ставки. В базе уже считают средневзвешенные и дефлятор, формулы не описаны. <span class="tag fact">факт</span> Средняя у ФЭС — Excel. RailTariff — не этот шаг.</td>
+          <td>Производная ставка на Ш5. Если считать нечего — сразу Ш5.</td>
+        </tr>
+        <tr>
+          <td class="num">Ш5 Ввод в действие</td>
+          <td>Принятая или производная ставка.</td>
+          <td>С указанной даты ставка действует. Прежняя — в архив. На дату одно действующее значение. Новый пакет не стирает предыдущий.</td>
+          <td>Действующая ставка.</td>
+        </tr>
+        <tr>
+          <td class="num">Ш6 Передача потребителям</td>
+          <td>Действующая ставка.</td>
+          <td>СВТ отдаёт сама, без кнопок. Не «вступление в силу». Читающая система своё значение как мастер не ведёт.</td>
+          <td>Ставка у потребителей: CRM, ССП, ЦБД (бизнес-плановый срез), ЕСД, SAP TMS, Озеро. Кто что — из канона процесса ставок.</td>
+        </tr>
+        <tr>
+          <td class="num">Ш7 Контроль полноты</td>
+          <td>Действующие ставки.</td>
+          <td>Видно, каких ставок не хватает. Цикл не стоит. За полноту отвечает бизнес.</td>
+          <td>Сигнал о нехватке. Недостающее — новый цикл с Ш1. Действующее идёт дальше.</td>
+        </tr>
+        <tr>
+          <td class="num">Ш8 Контроль целостности</td>
+          <td>Ставки, уже записанные в СВТ.</td>
+          <td>Проверка уже лежащих данных. Цикл не стоит.</td>
+          <td>Сигнал администратору ИТ. Правка — новый цикл с Ш1 только для изменённых строк.</td>
+        </tr>
+        <tr>
+          <td class="num">Ш9 Сверка план-факт</td>
+          <td><span class="tag gap">вопрос к бизнесу</span> С чем сверять. В СВТ сверки действующих ставок с фактом нет. <span class="tag fact">факт</span></td>
+          <td>Предложение канона: СВТ ставку не правит, сигнал источнику. Вес шага не закрыт.</td>
+          <td>Пока не закрыто.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h2>3. Что не класть на это кольцо</h2>
+  <div class="box">
+    <ul class="plain">
+      <li>Процесс паритетов, процесс маршрутов и лидтаймов, процесс ограничений — отдельные кольца с теми же типовыми шагами.</li>
+      <li>RailTariff — не шаг расчёта СВТ.</li>
+      <li>Роль в AD — не роль на ободе. Прототип — от роли в процессе (Набока).</li>
+    </ul>
+  </div>
+</main>
+</body>
+</html>
