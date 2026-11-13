@@ -162,7 +162,7 @@ services.AddCatalogApi<{Entity}Dto, {Entity}DetailDto>(
 ```
 
 - `using BlazorSvt.Platform.Api.Catalogs;`
-- `{kebab-code}` — код в API, стабильный контракт: множественное число в kebab-case (`transport-rates`, `locations-nodes`). Сменить потом — только новой версией API
+- `{kebab-code}` — стабильный код контракта в kebab-case. Обычный вид — множественное число: `transport-rates`, `locations-nodes`, `currencies`. Если имя в интерфейсе не совпадает с `{Entity}`, код берётся из этого имени: `MTR` → `products`. Новый код сверять с уже зарегистрированными; если пара неочевидна — спросить. Потом код меняется только новой версией API
 - Заголовок — тот же ключ, что у меню (`HeaderMenu.{Entity}`); домен — тот же `CatalogDomain`
 - `period` — только если у справочника есть срок действия (две даты `DateOnly` в list-DTO); иначе не передавать. Даёт фильтр `asOf`
 - `syncEntity` — имя в `v2.SyncState` для `dataAsOf`; по умолчанию имя DTO без `Dto`. У стабильного словаря с enum строки в `SyncState` нет — `dataAsOf` будет `null`, это нормально
