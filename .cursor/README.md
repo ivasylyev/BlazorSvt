@@ -26,7 +26,7 @@
 | Skill | Когда |
 |-------|--------|
 | `svt-architecture` | Архитектура, скоуп, roadmap, backlog, требования вне реестра |
-| `add-reference-book` | Добавление read-only справочника из легаси |
+| `add-reference-book` | Добавление read-only справочника из легаси (`SKILL.md` + `discovery.md` / `sql.md` / `csharp.md` / `grid-column-glossary.md`) |
 | `create-programmability` | Накат Programmability на localhost/`mdm` |
 | `publish-all-sql` | Публикация SQL в `C:\publish\v2` (`-Mode …`) |
 | `atlas` | Эталонный процесс / документы Атласа — **отдельный трек**, не стек и не SQL СВТ 2.0 |
@@ -44,6 +44,7 @@
 
 ## Что куда не класть
 
-- Длинный статус прода и полный MVP — в `svt-architecture`, не раздувать alwaysApply
+- Длинный статус прода и полный MVP — в `svt-architecture` (`SKILL.md` — статус, `roadmap.md` — план), не раздувать alwaysApply
+- Человеческий индекс документов — `docs/README.md`. Пакет architecture review собирает `docs/output-review-package/Build-ReviewPackage.ps1`; копии markdown и zip в git не хранятся
 - Алгоритм нового справочника — в `add-reference-book`, rule только указывает
 - Методология эталона / кольцо / промпты Атласа — в `atlas`, не смешивать с разработкой кода
