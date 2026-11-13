@@ -351,7 +351,7 @@ Read-only справочник из [catalogs-scope.md](catalogs-scope.md) пр�
 
 При закрытии митигации: в таблице выше меняется формулировка пробела на «закрыто (дата, ссылка
 на приложение/протокол)». После этого пакет для ревью пересобирают скриптом
-`docs/output-review-package/Build-ReviewPackage.ps1` (копии markdown и zip в git не хранятся).
+`docs/output-review-package/Build-ReviewPackage.ps1` (zip рядом с папкой; сгенерированные копии скрипт удаляет; zip в git не коммитится).
 Повторный architecture review должен видеть трассировку: условие HTML ↔ ID D-* ↔ Gate ↔ приложение §2б.
 
 ---

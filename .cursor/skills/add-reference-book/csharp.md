@@ -120,12 +120,13 @@ public required RateTypeEn RateTypeIdEn { get; set; }
 ```csharp
 services.AddScoped<IGridSettingsService<{Entity}Dto>, {Entity}GridSettingsService>();
 services.AddScoped<IDetailSettingsService<{Entity}DetailDto>, {Entity}DetailSettingsService>();
+// Строку SyncJob не добавлять, если {Entity} — стабильный словарь с enum (SKILL.md).
 services.AddSingleton<ISnapshotSyncJob, {Entity}SyncJob>();
 services.AddCatalogMenu(new CatalogMenuContribution(
     CatalogDomain.{Domain},
     "{entity}",
     "HeaderMenu.{Entity}",
-    VisibleToEditor: true));
+    VisibleToEditor: true)); // колонка «Меню ЕО»: да → true, нет → false
 ```
 
 `{entity}` — сегмент `@page` без ведущего слэша. В файле модуля нужен `using BlazorSvt.Platform.UI.Navigation;`. `{Domain}` — член `CatalogDomain` по домену справочника в [catalogs-scope.md](../svt-architecture/catalogs-scope.md):
@@ -157,8 +158,9 @@ URL вклада **должен совпадать** с `@page` в `.razor`.
 services.AddCatalogApi<{Entity}Dto, {Entity}DetailDto>(
     "{kebab-code}",
     CatalogDomain.{Domain},
-    "HeaderMenu.{Entity}",
-    new CatalogPeriod(nameof({Entity}Dto.StartDate), nameof({Entity}Dto.EndDate)));
+    "HeaderMenu.{Entity}");
+// CatalogPeriod добавлять только если в list-DTO есть срок действия (две даты DateOnly):
+// new CatalogPeriod(nameof({Entity}Dto.StartDate), nameof({Entity}Dto.EndDate))
 ```
 
 - `using BlazorSvt.Platform.Api.Catalogs;`

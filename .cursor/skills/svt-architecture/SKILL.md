@@ -63,11 +63,11 @@ description: >-
 2. Бизнес-логика в C#, а не в SP?
 3. Один pipeline для UI и batch (общие валидаторы/команды)?
 4. Типизированная таблица + constraints, не мета-описание?
-5. Грид из snapshot, карточка из проекции легаси, write отделён?
+5. Грид из snapshot (watermark-sync; стабильный словарь с enum — разовый снимок), карточка из проекции легаси, write отделён?
 6. Без Elastic/RabbitMQ/распределённого монолита?
 7. Покрыты ли изменения тестами? Unit — C#-логика (`GridQueryFactory`, валидаторы, contract DTO); integration — read-only smoke SP/view для нового справочника (см. `svt-development-patterns`, секция «Тестирование»)
 8. Для write: write-through в легаси до cutover; LWW; доменный write-toggle (`V2WriteEnabled_{Домен}`, не единый глобальный); field-level аудит — с MVP 1.0, до этого отсутствие аудита — принятый риск
-9. Если атрибут приходит из АСВ НСИ или ЦБД, не заводить для него редактор и не делать СВТ источником истины. Состав — [catalogs-scope.md](catalogs-scope.md), раздел «Внешние мастера»
+9. Редактор и загрузчик заводить только где в [catalogs-scope.md](catalogs-scope.md) колонки E и L не `—`. Комментарий строки — пометка для человека, состав работ не меняет. Строка с E = `—` после SoT flip источником истины в СВТ не становится
 10. Новый справочник или операция доступны Атласу через API (`AddCatalogApi` / `IApiEndpointContribution`)? Правила UI и API — одни (тот же сервис, тот же `IAccessGuard`), контракт не сломан (`OpenApiContractTests`)
 
 ## Требования, которых ещё нет в реестре
@@ -107,4 +107,4 @@ description: >-
 - Реестр справочников (SoT скоупа: состав доменов, RO/E/L, меню, приоритеты) — [catalogs-scope.md](catalogs-scope.md). Канон при изменении — этот файл в репозитории; Excel на Confluence — только исходный дамп легаси
 - Диаграммы для архитектурного ревью —
   [README.md](README.md) (файлы `01-as-is-legacy.png`, `02-to-be-current-program.png`, `03-future-containers-out-of-scope.png` лежат в этой же папке)
-- Пакет для передачи на ревью собирает [Build-ReviewPackage.ps1](../../../docs/output-review-package/Build-ReviewPackage.ps1) по [README](../../../docs/output-review-package/README.md): четыре markdown этого навыка, диаграммы из этой папки и `SVT-idealnyy-process-2.7.html`. Канон — файлы навыка; собранные копии и zip в git не хранятся
+- Пакет для передачи на ревью собирает [Build-ReviewPackage.ps1](../../../docs/output-review-package/Build-ReviewPackage.ps1) по [README](../../../docs/output-review-package/README.md): четыре markdown этого навыка, диаграммы из этой папки и `SVT-idealnyy-process-2.7.html` попадают в zip, затем скрипт удаляет эти копии из папки пакета. Канон — файлы навыка. Zip в git не коммитится

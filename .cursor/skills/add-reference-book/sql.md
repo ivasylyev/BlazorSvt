@@ -28,10 +28,10 @@ BlazorSvt/SqlScripts/Modules/{Entity}/
 └── Programmability/
     ├── vw_{Entity}_SnapshotSource.sql
     ├── vw_{Entity}_Detail.sql
-    └── sp_{Entity}_PopulateAffectedKeys.sql
+    └── sp_{Entity}_PopulateAffectedKeys.sql   # нет у стабильного словаря с enum
 ```
 
-Обновить также `SqlScripts/Publish-AllSql.ps1` (порядок: CreateTable → SnapshotSource → Insert → Indexes → Detail → PopulateAffectedKeys).
+`sp_{Entity}_PopulateAffectedKeys.sql` не создавать для стабильного словаря с enum и не добавлять его в `Publish-AllSql.ps1`. Для остальных обновить манифест в порядке: CreateTable → SnapshotSource → Insert → Indexes → Detail → PopulateAffectedKeys.
 
 Релизная копия — `SqlScripts/Migrations/{VersionPrefix}/`, где `{VersionPrefix}` берётся из `BlazorSvt/BlazorSvt.csproj`. Нумерация с `001`: дельта схемы, последним файлом полный снимок programmability `All_Programmability.sql`. В `C:\publish` само по себе не копировать. Конвенция — `SqlScripts/Migrations/README.md`.
 

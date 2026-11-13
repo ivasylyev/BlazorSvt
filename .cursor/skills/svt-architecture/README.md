@@ -42,4 +42,4 @@
 на многоузловой/K8s-деплой.
 
 Пакет для передачи собирает [`Build-ReviewPackage.ps1`](../../../docs/output-review-package/Build-ReviewPackage.ps1)
-по [`README`](../../../docs/output-review-package/README.md). Копии markdown, диаграммы и zip в git не хранятся.
+по [`README`](../../../docs/output-review-package/README.md). Скрипт кладёт zip рядом с папкой и удаляет сгенерированные копии из неё. Zip в git не коммитится.

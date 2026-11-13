@@ -19,7 +19,7 @@
 |---|---|
 | `api/` | Техническое и бизнес-описание API. Контракт — `svt-api-v1.openapi.json`. Локальная Postman-коллекция контрактом не является |
 | `tasks/` | Архив уже сделанного. Не исходные требования. Состав скоупа — `catalogs-scope.md`, алгоритм нового справочника — skill `add-reference-book` |
-| `output-review-package/` | Процедура пакета на architecture review. Сборку делает `Build-ReviewPackage.ps1`. Копии markdown, диаграммы и zip в git не хранятся. `review-current-state.html` — снимок заключения 07.08.2026 |
+| `output-review-package/` | Процедура пакета на architecture review. `Build-ReviewPackage.ps1` собирает zip и удаляет сгенерированные копии из папки. Zip в git не коммитится. `review-current-state.html` — снимок заключения 07.08.2026 |
 
 ## Снимки (статус прода не обновляется)
 
