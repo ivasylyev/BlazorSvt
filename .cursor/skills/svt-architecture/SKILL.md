@@ -18,7 +18,7 @@ description: >-
 | Что на проде, API, MCP, Import | этот файл |
 | Состав, домены, RO/E/L, меню, приоритеты | [catalogs-scope.md](catalogs-scope.md) |
 | Gate, порядок доменов, митигации | [roadmap.md](roadmap.md) |
-| Кольцо разработки, 12 вех | [roadmap.md](roadmap.md) §1.1б; подписи в [backlog.md](backlog.md) |
+| Кольцо разработки, 12 шагов | [roadmap.md](roadmap.md) §1.1б; подписи в [backlog.md](backlog.md) |
 | Чеклист и оценки | [backlog.md](backlog.md) |
 | Обязательные ограничения | правило `svt-architecture-principles` |
 | Как писать текущий код | правило `svt-development-patterns` |
