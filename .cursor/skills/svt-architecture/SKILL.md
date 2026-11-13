@@ -9,6 +9,23 @@ description: >-
 
 # Архитектура СВТ
 
+## Канон
+
+При расхождении берётся файл из этой таблицы. Постановки `docs/tasks`, транскрипты, бюджет и план для руководства — снимки, не процедуры.
+
+| Вопрос | Канон |
+|---|---|
+| Что на проде, API, MCP, Import | этот файл |
+| Состав, домены, RO/E/L, меню, приоритеты | [catalogs-scope.md](catalogs-scope.md) |
+| Gate, порядок доменов, митигации | [roadmap.md](roadmap.md) |
+| Чеклист и оценки | [backlog.md](backlog.md) |
+| Обязательные ограничения | правило `svt-architecture-principles` |
+| Как писать текущий код | правило `svt-development-patterns` |
+| Новый RO-справочник | skill `add-reference-book` |
+| Контракт HTTP | `docs/api/svt-api-v1.openapi.json` |
+| Как вызывать API | `docs/api/svt-api-v1-developers.md` |
+| Решения и риски API | [reference.md](reference.md) §6.6.1 |
+
 ## Когда применять
 
 - Новый справочник, редактор, импорт, интеграция
@@ -25,7 +42,20 @@ description: >-
 
 Корпоративный паспорт действующей ИС (критичность, ИСПДн, СУБД, обновление) — [reference.md](reference.md) §4.6.
 
-**Текущий статус**: фреймворк read-only справочников и выгрузки Excel грида/карточки (не модуль сквозных отчётов MVP 0.3.1). На проде: TransportRate, AverageRateLevel3, LocationsNodes, ParityRates, TransportLeg, RateType, Currency, ProductGroup, MTR, TransportTypeLevel3 (в реестре легаси-имена Rates, TransportLegs и TransportType_level_3; RateType, Currency и TransportTypeLevel3 — стабильные словари, разовый снимок, без watermark-sync; очередь Атласа — релиз 2.3.48). Также в коде: `HomeRatePivot`, `SmartRateLookup`. Watermark-sync; Windows Auth + роли `dbo.Role` (любая роль = read). Пилот read-only API для Атласа (`/api/v1`: все **зарегистрированные** модули справочников + умный подбор ставки; [reference.md](reference.md) §«API для внешних фронтендов»). Поверх — MCP `/api/mcp` (флаг `Api:McpEnabled` по умолчанию выключен; на PROD — после T6). Прототип Import: Excel + валидаторы + UI; staging не подключён, Import на проде закрыт. Каркас unit + integration тестов в `tests/`. `HomeRatePivot` читает снимки AverageRateLevel3 и LocationsNodes; правило отбора ставки пока в тексте SQL. Дашборды — MVP 1.1. Скоуп — [catalogs-scope.md](catalogs-scope.md); план — [roadmap.md](roadmap.md); чеклист — [backlog.md](backlog.md).
+**Текущий статус**
+
+| | |
+|---|---|
+| Контур | Read-only справочники, грид, карточка, выгрузка Excel. Сквозные отчёты — MVP 0.3.1. Дашборды — MVP 1.1 |
+| На проде | TransportRate, AverageRateLevel3, LocationsNodes, ParityRates, TransportLeg, RateType, Currency, ProductGroup, MTR, TransportTypeLevel3 |
+| Имена в реестре | `Rates` → `TransportRate`, `TransportLegs` → `TransportLeg`, `TransportType_level_3` → `TransportTypeLevel3` |
+| Без watermark-sync | RateType, Currency, TransportTypeLevel3: разовый снимок. Очередь Атласа, релиз 2.3.48 |
+| Ещё в коде | `HomeRatePivot`, `SmartRateLookup`. `HomeRatePivot` читает снимки AverageRateLevel3 и LocationsNodes; отбор ставки — в тексте SQL |
+| Доступ и sync | Windows Auth, роли `dbo.Role` (любая роль = read). Watermark-sync для остальных справочников на проде |
+| API | Пилот `/api/v1`, только чтение: все зарегистрированные модули и умный подбор. [reference.md](reference.md) §«API для внешних фронтендов» |
+| MCP | `/api/mcp`. Флаг `Api:McpEnabled` по умолчанию выключен; на PROD — после T6 |
+| Import | Прототип Excel, валидаторы и UI. Staging не подключён. На проде Import закрыт |
+| Тесты | Каркас unit и integration в `tests/` |
 
 ## Чеклист перед реализацией
 
@@ -33,7 +63,7 @@ description: >-
 2. Бизнес-логика в C#, а не в SP?
 3. Один pipeline для UI и batch (общие валидаторы/команды)?
 4. Типизированная таблица + constraints, не мета-описание?
-5. Read через snapshot/CQRS; write отделён?
+5. Грид из snapshot, карточка из проекции легаси, write отделён?
 6. Без Elastic/RabbitMQ/распределённого монолита?
 7. Покрыты ли изменения тестами? Unit — C#-логика (`GridQueryFactory`, валидаторы, contract DTO); integration — read-only smoke SP/view для нового справочника (см. `svt-development-patterns`, секция «Тестирование»)
 8. Для write: write-through в легаси до cutover; LWW; доменный write-toggle (`V2WriteEnabled_{Домен}`, не единый глобальный); field-level аудит — с MVP 1.0, до этого отсутствие аудита — принятый риск

@@ -95,11 +95,10 @@ Serilog (`Host/Program.cs`, секция `Serilog` в `appsettings.json`). Пр�
 
 Один справочник — два разных числа. В SQL и C# для PED всегда комментируй имя сущности рядом с номером таблицы.
 
-### Стабильные справочники (не отслеживаются)
+### Справочники без RowVer и без каскада
 
-Считаются неизменяемыми: **не** входят в `ISnapshotSyncJob.Sources`, **не** имеют веток в
-`PopulateAffectedKeys`, **не** получают `RowVer` в `Sync/01.Legacy_AddRowVersion.sql`.
-Колонки `*_Id` в snapshot **остаются**, если используются в grid-DTO (фильтрация/enum-отображение).
+Нет записи в `ISnapshotSyncJob.Sources`, нет ветки в `PopulateAffectedKeys`, нет `RowVer` в `Sync/01.Legacy_AddRowVersion.sql`.
+Колонки `*_Id` в snapshot остаются, если используются в grid-DTO (фильтрация, enum).
 
 | Справочник | Таблица legacy | Модули |
 |------------|----------------|--------|
@@ -107,15 +106,17 @@ Serilog (`Host/Program.cs`, секция `Serilog` в `appsettings.json`). Пр�
 | TypeNode | `dbo.PrimitiveEntityData_2132` | LocationsNodes |
 | TransportKind | `dbo.PrimitiveEntityData_2008` | TransportLeg, TransportRate, AverageRateLevel3 |
 | RateType | `dbo.PrimitiveEntityData_2048` | TransportRate, AverageRateLevel3; свой RO-модуль `RateType` |
-| TransportType | `dbo.PrimitiveEntityData_2023` | TransportRate, AverageRateLevel3 |
-| Currency | `dbo.PrimitiveEntityData_2016` | TransportRate, AverageRateLevel3 |
+| TransportType | `dbo.PrimitiveEntityData_2009` | TransportRate, AverageRateLevel3 |
+| TransportTypeLevel3 | `dbo.PrimitiveEntityData_2023` | свой RO-модуль `TransportTypeLevel3` |
+| Currency | `dbo.PrimitiveEntityData_2016` | TransportRate, AverageRateLevel3; свой RO-модуль `Currency` |
+| Relevance | `dbo.PrimitiveEntityData_2108` | ParityRates |
 | ETSNG | `dbo.PrimitiveEntityData_2019` | MTR (легаси, скрыт от пользователей, не меняется с 2019 г.) |
 
 При добавлении нового справочника к синхронизации: `vw_{Entity}_SnapshotSource`,
 `sp_{Entity}_PopulateAffectedKeys`, `{Entity}SyncJob` → `AddSingleton<ISnapshotSyncJob, …>()`,
-RowVer на основной PED-таблице. Стабильные источники в каскад **не** включать без явного решения.
+RowVer на основной PED-таблице. Источники из таблицы выше в каскад не включать без явного решения.
 
-**Свой RO-грид стабильного словаря с enum** — список и шаги только в skill `add-reference-book`, раздел «Стабильный словарь с enum». Кратко: разовая заливка, без RowVer, SyncJob, PopulateAffectedKeys и SyncState. Unit-тест SyncJob не добавлять.
+Свой RO-грид стабильного словаря с enum — другой список. Состав и шаги только в skill `add-reference-book`, раздел «Стабильный словарь с enum». Отсутствие sync само по себе грид не задаёт. Кратко для такого грида: разовая заливка, без RowVer, SyncJob, PopulateAffectedKeys и SyncState. Unit-тест SyncJob не добавлять.
 
 Дочерние/связанные сущности (типа `RatesOfAverageRate`) — в каскад **только** если пользователь
 явно попросил; часто legacy меняет родителя и детей одновременно.

@@ -241,13 +241,10 @@ SQL-логика вынесена в процедуры. Все обращени
 т.д.). Изменение справочника-источника инвалидирует зависимые строки через
 скрытые FK-колонки snapshot (`*_Id`) — курсор ведётся по каждой таблице-источнику.
 
-**Стабильные справочники** (не отслеживаются, без `RowVer` и без каскада):
-`1007` TypePlace, `2132` TypeNode, `2008` TransportKind,
-`2048` RateType, `2023` TransportType, `2016` Currency. Колонки `*_Id` в snapshot
-остаются, если нужны grid-DTO. Полный список — `.cursor/rules/svt-development-patterns.mdc`.
+**Справочники без RowVer и без каскада** — список и номера `PrimitiveEntityData_*` в `.cursor/rules/svt-development-patterns.mdc`. Колонки `*_Id` в snapshot остаются, если нужны grid-DTO.
 У TransportLeg тип отправки — сырой `ShipmentTypeCodeT` (не FK/enum на `2142`).
 
-Свой RO-грид справочника, у которого уже есть enum (RateType, TransportKind, TransportTypeLevel3, Currency, Relevance, TypeNode, TypePlace / LocationType), заливается один раз. `RowVer`, `SyncJob`, `PopulateAffectedKeys` и `SyncState` для него не создаются. `TransportType` в это исключение не входит: enum нет.
+Свой RO-грид стабильного словаря с enum — другой список, только в skill `add-reference-book`. Для него: разовая заливка, без `RowVer`, `SyncJob`, `PopulateAffectedKeys` и `SyncState`. Отсутствие sync само по себе грид не задаёт.
 
 **Удаления.** Ловятся не инкрементом, а `reconciliation` (anti-join snapshot ↔
 проекция), который воркер запускает раз в сутки. Допустимо, что физически
