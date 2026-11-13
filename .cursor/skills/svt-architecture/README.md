@@ -11,11 +11,9 @@
   [`backlog.md`](backlog.md)
 - Реестр справочников (скоуп, домены, RO/E/L):
   [`catalogs-scope.md`](catalogs-scope.md)
-  (в пакете для передачи — [`catalogs-scope.md`](../../../docs/output-review-package/catalogs-scope.md))
-- Снимок повторного architecture review: [`review-current-state.html`](../../../docs/output-review-package/review-current-state.html)
-- В пакете для передачи также идеальный процесс, версия 2.3:
-  [`SVT-idealnyy-process2.html`](../../../docs/output-review-package/SVT-idealnyy-process2.html)
-  (канон — [`SVT-idealnyy-process2.html`](../../../docs/docs/svt-v-atlas/SVT-idealnyy-process2.html))
+- Снимок повторного architecture review (07.08.2026, статус прода не обновляется): [`review-current-state.html`](../../../docs/output-review-package/review-current-state.html)
+- Идеальный процесс, версия 2.7 (канон, в пакет копируется скриптом):
+  [`SVT-idealnyy-process-2.7.html`](../../../docs/docs/svt-v-atlas/SVT-idealnyy-process-2.7.html)
 
 Отдельные файлы под каждый артефакт митигации **не ведутся** — всё в `roadmap.md` §2б,
 чтобы занятому ревьюеру не прыгать по папке.
@@ -43,5 +41,5 @@
 (sticky/affinity, см. `reference.md` §6.1) не должен архитектурно исключать последующий переход
 на многоузловой/K8s-деплой.
 
-Пакет для передачи: [`output-review-package/`](../../../docs/output-review-package/)
-и архив [`output-review-package.zip`](../../../docs/output-review-package.zip) (рядом с папкой).
+Пакет для передачи собирает [`Build-ReviewPackage.ps1`](../../../docs/output-review-package/Build-ReviewPackage.ps1)
+по [`README`](../../../docs/output-review-package/README.md). Скрипт кладёт zip рядом с папкой и удаляет сгенерированные копии из неё. Zip в git не коммитится.

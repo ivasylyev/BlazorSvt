@@ -7,9 +7,12 @@
 - просмотр справочников (режим только чтения);
 - фильтрация, сортировка, пагинация;
 - детальный просмотр записи;
-- выгрузка краткого и полного отчёта в Excel.
+- выгрузка краткого и полного отчёта в Excel;
+- пилот read-only API `/api/v1` и MCP `/api/mcp` (на проде MCP выключен).
 
-Редактирование данных, массовая загрузка и интеграции находятся в разработке.
+Редактирование записей и интеграции в новом контуре ещё не сделаны. Прототип загрузки Excel есть в `Import/`; staging не подключён, на проде Import закрыт.
+
+Актуальный статус — `.cursor/skills/svt-architecture/SKILL.md`. Карта документов — [`docs/README.md`](docs/README.md).
 
 ---
 
@@ -34,19 +37,26 @@ BlazorSvt/                  # Основное приложение
 ├── Platform/                # Общий фреймворк (grid, sync, отчёты, инфраструктура)
 ├── Modules/                 # Доменные модули (вертикальные срезы)
 │   ├── TransportRate/       # Транспортные тарифы
+│   ├── AverageRateLevel3/   # Средневзвешенные ставки L3
+│   ├── ParityRates/         # Паритетные ставки
 │   ├── TransportLeg/        # Транспортные плечи
-│   ├── AverageRateLevel3/   # Средние тарифы L3
-│   └── LocationsNodes/      # Локации / узлы
+│   ├── LocationsNodes/      # Локации / узлы
+│   ├── RateType/            # Типы ставок
+│   ├── Currency/            # Валюты
+│   ├── ProductGroup/        # Транспортные группы
+│   ├── MTR/                 # Продукты (МТР)
+│   └── TransportTypeLevel3/ # Типы транспорта, 3-й уровень
 ├── Import/                  # Контур загрузки данных (прототип)
 └── SqlScripts/              # DDL и SP (Platform + Modules, схема v2)
     ├── Platform/            # Схема, full-text, GetBlazorGridData, Sync_*
     └── Modules/             # Structure + Programmability по справочникам
 
 blazorbootstrap/             # Локальная сборка UI-компонентов
-docs/
+docs/                        # Карта — docs/README.md
 ├── user-guide/              # Руководство пользователя СВТ 2.0 (RU/EN, Confluence)
+├── api/                     # OpenAPI-снимок и описание API
 ├── estimation/              # Оценки трудозатрат трансформации
-└── …                        # Прочее; blog/ — сторонняя документация Blazor Bootstrap
+└── …
 tests/                       # Unit + integration (read-only SQL)
 ```
 
@@ -65,23 +75,33 @@ tests/                       # Unit + integration (read-only SQL)
 **Modules** — изолированные доменные модули. Каждый модуль содержит:
 - `List/` — DTO списка, страница grid, настройки колонок;
 - `Detail/` — DTO детализации, настройки detail view;
-- `Sync/` — `{Entity}SyncJob` (декларация источников RowVer);
+- `Sync/` — `{Entity}SyncJob` (декларация источников RowVer); у стабильного словаря с enum этой папки нет;
 - `{Module}Module.cs` — регистрация сервисов в DI.
 
 **Import** — загрузка данных из Excel (отдельный контур, не смешивается с read-модулями).
 
 ---
 
-## Реализованные справочники
+## Справочники на проде (read-only)
+
+Список и оговорки (стабильные словари без watermark-sync, легаси-имена) — в `.cursor/skills/svt-architecture/SKILL.md`. Сейчас это:
 
 | Маршрут | Модуль | Описание |
 |---------|--------|----------|
 | `/transportrate` | TransportRate | Транспортные тарифы |
+| `/averageratelevel3` | AverageRateLevel3 | Средневзвешенные ставки L3 |
+| `/parityrates` | ParityRates | Паритетные ставки |
 | `/transportleg` | TransportLeg | Транспортные плечи |
-| `/averageratelevel3` | AverageRateLevel3 | Средние тарифы L3 |
 | `/locationsnodes` | LocationsNodes | Локации / узлы |
+| `/ratetype` | RateType | Типы ставок |
+| `/currency` | Currency | Валюты |
+| `/productgroup` | ProductGroup | Транспортные группы |
+| `/mtr` | MTR | Продукты (МТР) |
+| `/transporttypelevel3` | TransportTypeLevel3 | Типы транспорта, 3-й уровень |
 
-Имена `Rates` / `Legs` в старых материалах относятся к тем же сущностям до переименования в `Transport*`.
+Имена `Rates` / `TransportLegs` / `TransportType_level_3` в реестре легаси относятся к модулям `TransportRate`, `TransportLeg` и `TransportTypeLevel3`.
+
+Рядом в коде, без отдельной строки меню справочника: `HomeRatePivot`, `SmartRateLookup`.
 
 ---
 
@@ -146,24 +166,7 @@ dotnet run --project BlazorSvt/BlazorSvt.csproj
 
 ## Добавление нового справочника
 
-Алгоритм целиком — skill `.cursor/skills/add-reference-book/`. Кратко:
-
-1. Создать модуль `Modules/{Name}/` со структурой `List/`, `Detail/`, `Sync/`.
-2. Определить DTO с атрибутами:
-   - `[GridSnapshot]`, `[GridColumn]` на list-DTO (метаданные для `v2.GetBlazorGridData`);
-   - `[DetailSource(...)]` на detail-DTO.
-3. Реализовать `*GridSettingsService` и `*DetailSettingsService`.
-4. Добавить Razor-страницу, наследующую `BaseGridPage<TItem, TDetailItem>`.
-5. `{Name}SyncJob` → `AddSingleton<ISnapshotSyncJob, …>()` внутри модуля.
-6. Создать `{Name}Module.cs` и зарегистрировать в `Host/Program.cs`:
-
-```csharp
-builder.Services.Add{Name}Module();
-```
-
-7. Добавить SQL в `SqlScripts/Modules/{Name}/`: Structure + Programmability (SnapshotSource, PopulateAffectedKeys, Detail).
-
-Образец — `Modules/TransportRate/` (C#) и `SqlScripts/Modules/TransportRate/` (SQL).
+Алгоритм целиком — skill `.cursor/skills/add-reference-book/` (`SKILL.md`, затем фазы `discovery.md`, `sql.md`, `csharp.md`). Образец обычного справочника — `Modules/TransportRate/`. Стабильный словарь с enum (без `SyncJob`) описан в том же навыке.
 
 ---
 
@@ -185,9 +188,10 @@ dotnet test --filter "Category=Unit"   # без БД
 |---------|--------|
 | Фреймворк grid (read-only) | Готово |
 | Отчёты Excel | Готово |
-| Справочники TransportRate, TransportLeg, AverageRateLevel3, LocationsNodes | Готово (read) |
-| Sync legacy → snapshot | Готово (инкремент + reconcile) |
+| 10 справочников read-only (см. таблицу выше) | На проде |
+| Sync legacy → snapshot | Готово (инкремент + reconcile; стабильные словари — разовый снимок) |
+| Пилот read-only API `/api/v1` | Готово |
 | Редактирование записей | Не реализовано |
-| Массовая загрузка | В разработке (`Import/`) |
+| Массовая загрузка | Прототип в `Import/`; на проде закрыт |
 | Интеграции | Не реализовано |
 | Write-модель / CQRS (command side) | Не реализовано |

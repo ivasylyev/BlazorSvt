@@ -1,3 +1,5 @@
+> Архив реализованной работы. Не исходные требования и не алгоритм новых задач. При расхождении с кодом и skill верны код и skill.
+
 ## Задача: read-only справочник TransportType_level_3 (Типы транспорта, 3 уровень)
 
 ### Контекст
@@ -41,12 +43,12 @@
 
 ### Критерии готовности
 
-- [ ] Модуль `BlazorSvt\Modules\TransportType_level_3\` (List/Detail/Module/Resources), меню в домене Маршруты, видимость по реестру
-- [ ] SQL в `BlazorSvt\SqlScripts\Modules\TransportType_level_3\` (Structure + Programmability SnapshotSource/Detail); **без** SyncJob/PopulateAffectedKeys
-- [ ] Разовая заливка снимка; грид/карточка/Excel работают локально
-- [ ] `AddCatalogApi` зарегистрирован; API отдаёт каталог (список/схема/поиск/карточка/export)
-- [ ] Тесты по образцу RateType / skill; покрытие API не красное
-- [ ] В backlog можно отметить **0.2.3.27** (после ревью)
+- [x] Модуль `BlazorSvt\Modules\TransportType_level_3\` (List/Detail/Module/Resources), меню в домене Маршруты, видимость по реестру
+- [x] SQL в `BlazorSvt\SqlScripts\Modules\TransportType_level_3\` (Structure + Programmability SnapshotSource/Detail); **без** SyncJob/PopulateAffectedKeys
+- [x] Разовая заливка снимка; грид/карточка/Excel работают локально
+- [x] `AddCatalogApi` зарегистрирован; API отдаёт каталог (список/схема/поиск/карточка/export)
+- [x] Тесты по образцу RateType / skill; покрытие API не красное
+- [x] В backlog можно отметить **0.2.3.27** (после ревью)
 
 ### Документы «прочитать до кода» (по порядку)
 

@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-"""Generate module resx from MDM Dictionary (pei/{Entity}/ai). LocaleId 1=en, 2=ru."""
+"""Generate module resx from MDM Dictionary (pei/{LegacyName}/ai). LocaleId 1=en, 2=ru."""
 
 from __future__ import annotations
 
@@ -358,7 +358,12 @@ def build_values(
 
 def main() -> int:
     parser = argparse.ArgumentParser()
-    parser.add_argument("--entity", default="LocationsNodes")
+    parser.add_argument("--entity", default="LocationsNodes", help="Module name: resx keys and file names")
+    parser.add_argument(
+        "--legacy-name",
+        default=None,
+        help="PrimitiveEntityInfo.Name when it differs from --entity",
+    )
     parser.add_argument("--output-dir", type=Path, required=True)
     parser.add_argument("--server", default="localhost")
     parser.add_argument("--database", default="mdm")
@@ -368,8 +373,9 @@ def main() -> int:
     parser.add_argument("--platform-resources-dir", type=Path, default=None)
     args = parser.parse_args()
 
+    legacy_name = args.legacy_name or args.entity
     title_ru, title_en = fetch_entity_titles(
-        args.entity,
+        legacy_name,
         args.server,
         args.database,
         args.user,
@@ -377,7 +383,7 @@ def main() -> int:
         args.title_en,
     )
 
-    rows = run_sql(args.entity, args.server, args.database, args.user, args.password)
+    rows = run_sql(legacy_name, args.server, args.database, args.user, args.password)
     en, ru = build_values(args.entity, rows, title_ru, title_en)
 
     args.output_dir.mkdir(parents=True, exist_ok=True)

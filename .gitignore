@@ -365,3 +365,14 @@ FodyWeavers.xsd
 .DS_Store
 /.idea/.idea.blazorbootstrap/.idea
 .idea/*
+
+# Снимок architecture review. Собирает docs/output-review-package/Build-ReviewPackage.ps1
+docs/output-review-package/reference.md
+docs/output-review-package/roadmap.md
+docs/output-review-package/backlog.md
+docs/output-review-package/catalogs-scope.md
+docs/output-review-package/01-as-is-legacy.png
+docs/output-review-package/02-to-be-current-program.png
+docs/output-review-package/03-future-containers-out-of-scope.png
+docs/output-review-package/SVT-idealnyy-process-2.7.html
+docs/output-review-package.zip
