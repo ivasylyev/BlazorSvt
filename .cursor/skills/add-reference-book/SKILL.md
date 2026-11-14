@@ -20,7 +20,7 @@ description: >-
 - Команда «добавить справочник», «создать модуль для {PrimitiveEntityInfo}»
 - Перенос сущности из легаси MDM в BlazorSVT (read-only grid + detail + export)
 
-Перед добавлением сверься с [catalogs-scope.md](../svt-architecture/catalogs-scope.md): справочник должен быть **в скоупе**; домен, видимость меню ЕО и тип работ — из реестра. Сущности из раздела «Вне скоупа», в том числе `TransportRequest` и `MassiveRequest`, этим навыком не переносятся. Этот навык покрывает только **RO** (грид/карточка/sync). Редактор и загрузчик — отдельные этапы (backlog 0.5–0.8). Домен «Заявки» — модуль 0.9, не справочник.
+Перед добавлением сверься с [catalogs-scope.md](../svt-architecture/catalogs-scope.md): справочник должен быть **в скоупе**; домен, видимость меню ЕО и тип работ — из реестра. Сущности из раздела «Вне скоупа», в том числе `TransportRequest` и `MassiveRequest`, этим навыком не переносятся. Этот навык покрывает только **RO** (грид/карточка/sync). Редактор и загрузчик — отдельные вехи (backlog 7–10). Домен «Заявки» — модуль 4, не справочник.
 
 ## Шаг 0 — имя справочника
 
@@ -39,6 +39,11 @@ description: >-
 |---|---|
 | `Rates` | `TransportRate` |
 | `TransportLegs` | `TransportLeg` |
+| `LegalType` | `Contractor` |
+
+`LegalType` в реестре записан как `Contractor` (`EntityInfo` 2054). Примитив — `LegalType` (2028), таблица `PrimitiveEntityData_2028`, представление `vw_LegalType`, словарь `pei/LegalType/ai`. `{LegacyName}` и `--legacy-name` — `LegalType`. `vw_Contractor` устарело.
+
+На экран Contractor не выводить: примитив `Address` (адреса вне скоупа); атрибут `Status`; `LegalForm` и `LevelOrg`, пока в строках нет значений. Порядок колонок грида: `Code`, `NameSearch`, затем флаги в порядке полей таблицы — `Consignee`, `IsTrader`, `IsProcessing`, `IsSender`, `IsDebtor`, `IsCreditor`, затем `INN`.
 
 ## Соглашения об именовании (новые справочники)
 
@@ -104,7 +109,7 @@ description: >-
 
 `ShipmentType` в класс не входит: отдельного enum нет. У TransportLeg тип отправки — сырой `ShipmentTypeCodeT`. Справочники «хранит константы» без enum не входят, пока enum не появится.
 
-`RateSyncClass` в этот класс не входит: в реестре это обычный RO со sync (backlog 0.2.3.7). Enum сам по себе класс не задаёт. `TypePlace` вне скоупа (исторический, вместо него TypeNode): свой RO-грид не делать; enum `LocationType*` остаётся для LocationsNodes.
+`RateSyncClass` в этот класс не входит: в реестре это обычный RO со sync (backlog 3.3.6). Enum сам по себе класс не задаёт. `TypePlace` вне скоупа (исторический, вместо него TypeNode): свой RO-грид не делать; enum `LocationType*` остаётся для LocationsNodes.
 
 Решение для собственного RO-грида такого справочника (принято на RateType, то же для остальных строк таблицы):
 

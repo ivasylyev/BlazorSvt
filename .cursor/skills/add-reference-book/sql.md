@@ -70,7 +70,7 @@ UNION ALL SELECT N'dbo.PrimitiveEntityData_1014'  -- LocationsNodes
 
 **vw_{Entity}_SnapshotSource** — единая проекция для первичной заливки и incremental MERGE. WHERE-фильтр членства (NOT NULL ключевые метрики, валидный Code/RateType/Product и т.п.) — как у эталона; при бизнес-правиле «без связанных X — битая запись» — `EXISTS` / отсечение в проекции.
 
-**vw_{Entity}_Detail** — карточка и полный Excel. Читает легаси-представления (`dbo.vw_{LegacyName}` и связанные `dbo.vw_*`); грид читает `v2.{Entity}_Snapshot`. Поля длинного списка (discovery §4) + системные; ссылки: Code/Name из joined views; при необходимости плечи/лидтаймы (эталон: `vw_TransportRate_Detail`, `vw_AverageRateLevel3_Detail`).  
+**vw_{Entity}_Detail** — карточка и полный Excel. Читает легаси-представления (`dbo.vw_{LegacyName}` и связанные `dbo.vw_*`); грид читает `v2.{Entity}_Snapshot`. Для Contractor легаси-представление — `dbo.vw_LegalType`, не `dbo.vw_Contractor`. Поля длинного списка (discovery §4) + системные; ссылки: Code/Name из joined views; при необходимости плечи/лидтаймы (эталон: `vw_TransportRate_Detail`, `vw_AverageRateLevel3_Detail`).  
 **Дочерние сущности без sub-grid:** вычисляемое поле через `STRING_AGG` (или аналог) **только в detail / export**, не в snapshot. Эталон: `TransportRateCodes` в `AverageRateLevel3`.
 
 **sp_{Entity}_PopulateAffectedKeys** — детекция по `@Source` / `@Lo` / `@Hi`. В шапке и у каждой ветки `IF` / `FROM` — комментарий «номер таблицы → справочник» (как у TransportRate / AverageRateLevel3). Для стабильного словаря с enum процедуру не создавать.

@@ -2,6 +2,8 @@
 
 Плоская копия для передачи на ревью. **Не источник истины.** Канон — `.cursor/skills/svt-architecture/` (`reference.md`, `roadmap.md`, `backlog.md`, `catalogs-scope.md`, диаграммы `01-as-is-legacy.png`, `02-to-be-current-program.png`, `03-future-containers-out-of-scope.png`) и `docs/docs/svt-v-atlas/SVT-idealnyy-process-2.7.html`.
 
+Страницы Confluence из таблицы ниже обновляются из этого пакета (скрипт копирует канон навыка), не наоборот.
+
 В git в этой папке лежат только этот README, `Build-ReviewPackage.ps1` и снимок заключения [`review-current-state.html`](review-current-state.html) (07.08.2026, статус прода не обновляется). Скрипт собирает `docs/output-review-package.zip` и после успешного zip удаляет из этой папки сгенерированные markdown, диаграммы и HTML идеального процесса. Zip в git не коммитится. `-NoZip` оставляет файлы в `-Destination`.
 
 ## Сборка
@@ -36,7 +38,7 @@
 
 Текстовое обоснование и альтернативы — `reference.md`.
 План, Gate A/B/C/D, **§2б отложенная митигация** — `roadmap.md`.
-Чеклист работ, таблица этапов и оценки — `backlog.md`.
+Чеклист работ, таблица вех и оценки — `backlog.md`.
 Реестр справочников — `catalogs-scope.md`.
 Идеальный процесс СВТ, версия 2.7 — `SVT-idealnyy-process-2.7.html`.
 Снимок повторного architecture review — `review-current-state.html` (в папке пакета он остаётся и после сборки).
@@ -51,4 +53,4 @@
 | 2 | `02-to-be-current-program.png` | Целевая архитектура текущей программы (Gate D) | Согласуется в рамках ревью |
 | 3 | `03-future-containers-out-of-scope.png` | Контейнеризация | **Вне скоупа** текущей программы |
 
-Исполнение типа E (прогон 0.2.1.10, CI 0.2.2.6, алерты 0.1.7.8, SCA 0.1.4.6, калибровка 0.0.5, …) — в [03. Бэклог трансформации СВТ](https://confluence.sibur.local/pages/viewpage.action?pageId=583080778), не выдаётся за закрытое.
+Исполнение типа E (прогон 3.1.10, CI 3.2.6, алерты 2.7.8, SCA 2.4.6, калибровка 1.7, …) — в [03. Бэклог трансформации СВТ](https://confluence.sibur.local/pages/viewpage.action?pageId=583080778), не выдаётся за закрытое.

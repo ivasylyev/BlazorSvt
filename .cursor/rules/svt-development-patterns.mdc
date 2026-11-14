@@ -12,11 +12,11 @@ alwaysApply: false
 
 ## Модульная регистрация
 
-Каждый модуль — `public static class *Module` с `Add*Module(IServiceCollection)`. Зависимости только через Platform-интерфейсы, не через другие Modules напрямую — это **hard architecture violation**, не стиль (единая сборка `BlazorSvt.csproj`, границу компилятор не проверяет; проверяется `ModuleBoundaryTests` — включение в CI пайплайна BlazorSvt ещё открыто, `backlog.md` 0.2.2.6 / roadmap D-ARCH). Общие IdsEnum — `Platform/Domain/IdsEnum/`.
+Каждый модуль — `public static class *Module` с `Add*Module(IServiceCollection)`. Зависимости только через Platform-интерфейсы, не через другие Modules напрямую — это **hard architecture violation**, не стиль (единая сборка `BlazorSvt.csproj`, границу компилятор не проверяет; проверяется `ModuleBoundaryTests` — включение в CI пайплайна BlazorSvt ещё открыто, `backlog.md` 3.2.6 / roadmap D-ARCH). Общие IdsEnum — `Platform/Domain/IdsEnum/`.
 
 - **Нельзя**: `Modules/{X}` импортирует класс/DTO из `Modules/{Y}` (X≠Y) напрямую (`using BlazorSvt.Modules.{Y}...`)
 - **Можно** (эталон в коде): cross-reference данные на чтении резолвятся в SQL-снапшоте, а не в C# — см. `TransportRateDto` (`NodeFromCode`/`NodeFromNameRu`/`NodeFromNameEn` из джойна с `LocationsNodes` в snapshot-view, не ссылка на класс модуля); общие enum — в `Platform/Domain/IdsEnum/`, не в модуле-источнике
-- На запись (будущие редакторы/загрузчики, backlog 0.5+): cross-domain FK-валидация — через общий Platform-сервис, параметризованный таблицей/колонкой, не через прямую ссылку на класс чужого модуля
+- На запись (будущие редакторы/загрузчики, backlog 7+): cross-domain FK-валидация — через общий Platform-сервис, параметризованный таблицей/колонкой, не через прямую ссылку на класс чужого модуля
 
 ## Grid-фреймворк
 
@@ -50,11 +50,11 @@ Serilog (`Host/Program.cs`, секция `Serilog` в `appsettings.json`). Пр�
 - **Корреляция**: HTTP — `MiddlewareDecorator` (`ShortCorrelationId`, `UserLogin`, `Channel`; входящий `X-Correlation-ID` принимается и возвращается в ответе); Blazor circuit — `CircuitCorrelationHandler` (`CircuitId` + `ShortCorrelationId` + `UserLogin`, `Channel = Blazor`); sync — `SyncCycleId` на цикл в `SnapshotSyncScheduler`
 - **API**: `Channel = Api` (`/api/mcp` — `Mcp`), `UserLogin` — конечный пользователь из `X-On-Behalf-Of`, `ApiClient` — служебная учётка. На вызов — одна строка `{API|MCP} {операция} {справочник} for {пользователь} via {клиент}: {статус} {код исхода}, rows, ms` (`ApiAccessMiddleware`; файловый шаблон выводит только текст сообщения). Код исхода — `ApiCallLog.ErrorCode` (`-` при успехе; ставят `ApiProblems` и `SvtMcpTool`). Операция MCP — имя инструмента или `mcp_*`. Тела запросов не логировать
 - **Sync health**: duration, cursor lag / affected в `SnapshotSyncExecutor`; ошибки entity изолированы в scheduler
-- **Аудит изменений данных** (кто/что/когда) — field-level аудит с MVP 1.0, до этого отсутствие аудита — принятый риск (чеклист architecture skill)
+- **Аудит изменений данных** (кто/что/когда) — field-level аудит с вехи 11, до этого отсутствие аудита — принятый риск (чеклист architecture skill)
 
 ## Доступ (Windows Auth + роли)
 
-Каркас: `Platform/Access/`. IIS Windows Authentication, `hostingModel="inprocess"`. На circuit: Windows-логин → роли из `dbo.User`/`dbo.UserRole`. Сверка с AD (`UserRole` add/delete по прямым группам `DOMAIN\Group`) — только если `Auth:SynchronizeUserRoles=true`; иначе AD не вызывается. Любая роль → read (`IAccessGuard.Ensure(AccessAction.Read)`). `/load` закрыт (`AccessAction.Import`, только `Auth:IgnoreAccessControl` в Development). Без ролей — `access-denied`; сбой AD при включённой сверке — `auth-unavailable`. Доменная запись в модели прав — с MVP 0.4: не флаги на `ICurrentUser`, а новый `AccessAction` и `RoleNames`. Сам write-through, редактор и загрузчик — с MVP 0.5.
+Каркас: `Platform/Access/`. IIS Windows Authentication, `hostingModel="inprocess"`. На circuit: Windows-логин → роли из `dbo.User`/`dbo.UserRole`. Сверка с AD (`UserRole` add/delete по прямым группам `DOMAIN\Group`) — только если `Auth:SynchronizeUserRoles=true`; иначе AD не вызывается. Любая роль → read (`IAccessGuard.Ensure(AccessAction.Read)`). `/load` закрыт (`AccessAction.Import`, только `Auth:IgnoreAccessControl` в Development). Без ролей — `access-denied`; сбой AD при включённой сверке — `auth-unavailable`. Доменная запись в модели прав — с вехи 6: не флаги на `ICurrentUser`, а новый `AccessAction` и `RoleNames`. Сам write-through, редактор и загрузчик — с вехи 7.
 
 **API (`/api`)** — та же Windows-аутентификация IIS. Вызывающий должен быть в `Api:TrustedClients` (список учёток `DOMAIN\svc`), иначе 403 `client_not_trusted` на весь `/api`, включая OpenAPI. На `/api/v1` обязателен `X-On-Behalf-Of: DOMAIN\user`; права — **только** по ролям этого пользователя (`UserAccessSynchronizer.SynchronizeOnBehalfAsync`: сохранённые роли `dbo.UserRole`, AD не опрашивается): нет в `dbo.User` → 403 `user_not_registered`, нет ролей → 403 `user_has_no_roles`. Права служебной учётки не используются. Сервисы проверяют `IAccessGuard` так же, как для Blazor.
 

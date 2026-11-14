@@ -47,14 +47,14 @@ description: >-
 
 | | |
 |---|---|
-| Контур | Read-only справочники, грид, карточка, выгрузка Excel. Сквозные отчёты (MVP 0.3.1) и дашборды (MVP 1.1) ещё не сделаны |
+| Контур | Read-only справочники, грид, карточка, выгрузка Excel. Сквозные отчёты (веха 5.1) и дашборды (веха 12) ещё не сделаны |
 | На проде | TransportRate, AverageRateLevel3, LocationsNodes, ParityRates, TransportLeg, RateType, Currency, ProductGroup, MTR, TransportTypeLevel3 |
 | Имена в реестре | `Rates` → `TransportRate`, `TransportLegs` → `TransportLeg`, `TransportType_level_3` → `TransportTypeLevel3` |
 | Без watermark-sync | RateType, Currency, TransportTypeLevel3: разовый снимок |
 | Очередь Атласа | Релиз 2.3.48, все четыре на проде. Currency и TransportTypeLevel3 — разовый снимок. ProductGroup и MTR — watermark-sync |
 | Ещё в коде | `HomeRatePivot`, `SmartRateLookup`. `HomeRatePivot` читает снимки AverageRateLevel3 и LocationsNodes; отбор ставки — в тексте SQL |
 | Доступ и sync | Windows Auth, роли `dbo.Role` (любая роль = read). Watermark-sync для остальных справочников на проде |
-| API | Пилот `/api/v1`, только чтение: все зарегистрированные модули и умный подбор. Код едет с приложением. Вызов Атласом с PROD не открыт, пока не закрыты [backlog.md](backlog.md) 0.3.2.7 и 0.3.2.8. [reference.md](reference.md) §«API для внешних фронтендов» |
+| API | Пилот `/api/v1`, только чтение: все зарегистрированные модули и умный подбор. Код едет с приложением. Вызов Атласом с PROD не открыт, пока не закрыты [backlog.md](backlog.md) 5.2.7 и 5.2.8. [reference.md](reference.md) §«API для внешних фронтендов» |
 | MCP | `/api/mcp`. Флаг `Api:McpEnabled` по умолчанию выключен; на PROD — после T6 |
 | Import | Прототип Excel, валидаторы и UI. Staging не подключён. На проде Import закрыт |
 | Тесты | Каркас unit и integration в `tests/` |
@@ -68,7 +68,7 @@ description: >-
 5. Грид из snapshot (watermark-sync; стабильный словарь с enum — разовый снимок), карточка из проекции легаси, пока write-through не остановлен (Gate D), write отделён?
 6. Без Elastic/RabbitMQ/распределённого монолита?
 7. Покрыты ли изменения тестами? Unit — C#-логика (`GridQueryFactory`, валидаторы, contract DTO); integration — read-only smoke SP/view для нового справочника (см. `svt-development-patterns`, секция «Тестирование»)
-8. Для write справочников: write-through в легаси и после Gate C, до Gate D (точечно раньше — только Gate C+); LWW; доменный write-toggle (`V2WriteEnabled_{Домен}`, не единый глобальный); field-level аудит — с MVP 1.0, до этого отсутствие аудита — принятый риск. Заявки на расчёт (0.9, сразу после тиража RO) — исключение: только новый контур, без write-through и без одновременной работы со старым контуром заявок
+8. Для write справочников: write-through в легаси и после Gate C, до Gate D (точечно раньше — только Gate C+); LWW; доменный write-toggle (`V2WriteEnabled_{Домен}`, не единый глобальный); field-level аудит — с вехи 11, до этого отсутствие аудита — принятый риск. Заявки на расчёт (4, сразу после тиража RO) — исключение: только новый контур, без write-through и без одновременной работы со старым контуром заявок
 9. Редактор и загрузчик заводить только где в [catalogs-scope.md](catalogs-scope.md) колонки E и L не `—`. Комментарий строки — пометка для человека, состав работ не меняет. Строка с E = `—` на Gate C домена источником истины в СВТ не объявляется. `AverageRateLevel3` — производная ставок: отдельного флипа нет, пересчёт пишет в те же легаси-таблицы до Gate D
 10. Новый справочник или операция доступны Атласу через API (`AddCatalogApi` / `IApiEndpointContribution`)? Правила UI и API — одни (тот же сервис, тот же `IAccessGuard`), контракт не сломан (`OpenApiContractTests`)
 
@@ -76,7 +76,7 @@ description: >-
 
 Справочник из [catalogs-scope.md](catalogs-scope.md) делается по skill `add-reference-book`. Его discovery этим разделом не заменяется.
 
-Раздел применяется к функции, которой нет ни в реестре, ни пунктом [backlog.md](backlog.md). Заявки на расчёт (0.9), аудит изменений (1.0) и дашборды (1.1) уже пункты бэклога: этот раздел на них не распространяется. Заявки исполняются сразу после тиража RO.
+Раздел применяется к функции, которой нет ни в реестре, ни пунктом [backlog.md](backlog.md). Заявки на расчёт (4), аудит изменений (11) и дашборды (12) уже пункты бэклога: этот раздел на них не распространяется. Заявки исполняются сразу после тиража RO.
 
 1. Разложи исходные данные: **есть** (с источником), **есть частично** (чего не хватает), **отсутствует**. Пробел — вопрос, а не место для правдоподобного значения.
 2. Метрику, интеграцию, атрибут или класс данных бери из материалов заказчика или из документов этого навыка. Если подтверждения нет — запиши пробел и спроси.
@@ -103,9 +103,9 @@ description: >-
 
 - Обоснование замещения, сравнение альтернатив и целевое состояние — [reference.md](reference.md)
   (условное архитектурное одобрение — §6.9)
-- Дорожная карта миграции (MVP, критерии, Gate A/B/C/D) — [roadmap.md](roadmap.md)
+- Дорожная карта миграции (вехи, критерии, Gate A/B/C/D) — [roadmap.md](roadmap.md)
   (отложенная митигация рисков и приложения threat model / SoD / SLI/SLO / … — §2б)
-- Чеклист работ, таблица этапов и оценка трудоёмкости — [backlog.md](backlog.md)
+- Чеклист работ, таблица вех и оценка трудоёмкости — [backlog.md](backlog.md)
 - Реестр справочников (SoT скоупа: состав доменов, RO/E/L, меню, приоритеты) — [catalogs-scope.md](catalogs-scope.md). Канон при изменении — этот файл в репозитории; Excel на Confluence — только исходный дамп легаси
 - Диаграммы для архитектурного ревью —
   [README.md](README.md) (файлы `01-as-is-legacy.png`, `02-to-be-current-program.png`, `03-future-containers-out-of-scope.png` лежат в этой же папке)

@@ -7,7 +7,7 @@
 - План, Gate A/B/C/D, **отложенная митигация рисков §2б** (реестр D-* + приложения: модель угроз,
   SoD, миграции, SLI/SLO, метрики пилотов, протокол нагрузки):
   [`roadmap.md`](roadmap.md)
-- Чеклист работ, таблица этапов и оценки:
+- Чеклист работ, таблица вех и оценки:
   [`backlog.md`](backlog.md)
 - Реестр справочников (скоуп, домены, RO/E/L):
   [`catalogs-scope.md`](catalogs-scope.md)
@@ -23,7 +23,7 @@
 | № | Файл | Состояние | Статус |
 |---|---|---|---|
 | 1 | [`01-as-is-legacy.png`](01-as-is-legacy.png) | Легаси (As-Is): распределённый монолит, Elastic, RabbitMQ, Angular | Текущее состояние прод |
-| 2 | [`02-to-be-current-program.png`](02-to-be-current-program.png) | Целевая архитектура **текущей программы** трансформации (итог MVP 2.0 / Gate D): та же ВМ и Windows Server 2016/IIS, модульный монолит .NET Blazor, без Elastic/RabbitMQ | Согласуется в рамках этого ревью |
+| 2 | [`02-to-be-current-program.png`](02-to-be-current-program.png) | Целевая архитектура **текущей программы** трансформации (итог вехи 14 / Gate D): та же ВМ и Windows Server 2016/IIS, модульный монолит .NET Blazor, без Elastic/RabbitMQ | Согласуется в рамках этого ревью |
 | 3 | [`03-future-containers-out-of-scope.png`](03-future-containers-out-of-scope.png) | Возможное будущее состояние — контейнеризация (Docker/Kubernetes) | **Вне скоупа текущей программы**; отдельная будущая инициатива с отдельным бизнес-кейсом |
 
 ## Почему три, а не одна схема

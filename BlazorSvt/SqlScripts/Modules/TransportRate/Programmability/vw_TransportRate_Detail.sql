@@ -274,8 +274,9 @@ AS
         ON p.Id = r.Product			
 			
 			
-    LEFT JOIN vw_Contractor con 
-        ON con.Id=r.Counterparty			
+    -- Contractor: примитив LegalType. vw_Contractor устарело.
+    LEFT JOIN vw_LegalType con
+        ON con.Id=r.Counterparty
 
     CROSS APPLY (
         SELECT TOP 1

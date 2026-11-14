@@ -2,7 +2,7 @@
 
 Читать после [SKILL.md](SKILL.md) (шаг 0 и именование). Дальше — [sql.md](sql.md).
 
-`{LegacyName}` — `PrimitiveEntityInfo.Name` и легаси-view `vw_{LegacyName}`. `{Entity}` — имя модуля, DTO и resx. Как они соотносятся — шаг 0 в SKILL.md.
+`{LegacyName}` — `PrimitiveEntityInfo.Name` и легаси-view `vw_{LegacyName}`. `{Entity}` — имя модуля, DTO и resx. Как они соотносятся — шаг 0 в SKILL.md. Для `Contractor` примитив и представление — `LegalType` / `vw_LegalType`; `vw_Contractor` устарело и не используется. `Address`, `Status`, а также пустые `LegalForm` и `LevelOrg` в грид и карточку не включать. Порядок колонок грида — в SKILL.md, шаг 0.
 
 Подключение: сервер `localhost`, база `mdm`. Логин и пароль — из `Database:MdmDb` в `BlazorSvt/appsettings.json`. Поле Server из этой строки не использовать: там адрес удалённого стенда. `appsettings.json` не менять.  
 Legacy DDL/views: `C:\Work\SVT\DB\SVT.DB.MDM\dbo\Views` и `dbo\Tables`.  
