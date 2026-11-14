@@ -12,7 +12,7 @@
 
 Редактирование записей и интеграции в новом контуре ещё не сделаны. Прототип загрузки Excel есть в `Import/`; staging не подключён, на проде Import закрыт.
 
-Актуальный статус — `.cursor/skills/svt-architecture/SKILL.md`. Карта документов — [`docs/README.md`](docs/README.md).
+Актуальный статус — `.cursor/skills/svt-architecture/status.md`. Карта документов — [`docs/README.md`](docs/README.md).
 
 ---
 
@@ -84,7 +84,7 @@ tests/                       # Unit + integration (read-only SQL)
 
 ## Справочники на проде (read-only)
 
-Список и оговорки (стабильные словари без watermark-sync, легаси-имена) — в `.cursor/skills/svt-architecture/SKILL.md`. Сейчас это:
+Список и оговорки (стабильные словари без watermark-sync, легаси-имена) — в `.cursor/skills/svt-architecture/status.md`. Сейчас это:
 
 | Маршрут | Модуль | Описание |
 |---------|--------|----------|
@@ -114,7 +114,7 @@ tests/                       # Unit + integration (read-only SQL)
 - **Strangler Fig** — переходный период с общей БД `mdm`, детальные view могут ссылаться на legacy-объекты `dbo.vw_*`.
 - **Инкрементальный sync** — RowVer → `PopulateAffectedKeys` → upsert snapshot; детали в `SqlScripts/README.md`.
 
-Подробнее: `.cursor/skills/svt-architecture/` (`architecture.md` — архитектура, `roadmap.md` — порядок и Gate, `backlog.md` — чеклист работ), правило `svt-development-patterns`.
+Подробнее: `.cursor/skills/svt-architecture/` (`architecture.md` — архитектура, `roadmap.md` — порядок и сводка вех, `cutover.md` — критерии Gate, `backlog.md` — чеклист работ), правило `svt-development-patterns`.
 
 ---
 

@@ -55,7 +55,17 @@ function Convert-ToConfluence([string]$text, $pageList) {
 }
 
 $skillDir = Join-Path $repoRoot ".cursor\skills\svt-architecture"
-$companions = @("risks.md", "glossary.md", "delivery-ring.md")
+$companions = @(
+    "risks.md",
+    "glossary.md",
+    "delivery-steps.md",
+    "cutover.md",
+    "outside-registry.md",
+    "status.md",
+    "pre-implementation-checklist.md",
+    "review-conditions.md",
+    "mitigations.md"
+)
 foreach ($p in $pages) {
     $source = Join-Path $skillDir $p.Name
     if (-not (Test-Path -LiteralPath $source)) {

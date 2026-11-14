@@ -7,7 +7,7 @@ description: >-
   к функции, которой ещё нет в реестре и бэклоге.
 ---
 
-# Архитектура СВТ
+# Контекст СВТ
 
 ## Канон
 
@@ -15,14 +15,19 @@ description: >-
 
 | Вопрос | Канон |
 |---|---|
-| Что на проде, API, MCP, Import | этот файл |
+| Что на проде, API, MCP, Import | [status.md](status.md) |
 | Обоснование и целевое состояние | [architecture.md](architecture.md) |
 | Состав, домены, RO/E/L, меню, приоритеты | [catalogs-scope.md](catalogs-scope.md) |
-| Порядок доменов и Gate | [roadmap.md](roadmap.md) |
-| Риски, меры, приложения D-* | [risks.md](risks.md) |
-| Шаги поставки | [delivery-ring.md](delivery-ring.md); подписи в [backlog.md](backlog.md) |
+| Порядок доменов и вех, критический путь, оценки вех | [roadmap.md](roadmap.md) |
+| Правила перехода и критерии Gate | [cutover.md](cutover.md) |
+| Риски и меры | [risks.md](risks.md) |
+| Условия одобрения | [review-conditions.md](review-conditions.md) |
+| Приложения D-* | [mitigations.md](mitigations.md) |
+| Шаги поставки | [delivery-steps.md](delivery-steps.md); подписи в [backlog.md](backlog.md) |
 | Термины | [glossary.md](glossary.md) |
-| Чеклист и оценки, вехи 1–14 | [backlog.md](backlog.md) |
+| Чеклист задач | [backlog.md](backlog.md) |
+| Функция, которой нет в реестре | [outside-registry.md](outside-registry.md) |
+| Чеклист перед кодом | [pre-implementation-checklist.md](pre-implementation-checklist.md) |
 | Обязательные ограничения | правило `svt-architecture-principles` |
 | Как писать текущий код | правило `svt-development-patterns` |
 | Новый RO-справочник | skill `add-reference-book` |
@@ -40,78 +45,36 @@ description: >-
 
 ## Краткий контекст
 
-**СВТ** — MDM логистических маршрутов, тарифов, складских ограничений. Замещение легаси (Angular, распределённый монолит, Elastic, RabbitMQ, метамодель справочников, логика в SP/SQL Agent).
-
-**Целевой стек**: Blazor Server + MS SQL. **Стиль**: модульный монолит. **Миграция**: Strangler Fig с общей БД. До Gate C источник истины домена — легаси-таблицы. На Gate C новый контур объявляется источником истины строк с редактором (колонка E не `—`); запись в легаси-таблицы продолжается до Gate D. Exit dual-run волнами → инкрементальный SoT flip по доменам справочников → единый финальный демонтаж легаси (детали — в [roadmap.md](roadmap.md), раздел «Критерии Gate»).
-
-Корпоративный паспорт действующей ИС (критичность, ИСПДн, СУБД, обновление) — [architecture.md](architecture.md) §4.6.
-
-**Текущий статус**
-
-| | |
-|---|---|
-| Контур | Read-only справочники, грид, карточка, выгрузка Excel. Сквозные отчёты (веха 5.1) и дашборды (веха 12) ещё не сделаны |
-| На проде | TransportRate, AverageRateLevel3, LocationsNodes, ParityRates, TransportLeg, RateType, Currency, ProductGroup, MTR, TransportTypeLevel3 |
-| Имена в реестре | `Rates` → `TransportRate`, `TransportLegs` → `TransportLeg`, `TransportType_level_3` → `TransportTypeLevel3` |
-| Без watermark-sync | RateType, Currency, TransportTypeLevel3: разовый снимок |
-| Очередь Атласа | Релиз 2.3.48, все четыре на проде. Currency и TransportTypeLevel3 — разовый снимок. ProductGroup и MTR — watermark-sync |
-| Ещё в коде | `HomeRatePivot`, `SmartRateLookup`. `HomeRatePivot` читает снимки AverageRateLevel3 и LocationsNodes; отбор ставки — в тексте SQL |
-| Доступ и sync | Windows Auth, роли `dbo.Role` (любая роль = read). Watermark-sync для остальных справочников на проде |
-| API | Пилот `/api/v1`, только чтение: все зарегистрированные модули и умный подбор. Код едет с приложением. Вызов Атласом с PROD не открыт, пока не закрыты [backlog.md](backlog.md) 5.2.7 и 5.2.8. [architecture.md](architecture.md) §«API для внешних фронтендов» |
-| MCP | `/api/mcp`. Флаг `Api:McpEnabled` по умолчанию выключен; на PROD — после T6 |
-| Import | Прототип Excel, валидаторы и UI. Staging не подключён. На проде Import закрыт |
-| Тесты | Каркас unit и integration в `tests/` |
+Текст раздела — [status.md](status.md).
 
 ## Чеклист перед реализацией
 
-1. Решение вписывается в вертикальный срез `Modules/{Name}/`?
-2. Бизнес-логика в C#, а не в SP?
-3. Один pipeline для UI и batch (общие валидаторы/команды)?
-4. Типизированная таблица + constraints, не мета-описание?
-5. Грид из snapshot (watermark-sync; стабильный словарь с enum — разовый снимок), карточка из проекции легаси, пока write-through не остановлен (Gate D), write отделён?
-6. Без Elastic/RabbitMQ/распределённого монолита?
-7. Покрыты ли изменения тестами? Unit — C#-логика (`GridQueryFactory`, валидаторы, contract DTO); integration — read-only smoke SP/view для нового справочника (см. `svt-development-patterns`, секция «Тестирование»)
-8. Для write справочников: write-through в легаси и после Gate C, до Gate D (точечно раньше — только Gate C+); LWW; доменный write-toggle (`V2WriteEnabled_{Домен}`, не единый глобальный); field-level аудит — с вехи 11, до этого отсутствие аудита — принятый риск. Заявки на расчёт (4, сразу после тиража RO) — исключение: только новый контур, без write-through и без одновременной работы со старым контуром заявок
-9. Редактор и загрузчик заводить только где в [catalogs-scope.md](catalogs-scope.md) колонки E и L не `—`. Комментарий строки — пометка для человека, состав работ не меняет. Строка с E = `—` на Gate C домена источником истины в СВТ не объявляется. `AverageRateLevel3` — производная ставок: отдельного флипа нет, пересчёт пишет в те же легаси-таблицы до Gate D
-10. Новый справочник или операция доступны Атласу через API (`AddCatalogApi` / `IApiEndpointContribution`)? Правила UI и API — одни (тот же сервис, тот же `IAccessGuard`), контракт не сломан (`OpenApiContractTests`)
+Текст раздела — [pre-implementation-checklist.md](pre-implementation-checklist.md).
 
 ## Требования, которых ещё нет в реестре
 
-Справочник из [catalogs-scope.md](catalogs-scope.md) делается по skill `add-reference-book`. Его discovery этим разделом не заменяется.
-
-Раздел применяется к функции, которой нет ни в реестре, ни пунктом [backlog.md](backlog.md). Заявки на расчёт (4), аудит изменений (11) и дашборды (12) уже пункты бэклога: этот раздел на них не распространяется. Заявки исполняются сразу после тиража RO.
-
-1. Разложи исходные данные: **есть** (с источником), **есть частично** (чего не хватает), **отсутствует**. Пробел — вопрос, а не место для правдоподобного значения.
-2. Метрику, интеграцию, атрибут или класс данных бери из материалов заказчика или из документов этого навыка. Если подтверждения нет — запиши пробел и спроси.
-3. Требование проверяемо: бизнес-потребность и что делает система. Связь сохраняется до пункта бэклога. Стек, размещение и границы модулей берутся из этого навыка и [architecture.md](architecture.md). Приёмка — [roadmap.md](roadmap.md), «Приёмка функции вне реестра справочников».
-4. Две несовместимые позиции сохрани обе. Решение — у владельца продукта домена.
-5. В [catalogs-scope.md](catalogs-scope.md), [roadmap.md](roadmap.md) и [backlog.md](backlog.md) попадает только явно подтверждённая формулировка. До подтверждения держи текст рабочей версией в ответе.
-
-Класс данных (коммерческая тайна, персональные данные) — открытый пробел T6 в приложении D-SEC-TM ([risks.md](risks.md)). Признаки сам не проставляй.
+Текст раздела — [outside-registry.md](outside-registry.md).
 
 ## Ключевые антипаттерны легаси (не повторять)
 
-| Проблема легаси | Следствие | Решение в новой СВТ |
-|-----------------|-----------|---------------------|
-| Распределённый монолит | Высокий риск дефектов | Модульный монолит, явные границы |
-| БД как вычислительный движок | Деградация на 2M+, отказ на 3M+ | Логика в приложении |
-| Elastic рассинхрон | Устаревшие данные | Только SQL + FTS |
-| Метамодель справочников | Нет constraints | Типизированные таблицы |
-| Дублирование правил UI/batch/SQL | 2× трудоёмкость, регрессии | Единый pipeline |
-| Низкая наблюдаемость | Долгие инциденты | Аудит + трассировка |
-
-Эталон СВТ / Атлас (кольцо, П3, документы в `docs/docs/svt-v-atlas/`) — skill `atlas`, не этот файл. Техническое API, через которое фронтенд Атласа читает СВТ, — [architecture.md](architecture.md) §«API для внешних фронтендов» и правило `svt-development-patterns` («API»).
+Текст раздела — [architecture.md](architecture.md), после §3.
 
 ## Подробная документация
 
 - Обоснование замещения, сравнение альтернатив и целевое состояние — [architecture.md](architecture.md)
-  (условное архитектурное одобрение — §6.9)
-- Дорожная карта: порядок доменов и Gate A/B/C/D — [roadmap.md](roadmap.md)
-- Риски, меры и приложения threat model / SoD / SLI/SLO / … — [risks.md](risks.md)
-- Двенадцать шагов поставки — [delivery-ring.md](delivery-ring.md)
+  (условное архитектурное одобрение — [review-conditions.md](review-conditions.md))
+- Дорожная карта: порядок доменов, сводка вех и критический путь — [roadmap.md](roadmap.md)
+- Правила перехода и критерии Gate A/B/C/D — [cutover.md](cutover.md)
+- Риски и меры — [risks.md](risks.md)
+- Условия одобрения — [review-conditions.md](review-conditions.md)
+- Приложения threat model / SoD / SLI/SLO / … — [mitigations.md](mitigations.md)
+- Двенадцать шагов поставки — [delivery-steps.md](delivery-steps.md)
 - Термины — [glossary.md](glossary.md)
-- Чеклист работ, таблица вех и оценка трудоёмкости — [backlog.md](backlog.md)
+- Чеклист работ — [backlog.md](backlog.md). Таблица вех и оценка трудоёмкости — [roadmap.md](roadmap.md)
 - Реестр справочников (SoT скоупа: состав доменов, RO/E/L, меню, приоритеты) — [catalogs-scope.md](catalogs-scope.md). Канон при изменении — этот файл в репозитории; Excel на Confluence — только исходный дамп легаси
+- Текущий статус контура — [status.md](status.md)
+- Функции вне реестра — [outside-registry.md](outside-registry.md)
+- Чеклист перед кодом — [pre-implementation-checklist.md](pre-implementation-checklist.md)
 - Оглавление пакета и диаграммы —
   [README.md](README.md) (файлы `01-as-is-legacy.png`, `02-to-be-current-program.png`, `03-future-containers-out-of-scope.png` лежат в этой же папке)
 - Пакет для передачи на ревью собирает [Build-ReviewPackage.ps1](../../../docs/output-review-package/Build-ReviewPackage.ps1) по [README](../../../docs/output-review-package/README.md): markdown этого навыка, диаграммы из этой папки и `SVT-idealnyy-process-2.7.html` попадают в zip, затем скрипт удаляет эти копии из папки пакета. Канон — файлы навыка. Zip в git не коммитится

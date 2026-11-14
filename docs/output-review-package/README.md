@@ -1,6 +1,6 @@
 # Пакет документов для архитектурного ревью СВТ 2.0
 
-Плоская копия для передачи на ревью. **Не источник истины.** Канон — `.cursor/skills/svt-architecture/` (`architecture.md`, `roadmap.md`, `risks.md`, `glossary.md`, `delivery-ring.md`, `backlog.md`, `catalogs-scope.md`, диаграммы `01-as-is-legacy.png`, `02-to-be-current-program.png`, `03-future-containers-out-of-scope.png`) и `docs/docs/svt-v-atlas/SVT-idealnyy-process-2.7.html`.
+Плоская копия для передачи на ревью. **Не источник истины.** Канон — `.cursor/skills/svt-architecture/` (`architecture.md`, `roadmap.md`, `cutover.md`, `risks.md`, `review-conditions.md`, `mitigations.md`, `glossary.md`, `delivery-steps.md`, `backlog.md`, `catalogs-scope.md`, `status.md`, `outside-registry.md`, `pre-implementation-checklist.md`, диаграммы `01-as-is-legacy.png`, `02-to-be-current-program.png`, `03-future-containers-out-of-scope.png`) и `docs/docs/svt-v-atlas/SVT-idealnyy-process-2.7.html`.
 
 Страницы Confluence из таблицы ниже обновляются из этого пакета (скрипт копирует канон навыка), не наоборот.
 
@@ -17,7 +17,7 @@
 Скрипт:
 
 1. Копирует markdown и три диаграммы из `.cursor/skills/svt-architecture/`.
-2. Заменяет ссылки и явные упоминания четырёх файлов из таблицы (включая самоссылки) на Confluence. Таблица ниже — и инструкция, и вход скрипта: ровно четыре строки. `risks.md`, `glossary.md` и `delivery-ring.md` копируются рядом и на Confluence не публикуются.
+2. Заменяет ссылки и явные упоминания четырёх файлов из таблицы (включая самоссылки) на Confluence. Таблица ниже — и инструкция, и вход скрипта: ровно четыре строки. `risks.md`, `glossary.md`, `delivery-steps.md`, `cutover.md`, `outside-registry.md`, `status.md`, `pre-implementation-checklist.md`, `review-conditions.md` и `mitigations.md` копируются рядом и на Confluence не публикуются.
 
 | Файл канона | Страница Confluence |
 |---|---|
@@ -32,20 +32,22 @@
 6. Кладёт zip рядом с папкой: `docs/output-review-package.zip`. В корне архива — папка `output-review-package/` без скрипта сборки. Старый zip перезаписывается.
 7. Удаляет из этой папки скопированные markdown, три диаграммы и `SVT-idealnyy-process-2.7.html`. README, скрипт и `review-current-state.html` остаются. При `-Destination` вне этой папки файлы там сохраняются, а сгенерированные копии в этой папке всё равно удаляются.
 
-Скоуп согласования: **условное одобрение** направления (см. [01. Архитектура трансформации СВТ: проблемы и решение](https://confluence.sibur.local/pages/viewpage.action?pageId=573815762) §6.9; реестр и приложения митигаций — `risks.md` в zip).
+Скоуп согласования: **условное одобрение** направления (см. `review-conditions.md` в zip, раздел §6.9; реестр там же, приложения митигаций — `mitigations.md`).
 
 ## Состав zip
 
 Текстовое обоснование и альтернативы — `architecture.md`.
-Порядок доменов и Gate A/B/C/D — `roadmap.md`.
-Риски, меры и приложения D-* — `risks.md`.
-Шаги поставки — `delivery-ring.md`. Термины — `glossary.md`.
-Чеклист работ, таблица вех и оценки — `backlog.md`.
+Порядок доменов, сводка вех и критический путь — `roadmap.md`.
+Правила перехода и критерии Gate A/B/C/D — `cutover.md`.
+Риски и меры — `risks.md`. Условия одобрения — `review-conditions.md`. Приложения D-* — `mitigations.md`.
+Шаги поставки — `delivery-steps.md`. Термины — `glossary.md`.
+Чеклист работ — `backlog.md`.
 Реестр справочников — `catalogs-scope.md`.
+Статус контура — `status.md`. Функции вне реестра — `outside-registry.md`. Чеклист перед кодом — `pre-implementation-checklist.md`.
 Идеальный процесс СВТ, версия 2.7 — `SVT-idealnyy-process-2.7.html`.
 Снимок повторного architecture review — `review-current-state.html` (в папке пакета он остаётся и после сборки).
 
-Отдельный файл на каждый артефакт митигации **не ведётся** — приложения D-* в `risks.md`.
+Отдельный файл на каждый артефакт митигации **не ведётся** — приложения D-* в `mitigations.md`.
 
 ## Диаграммы
 

@@ -19,8 +19,9 @@ MDM логистических маршрутов, тарифов и склад�
 
 | Вопрос | Канон |
 |---|---|
-| Статус прода, API, MCP, Import | `SKILL.md` |
-| Скоуп; Gate и план; чеклист | `catalogs-scope.md`; `roadmap.md`; `backlog.md` |
+| Статус прода, API, MCP, Import | `status.md` |
+| Скоуп; план и сводка вех; чеклист | `catalogs-scope.md`; `roadmap.md`; `backlog.md` |
+| Критерии Gate | `cutover.md` |
 | Риски и меры | `risks.md` |
 | Код; новый RO-справочник; HTTP | правило `svt-development-patterns`; skill `add-reference-book`; контракт — `docs/api/svt-api-v1.openapi.json`, вызов — `svt-api-v1-developers.md`, решения — `architecture.md` §6.6.1 |
 
@@ -28,7 +29,7 @@ MDM логистических маршрутов, тарифов и склад�
 
 ## Миграция
 
-**Strangler Fig**, общая БД. Чтение: watermark-sync → snapshot; стабильный словарь с enum — разовый снимок (skill `add-reference-book`). Запись справочников (с вехи 7): write-through в легаси до Gate D, в том числе после Gate C. На Gate C новый контур объявляется источником истины строк с редактором. Заявки на расчёт (4, сразу после тиража RO) — только новый контур, без write-through и без одновременной работы со старым контуром заявок. Детали Gate A/B/C/D — `roadmap.md`.
+**Strangler Fig**, общая БД. Чтение: watermark-sync → snapshot; стабильный словарь с enum — разовый снимок (skill `add-reference-book`). Запись справочников (с вехи 7): write-through в легаси до Gate D, в том числе после Gate C. На Gate C новый контур объявляется источником истины строк с редактором. Заявки на расчёт (4, сразу после тиража RO) — только новый контур, без write-through и без одновременной работы со старым контуром заявок. Детали Gate A/B/C/D — `cutover.md`.
 
 ## Структура репозитория
 

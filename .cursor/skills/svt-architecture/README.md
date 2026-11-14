@@ -4,17 +4,23 @@
 
 | Файл | Зачем |
 |---|---|
-| [`architecture.md`](architecture.md) | Обоснование, альтернативы, целевое состояние, условное одобрение (§6.9) |
-| [`roadmap.md`](roadmap.md) | Порядок доменов, зависимости старта, критерии Gate A/B/C/D |
-| [`risks.md`](risks.md) | Риски и меры, реестр D-* и приложения: модель угроз, SoD, миграции, SLI/SLO, метрики пилотов, протокол нагрузки |
-| [`delivery-ring.md`](delivery-ring.md) | Двенадцать шагов поставки |
+| [`architecture.md`](architecture.md) | Обоснование, альтернативы, целевое состояние |
+| [`roadmap.md`](roadmap.md) | Порядок доменов, сводка вех, критический путь |
+| [`cutover.md`](cutover.md) | Правила перехода и критерии Gate A/B/C/D |
+| [`risks.md`](risks.md) | Риски и меры |
+| [`review-conditions.md`](review-conditions.md) | Условия условного одобрения, реестр D-* |
+| [`mitigations.md`](mitigations.md) | Приложения: модель угроз, SoD, миграции, SLI/SLO, метрики пилотов, протокол нагрузки |
+| [`delivery-steps.md`](delivery-steps.md) | Двенадцать шагов поставки |
 | [`glossary.md`](glossary.md) | Термины |
-| [`backlog.md`](backlog.md) | Чеклист работ, таблица вех и оценки |
+| [`backlog.md`](backlog.md) | Чеклист работ |
 | [`catalogs-scope.md`](catalogs-scope.md) | Реестр справочников: скоуп, домены, RO/E/L |
+| [`status.md`](status.md) | Текущий статус контура |
+| [`outside-registry.md`](outside-registry.md) | Функции вне реестра справочников |
+| [`pre-implementation-checklist.md`](pre-implementation-checklist.md) | Чеклист перед кодом |
 | [`review-current-state.html`](../../../docs/output-review-package/review-current-state.html) | Снимок повторного architecture review (07.08.2026, статус прода не обновляется) |
 | [`SVT-idealnyy-process-2.7.html`](../../../docs/docs/svt-v-atlas/SVT-idealnyy-process-2.7.html) | Идеальный процесс, версия 2.7 (канон, в пакет копируется скриптом) |
 
-Отдельный файл на каждый артефакт митигации **не ведётся** — приложения D-* лежат в `risks.md`.
+Отдельный файл на каждый артефакт митигации **не ведётся** — приложения D-* лежат в `mitigations.md`.
 
 ## Последовательность диаграмм
 
