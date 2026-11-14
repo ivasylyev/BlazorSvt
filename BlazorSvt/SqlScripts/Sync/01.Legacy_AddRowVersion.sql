@@ -43,7 +43,9 @@ VALUES
     -- AverageRateLevel3
     (N'dbo.PrimitiveEntityData_2057', N'AverageRateLevel3 (основная)'),
     -- ParityRates
-    (N'dbo.PrimitiveEntityData_2109', N'ParityRates (основная)');
+    (N'dbo.PrimitiveEntityData_2109', N'ParityRates (основная)'),
+    -- Contractor (примитив LegalType)
+    (N'dbo.PrimitiveEntityData_2028', N'LegalType (основная), реестр Contractor');
 
 DECLARE @tableName SYSNAME, @comment NVARCHAR(100), @sql NVARCHAR(MAX);
 
@@ -97,7 +99,8 @@ VALUES
     (N'dbo.PrimitiveEntityData_2057', N'ix_PrimitiveEntityData_2057_RowVer'),  -- AverageRateLevel3
     (N'dbo.PrimitiveEntityData_2109', N'ix_PrimitiveEntityData_2109_RowVer'),  -- ParityRates
     (N'dbo.PrimitiveEntityData_1015', N'ix_PrimitiveEntityData_1015_RowVer'),  -- MTR (Product)
-    (N'dbo.PrimitiveEntityData_1014', N'ix_PrimitiveEntityData_1014_RowVer');  -- LocationsNodes
+    (N'dbo.PrimitiveEntityData_1014', N'ix_PrimitiveEntityData_1014_RowVer'),  -- LocationsNodes
+    (N'dbo.PrimitiveEntityData_2028', N'ix_PrimitiveEntityData_2028_RowVer');  -- LegalType (основная), реестр Contractor
 
 DECLARE @idxTable SYSNAME, @idxName SYSNAME, @idxSql NVARCHAR(MAX);
 

@@ -60,7 +60,7 @@ Serilog (`Host/Program.cs`, секция `Serilog` в `appsettings.json`). Пр�
 
 ## API и MCP
 
-Контракт, маршруты, решения и риски — `reference.md` §6.6.1 (skill `svt-architecture`). Статус пилота — `SKILL.md` того же навыка.
+Контракт, маршруты, решения и риски — `architecture.md` §6.6.1 (skill `svt-architecture`). Статус пилота — `SKILL.md` того же навыка.
 
 При правке кода:
 

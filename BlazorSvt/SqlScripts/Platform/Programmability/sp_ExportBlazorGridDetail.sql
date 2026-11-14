@@ -97,7 +97,8 @@ BEGIN
         @SelectList         = @SelectList,
         @SortKey            = @SortKey,
         @SortDirection      = @SortDirection,
-        @FilterJson         = @FilterJson;
+        @FilterJson         = @FilterJson,
+        @ReturnTotalCount   = 0;
 -- ������ ������ ��������� ������ "ORDER BY" �� "INNER JOIN #Filtered"
 -- ���� �������� - ��� ��������� �� ������ ������
     SET @DetailSQL = N'

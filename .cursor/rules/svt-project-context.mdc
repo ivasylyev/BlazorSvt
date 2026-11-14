@@ -21,7 +21,8 @@ MDM логистических маршрутов, тарифов и склад�
 |---|---|
 | Статус прода, API, MCP, Import | `SKILL.md` |
 | Скоуп; Gate и план; чеклист | `catalogs-scope.md`; `roadmap.md`; `backlog.md` |
-| Код; новый RO-справочник; HTTP | правило `svt-development-patterns`; skill `add-reference-book`; контракт — `docs/api/svt-api-v1.openapi.json`, вызов — `svt-api-v1-developers.md`, решения — `reference.md` §6.6.1 |
+| Риски и меры | `risks.md` |
+| Код; новый RO-справочник; HTTP | правило `svt-development-patterns`; skill `add-reference-book`; контракт — `docs/api/svt-api-v1.openapi.json`, вызов — `svt-api-v1-developers.md`, решения — `architecture.md` §6.6.1 |
 
 Принципы — правило `svt-architecture-principles`. Постановки `docs/tasks`, транскрипты, бюджет и план для руководства — снимки, не процедуры.
 

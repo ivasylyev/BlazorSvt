@@ -1,5 +1,7 @@
 using BlazorSvt.IntegrationTests.Infrastructure;
 using BlazorSvt.Modules.AverageRateLevel3.Detail;
+using BlazorSvt.Modules.Contractor.Detail;
+using BlazorSvt.Modules.Contractor.List;
 using BlazorSvt.Modules.Currency.Detail;
 using BlazorSvt.Modules.Currency.List;
 using BlazorSvt.Modules.AverageRateLevel3.List;
@@ -342,6 +344,43 @@ public class ModuleGridIntegrationTests(DatabaseFixture fixture) : IntegrationTe
 
         detail.Should().NotBeNull();
         detail!.ProductGroupId.Should().Be(entityKey);
+        detail.Code.Should().NotBeNullOrWhiteSpace();
+    }
+
+    [SkippableFact]
+    public async Task ContractorGrid_ReturnsRows()
+    {
+        var connectionString = RequireConnectionString();
+
+        var (rows, totalCount) = await GridSpTestHelper.ExecuteGetBlazorGridDataAsync<ContractorDto>(
+            connectionString,
+            typeof(ContractorDto),
+            GridSpTestHelper.CreateDefaultQuery());
+
+        rows.Should().NotBeEmpty();
+        totalCount.Should().BeGreaterThan(0);
+    }
+
+    [SkippableFact]
+    public async Task ContractorDetailView_ReturnsRowForGridEntityKey()
+    {
+        var connectionString = RequireConnectionString();
+
+        var (rows, _) = await GridSpTestHelper.ExecuteGetBlazorGridDataAsync<ContractorDto>(
+            connectionString,
+            typeof(ContractorDto),
+            GridSpTestHelper.CreateDefaultQuery(pageSize: 1));
+
+        var entityKey = rows[0].ContractorId;
+
+        var detail = await GridSpTestHelper.QueryDetailViewAsync<ContractorDetailDto>(
+            connectionString,
+            "v2.vw_Contractor_Detail",
+            "ContractorId",
+            entityKey);
+
+        detail.Should().NotBeNull();
+        detail!.ContractorId.Should().Be(entityKey);
         detail.Code.Should().NotBeNullOrWhiteSpace();
     }
 

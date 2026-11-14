@@ -43,7 +43,7 @@ description: >-
 
 `LegalType` в реестре записан как `Contractor` (`EntityInfo` 2054). Примитив — `LegalType` (2028), таблица `PrimitiveEntityData_2028`, представление `vw_LegalType`, словарь `pei/LegalType/ai`. `{LegacyName}` и `--legacy-name` — `LegalType`. `vw_Contractor` устарело.
 
-На экран Contractor не выводить: примитив `Address` (адреса вне скоупа); атрибут `Status`; `LegalForm` и `LevelOrg`, пока в строках нет значений. Порядок колонок грида: `Code`, `NameSearch`, затем флаги в порядке полей таблицы — `Consignee`, `IsTrader`, `IsProcessing`, `IsSender`, `IsDebtor`, `IsCreditor`, затем `INN`.
+На экран Contractor не выводить: примитив `Address` (адреса вне скоупа); атрибут `Status`; `LegalForm` и `LevelOrg`, пока в строках нет значений. Расхождение состояния записи и `Status` на localhost в постановке не учитывается: на проде его нет. Порядок колонок грида: `Code`, `NameSearch`, затем флаги в порядке полей таблицы — `Consignee`, `IsTrader`, `IsProcessing`, `IsSender`, `IsDebtor`, `IsCreditor`, затем `INN`. Подписи — [grid-column-glossary.md](grid-column-glossary.md), раздел Contractor.
 
 ## Соглашения об именовании (новые справочники)
 

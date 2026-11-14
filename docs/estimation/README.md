@@ -4,7 +4,7 @@
 и поэлементных троек в том же файле.
 Confluence ч. III: [pageId=567442215](https://confluence.sibur.local/pages/viewpage.action?pageId=567442215).
 
-WBS ids = `{веха}.{пакет}.{задача}` (не путать с `reference.md` §6.9).
+WBS ids = `{веха}.{пакет}.{задача}` (не путать с `architecture.md` §6.9).
 Скоуп RO/E/L — `catalogs-scope.md`. Третья цифра (человек с ИИ) только на вехе 1=25 и вехе 2=60.
 
 ## Перегенерация

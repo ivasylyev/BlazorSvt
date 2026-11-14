@@ -31,7 +31,7 @@
 | `publish-all-sql` | Публикация SQL в `C:\publish\v2` (`-Mode …`) |
 | `atlas` | Эталонный процесс / документы Атласа — **отдельный трек**, не стек и не SQL СВТ 2.0 |
 
-Подробности архитектуры: `skills/svt-architecture/` (`SKILL.md`, `reference.md`, `roadmap.md`, `backlog.md`, `catalogs-scope.md`).
+Подробности архитектуры: `skills/svt-architecture/` (`SKILL.md`, `architecture.md`, `roadmap.md`, `risks.md`, `backlog.md`, `catalogs-scope.md`).
 
 ## Commands → Skills
 
@@ -44,7 +44,7 @@
 
 ## Что куда не класть
 
-- Длинный статус прода и полный MVP — в `svt-architecture` (`SKILL.md` — статус, `roadmap.md` — план), не раздувать alwaysApply
+- Длинный статус прода и полный план — в `svt-architecture` (`SKILL.md` — статус, `roadmap.md` — порядок и Gate, `backlog.md` — вехи), не раздувать alwaysApply
 - Человеческий индекс документов — `docs/README.md`. Пакет architecture review собирает `docs/output-review-package/Build-ReviewPackage.ps1`: zip рядом с папкой, сгенерированные копии из папки скрипт удаляет. Zip в git не коммитится
 - Алгоритм нового справочника — в `add-reference-book`, rule только указывает
 - Методология эталона / кольцо / промпты Атласа — в `atlas`, не смешивать с разработкой кода

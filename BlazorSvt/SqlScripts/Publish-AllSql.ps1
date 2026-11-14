@@ -112,6 +112,12 @@ $fullManifest = @(
   'Modules\TransportTypeLevel3\Structure\02.TransportTypeLevel3_Insert.sql'
   'Modules\TransportTypeLevel3\Structure\03.TransportTypeLevel3_CreateIndexes.sql'
   'Modules\TransportTypeLevel3\Programmability\vw_TransportTypeLevel3_Detail.sql'
+  'Modules\Contractor\Structure\01.Contractor_CreateTable.sql'
+  'Modules\Contractor\Programmability\vw_Contractor_SnapshotSource.sql'
+  'Modules\Contractor\Structure\02.Contractor_Insert.sql'
+  'Modules\Contractor\Structure\03.Contractor_CreateIndexes.sql'
+  'Modules\Contractor\Programmability\vw_Contractor_Detail.sql'
+  'Modules\Contractor\Programmability\sp_Contractor_PopulateAffectedKeys.sql'
 )
 
 $programmabilityManifest = $fullManifest | Where-Object {

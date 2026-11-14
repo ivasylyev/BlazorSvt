@@ -1,6 +1,6 @@
 # Документы СВТ
 
-Карта папки `docs/`. Пути в таблицах — от корня репозитория. Канон архитектуры, скоупа и статуса прода — не здесь, а в `.cursor/skills/svt-architecture/` (`SKILL.md` — статус, `roadmap.md` — план, `backlog.md` — чеклист, `catalogs-scope.md` — реестр).
+Карта папки `docs/`. Пути в таблицах — от корня репозитория. Канон архитектуры, скоупа и статуса прода — не здесь, а в `.cursor/skills/svt-architecture/` (`SKILL.md` — статус, `architecture.md` — обоснование, `roadmap.md` — порядок и Gate, `backlog.md` — чеклист, `catalogs-scope.md` — реестр).
 
 ## Канон
 
@@ -11,7 +11,7 @@
 | `docs/api/svt-api-v1-developers.md` | Как вызывать API |
 | `docs/user-guide/*.ru.confluence.md` | Текст руководства пользователя. Английская версия — перевод |
 
-Решения и риски API — `.cursor/skills/svt-architecture/reference.md` §6.6.1.
+Решения и риски API — `.cursor/skills/svt-architecture/architecture.md` §6.6.1.
 
 ## Инженерные материалы
 

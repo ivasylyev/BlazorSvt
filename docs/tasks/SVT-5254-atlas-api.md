@@ -223,7 +223,7 @@ ProblemDetails со стабильным кодом ошибки (`catalog_not_f
 |---|---|
 | Навык `add-reference-book`, правило `svt-add-reference-book.mdc` | Шаг «регистрация справочника в API» и тест на него |
 | Правило `svt-development-patterns.mdc` | Новый раздел «API»: регистрация, фильтры, ошибки, OpenAPI. В разделе «Доступ» — доверенные клиенты и `X-On-Behalf-Of`. В разделе «Логирование» — `Channel` и `ApiClient`. В разделе «Тестирование» — тесты API и контракта |
-| Правило `svt-project-context.mdc`, навык `svt-architecture` (`SKILL.md`, `reference.md`) | Текущее состояние: появился API для Атласа. Второй вход в монолит рядом с Blazor. Отклонение: подбор читает легаси-представления |
+| Правило `svt-project-context.mdc`, навык `svt-architecture` (`SKILL.md`, `architecture.md`) | Текущее состояние: появился API для Атласа. Второй вход в монолит рядом с Blazor. Отклонение: подбор читает легаси-представления |
 | `roadmap.md`, `backlog.md` | Задачи из раздела 11 |
 | `SqlScripts/README.md` | Описание фактического поведения фильтров `GetBlazorGridData`. Сама процедура не меняется |
 | Навык `atlas`, `docs-svt.md` | Обмен с Атласом: пилотный API |

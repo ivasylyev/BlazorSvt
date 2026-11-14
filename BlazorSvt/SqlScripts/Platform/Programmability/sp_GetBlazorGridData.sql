@@ -104,7 +104,8 @@ CREATE OR ALTER PROCEDURE v2.GetBlazorGridData
     @SortKey            NVARCHAR(50) = NULL,
     @SortDirection      NVARCHAR(5) = NULL,
 
-    @FilterJson         NVARCHAR(MAX) = NULL
+    @FilterJson         NVARCHAR(MAX) = NULL,
+    @ReturnTotalCount   BIT = 1
 AS
 BEGIN
     SET NOCOUNT ON;
@@ -458,7 +459,8 @@ BEGIN
 
     EXEC sp_executesql @MainSQL;
 
-    SELECT @TotalCount AS TotalCount
+    IF @ReturnTotalCount = 1
+        SELECT @TotalCount AS TotalCount
     
 
 END

@@ -45,7 +45,8 @@ SqlScripts/
 │   ├── 2.0.0/              # baseline
 │   ├── 2.0.1/              # upgrade
 │   ├── 2.3.46/             # дельта RateType + снимок programmability
-│   ├── 2.3.48/             # текущий VersionPrefix: дельта Currency, ProductGroup, MTR, TransportTypeLevel3 + снимок programmability
+│   ├── 2.3.48/             # очередь Атласа: Currency, ProductGroup, MTR, TransportTypeLevel3 + снимок programmability
+│   ├── 2.3.49/             # текущий VersionPrefix: дельта Contractor + снимок programmability
 │   └── README.md           # конвенция релизов / два контура
 └── Translations_info.txt   # Справочник переводов полей (не для деплоя)
 ```
@@ -177,6 +178,18 @@ SqlScripts/
 | 3 | `Modules/TransportTypeLevel3/Structure/02.TransportTypeLevel3_Insert.sql` |
 | 4 | `Modules/TransportTypeLevel3/Structure/03.TransportTypeLevel3_CreateIndexes.sql` |
 | 5 | `Modules/TransportTypeLevel3/Programmability/vw_TransportTypeLevel3_Detail.sql` |
+
+**Contractor** (примитив LegalType, представление `dbo.vw_LegalType`; RowVer на `dbo.PrimitiveEntityData_2028`)
+
+| # | Скрипт |
+|---|--------|
+| 1 | `Sync/01.Legacy_AddRowVersion.sql` |
+| 2 | `Modules/Contractor/Structure/01.Contractor_CreateTable.sql` |
+| 3 | `Modules/Contractor/Programmability/vw_Contractor_SnapshotSource.sql` |
+| 4 | `Modules/Contractor/Structure/02.Contractor_Insert.sql` |
+| 5 | `Modules/Contractor/Structure/03.Contractor_CreateIndexes.sql` |
+| 6 | `Modules/Contractor/Programmability/vw_Contractor_Detail.sql` |
+| 7 | `Modules/Contractor/Programmability/sp_Contractor_PopulateAffectedKeys.sql` |
 
 ## Grid read-модель
 

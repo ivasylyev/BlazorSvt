@@ -55,6 +55,7 @@ function Convert-ToConfluence([string]$text, $pageList) {
 }
 
 $skillDir = Join-Path $repoRoot ".cursor\skills\svt-architecture"
+$companions = @("risks.md", "glossary.md", "delivery-ring.md")
 foreach ($p in $pages) {
     $source = Join-Path $skillDir $p.Name
     if (-not (Test-Path -LiteralPath $source)) {
@@ -64,6 +65,13 @@ foreach ($p in $pages) {
     $converted = Convert-ToConfluence $raw $pages
     $outFile = Join-Path $destinationPath $p.Name
     [System.IO.File]::WriteAllText($outFile, $converted, $utf8)
+}
+foreach ($name in $companions) {
+    $source = Join-Path $skillDir $name
+    if (-not (Test-Path -LiteralPath $source)) {
+        throw "Missing canon file: $source"
+    }
+    Copy-Item -LiteralPath $source -Destination (Join-Path $destinationPath $name) -Force
 }
 
 $pngs = @(
@@ -106,7 +114,7 @@ finally {
     Remove-Item -LiteralPath $stagingParent -Recurse -Force
 }
 
-$generatedNames = @($pages | ForEach-Object { $_.Name }) + $pngs + @(
+$generatedNames = @($pages | ForEach-Object { $_.Name }) + $companions + @("reference.md") + $pngs + @(
     "SVT-idealnyy-process-2.7.html",
     "SVT-idealnyy-process2.html"
 )

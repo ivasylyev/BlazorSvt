@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <resheader name="resmimetype"><value>text/microsoft-resx</value></resheader>
+  <resheader name="version"><value>2.0</value></resheader>
+  <resheader name="reader"><value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value></resheader>
+  <resheader name="writer"><value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value></resheader>
+  <data name="ContractorGrid.Title" xml:space="preserve"><value>Contractors</value></data>
+  <data name="ContractorDto.Code" xml:space="preserve"><value>Code</value></data>
+  <data name="ContractorDto.NameSearch" xml:space="preserve"><value>Search name</value></data>
+  <data name="ContractorDto.Consignee" xml:space="preserve"><value>Consignee</value></data>
+  <data name="ContractorDto.IsTrader" xml:space="preserve"><value>Trader</value></data>
+  <data name="ContractorDto.IsProcessing" xml:space="preserve"><value>Processor</value></data>
+  <data name="ContractorDto.IsSender" xml:space="preserve"><value>Shipper</value></data>
+  <data name="ContractorDto.IsDebtor" xml:space="preserve"><value>Debtor</value></data>
+  <data name="ContractorDto.IsCreditor" xml:space="preserve"><value>Creditor</value></data>
+  <data name="ContractorDto.INN" xml:space="preserve"><value>INN</value></data>
+  <data name="ContractorDto.IsArchive" xml:space="preserve"><value>Archive</value></data>
+  <data name="ContractorDto.CreationDate" xml:space="preserve"><value>Created</value></data>
+  <data name="ContractorDto.LastChangeDate" xml:space="preserve"><value>Changed</value></data>
+  <data name="ContractorDetailDto.Code" xml:space="preserve"><value>Code</value></data>
+  <data name="ContractorDetailDto.NameSearch" xml:space="preserve"><value>Search name (Name for search)</value></data>
+  <data name="ContractorDetailDto.Consignee" xml:space="preserve"><value>Consignee (Is a consignee)</value></data>
+  <data name="ContractorDetailDto.IsTrader" xml:space="preserve"><value>Trader (Is a trader)</value></data>
+  <data name="ContractorDetailDto.IsProcessing" xml:space="preserve"><value>Processor (Is a processor)</value></data>
+  <data name="ContractorDetailDto.IsSender" xml:space="preserve"><value>Shipper (Is a shipper)</value></data>
+  <data name="ContractorDetailDto.IsDebtor" xml:space="preserve"><value>Debtor (Is a customer, recipient, or debtor)</value></data>
+  <data name="ContractorDetailDto.IsCreditor" xml:space="preserve"><value>Creditor (Is a supplier or creditor)</value></data>
+  <data name="ContractorDetailDto.INN" xml:space="preserve"><value>INN (taxpayer identification number)</value></data>
+  <data name="ContractorDetailDto.ShortNameEGRUL" xml:space="preserve"><value>Short name as per the Unified State Register of Legal Entities</value></data>
+  <data name="ContractorDetailDto.FullNameEGRUL" xml:space="preserve"><value>Full name as per the Unified State Register of Legal Entities</value></data>
+  <data name="ContractorDetailDto.Customs" xml:space="preserve"><value>Customs</value></data>
+  <data name="ContractorDetailDto.CustomCode" xml:space="preserve"><value>Customs code</value></data>
+  <data name="ContractorDetailDto.OrgAffiliation" xml:space="preserve"><value>Organisational affiliation</value></data>
+  <data name="ContractorDetailDto.IsArchive" xml:space="preserve"><value>Archive</value></data>
+  <data name="ContractorDetailDto.CreationDate" xml:space="preserve"><value>Created</value></data>
+  <data name="ContractorDetailDto.LastChangeDate" xml:space="preserve"><value>Changed</value></data>
+  <data name="ContractorDetailDto.Group.0.Default" xml:space="preserve"><value>Default</value></data>
+</root>
