@@ -13,8 +13,7 @@ description: >-
 
 **Эталон зависит от вида справочника:**
 
-- интеграция и watermark-sync без каскада чужих справочников — `Modules/MTR`;
-- срок действия и каскад (узлы, продукт) — `Modules/TransportRate`, `Modules/AverageRateLevel3`;
+- watermark-sync — `Modules/TransportRate` и `SqlScripts/Modules/TransportRate`. Срок действия и каскад переносить, только если проекция этого справочника их читает. У TransportRate это узлы и продукт; тот же приём каскада — у `Modules/AverageRateLevel3`. Источники чужого job не копировать. Стабильные словари с enum в чужой каскад не включать;
 - стабильный словарь с enum, разовый снимок — `Modules/Currency`.
 
 Партиции и грид — как у `TransportLeg` и `LocationsNodes`. Легаси-имена в реестре — `Rates` и `TransportLegs`. В коде это модули `TransportRate` и `TransportLeg`, бизнес-ключи `TransportRateId` и `TransportLegId`.  

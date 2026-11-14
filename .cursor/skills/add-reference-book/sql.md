@@ -72,7 +72,7 @@ UNION ALL SELECT N'dbo.PrimitiveEntityData_1014'  -- LocationsNodes
 
 ### Programmability
 
-**vw_{Entity}_SnapshotSource** — единая проекция для первичной заливки и incremental MERGE. WHERE-фильтр членства (NOT NULL ключевые метрики, валидный Code/RateType/Product и т.п.) — как у эталона; при бизнес-правиле «без связанных X — битая запись» — `EXISTS` / отсечение в проекции.
+**vw_{Entity}_SnapshotSource** — единая проекция для первичной заливки и incremental MERGE. WHERE-фильтр членства из эталона не переносить. Отсечение (NOT NULL ключевой метрики, `EXISTS` «без связанных X — битая запись») писать только для бизнес-правила этого справочника. Форма такого отсечения — у `vw_TransportRate_SnapshotSource` и `vw_AverageRateLevel3_SnapshotSource`.
 
 **vw_{Entity}_Detail** — карточка и полный Excel. Читает легаси-представление основной таблицы (шаг 0: это не всегда `dbo.vw_{Entity}`) и связанные `dbo.vw_*`; грид читает `v2.{Entity}_Snapshot`. Поля длинного списка (discovery §4) + системные; ссылки: Code/Name из joined views; при необходимости плечи/лидтаймы (эталон: `vw_TransportRate_Detail`, `vw_AverageRateLevel3_Detail`).  
 **Дочерние сущности без sub-grid:** вычисляемое поле через `STRING_AGG` (или аналог) **только в detail / export**, не в snapshot. Эталон: `TransportRateCodes` в `AverageRateLevel3`.

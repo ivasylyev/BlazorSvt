@@ -144,7 +144,7 @@ services.AddCatalogMenu(new CatalogMenuContribution(
 
 `VisibleToEditor` — колонка «Меню ЕО» (`да` → `true`, `нет` → `false`). До вехи 6 шапка по этому флагу не фильтрует. Порядок пункта не задаётся: шапка сортирует подписи по алфавиту текущего языка. Ключ `HeaderMenu.{Entity}` добавляется в Platform.resx и равен заголовку грида; порядком пункта меню он не управляет.
 
-**`{Entity}SyncJob`:** без каскада — `MTRSyncJob` (один источник, основная таблица). С каскадом по проекции — `TransportRateSyncJob` / `AverageRateLevel3SyncJob`: Sources = основная таблица плюс чужой справочник, только если проекция его читает. Стабильные словари (RateType, Currency, …) в чужой каскад **не** включать. Если сам `{Entity}` — стабильный словарь с enum, SyncJob нет: только разовая заливка. У каждого источника — комментарий с именем справочника.
+**`{Entity}SyncJob`:** каркас — `TransportRateSyncJob`. Sources = основная таблица. Чужой справочник добавлять следующим источником, только если проекция его читает. Узлы и продукт в `TransportRateSyncJob` — источники TransportRate, в другой job их не переносить; то же для источников `AverageRateLevel3SyncJob`. Стабильные словари (RateType, Currency, …) в чужой каскад **не** включать. Если сам `{Entity}` — стабильный словарь с enum, SyncJob нет: только разовая заливка. У каждого источника — комментарий с именем справочника.
 
 **`Host/Program.cs`:** `builder.Services.Add{Entity}Module();`
 
