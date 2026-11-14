@@ -3,6 +3,7 @@
 > Канон порядка доменов, зависимостей старта и сводки вех. Критерии Gate A/B/C/D — [cutover.md](cutover.md). Страница Confluence «Архитектурная трансформация СВТ» — публикация для ревью; при расхождении верен репозиторий. Последняя сверка с Confluence — 04.08.2026. Страница Confluence обновляется из `docs/output-review-package`: скрипт сборки копирует файлы навыка. План из Confluence обратно не подтягивается.
 > Обоснование — [architecture.md](architecture.md). Риски и меры — [risks.md](risks.md). Шаги поставки — [delivery-steps.md](delivery-steps.md). Термины — [glossary.md](glossary.md).
 > Скоуп справочников — [catalogs-scope.md](catalogs-scope.md); план подгоняется под реестр. Чеклист — [backlog.md](backlog.md). Детальный расчёт — `docs/estimation/`.
+> Черновик вех из план-графика Атласа — [atlas-milestones-draft.md](atlas-milestones-draft.md). Это не канон. Файл сверяется с этой дорожной картой; единый документ по вехам будет выработан позже на основании обоих.
 > Нагрузочный PoC — пакет 3.1. Условное архитектурное одобрение — [review-conditions.md](review-conditions.md).
 
 ## Вехи и оценка трудоёмкости
