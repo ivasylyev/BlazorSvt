@@ -11,8 +11,13 @@ description: >-
 
 Полный вертикальный срез: MDM discovery → SQL (Structure + Programmability + SnapshotSync) → деплой и верификация БД → C#-модуль.
 
-**Эталоны реализации:** `Modules/TransportRate`, `Modules/AverageRateLevel3`, `Modules/TransportLeg`, `Modules/LocationsNodes`.  
-Легаси-имена в реестре — `Rates` и `TransportLegs`. В коде это модули `TransportRate` и `TransportLeg`, бизнес-ключи `TransportRateId` и `TransportLegId`.  
+**Эталон зависит от вида справочника:**
+
+- интеграция и watermark-sync без каскада чужих справочников — `Modules/MTR`;
+- срок действия и каскад (узлы, продукт) — `Modules/TransportRate`, `Modules/AverageRateLevel3`;
+- стабильный словарь с enum, разовый снимок — `Modules/Currency`.
+
+Партиции и грид — как у `TransportLeg` и `LocationsNodes`. Легаси-имена в реестре — `Rates` и `TransportLegs`. В коде это модули `TransportRate` и `TransportLeg`, бизнес-ключи `TransportRateId` и `TransportLegId`.  
 **Именование:** для **новых** справочников — соглашения ниже.
 
 ## Когда применять
@@ -24,14 +29,32 @@ description: >-
 
 ## Шаг 0 — имя справочника
 
-1. Если пользователь не указал имя — **уточни** системное имя легаси (`PrimitiveEntityInfo.Name`).
+1. Если пользователь не указал имя — **уточни** имя из реестра (`EntityInfo.Name`, колонка «Имя» в `catalogs-scope.md`).
 2. Без имени дальнейшие шаги **не выполнять**.
-3. Имя легаси всегда **системное** (например `TransportLeg`, не «Транспортные плечи»).
+3. Имя всегда **системное** (например `TransportLeg`, не «Транспортные плечи»).
 
 Два обозначения:
 
-- `{LegacyName}` — `PrimitiveEntityInfo.Name`. Им пользоваться в discovery-SQL, в `pei/{LegacyName}/ai` и в легаси-view `vw_{LegacyName}`.
-- `{Entity}` — имя модуля, папки, DTO, снимка `v2.{Entity}_Snapshot` и маршрута. Если в `{LegacyName}` нет `_` и нет строки в таблице ниже, имена совпадают. Если `_` есть, убрать его и поднять первую букву каждого сегмента, остальное не менять: `TransportType_level_3` → `TransportTypeLevel3`, `Priority_Rate` → `PriorityRate`, `Federal_Districts` → `FederalDistricts`, `OrganizationDPO_type` → `OrganizationDPOType`, `MTR_DPO` → `MTRDPO`.
+- `{Entity}` — имя модуля, папки, DTO, снимка `v2.{Entity}_Snapshot` и маршрута. По умолчанию это имя реестра. Если в нём есть `_` и нет строки в таблице ниже, убрать `_` и поднять первую букву каждого сегмента, остальное не менять: `TransportType_level_3` → `TransportTypeLevel3`, `Priority_Rate` → `PriorityRate`, `Federal_Districts` → `FederalDistricts`, `OrganizationDPO_type` → `OrganizationDPOType`, `MTR_DPO` → `MTRDPO`.
+- `{LegacyName}` — имя **основного примитива** (`PrimitiveEntityInfo.Name`). Им пользоваться в discovery-SQL, в `pei/{LegacyName}/ai` и в легаси-view, которая проецирует его таблицу.
+
+Перед discovery сверь реестр и примитив:
+
+```sql
+SELECT e.Id AS EntityInfoId, e.Name AS EntityName,
+       es.Id AS StructureId, es.ParentId,
+       p.Id AS PrimitiveEntityInfoId, p.Name AS PrimitiveName
+FROM dbo.EntityInfo e
+JOIN dbo.EntityStructure es ON es.EntityInfoId = e.Id
+JOIN dbo.PrimitiveEntityInfo p ON p.Id = es.PrimitiveEntityInfoId
+WHERE e.Name = N'{RegistryName}';
+```
+
+- Id и имя в реестре — `EntityInfo` (URL `masterdata/{id}` и колонка «Имя»). Номер таблицы `PrimitiveEntityData_*` — `PrimitiveEntityInfo.Id` строки с `ParentId IS NULL`.
+- Имена совпали — `{LegacyName}` = `{Entity}` (после правила `_` и таблицы переименований).
+- Имена разошлись — `{LegacyName}` имя примитива, `{Entity}` имя реестра, если таблица ниже не говорит иное. Пример: реестр `Contractor` (`EntityInfo` 2054), примитив `LegalType` (2028), таблица `PrimitiveEntityData_2028`, представление `vw_LegalType`, словарь `pei/LegalType/ai`.
+- Представление — то, которое читает эту таблицу. Одноимённое реестру тонкое представление, которое её не проецирует, устарело (`vw_Contractor`). Замены джойнов — только в SoT (`Modules/**/Programmability`). Файлы уже выкаченной `Migrations/{версия}/` не переписывать: новый `All_Programmability` забирает SoT.
+- Строка с `ParentId IS NOT NULL` — дочерний примитив. В модуль он не входит, пока пользователь не включил его в скоуп. Примитив сущности из раздела «Вне скоупа» новой строкой реестра не становится.
 
 Отдельные переименования (подчёркивания нет):
 
@@ -41,9 +64,7 @@ description: >-
 | `TransportLegs` | `TransportLeg` |
 | `LegalType` | `Contractor` |
 
-`LegalType` в реестре записан как `Contractor` (`EntityInfo` 2054). Примитив — `LegalType` (2028), таблица `PrimitiveEntityData_2028`, представление `vw_LegalType`, словарь `pei/LegalType/ai`. `{LegacyName}` и `--legacy-name` — `LegalType`. `vw_Contractor` устарело.
-
-На экран Contractor не выводить: примитив `Address` (адреса вне скоупа); атрибут `Status`; `LegalForm` и `LevelOrg`, пока в строках нет значений. Расхождение состояния записи и `Status` на localhost в постановке не учитывается: на проде его нет. Порядок колонок грида: `Code`, `NameSearch`, затем флаги в порядке полей таблицы — `Consignee`, `IsTrader`, `IsProcessing`, `IsSender`, `IsDebtor`, `IsCreditor`, затем `INN`. Подписи — [grid-column-glossary.md](grid-column-glossary.md), раздел Contractor.
+Состав экрана конкретного справочника — в его постановке и в комментарии `catalogs-scope.md`, не в этом навыке. Как отбирать атрибуты и чем порядок грида отличается от порядка карточки — [discovery.md](discovery.md) §1 и §3.
 
 ## Соглашения об именовании (новые справочники)
 
@@ -138,6 +159,8 @@ description: >-
 - [ ] Unit: `GridColumnMetadataBuilderTests` + `SnapshotSyncJobContractTests` (второй — только если есть SyncJob)
 - [ ] Integration: grid + detail smoke + FTS
 - [ ] `dotnet build` / `dotnet test` OK
+- [ ] В `catalogs-scope.md` колонка RO остаётся `[ ]`: `[x]` ставится, когда справочник на проде
+- [ ] Пункт backlog не отмечать до ревью
 
 ## Связанные навыки
 

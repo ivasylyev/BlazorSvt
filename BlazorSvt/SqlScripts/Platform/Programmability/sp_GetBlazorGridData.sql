@@ -422,7 +422,7 @@ BEGIN
         FROM ' + @SafeTableName + '
         ' + @TotalCountWhereClause + ';';
 
-    -- Для отладки  раскомментировать:
+    -- Отладочный вывод динамического SQL. Попадает в вывод sqlcmd.
     PRINT @TotalCountSQL;
 
     EXEC sp_executesql
@@ -454,7 +454,7 @@ BEGIN
     FETCH NEXT ' + CAST(@PageSize AS NVARCHAR(20)) + ' ROWS ONLY;
     ';
 
-    -- Для отладки  раскомментировать:
+    -- Отладочный вывод динамического SQL. Попадает в вывод sqlcmd.
     PRINT @MainSQL;
 
     EXEC sp_executesql @MainSQL;

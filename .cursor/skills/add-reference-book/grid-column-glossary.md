@@ -17,7 +17,7 @@
 | EN направления | From / To (не Origin / Destination) |
 | Единицы измерения | Только в Detail (в скобках у полного имени), не в заголовке грида |
 | Точки | После точки в аббревиатурах — пробел (`Рег. отпр.`, не `Рег.отпр.`) |
-| Detail формат | `Короткое (полное)`, **только если** короткое ≠ текущему полному |
+| Detail формат | `Короткое (полное)`, **только если** короткое ≠ текущему полному. Если полное уже начинается с короткого, на карточке остаётся полное, без второй обёртки: short `INN`, full `INN (taxpayer identification number)` → карточка `INN (taxpayer identification number)` |
 | Detail-only | Поля без пары в гриде — **не** сокращать |
 | Groups / Title | `{Entity}DetailDto.Group.*`, `{Entity}Grid.Title` — **не** трогать по этому глоссарию |
 | Мёртвые ключи | Ключи не из `*GridSettingsService` — **не** трогать |
@@ -184,7 +184,7 @@
 
 ### Contractor
 
-Согласовано для грида и карточки Contractor. У `Code` английское полное имя — `Code`. Поля только карточки короткими именами не заменяются.
+Согласовано для грида и карточки Contractor. У `Code` английское полное имя — `Code`. У `INN` английское полное уже содержит короткое, поэтому карточка EN — `INN (taxpayer identification number)`. Строки «карточка» короткими именами не заменяются: колонки short у них пустые, в resx пишется полное имя.
 
 | Key | Где | RU полное | EN полное | RU short | EN short |
 |-----|-----|-----------|-----------|----------|----------|
@@ -197,8 +197,8 @@
 | `IsDebtor` | грид | Является Заказчиком\Получателем\Дебитором | Is a customer, recipient, or debtor | Дебитор | Debtor |
 | `IsCreditor` | грид | Является Поставщиком\Кредитором | Is a supplier or creditor | Кредитор | Creditor |
 | `INN` | грид | ИНН | INN (taxpayer identification number) | ИНН | INN |
-| `ShortNameEGRUL` | карточка | Краткое наименование из ЕГРЮЛ | Short name as per the Unified State Register of Legal Entities | Краткое ЕГРЮЛ | EGRUL short |
-| `FullNameEGRUL` | карточка | Полное наименование из ЕГРЮЛ | Full name as per the Unified State Register of Legal Entities | Полное ЕГРЮЛ | EGRUL full |
-| `Customs` | карточка | Таможня | Customs | Таможня | Customs |
-| `CustomCode` | карточка | Код таможни | Customs code | Код таможни | Customs code |
-| `OrgAffiliation` | карточка | Организационная принадлежность | Organisational affiliation | Принадлежность | Affiliation |
+| `ShortNameEGRUL` | карточка | Краткое наименование из ЕГРЮЛ | Short name as per the Unified State Register of Legal Entities | — | — |
+| `FullNameEGRUL` | карточка | Полное наименование из ЕГРЮЛ | Full name as per the Unified State Register of Legal Entities | — | — |
+| `Customs` | карточка | Таможня | Customs | — | — |
+| `CustomCode` | карточка | Код таможни | Customs code | — | — |
+| `OrgAffiliation` | карточка | Организационная принадлежность | Organisational affiliation | — | — |

@@ -1,6 +1,6 @@
 ﻿/*
   Auto-generated: All v2 Programmability
-  Generated: 2026-11-14 20:20:09
+  Generated: 2026-11-14 21:01:42
   Scripts: 39
   Order: Create-Programmability.ps1 (Platform -> Modules by name)
 */
@@ -589,7 +589,7 @@ BEGIN
         FROM ' + @SafeTableName + '
         ' + @TotalCountWhereClause + ';';
 
-    -- Для отладки  раскомментировать:
+    -- Отладочный вывод динамического SQL. Попадает в вывод sqlcmd.
     PRINT @TotalCountSQL;
 
     EXEC sp_executesql
@@ -621,7 +621,7 @@ BEGIN
     FETCH NEXT ' + CAST(@PageSize AS NVARCHAR(20)) + ' ROWS ONLY;
     ';
 
-    -- Для отладки  раскомментировать:
+    -- Отладочный вывод динамического SQL. Попадает в вывод sqlcmd.
     PRINT @MainSQL;
 
     EXEC sp_executesql @MainSQL;

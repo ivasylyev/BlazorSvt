@@ -2,23 +2,27 @@
 
 Оглавление пакета для **условного** архитектурного одобрения.
 
-| Файл | Зачем |
-|---|---|
-| [`architecture.md`](architecture.md) | Обоснование, альтернативы, целевое состояние |
-| [`roadmap.md`](roadmap.md) | Порядок доменов, сводка вех, критический путь |
-| [`cutover.md`](cutover.md) | Правила перехода и критерии Gate A/B/C/D |
-| [`risks.md`](risks.md) | Риски и меры |
-| [`review-conditions.md`](review-conditions.md) | Условия условного одобрения, реестр D-* |
-| [`mitigations.md`](mitigations.md) | Приложения: модель угроз, SoD, миграции, SLI/SLO, метрики пилотов, протокол нагрузки |
-| [`delivery-steps.md`](delivery-steps.md) | Двенадцать шагов поставки |
-| [`glossary.md`](glossary.md) | Термины |
-| [`backlog.md`](backlog.md) | Чеклист работ |
-| [`catalogs-scope.md`](catalogs-scope.md) | Реестр справочников: скоуп, домены, RO/E/L |
-| [`status.md`](status.md) | Текущий статус контура |
-| [`outside-registry.md`](outside-registry.md) | Функции вне реестра справочников |
-| [`pre-implementation-checklist.md`](pre-implementation-checklist.md) | Чеклист перед кодом |
-| [`review-current-state.html`](../../../docs/output-review-package/review-current-state.html) | Снимок повторного architecture review (07.08.2026, статус прода не обновляется) |
-| [`SVT-idealnyy-process-2.7.html`](../../../docs/docs/svt-v-atlas/SVT-idealnyy-process-2.7.html) | Идеальный процесс, версия 2.7 (канон, в пакет копируется скриптом) |
+Порядок первого чтения. Номера страниц Confluence («01. Архитектура» … «04. Список справочников») этой колонкой не заменяются.
+
+| № | Файл | Зачем |
+|---|---|---|
+| 1 | [`glossary.md`](glossary.md) | Термины. Открыть до остальных текстов |
+| 2 | [`status.md`](status.md) | Где контур сейчас |
+| 3 | [`architecture.md`](architecture.md) | Обоснование, альтернативы, целевое состояние. Сразу после него — схемы 1–3 ниже |
+| 4 | [`SVT-idealnyy-process-2.7.html`](../../../docs/docs/svt-v-atlas/SVT-idealnyy-process-2.7.html) | Идеальный процесс, версия 2.7 (канон, в пакет копируется скриптом) |
+| 5 | [`catalogs-scope.md`](catalogs-scope.md) | Реестр справочников: скоуп, домены, RO/E/L |
+| 6 | [`roadmap.md`](roadmap.md) | Порядок доменов, сводка вех, критический путь |
+| 7 | [`delivery-steps.md`](delivery-steps.md) | Двенадцать шагов поставки. Подписи «Шаг» в бэклоге |
+| 8 | [`backlog.md`](backlog.md) | Чеклист работ |
+| 9 | [`cutover.md`](cutover.md) | Правила перехода и критерии Gate A/B/C/D |
+| 10 | [`risks.md`](risks.md) | Риски и меры |
+| 11 | [`review-conditions.md`](review-conditions.md) | Условия условного одобрения, реестр D-* |
+| 12 | [`mitigations.md`](mitigations.md) | Приложения: модель угроз, SoD, миграции, SLI/SLO, метрики пилотов, протокол нагрузки |
+| 13 | [`outside-registry.md`](outside-registry.md) | Функции вне реестра справочников |
+| 14 | [`pre-implementation-checklist.md`](pre-implementation-checklist.md) | Чеклист перед кодом |
+| 15 | [`review-current-state.html`](../../../docs/output-review-package/review-current-state.html) | Снимок повторного architecture review (07.08.2026, статус прода не обновляется) |
+
+`README.md` — это оглавление, [`SKILL.md`](SKILL.md) — указатель для агента. В порядок чтения они не входят.
 
 Отдельный файл на каждый артефакт митигации **не ведётся** — приложения D-* лежат в `mitigations.md`.
 

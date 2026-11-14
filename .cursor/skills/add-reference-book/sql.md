@@ -33,7 +33,11 @@ BlazorSvt/SqlScripts/Modules/{Entity}/
 
 `sp_{Entity}_PopulateAffectedKeys.sql` не создавать для стабильного словаря с enum и не добавлять его в `Publish-AllSql.ps1`. Для остальных обновить манифест в порядке: CreateTable → SnapshotSource → Insert → Indexes → Detail → PopulateAffectedKeys.
 
-Релизная копия — `SqlScripts/Migrations/{VersionPrefix}/`, где `{VersionPrefix}` берётся из `BlazorSvt/BlazorSvt.csproj`. Нумерация с `001`: дельта схемы, последним файлом полный снимок programmability `All_Programmability.sql`. В `C:\publish` само по себе не копировать. Конвенция — `SqlScripts/Migrations/README.md`.
+Релизная копия — `SqlScripts/Migrations/{VersionPrefix}/`, `{VersionPrefix}` из `BlazorSvt/BlazorSvt.csproj`. Перед первой копией выяснить, выкачена ли эта папка (канон — пользователь; папка с пометкой «не править» в README миграций уже выкачена).
+
+- Папка ещё не выкатывалась — следующий свободный номер в ней.
+- Папка уже на стенде — сначала поднять `VersionPrefix`. Новая папка начинается с `001`. Старую не править.
+- «Нумерация с `001`» относится только к новой папке. Последний файл папки — полный снимок `All_Programmability.sql`. В `C:\publish` само по себе не копировать. Как собрать снимок — `Migrations/README.md`.
 
 ### Structure
 
@@ -70,7 +74,7 @@ UNION ALL SELECT N'dbo.PrimitiveEntityData_1014'  -- LocationsNodes
 
 **vw_{Entity}_SnapshotSource** — единая проекция для первичной заливки и incremental MERGE. WHERE-фильтр членства (NOT NULL ключевые метрики, валидный Code/RateType/Product и т.п.) — как у эталона; при бизнес-правиле «без связанных X — битая запись» — `EXISTS` / отсечение в проекции.
 
-**vw_{Entity}_Detail** — карточка и полный Excel. Читает легаси-представления (`dbo.vw_{LegacyName}` и связанные `dbo.vw_*`); грид читает `v2.{Entity}_Snapshot`. Для Contractor легаси-представление — `dbo.vw_LegalType`, не `dbo.vw_Contractor`. Поля длинного списка (discovery §4) + системные; ссылки: Code/Name из joined views; при необходимости плечи/лидтаймы (эталон: `vw_TransportRate_Detail`, `vw_AverageRateLevel3_Detail`).  
+**vw_{Entity}_Detail** — карточка и полный Excel. Читает легаси-представление основной таблицы (шаг 0: это не всегда `dbo.vw_{Entity}`) и связанные `dbo.vw_*`; грид читает `v2.{Entity}_Snapshot`. Поля длинного списка (discovery §4) + системные; ссылки: Code/Name из joined views; при необходимости плечи/лидтаймы (эталон: `vw_TransportRate_Detail`, `vw_AverageRateLevel3_Detail`).  
 **Дочерние сущности без sub-grid:** вычисляемое поле через `STRING_AGG` (или аналог) **только в detail / export**, не в snapshot. Эталон: `TransportRateCodes` в `AverageRateLevel3`.
 
 **sp_{Entity}_PopulateAffectedKeys** — детекция по `@Source` / `@Lo` / `@Hi`. В шапке и у каждой ветки `IF` / `FROM` — комментарий «номер таблицы → справочник» (как у TransportRate / AverageRateLevel3). Для стабильного словаря с enum процедуру не создавать.
@@ -101,7 +105,7 @@ UNION ALL SELECT N'dbo.PrimitiveEntityData_1014'  -- LocationsNodes
 | `DATETIME` | `Date` |
 | `DECIMAL` | `Decimal` |
 
-**Full export** — platform-процедура `v2.ExportBlazorGridDetail`: grid-метаданные из list-DTO, `@DetailViewName` и `@EntityKeyColumn` из `[DetailSource]` на detail-DTO. Per-module export-процедура **не нужна**.
+**Full export** — platform-процедура `v2.ExportBlazorGridDetail`: grid-метаданные из list-DTO, `@DetailViewName` и `@EntityKeyColumn` из `[DetailSource]` на detail-DTO. Per-module export-процедура **не нужна**. Вызов грида внутри неё идёт с `@ReturnTotalCount = 0`: второй результат `v2.GetBlazorGridData` — число строк, и `INSERT…EXEC` иначе записывает это число как ключ строки.
 
 Обновить `BlazorSvt/SqlScripts/README.md` (секция нового модуля).
 
@@ -112,7 +116,7 @@ UNION ALL SELECT N'dbo.PrimitiveEntityData_1014'  -- LocationsNodes
 1. **RowVer** (если новая основная таблица) — `Sync/01.Legacy_AddRowVersion.sql`
 2. **01 CreateTable** → **SnapshotSource** → **02 Insert** → **03 Indexes** → **Detail** → **PopulateAffectedKeys**  
    (Insert зависит от SnapshotSource; Indexes — после залитых данных)
-3. Либо Structure 01–03 вручную, затем полный прогон Programmability:
+3. Либо Structure 01–03 вручную, затем полный прогон Programmability. Скрипт ниже берёт SQL-логин из `Database:MdmDb` и без `User ID` не запускается. Structure он не накатывает. При `Trusted_Connection` его не вызывать: каждый файл — `sqlcmd -E`, как в примере ниже.
 
 ```powershell
 & ".\BlazorSvt\SqlScripts\Create-Programmability.ps1"
@@ -127,17 +131,26 @@ UNION ALL SELECT N'dbo.PrimitiveEntityData_1014'  -- LocationsNodes
 | **Новый** справочник | Всегда `01`, `02`, `03` |
 | **Существующий** | Спросить пользователя: нужен ли sqlcmd и **какие именно** файлы |
 
-Пример sqlcmd (сервер `localhost`, база `mdm`; логин и пароль из `Database:MdmDb`):
+Сервер `localhost`, база `mdm`. Поле Server из `Database:MdmDb` не использовать. `appsettings.json` не менять.
+
+В строке есть `User ID`:
 
 ```powershell
-sqlcmd -S localhost -d mdm -U <User ID> -P <Password> -i "BlazorSvt\SqlScripts\Modules\{Entity}\Structure\01.{Entity}_CreateTable.sql" -b
-# повторить для 02, 03
+sqlcmd -S localhost -d mdm -U <User ID> -P <Password> -b -f 65001 -i "BlazorSvt\SqlScripts\Modules\{Entity}\Structure\01.{Entity}_CreateTable.sql"
 ```
+
+`Trusted_Connection`, логина нет:
+
+```powershell
+sqlcmd -S localhost -d mdm -E -b -f 65001 -i "BlazorSvt\SqlScripts\Modules\{Entity}\Structure\01.{Entity}_CreateTable.sql"
+```
+
+Повторить для остальных файлов порядка деплоя. Пакет с JSON класть во временный `.sql` и вызывать через `-i`: `-Q` ломает кавычки, `-W` и `-y` вместе нельзя. Временный файл не класть в `SqlScripts` и после проверки удалить. `v2.GetBlazorGridData` печатает динамический SQL (`PRINT`); это не результат запроса.
 
 ### Верификация SQL (обязательна)
 
-1. `EXEC v2.GetBlazorGridData`: `@TableName` = `v2.{Entity}_Snapshot`, `@AllowedColumnsJson` и `@SelectList` собрать по короткому списку discovery §1 и системным полям снимка (простой и сложный FTS, если применимо). Атрибутов DTO ещё нет — из них параметры не брать
-2. `EXEC v2.ExportBlazorGridDetail`: `@DetailViewName` = `v2.vw_{Entity}_Detail`, `@EntityKeyColumn` = `{Entity}Id` (имена из [SKILL.md](SKILL.md), не из detail-DTO)
+1. `EXEC v2.GetBlazorGridData`: `@TableName` = `v2.{Entity}_Snapshot`, `@AllowedColumnsJson` и `@SelectList` собрать по короткому списку discovery §1 и системным полям снимка (простой и сложный FTS, если применимо). Атрибутов DTO ещё нет — из них параметры не брать. `@ReturnTotalCount` не передавать: по умолчанию 1, второй результат — число строк.
+2. `EXEC v2.ExportBlazorGridDetail`: `@DetailViewName` = `v2.vw_{Entity}_Detail`, `@EntityKeyColumn` = `{Entity}Id` (имена из [SKILL.md](SKILL.md), не из detail-DTO), `@PageSize = 1`. Ровно одна строка карточки. Вторая строка, у которой ключ равен общему числу строк снимка, значит, что в ключи попал `TotalCount`: выгрузка должна звать грид с `@ReturnTotalCount = 0`.
 3. `SELECT TOP 1 * FROM v2.{Entity}_Snapshot`
 4. `SELECT TOP 1 * FROM v2.vw_{Entity}_Detail`
 
