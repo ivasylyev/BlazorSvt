@@ -22,7 +22,7 @@
 | 14 | [`pre-implementation-checklist.md`](pre-implementation-checklist.md) | Чеклист перед кодом |
 | 15 | [`review-current-state.html`](../../../docs/output-review-package/review-current-state.html) | Снимок повторного architecture review (07.08.2026, статус прода не обновляется) |
 
-`README.md` — это оглавление, [`SKILL.md`](SKILL.md) — указатель для агента. Страница для человека — [svt-architecture.md](../../docs/svt/svt-architecture.md). В порядок чтения они не входят.
+`README.md` — это оглавление, [`SKILL.md`](SKILL.md) — указатель для агента. Страница для человека — [svt-architecture.md](../../docs/svt/svt-architecture.md). В порядок чтения они не входят. Таблица «Канон» на странице совпадает с таблицей в `SKILL.md`. При расхождении берётся `SKILL.md`.
 
 Отдельный файл на каждый артефакт митигации **не ведётся** — приложения D-* лежат в `mitigations.md`.
 

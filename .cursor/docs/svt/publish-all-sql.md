@@ -2,15 +2,15 @@
 
 ## Что делает
 
-`publish-all-sql` копирует SQL-скрипты деплоя из `Migrations/` и SoT в `C:\publish\v2` (или в `-TargetPath`). Исходники в репозитории не изменяет. Перед копированием удаляет старые `*.sql` в целевой папке режима.
-
-На базу скрипт не накатывает. Локальный накат — [`create-programmability`](create-programmability.md).
+`publish-all-sql` копирует SQL-скрипты деплоя из `Migrations/` и SoT в `C:\publish\v2` (или в `-TargetPath`). Исходники в репозитории остаются как есть. Перед копированием старые `*.sql` в целевой папке режима удаляются. На базу скрипт не накатывает: локальный накат — [`create-programmability`](create-programmability.md).
 
 ## Когда брать
 
+Человек вызывает `/publish_all_sql`. Агент берёт скил сам, когда просят опубликовать SQL или обновить `C:\publish\v2`. Оба входа ведут в один [`SKILL.md`](../../skills/publish-all-sql/SKILL.md).
+
 | Ситуация | Куда |
 |---|---|
-| Опубликовать SQL для деплоя, обновить `C:\publish\v2` | Этот скил или `/publish_all_sql` |
+| Опубликовать SQL для деплоя, обновить `C:\publish\v2` | Этот скил |
 | Накатить SP на локальную `mdm` | [`create-programmability`](create-programmability.md) |
 | Написать справочник и его SQL | [`add-reference-book`](add-reference-book.md); публикация — после того, как SoT и релиз собраны |
 
@@ -18,22 +18,19 @@
 
 Запуск из корня репозитория `c:\Work\BlazorSVT`. Конвенция релизов — `BlazorSvt/SqlScripts/Migrations/README.md`. Имя папки в `Migrations/` совпадает с `VersionPrefix` в `BlazorSvt/BlazorSvt.csproj`. После выката папку версии не правят.
 
-## Как устроено
+## Каталог деплоя
 
-Процедура и команды — [`SKILL.md`](../../skills/publish-all-sql/SKILL.md).
+Четыре режима — `All` (по умолчанию), `Release`, `Programmability`, `FromSource`. Источник, приёмник и что в папку режима не копируется — в `SKILL.md`. Туда же шаг нового справочника: SoT, DDL-дельта релиза и строки манифеста в `Publish-AllSql.ps1`.
 
-| Mode | Источник | Куда |
-|---|---|---|
-| `All` (по умолчанию) | `SqlScripts/Migrations/{x.y.z}/` | `TargetPath\{x.y.z}\` |
-| `Release` | `Migrations/{Version}/` | `TargetPath\{Version}\` |
-| `Programmability` | SoT `**/Programmability/*.sql` | `TargetPath\programmability\` |
-| `FromSource` | SoT Structure + Programmability | плоский `TargetPath\` с префиксами `001.`… |
+## Частые вопросы
 
-Опционально: `-TargetPath`. В папку режима не копируются `Create-Programmability.ps1`, `Publish-AllSql.ps1`, `README.md`, `Translations_info.txt`, `Migrations/README.md`.
+**Скрипт накатил базу.**
 
-Новый справочник в публикации: SoT в `Modules/{Name}/`, DDL-дельта в `Migrations/X.Y.Z/`, строки манифеста `FromSource` и `Programmability` в `Publish-AllSql.ps1`. Подробности шага — в `SKILL.md`.
+Скрипт копирует файлы в `TargetPath`. Накат Programmability на localhost — [`create-programmability`](create-programmability.md).
 
-Человек вызывает `/publish_all_sql`. Агент берёт скил сам, когда просят опубликовать SQL. Оба входа ведут в один `SKILL.md`.
+**Какой режим брать.**
+
+Без явного режима — `All`: все версии `Migrations/` в `C:\publish\v2\{version}\`. Остальные три режима и их источники — в `SKILL.md`.
 
 ## Сработало, если
 
@@ -43,4 +40,4 @@
 
 ## Куда встаёт
 
-После [`add-reference-book`](add-reference-book.md), когда SQL уже лежит в SoT и в папке релиза. Рядом [`create-programmability`](create-programmability.md) выполняет Programmability на localhost и в `C:\publish\v2` ничего не кладёт.
+Шаг после [`add-reference-book`](add-reference-book.md), когда SQL уже лежит в SoT и в папке релиза. Рядом [`create-programmability`](create-programmability.md) выполняет Programmability на localhost. Цепочка — [`docs/README.md`](../README.md).

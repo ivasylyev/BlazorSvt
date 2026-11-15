@@ -1,19 +1,32 @@
 # Страницы скилов
 
-Тексты для человека. Процедура, которую читает агент, лежит в `../skills/<имя>/SKILL.md`. Маршрут «ситуация → скил» — в [`../README.md`](../README.md), раздел «Куда идти».
+Тексты для человека. Процедура, которую читает агент, — `../skills/<имя>/SKILL.md`. Договор страницы — [writing-pages.md](writing-pages.md). Слои правил и slash-команд — [`../README.md`](../README.md).
+
+Имя файла совпадает с именем скила. Папка — трек.
+
+## Цепочка
+
+```text
+svt-architecture
+  → add-reference-book
+      → create-programmability   (накат на localhost)
+      → publish-all-sql          (копия в каталог деплоя)
+atlas
+  → plan-grafik-md-html
+```
 
 ## СВТ
 
-| Страница | О чём |
-|---|---|
-| [svt-architecture.md](svt/svt-architecture.md) | Архитектура, скоуп, вехи, Gate, риски, чеклист |
-| [add-reference-book.md](svt/add-reference-book.md) | Read-only справочник из легаси |
-| [create-programmability.md](svt/create-programmability.md) | Накат Programmability на localhost/`mdm` |
-| [publish-all-sql.md](svt/publish-all-sql.md) | Публикация SQL в `C:\publish\v2` |
+| Страница | Кто вызывает | О чём |
+|---|---|---|
+| [svt-architecture](svt/svt-architecture.md) | агент | Канон СВТ 2.0: на каждый вопрос один файл |
+| [add-reference-book](svt/add-reference-book.md) | агент | Read-only справочник из легаси. Редактор, загрузчик и заявки — вне скила |
+| [create-programmability](svt/create-programmability.md) | человек `/create_programmability` и агент | Накат Programmability на localhost/`mdm` |
+| [publish-all-sql](svt/publish-all-sql.md) | человек `/publish_all_sql` и агент | Копия SQL в каталог деплоя `C:\publish\v2` |
 
 ## Атлас
 
-| Страница | О чём |
-|---|---|
-| [atlas.md](atlas/atlas.md) | Кольцо, эталон, роли, промпты, шаблоны |
-| [plan-grafik-md-html.md](atlas/plan-grafik-md-html.md) | Разделы 0 / 1а / 1б план-графика, MD ↔ HTML |
+| Страница | Кто вызывает | О чём |
+|---|---|---|
+| [atlas](atlas/atlas.md) | агент | Кольцо эталонного процесса и документы эталона СВТ |
+| [plan-grafik-md-html](atlas/plan-grafik-md-html.md) | агент | Текст и таблицы разделов 0, 1а и 1б между Markdown и HTML |

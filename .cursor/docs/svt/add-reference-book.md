@@ -2,27 +2,20 @@
 
 ## Что делает
 
-`add-reference-book` собирает read-only справочник из легаси MDM: discovery атрибутов, snapshot SQL, programmability, C#-модуль, грид и меню.
-
-Навык покрывает RO: грид, карточка, sync. Редактор и загрузчик остаются вехами backlog 7–10. Домен «Заявки» ведётся модулем 4. Сущности раздела «Вне скоупа», в том числе `TransportRequest` и `MassiveRequest`, в этот навык не входят.
+`add-reference-book` собирает read-only справочник из легаси MDM: discovery атрибутов, snapshot SQL, programmability, C#-модуль, грид и меню. Скил покрывает RO: грид, карточка, sync. Редактор и загрузчик остаются вехами backlog 7–10. Домен «Заявки» ведётся модулем 4. Сущности раздела «Вне скоупа», в том числе `TransportRequest` и `MassiveRequest`, в этот навык не входят.
 
 ## Когда брать
 
+Агент берёт скил сам по запросу добавить справочник, перенести `PrimitiveEntityInfo` или собрать RO grid, карточку и export.
+
 | Ситуация | Куда |
 |---|---|
-| «Добавить справочник», перенос `PrimitiveEntityInfo`, RO grid + detail + export, справочник в скоупе | Этот скил |
+| Справочник в скоупе, RO grid + detail + export | Этот скил |
 | Справочник вне скоупа | Остановиться. Состав — `catalogs-scope.md` в [`svt-architecture`](svt-architecture.md) |
 | Редактор или пакетная загрузка | backlog 7–10 |
 | Заявки на расчёт | модуль 4 |
 | Накатить уже написанные SP на localhost | [`create-programmability`](create-programmability.md) |
 | Опубликовать скрипты в `C:\publish\v2` | [`publish-all-sql`](publish-all-sql.md) |
-
-Внутри скила два вида снимка:
-
-| Вид | Эталон |
-|---|---|
-| watermark-sync | `Modules/TransportRate` |
-| Стабильный словарь с enum, разовый снимок | `Modules/Currency` |
 
 ## Что нужно до старта
 
@@ -30,30 +23,39 @@
 - Справочник в скоупе. Домен, видимость меню ЕО и тип работ — из реестра.
 - Локальная база `mdm` на `localhost` для discovery и верификации. Логин и пароль — `Database:MdmDb`. `appsettings.json` не менять.
 
-## Как устроено
+## Два вида снимка
 
-Процедура — [`SKILL.md`](../../skills/add-reference-book/SKILL.md). Фазы читаются по одной, до выполнения:
+| Вид | Эталон | Что есть у среза |
+|---|---|---|
+| watermark-sync | `Modules/TransportRate` | SyncJob, `PopulateAffectedKeys`, инициализация `SyncState` |
+| Стабильный словарь с enum, разовый снимок | `Modules/Currency` | Снимок заполняется один раз. SyncJob нет |
 
-| Фаза | Файл |
-|---|---|
-| 1 | `discovery.md` |
-| 2–3 | `sql.md` |
-| 4–6 | `csharp.md` |
+`{Entity}` — имя модуля, папки, DTO и снимка. `{LegacyName}` — имя основного примитива. Правило `_`, таблица переименований и список словарей с enum — в [`SKILL.md`](../../skills/add-reference-book/SKILL.md). `TransportType` в класс разового снимка не входит: собственный RO-грид делается со watermark-sync, хотя enum уже есть.
 
-Короткие заголовки грида после генерации resx — `grid-column-glossary.md`.
+Фазы читаются по одной: `discovery.md`, затем `sql.md`, затем `csharp.md`. Короткие заголовки грида после генерации resx — `grid-column-glossary.md`.
 
-`{Entity}` — имя модуля, папки, DTO и снимка. `{LegacyName}` — имя основного примитива. Правило `_` и отдельные переименования (`Rates` → `TransportRate`, `TransportLegs` → `TransportLeg`, `LegalType` → `Contractor`) записаны в `SKILL.md`.
+## Частые вопросы
 
-Список стабильных словарей с enum и исключения из него — в `SKILL.md`, раздел «Стабильный словарь с enum». `TransportType` в этот класс не входит: собственный RO-грид делается со watermark-sync, хотя enum уже есть.
+**У справочника уже есть enum. Делать разовый снимок?**
+
+Только если он в классе стабильного словаря с enum. Список и исключения — в `SKILL.md`. Enum сам по себе класс не задаёт.
+
+**Чем `{Entity}` отличается от `{LegacyName}`.**
+
+`{Entity}` — модуль и снимок. `{LegacyName}` — основной примитив в discovery-SQL и легаси-view. Имена фиксируются до SQL и C#.
+
+**Редактор, загрузчик, заявки.**
+
+Редактор и загрузчик — backlog 7–10. Заявки на расчёт — модуль 4.
 
 ## Сработало, если
 
 - Имена `{LegacyName}` и `{Entity}` зафиксированы до SQL и C#.
-- У watermark-sync есть SyncJob, `PopulateAffectedKeys` и инициализация `SyncState`. У стабильного словаря с enum их нет: снимок заполняется один раз.
+- У watermark-sync есть SyncJob, `PopulateAffectedKeys` и инициализация `SyncState`. У стабильного словаря с enum снимок заполнен один раз, без этих трёх.
 - В `catalogs-scope.md` колонка RO остаётся `[ ]`, пока справочник не на проде.
 - Пункт backlog не отмечен до ревью.
 - `dotnet build` и `dotnet test` проходят.
 
 ## Куда встаёт
 
-После сверки с [`svt-architecture`](svt-architecture.md) / `catalogs-scope.md`. Накат Programmability на localhost — [`create-programmability`](create-programmability.md). Публикация в `C:\publish\v2` — [`publish-all-sql`](publish-all-sql.md).
+Шаг после сверки с [`svt-architecture`](svt-architecture.md) / `catalogs-scope.md`. Дальше накат на localhost — [`create-programmability`](create-programmability.md), копия в каталог деплоя — [`publish-all-sql`](publish-all-sql.md). Цепочка — [`docs/README.md`](../README.md).
