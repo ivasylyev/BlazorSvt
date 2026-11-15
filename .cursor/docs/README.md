@@ -7,6 +7,8 @@
 ## Цепочка
 
 ```text
+grill-with-docs
+  → to-spec
 svt-architecture
   → add-reference-book
       → create-programmability   (накат на localhost)
@@ -23,6 +25,9 @@ atlas
 | [add-reference-book](svt/add-reference-book.md) | агент | Read-only справочник из легаси. Редактор, загрузчик и заявки — вне скила |
 | [create-programmability](svt/create-programmability.md) | человек `/create_programmability` и агент | Накат Programmability на localhost/`mdm` |
 | [publish-all-sql](svt/publish-all-sql.md) | человек `/publish_all_sql` и агент | Копия SQL в каталог деплоя `C:\publish\v2` |
+| [grill-with-docs](svt/grill-with-docs.md) | агент | Интервью по ещё не записанному плану; термин — в `glossary.md` |
+| [to-spec](svt/to-spec.md) | человек | Снимок постановки в `docs/tasks` по уже закрытому разговору |
+| [handoff](svt/handoff.md) | человек | Передача разговора в другой чат. В цепочку выше не входит |
 
 ## Атлас
 
