@@ -35,6 +35,10 @@ description: >-
 | Как вызывать API | `docs/api/svt-api-v1-developers.md` |
 | Решения и риски API | [architecture.md](architecture.md) §6.6.1 |
 
+Канон скоупа при изменении — [catalogs-scope.md](catalogs-scope.md) в репозитории. Excel на Confluence — исходный дамп легаси.
+
+Оглавление пакета на ревью и диаграммы — [README.md](README.md) (`01-as-is-legacy.png`, `02-to-be-current-program.png`, `03-future-containers-out-of-scope.png` лежат в этой же папке). Сборку zip делает [Build-ReviewPackage.ps1](../../../docs/output-review-package/Build-ReviewPackage.ps1) по [README](../../../docs/output-review-package/README.md): markdown этого навыка, диаграммы из этой папки и `SVT-idealnyy-process-2.7.html` попадают в zip, затем скрипт удаляет эти копии из папки пакета. Канон — файлы навыка. Zip в git не коммитится.
+
 ## Когда применять
 
 - Новый справочник, редактор, импорт, интеграция
@@ -58,23 +62,3 @@ description: >-
 ## Ключевые антипаттерны легаси (не повторять)
 
 Текст раздела — [architecture.md](architecture.md), после §3.
-
-## Подробная документация
-
-- Обоснование замещения, сравнение альтернатив и целевое состояние — [architecture.md](architecture.md)
-  (условное архитектурное одобрение — [review-conditions.md](review-conditions.md))
-- Дорожная карта: порядок доменов, сводка вех и критический путь — [roadmap.md](roadmap.md)
-- Правила перехода и критерии Gate A/B/C/D — [cutover.md](cutover.md)
-- Риски и меры — [risks.md](risks.md)
-- Условия одобрения — [review-conditions.md](review-conditions.md)
-- Приложения threat model / SoD / SLI/SLO / … — [mitigations.md](mitigations.md)
-- Двенадцать шагов поставки — [delivery-steps.md](delivery-steps.md)
-- Термины — [glossary.md](glossary.md)
-- Чеклист работ — [backlog.md](backlog.md). Таблица вех и оценка трудоёмкости — [roadmap.md](roadmap.md)
-- Реестр справочников (SoT скоупа: состав доменов, RO/E/L, меню, приоритеты) — [catalogs-scope.md](catalogs-scope.md). Канон при изменении — этот файл в репозитории; Excel на Confluence — только исходный дамп легаси
-- Текущий статус контура — [status.md](status.md)
-- Функции вне реестра — [outside-registry.md](outside-registry.md)
-- Чеклист перед кодом — [pre-implementation-checklist.md](pre-implementation-checklist.md)
-- Оглавление пакета и диаграммы —
-  [README.md](README.md) (файлы `01-as-is-legacy.png`, `02-to-be-current-program.png`, `03-future-containers-out-of-scope.png` лежат в этой же папке)
-- Пакет для передачи на ревью собирает [Build-ReviewPackage.ps1](../../../docs/output-review-package/Build-ReviewPackage.ps1) по [README](../../../docs/output-review-package/README.md): markdown этого навыка, диаграммы из этой папки и `SVT-idealnyy-process-2.7.html` попадают в zip, затем скрипт удаляет эти копии из папки пакета. Канон — файлы навыка. Zip в git не коммитится
