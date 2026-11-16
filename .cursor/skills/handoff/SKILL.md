@@ -1,0 +1,62 @@
+---
+name: handoff
+description: >-
+  Пишет передачу текущего разговора, когда работу забирает другой человек, другая
+  машина или побочная сессия. Используй только когда пользователь явно просит
+  handoff или передачу сессии.
+disable-model-invocation: true
+---
+
+# handoff
+
+Сжать текущий разговор в файл, который можно унести в другой чат. Тот же чат, та же машина и продолжение той же задачи файл не требуют: передача пишется, когда работа уходит из этого разговора.
+
+Поводы: другой человек, другая машина или среда, другой каталог, побочная сессия рядом с текущей. После записи этот чат не закрывать и канон не менять.
+
+## Когда применять
+
+Явная просьба: «handoff», «передача», «резюмируй»,  «подитожь», «передаю в новую сессию».
+
+Цель следующей сессии названа — под неё и собирать файл. Не названа — спросить один раз и только потом писать.
+
+## Куда писать
+
+Продолжение на этой же машине в ближайшее время: `%TEMP%\svt-handoff-<slug>.md`. В ответе дать полный путь.
+
+Другой человек или другая машина: `docs/handoff/ГГГГ-ММ-ДД-<slug>.md`. В `.cursor/skills/svt-architecture/` передачу не класть.
+
+Slug — латиницей, через дефис. Файл с таким именем уже есть — не перезаписывать, взять следующее свободное имя с суффиксом `-2`.
+
+Первая строка файла:
+
+```markdown
+> Снимок передачи, не канон. При расхождении верны код и skill.
+```
+
+## Что внутри
+
+Что в работе, зачем, что делать дальше, что сознательно не делается. Непроверенное («это уже сделано», «этого в коде нет») помечать как непроверенное.
+
+Постановки, глоссарий, файлы канона, коммиты и диффы — только пути и номера пунктов `backlog.md`, без копий текста.
+
+Секция «Какие скиллы открыть» — пути скиллов этого репозитория, которые следующему агенту нужны для названной цели. Чужой Skill tool не вызывать.
+
+Пароли, токены и строки подключения вычистить. `Database:MdmDb` упоминать без значения.
+
+## Конец
+
+В ответе — полный путь к файлу. Этот разговор на записанном месте не обрывать.
+
+## Источник
+
+Адаптация `handoff` из [mattpocock/skills](https://github.com/mattpocock/skills).
+
+MIT License
+
+Copyright (c) 2026 Matt Pocock
+
+Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.

@@ -1,29 +1,37 @@
 # Архитектурные материалы СВТ 2.0 (пакет на ревью)
 
-Диаграммы развёртывания, обоснование и дорожная карта для **условного** архитектурного
-одобрения.
+Оглавление пакета для **условного** архитектурного одобрения.
 
-- Обоснование и альтернативы: [`reference.md`](reference.md) (в т.ч. §6.9)
-- План, Gate A/B/C/D, **отложенная митигация рисков §2б** (реестр D-* + приложения: модель угроз,
-  SoD, миграции, SLI/SLO, метрики пилотов, протокол нагрузки):
-  [`roadmap.md`](roadmap.md)
-- Чеклист работ, таблица этапов и оценки:
-  [`backlog.md`](backlog.md)
-- Реестр справочников (скоуп, домены, RO/E/L):
-  [`catalogs-scope.md`](catalogs-scope.md)
-- Снимок повторного architecture review (07.08.2026, статус прода не обновляется): [`review-current-state.html`](../../../docs/output-review-package/review-current-state.html)
-- Идеальный процесс, версия 2.7 (канон, в пакет копируется скриптом):
-  [`SVT-idealnyy-process-2.7.html`](../../../docs/docs/svt-v-atlas/SVT-idealnyy-process-2.7.html)
- 
-Отдельные файлы под каждый артефакт митигации **не ведутся** — всё в `roadmap.md` §2б,
-чтобы занятому ревьюеру не прыгать по папке.
+Порядок первого чтения. Номера страниц Confluence («01. Архитектура» … «04. Список справочников») этой колонкой не заменяются.
+
+| № | Файл | Зачем |
+|---|---|---|
+| 1 | [`glossary.md`](glossary.md) | Термины. Открыть до остальных текстов |
+| 2 | [`status.md`](status.md) | Где контур сейчас |
+| 3 | [`architecture.md`](architecture.md) | Обоснование, альтернативы, целевое состояние. Сразу после него — схемы 1–3 ниже |
+| 4 | [`SVT-idealnyy-process-2.7.html`](../../../docs/docs/svt-v-atlas/SVT-idealnyy-process-2.7.html) | Идеальный процесс, версия 2.7 (канон, в пакет копируется скриптом) |
+| 5 | [`catalogs-scope.md`](catalogs-scope.md) | Реестр справочников: скоуп, домены, RO/E/L |
+| 6 | [`roadmap.md`](roadmap.md) | Порядок доменов, сводка вех, критический путь |
+| 7 | [`delivery-steps.md`](delivery-steps.md) | Двенадцать шагов поставки. Подписи «Шаг» в бэклоге |
+| 8 | [`backlog.md`](backlog.md) | Чеклист работ |
+| 9 | [`cutover.md`](cutover.md) | Правила перехода и критерии Gate A/B/C/D |
+| 10 | [`risks.md`](risks.md) | Риски и меры |
+| 11 | [`review-conditions.md`](review-conditions.md) | Условия условного одобрения, реестр D-* |
+| 12 | [`mitigations.md`](mitigations.md) | Приложения: модель угроз, SoD, миграции, SLI/SLO, метрики пилотов, протокол нагрузки |
+| 13 | [`outside-registry.md`](outside-registry.md) | Функции вне реестра справочников |
+| 14 | [`pre-implementation-checklist.md`](pre-implementation-checklist.md) | Чеклист перед кодом |
+| 15 | [`review-current-state.html`](../../../docs/output-review-package/review-current-state.html) | Снимок повторного architecture review (07.08.2026, статус прода не обновляется) |
+
+`README.md` — это оглавление, [`SKILL.md`](SKILL.md) — указатель для агента. Страница для человека — [svt-architecture.md](../../docs/svt/svt-architecture.md). В порядок чтения они не входят. Таблица «Канон» на странице совпадает с таблицей в `SKILL.md`. При расхождении берётся `SKILL.md`.
+
+Отдельный файл на каждый артефакт митигации **не ведётся** — приложения D-* лежат в `mitigations.md`.
 
 ## Последовательность диаграмм
 
 | № | Файл | Состояние | Статус |
 |---|---|---|---|
 | 1 | [`01-as-is-legacy.png`](01-as-is-legacy.png) | Легаси (As-Is): распределённый монолит, Elastic, RabbitMQ, Angular | Текущее состояние прод |
-| 2 | [`02-to-be-current-program.png`](02-to-be-current-program.png) | Целевая архитектура **текущей программы** трансформации (итог MVP 2.0 / Gate D): та же ВМ и Windows Server 2016/IIS, модульный монолит .NET Blazor, без Elastic/RabbitMQ | Согласуется в рамках этого ревью |
+| 2 | [`02-to-be-current-program.png`](02-to-be-current-program.png) | Целевая архитектура **текущей программы** трансформации (итог вехи 14 / Gate D): та же ВМ и Windows Server 2016/IIS, модульный монолит .NET Blazor, без Elastic/RabbitMQ | Согласуется в рамках этого ревью |
 | 3 | [`03-future-containers-out-of-scope.png`](03-future-containers-out-of-scope.png) | Возможное будущее состояние — контейнеризация (Docker/Kubernetes) | **Вне скоупа текущей программы**; отдельная будущая инициатива с отдельным бизнес-кейсом |
 
 ## Почему три, а не одна схема
@@ -38,7 +46,7 @@
 целью текущей программы.
 
 Единственное, на что диаграмма 3 влияет уже сейчас: выбор механизма сессий Blazor Server
-(sticky/affinity, см. `reference.md` §6.1) не должен архитектурно исключать последующий переход
+(sticky/affinity, см. `architecture.md` §6.1) не должен архитектурно исключать последующий переход
 на многоузловой/K8s-деплой.
 
 Пакет для передачи собирает [`Build-ReviewPackage.ps1`](../../../docs/output-review-package/Build-ReviewPackage.ps1)

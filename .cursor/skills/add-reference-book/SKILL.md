@@ -11,8 +11,12 @@ description: >-
 
 Полный вертикальный срез: MDM discovery → SQL (Structure + Programmability + SnapshotSync) → деплой и верификация БД → C#-модуль.
 
-**Эталоны реализации:** `Modules/TransportRate`, `Modules/AverageRateLevel3`, `Modules/TransportLeg`, `Modules/LocationsNodes`.  
-Легаси-имена в реестре — `Rates` и `TransportLegs`. В коде это модули `TransportRate` и `TransportLeg`, бизнес-ключи `TransportRateId` и `TransportLegId`.  
+**Эталон зависит от вида справочника:**
+
+- watermark-sync — `Modules/TransportRate` и `SqlScripts/Modules/TransportRate`. Срок действия и каскад переносить, только если проекция этого справочника их читает. У TransportRate это узлы и продукт; тот же приём каскада — у `Modules/AverageRateLevel3`. Источники чужого job не копировать. Стабильные словари с enum в чужой каскад не включать;
+- стабильный словарь с enum, разовый снимок — `Modules/Currency`.
+
+Партиции и грид — как у `TransportLeg` и `LocationsNodes`. Легаси-имена в реестре — `Rates` и `TransportLegs`. В коде это модули `TransportRate` и `TransportLeg`, бизнес-ключи `TransportRateId` и `TransportLegId`.  
 **Именование:** для **новых** справочников — соглашения ниже.
 
 ## Когда применять
@@ -20,18 +24,36 @@ description: >-
 - Команда «добавить справочник», «создать модуль для {PrimitiveEntityInfo}»
 - Перенос сущности из легаси MDM в BlazorSVT (read-only grid + detail + export)
 
-Перед добавлением сверься с [catalogs-scope.md](../svt-architecture/catalogs-scope.md): справочник должен быть **в скоупе**; домен, видимость меню ЕО и тип работ — из реестра. Сущности из раздела «Вне скоупа», в том числе `TransportRequest` и `MassiveRequest`, этим навыком не переносятся. Этот навык покрывает только **RO** (грид/карточка/sync). Редактор и загрузчик — отдельные этапы (backlog 0.5–0.8). Домен «Заявки» — модуль 0.9, не справочник.
+Перед добавлением сверься с [catalogs-scope.md](../svt-architecture/catalogs-scope.md): справочник должен быть **в скоупе**; домен, видимость меню ЕО и тип работ — из реестра. Сущности из раздела «Вне скоупа», в том числе `TransportRequest` и `MassiveRequest`, этим навыком не переносятся. Этот навык покрывает только **RO** (грид/карточка/sync). Редактор и загрузчик — отдельные вехи (backlog 7–10). Домен «Заявки» — модуль 4, не справочник.
 
 ## Шаг 0 — имя справочника
 
-1. Если пользователь не указал имя — **уточни** системное имя легаси (`PrimitiveEntityInfo.Name`).
+1. Если пользователь не указал имя — **уточни** имя из реестра (`EntityInfo.Name`, колонка «Имя» в `catalogs-scope.md`).
 2. Без имени дальнейшие шаги **не выполнять**.
-3. Имя легаси всегда **системное** (например `TransportLeg`, не «Транспортные плечи»).
+3. Имя всегда **системное** (например `TransportLeg`, не «Транспортные плечи»).
 
 Два обозначения:
 
-- `{LegacyName}` — `PrimitiveEntityInfo.Name`. Им пользоваться в discovery-SQL, в `pei/{LegacyName}/ai` и в легаси-view `vw_{LegacyName}`.
-- `{Entity}` — имя модуля, папки, DTO, снимка `v2.{Entity}_Snapshot` и маршрута. Если в `{LegacyName}` нет `_` и нет строки в таблице ниже, имена совпадают. Если `_` есть, убрать его и поднять первую букву каждого сегмента, остальное не менять: `TransportType_level_3` → `TransportTypeLevel3`, `Priority_Rate` → `PriorityRate`, `Federal_Districts` → `FederalDistricts`, `OrganizationDPO_type` → `OrganizationDPOType`, `MTR_DPO` → `MTRDPO`.
+- `{Entity}` — имя модуля, папки, DTO, снимка `v2.{Entity}_Snapshot` и маршрута. По умолчанию это имя реестра. Если в нём есть `_` и нет строки в таблице ниже, убрать `_` и поднять первую букву каждого сегмента, остальное не менять: `TransportType_level_3` → `TransportTypeLevel3`, `Priority_Rate` → `PriorityRate`, `Federal_Districts` → `FederalDistricts`, `OrganizationDPO_type` → `OrganizationDPOType`, `MTR_DPO` → `MTRDPO`.
+- `{LegacyName}` — имя **основного примитива** (`PrimitiveEntityInfo.Name`). Им пользоваться в discovery-SQL, в `pei/{LegacyName}/ai` и в легаси-view, которая проецирует его таблицу.
+
+Перед discovery сверь реестр и примитив:
+
+```sql
+SELECT e.Id AS EntityInfoId, e.Name AS EntityName,
+       es.Id AS StructureId, es.ParentId,
+       p.Id AS PrimitiveEntityInfoId, p.Name AS PrimitiveName
+FROM dbo.EntityInfo e
+JOIN dbo.EntityStructure es ON es.EntityInfoId = e.Id
+JOIN dbo.PrimitiveEntityInfo p ON p.Id = es.PrimitiveEntityInfoId
+WHERE e.Name = N'{RegistryName}';
+```
+
+- Id и имя в реестре — `EntityInfo` (URL `masterdata/{id}` и колонка «Имя»). Номер таблицы `PrimitiveEntityData_*` — `PrimitiveEntityInfo.Id` строки с `ParentId IS NULL`.
+- Имена совпали — `{LegacyName}` = `{Entity}` (после правила `_` и таблицы переименований).
+- Имена разошлись — `{LegacyName}` имя примитива, `{Entity}` имя реестра, если таблица ниже не говорит иное. Пример: реестр `Contractor` (`EntityInfo` 2054), примитив `LegalType` (2028), таблица `PrimitiveEntityData_2028`, представление `vw_LegalType`, словарь `pei/LegalType/ai`.
+- Представление — то, которое читает эту таблицу. Одноимённое реестру тонкое представление, которое её не проецирует, устарело (`vw_Contractor`). Замены джойнов — только в SoT (`Modules/**/Programmability`). Файлы уже выкаченной `Migrations/{версия}/` не переписывать: новый `All_Programmability` забирает SoT.
+- Строка с `ParentId IS NOT NULL` — дочерний примитив. В модуль он не входит, пока пользователь не включил его в скоуп. Примитив сущности из раздела «Вне скоупа» новой строкой реестра не становится.
 
 Отдельные переименования (подчёркивания нет):
 
@@ -39,6 +61,9 @@ description: >-
 |---|---|
 | `Rates` | `TransportRate` |
 | `TransportLegs` | `TransportLeg` |
+| `LegalType` | `Contractor` |
+
+Состав экрана конкретного справочника — в его постановке и в комментарии `catalogs-scope.md`, не в этом навыке. Как отбирать атрибуты и чем порядок грида отличается от порядка карточки — [discovery.md](discovery.md) §1 и §3.
 
 ## Соглашения об именовании (новые справочники)
 
@@ -104,7 +129,7 @@ description: >-
 
 `ShipmentType` в класс не входит: отдельного enum нет. У TransportLeg тип отправки — сырой `ShipmentTypeCodeT`. Справочники «хранит константы» без enum не входят, пока enum не появится.
 
-`RateSyncClass` в этот класс не входит: в реестре это обычный RO со sync (backlog 0.2.3.7). Enum сам по себе класс не задаёт. `TypePlace` вне скоупа (исторический, вместо него TypeNode): свой RO-грид не делать; enum `LocationType*` остаётся для LocationsNodes.
+`RateSyncClass` в этот класс не входит: в реестре это обычный RO со sync (backlog 3.3.6). Enum сам по себе класс не задаёт. `TypePlace` вне скоупа (исторический, вместо него TypeNode): свой RO-грид не делать; enum `LocationType*` остаётся для LocationsNodes.
 
 Решение для собственного RO-грида такого справочника (принято на RateType, то же для остальных строк таблицы):
 
@@ -133,6 +158,8 @@ description: >-
 - [ ] Unit: `GridColumnMetadataBuilderTests` + `SnapshotSyncJobContractTests` (второй — только если есть SyncJob)
 - [ ] Integration: grid + detail smoke + FTS
 - [ ] `dotnet build` / `dotnet test` OK
+- [ ] В `catalogs-scope.md` колонка RO остаётся `[ ]`: `[x]` ставится, когда справочник на проде
+- [ ] Пункт backlog не отмечать до ревью
 
 ## Связанные навыки
 

@@ -14,8 +14,10 @@ Migrations/
 │   └── 038.…054.…
 ├── 2.3.46/            ← RateType (не править)
 │   └── 001.…005.…
-└── 2.3.48/            ← текущий VersionPrefix
-    └── 001.…020.…
+├── 2.3.48/            ← очередь Атласа (не править)
+│   └── 001.…020.…
+└── 2.3.49/            ← текущий VersionPrefix
+    └── 001.…008.…
 ```
 
 Публикация наружу (для DBA):
@@ -37,19 +39,45 @@ Migrations/
 | **Programmability** | views, SP, fn (`CREATE OR ALTER`) | идемпотентно, всегда latest | SoT для локального наката; в папке версии — последний файл `All_Programmability.sql` |
 
 Накат на **уже развёрнутую** БД: скрипты ещё не применённой папки версии по порядку номеров (снимок programmability — последний).
-Greenfield: `2.0.0` → `2.0.1` → `2.3.46` → `2.3.48`.
+Greenfield: `2.0.0` → `2.0.1` → `2.3.46` → `2.3.48` → `2.3.49`.
 
 Рекомендуется (пока вручную) вести учёт: какая версия уже на стенде (хотя бы запись в wiki / будущая `v2.SchemaVersion`).
 
 ## Правила текущего релиза
 
-Имя папки — `VersionPrefix` из `BlazorSvt/BlazorSvt.csproj` (сейчас `2.3.48`), без суффикса числа коммитов. Это не «следующий номер после 2.0.1» и не пункт бэклога `2.0.2`.
+Имя папки — `VersionPrefix` из `BlazorSvt/BlazorSvt.csproj` (сейчас `2.3.49`), без суффикса числа коммитов. Это не «следующий номер после 2.0.1» и не пункт бэклога `2.0.2`.
 
-1. **Папка уже выкаченного релиза — read-only.** Пока `VersionPrefix` не сменился, скрипты дописываются в текущую папку. После смены версии старую папку не правят: баг уходит новым скриптом в папку новой версии.
-2. В папке версии — дельта схемы (Structure, `ALTER`, индексы, data fix), затем **последним файлом полный снимок** всей programmability `v2` (`All_Programmability.sql`). В текущем релизе это `2.3.48/020`. В `2.3.46` это `005`. В `2.0.1` такой пакет стоял дважды: `045` и `052`.
-3. Нумерация **внутри релиза** с `001`. Исторические `038…` в `2.0.1` не переименовываем.
+1. Перед записью скриптов выяснить, выкачена ли папка текущего `VersionPrefix`. Выкаченная папка read-only: `VersionPrefix` поднимается, новая папка начинается с `001`, старая не правится. Папка, которая ещё не выкатывалась, продолжается следующим номером. Баг уже выкаченного релиза уходит новым скриптом в папку новой версии.
+2. В папке версии — дельта схемы (Structure, `ALTER`, индексы, data fix), затем **последним файлом полный снимок** всей programmability `v2` (`All_Programmability.sql`). В текущем релизе последний снимок — `2.3.49/008`. В `2.3.48` это `020` (2026-11-03). В `2.3.46` это `005`. В `2.0.1` такой пакет стоял дважды: `045` и `052`.
+3. Новая папка версии нумеруется с `001`. Невыкаченная папка продолжается следующим номером, а не с `001`. Исторические `038…` в `2.0.1` не переименовываем.
 4. SoT остаётся в `Platform/` и `Modules/`: локальный `Create-Programmability.ps1` читает его, а не `Migrations/`. В папку версии попадает копия дельты и снимок programmability.
 5. Публикация в `C:\publish` этим правилом не требуется.
+
+## Снимок All_Programmability
+
+Последний файл папки версии. Собирается из SoT в порядке `Create-Programmability.ps1`, на БД не исполняется. Кодировка — UTF-8 with BOM. Снимок уже выкаченной папки не пересобирать.
+
+Порядок файлов: сначала `Platform/Programmability/*.sql`, затем `Modules/*/Programmability/*.sql` по имени папки модуля. Внутри папки ключ сортировки, затем имя файла: `fn_*` и `vw_*` — `010`, `sp_*` и `*_Get.sql` — `020`, `*_ExportFull.sql` — `030`, прочие — `100`.
+
+Шапка и разделитель каждого скрипта:
+
+```
+/*
+  Auto-generated: All v2 Programmability
+  Generated: yyyy-MM-dd HH:mm:ss
+  Scripts: N
+  Order: Create-Programmability.ps1 (Platform -> Modules by name)
+*/
+GO
+
+--------------------------------------------------------------------------------
+-- [1/N] Platform :: fn_GetDateSqlOperator.sql
+-- Source: Platform\Programmability\fn_GetDateSqlOperator.sql
+--------------------------------------------------------------------------------
+GO
+```
+
+`Source` — путь от `SqlScripts` с обратными слэшами. В заголовке блока имя области — `Platform` или имя папки модуля, без префикса `Modules\`. Тело файла — как в SoT, без BOM и без хвостовых пустых строк. Между скриптами одна пустая строка.
 
 ## Архив 2.0.0 / 2.0.1 (факт выкладки)
 
@@ -84,7 +112,9 @@ Greenfield: `2.0.0` → `2.0.1` → `2.3.46` → `2.3.48`.
 
 RateType — стабильный словарь с enum. В миграции нет `sp_RateType_PopulateAffectedKeys`, `RowVer` и `SyncState`. В снимке `005` у RateType только `vw_RateType_Detail` и `vw_RateType_SnapshotSource`.
 
-## Текущий релиз 2.3.48
+## Релиз 2.3.48
+
+Очередь Атласа. `VersionPrefix` сменился на `2.3.49`: файлы `2.3.48` не править.
 
 | Файл | Что это |
 |------|---------|
@@ -115,6 +145,21 @@ ProductGroup — справочник с watermark-sync. `RowVer` на `dbo.Prim
 MTR — справочник с watermark-sync. `RowVer` на `dbo.PrimitiveEntityData_1015` уже был (источник каскада ставок). В каскад своего job входят основная таблица и ProductGroup; `012` инициализирует курсоры для 1015 и 1013. ETSNG — легаси-справочник, не меняется и не отслеживается. `vw_MTR_Detail` и `sp_MTR_PopulateAffectedKeys` — в снимке `020`.
 
 TransportTypeLevel3 — стабильный словарь с enum. В миграции нет `sp_TransportTypeLevel3_PopulateAffectedKeys`, `RowVer` и `SyncState`. В снимке `020` у TransportTypeLevel3 только `vw_TransportTypeLevel3_Detail` и `vw_TransportTypeLevel3_SnapshotSource`.
+
+## Текущий релиз 2.3.49
+
+| Файл | Что это |
+|------|---------|
+| `001.Contractor_AddRowVersion.sql` | RowVer и NC-индекс на `dbo.PrimitiveEntityData_2028` (LegalType, реестр Contractor) |
+| `002.01.Contractor_CreateTable.sql` | Первое появление `v2.Contractor_Snapshot` |
+| `003.vw_Contractor_SnapshotSource.sql` | Проекция из `dbo.vw_LegalType` |
+| `004.02.Contractor_Insert.sql` | Полная заливка и курсор `v2.SyncState` по `dbo.PrimitiveEntityData_2028` |
+| `005.03.Contractor_CreateIndexes.sql` | Уникальный индекс, фильтры по `Code`, индекс по ключу, full-text |
+| `006.vw_Contractor_Detail.sql` | Карточка Contractor |
+| `007.sp_Contractor_PopulateAffectedKeys.sql` | Детекция изменений LegalType |
+| `008.All_Programmability.sql` | Полный снимок programmability, 39 скриптов, включая Contractor |
+
+Contractor (SVT-5290) — справочник с watermark-sync. Примитив LegalType, чтение из `dbo.vw_LegalType`. `001` добавляет `RowVer` на `dbo.PrimitiveEntityData_2028`. Актуальный полный снимок — `008`.
 
 ## Чеклист нового релиза
 

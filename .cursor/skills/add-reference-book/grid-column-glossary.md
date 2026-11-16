@@ -17,7 +17,7 @@
 | EN направления | From / To (не Origin / Destination) |
 | Единицы измерения | Только в Detail (в скобках у полного имени), не в заголовке грида |
 | Точки | После точки в аббревиатурах — пробел (`Рег. отпр.`, не `Рег.отпр.`) |
-| Detail формат | `Короткое (полное)`, **только если** короткое ≠ текущему полному |
+| Detail формат | `Короткое (полное)`, **только если** короткое ≠ текущему полному. Если полное уже начинается с короткого, на карточке остаётся полное, без второй обёртки: short `INN`, full `INN (taxpayer identification number)` → карточка `INN (taxpayer identification number)` |
 | Detail-only | Поля без пары в гриде — **не** сокращать |
 | Groups / Title | `{Entity}DetailDto.Group.*`, `{Entity}Grid.Title` — **не** трогать по этому глоссарию |
 | Мёртвые ключи | Ключи не из `*GridSettingsService` — **не** трогать |
@@ -154,6 +154,14 @@
 | Код SAP | `SAPCode` | Код SAP | — | SAP code | — |
 | Код Orion | `OrionCode` | Код Orion | — | Orion code | — |
 | Статус записи | `Status` (`StatusIdRu`/`En`) | Статус | — | Status | — |
+| Наименование для поиска | `NameSearch` | Для поиска | — | Search name | — |
+| Грузополучатель | `Consignee` | Получатель | — | Consignee | — |
+| Трейдер | `IsTrader` | Трейдер | — | Trader | — |
+| Переработчик | `IsProcessing` | Переработчик | — | Processor | — |
+| Грузоотправитель | `IsSender` | Отправитель | — | Shipper | — |
+| Дебитор | `IsDebtor` | Дебитор | — | Debtor | — |
+| Кредитор | `IsCreditor` | Кредитор | — | Creditor | — |
+| ИНН | `INN` | ИНН | — | INN | — |
 
 `RateTypeCode` в grid settings может отсутствовать — short применяют только если ключ реально используется в гриде; иначе ключ считается мёртвым для правки.
 
@@ -173,3 +181,24 @@
 | `RateSyncClass` | Класс синхронизации | Rate synchronization class | Класс синхр. | Sync class |
 | `ProductCode` | Код продукта | Product code | Код продукта | Product code |
 | `IsBasic_forCBD` | Основной тип транспорта для ЦБД | Basic transport type for CBD | Осн. ЦБД | CBD basic |
+
+### Contractor
+
+Согласовано для грида и карточки Contractor. У `Code` английское полное имя — `Code`. У `INN` английское полное уже содержит короткое, поэтому карточка EN — `INN (taxpayer identification number)`. Строки «карточка» короткими именами не заменяются: колонки short у них пустые, в resx пишется полное имя.
+
+| Key | Где | RU полное | EN полное | RU short | EN short |
+|-----|-----|-----------|-----------|----------|----------|
+| `Code` | грид | Код записи | Code | Код | Code |
+| `NameSearch` | грид | Наименование для поиска | Name for search | Для поиска | Search name |
+| `Consignee` | грид | Является грузополучателем | Is a consignee | Получатель | Consignee |
+| `IsTrader` | грид | Является трейдером | Is a trader | Трейдер | Trader |
+| `IsProcessing` | грид | Является переработчиком | Is a processor | Переработчик | Processor |
+| `IsSender` | грид | Является грузоотправителем | Is a shipper | Отправитель | Shipper |
+| `IsDebtor` | грид | Является Заказчиком\Получателем\Дебитором | Is a customer, recipient, or debtor | Дебитор | Debtor |
+| `IsCreditor` | грид | Является Поставщиком\Кредитором | Is a supplier or creditor | Кредитор | Creditor |
+| `INN` | грид | ИНН | INN (taxpayer identification number) | ИНН | INN |
+| `ShortNameEGRUL` | карточка | Краткое наименование из ЕГРЮЛ | Short name as per the Unified State Register of Legal Entities | — | — |
+| `FullNameEGRUL` | карточка | Полное наименование из ЕГРЮЛ | Full name as per the Unified State Register of Legal Entities | — | — |
+| `Customs` | карточка | Таможня | Customs | — | — |
+| `CustomCode` | карточка | Код таможни | Customs code | — | — |
+| `OrgAffiliation` | карточка | Организационная принадлежность | Organisational affiliation | — | — |

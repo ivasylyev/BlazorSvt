@@ -1,0 +1,16 @@
+@page "/contractor"
+@using BlazorSvt.Modules.Contractor.Detail
+@inherits BaseGridPage<ContractorDto, ContractorDetailDto>
+
+<GenericGrid TItem="ContractorDto"
+             TDetailItem="ContractorDetailDto"
+             PageTitle="@EL["ContractorGrid.Title"]"
+             AllowDetailView="true"
+             DataProvider="DataProvider"
+             DetailDataProvider="DetailDataProvider"
+             DetailKeySelector="DetailKeySelector">
+
+    <DetailViewTemplate Context="detail">
+    </DetailViewTemplate>
+
+</GenericGrid>

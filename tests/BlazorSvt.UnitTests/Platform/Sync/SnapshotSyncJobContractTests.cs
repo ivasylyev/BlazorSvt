@@ -4,6 +4,8 @@ using BlazorSvt.Modules.LocationsNodes.List;
 using BlazorSvt.Modules.LocationsNodes.Sync;
 using BlazorSvt.Modules.ParityRates.List;
 using BlazorSvt.Modules.ParityRates.Sync;
+using BlazorSvt.Modules.Contractor.List;
+using BlazorSvt.Modules.Contractor.Sync;
 using BlazorSvt.Modules.MTR.List;
 using BlazorSvt.Modules.MTR.Sync;
 using BlazorSvt.Modules.ProductGroup.List;
@@ -101,6 +103,15 @@ public class SnapshotSyncJobContractTests
                 "v2.vw_MTR_SnapshotSource",
                 "v2.MTR_PopulateAffectedKeys"
             },
+            {
+                new ContractorSyncJob(),
+                typeof(ContractorDto),
+                "Contractor",
+                "v2.Contractor_Snapshot",
+                nameof(ContractorDto.ContractorId),
+                "v2.vw_Contractor_SnapshotSource",
+                "v2.Contractor_PopulateAffectedKeys"
+            },
         };
 
     public static IEnumerable<object[]> AllJobs()
@@ -178,6 +189,14 @@ public class SnapshotSyncJobContractTests
 
         sources.Should().Contain("dbo.PrimitiveEntityData_1015");
         sources.Should().NotContain("dbo.PrimitiveEntityData_2048");
+    }
+
+    [Fact]
+    public void ContractorJob_TracksLegalTypeOnly()
+    {
+        var sources = new ContractorSyncJob().Sources.Select(s => s.Name);
+
+        sources.Should().Equal("dbo.PrimitiveEntityData_2028");
     }
 
     [Fact]

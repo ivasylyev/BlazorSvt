@@ -1,11 +1,11 @@
 # Оценка трудоёмкости трансформации СВТ
 
-Источник цифр для таблицы этапов в [backlog.md](../../.cursor/skills/svt-architecture/backlog.md)
-и поэлементных троек в том же файле.
+Источник цифр для таблицы вех в [roadmap.md](../../.cursor/skills/svt-architecture/roadmap.md)
+и поэлементных троек в [backlog.md](../../.cursor/skills/svt-architecture/backlog.md).
 Confluence ч. III: [pageId=567442215](https://confluence.sibur.local/pages/viewpage.action?pageId=567442215).
 
-WBS ids = `{MVP}.{пакет}.{пункт}` (не путать с `reference.md` §6.9).
-Скоуп RO/E/L — `catalogs-scope.md`. Третья цифра (человек с ИИ) только на MVP 0.0=25 и 0.1=60.
+WBS ids = `{веха}.{пакет}.{задача}` (не путать с [review-conditions.md](../../.cursor/skills/svt-architecture/review-conditions.md)).
+Скоуп RO/E/L — `catalogs-scope.md`. Третья цифра (человек с ИИ) только на вехе 1=25 и вехе 2=60.
 
 ## Перегенерация
 
@@ -14,11 +14,11 @@ python docs/estimation/generate_effort_estimate.py
 python docs/estimation/generate_backlog_md.py
 ```
 
-Первый скрипт пишет TSV и Wiki Markup. Второй собирает черновик `backlog.md` и не воспроизводит ручной нарратив (очередь Атласа, примечания пунктов). Канон чеклиста — сам `backlog.md`. Перед запуском сверить вывод и не затирать ручные формулировки.
+Первый скрипт пишет TSV и Wiki Markup. Второй собирает черновик чеклиста `backlog.md` и не воспроизводит ручной нарратив (очередь Атласа, примечания пунктов). Сводку вех и критический путь он не пишет: они вручную в `roadmap.md`. Перед запуском сверить вывод и не затирать ручные формулировки.
 
 | Файл | Назначение |
 |------|------------|
-| `00_summary_by_stage.tsv` | Сводка по этапам MVP (включая слот «человек») |
+| `00_summary_by_stage.tsv` | Сводка по вехам (включая слот «человек») |
 | `01_detail_items.tsv` | Пункты бэклога |
 | `02_by_backlog_task.tsv` | Суммы по пакетам |
 | `03_assumptions_and_norms.tsv` | Допущения и нормы |

@@ -23,6 +23,9 @@ description: >-
 - Выполняет все `*.sql` из `SqlScripts/Platform/Programmability/` и `SqlScripts/Modules/*/Programmability/`
 - Останавливается при первой ошибке sqlcmd (`-b`)
 - Structure-скрипты не затрагивает
+- Требует SQL-логин (`User ID`). При `Trusted_Connection` скрипт не запускать: каждый файл Programmability — `sqlcmd -S localhost -d mdm -E -b -f 65001 -i <файл>`. Порядок тот же, что у скрипта: Platform, затем модули по имени; внутри папки `fn`/`vw` перед `sp`
+
+Тот же порядок — у снимка `All_Programmability.sql`. Как его собрать — `BlazorSvt/SqlScripts/Migrations/README.md`, раздел «Снимок All_Programmability». Этот скрипт снимок не пишет.
 
 ## После запуска
 

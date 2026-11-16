@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <resheader name="resmimetype"><value>text/microsoft-resx</value></resheader>
+  <resheader name="version"><value>2.0</value></resheader>
+  <resheader name="reader"><value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value></resheader>
+  <resheader name="writer"><value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value></resheader>
+  <data name="ContractorGrid.Title" xml:space="preserve"><value>Контрагенты</value></data>
+  <data name="ContractorDto.Code" xml:space="preserve"><value>Код</value></data>
+  <data name="ContractorDto.NameSearch" xml:space="preserve"><value>Для поиска</value></data>
+  <data name="ContractorDto.Consignee" xml:space="preserve"><value>Получатель</value></data>
+  <data name="ContractorDto.IsTrader" xml:space="preserve"><value>Трейдер</value></data>
+  <data name="ContractorDto.IsProcessing" xml:space="preserve"><value>Переработчик</value></data>
+  <data name="ContractorDto.IsSender" xml:space="preserve"><value>Отправитель</value></data>
+  <data name="ContractorDto.IsDebtor" xml:space="preserve"><value>Дебитор</value></data>
+  <data name="ContractorDto.IsCreditor" xml:space="preserve"><value>Кредитор</value></data>
+  <data name="ContractorDto.INN" xml:space="preserve"><value>ИНН</value></data>
+  <data name="ContractorDto.IsArchive" xml:space="preserve"><value>Архив</value></data>
+  <data name="ContractorDto.CreationDate" xml:space="preserve"><value>Создано</value></data>
+  <data name="ContractorDto.LastChangeDate" xml:space="preserve"><value>Изменено</value></data>
+  <data name="ContractorDetailDto.Code" xml:space="preserve"><value>Код (Код записи)</value></data>
+  <data name="ContractorDetailDto.NameSearch" xml:space="preserve"><value>Для поиска (Наименование для поиска)</value></data>
+  <data name="ContractorDetailDto.Consignee" xml:space="preserve"><value>Получатель (Является грузополучателем)</value></data>
+  <data name="ContractorDetailDto.IsTrader" xml:space="preserve"><value>Трейдер (Является трейдером)</value></data>
+  <data name="ContractorDetailDto.IsProcessing" xml:space="preserve"><value>Переработчик (Является переработчиком)</value></data>
+  <data name="ContractorDetailDto.IsSender" xml:space="preserve"><value>Отправитель (Является грузоотправителем)</value></data>
+  <data name="ContractorDetailDto.IsDebtor" xml:space="preserve"><value>Дебитор (Является Заказчиком\Получателем\Дебитором)</value></data>
+  <data name="ContractorDetailDto.IsCreditor" xml:space="preserve"><value>Кредитор (Является Поставщиком\Кредитором)</value></data>
+  <data name="ContractorDetailDto.INN" xml:space="preserve"><value>ИНН</value></data>
+  <data name="ContractorDetailDto.ShortNameEGRUL" xml:space="preserve"><value>Краткое наименование из ЕГРЮЛ</value></data>
+  <data name="ContractorDetailDto.FullNameEGRUL" xml:space="preserve"><value>Полное наименование из ЕГРЮЛ</value></data>
+  <data name="ContractorDetailDto.Customs" xml:space="preserve"><value>Таможня</value></data>
+  <data name="ContractorDetailDto.CustomCode" xml:space="preserve"><value>Код таможни</value></data>
+  <data name="ContractorDetailDto.OrgAffiliation" xml:space="preserve"><value>Организационная принадлежность</value></data>
+  <data name="ContractorDetailDto.IsArchive" xml:space="preserve"><value>Архив</value></data>
+  <data name="ContractorDetailDto.CreationDate" xml:space="preserve"><value>Создано</value></data>
+  <data name="ContractorDetailDto.LastChangeDate" xml:space="preserve"><value>Изменено</value></data>
+  <data name="ContractorDetailDto.Group.0.Default" xml:space="preserve"><value>По умолчанию</value></data>
+</root>
