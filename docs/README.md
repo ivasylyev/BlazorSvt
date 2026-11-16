@@ -29,7 +29,7 @@
 | `docs/docs/svt-plan-dlya-rukovoditeley.html` | План для руководства, 13.10.2026 |
 | `docs/output-review-package/review-current-state.html` | Архитектурное заключение, 07.08.2026 |
 
-Актуальный статус — `.cursor/skills/svt-architecture/SKILL.md`.
+Актуальный статус — `.cursor/skills/svt-architecture/status.md`. Указатель «вопрос → файл» — `SKILL.md` того же навыка.
 
 ## Отдельные треки
 

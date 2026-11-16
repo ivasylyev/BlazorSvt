@@ -254,7 +254,7 @@ SQL-логика вынесена в процедуры. Все обращени
 т.д.). Изменение справочника-источника инвалидирует зависимые строки через
 скрытые FK-колонки snapshot (`*_Id`) — курсор ведётся по каждой таблице-источнику.
 
-**Справочники без RowVer и без каскада** — список и номера `PrimitiveEntityData_*` в `.cursor/rules/svt-development-patterns.mdc`. Колонки `*_Id` в snapshot остаются, если нужны grid-DTO.
+**Справочники вне каскада чужих гридов** — список и номера `PrimitiveEntityData_*` в `.cursor/rules/svt-development-patterns.mdc`. Свой watermark-sync в этой таблице есть только у `TransportType`. Колонки `*_Id` в snapshot остаются, если нужны grid-DTO.
 У TransportLeg тип отправки — сырой `ShipmentTypeCodeT` (не FK/enum на `2142`).
 
 Свой RO-грид стабильного словаря с enum — другой список, только в skill `add-reference-book`. Для него: разовая заливка, без `RowVer`, `SyncJob`, `PopulateAffectedKeys` и `SyncState`. Отсутствие sync само по себе грид не задаёт.

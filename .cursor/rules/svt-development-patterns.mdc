@@ -95,10 +95,12 @@ Serilog (`Host/Program.cs`, секция `Serilog` в `appsettings.json`). Пр�
 
 Один справочник — два разных числа. В SQL и C# для PED всегда комментируй имя сущности рядом с номером таблицы.
 
-### Справочники без RowVer и без каскада
+### Справочники вне каскада чужих гридов
 
-Нет записи в `ISnapshotSyncJob.Sources`, нет ветки в `PopulateAffectedKeys`, нет `RowVer` в `Sync/01.Legacy_AddRowVersion.sql`.
+Чужой SyncJob не включает их в `Sources` и не заводит на них ветку `PopulateAffectedKeys`.
 Колонки `*_Id` в snapshot остаются, если используются в grid-DTO (фильтрация, enum).
+
+Своего `RowVer`, SyncJob и `PopulateAffectedKeys` нет у всех строк таблицы, кроме `TransportType`. У `TransportType` собственный RO-грид делается со watermark-sync. В класс «стабильный словарь с enum» он не входит (skill `add-reference-book`). То, что чужой грид не каскадит на справочник, разовый снимок для его собственного грида не задаёт.
 
 | Справочник | Таблица legacy | Модули |
 |------------|----------------|--------|
@@ -111,8 +113,6 @@ Serilog (`Host/Program.cs`, секция `Serilog` в `appsettings.json`). Пр�
 | Currency | `dbo.PrimitiveEntityData_2016` | TransportRate, AverageRateLevel3; свой RO-модуль `Currency` |
 | Relevance | `dbo.PrimitiveEntityData_2108` | ParityRates |
 | ETSNG | `dbo.PrimitiveEntityData_2019` | MTR (легаси, скрыт от пользователей, не меняется с 2019 г.) |
-
-`TransportType` стоит в этой таблице, потому что чужие гриды на него не каскадят. Собственный RO-грид `TransportType` делается со sync: в класс «стабильный словарь с enum» он не входит (skill `add-reference-book`).
 
 При добавлении нового справочника к синхронизации: `vw_{Entity}_SnapshotSource`,
 `sp_{Entity}_PopulateAffectedKeys`, `{Entity}SyncJob` → `AddSingleton<ISnapshotSyncJob, …>()`,
