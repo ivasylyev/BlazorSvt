@@ -106,7 +106,7 @@ WHERE e.Name = N'{RegistryName}';
 
 | Фаза | Файл | Содержание |
 |------|------|------------|
-| 1 | [discovery.md](discovery.md) | MDM discovery, ссылки, IdsEnum, алиасы, resx |
+| 1 | [discovery.md](discovery.md) | MDM discovery; запросы и DDL — субагент, см. discovery.md |
 | 2–3 | [sql.md](sql.md) | Structure + Programmability, деплой, верификация БД |
 | 4–6 | [csharp.md](csharp.md) | C#-модуль, API, тесты, финальная проверка |
 
