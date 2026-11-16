@@ -12,7 +12,7 @@ alwaysApply: false
 
 ## Модульная регистрация
 
-Каждый модуль — `public static class *Module` с `Add*Module(IServiceCollection)`. Зависимости только через Platform-интерфейсы, не через другие Modules напрямую — это **hard architecture violation**, не стиль (единая сборка `BlazorSvt.csproj`, границу компилятор не проверяет; проверяется `ModuleBoundaryTests` — включение в CI пайплайна BlazorSvt ещё открыто, `backlog.md` 3.2.6 / roadmap D-ARCH). Общие IdsEnum — `Platform/Domain/IdsEnum/`.
+Каждый модуль — `public static class *Module` с `Add*Module(IServiceCollection)`. Зависимости только через Platform-интерфейсы, не через другие Modules напрямую — это **hard architecture violation**, не стиль (единая сборка `BlazorSvt.csproj`, границу компилятор не проверяет; проверяется `ModuleBoundaryTests` — включение в CI пайплайна BlazorSvt ещё открыто, `backlog.md` 3.2.6 / `review-conditions.md` D-ARCH). Общие IdsEnum — `Platform/Domain/IdsEnum/`.
 
 - **Нельзя**: `Modules/{X}` импортирует класс/DTO из `Modules/{Y}` (X≠Y) напрямую (`using BlazorSvt.Modules.{Y}...`)
 - **Можно** (эталон в коде): cross-reference данные на чтении резолвятся в SQL-снапшоте, а не в C# — см. `TransportRateDto` (`NodeFromCode`/`NodeFromNameRu`/`NodeFromNameEn` из джойна с `LocationsNodes` в snapshot-view, не ссылка на класс модуля); общие enum — в `Platform/Domain/IdsEnum/`, не в модуле-источнике
@@ -95,10 +95,12 @@ Serilog (`Host/Program.cs`, секция `Serilog` в `appsettings.json`). Пр�
 
 Один справочник — два разных числа. В SQL и C# для PED всегда комментируй имя сущности рядом с номером таблицы.
 
-### Справочники без RowVer и без каскада
+### Справочники вне каскада чужих гридов
 
-Нет записи в `ISnapshotSyncJob.Sources`, нет ветки в `PopulateAffectedKeys`, нет `RowVer` в `Sync/01.Legacy_AddRowVersion.sql`.
+Чужой SyncJob не включает их в `Sources` и не заводит на них ветку `PopulateAffectedKeys`.
 Колонки `*_Id` в snapshot остаются, если используются в grid-DTO (фильтрация, enum).
+
+Своего `RowVer`, SyncJob и `PopulateAffectedKeys` нет у всех строк таблицы, кроме `TransportType`. Свой RO-грид `TransportType` — skill `add-reference-book`, раздел «Стабильный словарь с enum».
 
 | Справочник | Таблица legacy | Модули |
 |------------|----------------|--------|
@@ -112,13 +114,11 @@ Serilog (`Host/Program.cs`, секция `Serilog` в `appsettings.json`). Пр�
 | Relevance | `dbo.PrimitiveEntityData_2108` | ParityRates |
 | ETSNG | `dbo.PrimitiveEntityData_2019` | MTR (легаси, скрыт от пользователей, не меняется с 2019 г.) |
 
-`TransportType` стоит в этой таблице, потому что чужие гриды на него не каскадят. Собственный RO-грид `TransportType` делается со sync: в класс «стабильный словарь с enum» он не входит (skill `add-reference-book`).
-
 При добавлении нового справочника к синхронизации: `vw_{Entity}_SnapshotSource`,
 `sp_{Entity}_PopulateAffectedKeys`, `{Entity}SyncJob` → `AddSingleton<ISnapshotSyncJob, …>()`,
 RowVer на основной PED-таблице. Источники из таблицы выше в каскад не включать без явного решения.
 
-Свой RO-грид стабильного словаря с enum — другой список. Состав и шаги только в skill `add-reference-book`, раздел «Стабильный словарь с enum». Отсутствие sync само по себе грид не задаёт. Кратко для такого грида: разовая заливка, без RowVer, SyncJob, PopulateAffectedKeys и SyncState. Unit-тест SyncJob не добавлять.
+Свой RO-грид стабильного словаря с enum — другой список. Состав и шаги только в skill `add-reference-book`, раздел «Стабильный словарь с enum». Отсутствие sync само по себе грид не задаёт.
 
 Дочерние/связанные сущности (типа `RatesOfAverageRate`) — в каскад **только** если пользователь
 явно попросил; часто legacy меняет родителя и детей одновременно.

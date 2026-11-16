@@ -22,31 +22,7 @@
 
 ## Канон
 
-| Вопрос | Канон |
-|---|---|
-| Что на проде, API, MCP, Import | [status.md](../../skills/svt-architecture/status.md) |
-| Обоснование и целевое состояние | [architecture.md](../../skills/svt-architecture/architecture.md) |
-| Состав, домены, RO/E/L, меню, приоритеты | [catalogs-scope.md](../../skills/svt-architecture/catalogs-scope.md) |
-| Порядок доменов и вех, критический путь, оценки вех | [roadmap.md](../../skills/svt-architecture/roadmap.md) |
-| Правила перехода и критерии Gate | [cutover.md](../../skills/svt-architecture/cutover.md) |
-| Риски и меры | [risks.md](../../skills/svt-architecture/risks.md) |
-| Условия одобрения | [review-conditions.md](../../skills/svt-architecture/review-conditions.md) |
-| Приложения D-* | [mitigations.md](../../skills/svt-architecture/mitigations.md) |
-| Шаги поставки | [delivery-steps.md](../../skills/svt-architecture/delivery-steps.md); подписи в [backlog.md](../../skills/svt-architecture/backlog.md) |
-| Термины | [glossary.md](../../skills/svt-architecture/glossary.md) |
-| Чеклист задач | [backlog.md](../../skills/svt-architecture/backlog.md) |
-| Функция, которой нет в реестре | [outside-registry.md](../../skills/svt-architecture/outside-registry.md) |
-| Чеклист перед кодом | [pre-implementation-checklist.md](../../skills/svt-architecture/pre-implementation-checklist.md) |
-| Обязательные ограничения | правило `svt-architecture-principles` |
-| Как писать текущий код | правило `svt-development-patterns` |
-| Новый RO-справочник | skill [`add-reference-book`](../../skills/add-reference-book/SKILL.md) |
-| Контракт HTTP | `docs/api/svt-api-v1.openapi.json` |
-| Как вызывать API | `docs/api/svt-api-v1-developers.md` |
-| Решения и риски API | [architecture.md](../../skills/svt-architecture/architecture.md) §6.6.1 |
-
-Канон скоупа при изменении — [catalogs-scope.md](../../skills/svt-architecture/catalogs-scope.md) в репозитории. Excel на Confluence — исходный дамп легаси.
-
-Порядок первого чтения пакета на ревью и три диаграммы — [`README.md`](../../skills/svt-architecture/README.md) папки скила. Пакет для передачи собирает `docs/output-review-package/Build-ReviewPackage.ps1`. Канон — файлы навыка. Zip в git не коммитится.
+Таблица «вопрос → файл» — [`SKILL.md`](../../skills/svt-architecture/SKILL.md), раздел «Канон». Пакет на ревью — [`README.md`](../../skills/svt-architecture/README.md) папки скила и `docs/output-review-package/README.md`.
 
 ## Частые вопросы
 

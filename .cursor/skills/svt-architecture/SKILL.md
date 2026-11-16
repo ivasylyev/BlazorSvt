@@ -37,7 +37,7 @@ description: >-
 
 Канон скоупа при изменении — [catalogs-scope.md](catalogs-scope.md) в репозитории. Excel на Confluence — исходный дамп легаси.
 
-Оглавление пакета на ревью и диаграммы — [README.md](README.md) (`01-as-is-legacy.png`, `02-to-be-current-program.png`, `03-future-containers-out-of-scope.png` лежат в этой же папке). Сборку zip делает [Build-ReviewPackage.ps1](../../../docs/output-review-package/Build-ReviewPackage.ps1) по [README](../../../docs/output-review-package/README.md): markdown этого навыка, диаграммы из этой папки и `SVT-idealnyy-process-2.7.html` попадают в zip, затем скрипт удаляет эти копии из папки пакета. Канон — файлы навыка. Zip в git не коммитится.
+Оглавление пакета на ревью и диаграммы — [README.md](README.md) (`01-as-is-legacy.png`, `02-to-be-current-program.png`, `03-future-containers-out-of-scope.png` лежат в этой же папке). Сборка zip — [README](../../../docs/output-review-package/README.md). Канон — файлы навыка.
 
 ## Когда применять
 

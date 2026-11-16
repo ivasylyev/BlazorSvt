@@ -2,7 +2,7 @@
 
 Карта правил, навыков и slash-команд для СВТ 2.0. Канон при расхождении — **skill**, не command и не краткий alwaysApply-абзац.
 
-Маршрут «ситуация → скил» — [`docs/README.md`](docs/README.md). Процедура, которую читает агент, — `skills/<имя>/SKILL.md`. Договор страницы скила — [`docs/writing-pages.md`](docs/writing-pages.md).
+Маршрут «ситуация → скил» — [`.cursor/docs/README.md`](docs/README.md). Процедура, которую читает агент, — `skills/<имя>/SKILL.md`. Договор страницы скила — [`docs/writing-pages.md`](docs/writing-pages.md).
 
 ## Слои
 
@@ -19,6 +19,7 @@
 |------|-------|------------|
 | `svt-project-context.mdc` | alwaysApply | Краткий контекст + указатель на таблицу «Канон» |
 | `svt-architecture-principles.mdc` | alwaysApply | Обязательные ограничения архитектуры |
+| `ne-udalyat-sami.mdc` | alwaysApply | Не удалять без явного названия, не придумывать факты |
 | `svt-development-patterns.mdc` | `BlazorSvt/**/*` | Паттерны модулей, grid, API, sync, тесты |
 | `svt-add-reference-book.mdc` | Modules / SqlScripts Modules | Указатель на skill `add-reference-book` |
 | `svt-atlas.mdc` | `docs/docs/svt-v-atlas/**` | Указатель на skill `atlas` (эталонные документы) |
@@ -36,6 +37,6 @@
 ## Что куда не класть
 
 - Длинный статус прода и полный план — в skill `svt-architecture`, таблица «Канон» в `SKILL.md`. AlwaysApply эту таблицу не дублирует
-- Страницы скилов для человека — `.cursor/docs/`. Каталог — `.cursor/docs/README.md`. Индекс документов продукта — `docs/README.md` в корне репозитория. Пакет architecture review собирает `docs/output-review-package/Build-ReviewPackage.ps1`: zip рядом с папкой, сгенерированные копии из папки скрипт удаляет. Zip в git не коммитится
+- Страницы скилов для человека — `.cursor/docs/`. Каталог — `.cursor/docs/README.md`. Индекс документов продукта — `docs/README.md` в корне репозитория. Пакет architecture review — `docs/output-review-package/README.md`
 - Алгоритм нового справочника — в `add-reference-book`, rule только указывает
 - Методология эталона / кольцо / промпты Атласа — в `atlas`. Синхронизация разделов 0 / 1а / 1б план-графика — в `plan-grafik-md-html`. Полоска и карточки вех СВТ в разделе «г» — в `svt-vehi-html`
