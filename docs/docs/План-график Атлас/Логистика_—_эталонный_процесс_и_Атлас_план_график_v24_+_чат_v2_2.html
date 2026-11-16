@@ -1041,31 +1041,60 @@ document.addEventListener("click", function (e) {
   <h4 class="p0-h4">д) Ресурсный план стрима</h4><div class="p0-box"><p>Незавершённых работ: <b>35</b>. Задействованы: Агапов А. (9), Васильев А. (4), Фролов И. (3), Набока М. (2), Дронов А. (1), Васильев И. (1).</p><p class="p0-miss">Не хватает людей (роль не назначена): QA — 5 задач; ИТ-партнёр — 5 задач; DevOps — 2 задач; Эксплуатация и поддержка — 2 задач; Владелец мониторинга — 1 задач.</p><p class="p0-muted">Команда стрима: Набока М., Агапов А..</p><p class="p0-muted">Ресурс по каждой вехе — в карточках выше.</p></div>
   <h4 class="p0-h4">е) Пересечения со смежными командами</h4><div class="p0-box"><p>Явных зависимостей от вех других стримов в плане нет; стыки определяются в вехе «Перечень интеграций со смежными стримами» (04.12).</p></div>
   <h4 class="p0-h4">ж) Открытые вопросы и где нужна помощь</h4><div class="p0-grid2"><div class="p0-box"><h5>Открытые вопросы</h5><p>Открытых вопросов по стриму нет.</p></div><div class="p0-box"><h5>Нужна помощь</h5><ul><li>Определить, что автоматизировать первым (развилка), и согласовать доработки SAP по УПД.</li><li>Назначить исполнителей на роли: ИТ-партнёр (5 задач); QA (5 задач); DevOps (2 задач); Эксплуатация и поддержка (2 задач); Владелец мониторинга (1 задач).</li><li>Просрочено незавершённых задач: 3 — например: 14.7 Сформировать короткий список самых прибыльных гипотез; 14.6а Снять ограничения автоматизации: автоподписание в ЭДО с ЭБ,…; 14.6б Снять ограничения автоматизации: автоподписание в ЭДО с ЭБ,…. Нужно решение: завершить, перенести или снять.</li></ul></div></div>
-  </details><details class="p0-stream p0-blued" id="p0-СВТ" open><summary><span class="p0-sn">Система ведения тарифов (СВТ 2.0)</span><span class="p0-ss">Ответственный: Подоплелова Е. · вех 20 · задач 26</span></summary>
+  </details><details class="p0-stream p0-blued" id="p0-СВТ" open><summary><span class="p0-sn">Система ведения тарифов (СВТ 2.0)</span><span class="p0-ss">Ответственный: Подоплелова Е. · вех 49 · задач 26</span></summary>
   <div class="p0-grid3"><div class="p0-box p0-blue"><h4>а) Как работает сейчас</h4><ul><li><b>Что ведём.</b> СВТ — мастер-система: ставки, маршруты, плечи и лидтаймы, паритеты, складские ограничения, квоты для матрицы каналов. Мы являемся одним из ключевых источников данных для бизнес-планирования. Данные забирают 8 смежных систем.</li><li><b>Как устроено.</b> Коробочное решение с собственными доработками. За шесть лет систему много дорабатывали, часть исходного функционала не используется, но влияет на стабильность. Данные в СВТ создают около 10 человек, читают — 300+. Аудит — только по последним изменениям в системе.</li><li><b>Что уже сделали.</b> Устранены повторяющиеся сбои загрузки данных. Раньше загрузка большого объёма ставок вызывала сбой, а несвоевременное внесение данных могло сдвинуть бизнес-планирование компании. Загрузчик стабилизирован и ускорен.</li><li><b>Почему этого мало.</b> Мы устранили самое острое, чтобы система не падала. Процесс неоптимален, система не до конца отвечает потребностям бизнеса: пользователи жалуются, что приходят не те данные или не тогда. Корневая причина не устранена, её можно снять только вместе с переработкой процесса.</li></ul></div><div class="p0-box p0-blue"><h4>б) Проблематика</h4><ul><li><b>Данные приходят в СВТ из разных источников и без единых правил.</b> Данные берутся из Excel, почты и SharePoint. Пользователи считают их по своим формулам. Часть данных идёт по интеграциям, часть обрабатывается сторонними скриптами на Python. На входе СВТ получает неконсистентные данные, и контролировать их качество тяжело.</li><li><b>Бизнес-правила устарели и расходятся между собой.</b> Бизнес-логика реализована по устаревшим требованиям, не соответствующим текущим потребностям бизнеса. Одна и та же бизнес-логика реализована в трёх разных местах и из-за этого частично неконсистентна. Около половины инцидентов — система приняла то, что бизнес считает ошибкой. Точечная правка корневую причину не снимает.</li><li><b>Ограничения коробочного продукта.</b> Имеются ограничения в коробочном продукте, из-за чего не все потребности бизнеса можно реализовать. Коробочный продукт хорошо предусмотрен для введения справочников и связи между ними, но плохо предусмотрен для workflow (жизненного цикла заявки). Например, заявки и по ставкам, и по паритетным ставкам коробка не предусматривает: для этого нужно переделывать её ядро.</li></ul></div><div class="p0-box p0-blue"><h4>в) Что хотим сделать</h4><ul><li><b>Почему в интерфейсе Атласа.</b> Данные в СВТ создают около 10 человек, читают — 300+. Создателям данных даём одно рабочее место в Атласе вместо Excel, почты, SharePoint и сторонних скриптов. Все входы проходят одни и те же проверки, и качество данных контролируется на входе, а не после. Ручную сборку данных автоматизируем.</li><li><b>Бизнес-процесс, согласованный с бизнесом.</b> Обследуем текущие бизнес-процессы, выявляем неоптимальные места, оптимизируем и автоматизируем. На этом этапе собирается часть Атласа для СВТ.</li><li><b>Поэтапная трансформация по методологии Атласа.</b> Процесс и система меняются вместе — только так снимается корневая причина ошибок в данных. Для нового актуального бизнес-процесса выявляем правила, актуализируем их с бизнесом и реализуем один раз для всех входов. Роли и прототипы выводим в Атлас по мере обследования; первым — заявка на расчёт стоимости транспортировки.</li></ul></div></div>
   <h4 class="p0-h4 p0-blue-mark">г) Вехи: результат и метрики</h4>
-<p class="p0-note p0-blue">Сначала полоска вех, ниже — результат и метрика по каждой. Сделано по ИТ: стабилизация. Вехи и сроки — по плану-графику стрима (Васильев И., 12.11.2026). После перечня работ домены идут внахлёст: пока делают следующий, бизнес проходит ОПЭ по предыдущему. После июня 2027 остальные домены на общей встрече показаны одной вехой; детализация — в плане задач. Сроки после 02 / 2027 — ориентир, хвост плана может сдвигаться.</p>
+<p class="p0-note p0-blue">Сначала полоска вех, ниже — результат и метрика по каждой. Сделано по ИТ: стабилизация. Вехи и сроки — по плану-графику стрима (Васильев И., 12.11.2026). После перечня работ домены идут внахлёст: пока делают следующий, бизнес проходит ОПЭ по предыдущему. Сроки после 02 / 2027 — ориентир, хвост плана может сдвигаться.</p>
 <div class="p0-tl p0-blue" aria-label="Вехи СВТ 2.0">
 <div class="p0-tl-i done"><b>10 / 2026</b><strong>Стабилизация выполнена</strong><span>ИТ · Васильев, Подоплелова, Ершов, Петренев · выполнено</span></div>
 <div class="p0-tl-i done"><b>11 / 2026</b><strong>Эталонный процесс составлен. Утвержден бизнесом</strong><span>передача · выполнено</span></div>
 <div class="p0-tl-i done"><b>11 / 2026</b><strong>Роли определены и утверждены бизнесом</strong><span>передача · выполнено</span></div>
 <div class="p0-tl-i work"><b>11 / 2026</b><strong>Сформирован план работ</strong><span>бизнес · в работе</span></div>
-<div class="p0-tl-i work"><b>12 / 2026</b><strong>Юзкейсы 3 ролей для домена «Заявка на расчет стоимости»</strong><span>бизнес · в работе</span></div>
+<div class="p0-tl-i work"><b>12 / 2026</b><strong>Юзкейсы 3 ролей для домена «Заявки на расчет стоимости»</strong><span>бизнес · в работе</span></div>
 <div class="p0-tl-i later"><b>12 / 2026</b><strong>Создан первый прототип «Заявка на расчет стоимости»</strong><span>бизнес · ориентир</span></div>
-<div class="p0-tl-i later"><b>01 / 2027</b><strong>Демо проведено. Прототип утвержден бизнесом</strong><span>бизнес · ориентир</span></div>
+<div class="p0-tl-i later"><b>01 / 2027</b><strong>Демо проведено. Прототип «Заявки на расчет стоимости» утвержден бизнесом</strong><span>бизнес · ориентир</span></div>
 <div class="p0-tl-i later"><b>02 / 2027</b><strong>Среды подготовлены</strong><span>запуск · ориентир</span></div>
 <div class="p0-tl-i later"><b>03 / 2027</b><strong>MVP заявок на расчёт на проде. Старт передачи в поддержку</strong><span>запуск · ориентир</span></div>
-<div class="p0-tl-i later"><b>04 / 2027</b><strong>«Заявка на расчет стоимости» выведены в ОПЭ. Готова док-ция для поддержки</strong><span>запуск · ориентир</span></div>
-<div class="p0-tl-i later"><b>05 / 2027</b><strong>«Заявка на расчет стоимости» выведены в ПЭ и выведены на поддержку</strong><span>запуск · ориентир</span></div>
-<div class="p0-tl-i later"><b>03–05 / 2027</b><strong>Ставки: прод, ОПЭ, ПЭ</strong><span>запуск · ориентир</span></div>
-<div class="p0-tl-i later"><b>05 / 2027</b><strong>Ставки: документация для поддержки подготовлена</strong><span>поддержка · ориентир</span></div>
-<div class="p0-tl-i later"><b>06 / 2027</b><strong>Ставки: поддержка забрала решение</strong><span>поддержка · ориентир</span></div>
-<div class="p0-tl-i later"><b>04–06 / 2027</b><strong>Маршруты и плечи: прод, ОПЭ, ПЭ</strong><span>запуск · ориентир</span></div>
-<div class="p0-tl-i later"><b>06 / 2027</b><strong>Маршруты и плечи: документация для поддержки подготовлена</strong><span>поддержка · ориентир</span></div>
-<div class="p0-tl-i later"><b>07 / 2027</b><strong>Маршруты и плечи: поддержка забрала решение</strong><span>поддержка · ориентир</span></div>
-<div class="p0-tl-i later"><b>07–12 / 2027</b><strong>Остальные домены поэтапно: лидтаймы, складские ограничения, матрица каналов, паритеты</strong><span>запуск · ориентир</span></div>
-<div class="p0-tl-i later"><b>12 / 2027</b><strong>Переход в Атлас всех пользователей по всем доменам</strong><span>тираж · ориентир</span></div>
-<div class="p0-tl-i later"><b>I–II кв. / 2028</b><strong>Контроль метрик перехода. Подготовка документации для поддержки. Передача на поддержку</strong><span>бизнес ✔ · ориентир</span></div>
+<div class="p0-tl-i later"><b>04 / 2027</b><strong>«Заявки на расчет стоимости» выведены в ОПЭ. Готова док-ция для поддержки</strong><span>запуск · ориентир</span></div>
+<div class="p0-tl-i later"><b>05 / 2027</b><strong>«Заявки на расчет стоимости» выведены в ПЭ, переданы на поддержку</strong><span>запуск · ориентир</span></div>
+<div class="p0-tl-i later"><b>апрель 2027</b><strong>Юзкейсы ролей для домена «Ставки»</strong><span>бизнес · ориентир</span></div>
+<div class="p0-tl-i later"><b>апрель 2027</b><strong>Создан прототип «Ставки»</strong><span>бизнес · ориентир</span></div>
+<div class="p0-tl-i later"><b>май 2027</b><strong>Демо проведено. Прототип «Ставки» утвержден бизнесом</strong><span>бизнес · ориентир</span></div>
+<div class="p0-tl-i later"><b>июнь 2027</b><strong>MVP «Ставки» на проде. Старт передачи в поддержку</strong><span>запуск · ориентир</span></div>
+<div class="p0-tl-i later"><b>июль 2027</b><strong>«Ставки» выведены в ОПЭ. Готова док-ция для поддержки</strong><span>запуск · ориентир</span></div>
+<div class="p0-tl-i later"><b>август 2027</b><strong>«Ставки» выведены в ПЭ, переданы на поддержку</strong><span>запуск · ориентир</span></div>
+<div class="p0-tl-i later"><b>июль 2027</b><strong>Юзкейсы ролей для домена «Паритеты»</strong><span>бизнес · ориентир</span></div>
+<div class="p0-tl-i later"><b>июль 2027</b><strong>Создан прототип «Паритеты»</strong><span>бизнес · ориентир</span></div>
+<div class="p0-tl-i later"><b>август 2027</b><strong>Демо проведено. Прототип «Паритеты» утвержден бизнесом</strong><span>бизнес · ориентир</span></div>
+<div class="p0-tl-i later"><b>сентябрь 2027</b><strong>MVP «Паритеты» на проде. Старт передачи в поддержку</strong><span>запуск · ориентир</span></div>
+<div class="p0-tl-i later"><b>октябрь 2027</b><strong>«Паритеты» выведены в ОПЭ. Готова док-ция для поддержки</strong><span>запуск · ориентир</span></div>
+<div class="p0-tl-i later"><b>ноябрь 2027</b><strong>«Паритеты» выведены в ПЭ, переданы на поддержку</strong><span>запуск · ориентир</span></div>
+<div class="p0-tl-i later"><b>октябрь 2027</b><strong>Юзкейсы ролей для домена «Маршруты»</strong><span>бизнес · ориентир</span></div>
+<div class="p0-tl-i later"><b>октябрь 2027</b><strong>Создан прототип «Маршруты»</strong><span>бизнес · ориентир</span></div>
+<div class="p0-tl-i later"><b>ноябрь 2027</b><strong>Демо проведено. Прототип «Маршруты» утвержден бизнесом</strong><span>бизнес · ориентир</span></div>
+<div class="p0-tl-i later"><b>декабрь 2027</b><strong>MVP «Маршруты» на проде. Старт передачи в поддержку</strong><span>запуск · ориентир</span></div>
+<div class="p0-tl-i later"><b>январь 2028</b><strong>«Маршруты» выведены в ОПЭ. Готова док-ция для поддержки</strong><span>запуск · ориентир</span></div>
+<div class="p0-tl-i later"><b>февраль 2028</b><strong>«Маршруты» выведены в ПЭ, переданы на поддержку</strong><span>запуск · ориентир</span></div>
+<div class="p0-tl-i later"><b>январь 2028</b><strong>Юзкейсы ролей для домена «Продукты»</strong><span>бизнес · ориентир</span></div>
+<div class="p0-tl-i later"><b>январь 2028</b><strong>Создан прототип «Продукты»</strong><span>бизнес · ориентир</span></div>
+<div class="p0-tl-i later"><b>январь 2028</b><strong>Демо проведено. Прототип «Продукты» утвержден бизнесом</strong><span>бизнес · ориентир</span></div>
+<div class="p0-tl-i later"><b>февраль 2028</b><strong>MVP «Продукты» на проде. Старт передачи в поддержку</strong><span>запуск · ориентир</span></div>
+<div class="p0-tl-i later"><b>февраль 2028</b><strong>«Продукты» выведены в ОПЭ. Готова док-ция для поддержки</strong><span>запуск · ориентир</span></div>
+<div class="p0-tl-i later"><b>март 2028</b><strong>«Продукты» выведены в ПЭ, переданы на поддержку</strong><span>запуск · ориентир</span></div>
+<div class="p0-tl-i later"><b>февраль 2028</b><strong>Юзкейсы ролей для домена «Склады и ограничения»</strong><span>бизнес · ориентир</span></div>
+<div class="p0-tl-i later"><b>февраль 2028</b><strong>Создан прототип «Склады и ограничения»</strong><span>бизнес · ориентир</span></div>
+<div class="p0-tl-i later"><b>март 2028</b><strong>Демо проведено. Прототип «Склады и ограничения» утвержден бизнесом</strong><span>бизнес · ориентир</span></div>
+<div class="p0-tl-i later"><b>апрель 2028</b><strong>MVP «Склады и ограничения» на проде. Старт передачи в поддержку</strong><span>запуск · ориентир</span></div>
+<div class="p0-tl-i later"><b>май 2028</b><strong>«Склады и ограничения» выведены в ОПЭ. Готова док-ция для поддержки</strong><span>запуск · ориентир</span></div>
+<div class="p0-tl-i later"><b>июнь 2028</b><strong>«Склады и ограничения» выведены в ПЭ, переданы на поддержку</strong><span>запуск · ориентир</span></div>
+<div class="p0-tl-i later"><b>май 2028</b><strong>Юзкейсы ролей для домена «Матрица каналов»</strong><span>бизнес · ориентир</span></div>
+<div class="p0-tl-i later"><b>май 2028</b><strong>Создан прототип «Матрица каналов»</strong><span>бизнес · ориентир</span></div>
+<div class="p0-tl-i later"><b>июнь 2028</b><strong>Демо проведено. Прототип «Матрица каналов» утвержден бизнесом</strong><span>бизнес · ориентир</span></div>
+<div class="p0-tl-i later"><b>июль 2028</b><strong>MVP «Матрица каналов» на проде. Старт передачи в поддержку</strong><span>запуск · ориентир</span></div>
+<div class="p0-tl-i later"><b>август 2028</b><strong>«Матрица каналов» выведена в ОПЭ. Готова док-ция для поддержки</strong><span>запуск · ориентир</span></div>
+<div class="p0-tl-i later"><b>сентябрь 2028</b><strong>«Матрица каналов» выведена в ПЭ, передана на поддержку</strong><span>запуск · ориентир</span></div>
+<div class="p0-tl-i later"><b>сентябрь 2028</b><strong>Переход в Атлас всех пользователей по всем доменам</strong><span>тираж · ориентир</span></div>
+<div class="p0-tl-i later"><b>4 кв 2028</b><strong>Контроль метрик перехода. Подготовка документации для поддержки. Передача на поддержку</strong><span>бизнес ✔ · ориентир</span></div>
 </div>
 <div class="p0-cards">
 <div class="p0-card p0-blue"><div class="p0-ch"><b>10 / 2026</b><span class="p0-tag">развитие</span><span class="p0-st ok">выполнено</span><span class="p0-lane">ИТ</span></div><div class="p0-ct">Стабилизация старой СВТ: корневые причины найдены, загрузка и проверки ускорены</div>
@@ -1082,13 +1111,13 @@ document.addEventListener("click", function (e) {
 <div class="p0-card p0-blue"><div class="p0-ch"><b>11 / 2026</b><span class="p0-tag">развитие</span><span class="p0-st plan">в работе</span><span class="p0-lane">бизнес</span></div><div class="p0-ct">Сформирован план работ</div>
   <div class="p0-cm"><span class="p0-l">Результат и метрика</span>пробел</div>
   <div class="p0-cr"><span class="p0-l">Ресурс</span>пробел</div></div>
-<div class="p0-card p0-blue"><div class="p0-ch"><b>12 / 2026</b><span class="p0-tag">развитие</span><span class="p0-st plan">в работе</span><span class="p0-lane">бизнес</span></div><div class="p0-ct">Юзкейсы 3 ролей для домена «Заявка на расчет стоимости»</div>
+<div class="p0-card p0-blue"><div class="p0-ch"><b>12 / 2026</b><span class="p0-tag">развитие</span><span class="p0-st plan">в работе</span><span class="p0-lane">бизнес</span></div><div class="p0-ct">Юзкейсы 3 ролей для домена «Заявки на расчет стоимости»</div>
   <div class="p0-cm"><span class="p0-l">Результат и метрика</span>пробел</div>
   <div class="p0-cr"><span class="p0-l">Ресурс</span>пробел</div></div>
 <div class="p0-card p0-blue"><div class="p0-ch"><b>12 / 2026</b><span class="p0-tag">развитие</span><span class="p0-st plan">ориентир</span><span class="p0-lane">бизнес</span></div><div class="p0-ct">Создан первый прототип «Заявка на расчет стоимости»</div>
   <div class="p0-cm"><span class="p0-l">Результат и метрика</span>Прототип — кликабельный HTML по ролям, в проде его нет. Черновики по несогласованным ролям можно собирать раньше, чтобы научиться; прототип, который можно показать бизнесу, — во второй половине декабря (Васильев И., 12.11.2026). Какие роли первые — пробел.</div><div class="p0-cm"><span class="p0-l">Показатели стрима на дату вехи</span>Работают в прототипе: 4 из ~10 создателей данных</div>
   <div class="p0-cr"><span class="p0-l">Ресурс</span>Подоплелова Е., Васильев И.</div></div>
-<div class="p0-card p0-blue"><div class="p0-ch"><b>01 / 2027</b><span class="p0-tag">развитие</span><span class="p0-st plan">ориентир</span><span class="p0-lane">бизнес</span></div><div class="p0-ct">Демо проведено. Прототип утвержден бизнесом</div>
+<div class="p0-card p0-blue"><div class="p0-ch"><b>01 / 2027</b><span class="p0-tag">развитие</span><span class="p0-st plan">ориентир</span><span class="p0-lane">бизнес</span></div><div class="p0-ct">Демо проведено. Прототип «Заявки на расчет стоимости» утвержден бизнесом</div>
   <div class="p0-cm"><span class="p0-l">Результат и метрика</span>Демо для бизнеса под разными ролями: бизнес прощёлкивает свои юзкейсы и даёт обратную связь, прототип дорабатывается. Месяц — ориентир.</div>
   <div class="p0-cr"><span class="p0-l">Ресурс</span>Кудрявцев В., Подоплелова Е.</div></div>
 <div class="p0-card p0-blue"><div class="p0-ch"><b>02 / 2027</b><span class="p0-tag">развитие</span><span class="p0-st plan">ориентир</span><span class="p0-lane">запуск</span></div><div class="p0-ct">Среды подготовлены</div>
@@ -1097,37 +1126,124 @@ document.addEventListener("click", function (e) {
 <div class="p0-card p0-blue"><div class="p0-ch"><b>03 / 2027</b><span class="p0-tag">запуск</span><span class="p0-st plan">ориентир</span><span class="p0-lane">запуск</span></div><div class="p0-ct">MVP заявок на расчёт на проде. Старт передачи в поддержку</div>
   <div class="p0-cm"><span class="p0-l">Результат и метрика</span>MVP — урезанный функционал на реальных данных, часть рабочего процесса (Васильев И., 12.11.2026). Поток: ручных заявок около 350 в месяц (зависит от потока); автоматических запросов на расчёт транспортировки из CRM / Ecom около 9000 в месяц. <b>Автозаявки, если умный подбор не нашёл ставку.</b> При переводе заявок в Атлас автоматически создаём заявку по каждому запросу CRM / Ecom, где умный подбор не нашёл ставку. Сейчас подбор закрывает около 95% запросов; цель — 99%. Владелец процесса по ставкам сразу видит эти случаи в Атласе. Раньше заявку могли не оформить и вписать цену вручную. В перспективе в CRM нужно заблокировать ручной ввод стоимости транспортировки. Ориентир.</div><div class="p0-cm"><span class="p0-l">Показатели стрима на дату вехи</span>Ручных заявок: ~350/мес<br>Автозапросов из CRM / Ecom: ~9000/мес<br>Умный подбор находит ставку: сейчас ~95%, цель 99%<br>Срок ответа сейчас: сутки на простой рейс по России, до трёх суток на мультимодальный</div>
   <div class="p0-cr"><span class="p0-l">Ресурс</span>Подоплелова Е., Васильев И.; продажи и те, кто заводит заявку прямо в СВТ.</div></div>
-<div class="p0-card p0-blue"><div class="p0-ch"><b>04 / 2027</b><span class="p0-tag">запуск</span><span class="p0-st plan">ориентир</span><span class="p0-lane">запуск</span></div><div class="p0-ct">«Заявка на расчет стоимости» выведены в ОПЭ. Готова док-ция для поддержки</div>
+<div class="p0-card p0-blue"><div class="p0-ch"><b>04 / 2027</b><span class="p0-tag">запуск</span><span class="p0-st plan">ориентир</span><span class="p0-lane">запуск</span></div><div class="p0-ct">«Заявки на расчет стоимости» выведены в ОПЭ. Готова док-ция для поддержки</div>
   <div class="p0-cm"><span class="p0-l">Результат и метрика</span>Пользоваться заявками — с условного апреля (Васильев И., 12.11.2026). Пользователи, создающие ручные заявки (~350 в месяц), переводятся на работу в Атласе. <b>Автозаявки, если умный подбор не нашёл ставку.</b> При переводе заявок в Атлас автоматически создаём заявку по каждому запросу CRM / Ecom, где умный подбор не нашёл ставку. Сейчас подбор закрывает около 95% запросов; цель — 99%. Владелец процесса по ставкам сразу видит эти случаи в Атласе. Раньше заявку могли не оформить и вписать цену вручную. В перспективе в CRM нужно заблокировать ручной ввод стоимости транспортировки. Ориентир.</div><div class="p0-cm"><span class="p0-l">Показатели стрима на дату вехи</span>Ручных заявок: ~350/мес<br>Автозапросов из CRM / Ecom: ~9000/мес<br>Умный подбор находит ставку: сейчас ~95%, цель 99%<br>Автозаявки по промахам подбора: включены</div>
   <div class="p0-cr"><span class="p0-l">Ресурс</span>Подоплелова Е., Васильев И.</div></div>
-<div class="p0-card p0-blue"><div class="p0-ch"><b>05 / 2027</b><span class="p0-tag">запуск</span><span class="p0-st plan">ориентир</span><span class="p0-lane">запуск</span></div><div class="p0-ct">«Заявка на расчет стоимости» выведены в ПЭ и выведены на поддержку</div>
+<div class="p0-card p0-blue"><div class="p0-ch"><b>05 / 2027</b><span class="p0-tag">запуск</span><span class="p0-st plan">ориентир</span><span class="p0-lane">запуск</span></div><div class="p0-ct">«Заявки на расчет стоимости» выведены в ПЭ, переданы на поддержку</div>
   <div class="p0-cm"><span class="p0-l">Результат и метрика</span>Пользователи, создающие ручные заявки (~350 в месяц), полностью переведены на работу в Атласе. <b>Автозаявки, если умный подбор не нашёл ставку.</b> При переводе заявок в Атлас автоматически создаём заявку по каждому запросу CRM / Ecom, где умный подбор не нашёл ставку. Сейчас подбор закрывает около 95% запросов; цель — 99%. Владелец процесса по ставкам сразу видит эти случаи в Атласе. Раньше заявку могли не оформить и вписать цену вручную. В перспективе в CRM нужно заблокировать ручной ввод стоимости транспортировки. Срок ответа — в проработке. Эффект: ускорение продаж.</div><div class="p0-cm"><span class="p0-l">Показатели стрима на дату вехи</span>Ручных заявок в Атласе: ~350/мес<br>Автозапросов из CRM / Ecom: ~9000/мес<br>Умный подбор находит ставку: цель 99% (база ~95%)<br>Автозаявки по промахам подбора: включены<br>Создатели данных в новом контуре: N из ~10</div>
   <div class="p0-cr"><span class="p0-l">Ресурс</span>Подоплелова Е., Васильев И.</div></div>
-<div class="p0-card p0-blue"><div class="p0-ch"><b>03–05 / 2027</b><span class="p0-tag">запуск</span><span class="p0-st plan">ориентир</span><span class="p0-lane">запуск</span></div><div class="p0-ct">Ставки: на проде, ОПЭ, выведены в ПЭ</div>
-  <div class="p0-cm"><span class="p0-l">Результат и метрика</span>На проде в марте, ОПЭ в апреле, в мае выведены в ПЭ. Домены идут внахлёст: пока делают следующий, бизнес проходит ОПЭ по предыдущему (Васильев И., 12.11.2026). Создают данные в новом контуре: N из ~10; доля данных через единый вход с проверками — в проработке. Ориентир, хвост плана может сдвигаться.</div>
-  <div class="p0-cr"><span class="p0-l">Ресурс</span>Подоплелова Е., Васильев И.</div></div>
-<div class="p0-card p0-blue"><div class="p0-ch"><b>05 / 2027</b><span class="p0-tag">запуск</span><span class="p0-st plan">ориентир</span><span class="p0-lane">поддержка</span></div><div class="p0-ct">Ставки: подготовлена вся необходимая документация для передачи в поддержку</div>
-  <div class="p0-cm"><span class="p0-l">Результат и метрика</span>Регламент, вторая линия, обучение поддержки; ведение домена переведено на СВТ 2.0. Ориентир.</div>
-  <div class="p0-cr"><span class="p0-l">Ресурс</span>Васильев И., команда Коряйкина А.</div></div>
-<div class="p0-card p0-blue"><div class="p0-ch"><b>06 / 2027</b><span class="p0-tag">запуск</span><span class="p0-st plan">ориентир</span><span class="p0-lane">поддержка</span></div><div class="p0-ct">Ставки: поддержка согласилась забрать решение</div>
-  <div class="p0-cm"><span class="p0-l">Результат и метрика</span>Поддержка забирает решение и подтверждает: теперь мы сопровождаем это решение. Ориентир: месяц после вывода в ПЭ.</div>
-  <div class="p0-cr"><span class="p0-l">Ресурс</span>Команда Коряйкина А.</div></div>
-<div class="p0-card p0-blue"><div class="p0-ch"><b>04–06 / 2027</b><span class="p0-tag">запуск</span><span class="p0-st plan">ориентир</span><span class="p0-lane">запуск</span></div><div class="p0-ct">Маршруты и плечи: на проде, ОПЭ, выведены в ПЭ</div>
-  <div class="p0-cm"><span class="p0-l">Результат и метрика</span>На проде в апреле, ОПЭ в мае, в июне выведены в ПЭ. Создают данные в новом контуре: N из ~10; доля данных через единый вход с проверками — в проработке. Ориентир, хвост плана может сдвигаться.</div>
-  <div class="p0-cr"><span class="p0-l">Ресурс</span>Подоплелова Е., Васильев И.</div></div>
-<div class="p0-card p0-blue"><div class="p0-ch"><b>06 / 2027</b><span class="p0-tag">запуск</span><span class="p0-st plan">ориентир</span><span class="p0-lane">поддержка</span></div><div class="p0-ct">Маршруты и плечи: подготовлена вся необходимая документация для передачи в поддержку</div>
-  <div class="p0-cm"><span class="p0-l">Результат и метрика</span>Регламент, вторая линия, обучение поддержки; ведение домена переведено на СВТ 2.0. Ориентир.</div>
-  <div class="p0-cr"><span class="p0-l">Ресурс</span>Васильев И., команда Коряйкина А.</div></div>
-<div class="p0-card p0-blue"><div class="p0-ch"><b>07 / 2027</b><span class="p0-tag">запуск</span><span class="p0-st plan">ориентир</span><span class="p0-lane">поддержка</span></div><div class="p0-ct">Маршруты и плечи: поддержка согласилась забрать решение</div>
-  <div class="p0-cm"><span class="p0-l">Результат и метрика</span>Поддержка забирает решение и подтверждает: теперь мы сопровождаем это решение. Ориентир: месяц после вывода в ПЭ.</div>
-  <div class="p0-cr"><span class="p0-l">Ресурс</span>Команда Коряйкина А.</div></div>
-<div class="p0-card p0-blue"><div class="p0-ch"><b>07–12 / 2027</b><span class="p0-tag">запуск</span><span class="p0-st plan">ориентир</span><span class="p0-lane">запуск</span></div><div class="p0-ct">Остальные домены поэтапно: лидтаймы, складские ограничения, матрица каналов, паритеты</div>
-  <div class="p0-cm"><span class="p0-l">Результат и метрика</span>Домены на проде, прошли ОПЭ и выведены в ПЭ. По каждому домену — документация для передачи в поддержку и согласие поддержки забрать решение (месяц после ПЭ). Создают данные в новом контуре: N из ~10; доля данных через единый вход с проверками — в проработке. Ориентир, хвост плана может сдвигаться.</div>
-  <div class="p0-cr"><span class="p0-l">Ресурс</span>Подоплелова Е., Васильев И.</div></div>
-<div class="p0-card p0-blue"><div class="p0-ch"><b>12 / 2027</b><span class="p0-tag">тираж</span><span class="p0-st plan">ориентир</span><span class="p0-lane">тираж</span></div><div class="p0-ct">Переход в Атлас всех пользователей по всем доменам</div>
+<div class="p0-card p0-blue"><div class="p0-ch"><b>апрель 2027</b><span class="p0-tag">развитие</span><span class="p0-st plan">ориентир</span><span class="p0-lane">бизнес</span></div><div class="p0-ct">Юзкейсы ролей для домена «Ставки»</div>
+  <div class="p0-cm"><span class="p0-l">Результат и метрика</span>пробел</div>
+  <div class="p0-cr"><span class="p0-l">Ресурс</span>пробел</div></div>
+<div class="p0-card p0-blue"><div class="p0-ch"><b>апрель 2027</b><span class="p0-tag">развитие</span><span class="p0-st plan">ориентир</span><span class="p0-lane">бизнес</span></div><div class="p0-ct">Создан прототип «Ставки»</div>
+  <div class="p0-cm"><span class="p0-l">Результат и метрика</span>пробел</div>
+  <div class="p0-cr"><span class="p0-l">Ресурс</span>пробел</div></div>
+<div class="p0-card p0-blue"><div class="p0-ch"><b>май 2027</b><span class="p0-tag">развитие</span><span class="p0-st plan">ориентир</span><span class="p0-lane">бизнес</span></div><div class="p0-ct">Демо проведено. Прототип «Ставки» утвержден бизнесом</div>
+  <div class="p0-cm"><span class="p0-l">Результат и метрика</span>пробел</div>
+  <div class="p0-cr"><span class="p0-l">Ресурс</span>пробел</div></div>
+<div class="p0-card p0-blue"><div class="p0-ch"><b>июнь 2027</b><span class="p0-tag">запуск</span><span class="p0-st plan">ориентир</span><span class="p0-lane">запуск</span></div><div class="p0-ct">MVP «Ставки» на проде. Старт передачи в поддержку</div>
+  <div class="p0-cm"><span class="p0-l">Результат и метрика</span>пробел</div>
+  <div class="p0-cr"><span class="p0-l">Ресурс</span>пробел</div></div>
+<div class="p0-card p0-blue"><div class="p0-ch"><b>июль 2027</b><span class="p0-tag">запуск</span><span class="p0-st plan">ориентир</span><span class="p0-lane">запуск</span></div><div class="p0-ct">«Ставки» выведены в ОПЭ. Готова док-ция для поддержки</div>
+  <div class="p0-cm"><span class="p0-l">Результат и метрика</span>пробел</div>
+  <div class="p0-cr"><span class="p0-l">Ресурс</span>пробел</div></div>
+<div class="p0-card p0-blue"><div class="p0-ch"><b>август 2027</b><span class="p0-tag">запуск</span><span class="p0-st plan">ориентир</span><span class="p0-lane">запуск</span></div><div class="p0-ct">«Ставки» выведены в ПЭ, переданы на поддержку</div>
+  <div class="p0-cm"><span class="p0-l">Результат и метрика</span>пробел</div>
+  <div class="p0-cr"><span class="p0-l">Ресурс</span>пробел</div></div>
+<div class="p0-card p0-blue"><div class="p0-ch"><b>июль 2027</b><span class="p0-tag">развитие</span><span class="p0-st plan">ориентир</span><span class="p0-lane">бизнес</span></div><div class="p0-ct">Юзкейсы ролей для домена «Паритеты»</div>
+  <div class="p0-cm"><span class="p0-l">Результат и метрика</span>пробел</div>
+  <div class="p0-cr"><span class="p0-l">Ресурс</span>пробел</div></div>
+<div class="p0-card p0-blue"><div class="p0-ch"><b>июль 2027</b><span class="p0-tag">развитие</span><span class="p0-st plan">ориентир</span><span class="p0-lane">бизнес</span></div><div class="p0-ct">Создан прототип «Паритеты»</div>
+  <div class="p0-cm"><span class="p0-l">Результат и метрика</span>пробел</div>
+  <div class="p0-cr"><span class="p0-l">Ресурс</span>пробел</div></div>
+<div class="p0-card p0-blue"><div class="p0-ch"><b>август 2027</b><span class="p0-tag">развитие</span><span class="p0-st plan">ориентир</span><span class="p0-lane">бизнес</span></div><div class="p0-ct">Демо проведено. Прототип «Паритеты» утвержден бизнесом</div>
+  <div class="p0-cm"><span class="p0-l">Результат и метрика</span>пробел</div>
+  <div class="p0-cr"><span class="p0-l">Ресурс</span>пробел</div></div>
+<div class="p0-card p0-blue"><div class="p0-ch"><b>сентябрь 2027</b><span class="p0-tag">запуск</span><span class="p0-st plan">ориентир</span><span class="p0-lane">запуск</span></div><div class="p0-ct">MVP «Паритеты» на проде. Старт передачи в поддержку</div>
+  <div class="p0-cm"><span class="p0-l">Результат и метрика</span>пробел</div>
+  <div class="p0-cr"><span class="p0-l">Ресурс</span>пробел</div></div>
+<div class="p0-card p0-blue"><div class="p0-ch"><b>октябрь 2027</b><span class="p0-tag">запуск</span><span class="p0-st plan">ориентир</span><span class="p0-lane">запуск</span></div><div class="p0-ct">«Паритеты» выведены в ОПЭ. Готова док-ция для поддержки</div>
+  <div class="p0-cm"><span class="p0-l">Результат и метрика</span>пробел</div>
+  <div class="p0-cr"><span class="p0-l">Ресурс</span>пробел</div></div>
+<div class="p0-card p0-blue"><div class="p0-ch"><b>ноябрь 2027</b><span class="p0-tag">запуск</span><span class="p0-st plan">ориентир</span><span class="p0-lane">запуск</span></div><div class="p0-ct">«Паритеты» выведены в ПЭ, переданы на поддержку</div>
+  <div class="p0-cm"><span class="p0-l">Результат и метрика</span>пробел</div>
+  <div class="p0-cr"><span class="p0-l">Ресурс</span>пробел</div></div>
+<div class="p0-card p0-blue"><div class="p0-ch"><b>октябрь 2027</b><span class="p0-tag">развитие</span><span class="p0-st plan">ориентир</span><span class="p0-lane">бизнес</span></div><div class="p0-ct">Юзкейсы ролей для домена «Маршруты»</div>
+  <div class="p0-cm"><span class="p0-l">Результат и метрика</span>пробел</div>
+  <div class="p0-cr"><span class="p0-l">Ресурс</span>пробел</div></div>
+<div class="p0-card p0-blue"><div class="p0-ch"><b>октябрь 2027</b><span class="p0-tag">развитие</span><span class="p0-st plan">ориентир</span><span class="p0-lane">бизнес</span></div><div class="p0-ct">Создан прототип «Маршруты»</div>
+  <div class="p0-cm"><span class="p0-l">Результат и метрика</span>пробел</div>
+  <div class="p0-cr"><span class="p0-l">Ресурс</span>пробел</div></div>
+<div class="p0-card p0-blue"><div class="p0-ch"><b>ноябрь 2027</b><span class="p0-tag">развитие</span><span class="p0-st plan">ориентир</span><span class="p0-lane">бизнес</span></div><div class="p0-ct">Демо проведено. Прототип «Маршруты» утвержден бизнесом</div>
+  <div class="p0-cm"><span class="p0-l">Результат и метрика</span>пробел</div>
+  <div class="p0-cr"><span class="p0-l">Ресурс</span>пробел</div></div>
+<div class="p0-card p0-blue"><div class="p0-ch"><b>декабрь 2027</b><span class="p0-tag">запуск</span><span class="p0-st plan">ориентир</span><span class="p0-lane">запуск</span></div><div class="p0-ct">MVP «Маршруты» на проде. Старт передачи в поддержку</div>
+  <div class="p0-cm"><span class="p0-l">Результат и метрика</span>пробел</div>
+  <div class="p0-cr"><span class="p0-l">Ресурс</span>пробел</div></div>
+<div class="p0-card p0-blue"><div class="p0-ch"><b>январь 2028</b><span class="p0-tag">запуск</span><span class="p0-st plan">ориентир</span><span class="p0-lane">запуск</span></div><div class="p0-ct">«Маршруты» выведены в ОПЭ. Готова док-ция для поддержки</div>
+  <div class="p0-cm"><span class="p0-l">Результат и метрика</span>пробел</div>
+  <div class="p0-cr"><span class="p0-l">Ресурс</span>пробел</div></div>
+<div class="p0-card p0-blue"><div class="p0-ch"><b>февраль 2028</b><span class="p0-tag">запуск</span><span class="p0-st plan">ориентир</span><span class="p0-lane">запуск</span></div><div class="p0-ct">«Маршруты» выведены в ПЭ, переданы на поддержку</div>
+  <div class="p0-cm"><span class="p0-l">Результат и метрика</span>пробел</div>
+  <div class="p0-cr"><span class="p0-l">Ресурс</span>пробел</div></div>
+<div class="p0-card p0-blue"><div class="p0-ch"><b>январь 2028</b><span class="p0-tag">развитие</span><span class="p0-st plan">ориентир</span><span class="p0-lane">бизнес</span></div><div class="p0-ct">Юзкейсы ролей для домена «Продукты»</div>
+  <div class="p0-cm"><span class="p0-l">Результат и метрика</span>пробел</div>
+  <div class="p0-cr"><span class="p0-l">Ресурс</span>пробел</div></div>
+<div class="p0-card p0-blue"><div class="p0-ch"><b>январь 2028</b><span class="p0-tag">развитие</span><span class="p0-st plan">ориентир</span><span class="p0-lane">бизнес</span></div><div class="p0-ct">Создан прототип «Продукты»</div>
+  <div class="p0-cm"><span class="p0-l">Результат и метрика</span>пробел</div>
+  <div class="p0-cr"><span class="p0-l">Ресурс</span>пробел</div></div>
+<div class="p0-card p0-blue"><div class="p0-ch"><b>январь 2028</b><span class="p0-tag">развитие</span><span class="p0-st plan">ориентир</span><span class="p0-lane">бизнес</span></div><div class="p0-ct">Демо проведено. Прототип «Продукты» утвержден бизнесом</div>
+  <div class="p0-cm"><span class="p0-l">Результат и метрика</span>пробел</div>
+  <div class="p0-cr"><span class="p0-l">Ресурс</span>пробел</div></div>
+<div class="p0-card p0-blue"><div class="p0-ch"><b>февраль 2028</b><span class="p0-tag">запуск</span><span class="p0-st plan">ориентир</span><span class="p0-lane">запуск</span></div><div class="p0-ct">MVP «Продукты» на проде. Старт передачи в поддержку</div>
+  <div class="p0-cm"><span class="p0-l">Результат и метрика</span>пробел</div>
+  <div class="p0-cr"><span class="p0-l">Ресурс</span>пробел</div></div>
+<div class="p0-card p0-blue"><div class="p0-ch"><b>февраль 2028</b><span class="p0-tag">запуск</span><span class="p0-st plan">ориентир</span><span class="p0-lane">запуск</span></div><div class="p0-ct">«Продукты» выведены в ОПЭ. Готова док-ция для поддержки</div>
+  <div class="p0-cm"><span class="p0-l">Результат и метрика</span>пробел</div>
+  <div class="p0-cr"><span class="p0-l">Ресурс</span>пробел</div></div>
+<div class="p0-card p0-blue"><div class="p0-ch"><b>март 2028</b><span class="p0-tag">запуск</span><span class="p0-st plan">ориентир</span><span class="p0-lane">запуск</span></div><div class="p0-ct">«Продукты» выведены в ПЭ, переданы на поддержку</div>
+  <div class="p0-cm"><span class="p0-l">Результат и метрика</span>пробел</div>
+  <div class="p0-cr"><span class="p0-l">Ресурс</span>пробел</div></div>
+<div class="p0-card p0-blue"><div class="p0-ch"><b>февраль 2028</b><span class="p0-tag">развитие</span><span class="p0-st plan">ориентир</span><span class="p0-lane">бизнес</span></div><div class="p0-ct">Юзкейсы ролей для домена «Склады и ограничения»</div>
+  <div class="p0-cm"><span class="p0-l">Результат и метрика</span>пробел</div>
+  <div class="p0-cr"><span class="p0-l">Ресурс</span>пробел</div></div>
+<div class="p0-card p0-blue"><div class="p0-ch"><b>февраль 2028</b><span class="p0-tag">развитие</span><span class="p0-st plan">ориентир</span><span class="p0-lane">бизнес</span></div><div class="p0-ct">Создан прототип «Склады и ограничения»</div>
+  <div class="p0-cm"><span class="p0-l">Результат и метрика</span>пробел</div>
+  <div class="p0-cr"><span class="p0-l">Ресурс</span>пробел</div></div>
+<div class="p0-card p0-blue"><div class="p0-ch"><b>март 2028</b><span class="p0-tag">развитие</span><span class="p0-st plan">ориентир</span><span class="p0-lane">бизнес</span></div><div class="p0-ct">Демо проведено. Прототип «Склады и ограничения» утвержден бизнесом</div>
+  <div class="p0-cm"><span class="p0-l">Результат и метрика</span>пробел</div>
+  <div class="p0-cr"><span class="p0-l">Ресурс</span>пробел</div></div>
+<div class="p0-card p0-blue"><div class="p0-ch"><b>апрель 2028</b><span class="p0-tag">запуск</span><span class="p0-st plan">ориентир</span><span class="p0-lane">запуск</span></div><div class="p0-ct">MVP «Склады и ограничения» на проде. Старт передачи в поддержку</div>
+  <div class="p0-cm"><span class="p0-l">Результат и метрика</span>пробел</div>
+  <div class="p0-cr"><span class="p0-l">Ресурс</span>пробел</div></div>
+<div class="p0-card p0-blue"><div class="p0-ch"><b>май 2028</b><span class="p0-tag">запуск</span><span class="p0-st plan">ориентир</span><span class="p0-lane">запуск</span></div><div class="p0-ct">«Склады и ограничения» выведены в ОПЭ. Готова док-ция для поддержки</div>
+  <div class="p0-cm"><span class="p0-l">Результат и метрика</span>пробел</div>
+  <div class="p0-cr"><span class="p0-l">Ресурс</span>пробел</div></div>
+<div class="p0-card p0-blue"><div class="p0-ch"><b>июнь 2028</b><span class="p0-tag">запуск</span><span class="p0-st plan">ориентир</span><span class="p0-lane">запуск</span></div><div class="p0-ct">«Склады и ограничения» выведены в ПЭ, переданы на поддержку</div>
+  <div class="p0-cm"><span class="p0-l">Результат и метрика</span>пробел</div>
+  <div class="p0-cr"><span class="p0-l">Ресурс</span>пробел</div></div>
+<div class="p0-card p0-blue"><div class="p0-ch"><b>май 2028</b><span class="p0-tag">развитие</span><span class="p0-st plan">ориентир</span><span class="p0-lane">бизнес</span></div><div class="p0-ct">Юзкейсы ролей для домена «Матрица каналов»</div>
+  <div class="p0-cm"><span class="p0-l">Результат и метрика</span>пробел</div>
+  <div class="p0-cr"><span class="p0-l">Ресурс</span>пробел</div></div>
+<div class="p0-card p0-blue"><div class="p0-ch"><b>май 2028</b><span class="p0-tag">развитие</span><span class="p0-st plan">ориентир</span><span class="p0-lane">бизнес</span></div><div class="p0-ct">Создан прототип «Матрица каналов»</div>
+  <div class="p0-cm"><span class="p0-l">Результат и метрика</span>пробел</div>
+  <div class="p0-cr"><span class="p0-l">Ресурс</span>пробел</div></div>
+<div class="p0-card p0-blue"><div class="p0-ch"><b>июнь 2028</b><span class="p0-tag">развитие</span><span class="p0-st plan">ориентир</span><span class="p0-lane">бизнес</span></div><div class="p0-ct">Демо проведено. Прототип «Матрица каналов» утвержден бизнесом</div>
+  <div class="p0-cm"><span class="p0-l">Результат и метрика</span>пробел</div>
+  <div class="p0-cr"><span class="p0-l">Ресурс</span>пробел</div></div>
+<div class="p0-card p0-blue"><div class="p0-ch"><b>июль 2028</b><span class="p0-tag">запуск</span><span class="p0-st plan">ориентир</span><span class="p0-lane">запуск</span></div><div class="p0-ct">MVP «Матрица каналов» на проде. Старт передачи в поддержку</div>
+  <div class="p0-cm"><span class="p0-l">Результат и метрика</span>пробел</div>
+  <div class="p0-cr"><span class="p0-l">Ресурс</span>пробел</div></div>
+<div class="p0-card p0-blue"><div class="p0-ch"><b>август 2028</b><span class="p0-tag">запуск</span><span class="p0-st plan">ориентир</span><span class="p0-lane">запуск</span></div><div class="p0-ct">«Матрица каналов» выведена в ОПЭ. Готова док-ция для поддержки</div>
+  <div class="p0-cm"><span class="p0-l">Результат и метрика</span>пробел</div>
+  <div class="p0-cr"><span class="p0-l">Ресурс</span>пробел</div></div>
+<div class="p0-card p0-blue"><div class="p0-ch"><b>сентябрь 2028</b><span class="p0-tag">запуск</span><span class="p0-st plan">ориентир</span><span class="p0-lane">запуск</span></div><div class="p0-ct">«Матрица каналов» выведена в ПЭ, передана на поддержку</div>
+  <div class="p0-cm"><span class="p0-l">Результат и метрика</span>пробел</div>
+  <div class="p0-cr"><span class="p0-l">Ресурс</span>пробел</div></div>
+<div class="p0-card p0-blue"><div class="p0-ch"><b>сентябрь 2028</b><span class="p0-tag">тираж</span><span class="p0-st plan">ориентир</span><span class="p0-lane">тираж</span></div><div class="p0-ct">Переход в Атлас всех пользователей по всем доменам</div>
   <div class="p0-cm"><span class="p0-l">Результат и метрика</span>Все модули собраны. Все ~10 создателей данных работают в новом контуре. Ориентир.</div><div class="p0-cm"><span class="p0-l">Показатели стрима на дату вехи</span>Создают данные в новом контуре: ~10 из ~10</div>
   <div class="p0-cr"><span class="p0-l">Ресурс</span>Подоплелова Е., Васильев И.</div></div>
-<div class="p0-card p0-blue"><div class="p0-ch"><b>I–II кв. / 2028</b><span class="p0-tag">тираж</span><span class="p0-st plan">ориентир</span><span class="p0-lane">бизнес ✔</span></div><div class="p0-ct">Контроль метрик перехода. Подготовка документации для поддержки. Передача на поддержку</div>
+<div class="p0-card p0-blue"><div class="p0-ch"><b>4 кв 2028</b><span class="p0-tag">тираж</span><span class="p0-st plan">ориентир</span><span class="p0-lane">бизнес ✔</span></div><div class="p0-ct">Контроль метрик перехода. Подготовка документации для поддержки. Передача на поддержку</div>
   <div class="p0-cm"><span class="p0-l">Результат и метрика</span>Метрики перехода сравниваются с базой «до». Ориентир.</div><div class="p0-cm"><span class="p0-l">Показатели стрима на дату вехи</span>Создают данные в новом контуре: ~10 из ~10<br>Срок ответа, доля автообработки, время в Excel и доля данных через единый вход с проверками сверены с базой «до». Базы — в проработке</div>
   <div class="p0-cr"><span class="p0-l">Ресурс</span>Подоплелова Е., Кудрявцев В.</div></div>
 </div>
