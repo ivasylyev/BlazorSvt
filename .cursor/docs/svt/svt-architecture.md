@@ -16,6 +16,7 @@
 | Публикация SQL в каталог деплоя | [`publish-all-sql`](publish-all-sql.md) |
 | Эталон, кольцо, роли | [`atlas`](../atlas/atlas.md) |
 | Разделы 0 / 1а / 1б план-графика | [`plan-grafik-md-html`](../atlas/plan-grafik-md-html.md) |
+| Полоска и карточки вех СВТ в разделе «г» план-графика | [`svt-vehi-html`](../atlas/svt-vehi-html.md) |
 | Как писать текущий код модуля | правило `svt-development-patterns` |
 | Обязательные ограничения архитектуры | правило `svt-architecture-principles` |
 
