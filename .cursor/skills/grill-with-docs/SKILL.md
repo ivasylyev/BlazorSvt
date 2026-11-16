@@ -97,16 +97,3 @@ description: >-
 
 Интервью закончено, когда каждая ветка либо закрыта ответом, либо явно оставлена пробелом. Итог — четыре блока: решения, риски, допущения для проверки, пробелы. Спроси, общее ли понимание. После «да» постановку не пиши и код не начинай: постановка — отдельная команда `to-spec`.
 
-## Источник
-
-Адаптация `grilling` и `grill-with-docs` из [mattpocock/skills](https://github.com/mattpocock/skills). Разбор входа и пачки — по мотивам [spec-interview](https://github.com/leandroz/claude-plugins/blob/main/spec-interview/skills/spec-interview/SKILL.md), [plan-interview](https://github.com/pskoett/pskoett-ai-skills/blob/HEAD/skills/plan-interview/SKILL.md), [pigfoot grill-me](https://github.com/pigfoot/claude-code-hubs/blob/main/plugins/grill-me/skills/grill-me/SKILL.md) и [bradford-marais grill-me](https://github.com/bradford-marais/grill-me); текст оттуда не копировался.
-
-MIT License
-
-Copyright (c) 2026 Matt Pocock
-
-Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
