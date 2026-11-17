@@ -153,20 +153,37 @@ foreach ($dm in [regex]::Matches($s0Body, '(?is)<details class="p0-stream([^"]*)
   if ($tl.Success) {
     [void]$sb.AppendLine('###### Полоска вех')
     [void]$sb.AppendLine('')
+    $tlShown = New-Object System.Collections.Generic.List[string]
+    $tlHeld = New-Object System.Collections.Generic.List[string]
+    foreach ($ti in [regex]::Matches($tl.Groups[1].Value, '(?is)<div class="p0-tl-i\s*([^"]*)"><b>(.*?)</b><strong>(.*?)</strong><span>(.*?)</span></div>')) {
+      $klass = ($ti.Groups[1].Value.Trim() -split '\s+')[0]
+      if (-not $klass) { $klass = 'later' }
+      $date = StripTags $ti.Groups[2].Value
+      $line = '| ' + $date + ' | ' + (StripTags $ti.Groups[3].Value) + ' | ' + $klass + ' | ' + (StripTags $ti.Groups[4].Value) + ' |'
+      if ($id -eq 'p0-СВТ' -and $date -match '2028') { $tlHeld.Add($line) } else { $tlShown.Add($line) }
+    }
     [void]$sb.AppendLine('| Дата | Веха | Класс | Подпись |')
     [void]$sb.AppendLine('|---|---|---|---|')
-    foreach ($ti in [regex]::Matches($tl.Groups[1].Value, '(?is)<div class="p0-tl-i\s*([^"]*)"><b>(.*?)</b><strong>(.*?)</strong><span>(.*?)</span></div>')) {
-      $klass = $ti.Groups[1].Value.Trim()
-      if (-not $klass) { $klass = 'later' }
-      [void]$sb.AppendLine('| ' + (StripTags $ti.Groups[2].Value) + ' | ' + (StripTags $ti.Groups[3].Value) + ' | ' + $klass + ' | ' + (StripTags $ti.Groups[4].Value) + ' |')
-    }
+    foreach ($line in $tlShown) { [void]$sb.AppendLine($line) }
     [void]$sb.AppendLine('')
+    if ($tlHeld.Count -gt 0) {
+      [void]$sb.AppendLine('<details><summary>Вехи 2028 года (' + $tlHeld.Count + '). Решение не принято, ресурс не считается</summary>')
+      [void]$sb.AppendLine('')
+      [void]$sb.AppendLine('| Дата | Веха | Класс | Подпись |')
+      [void]$sb.AppendLine('|---|---|---|---|')
+      foreach ($line in $tlHeld) { [void]$sb.AppendLine($line) }
+      [void]$sb.AppendLine('')
+      [void]$sb.AppendLine('</details>')
+      [void]$sb.AppendLine('')
+    }
   }
 
-  $cards = [regex]::Matches($body, '(?is)<div class="p0-card([^"]*)">\s*<div class="p0-ch"><b>(.*?)</b>(.*?)</div>\s*<div class="p0-ct">(.*?)</div>(.*?)</div>(?=\s*<div class="p0-card|\s*<h4|\s*$)')
+  $cards = [regex]::Matches($body, '(?is)<div class="p0-card([^"]*)">\s*<div class="p0-ch"><b>(.*?)</b>(.*?)</div>\s*<div class="p0-ct">(.*?)</div>(.*?)</div>(?=\s*(?:<label\b[^>]*>.*?</label>\s*)?(?:<div class="p0-card|</div>\s*<h4|$))')
   if ($cards.Count -gt 0) {
     [void]$sb.AppendLine('###### Карточки вех')
     [void]$sb.AppendLine('')
+    $cardShown = New-Object System.Collections.Generic.List[string]
+    $cardHeld = New-Object System.Collections.Generic.List[string]
     foreach ($c in $cards) {
       $date = StripTags $c.Groups[2].Value
       $ch = $c.Groups[3].Value
@@ -175,24 +192,34 @@ foreach ($dm in [regex]::Matches($s0Body, '(?is)<details class="p0-stream([^"]*)
       $tag = [regex]::Match($ch, '(?is)<span class="p0-tag">(.*?)</span>').Groups[1].Value
       $st = [regex]::Match($ch, '(?is)<span class="p0-st[^"]*">(.*?)</span>').Groups[1].Value
       $lane = [regex]::Match($ch, '(?is)<span class="p0-lane">(.*?)</span>').Groups[1].Value
-      [void]$sb.AppendLine('**' + $date + ' — ' + $ct + '**')
+      $chunk = New-Object System.Text.StringBuilder
+      [void]$chunk.AppendLine('**' + $date + ' — ' + $ct + '**')
       $metaBits = @()
       if ($tag) { $metaBits += ('тип: ' + (StripTags $tag)) }
       if ($st) { $metaBits += ('статус: ' + (StripTags $st)) }
       if ($lane) { $metaBits += ('дорожка: ' + (StripTags $lane)) }
-      if ($metaBits.Count) { [void]$sb.AppendLine('- ' + ($metaBits -join ' · ')) }
+      if ($metaBits.Count) { [void]$chunk.AppendLine('- ' + ($metaBits -join ' · ')) }
       foreach ($cm in [regex]::Matches($rest, '(?is)<div class="p0-cm"><span class="p0-l">(.*?)</span>(.*?)</div>')) {
-        [void]$sb.AppendLine('- **' + (StripTags $cm.Groups[1].Value) + ':** ' + (StripTags $cm.Groups[2].Value).Replace("`n", ' / '))
+        [void]$chunk.AppendLine('- **' + (StripTags $cm.Groups[1].Value) + ':** ' + (StripTags $cm.Groups[2].Value).Replace("`n", ' / '))
       }
       $cr = [regex]::Match($rest, '(?is)<div class="p0-cr"><span class="p0-l">(.*?)</span>(.*?)</div>')
       if ($cr.Success) {
-        [void]$sb.AppendLine('- **' + (StripTags $cr.Groups[1].Value) + ':** ' + (StripTags $cr.Groups[2].Value).Replace("`n", ' '))
+        [void]$chunk.AppendLine('- **' + (StripTags $cr.Groups[1].Value) + ':** ' + (StripTags $cr.Groups[2].Value).Replace("`n", ' '))
       }
+      [void]$chunk.AppendLine('')
+      if ($id -eq 'p0-СВТ' -and $date -match '2028') { $cardHeld.Add($chunk.ToString()) } else { $cardShown.Add($chunk.ToString()) }
+    }
+    foreach ($chunk in $cardShown) { [void]$sb.Append($chunk) }
+    if ($cardHeld.Count -gt 0) {
+      [void]$sb.AppendLine('<details><summary>Вехи 2028 года (' + $cardHeld.Count + '). Решение не принято, ресурс не считается</summary>')
+      [void]$sb.AppendLine('')
+      foreach ($chunk in $cardHeld) { [void]$sb.Append($chunk) }
+      [void]$sb.AppendLine('</details>')
       [void]$sb.AppendLine('')
     }
   }
 
-  foreach ($h4 in [regex]::Matches($body, '(?is)<h4 class="p0-h4[^"]*">(.*?)</h4>\s*(<div class="p0-(?:box|grid2)[^"]*"[^>]*>.*?</div>)')) {
+  foreach ($h4 in [regex]::Matches($body, '(?is)<h4 class="p0-h4[^"]*">([^<]*)</h4>\s*(<div class="p0-(?:box|grid2)[^"]*"[^>]*>.*?</div>)')) {
     $ht = StripTags $h4.Groups[1].Value
     if ($ht -match '^[деж]') {
       [void]$sb.AppendLine('##### ' + $ht)
@@ -236,24 +263,54 @@ foreach ($stream in $spec.streams) {
     }
     [void]$sb.AppendLine('')
   }
-  [void]$sb.AppendLine('| Код | Тип | Дата | Веха | Ответственный | Шаги кольца |')
-  [void]$sb.AppendLine('|---|---|---|---|---|---|')
+  $relShown = @()
+  $relHeld = @()
   foreach ($rel in $stream.rels) {
+    if ($stream.code -eq 'СВТ' -and [string]$rel.d -match '2028') { $relHeld += $rel } else { $relShown += $rel }
+  }
+  function Write-RelRow($rel, $typeMap, $sb) {
     $ty = if ($typeMap.ContainsKey([string]$rel.type)) { $typeMap[[string]$rel.type] } else { $rel.type }
     $steps = @()
     if ($rel.steps) { $rel.steps.PSObject.Properties | ForEach-Object { $steps += $_.Name } }
     $stepStr = ($steps | Sort-Object { [int]$_ }) -join ','
     [void]$sb.AppendLine('| `' + $rel.code + '` | ' + $ty + ' | ' + $rel.d + ' | ' + ($rel.t -replace '\|','/') + ' | ' + ($rel.own -replace '\|','/') + ' | ' + $stepStr + ' |')
   }
+  [void]$sb.AppendLine('| Код | Тип | Дата | Веха | Ответственный | Шаги кольца |')
+  [void]$sb.AppendLine('|---|---|---|---|---|---|')
+  foreach ($rel in $relShown) { Write-RelRow $rel $typeMap $sb }
   [void]$sb.AppendLine('')
+  if ($relHeld.Count -gt 0) {
+    [void]$sb.AppendLine('<details><summary>Вехи 2028 года (' + $relHeld.Count + '). Решение не принято, ресурс не считается</summary>')
+    [void]$sb.AppendLine('')
+    [void]$sb.AppendLine('| Код | Тип | Дата | Веха | Ответственный | Шаги кольца |')
+    [void]$sb.AppendLine('|---|---|---|---|---|---|')
+    foreach ($rel in $relHeld) { Write-RelRow $rel $typeMap $sb }
+    [void]$sb.AppendLine('')
+    [void]$sb.AppendLine('</details>')
+    [void]$sb.AppendLine('')
+  }
   [void]$sb.AppendLine('<details><summary>Метрики и критерии вех стрима ' + $stream.code + '</summary>')
   [void]$sb.AppendLine('')
-  foreach ($rel in $stream.rels) {
+  foreach ($rel in $relShown) {
     [void]$sb.AppendLine('#### `' + $rel.code + '` — ' + $rel.t)
     [void]$sb.AppendLine('')
     if ($rel.metric) { [void]$sb.AppendLine('- Критерий/метрика: ' + $rel.metric) }
     if ($rel.avail) { [void]$sb.AppendLine('- Доступность: ' + $rel.avail) }
     if ($rel.mt -and $rel.mt.what) { [void]$sb.AppendLine('- what: ' + $rel.mt.what) }
+    [void]$sb.AppendLine('')
+  }
+  if ($relHeld.Count -gt 0) {
+    [void]$sb.AppendLine('<details><summary>Метрики вех 2028 года (' + $relHeld.Count + '). Решение не принято, ресурс не считается</summary>')
+    [void]$sb.AppendLine('')
+    foreach ($rel in $relHeld) {
+      [void]$sb.AppendLine('#### `' + $rel.code + '` — ' + $rel.t)
+      [void]$sb.AppendLine('')
+      if ($rel.metric) { [void]$sb.AppendLine('- Критерий/метрика: ' + $rel.metric) }
+      if ($rel.avail) { [void]$sb.AppendLine('- Доступность: ' + $rel.avail) }
+      if ($rel.mt -and $rel.mt.what) { [void]$sb.AppendLine('- what: ' + $rel.mt.what) }
+      [void]$sb.AppendLine('')
+    }
+    [void]$sb.AppendLine('</details>')
     [void]$sb.AppendLine('')
   }
   [void]$sb.AppendLine('</details>')
