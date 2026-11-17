@@ -1777,7 +1777,7 @@
 <tr><td class="num">123</td><td>Не установлен признак "Плечо действует" при наличии активных ставок</td></tr>
 <tr><td class="num">165</td><td>Активные привязки к архивным плечам/ставкам</td></tr>
 <tr><td class="num">166</td><td>Активные привязки к архивным плечам/средневзвешенным ставкам</td></tr>
-<tr><td class="num">206</td><td>Проверка актуальности данных у транспортного плеча (отдает коды лидтаймов с неактуальными даннами на плече)</td></tr>
+<tr><td class="num">206</td><td>Проверка актуальности данных у транспортного плеча (отдает коды лидтаймов с неактуальными данными на плече)</td></tr>
 <tr><td class="num">207</td><td>Проверка на отсутствие промежутков в периодах действия лидтаймов у транспортного плеча (отдает коды плеч с промежутками в лидтаймах)</td></tr>
 <tr><td class="num">208</td><td>Проверка наличия у лидтайма даты начала действия (отдает коды лидтаймов без даты)</td></tr>
 <tr><td class="num">209</td><td>Проверка наличия у лидтайма даты окончания действия (отдает коды лидтаймов без даты)</td></tr>
@@ -1794,7 +1794,7 @@
 <tr><td class="num">224</td><td>Проверка актуальности итогового времени транспортировки (TransportationTime и Leg(1 и 2)_TransportationTime) у лидтаймов</td></tr>
 <tr><td class="num">259</td><td>Мониторинг: Для неархивных записей справочника "Транспортные плечи" должен существовать активный лидтайм.</td></tr>
 <tr><td class="num">261</td><td>Мониторинг: Для неархивных записей справочника "Транспортные плечи -&gt; Лидтаймы" тип отправки (ShipmentType) должен соответствовать выбранному виду транспорта (TransportKind).</td></tr>
-<tr><td class="num">263</td><td>Агрегированые данные из лидтаймов соостветствую данным из плеч</td></tr>
+<tr><td class="num">263</td><td>Агрегированные данные из лидтаймов соответствуют данным из плеч</td></tr>
 <tr><td class="num">264</td><td>Мониторинг: Для неархивных записей справочника "Транспортные плечи" для тип отправки ЦБД (ShipmentTypeCBD) должен существовать активный лидтайм с таким же типом отправки (ShipmentType).</td></tr>
 </tbody></table></details>
 <details><summary>Средневзвешенные ставки 3 уровня · 20</summary>
@@ -1829,9 +1829,9 @@
 <tr><td class="num">228</td><td>Маршруты с некорректной цепочкой узлов</td></tr>
 <tr><td class="num">229</td><td>Маршруты с некорректным видом транспорта</td></tr>
 <tr><td class="num">230</td><td>Маршруты с некорректными плечами</td></tr>
-<tr><td class="num">232</td><td>Потеряные короткие имена</td></tr>
-<tr><td class="num">233</td><td>Потеряное название маршрута</td></tr>
-<tr><td class="num">260</td><td>Мониторинг: Поиск измененых маршрутов, но не папавших в интеграцию ERP.</td></tr>
+<tr><td class="num">232</td><td>Потерянные короткие имена</td></tr>
+<tr><td class="num">233</td><td>Потерянное название маршрута</td></tr>
+<tr><td class="num">260</td><td>Мониторинг: Поиск измененных маршрутов, но не попавших в интеграцию ERP.</td></tr>
 </tbody></table></details>
 <details><summary>Склады АСВ - ERP. Ограничения · 8</summary>
 <table><thead><tr><th>№</th><th>Проверка</th></tr></thead><tbody>
@@ -1846,7 +1846,7 @@
 </tbody></table></details>
 <details><summary>Склады. Ограничения · 8</summary>
 <table><thead><tr><th>№</th><th>Проверка</th></tr></thead><tbody>
-<tr><td class="num">225</td><td>Пересечание параметров складов по периодам действия</td></tr>
+<tr><td class="num">225</td><td>Пересечение параметров складов по периодам действия</td></tr>
 <tr><td class="num">249</td><td>Мониторинг: Для складов страны "Турция" для всех неархивных ограничений значение TotalCapacity должно быть задано и неотрицательно.</td></tr>
 <tr><td class="num">250</td><td>Мониторинг: Для складов страны "Китай" для всех неархивных ограничений значения CargoCleared и CargoNotCleared должны быть заданы и неотрицательны.</td></tr>
 <tr><td class="num">251</td><td>Мониторинг: Для складов страны "Турция" для всех неархивных ограничений, если указано значение ExtraVolume, оно должно быть неотрицательным.</td></tr>
@@ -1876,8 +1876,8 @@
 <details><summary>Паритетные ставки · 5</summary>
 <table><thead><tr><th>№</th><th>Проверка</th></tr></thead><tbody>
 <tr><td class="num">172</td><td>Уникальность полей по списку: StartDate + EndDate + NodeFromCode + NodeToCode + TransportTypeCode + ProductGroupCode + Dangerous_Cargo.</td></tr>
-<tr><td class="num">173</td><td>Не заполненно поле из списка: StartDate, EndDate, Relevance, NodeFromCode, NodeToCode, TransportTypeCode, TotalCostTransport, LoadOfTransport, TotalCostTon, CurrencyStandard.</td></tr>
-<tr><td class="num">205</td><td>Стоимость за тонну не соответсвет стоимости за ТС</td></tr>
+<tr><td class="num">173</td><td>Не заполнено поле из списка: StartDate, EndDate, Relevance, NodeFromCode, NodeToCode, TransportTypeCode, TotalCostTransport, LoadOfTransport, TotalCostTon, CurrencyStandard.</td></tr>
+<tr><td class="num">205</td><td>Стоимость за тонну не соответствует стоимости за ТС</td></tr>
 <tr><td class="num">231</td><td>Поиск не актуальных ссылок у паритетных ставок</td></tr>
 <tr><td class="num">234</td><td>Неправильные имена у маршрутов</td></tr>
 </tbody></table></details>
