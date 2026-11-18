@@ -542,8 +542,24 @@ def replace_ids(text: str, task: dict[str, str], mile: dict[str, str], *, late: 
 
 
 # Листья, которых нет в прежних id. Номер уже выдан в backlog.md.
-# Юзкейсы — литеральные доли 0.5 / 0.25 (не split_even: 0.25 стало бы 0.2).
-# Прототип 9 / 5 и демо 6 / 4.5 — split_even, остаток на последнем листе.
+# Оценка листа аналитики (без ИИ, с ИИ) для домена ×1. Работа с людьми: с ИИ = без ИИ;
+# документы: 0.4 от «без ИИ»; генерация прототипа агентом: 0.2.
+USECASE_EST = (
+    (0.5, 0.5), (0.5, 0.2), (0.5, 0.2), (1.5, 1.5), (1.0, 1.0), (0.5, 0.2),
+    (0.5, 0.2), (0.5, 0.2), (0.5, 0.2), (0.5, 0.2), (1.0, 1.0), (0.5, 0.2),
+)
+PROTO_EST = ((1.5, 0.6), (1.5, 0.6), (1.5, 0.6), (1.5, 0.3), (1.5, 0.6), (1.5, 0.6))
+DEMO_EST = (
+    (0.6, 0.6), (0.6, 0.6), (0.6, 0.6), (0.6, 0.24), (0.6, 0.24),
+    (0.6, 0.6), (0.6, 0.6), (0.6, 0.6), (1.2, 0.48),
+)
+# Коэффициент домена к юзкейсам, прототипу и демо. Пакеты вне списка — ×1.
+ANALYTICS_FACTOR = {
+    **dict.fromkeys(("9.11", "9.12", "9.13"), 1.5),
+    **dict.fromkeys(("9.14", "9.15", "9.16"), 0.5),
+    **dict.fromkeys(("9.29", "9.30", "9.31"), 0.5),
+    **dict.fromkeys(("10.6", "10.7", "10.8"), 0.5),
+}
 USECASE_TITLES = (
     "Роли домена и поимённый список участников интервью; письменно закрепить сотрудников бизнеса (Шаг: Клиентский опыт)",
     "Материалы «как есть»: экраны легаси, Excel, почта, SharePoint, сторонние скрипты, инциденты домена за год (Шаг: Клиентский опыт)",
@@ -597,20 +613,24 @@ def manual_estimate_items() -> list[Item]:
     def add(new_id: str, title: str, no_ai: float, with_ai: float) -> None:
         items.append(_synth(f"manual:{new_id}", title, "", no_ai, with_ai, "", new_id, ""))
 
-    pr = list(zip(split_even(9, 6), split_even(5, 6)))
-    dm = list(zip(split_even(6, 9), split_even(4.5, 9)))
+    pr = PROTO_EST
+    dm = DEMO_EST
+
+    def add_scaled(pkg: str, i: int, title: str, est: tuple[float, float]) -> None:
+        k = ANALYTICS_FACTOR.get(pkg, 1.0)
+        add(f"{pkg}.{i}", title, round(est[0] * k, 2), round(est[1] * k, 2))
 
     def add_usecases(pkg: str) -> None:
         for i, title in enumerate(USECASE_TITLES, 1):
-            add(f"{pkg}.{i}", title, 0.5, 0.25)
+            add_scaled(pkg, i, title, USECASE_EST[i - 1])
 
     def add_proto(pkg: str) -> None:
-        for i, (n, w) in enumerate(pr, 1):
-            add(f"{pkg}.{i}", PROTO_TITLES[i - 1], n, w)
+        for i, est in enumerate(pr, 1):
+            add_scaled(pkg, i, PROTO_TITLES[i - 1], est)
 
     def add_demo(pkg: str, handoff: str) -> None:
-        for i, (n, w) in enumerate(dm, 1):
-            add(f"{pkg}.{i}", demo_titles(pkg, handoff)[i - 1], n, w)
+        for i, est in enumerate(dm, 1):
+            add_scaled(pkg, i, demo_titles(pkg, handoff)[i - 1], est)
 
     for pkg in ("1.12", "3.7", "9.11", "9.14", "9.17"):
         add_usecases(pkg)
@@ -653,13 +673,13 @@ def manual_estimate_items() -> list[Item]:
         ("7.10.5", 4, 1.5, "Тесты API записи: unit, HTTP, контракт OpenAPI (Шаг: Разработка)"),
         ("7.10.6", 6, 2, "Пилот API записи на «Транспортных плечах» (Шаг: Разработка)"),
         ("9.2.31", 3, 1.5, "API записи домена «Ставки»: OpenAPI, Swagger, MCP (Шаг: Разработка)"),
-        ("9.3.13", 3, 1.5, "API записи домена «Паритеты»: OpenAPI, Swagger, MCP (Шаг: Разработка)"),
-        ("9.4.27", 3, 1.5, "API записи домена «Маршруты»: OpenAPI, Swagger, MCP (Шаг: Разработка)"),
-        ("9.5.18", 3, 1.5, "API записи домена «Продукты»: OpenAPI, Swagger, MCP (Шаг: Разработка)"),
-        ("9.6.20", 3, 1.5, "API записи домена «Склады и ограничения»: OpenAPI, Swagger, MCP (Шаг: Разработка)"),
-        ("9.7.26", 3, 1.5, "API записи домена «Матрица каналов»: OpenAPI, Swagger, MCP (Шаг: Разработка)"),
-        ("9.8.16", 3, 1.5, "API записи домена «Интеграция с ЦБД»: OpenAPI, Swagger, MCP (Шаг: Разработка)"),
-        ("10.2.9", 3, 1.5, "API записи домена «Вспомогательные»: OpenAPI, Swagger, MCP (Шаг: Разработка)"),
+        ("9.3.13", 3, 0.5, "API записи домена «Паритеты»: OpenAPI, Swagger, MCP (Шаг: Разработка)"),
+        ("9.4.27", 3, 0.5, "API записи домена «Маршруты»: OpenAPI, Swagger, MCP (Шаг: Разработка)"),
+        ("9.5.18", 3, 0.5, "API записи домена «Продукты»: OpenAPI, Swagger, MCP (Шаг: Разработка)"),
+        ("9.6.20", 3, 0.5, "API записи домена «Склады и ограничения»: OpenAPI, Swagger, MCP (Шаг: Разработка)"),
+        ("9.7.26", 3, 0.5, "API записи домена «Матрица каналов»: OpenAPI, Swagger, MCP (Шаг: Разработка)"),
+        ("9.8.16", 3, 0.5, "API записи домена «Интеграция с ЦБД»: OpenAPI, Swagger, MCP (Шаг: Разработка)"),
+        ("10.2.9", 3, 0.5, "API записи домена «Вспомогательные»: OpenAPI, Swagger, MCP (Шаг: Разработка)"),
         ("3.6.9", 2, 1, "Целевые показатели быстродействия просмотра: установить и замерить (Шаг: Наблюдение)"),
         ("4.1.22", 2, 1, "Срок ответа на заявку и доля автообработки: замер в модуле и сравнение с базой «до» (Шаг: Наблюдение)"),
         ("4.1.23", 2, 1, "Качество данных заявок: определить метрику и снять (Шаг: Наблюдение)"),
