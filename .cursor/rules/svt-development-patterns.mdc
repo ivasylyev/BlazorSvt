@@ -90,10 +90,10 @@ Serilog (`Host/Program.cs`, секция `Serilog` в `appsettings.json`). Пр�
 
 | Пространство | Пример | Где смотреть |
 |--------------|--------|--------------|
-| `PrimitiveEntityInfo.Id` (UI / URL легаси `/masterdata/{id}`, реестр catalogs-scope) | RateType **2085**, TypeNode **2151**, TypePlace **1002** | `PrimitiveEntityInfo`, ссылки Confluence/легаси |
-| Номер таблицы `dbo.PrimitiveEntityData_XXXX` | RateType **2048**, TypeNode **2132**, TypePlace **1007** | DDL sync, `PopulateAffectedKeys`, consts SyncJob |
+| `EntityInfo.Id` (UI / URL легаси `/masterdata/{id}`, реестр catalogs-scope) | RateType **2085**, TypeNode **2151**, TypePlace **1002** | `EntityInfo`, ссылки Confluence/легаси |
+| Номер таблицы `dbo.PrimitiveEntityData_XXXX` = `PrimitiveEntityInfo.Id` основного примитива | RateType **2048**, TypeNode **2132**, TypePlace **1007** | `EntityStructure` (`ParentId IS NULL`), DDL sync, `PopulateAffectedKeys`, consts SyncJob |
 
-Один справочник — два разных числа. В SQL и C# для PED всегда комментируй имя сущности рядом с номером таблицы.
+Один справочник — два разных числа. Связь — запрос шага 0 skill `add-reference-book`. В SQL и C# для PED всегда комментируй имя сущности рядом с номером таблицы.
 
 ### Справочники вне каскада чужих гридов
 
@@ -107,11 +107,12 @@ Serilog (`Host/Program.cs`, секция `Serilog` в `appsettings.json`). Пр�
 | TypePlace (LocationType) | `dbo.PrimitiveEntityData_1007` | LocationsNodes |
 | TypeNode | `dbo.PrimitiveEntityData_2132` | LocationsNodes |
 | TransportKind | `dbo.PrimitiveEntityData_2008` | TransportLeg, TransportRate, AverageRateLevel3 |
-| RateType | `dbo.PrimitiveEntityData_2048` | TransportRate, AverageRateLevel3; свой RO-модуль `RateType` |
+| RateType | `dbo.PrimitiveEntityData_2048` | TransportRate, AverageRateLevel3, Coefficient; свой RO-модуль `RateType` |
 | TransportType | `dbo.PrimitiveEntityData_2009` | TransportRate, AverageRateLevel3 |
 | TransportTypeLevel3 | `dbo.PrimitiveEntityData_2023` | свой RO-модуль `TransportTypeLevel3` |
 | Currency | `dbo.PrimitiveEntityData_2016` | TransportRate, AverageRateLevel3; свой RO-модуль `Currency` |
 | Relevance | `dbo.PrimitiveEntityData_2108` | ParityRates |
+| CoefficientType | `dbo.PrimitiveEntityData_2077` | Coefficient |
 | ETSNG | `dbo.PrimitiveEntityData_2019` | MTR (легаси, скрыт от пользователей, не меняется с 2019 г.) |
 
 При добавлении нового справочника к синхронизации: `vw_{Entity}_SnapshotSource`,

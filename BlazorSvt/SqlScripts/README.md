@@ -38,15 +38,18 @@ SqlScripts/
 │   ├── MTR/
 │   │   ├── Structure/
 │   │   └── Programmability/
-│   └── TransportTypeLevel3/
+│   ├── TransportTypeLevel3/
+│   │   ├── Structure/
+│   │   └── Programmability/   # без PopulateAffectedKeys: разовая заливка
+│   └── Coefficient/
 │       ├── Structure/
-│       └── Programmability/   # без PopulateAffectedKeys: разовая заливка
+│       └── Programmability/
 ├── Migrations/             # Релизные артефакты наката (immutable после выката)
 │   ├── 2.0.0/              # baseline
 │   ├── 2.0.1/              # upgrade
 │   ├── 2.3.46/             # дельта RateType + снимок programmability
 │   ├── 2.3.48/             # очередь Атласа: Currency, ProductGroup, MTR, TransportTypeLevel3 + снимок programmability
-│   ├── 2.3.49/             # текущий VersionPrefix: дельта Contractor + снимок programmability
+│   ├── 2.3.49/             # текущий VersionPrefix: дельта Contractor, Coefficient + снимок programmability
 │   └── README.md           # конвенция релизов / два контура
 └── Translations_info.txt   # Справочник переводов полей (не для деплоя)
 ```
@@ -190,6 +193,18 @@ SqlScripts/
 | 5 | `Modules/Contractor/Structure/03.Contractor_CreateIndexes.sql` |
 | 6 | `Modules/Contractor/Programmability/vw_Contractor_Detail.sql` |
 | 7 | `Modules/Contractor/Programmability/sp_Contractor_PopulateAffectedKeys.sql` |
+
+**Coefficient** (представление `dbo.vw_Coefficient`; RowVer на `dbo.PrimitiveEntityData_2081`; CoefficientType и RateType — enum, не отслеживаются)
+
+| # | Скрипт |
+|---|--------|
+| 1 | `Sync/01.Legacy_AddRowVersion.sql` |
+| 2 | `Modules/Coefficient/Structure/01.Coefficient_CreateTable.sql` |
+| 3 | `Modules/Coefficient/Programmability/vw_Coefficient_SnapshotSource.sql` |
+| 4 | `Modules/Coefficient/Structure/02.Coefficient_Insert.sql` |
+| 5 | `Modules/Coefficient/Structure/03.Coefficient_CreateIndexes.sql` |
+| 6 | `Modules/Coefficient/Programmability/vw_Coefficient_Detail.sql` |
+| 7 | `Modules/Coefficient/Programmability/sp_Coefficient_PopulateAffectedKeys.sql` |
 
 ## Grid read-модель
 

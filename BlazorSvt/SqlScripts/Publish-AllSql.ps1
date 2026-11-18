@@ -118,6 +118,12 @@ $fullManifest = @(
   'Modules\Contractor\Structure\03.Contractor_CreateIndexes.sql'
   'Modules\Contractor\Programmability\vw_Contractor_Detail.sql'
   'Modules\Contractor\Programmability\sp_Contractor_PopulateAffectedKeys.sql'
+  'Modules\Coefficient\Structure\01.Coefficient_CreateTable.sql'
+  'Modules\Coefficient\Programmability\vw_Coefficient_SnapshotSource.sql'
+  'Modules\Coefficient\Structure\02.Coefficient_Insert.sql'
+  'Modules\Coefficient\Structure\03.Coefficient_CreateIndexes.sql'
+  'Modules\Coefficient\Programmability\vw_Coefficient_Detail.sql'
+  'Modules\Coefficient\Programmability\sp_Coefficient_PopulateAffectedKeys.sql'
 )
 
 $programmabilityManifest = $fullManifest | Where-Object {

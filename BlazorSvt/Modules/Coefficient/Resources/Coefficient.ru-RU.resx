@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <resheader name="resmimetype"><value>text/microsoft-resx</value></resheader>
+  <resheader name="version"><value>2.0</value></resheader>
+  <resheader name="reader"><value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value></resheader>
+  <resheader name="writer"><value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value></resheader>
+  <data name="CoefficientGrid.Title" xml:space="preserve"><value>Коэффициент</value></data>
+  <data name="CoefficientDto.Code" xml:space="preserve"><value>Код</value></data>
+  <data name="CoefficientDto.CoefficientTypeName" xml:space="preserve"><value>Тип</value></data>
+  <data name="CoefficientDto.Name" xml:space="preserve"><value>Название</value></data>
+  <data name="CoefficientDto.StartDate" xml:space="preserve"><value>Начало</value></data>
+  <data name="CoefficientDto.FinishDate" xml:space="preserve"><value>Окончание</value></data>
+  <data name="CoefficientDto.Active" xml:space="preserve"><value>Активный</value></data>
+  <data name="CoefficientDto.OverallValue" xml:space="preserve"><value>На ставку</value></data>
+  <data name="CoefficientDto.RateTypeName" xml:space="preserve"><value>Тип ставки</value></data>
+  <data name="CoefficientDto.IsArchive" xml:space="preserve"><value>Архив</value></data>
+  <data name="CoefficientDto.CreationDate" xml:space="preserve"><value>Создано</value></data>
+  <data name="CoefficientDto.LastChangeDate" xml:space="preserve"><value>Изменено</value></data>
+  <data name="CoefficientDetailDto.Code" xml:space="preserve"><value>Код (Код записи)</value></data>
+  <data name="CoefficientDetailDto.CoefficientTypeName" xml:space="preserve"><value>Тип</value></data>
+  <data name="CoefficientDetailDto.Name" xml:space="preserve"><value>Название</value></data>
+  <data name="CoefficientDetailDto.StartDate" xml:space="preserve"><value>Начало действия</value></data>
+  <data name="CoefficientDetailDto.FinishDate" xml:space="preserve"><value>Окончание действия</value></data>
+  <data name="CoefficientDetailDto.Active" xml:space="preserve"><value>Активный</value></data>
+  <data name="CoefficientDetailDto.OverallValue" xml:space="preserve"><value>На ставку (Значение на ставку в целом)</value></data>
+  <data name="CoefficientDetailDto.RateTypeName" xml:space="preserve"><value>Тип ставки</value></data>
+  <data name="CoefficientDetailDto.IsArchive" xml:space="preserve"><value>Архив</value></data>
+  <data name="CoefficientDetailDto.CreationDate" xml:space="preserve"><value>Создано</value></data>
+  <data name="CoefficientDetailDto.LastChangeDate" xml:space="preserve"><value>Изменено</value></data>
+  <data name="CoefficientDetailDto.Group.0.Default" xml:space="preserve"><value>По умолчанию</value></data>
+</root>
