@@ -136,7 +136,8 @@ app.MapSvtMcp();
 app.MapStaticAssets();
 
 // Liveness: публичный URL /v2/hc (PathBase). Без БД и Blazor circuit.
-app.MapGet("/hc", () => Results.Text("healthy", "text/plain"))
+// ShortCircuit обходит журнал запросов — строку вызова пишет обработчик.
+app.MapGet("/hc", HealthCheckEndpoint.InvokeAsync)
     .AllowAnonymous()
     .ShortCircuit();
 
