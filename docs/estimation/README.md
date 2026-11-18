@@ -5,16 +5,15 @@
 Confluence ч. III: [pageId=567442215](https://confluence.sibur.local/pages/viewpage.action?pageId=567442215).
 
 WBS ids = `{веха}.{пакет}.{задача}` (не путать с [review-conditions.md](../../.cursor/skills/svt-architecture/review-conditions.md)).
-Скоуп RO/E/L — `catalogs-scope.md`. Третья цифра (человек с ИИ) только на вехе 1=25 и вехе 2=60.
+Скоуп RO/E/L — `catalogs-scope.md`. Третья цифра (человек с ИИ) только на прежних вехах 1=25 и 2=60 (до перенумерации вех в 1–63).
 
 ## Перегенерация
 
 ```bash
 python docs/estimation/generate_effort_estimate.py
-python docs/estimation/generate_backlog_md.py
 ```
 
-Первый скрипт пишет TSV и Wiki Markup. Второй собирает черновик чеклиста `backlog.md` и не воспроизводит ручной нарратив (очередь Атласа, примечания пунктов). Сводку вех и критический путь он не пишет: они вручную в `roadmap.md`. Перед запуском сверить вывод и не затирать ручные формулировки.
+Скрипт пишет TSV и Wiki Markup. `backlog.md` и `roadmap.md` он не пишет: они ведутся вручную.
 
 | Файл | Назначение |
 |------|------------|

@@ -447,9 +447,9 @@ def replace_ids(text: str, task: dict[str, str], mile: dict[str, str], *, late: 
     if not text:
         return text
     text, shielded = _shield(text)
-    text = text.replace("MVP 0.5+", "вехи 7")
-    text = text.replace("MVP 0.4+", "вехи 6")
-    text = text.replace("итог MVP 2.0", "итог вехи 14")
+    text = text.replace("MVP 0.5+", "вехи 21")
+    text = text.replace("MVP 0.4+", "вехи 21")
+    text = text.replace("итог MVP 2.0", "итог вехи 63")
 
     def rng(m: re.Match) -> str:
         a, b = m.group(1), m.group(2)
@@ -671,7 +671,7 @@ def manual_estimate_items() -> list[Item]:
         ("7.10.3", 3, 1.5, "MCP-инструменты записи поверх того же каркаса (Шаг: Разработка)"),
         ("7.10.4", 5, 2.5, "Пакетная запись через API поверх оркестрации загрузчика 8.3 (Шаг: Разработка)"),
         ("7.10.5", 4, 1.5, "Тесты API записи: unit, HTTP, контракт OpenAPI (Шаг: Разработка)"),
-        ("7.10.6", 6, 2, "Пилот API записи на «Транспортных плечах» (Шаг: Разработка)"),
+        ("7.10.6", 6, 2, "Пилот API записи на «Ставках» (Rates) (Шаг: Разработка)"),
         ("9.2.31", 3, 1.5, "API записи домена «Ставки»: OpenAPI, Swagger, MCP (Шаг: Разработка)"),
         ("9.3.13", 3, 0.5, "API записи домена «Паритеты»: OpenAPI, Swagger, MCP (Шаг: Разработка)"),
         ("9.4.27", 3, 0.5, "API записи домена «Маршруты»: OpenAPI, Swagger, MCP (Шаг: Разработка)"),

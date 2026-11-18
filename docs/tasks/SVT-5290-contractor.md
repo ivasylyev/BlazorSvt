@@ -7,7 +7,7 @@
 **СВТ 2.0** — переписывание MDM тарифов/маршрутов с легаси на **Blazor Server + MS SQL**. Эта задача переносит справочник **только для чтения** (грид, карточка, Excel, API). Редактор и загрузчик не входят в задачу.
 
 Источник истины по составу: `.cursor\skills\svt-architecture\catalogs-scope.md`.  
-Чеклист: `.cursor\skills\svt-architecture\backlog.md` → пункт **3.3.3**.
+Чеклист: `.cursor\skills\svt-architecture\backlog.md` → пункт **15.10.10**.
 
 ### Что сделать
 
@@ -40,4 +40,4 @@
 - [x] Грид, карточка и выгрузка читают локальную базу
 - [x] `AddCatalogApi` (`contractors`)
 - [x] Тесты по skill
-- [ ] Пункт 3.3.3 в backlog не отмечать до ревью
+- [ ] Пункт 15.10.10 в backlog не отмечать до ревью
