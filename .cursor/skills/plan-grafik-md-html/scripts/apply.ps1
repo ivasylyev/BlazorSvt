@@ -166,7 +166,7 @@ function ApplyV12 {
       Write-Host "v12 rel updated: $code"
     }
 
-    $met = [regex]::Match($sec, '(?ms)####\s*`' + [regex]::Escape($code) + '`[^\n]*\r?\n+\s*-\s*Критерий/метрика:\s*(.+?)(?=\r?\n\s*\r?\n|\r?\n####|\r?\n</details>)')
+    $met = [regex]::Match($sec, '(?ms)####\s*`' + [regex]::Escape($code) + '`[^\n]*\r?\n+\s*-\s*Критерий/метрика:\s*(.+?)(?=\r?\n\s*\r?\n|\r?\n####|\r?\n</details>|\r?\n\s*-\s+)')
     if ($met.Success) {
       $metric = $met.Groups[1].Value.Trim()
       $rel2 = FindRelObject $updated $code

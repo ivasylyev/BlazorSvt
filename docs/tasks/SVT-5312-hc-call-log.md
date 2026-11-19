@@ -16,7 +16,7 @@
 
 Маршрут приложения — `GET /hc` в `BlazorSvt/Host/Program.cs` (`AllowAnonymous`, `ShortCircuit`). Снаружи на стендах путь `/v2/hc`: так настроен роутинг IIS; в конфигурации приложения `PathBase` тоже `/v2`. В руководстве для вызывающих это `GET /v2/hc` без аутентификации API — [svt-api-v1-developers.md](../api/svt-api-v1-developers.md). В снимке OpenAPI пути нет.
 
-Журнал приложения — Serilog, порог Debug, файл `C:/logs/v2`, шаблон с `ShortCorrelationId`. Наблюдаемость — [architecture.md](../../.cursor/skills/svt-architecture/architecture.md) §6.7 и правило `svt-architecture-principles`. Field-level аудит — веха 11, к этому вызову не относится.
+Журнал приложения — Serilog, порог Debug, файл `C:/logs/v2`, шаблон с `ShortCorrelationId`. Наблюдаемость — [architecture.md](../../.cursor/skills/svt-architecture/architecture.md) §6.7 и правило `svt-architecture-principles`. Field-level аудит — веха 36 (36.8), к этому вызову не относится.
 
 Анонимный доступ на IIS выключен. `AllowAnonymous` на маршруте анонимный доступ IIS не открывает.
 
