@@ -15,7 +15,6 @@ svt-architecture
       → publish-all-sql          (копия в каталог деплоя)
 atlas
   → plan-grafik-md-html
-      → svt-vehi-html   (вехи СВТ в разделе «г», скрипт их не собирает)
 ```
 
 ## СВТ
@@ -37,4 +36,3 @@ atlas
 |---|---|---|
 | [atlas](atlas/atlas.md) | агент | Кольцо эталонного процесса и документы эталона СВТ |
 | [plan-grafik-md-html](atlas/plan-grafik-md-html.md) | агент | Текст и таблицы разделов 0, 1а и 1б между Markdown и HTML |
-| [svt-vehi-html](atlas/svt-vehi-html.md) | агент | Полоска и карточки вех СВТ в разделе «г» план-графика из черновика |

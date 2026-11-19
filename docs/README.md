@@ -36,6 +36,9 @@
 | Папка | Что это |
 |---|---|
 | `docs/docs/svt-v-atlas/` | Эталонный процесс. Навык `atlas`, не стек СВТ 2.0 |
+| `docs/docs/План-график Атлас/atlas-milestones-draft.md` | Черновик вех стрима СВТ. Не канон. Порядок вех — `roadmap.md`. Процедура его не открывает |
+| `docs/docs/План-график Атлас/atlas-milestones-draft2.md` | Снимок текста того же стрима. Не канон. Процедура его не открывает |
+| `docs/docs/План-график Атлас/atlas-milestones-mapping-without-SVT.md` | Вариант сверки без фронта СВТ. Не канон. Процедура его не открывает |
 | `docs/docs/svt-plan-dlya-rukovoditeley.html` | План для руководства. Вёрстка заморожена правилом `svt-exec-html` |
 | `docs/docs/sibur_style.md` | Фирменный стиль СИБУР для новых материалов |
 | `docs/docs/CX-UX.html` | CX. Не шаблон плана для руководства и не продукт СВТ |
