@@ -4,7 +4,7 @@
 
 ## Параметры
 
-Оркестратор передаёт: `RepoRoot`, `Entity` (у ролей на весь батч нет), `Class` (`simple` или `complex`), `VersionPrefix`, `WorkDir`, `BaseRef`, `Db` (`-E` или `-U … -P …`), `Batch` (имена всех справочников батча), `BatchDir`, `AgentsDir` (папка этих файлов). Скрипты оркестратора — `{AgentsDir}\..\scripts\`.
+Оркестратор передаёт: `RepoRoot`, `Entity` (у ролей на весь батч нет; у classify — имя реестра), `Class` (`simple` или `complex`; у ролей на весь батч и у classify нет), `VersionPrefix`, `WorkDir` (у classify нет — см. его роль), `BaseRef`, `Db` (`-E` или `-U … -P …`), `Batch` (имена всех справочников батча), `BatchDir`, `AgentsDir` (папка этих файлов). Скрипты оркестратора — `{AgentsDir}\..\scripts\`.
 
 ## Источники правил
 
@@ -15,7 +15,7 @@
 - `grid-column-glossary.md` — короткие заголовки грида.
 - `{WorkDir}\spec.md` (у ролей на весь батч — `{BatchDir}\{Entity}\spec.md`) — контракт конвейера. Имена колонок, свойств, enum, заголовки, код API, источники sync берутся оттуда. Раздел 8 «Решения» обязателен к исполнению.
 
-Эталон файлов — из `add-reference-book/SKILL.md` (watermark-sync / стабильный словарь с enum). `Class` из параметров и раздела 1 spec должен совпадать с таблицей «Стабильный словарь с enum»; расхождение — «ВОПРОСЫ».
+Эталон файлов — из `add-reference-book/SKILL.md` (watermark-sync / стабильный словарь с enum). `Class` из параметров и раздела 1 spec должен совпадать с таблицей «Стабильный словарь с enum»; расхождение — «ВОПРОСЫ». Исключение: в разделе 8 записано решение «simple», а enum ещё нет — строку таблицы допишет csharp после создания enum, это не расхождение.
 
 Если спецификация расходится с базой или правилом — не исправляй её сама и не отступай молча. Верни расхождение в блоке «ВОПРОСЫ».
 
@@ -48,7 +48,7 @@
 
 ## Сборка и тесты
 
-Если `BlazorSvt.dll` заблокирован запущенным приложением — `dotnet test … --artifacts-path {RepoRoot}\.tmp-artifacts-{роль}`, после прогона папку удалить. Папка вне репозитория ломает тесты, которые ищут корень (`AppBuildInfoTests`, `OpenApiContractTests`). Перед integration-тестами: `BLAZORSVT_TEST_CONNECTION` = строка `Database:MdmDb` с `Server=localhost`.
+Если `BlazorSvt.dll` заблокирован запущенным приложением — `dotnet test … --artifacts-path {RepoRoot}\.tmp-artifacts-{роль}` (если в роли задано другое имя папки — оно), после прогона папку удалить. Папка вне репозитория ломает тесты, которые ищут корень (`AppBuildInfoTests`, `OpenApiContractTests`). Перед integration-тестами: `BLAZORSVT_TEST_CONNECTION` = строка `Database:MdmDb` с `Server=localhost`.
 
 ## Экономия контекста
 

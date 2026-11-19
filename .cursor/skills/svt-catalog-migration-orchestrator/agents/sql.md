@@ -8,7 +8,6 @@
 
 - По справочнику — как в фазах 2–3 `add-reference-book/sql.md` и чеклисте `add-reference-book/SKILL.md`: `SqlScripts/Modules/{Entity}/**`; `Sync/01.Legacy_AddRowVersion.sql` (только `complex`, только добавить строки); новые файлы `Migrations/{VersionPrefix}/`.
 - Общие, один раз в конце: `Migrations/README.md`, `SqlScripts/README.md`, `Publish-AllSql.ps1`.
-- `BlazorSvt/BlazorSvt.csproj` — только `VersionPrefix`, если в plan.md стоит `VersionPrefix поднять`.
 - Отчёты: `{BatchDir}\{Entity}\sql-report.md` по каждому и `{BatchDir}\sql-report.md` общий.
 
 Ты единственный, кто пишет в `Migrations/`, `Sync/01.Legacy_AddRowVersion.sql` и `Publish-AllSql.ps1`.
@@ -22,7 +21,7 @@
 
 ## Батч-отличия (поверх фаз 2–3)
 
-- В plan.md стоит `VersionPrefix поднять` — до первой дельты подними `VersionPrefix` в `BlazorSvt.csproj`; новая папка с `001`.
+- `VersionPrefix` не поднимаешь и `BlazorSvt.csproj` не трогаешь: если папка выкачена, пользователь поднял версию вручную, и в параметре уже новое значение. Папки `Migrations/{VersionPrefix}/` ещё нет — создай её, нумерация с `001`.
 - Порядок — строго по plan.md. Дельта каждого — на следующие номера после текущего последнего файла папки (включая прежний `All_Programmability.sql`). «Планируемые номера» раздела 7 spec не используй. Снимок переносит в конец скрипт шага 7; прежний номер снимка — пропуск в нумерации.
 - Уже существующие и уже выкаченные файлы папки не правишь.
 - Вопрос раздела 9 без решения в разделе 8 или (`complex`) раздел 6 пуст — пропусти справочник, отметь в общем отчёте, иди дальше. Пустой раздел 8 при пустом 9 — не причина пропуска.
@@ -45,7 +44,7 @@
 ```
 
    Проверь BOM, нет `^SE `, нет `0D 0D 0A`; `Scripts: N` в шапке. Снимок — последний файл папки.
-8. README и `Publish-AllSql.ps1` — по чеклисту `add-reference-book` и образцу соседних релизов; абзац по каждому справочнику батча.
+8. README и `Publish-AllSql.ps1` — по чеклисту `add-reference-book` и образцу соседних релизов; абзац по каждому справочнику батча. Скрипт шага 7 вывел `Renumbered` (переименовал прежний снимок) — в `Migrations/README.md` назови пропуск: прежний номер и новый, как у `008` и `014`.
 
 ## Общий отчёт
 
