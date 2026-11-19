@@ -182,6 +182,19 @@
 | `ProductCode` | Код продукта | Product code | Код продукта | Product code |
 | `IsBasic_forCBD` | Основной тип транспорта для ЦБД | Basic transport type for CBD | Осн. ЦБД | CBD basic |
 
+### Coefficient
+
+Согласовано для грида и карточки Coefficient. `Code` — как у Contractor: в гриде «Код» / `Code`, на карточке «Код (Код записи)» / `Code`. `Name` и тип ставки — по общему глоссарию выше.
+
+| Key | RU полное | EN полное | RU short | EN short |
+|-----|-----------|-----------|----------|----------|
+| `CoefficientTypeName` (`CoefficientTypeIdRu`/`En`) | Тип | Coefficient type | Тип | Type |
+| `StartDate` | Начало действия | Start date | Начало | Start |
+| `FinishDate` | Окончание действия | End date | Окончание | End |
+| `Active` | Активный | Active | Активный | Active |
+| `OverallValue` | Значение на ставку в целом | Value for the rate as a whole | На ставку | Whole rate |
+| `RateTypeName` (`RateTypeIdRu`/`En`) | Тип ставки | Rate type | Тип ставки | Rate type |
+
 ### Contractor
 
 Согласовано для грида и карточки Contractor. У `Code` английское полное имя — `Code`. У `INN` английское полное уже содержит короткое, поэтому карточка EN — `INN (taxpayer identification number)`. Строки «карточка» короткими именами не заменяются: колонки short у них пустые, в resx пишется полное имя.

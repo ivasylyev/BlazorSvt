@@ -4,6 +4,8 @@ using BlazorSvt.Modules.LocationsNodes.List;
 using BlazorSvt.Modules.LocationsNodes.Sync;
 using BlazorSvt.Modules.ParityRates.List;
 using BlazorSvt.Modules.ParityRates.Sync;
+using BlazorSvt.Modules.Coefficient.List;
+using BlazorSvt.Modules.Coefficient.Sync;
 using BlazorSvt.Modules.Contractor.List;
 using BlazorSvt.Modules.Contractor.Sync;
 using BlazorSvt.Modules.MTR.List;
@@ -35,6 +37,7 @@ public class SnapshotSyncJobContractTests
         "dbo.PrimitiveEntityData_2016", // Currency
         "dbo.PrimitiveEntityData_2108", // Relevance
         "dbo.PrimitiveEntityData_2019", // ETSNG
+        "dbo.PrimitiveEntityData_2077", // CoefficientType
     ];
 
     public static TheoryData<ISnapshotSyncJob, Type, string, string, string, string, string> RegisteredJobs =>
@@ -111,6 +114,15 @@ public class SnapshotSyncJobContractTests
                 nameof(ContractorDto.ContractorId),
                 "v2.vw_Contractor_SnapshotSource",
                 "v2.Contractor_PopulateAffectedKeys"
+            },
+            {
+                new CoefficientSyncJob(),
+                typeof(CoefficientDto),
+                "Coefficient",
+                "v2.Coefficient_Snapshot",
+                nameof(CoefficientDto.CoefficientId),
+                "v2.vw_Coefficient_SnapshotSource",
+                "v2.Coefficient_PopulateAffectedKeys"
             },
         };
 
@@ -197,6 +209,14 @@ public class SnapshotSyncJobContractTests
         var sources = new ContractorSyncJob().Sources.Select(s => s.Name);
 
         sources.Should().Equal("dbo.PrimitiveEntityData_2028");
+    }
+
+    [Fact]
+    public void CoefficientJob_TracksCoefficientOnly()
+    {
+        var sources = new CoefficientSyncJob().Sources.Select(s => s.Name);
+
+        sources.Should().Equal("dbo.PrimitiveEntityData_2081");
     }
 
     [Fact]

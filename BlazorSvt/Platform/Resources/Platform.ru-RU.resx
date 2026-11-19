@@ -156,6 +156,9 @@
   <data name="HeaderMenu.Contractor" xml:space="preserve">
     <value>Контрагенты</value>
   </data>
+  <data name="HeaderMenu.Coefficient" xml:space="preserve">
+    <value>Коэффициент</value>
+  </data>
   <data name="HeaderMenu.Load" xml:space="preserve">
     <value>Загрузка</value>
   </data>

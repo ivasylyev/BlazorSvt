@@ -17,7 +17,8 @@
     { "key": "currencyId", "value": "0" },
     { "key": "productGroupId", "value": "0" },
     { "key": "mtrId", "value": "0" },
-    { "key": "transportTypeLevel3Id", "value": "0" }
+    { "key": "transportTypeLevel3Id", "value": "0" },
+    { "key": "coefficientId", "value": "0" }
   ],
   "protocolProfileBehavior": {
     "strictSSL": false
@@ -824,6 +825,78 @@
               "raw": "{ \"kind\": \"Full\" }"
             },
             "url": "{{baseUrl}}/api/v1/catalogs/transport-types-level-3/export"
+          }
+        }
+      ]
+    },
+    {
+      "name": "coefficients",
+      "item": [
+        {
+          "name": "Schema",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/api/v1/catalogs/coefficients/schema"
+          }
+        },
+        {
+          "name": "Search first page",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const json = pm.response.json();",
+                  "if (json.items && json.items.length) {",
+                  "  pm.collectionVariables.set('coefficientId', String(json.items[0].coefficientId));",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"page\": 1,\n  \"pageSize\": 10\n}"
+            },
+            "url": "{{baseUrl}}/api/v1/catalogs/coefficients/items/search"
+          }
+        },
+        {
+          "name": "Get item",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/api/v1/catalogs/coefficients/items/{{coefficientId}}",
+            "description": "Сначала Search first page."
+          }
+        },
+        {
+          "name": "Export short",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{ \"kind\": \"Short\" }"
+            },
+            "url": "{{baseUrl}}/api/v1/catalogs/coefficients/export"
+          }
+        },
+        {
+          "name": "Export full",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{ \"kind\": \"Full\" }"
+            },
+            "url": "{{baseUrl}}/api/v1/catalogs/coefficients/export"
           }
         }
       ]

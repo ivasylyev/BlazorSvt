@@ -1,5 +1,7 @@
 using BlazorSvt.IntegrationTests.Infrastructure;
 using BlazorSvt.Modules.AverageRateLevel3.Detail;
+using BlazorSvt.Modules.Coefficient.Detail;
+using BlazorSvt.Modules.Coefficient.List;
 using BlazorSvt.Modules.Contractor.Detail;
 using BlazorSvt.Modules.Contractor.List;
 using BlazorSvt.Modules.Currency.Detail;
@@ -382,6 +384,45 @@ public class ModuleGridIntegrationTests(DatabaseFixture fixture) : IntegrationTe
         detail.Should().NotBeNull();
         detail!.ContractorId.Should().Be(entityKey);
         detail.Code.Should().NotBeNullOrWhiteSpace();
+    }
+
+    [SkippableFact]
+    public async Task CoefficientGrid_ReturnsRows()
+    {
+        var connectionString = RequireConnectionString();
+
+        var (rows, totalCount) = await GridSpTestHelper.ExecuteGetBlazorGridDataAsync<CoefficientDto>(
+            connectionString,
+            typeof(CoefficientDto),
+            GridSpTestHelper.CreateDefaultQuery());
+
+        rows.Should().NotBeEmpty();
+        totalCount.Should().BeGreaterThan(0);
+    }
+
+    [SkippableFact]
+    public async Task CoefficientDetailView_ReturnsRowForGridEntityKey()
+    {
+        var connectionString = RequireConnectionString();
+
+        var (rows, _) = await GridSpTestHelper.ExecuteGetBlazorGridDataAsync<CoefficientDto>(
+            connectionString,
+            typeof(CoefficientDto),
+            GridSpTestHelper.CreateDefaultQuery(pageSize: 1));
+
+        var entityKey = rows[0].CoefficientId;
+
+        var detail = await GridSpTestHelper.QueryDetailViewAsync<CoefficientDetailDto>(
+            connectionString,
+            "v2.vw_Coefficient_Detail",
+            "CoefficientId",
+            entityKey);
+
+        detail.Should().NotBeNull();
+        detail!.CoefficientId.Should().Be(entityKey);
+        detail.Code.Should().NotBeNullOrWhiteSpace();
+        detail.CoefficientTypeIdRu.Should().Be(rows[0].CoefficientTypeIdRu);
+        detail.RateTypeIdRu.Should().Be(rows[0].RateTypeIdRu);
     }
 
     [SkippableFact]

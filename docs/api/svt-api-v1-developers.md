@@ -122,6 +122,7 @@ OpenAPI/Swagger UI: TrustedClients обязателен; **`X-On-Behalf-Of` дл
 | `average-rates-level3` | Средневзвешенные ставки 3 ур. |
 | `parity-rates` | Паритетные ставки |
 | `rate-types` | Типы ставок |
+| `coefficients` | Коэффициент |
 | `currencies` | Валюты |
 | `product-groups` | Транспортные группы |
 | `products` | Продукты |
