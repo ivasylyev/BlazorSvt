@@ -156,6 +156,9 @@
   <data name="HeaderMenu.Contractor" xml:space="preserve">
 	  <value>Contractors</value>
   </data>
+  <data name="HeaderMenu.Coefficient" xml:space="preserve">
+	  <value>Coefficient</value>
+  </data>
   <data name="HeaderMenu.Load" xml:space="preserve">
 	  <value>Load</value>
   </data>

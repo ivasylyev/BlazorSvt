@@ -17,7 +17,7 @@ Migrations/
 ├── 2.3.48/            ← очередь Атласа (не править)
 │   └── 001.…020.…
 └── 2.3.49/            ← текущий VersionPrefix
-    └── 001.…008.…
+    └── 001.…014.…
 ```
 
 Публикация наружу (для DBA):
@@ -48,7 +48,7 @@ Greenfield: `2.0.0` → `2.0.1` → `2.3.46` → `2.3.48` → `2.3.49`.
 Имя папки — `VersionPrefix` из `BlazorSvt/BlazorSvt.csproj` (сейчас `2.3.49`), без суффикса числа коммитов. Это не «следующий номер после 2.0.1» и не пункт бэклога `2.0.2`.
 
 1. Перед записью скриптов выяснить, выкачена ли папка текущего `VersionPrefix`. Выкаченная папка read-only: `VersionPrefix` поднимается, новая папка начинается с `001`, старая не правится. Папка, которая ещё не выкатывалась, продолжается следующим номером. Баг уже выкаченного релиза уходит новым скриптом в папку новой версии.
-2. В папке версии — дельта схемы (Structure, `ALTER`, индексы, data fix), затем **последним файлом полный снимок** всей programmability `v2` (`All_Programmability.sql`). В текущем релизе последний снимок — `2.3.49/008`. В `2.3.48` это `020` (2026-11-03). В `2.3.46` это `005`. В `2.0.1` такой пакет стоял дважды: `045` и `052`.
+2. В папке версии — дельта схемы (Structure, `ALTER`, индексы, data fix), затем **последним файлом полный снимок** всей programmability `v2` (`All_Programmability.sql`). В текущем релизе последний снимок — `2.3.49/014`. В `2.3.48` это `020` (2026-11-03). В `2.3.46` это `005`. В `2.0.1` такой пакет стоял дважды: `045` и `052`.
 3. Новая папка версии нумеруется с `001`. Невыкаченная папка продолжается следующим номером, а не с `001`. Исторические `038…` в `2.0.1` не переименовываем.
 4. SoT остаётся в `Platform/` и `Modules/`: локальный `Create-Programmability.ps1` читает его, а не `Migrations/`. В папку версии попадает копия дельты и снимок programmability.
 5. Публикация в `C:\publish` этим правилом не требуется.
@@ -157,9 +157,18 @@ TransportTypeLevel3 — стабильный словарь с enum. В мигр
 | `005.03.Contractor_CreateIndexes.sql` | Уникальный индекс, фильтры по `Code`, индекс по ключу, full-text |
 | `006.vw_Contractor_Detail.sql` | Карточка Contractor |
 | `007.sp_Contractor_PopulateAffectedKeys.sql` | Детекция изменений LegalType |
-| `008.All_Programmability.sql` | Полный снимок programmability, 39 скриптов, включая Contractor |
+| `009.Coefficient_AddRowVersion.sql` | RowVer на `dbo.PrimitiveEntityData_2081` (Coefficient), без индекса: таблица мала |
+| `010.01.Coefficient_CreateTable.sql` | Первое появление `v2.Coefficient_Snapshot` |
+| `011.vw_Coefficient_SnapshotSource.sql` | Проекция из `dbo.vw_Coefficient`; выполняется до заливки |
+| `012.02.Coefficient_Insert.sql` | Полная заливка и курсор `v2.SyncState` по `dbo.PrimitiveEntityData_2081` |
+| `013.03.Coefficient_CreateIndexes.sql` | Уникальный индекс, фильтры по `Code`, датам, типу коэффициента и типу ставки, индекс по ключу, full-text |
+| `014.All_Programmability.sql` | Полный снимок programmability, 42 скрипта (2026-11-18) |
 
-Contractor (SVT-5290) — справочник с watermark-sync. Примитив LegalType, чтение из `dbo.vw_LegalType`. `001` добавляет `RowVer` на `dbo.PrimitiveEntityData_2028`. Актуальный полный снимок — `008`.
+Contractor (SVT-5290) — справочник с watermark-sync. Примитив LegalType, чтение из `dbo.vw_LegalType`. `001` добавляет `RowVer` на `dbo.PrimitiveEntityData_2028`.
+
+Coefficient — справочник с watermark-sync. `009` добавляет `RowVer` на `dbo.PrimitiveEntityData_2081`. CoefficientType (2077) и RateType (2048) — enum, в каскад не входят. `vw_Coefficient_Detail` и `sp_Coefficient_PopulateAffectedKeys` — в снимке `014`.
+
+Файл `008` — прежнее имя снимка programmability: после дельты Coefficient его переименовали в `014`. Актуальный полный снимок — `014`.
 
 ## Чеклист нового релиза
 

@@ -45,7 +45,9 @@ VALUES
     -- ParityRates
     (N'dbo.PrimitiveEntityData_2109', N'ParityRates (основная)'),
     -- Contractor (примитив LegalType)
-    (N'dbo.PrimitiveEntityData_2028', N'LegalType (основная), реестр Contractor');
+    (N'dbo.PrimitiveEntityData_2028', N'LegalType (основная), реестр Contractor'),
+    -- Coefficient
+    (N'dbo.PrimitiveEntityData_2081', N'Coefficient (основная)');
 
 DECLARE @tableName SYSNAME, @comment NVARCHAR(100), @sql NVARCHAR(MAX);
 

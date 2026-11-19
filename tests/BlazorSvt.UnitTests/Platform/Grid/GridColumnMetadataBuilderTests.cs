@@ -1,4 +1,5 @@
 using BlazorSvt.Modules.AverageRateLevel3.List;
+using BlazorSvt.Modules.Coefficient.List;
 using BlazorSvt.Modules.Contractor.List;
 using BlazorSvt.Modules.Currency.List;
 using BlazorSvt.Modules.MTR.List;
@@ -117,6 +118,15 @@ public class GridColumnMetadataBuilderTests
 
         metadata.TableName.Should().Be("v2.Contractor_Snapshot");
         metadata.EntityKeyPropertyName.Should().Be(nameof(ContractorDto.ContractorId));
+    }
+
+    [Fact]
+    public void GetMetadata_Coefficient_UsesSnapshotTableAndEntityKey()
+    {
+        var metadata = GridColumnMetadataBuilder.GetMetadata(typeof(CoefficientDto));
+
+        metadata.TableName.Should().Be("v2.Coefficient_Snapshot");
+        metadata.EntityKeyPropertyName.Should().Be(nameof(CoefficientDto.CoefficientId));
     }
 
     [Fact]

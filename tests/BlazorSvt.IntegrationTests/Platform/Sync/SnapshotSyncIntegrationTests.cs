@@ -1,6 +1,7 @@
 using System.Data;
 using System.Data.SqlClient;
 using BlazorSvt.IntegrationTests.Infrastructure;
+using BlazorSvt.Modules.Coefficient.Sync;
 using BlazorSvt.Modules.LocationsNodes.Sync;
 using BlazorSvt.Modules.MTR.Sync;
 using BlazorSvt.Modules.ProductGroup.Sync;
@@ -69,6 +70,19 @@ public sealed class SnapshotSyncIntegrationTests(DatabaseFixture fixture) : Inte
             LegacyTable: "dbo.PrimitiveEntityData_1015",
             LegacyColumn: "a_1033", // vw_MTR.NameFull_ru
             SnapshotColumn: "NameFullRu",
+            CreateStimulusValue: original => $"SVT_TST_{Random.Shared.Next(100_000, 999_999)}",
+            ParseLegacyValue: value => (string)value!,
+            FormatLegacyValue: value => (string)value));
+    }
+
+    [SkippableFact]
+    public async Task Coefficient_IncrementalSync_PropagatesLegacyChange()
+    {
+        await RunCommitStimulusScenarioAsync(new SyncStimulusCase(
+            new CoefficientSyncJob(),
+            LegacyTable: "dbo.PrimitiveEntityData_2081",
+            LegacyColumn: "a_4041", // vw_Coefficient.Name
+            SnapshotColumn: "Name",
             CreateStimulusValue: original => $"SVT_TST_{Random.Shared.Next(100_000, 999_999)}",
             ParseLegacyValue: value => (string)value!,
             FormatLegacyValue: value => (string)value));
