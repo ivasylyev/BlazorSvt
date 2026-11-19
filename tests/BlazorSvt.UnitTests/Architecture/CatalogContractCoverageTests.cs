@@ -1,5 +1,7 @@
 using System.Reflection;
 using BlazorSvt.Modules.Currency.List;
+using BlazorSvt.Modules.RateCalcType.List;
+using BlazorSvt.Modules.RateSyncClass.List;
 using BlazorSvt.Modules.RateType.List;
 using BlazorSvt.Modules.TransportTypeLevel3.List;
 using BlazorSvt.Platform.Infrastructure.Config;
@@ -32,7 +34,7 @@ public class CatalogContractCoverageTests
     [Fact]
     public void WhenAssemblyDeclaresGridSnapshotDtos_TypesMatchRegisteredJobs()
     {
-        var stableWithoutSyncJob = new[] { typeof(RateTypeDto), typeof(CurrencyDto), typeof(TransportTypeLevel3Dto) };
+        var stableWithoutSyncJob = new[] { typeof(RateTypeDto), typeof(CurrencyDto), typeof(TransportTypeLevel3Dto), typeof(RateSyncClassDto), typeof(RateCalcTypeDto) };
 
         var attributed = App.GetTypes()
             .Where(type => type.IsDefined(typeof(GridSnapshotAttribute), inherit: false))

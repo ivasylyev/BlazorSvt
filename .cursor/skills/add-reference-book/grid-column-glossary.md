@@ -100,6 +100,9 @@
 | Дата изменения | `LastChangeDate` | Изменено | — | Changed | — |
 | Дата начала | `StartDate` | Начало | — | Start | — |
 | Дата окончания | `EndDate` | Окончание | — | End | — |
+| Тип отчёта | `ReportTypeName` | Тип отчёта | — | Report type | — |
+| Период действия с | `DateFrom` | Период действия с | — | From | — |
+| Период действия по | `DateTo` | Период действия по | — | To | — |
 | Валюта | `Currency` / `CurrencyCode` | Валюта | — | Currency | — |
 | Ср.взвеш. ставка | `RateLevel3` | Ср. ставка | — | Avg rate | — |
 | Эфф. загрузка (т) | `EffectiveLoadOfTransportType` | Загрузка | — | Load | — |
@@ -155,6 +158,7 @@
 | Код Orion | `OrionCode` | Код Orion | — | Orion code | — |
 | Статус записи | `Status` (`StatusIdRu`/`En`) | Статус | — | Status | — |
 | Наименование для поиска | `NameSearch` | Для поиска | — | Search name | — |
+| Код для поиска | `SearchCode` | Код поиска | — | Search code | — |
 | Грузополучатель | `Consignee` | Получатель | — | Consignee | — |
 | Трейдер | `IsTrader` | Трейдер | — | Trader | — |
 | Переработчик | `IsProcessing` | Переработчик | — | Processor | — |
@@ -162,6 +166,10 @@
 | Дебитор | `IsDebtor` | Дебитор | — | Debtor | — |
 | Кредитор | `IsCreditor` | Кредитор | — | Creditor | — |
 | ИНН | `INN` | ИНН | — | INN | — |
+| Подъём узла назначения до региона | `DestinationNodeToRegion` | До региона | — | To region | — |
+| Подъём узла назначения до страны | `DestinationNodeToCountry` | До страны | — | To country | — |
+| Подъём продукта до группы продуктов | `ProductToProductGroup` | До группы | — | To group | — |
+| Любой тип транспорта | `AnyTransportKind` | Любой вид | — | Any kind | — |
 
 `RateTypeCode` в grid settings может отсутствовать — short применяют только если ключ реально используется в гриде; иначе ключ считается мёртвым для правки.
 
@@ -179,6 +187,7 @@
 | `Code_NSI` | Код НСИ | NSI code | Код НСИ | NSI code |
 | `SVTUseProductGroupWhenNoProductRateExists` | Подниматься до группы если ставка для продукта не найдена | Fall back to group if no product rate found | До группы | Group fallback |
 | `RateSyncClass` | Класс синхронизации | Rate synchronization class | Класс синхр. | Sync class |
+| `SearchCode` | Код для поиска | Search code | Код поиска | Search code |
 | `ProductCode` | Код продукта | Product code | Код продукта | Product code |
 | `IsBasic_forCBD` | Основной тип транспорта для ЦБД | Basic transport type for CBD | Осн. ЦБД | CBD basic |
 
@@ -215,3 +224,14 @@
 | `Customs` | карточка | Таможня | Customs | — | — |
 | `CustomCode` | карточка | Код таможни | Customs code | — | — |
 | `OrgAffiliation` | карточка | Организационная принадлежность | Organisational affiliation | — | — |
+
+### RateAutoSelectionSetting
+
+Согласовано для грида и карточки RateAutoSelectionSetting. `Code` и системные поля — из общего глоссария. Русское полное `AnyTransportKind` — «Любой тип транспорта». RU short «До группы» у `ProductToProductGroup` совпадает с `SVTUseProductGroupWhenNoProductRateExists`; EN short другой: To group, не Group fallback.
+
+| Key | RU полное | EN полное | RU short | EN short |
+|-----|-----------|-----------|----------|----------|
+| `DestinationNodeToRegion` | Подъём узла назначения до региона | Raise destination node to region | До региона | To region |
+| `DestinationNodeToCountry` | Подъём узла назначения до страны | Raise destination node to country | До страны | To country |
+| `ProductToProductGroup` | Подъём продукта до группы продуктов | Raise product to product group | До группы | To group |
+| `AnyTransportKind` | Любой тип транспорта | Any transport kind | Любой вид | Any kind |

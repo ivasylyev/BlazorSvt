@@ -129,6 +129,10 @@ OpenAPI/Swagger UI: TrustedClients обязателен; **`X-On-Behalf-Of` дл
 | `locations-nodes` | Узлы / локации |
 | `transport-legs` | Транспортные плечи |
 | `transport-types-level-3` | Типы транспорта (3 уровень) |
+| `rate-sync-classes` | Класс синхронизации ставок |
+| `rate-calc-types` | Способ расчёта ставки |
+| `rate-auto-selection-settings` | Настройка автоподбора ставок |
+| `report-constructors` | Конструктор отчётов |
 
 Актуальный список всегда берите из `GET /catalogs` или из OpenAPI. Новый справочник появляется после регистрации в СВТ 2.0 — отдельный «второй» контракт не нужен.
 

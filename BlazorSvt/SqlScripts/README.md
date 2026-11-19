@@ -41,7 +41,19 @@ SqlScripts/
 │   ├── TransportTypeLevel3/
 │   │   ├── Structure/
 │   │   └── Programmability/   # без PopulateAffectedKeys: разовая заливка
-│   └── Coefficient/
+│   ├── Coefficient/
+│   │   ├── Structure/
+│   │   └── Programmability/
+│   ├── RateSyncClass/
+│   │   ├── Structure/
+│   │   └── Programmability/   # без PopulateAffectedKeys: разовая заливка
+│   ├── RateCalcType/
+│   │   ├── Structure/
+│   │   └── Programmability/   # без PopulateAffectedKeys: разовая заливка
+│   ├── RateAutoSelectionSetting/
+│   │   ├── Structure/
+│   │   └── Programmability/
+│   └── ReportConstructor/
 │       ├── Structure/
 │       └── Programmability/
 ├── Migrations/             # Релизные артефакты наката (immutable после выката)
@@ -49,7 +61,7 @@ SqlScripts/
 │   ├── 2.0.1/              # upgrade
 │   ├── 2.3.46/             # дельта RateType + снимок programmability
 │   ├── 2.3.48/             # очередь Атласа: Currency, ProductGroup, MTR, TransportTypeLevel3 + снимок programmability
-│   ├── 2.3.49/             # текущий VersionPrefix: дельта Contractor, Coefficient + снимок programmability
+│   ├── 2.3.49/             # текущий VersionPrefix: Contractor, Coefficient, RateSyncClass, RateCalcType, RateAutoSelectionSetting, ReportConstructor + снимок programmability
 │   └── README.md           # конвенция релизов / два контура
 └── Translations_info.txt   # Справочник переводов полей (не для деплоя)
 ```
@@ -205,6 +217,50 @@ SqlScripts/
 | 5 | `Modules/Coefficient/Structure/03.Coefficient_CreateIndexes.sql` |
 | 6 | `Modules/Coefficient/Programmability/vw_Coefficient_Detail.sql` |
 | 7 | `Modules/Coefficient/Programmability/sp_Coefficient_PopulateAffectedKeys.sql` |
+
+**RateSyncClass** (стабильный разовый снимок: без RowVer, SyncJob и PopulateAffectedKeys; проекция до Insert)
+
+| # | Скрипт |
+|---|--------|
+| 1 | `Modules/RateSyncClass/Structure/01.RateSyncClass_CreateTable.sql` |
+| 2 | `Modules/RateSyncClass/Programmability/vw_RateSyncClass_SnapshotSource.sql` |
+| 3 | `Modules/RateSyncClass/Structure/02.RateSyncClass_Insert.sql` |
+| 4 | `Modules/RateSyncClass/Structure/03.RateSyncClass_CreateIndexes.sql` |
+| 5 | `Modules/RateSyncClass/Programmability/vw_RateSyncClass_Detail.sql` |
+
+**RateCalcType** (стабильный разовый снимок: без RowVer, SyncJob и PopulateAffectedKeys; проекция до Insert)
+
+| # | Скрипт |
+|---|--------|
+| 1 | `Modules/RateCalcType/Structure/01.RateCalcType_CreateTable.sql` |
+| 2 | `Modules/RateCalcType/Programmability/vw_RateCalcType_SnapshotSource.sql` |
+| 3 | `Modules/RateCalcType/Structure/02.RateCalcType_Insert.sql` |
+| 4 | `Modules/RateCalcType/Structure/03.RateCalcType_CreateIndexes.sql` |
+| 5 | `Modules/RateCalcType/Programmability/vw_RateCalcType_Detail.sql` |
+
+**RateAutoSelectionSetting** (представление `dbo.vw_RateAutoSelectionSetting`; RowVer на `dbo.PrimitiveEntityData_2101`)
+
+| # | Скрипт |
+|---|--------|
+| 1 | `Sync/01.Legacy_AddRowVersion.sql` |
+| 2 | `Modules/RateAutoSelectionSetting/Structure/01.RateAutoSelectionSetting_CreateTable.sql` |
+| 3 | `Modules/RateAutoSelectionSetting/Programmability/vw_RateAutoSelectionSetting_SnapshotSource.sql` |
+| 4 | `Modules/RateAutoSelectionSetting/Structure/02.RateAutoSelectionSetting_Insert.sql` |
+| 5 | `Modules/RateAutoSelectionSetting/Structure/03.RateAutoSelectionSetting_CreateIndexes.sql` |
+| 6 | `Modules/RateAutoSelectionSetting/Programmability/vw_RateAutoSelectionSetting_Detail.sql` |
+| 7 | `Modules/RateAutoSelectionSetting/Programmability/sp_RateAutoSelectionSetting_PopulateAffectedKeys.sql` |
+
+**ReportConstructor** (представление `dbo.vw_ReportConstructor`; новый RowVer на `dbo.PrimitiveEntityData_2130`; каскад 1014, 1013, 1015)
+
+| # | Скрипт |
+|---|--------|
+| 1 | `Sync/01.Legacy_AddRowVersion.sql` |
+| 2 | `Modules/ReportConstructor/Structure/01.ReportConstructor_CreateTable.sql` |
+| 3 | `Modules/ReportConstructor/Programmability/vw_ReportConstructor_SnapshotSource.sql` |
+| 4 | `Modules/ReportConstructor/Structure/02.ReportConstructor_Insert.sql` |
+| 5 | `Modules/ReportConstructor/Structure/03.ReportConstructor_CreateIndexes.sql` |
+| 6 | `Modules/ReportConstructor/Programmability/vw_ReportConstructor_Detail.sql` |
+| 7 | `Modules/ReportConstructor/Programmability/sp_ReportConstructor_PopulateAffectedKeys.sql` |
 
 ## Grid read-модель
 
