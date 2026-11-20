@@ -204,6 +204,21 @@
 | `OverallValue` | Значение на ставку в целом | Value for the rate as a whole | На ставку | Whole rate |
 | `RateTypeName` (`RateTypeIdRu`/`En`) | Тип ставки | Rate type | Тип ставки | Rate type |
 
+Таблицы дочерних примитивов на карточке Coefficient — полные имена, short не задаётся.
+
+| Key | RU полное | EN полное | RU short | EN short |
+|-----|-----------|-----------|----------|----------|
+| группа `CoefficientConditionValue` | Условие по коэффициенту | Coefficient conditions | — | — |
+| группа `CoefficientComponentValue` | Составляющая по коэффициенту | Coefficient components | — | — |
+| `Except` | Исключать | Exclude | — | — |
+| `TransportKind` | Вид транспорта | Transport kind | — | — |
+| `TransportTypeLevel2` | Тип транспорта (2 уровень) | Transport type (level 2) | — | — |
+| `VehicleType` | Тип подвижного состава | Rolling stock type | — | — |
+| `FromLocation` | Направление от | From | — | — |
+| `ToLocation` | Направление до | To | — | — |
+| `Component` | Составляющая | Component | — | — |
+| `Value` | Значение | Value | — | — |
+
 ### Contractor
 
 Согласовано для грида и карточки Contractor. У `Code` английское полное имя — `Code`. У `INN` английское полное уже содержит короткое, поэтому карточка EN — `INN (taxpayer identification number)`. Строки «карточка» короткими именами не заменяются: колонки short у них пустые, в resx пишется полное имя.
