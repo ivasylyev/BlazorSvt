@@ -14,10 +14,7 @@
 
 ## Что читать
 
-- `add-reference-book/sql.md` — «Фаза 2», «Фаза 3» (в ней «Верификация SQL»).
-- `add-reference-book/SKILL.md` — для `simple` раздел «Стабильный словарь с enum»; для обоих — именование, системные поля, чеклист SQL-пунктов.
-- Эталон SQL-модуля — из `add-reference-book/SKILL.md` по классу.
-- `Migrations/README.md` — раздел текущего релиза.
+`add-reference-book/sql.md`. Из `SKILL.md` — только «Системные поля snapshot» и, если класс simple, «Стабильный словарь с enum». Чеклист и файлы discovery не открывай. `Migrations/README.md` — раздел текущего релиза.
 
 ## Батч-отличия (поверх фаз 2–3)
 

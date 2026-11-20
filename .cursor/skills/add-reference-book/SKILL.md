@@ -63,7 +63,7 @@ WHERE e.Name = N'{RegistryName}';
 | `TransportLegs` | `TransportLeg` |
 | `LegalType` | `Contractor` |
 
-Состав экрана конкретного справочника — в его постановке и в комментарии `catalogs-scope.md`, не в этом навыке. Как отбирать атрибуты и чем порядок грида отличается от порядка карточки — [discovery.md](discovery.md) §1 и §4.
+Состав экрана конкретного справочника — в его постановке и в комментарии `catalogs-scope.md`, не в этом навыке. Как отбирать атрибуты и чем порядок грида отличается от порядка карточки — [discovery-rules.md](discovery-rules.md) §1 и §4. Запросы этих списков — [discovery-queries.md](discovery-queries.md), их открывать только на время `SELECT`.
 
 ## Соглашения об именовании (новые справочники)
 
@@ -92,9 +92,9 @@ WHERE e.Name = N'{RegistryName}';
 - `{Entity}Id` (бизнес-ключ, `CAST(Id AS …)` из `vw_{LegacyName}`)
 - `Code`
 - `IsArchive` (`CASE WHEN ISNULL(PrimitiveEntityDataStateId, 2) = 2 THEN 1 ELSE 0 END`)
-- `CreationDate`, `LastChangeDate`
+- `CreationDate`, `LastChangeDate`. `LastChangeDate` в снимке — `DATETIME NOT NULL`. Пустое значение легаси заменять на дату создания: `ISNULL(LastChangeDate, CreationDate)`. В DTO тип `DateTime`
 
-**Бизнес-флаги** (например `CanBeUsed`) — только если есть в коротком списке (см. [discovery.md](discovery.md) §1).
+**Бизнес-флаги** (например `CanBeUsed`) — только если есть в коротком списке (см. [discovery-rules.md](discovery-rules.md) §1).
 
 ### Партиционирование (по умолчанию)
 
@@ -106,11 +106,11 @@ WHERE e.Name = N'{RegistryName}';
 
 | Фаза | Файл | Содержание |
 |------|------|------------|
-| 1 | [discovery.md](discovery.md) | MDM discovery; запросы и DDL — субагент, см. discovery.md |
+| 1 | [discovery-rules.md](discovery-rules.md) | Состав экрана, ссылки, enum, каскад. Запросы — [discovery-queries.md](discovery-queries.md), только на время `SELECT` |
 | 2–3 | [sql.md](sql.md) | Structure + Programmability, деплой, верификация БД |
 | 4–6 | [csharp.md](csharp.md) | C#-модуль, API, тесты, финальная проверка |
 
-Короткие заголовки грида после генерации resx — [grid-column-glossary.md](grid-column-glossary.md).
+Короткие заголовки грида после генерации resx — раздел «Правила» в [grid-column-glossary.md](grid-column-glossary.md) и поиск имени поля. Блоки `###` чужих справочников не читать.
 
 ## Стабильный словарь с enum (свой RO-грид)
 
@@ -145,7 +145,7 @@ WHERE e.Name = N'{RegistryName}';
 ## Чеклист
 
 - [ ] Имена `{LegacyName}` и `{Entity}` получены
-- [ ] Короткий и длинный списки + фильтрация неиспользуемых ([discovery.md](discovery.md))
+- [ ] Короткий и длинный списки + фильтрация неиспользуемых ([discovery-rules.md](discovery-rules.md), запросы — [discovery-queries.md](discovery-queries.md))
 - [ ] Переводы из Dictionary в `Modules/{Entity}/Resources/{Entity}.resx` + `HeaderMenu.{Entity}` в Platform.resx
 - [ ] SQL Structure 01–03 + SnapshotSource + Detail + PopulateAffectedKeys (у стабильного словаря с enum PopulateAffectedKeys нет) ([sql.md](sql.md))
 - [ ] Все новые/изменённые `.sql` в SqlScripts — UTF-8 with BOM

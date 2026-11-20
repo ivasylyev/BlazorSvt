@@ -1,6 +1,6 @@
 # Фазы 2–3 — SQL и деплой БД
 
-Читать после [discovery.md](discovery.md). C# — только после успешной верификации здесь → [csharp.md](csharp.md).  
+Читать после фазы 1 ([discovery-rules.md](discovery-rules.md)). Запросы discovery повторно не открывать. C# — только после успешной верификации здесь → [csharp.md](csharp.md).  
 Стабильный словарь с enum — правила в [SKILL.md](SKILL.md).
 
 ## Фаза 2 — SQL-артефакты
