@@ -23,7 +23,7 @@ h2. 1. What SVT 2.0 is and how it differs from the legacy system
 *SVT 2.0* is the new version of the Tariff Management System. At this stage you can *view* the reference books that have already been migrated.
 
 ||Action||Where to do it||
-|View migrated reference books (rates, rate type, coefficient, average rates, parities, transport legs, locations-nodes, means of transport (level 3), transport groups, products, currencies)|*SVT 2.0*|
+|View migrated reference books (rates, rate type, coefficient, average rates, rate auto-selection settings, rate calculation type, rate synchronization class, report constructor, parities, transport legs, locations-nodes, means of transport (level 3), transport groups, products, currencies)|*SVT 2.0*|
 |Load and change data for these reference books|*Legacy* SVT|
 |View reference books that are *not* migrated yet|*Legacy* SVT|
 
@@ -74,8 +74,12 @@ At the bottom of the page there is a footer bar: on the left, the load time of t
 |—|Home|Summary «Average rates by direction»|
 |Rates|Average Rate|Average Rate|
 |Rates|Coefficient|Coefficient|
+|Rates|Rate auto-selection settings|Rate auto-selection settings|
+|Rates|Rate calculation type|Rate calculation type|
+|Rates|Rate synchronization class|Rate synchronization class|
 |Rates|Rates|Rates|
 |Rates|Rate type|Rate type|
+|Rates|Report constructor|Report constructor|
 |Parities|Parity rates|Parity rates|
 |Routes|Locations-Nodes|Locations-Nodes|
 |Routes|Means of transport (level 3)|Means of transport (level 3)|

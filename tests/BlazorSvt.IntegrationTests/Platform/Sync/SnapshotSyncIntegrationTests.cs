@@ -5,6 +5,8 @@ using BlazorSvt.Modules.Coefficient.Sync;
 using BlazorSvt.Modules.LocationsNodes.Sync;
 using BlazorSvt.Modules.MTR.Sync;
 using BlazorSvt.Modules.ProductGroup.Sync;
+using BlazorSvt.Modules.RateAutoSelectionSetting.Sync;
+using BlazorSvt.Modules.ReportConstructor.Sync;
 using BlazorSvt.Modules.TransportLeg.Sync;
 using BlazorSvt.Modules.TransportRate.Sync;
 using BlazorSvt.Platform.Infrastructure.Config;
@@ -84,6 +86,32 @@ public sealed class SnapshotSyncIntegrationTests(DatabaseFixture fixture) : Inte
             LegacyColumn: "a_4041", // vw_Coefficient.Name
             SnapshotColumn: "Name",
             CreateStimulusValue: original => $"SVT_TST_{Random.Shared.Next(100_000, 999_999)}",
+            ParseLegacyValue: value => (string)value!,
+            FormatLegacyValue: value => (string)value));
+    }
+
+    [SkippableFact]
+    public async Task RateAutoSelectionSetting_IncrementalSync_PropagatesLegacyChange()
+    {
+        await RunCommitStimulusScenarioAsync(new SyncStimulusCase(
+            new RateAutoSelectionSettingSyncJob(),
+            LegacyTable: "dbo.PrimitiveEntityData_2101",
+            LegacyColumn: "Code", // vw_RateAutoSelectionSetting.Code
+            SnapshotColumn: "Code",
+            CreateStimulusValue: original => $"SVT{Random.Shared.Next(100_000, 999_999):D6}",
+            ParseLegacyValue: value => (string)value!,
+            FormatLegacyValue: value => (string)value));
+    }
+
+    [SkippableFact]
+    public async Task ReportConstructor_IncrementalSync_PropagatesLegacyChange()
+    {
+        await RunCommitStimulusScenarioAsync(new SyncStimulusCase(
+            new ReportConstructorSyncJob(),
+            LegacyTable: "dbo.PrimitiveEntityData_2130",
+            LegacyColumn: "Code", // vw_ReportConstructor.Code
+            SnapshotColumn: "Code",
+            CreateStimulusValue: original => $"SVT{Random.Shared.Next(100_000, 999_999):D6}",
             ParseLegacyValue: value => (string)value!,
             FormatLegacyValue: value => (string)value));
     }

@@ -18,7 +18,11 @@
     { "key": "productGroupId", "value": "0" },
     { "key": "mtrId", "value": "0" },
     { "key": "transportTypeLevel3Id", "value": "0" },
-    { "key": "coefficientId", "value": "0" }
+    { "key": "coefficientId", "value": "0" },
+    { "key": "rateSyncClassId", "value": "0" },
+    { "key": "rateCalcTypeId", "value": "0" },
+    { "key": "rateAutoSelectionSettingId", "value": "0" },
+    { "key": "reportConstructorId", "value": "0" }
   ],
   "protocolProfileBehavior": {
     "strictSSL": false
@@ -897,6 +901,294 @@
               "raw": "{ \"kind\": \"Full\" }"
             },
             "url": "{{baseUrl}}/api/v1/catalogs/coefficients/export"
+          }
+        }
+      ]
+    },
+    {
+      "name": "rate-sync-classes",
+      "item": [
+        {
+          "name": "Schema",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/api/v1/catalogs/rate-sync-classes/schema"
+          }
+        },
+        {
+          "name": "Search first page",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const json = pm.response.json();",
+                  "if (json.items && json.items.length) {",
+                  "  pm.collectionVariables.set('rateSyncClassId', String(json.items[0].rateSyncClassId));",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"page\": 1,\n  \"pageSize\": 10\n}"
+            },
+            "url": "{{baseUrl}}/api/v1/catalogs/rate-sync-classes/items/search"
+          }
+        },
+        {
+          "name": "Get item",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/api/v1/catalogs/rate-sync-classes/items/{{rateSyncClassId}}",
+            "description": "Сначала Search first page."
+          }
+        },
+        {
+          "name": "Export short",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{ \"kind\": \"Short\" }"
+            },
+            "url": "{{baseUrl}}/api/v1/catalogs/rate-sync-classes/export"
+          }
+        },
+        {
+          "name": "Export full",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{ \"kind\": \"Full\" }"
+            },
+            "url": "{{baseUrl}}/api/v1/catalogs/rate-sync-classes/export"
+          }
+        }
+      ]
+    },
+    {
+      "name": "rate-calc-types",
+      "item": [
+        {
+          "name": "Schema",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/api/v1/catalogs/rate-calc-types/schema"
+          }
+        },
+        {
+          "name": "Search first page",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const json = pm.response.json();",
+                  "if (json.items && json.items.length) {",
+                  "  pm.collectionVariables.set('rateCalcTypeId', String(json.items[0].rateCalcTypeId));",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"page\": 1,\n  \"pageSize\": 10\n}"
+            },
+            "url": "{{baseUrl}}/api/v1/catalogs/rate-calc-types/items/search"
+          }
+        },
+        {
+          "name": "Get item",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/api/v1/catalogs/rate-calc-types/items/{{rateCalcTypeId}}",
+            "description": "Сначала Search first page."
+          }
+        },
+        {
+          "name": "Export short",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{ \"kind\": \"Short\" }"
+            },
+            "url": "{{baseUrl}}/api/v1/catalogs/rate-calc-types/export"
+          }
+        },
+        {
+          "name": "Export full",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{ \"kind\": \"Full\" }"
+            },
+            "url": "{{baseUrl}}/api/v1/catalogs/rate-calc-types/export"
+          }
+        }
+      ]
+    },
+    {
+      "name": "rate-auto-selection-settings",
+      "item": [
+        {
+          "name": "Schema",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/api/v1/catalogs/rate-auto-selection-settings/schema"
+          }
+        },
+        {
+          "name": "Search first page",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const json = pm.response.json();",
+                  "if (json.items && json.items.length) {",
+                  "  pm.collectionVariables.set('rateAutoSelectionSettingId', String(json.items[0].rateAutoSelectionSettingId));",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"page\": 1,\n  \"pageSize\": 10\n}"
+            },
+            "url": "{{baseUrl}}/api/v1/catalogs/rate-auto-selection-settings/items/search"
+          }
+        },
+        {
+          "name": "Get item",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/api/v1/catalogs/rate-auto-selection-settings/items/{{rateAutoSelectionSettingId}}",
+            "description": "Сначала Search first page."
+          }
+        },
+        {
+          "name": "Export short",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{ \"kind\": \"Short\" }"
+            },
+            "url": "{{baseUrl}}/api/v1/catalogs/rate-auto-selection-settings/export"
+          }
+        },
+        {
+          "name": "Export full",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{ \"kind\": \"Full\" }"
+            },
+            "url": "{{baseUrl}}/api/v1/catalogs/rate-auto-selection-settings/export"
+          }
+        }
+      ]
+    },
+    {
+      "name": "report-constructors",
+      "item": [
+        {
+          "name": "Schema",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/api/v1/catalogs/report-constructors/schema"
+          }
+        },
+        {
+          "name": "Search first page",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const json = pm.response.json();",
+                  "if (json.items && json.items.length) {",
+                  "  pm.collectionVariables.set('reportConstructorId', String(json.items[0].reportConstructorId));",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"page\": 1,\n  \"pageSize\": 10\n}"
+            },
+            "url": "{{baseUrl}}/api/v1/catalogs/report-constructors/items/search"
+          }
+        },
+        {
+          "name": "Get item",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/api/v1/catalogs/report-constructors/items/{{reportConstructorId}}",
+            "description": "Сначала Search first page."
+          }
+        },
+        {
+          "name": "Export short",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{ \"kind\": \"Short\" }"
+            },
+            "url": "{{baseUrl}}/api/v1/catalogs/report-constructors/export"
+          }
+        },
+        {
+          "name": "Export full",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{ \"kind\": \"Full\" }"
+            },
+            "url": "{{baseUrl}}/api/v1/catalogs/report-constructors/export"
           }
         }
       ]

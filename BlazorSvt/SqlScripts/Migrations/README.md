@@ -17,7 +17,7 @@ Migrations/
 ├── 2.3.48/            ← очередь Атласа (не править)
 │   └── 001.…020.…
 └── 2.3.49/            ← текущий VersionPrefix
-    └── 001.…014.…
+    └── 001.…033.…
 ```
 
 Публикация наружу (для DBA):
@@ -48,7 +48,7 @@ Greenfield: `2.0.0` → `2.0.1` → `2.3.46` → `2.3.48` → `2.3.49`.
 Имя папки — `VersionPrefix` из `BlazorSvt/BlazorSvt.csproj` (сейчас `2.3.49`), без суффикса числа коммитов. Это не «следующий номер после 2.0.1» и не пункт бэклога `2.0.2`.
 
 1. Перед записью скриптов выяснить, выкачена ли папка текущего `VersionPrefix`. Выкаченная папка read-only: `VersionPrefix` поднимается, новая папка начинается с `001`, старая не правится. Папка, которая ещё не выкатывалась, продолжается следующим номером. Баг уже выкаченного релиза уходит новым скриптом в папку новой версии.
-2. В папке версии — дельта схемы (Structure, `ALTER`, индексы, data fix), затем **последним файлом полный снимок** всей programmability `v2` (`All_Programmability.sql`). В текущем релизе последний снимок — `2.3.49/014`. В `2.3.48` это `020` (2026-11-03). В `2.3.46` это `005`. В `2.0.1` такой пакет стоял дважды: `045` и `052`.
+2. В папке версии — дельта схемы (Structure, `ALTER`, индексы, data fix), затем **последним файлом полный снимок** всей programmability `v2` (`All_Programmability.sql`). В текущем релизе последний снимок — `2.3.49/033`. В `2.3.48` это `020` (2026-11-03). В `2.3.46` это `005`. В `2.0.1` такой пакет стоял дважды: `045` и `052`.
 3. Новая папка версии нумеруется с `001`. Невыкаченная папка продолжается следующим номером, а не с `001`. Исторические `038…` в `2.0.1` не переименовываем.
 4. SoT остаётся в `Platform/` и `Modules/`: локальный `Create-Programmability.ps1` читает его, а не `Migrations/`. В папку версии попадает копия дельты и снимок programmability.
 5. Публикация в `C:\publish` этим правилом не требуется.
@@ -162,13 +162,39 @@ TransportTypeLevel3 — стабильный словарь с enum. В мигр
 | `011.vw_Coefficient_SnapshotSource.sql` | Проекция из `dbo.vw_Coefficient`; выполняется до заливки |
 | `012.02.Coefficient_Insert.sql` | Полная заливка и курсор `v2.SyncState` по `dbo.PrimitiveEntityData_2081` |
 | `013.03.Coefficient_CreateIndexes.sql` | Уникальный индекс, фильтры по `Code`, датам, типу коэффициента и типу ставки, индекс по ключу, full-text |
-| `014.All_Programmability.sql` | Полный снимок programmability, 42 скрипта (2026-11-18) |
+| `015.01.RateSyncClass_CreateTable.sql` | Первое появление `v2.RateSyncClass_Snapshot` |
+| `016.vw_RateSyncClass_SnapshotSource.sql` | Проекция из `dbo.vw_RateSyncClass`; выполняется до заливки |
+| `017.02.RateSyncClass_Insert.sql` | Разовая заливка, без курсора `v2.SyncState` |
+| `018.03.RateSyncClass_CreateIndexes.sql` | Уникальный индекс, фильтр по `Code`, индекс по ключу, full-text по `Name` |
+| `019.01.RateCalcType_CreateTable.sql` | Первое появление `v2.RateCalcType_Snapshot` |
+| `020.vw_RateCalcType_SnapshotSource.sql` | Проекция из `dbo.vw_RateCalcType`; выполняется до заливки |
+| `021.02.RateCalcType_Insert.sql` | Разовая заливка, без курсора `v2.SyncState` |
+| `022.03.RateCalcType_CreateIndexes.sql` | Уникальный индекс, фильтр по `Code`, индекс по ключу, full-text по `Code`, `Name`, `SearchCode` |
+| `023.RateAutoSelectionSetting_AddRowVersion.sql` | RowVer на `dbo.PrimitiveEntityData_2101` (RateAutoSelectionSetting), без индекса: таблица мала |
+| `024.01.RateAutoSelectionSetting_CreateTable.sql` | Первое появление `v2.RateAutoSelectionSetting_Snapshot` |
+| `025.vw_RateAutoSelectionSetting_SnapshotSource.sql` | Проекция из `dbo.vw_RateAutoSelectionSetting`; выполняется до заливки |
+| `026.02.RateAutoSelectionSetting_Insert.sql` | Полная заливка и курсор `v2.SyncState` по `dbo.PrimitiveEntityData_2101` |
+| `027.03.RateAutoSelectionSetting_CreateIndexes.sql` | Уникальный индекс, фильтр по `Code`, full-text по `Code` |
+| `028.ReportConstructor_AddRowVersion.sql` | RowVer на `dbo.PrimitiveEntityData_2130` (ReportConstructor), без индекса: таблица мала |
+| `029.01.ReportConstructor_CreateTable.sql` | Первое появление `v2.ReportConstructor_Snapshot` |
+| `030.vw_ReportConstructor_SnapshotSource.sql` | Проекция из `dbo.vw_ReportConstructor`; выполняется до заливки |
+| `031.02.ReportConstructor_Insert.sql` | Полная заливка и курсор `v2.SyncState` по 2130, 1014, 1013, 1015 |
+| `032.03.ReportConstructor_CreateIndexes.sql` | Уникальный индекс, фильтры по `Code` и коротким enum, индексы по ключу и скрытым FK, full-text |
+| `033.All_Programmability.sql` | Полный снимок programmability, 52 скрипта (2026-11-19) |
 
 Contractor (SVT-5290) — справочник с watermark-sync. Примитив LegalType, чтение из `dbo.vw_LegalType`. `001` добавляет `RowVer` на `dbo.PrimitiveEntityData_2028`.
 
-Coefficient — справочник с watermark-sync. `009` добавляет `RowVer` на `dbo.PrimitiveEntityData_2081`. CoefficientType (2077) и RateType (2048) — enum, в каскад не входят. `vw_Coefficient_Detail` и `sp_Coefficient_PopulateAffectedKeys` — в снимке `014`.
+Coefficient — справочник с watermark-sync. `009` добавляет `RowVer` на `dbo.PrimitiveEntityData_2081`. CoefficientType (2077) и RateType (2048) — enum, в каскад не входят. `vw_Coefficient_Detail` и `sp_Coefficient_PopulateAffectedKeys` — в снимке `033`.
 
-Файл `008` — прежнее имя снимка programmability: после дельты Coefficient его переименовали в `014`. Актуальный полный снимок — `014`.
+RateSyncClass — класс simple, разовый снимок. `RowVer` на `dbo.PrimitiveEntityData_2127` не добавлялся. `vw_RateSyncClass_Detail` — в снимке `033`. Процедуры PopulateAffectedKeys нет.
+
+RateCalcType — класс simple, разовый снимок. `RowVer` на `dbo.PrimitiveEntityData_2092` не добавлялся. `vw_RateCalcType_Detail` — в снимке `033`. Процедуры PopulateAffectedKeys нет.
+
+RateAutoSelectionSetting — справочник с watermark-sync. `023` добавляет новый `RowVer` на `dbo.PrimitiveEntityData_2101`. Других источников нет. `vw_RateAutoSelectionSetting_Detail` и `sp_RateAutoSelectionSetting_PopulateAffectedKeys` — в снимке `033`.
+
+ReportConstructor — справочник с watermark-sync. `028` добавляет новый `RowVer` на `dbo.PrimitiveEntityData_2130`. `RowVer` на LocationsNodes (1014), ProductGroup (1013) и MTR (1015) уже был. `vw_ReportConstructor_Detail` и `sp_ReportConstructor_PopulateAffectedKeys` — в снимке `033`.
+
+Файл `008` — прежнее имя снимка programmability: после дельты Coefficient его переименовали в `014`. Файл `014` — прежнее имя снимка: после дельты этого батча его переименовали в `033`. Актуальный полный снимок — `033`.
 
 ## Чеклист нового релиза
 

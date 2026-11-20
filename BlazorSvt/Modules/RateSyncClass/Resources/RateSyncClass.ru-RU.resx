@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <resheader name="resmimetype"><value>text/microsoft-resx</value></resheader>
+  <resheader name="version"><value>2.0</value></resheader>
+  <resheader name="reader"><value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value></resheader>
+  <resheader name="writer"><value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value></resheader>
+  <data name="RateSyncClassGrid.Title" xml:space="preserve"><value>Класс синхронизации ставок</value></data>
+  <data name="RateSyncClassDto.Code" xml:space="preserve"><value>Код</value></data>
+  <data name="RateSyncClassDto.Name" xml:space="preserve"><value>Название</value></data>
+  <data name="RateSyncClassDto.IsArchive" xml:space="preserve"><value>Архив</value></data>
+  <data name="RateSyncClassDto.CreationDate" xml:space="preserve"><value>Создано</value></data>
+  <data name="RateSyncClassDto.LastChangeDate" xml:space="preserve"><value>Изменено</value></data>
+  <data name="RateSyncClassDetailDto.Code" xml:space="preserve"><value>Код</value></data>
+  <data name="RateSyncClassDetailDto.Name" xml:space="preserve"><value>Название (Наименование)</value></data>
+  <data name="RateSyncClassDetailDto.IsArchive" xml:space="preserve"><value>Архив</value></data>
+  <data name="RateSyncClassDetailDto.CreationDate" xml:space="preserve"><value>Создано</value></data>
+  <data name="RateSyncClassDetailDto.LastChangeDate" xml:space="preserve"><value>Изменено</value></data>
+  <data name="RateSyncClassDetailDto.Group.0.Default" xml:space="preserve"><value>По умолчанию</value></data>
+</root>

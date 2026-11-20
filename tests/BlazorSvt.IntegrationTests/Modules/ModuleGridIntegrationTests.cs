@@ -14,6 +14,14 @@ using BlazorSvt.Modules.MTR.Detail;
 using BlazorSvt.Modules.MTR.List;
 using BlazorSvt.Modules.ProductGroup.Detail;
 using BlazorSvt.Modules.ProductGroup.List;
+using BlazorSvt.Modules.RateAutoSelectionSetting.Detail;
+using BlazorSvt.Modules.RateAutoSelectionSetting.List;
+using BlazorSvt.Modules.ReportConstructor.Detail;
+using BlazorSvt.Modules.ReportConstructor.List;
+using BlazorSvt.Modules.RateCalcType.Detail;
+using BlazorSvt.Modules.RateCalcType.List;
+using BlazorSvt.Modules.RateSyncClass.Detail;
+using BlazorSvt.Modules.RateSyncClass.List;
 using BlazorSvt.Modules.RateType.Detail;
 using BlazorSvt.Modules.RateType.List;
 using BlazorSvt.Modules.ParityRates.List;
@@ -497,5 +505,162 @@ public class ModuleGridIntegrationTests(DatabaseFixture fixture) : IntegrationTe
         detail.Should().NotBeNull();
         detail!.TransportTypeLevel3Id.Should().Be(entityKey);
         detail.Code.Should().NotBeNullOrWhiteSpace();
+    }
+
+    [SkippableFact]
+    public async Task RateSyncClassGrid_ReturnsRows()
+    {
+        var connectionString = RequireConnectionString();
+
+        var (rows, totalCount) = await GridSpTestHelper.ExecuteGetBlazorGridDataAsync<RateSyncClassDto>(
+            connectionString,
+            typeof(RateSyncClassDto),
+            GridSpTestHelper.CreateDefaultQuery());
+
+        rows.Should().NotBeEmpty();
+        totalCount.Should().BeGreaterThan(0);
+    }
+
+    [SkippableFact]
+    public async Task RateSyncClassDetailView_ReturnsRowForGridEntityKey()
+    {
+        var connectionString = RequireConnectionString();
+
+        var (rows, _) = await GridSpTestHelper.ExecuteGetBlazorGridDataAsync<RateSyncClassDto>(
+            connectionString,
+            typeof(RateSyncClassDto),
+            GridSpTestHelper.CreateDefaultQuery(pageSize: 1));
+
+        var entityKey = rows[0].RateSyncClassId;
+
+        var detail = await GridSpTestHelper.QueryDetailViewAsync<RateSyncClassDetailDto>(
+            connectionString,
+            "v2.vw_RateSyncClass_Detail",
+            "RateSyncClassId",
+            entityKey);
+
+        detail.Should().NotBeNull();
+        detail!.RateSyncClassId.Should().Be(entityKey);
+        detail.Code.Should().NotBeNullOrWhiteSpace();
+    }
+
+    [SkippableFact]
+    public async Task RateCalcTypeGrid_ReturnsRows()
+    {
+        var connectionString = RequireConnectionString();
+
+        var (rows, totalCount) = await GridSpTestHelper.ExecuteGetBlazorGridDataAsync<RateCalcTypeDto>(
+            connectionString,
+            typeof(RateCalcTypeDto),
+            GridSpTestHelper.CreateDefaultQuery());
+
+        rows.Should().NotBeEmpty();
+        totalCount.Should().BeGreaterThan(0);
+    }
+
+    [SkippableFact]
+    public async Task RateCalcTypeDetailView_ReturnsRowForGridEntityKey()
+    {
+        var connectionString = RequireConnectionString();
+
+        var (rows, _) = await GridSpTestHelper.ExecuteGetBlazorGridDataAsync<RateCalcTypeDto>(
+            connectionString,
+            typeof(RateCalcTypeDto),
+            GridSpTestHelper.CreateDefaultQuery(pageSize: 1));
+
+        var entityKey = rows[0].RateCalcTypeId;
+
+        var detail = await GridSpTestHelper.QueryDetailViewAsync<RateCalcTypeDetailDto>(
+            connectionString,
+            "v2.vw_RateCalcType_Detail",
+            "RateCalcTypeId",
+            entityKey);
+
+        detail.Should().NotBeNull();
+        detail!.RateCalcTypeId.Should().Be(entityKey);
+        detail.Code.Should().NotBeNullOrWhiteSpace();
+    }
+
+    [SkippableFact]
+    public async Task RateAutoSelectionSettingGrid_ReturnsRows()
+    {
+        var connectionString = RequireConnectionString();
+
+        var (rows, totalCount) = await GridSpTestHelper.ExecuteGetBlazorGridDataAsync<RateAutoSelectionSettingDto>(
+            connectionString,
+            typeof(RateAutoSelectionSettingDto),
+            GridSpTestHelper.CreateDefaultQuery());
+
+        rows.Should().NotBeEmpty();
+        totalCount.Should().BeGreaterThan(0);
+        rows[0].Code.Should().Be("3");
+        rows[0].RateAutoSelectionSettingId.Should().Be(10609266);
+    }
+
+    [SkippableFact]
+    public async Task RateAutoSelectionSettingDetailView_ReturnsRowForGridEntityKey()
+    {
+        var connectionString = RequireConnectionString();
+
+        var (rows, _) = await GridSpTestHelper.ExecuteGetBlazorGridDataAsync<RateAutoSelectionSettingDto>(
+            connectionString,
+            typeof(RateAutoSelectionSettingDto),
+            GridSpTestHelper.CreateDefaultQuery(pageSize: 1));
+
+        var entityKey = rows[0].RateAutoSelectionSettingId;
+
+        var detail = await GridSpTestHelper.QueryDetailViewAsync<RateAutoSelectionSettingDetailDto>(
+            connectionString,
+            "v2.vw_RateAutoSelectionSetting_Detail",
+            "RateAutoSelectionSettingId",
+            entityKey);
+
+        detail.Should().NotBeNull();
+        detail!.RateAutoSelectionSettingId.Should().Be(entityKey);
+        detail.Code.Should().Be(rows[0].Code);
+        detail.DestinationNodeToRegion.Should().Be(rows[0].DestinationNodeToRegion);
+        detail.AnyTransportKind.Should().Be(rows[0].AnyTransportKind);
+    }
+
+    [SkippableFact]
+    public async Task ReportConstructorGrid_ReturnsRows()
+    {
+        var connectionString = RequireConnectionString();
+
+        var (rows, totalCount) = await GridSpTestHelper.ExecuteGetBlazorGridDataAsync<ReportConstructorDto>(
+            connectionString,
+            typeof(ReportConstructorDto),
+            GridSpTestHelper.CreateDefaultQuery());
+
+        rows.Should().NotBeEmpty();
+        totalCount.Should().Be(12);
+        rows.Should().OnlyContain(r => r.LastChangeDate != default);
+        rows.Should().OnlyContain(r => r.Code.Length > 0);
+    }
+
+    [SkippableFact]
+    public async Task ReportConstructorDetailView_ReturnsRowForGridEntityKey()
+    {
+        var connectionString = RequireConnectionString();
+
+        var (rows, _) = await GridSpTestHelper.ExecuteGetBlazorGridDataAsync<ReportConstructorDto>(
+            connectionString,
+            typeof(ReportConstructorDto),
+            GridSpTestHelper.CreateDefaultQuery(pageSize: 1));
+
+        var entityKey = rows[0].ReportConstructorId;
+
+        var detail = await GridSpTestHelper.QueryDetailViewAsync<ReportConstructorDetailDto>(
+            connectionString,
+            "v2.vw_ReportConstructor_Detail",
+            "ReportConstructorId",
+            entityKey);
+
+        detail.Should().NotBeNull();
+        detail!.ReportConstructorId.Should().Be(entityKey);
+        detail.Code.Should().Be(rows[0].Code);
+        detail.ReportTypeIdRu.Should().Be(rows[0].ReportTypeIdRu);
+        detail.DateFrom.Should().Be(rows[0].DateFrom);
+        detail.LastChangeDate.Should().Be(rows[0].LastChangeDate);
     }
 }
