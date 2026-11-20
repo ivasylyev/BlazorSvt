@@ -34,7 +34,7 @@
 - Запрос строк секции отбирает по `CoefficientId` и по набору состояний, переданному параметром. Строки упорядочены по `Id` и ограничены пределом. Число M — отдельный `COUNT` с тем же отбором.
 - В `vw_Coefficient_Detail.sql` обновить комментарий «Дочерние CoefficientConditionValue и CoefficientComponentValue не выводятся».
 - Оба view добавить в манифест `BlazorSvt/SqlScripts/Publish-AllSql.ps1` после `vw_Coefficient_Detail.sql` и в таблицу Coefficient в `BlazorSvt/SqlScripts/README.md`.
-- Релизную копию `BlazorSvt/SqlScripts/Migrations/2.3.49/033.All_Programmability.sql` пересобрать скриптом `build-all-programmability.ps1` навыка `svt-catalog-migration-orchestrator`. Папка `2.3.49` не развёрнута.
+- Снимок `NNN.All_Programmability.sql` в `BlazorSvt/SqlScripts/Migrations/2.3.49/` пересобрать скриптом `build-all-programmability.ps1` навыка `svt-catalog-migration-orchestrator`. После слияния с `master` это `051`. Папка `2.3.49` не развёрнута. Своих дельта-файлов задача не добавляет: номер снимка определяют дельты других задач.
 
 **Platform**
 - Добавить обобщённую дочернюю секцию: заголовок группы, загрузчик строк по ключу родителя, колонки с подписями.
