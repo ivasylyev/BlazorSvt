@@ -1,10 +1,14 @@
 using System.Globalization;
+using BlazorSvt.Modules.Coefficient;
 using BlazorSvt.Modules.Coefficient.Detail;
 using BlazorSvt.Platform.Domain.IdsEnum;
 using BlazorSvt.Platform.Grid.Models;
 using BlazorSvt.Platform.Grid.Services;
 using FluentAssertions;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Localization;
+using Microsoft.Extensions.Logging.Abstractions;
+using Microsoft.Extensions.Options;
 using NSubstitute;
 using CoefficientResources = BlazorSvt.Modules.Coefficient.Resources.Coefficient;
 using PlatformResources = BlazorSvt.Platform.Resources.Platform;
@@ -117,6 +121,68 @@ public class CoefficientChildSectionsTests
         table.Rows.Single().Should().Equal("670", "General", 1.0500m.ToString(CultureInfo.CurrentCulture));
         table.TotalCount.Should().Be(14);
         table.IsTruncated.Should().BeTrue();
+    }
+
+    [Fact]
+    public void Module_RegistersSectionsInGroupOrder()
+    {
+        var services = new ServiceCollection();
+        services.AddCoefficientModule();
+
+        services
+            .Where(d => d.ServiceType == typeof(IDetailChildSection<CoefficientDetailDto>))
+            .Select(d => d.ImplementationType)
+            .Should().Equal(typeof(CoefficientConditionValueSection), typeof(CoefficientComponentValueSection));
+    }
+
+    [Theory]
+    [InlineData("ru", "ru-RU",
+        "Условие по коэффициенту",
+        new[] { "Код", "Исключать", "Вид транспорта", "Тип транспорта (2 уровень)", "Тип подвижного состава", "Направление от", "Направление до", "Архив" },
+        "Составляющая по коэффициенту",
+        new[] { "Код", "Составляющая", "Значение", "Архив" })]
+    [InlineData("en", "en-US",
+        "Coefficient conditions",
+        new[] { "Code", "Exclude", "Transport kind", "Transport type (level 2)", "Rolling stock type", "From", "To", "Archive" },
+        "Coefficient components",
+        new[] { "Code", "Component", "Value", "Archive" })]
+    public async Task Sections_UseResxTitlesAndHeaders(
+        string lang,
+        string culture,
+        string conditionTitle,
+        string[] conditionHeaders,
+        string componentTitle,
+        string[] componentHeaders)
+    {
+        var previousUiCulture = CultureInfo.CurrentUICulture;
+        CultureInfo.CurrentUICulture = CultureInfo.GetCultureInfo(culture);
+        try
+        {
+            var factory = new ResourceManagerStringLocalizerFactory(
+                Options.Create(new LocalizationOptions()), NullLoggerFactory.Instance);
+            var resxLocalizer = new StringLocalizer<CoefficientResources>(factory);
+            var resxPlatform = new StringLocalizer<PlatformResources>(factory);
+            GivenConditionRows(new CoefficientConditionValueDto { CoefficientId = CoefficientId, Id = 1, PrimitiveEntityDataStateId = 1 });
+            dataService
+                .GetRowsAsync<CoefficientComponentValueDto>(Arg.Any<object>(), Arg.Any<IReadOnlyCollection<int>>(), Arg.Any<CancellationToken>())
+                .Returns(new DetailChildPage<CoefficientComponentValueDto>(
+                    [new CoefficientComponentValueDto { CoefficientId = CoefficientId, Id = 1, PrimitiveEntityDataStateId = 1 }],
+                    TotalCount: 1));
+            var condition = new CoefficientConditionValueSection(dataService, resxLocalizer, resxPlatform);
+            var component = new CoefficientComponentValueSection(dataService, resxLocalizer, resxPlatform);
+
+            var conditionTable = await condition.LoadAsync(Parent(isArchive: true), lang, CancellationToken.None);
+            var componentTable = await component.LoadAsync(Parent(isArchive: true), lang, CancellationToken.None);
+
+            condition.Title.Should().Be(conditionTitle);
+            conditionTable.Headers.Should().Equal(conditionHeaders);
+            component.Title.Should().Be(componentTitle);
+            componentTable.Headers.Should().Equal(componentHeaders);
+        }
+        finally
+        {
+            CultureInfo.CurrentUICulture = previousUiCulture;
+        }
     }
 
     private void GivenConditionRows(params CoefficientConditionValueDto[] rows) =>

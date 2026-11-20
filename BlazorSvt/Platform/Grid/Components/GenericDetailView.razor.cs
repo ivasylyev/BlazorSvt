@@ -55,14 +55,22 @@ public partial class GenericDetailView<TItem, TDetailItem> : SvtComponentBase, I
             errorMessage = null;
             allExpanded = true;
             childSections = [];
-            detail = await DetailDataProvider(Item, cancellationToken);
+            var loadedDetail = await DetailDataProvider(Item, cancellationToken);
+            if (cancellationToken.IsCancellationRequested)
+                return;
+
+            detail = loadedDetail;
             detailSettings ??= DetailSettingsService.GetGridDetailSettings(Lang);
 
             if (detail is not null && ChildSections.Any())
             {
                 isLoading = false;
                 StateHasChanged();
-                childSections = await LoadChildSectionsAsync(detail, cancellationToken);
+                var loadedSections = await LoadChildSectionsAsync(detail, cancellationToken);
+                if (cancellationToken.IsCancellationRequested)
+                    return;
+
+                childSections = loadedSections;
             }
         }
         catch (OperationCanceledException) when (cancellationToken.IsCancellationRequested)
@@ -76,7 +84,8 @@ public partial class GenericDetailView<TItem, TDetailItem> : SvtComponentBase, I
         }
         finally
         {
-            isLoading = false;
+            if (!cancellationToken.IsCancellationRequested)
+                isLoading = false;
         }
     }
 
