@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <resheader name="resmimetype"><value>text/microsoft-resx</value></resheader>
+  <resheader name="version"><value>2.0</value></resheader>
+  <resheader name="reader"><value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value></resheader>
+  <resheader name="writer"><value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value></resheader>
+  <data name="TransportRouteGrid.Title" xml:space="preserve"><value>Транспортный маршрут</value></data>
+  <data name="TransportRouteDto.Code" xml:space="preserve"><value>Код</value></data>
+  <data name="TransportRouteDto.CodeSAP" xml:space="preserve"><value>Код SAP</value></data>
+  <data name="TransportRouteDto.Route" xml:space="preserve"><value>Путь</value></data>
+  <data name="TransportRouteDto.StartNodeCode" xml:space="preserve"><value>Код отпр.</value></data>
+  <data name="TransportRouteDto.StartNodeName" xml:space="preserve"><value>Отправление</value></data>
+  <data name="TransportRouteDto.RegionFromCode" xml:space="preserve"><value>Код рег. отпр.</value></data>
+  <data name="TransportRouteDto.RegionFromName" xml:space="preserve"><value>Рег. отпр.</value></data>
+  <data name="TransportRouteDto.ProxyNodeCode" xml:space="preserve"><value>Код пром.</value></data>
+  <data name="TransportRouteDto.ProxyNodeName" xml:space="preserve"><value>Промежуточный</value></data>
+  <data name="TransportRouteDto.EndNodeCode" xml:space="preserve"><value>Код назн.</value></data>
+  <data name="TransportRouteDto.EndNodeName" xml:space="preserve"><value>Назначение</value></data>
+  <data name="TransportRouteDto.RegionToCode" xml:space="preserve"><value>Код рег. назн.</value></data>
+  <data name="TransportRouteDto.RegionToName" xml:space="preserve"><value>Рег. назн.</value></data>
+  <data name="TransportRouteDto.RouteTransportKindName" xml:space="preserve"><value>Вид ТС</value></data>
+  <data name="TransportRouteDto.IsActive" xml:space="preserve"><value>Активен</value></data>
+  <data name="TransportRouteDto.Leg1_TransportTypeName" xml:space="preserve"><value>Тип 1</value></data>
+  <data name="TransportRouteDto.Leg2_TransportTypeName" xml:space="preserve"><value>Тип 2</value></data>
+  <data name="TransportRouteDto.ChainNodes" xml:space="preserve"><value>Цепочка</value></data>
+  <data name="TransportRouteDto.CreationDate" xml:space="preserve"><value>Создано</value></data>
+  <data name="TransportRouteDto.LastChangeDate" xml:space="preserve"><value>Изменено</value></data>
+  <data name="TransportRouteDto.IsArchive" xml:space="preserve"><value>Архив</value></data>
+  <data name="TransportRouteDetailDto.Code" xml:space="preserve"><value>Код (Код СВТ)</value></data>
+  <data name="TransportRouteDetailDto.CodeSAP" xml:space="preserve"><value>Код SAP</value></data>
+  <data name="TransportRouteDetailDto.IsActive" xml:space="preserve"><value>Активен (Маршрут активен)</value></data>
+  <data name="TransportRouteDetailDto.Route" xml:space="preserve"><value>Путь</value></data>
+  <data name="TransportRouteDetailDto.StartNodeName" xml:space="preserve"><value>Отправление (Узел отправления)</value></data>
+  <data name="TransportRouteDetailDto.StartNodeCode" xml:space="preserve"><value>Код отпр.</value></data>
+  <data name="TransportRouteDetailDto.RegionFromName" xml:space="preserve"><value>Рег. отпр. (Регион отправления)</value></data>
+  <data name="TransportRouteDetailDto.RegionFromCode" xml:space="preserve"><value>Код рег. отпр.</value></data>
+  <data name="TransportRouteDetailDto.ProxyNodeName" xml:space="preserve"><value>Промежуточный (Узел промежуточный)</value></data>
+  <data name="TransportRouteDetailDto.ProxyNodeCode" xml:space="preserve"><value>Код пром.</value></data>
+  <data name="TransportRouteDetailDto.EndNodeName" xml:space="preserve"><value>Назначение (Узел назначения)</value></data>
+  <data name="TransportRouteDetailDto.EndNodeCode" xml:space="preserve"><value>Код назн.</value></data>
+  <data name="TransportRouteDetailDto.RegionToName" xml:space="preserve"><value>Рег. назн. (Регион назначения)</value></data>
+  <data name="TransportRouteDetailDto.RegionToCode" xml:space="preserve"><value>Код рег. назн.</value></data>
+  <data name="TransportRouteDetailDto.RouteTransportKindName" xml:space="preserve"><value>Вид ТС (Вид транспорта)</value></data>
+  <data name="TransportRouteDetailDto.Leg1_TransportTypeName" xml:space="preserve"><value>Тип 1 (Плечо 1.Тип транспорта)</value></data>
+  <data name="TransportRouteDetailDto.Leg2_TransportTypeName" xml:space="preserve"><value>Тип 2 (Плечо 2.Тип транспорта)</value></data>
+  <data name="TransportRouteDetailDto.ShortNameRu" xml:space="preserve"><value>Краткое наименование (RU)</value></data>
+  <data name="TransportRouteDetailDto.ShortNameEN" xml:space="preserve"><value>Краткое наименование (EN)</value></data>
+  <data name="TransportRouteDetailDto.NameEN" xml:space="preserve"><value>Наименование (EN)</value></data>
+  <data name="TransportRouteDetailDto.ChainNodes" xml:space="preserve"><value>Цепочка (Цепочка маршрута)</value></data>
+  <data name="TransportRouteDetailDto.Leg_01Code" xml:space="preserve"><value>Плечо 01</value></data>
+  <data name="TransportRouteDetailDto.Leg_02Code" xml:space="preserve"><value>Плечо 02</value></data>
+  <data name="TransportRouteDetailDto.Leg_03Code" xml:space="preserve"><value>Плечо 03</value></data>
+  <data name="TransportRouteDetailDto.IsArchive" xml:space="preserve"><value>Архив</value></data>
+  <data name="TransportRouteDetailDto.CreationDate" xml:space="preserve"><value>Создано</value></data>
+  <data name="TransportRouteDetailDto.LastChangeDate" xml:space="preserve"><value>Изменено</value></data>
+  <data name="TransportRouteDetailDto.Group.0.Default" xml:space="preserve"><value>По умолчанию</value></data>
+</root>

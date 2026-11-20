@@ -2,6 +2,8 @@ using System.Data;
 using System.Data.SqlClient;
 using BlazorSvt.IntegrationTests.Infrastructure;
 using BlazorSvt.Modules.Coefficient.Sync;
+using BlazorSvt.Modules.Country.Sync;
+using BlazorSvt.Modules.Region.Sync;
 using BlazorSvt.Modules.LocationsNodes.Sync;
 using BlazorSvt.Modules.MTR.Sync;
 using BlazorSvt.Modules.ProductGroup.Sync;
@@ -9,6 +11,7 @@ using BlazorSvt.Modules.RateAutoSelectionSetting.Sync;
 using BlazorSvt.Modules.ReportConstructor.Sync;
 using BlazorSvt.Modules.TransportLeg.Sync;
 using BlazorSvt.Modules.TransportRate.Sync;
+using BlazorSvt.Modules.TransportRoute.Sync;
 using BlazorSvt.Platform.Infrastructure.Config;
 using BlazorSvt.Platform.Sync;
 using Dapper;
@@ -117,6 +120,32 @@ public sealed class SnapshotSyncIntegrationTests(DatabaseFixture fixture) : Inte
     }
 
     [SkippableFact]
+    public async Task Country_IncrementalSync_PropagatesLegacyChange()
+    {
+        await RunCommitStimulusScenarioAsync(new SyncStimulusCase(
+            new CountrySyncJob(),
+            LegacyTable: "dbo.PrimitiveEntityData_1009",
+            LegacyColumn: "a_1008", // vw_Country.Name_ru
+            SnapshotColumn: "NameRu",
+            CreateStimulusValue: original => $"SVT_TST_{Random.Shared.Next(100_000, 999_999)}",
+            ParseLegacyValue: value => (string)value!,
+            FormatLegacyValue: value => (string)value));
+    }
+
+    [SkippableFact]
+    public async Task Region_IncrementalSync_PropagatesLegacyChange()
+    {
+        await RunCommitStimulusScenarioAsync(new SyncStimulusCase(
+            new RegionSyncJob(),
+            LegacyTable: "dbo.PrimitiveEntityData_1008",
+            LegacyColumn: "a_1005", // vw_Region.Name_ru
+            SnapshotColumn: "NameRu",
+            CreateStimulusValue: original => $"SVT_TST_{Random.Shared.Next(100_000, 999_999)}",
+            ParseLegacyValue: value => (string)value!,
+            FormatLegacyValue: value => (string)value));
+    }
+
+    [SkippableFact]
     public async Task TransportRate_IncrementalSync_PropagatesLegacyChange()
     {
         await RunCommitStimulusScenarioAsync(new SyncStimulusCase(
@@ -127,6 +156,19 @@ public sealed class SnapshotSyncIntegrationTests(DatabaseFixture fixture) : Inte
             CreateStimulusValue: original => decimal.Round(Convert.ToDecimal(original), 2) + 10m,
             ParseLegacyValue: value => decimal.Round(Convert.ToDecimal(value), 2),
             FormatLegacyValue: value => (decimal)value!));
+    }
+
+    [SkippableFact]
+    public async Task TransportRoute_IncrementalSync_PropagatesLegacyChange()
+    {
+        await RunCommitStimulusScenarioAsync(new SyncStimulusCase(
+            new TransportRouteSyncJob(),
+            LegacyTable: "dbo.PrimitiveEntityData_2010",
+            LegacyColumn: "a_4804", // vw_TransportRoute.ChainNodes
+            SnapshotColumn: "ChainNodes",
+            CreateStimulusValue: original => $"SVT_TST_{Random.Shared.Next(100_000, 999_999)}",
+            ParseLegacyValue: value => (string)value!,
+            FormatLegacyValue: value => (string)value));
     }
 
     private async Task RunCommitStimulusScenarioAsync(SyncStimulusCase testCase)

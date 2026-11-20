@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <resheader name="resmimetype"><value>text/microsoft-resx</value></resheader>
+  <resheader name="version"><value>2.0</value></resheader>
+  <resheader name="reader"><value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value></resheader>
+  <resheader name="writer"><value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value></resheader>
+  <data name="CountryGrid.Title" xml:space="preserve"><value>Страна</value></data>
+  <data name="CountryDto.Code" xml:space="preserve"><value>Код</value></data>
+  <data name="CountryDto.Name" xml:space="preserve"><value>Название</value></data>
+  <data name="CountryDto.ISOCode" xml:space="preserve"><value>Код ISO</value></data>
+  <data name="CountryDto.PlanCode" xml:space="preserve"><value>Код план.</value></data>
+  <data name="CountryDto.Market" xml:space="preserve"><value>Макрорегион</value></data>
+  <data name="CountryDto.ISOCode3" xml:space="preserve"><value>Обозначение</value></data>
+  <data name="CountryDto.Status" xml:space="preserve"><value>Статус</value></data>
+  <data name="CountryDto.IsArchive" xml:space="preserve"><value>Архив</value></data>
+  <data name="CountryDto.CreationDate" xml:space="preserve"><value>Создано</value></data>
+  <data name="CountryDto.LastChangeDate" xml:space="preserve"><value>Изменено</value></data>
+  <data name="CountryDetailDto.Code" xml:space="preserve"><value>Код</value></data>
+  <data name="CountryDetailDto.NameRu" xml:space="preserve"><value>Наименование страны (RU)</value></data>
+  <data name="CountryDetailDto.ISOCode" xml:space="preserve"><value>Код ISO страны</value></data>
+  <data name="CountryDetailDto.NameEn" xml:space="preserve"><value>Наименование страны (EN)</value></data>
+  <data name="CountryDetailDto.PlanCode" xml:space="preserve"><value>Код план. (Код страны для планирования)</value></data>
+  <data name="CountryDetailDto.Market" xml:space="preserve"><value>Макрорегион</value></data>
+  <data name="CountryDetailDto.ISOCode3" xml:space="preserve"><value>Обозначение страны</value></data>
+  <data name="CountryDetailDto.Status" xml:space="preserve"><value>Статус записи</value></data>
+  <data name="CountryDetailDto.CreationDate" xml:space="preserve"><value>Создано</value></data>
+  <data name="CountryDetailDto.LastChangeDate" xml:space="preserve"><value>Изменено</value></data>
+  <data name="CountryDetailDto.IsArchive" xml:space="preserve"><value>Архив</value></data>
+  <data name="CountryDetailDto.Group.0.Default" xml:space="preserve"><value>По умолчанию</value></data>
+</root>

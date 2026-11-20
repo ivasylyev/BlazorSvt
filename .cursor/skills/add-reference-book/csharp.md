@@ -1,7 +1,7 @@
 # Фазы 4–6 — C#-модуль, тесты, финал
 
 Читать только после успешного деплоя и верификации SQL ([sql.md](sql.md)).  
-Стабильный словарь с enum — [SKILL.md](SKILL.md). Именование ссылок/enum — [discovery.md](discovery.md).
+Стабильный словарь с enum — [SKILL.md](SKILL.md). Именование ссылок и enum — [discovery-rules.md](discovery-rules.md) §6–7, открывать только если модуль заводит ссылку или enum.
 
 ## Фаза 4 — C#-модуль
 
@@ -65,6 +65,7 @@ public required RateTypeEn RateTypeIdEn { get; set; }
 - **Все колонки видимы**, кроме `IsArchive`, `CreationDate`, `LastChangeDate`
 - `IsArchive`: `Visible = false`, `FilterValue = "False"` **всегда**
 - `CreationDate`, `LastChangeDate`: `Visible = false` **всегда** (без `FilterValue`)
+- `LastChangeDate` в DTO — `DateTime`, не `DateTime?`. В снимке колонка `NOT NULL`: пустая дата легаси уже заменена на `CreationDate` (`ISNULL(LastChangeDate, CreationDate)`)
 - **Короткий словарь (enum):** видимая колонка `{X}IdRu`/`{X}IdEn` с `GetDisplayName`; без `Code`/`Name*`.
 - **Длинный словарь:** видимая `{X}NameRu`/`{X}NameEn`; **без Id**, без дублирующей скрытой Name-колонки.
 - **Whitelist Code** (`NodeToCode`, `RegionCode`, …): `{X}Code` — `Visible = false`, `Filterable = true` (пользователь может включить в настройках).

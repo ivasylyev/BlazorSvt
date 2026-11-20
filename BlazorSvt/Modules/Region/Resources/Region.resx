@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <resheader name="resmimetype"><value>text/microsoft-resx</value></resheader>
+  <resheader name="version"><value>2.0</value></resheader>
+  <resheader name="reader"><value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value></resheader>
+  <resheader name="writer"><value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value></resheader>
+  <data name="RegionGrid.Title" xml:space="preserve"><value>Region</value></data>
+  <data name="RegionDto.Code" xml:space="preserve"><value>Code</value></data>
+  <data name="RegionDto.RegionCode" xml:space="preserve"><value>Region code</value></data>
+  <data name="RegionDto.Code_NSI" xml:space="preserve"><value>NSI code</value></data>
+  <data name="RegionDto.RegionCodePlanning" xml:space="preserve"><value>Plan code</value></data>
+  <data name="RegionDto.RegionCodeRF" xml:space="preserve"><value>RF code</value></data>
+  <data name="RegionDto.NameRu" xml:space="preserve"><value>Регион (RU)</value></data>
+  <data name="RegionDto.NameEn" xml:space="preserve"><value>Регион (EN)</value></data>
+  <data name="RegionDto.CountryName" xml:space="preserve"><value>Country</value></data>
+  <data name="RegionDto.Market" xml:space="preserve"><value>Macroregion</value></data>
+  <data name="RegionDto.Status" xml:space="preserve"><value>Status</value></data>
+  <data name="RegionDto.FederalDistricts" xml:space="preserve"><value>Fed. district</value></data>
+  <data name="RegionDto.CreationDate" xml:space="preserve"><value>Created</value></data>
+  <data name="RegionDto.LastChangeDate" xml:space="preserve"><value>Changed</value></data>
+  <data name="RegionDto.IsArchive" xml:space="preserve"><value>Archive</value></data>
+  <data name="RegionDetailDto.Code" xml:space="preserve"><value>Code</value></data>
+  <data name="RegionDetailDto.CreationDate" xml:space="preserve"><value>Created</value></data>
+  <data name="RegionDetailDto.LastChangeDate" xml:space="preserve"><value>Changed</value></data>
+  <data name="RegionDetailDto.IsArchive" xml:space="preserve"><value>Archive</value></data>
+  <data name="RegionDetailDto.NameRu" xml:space="preserve"><value>Регион (RU)</value></data>
+  <data name="RegionDetailDto.RegionCode" xml:space="preserve"><value>Region code</value></data>
+  <data name="RegionDetailDto.CountryName" xml:space="preserve"><value>Country</value></data>
+  <data name="RegionDetailDto.Status" xml:space="preserve"><value>Status (Record status)</value></data>
+  <data name="RegionDetailDto.NameEn" xml:space="preserve"><value>Регион (EN)</value></data>
+  <data name="RegionDetailDto.RegionCodeRF" xml:space="preserve"><value>RF code (Russian region code)</value></data>
+  <data name="RegionDetailDto.RegionCodePlanning" xml:space="preserve"><value>Plan code (Region code for planning)</value></data>
+  <data name="RegionDetailDto.Market" xml:space="preserve"><value>Macroregion</value></data>
+  <data name="RegionDetailDto.Code_NSI" xml:space="preserve"><value>NSI code</value></data>
+  <data name="RegionDetailDto.FederalDistricts" xml:space="preserve"><value>Fed. district (Federal district)</value></data>
+  <data name="RegionDetailDto.Group.0.Default" xml:space="preserve"><value>Default</value></data>
+</root>

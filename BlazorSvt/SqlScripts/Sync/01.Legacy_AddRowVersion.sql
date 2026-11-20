@@ -51,7 +51,9 @@ VALUES
     -- RateAutoSelectionSetting
     (N'dbo.PrimitiveEntityData_2101', N'RateAutoSelectionSetting (основная)'),
     -- ReportConstructor
-    (N'dbo.PrimitiveEntityData_2130', N'ReportConstructor (основная)');
+    (N'dbo.PrimitiveEntityData_2130', N'ReportConstructor (основная)'),
+    -- TransportRoute
+    (N'dbo.PrimitiveEntityData_2010', N'TransportRoute (основная)');
 
 DECLARE @tableName SYSNAME, @comment NVARCHAR(100), @sql NVARCHAR(MAX);
 
@@ -106,7 +108,8 @@ VALUES
     (N'dbo.PrimitiveEntityData_2109', N'ix_PrimitiveEntityData_2109_RowVer'),  -- ParityRates
     (N'dbo.PrimitiveEntityData_1015', N'ix_PrimitiveEntityData_1015_RowVer'),  -- MTR (Product)
     (N'dbo.PrimitiveEntityData_1014', N'ix_PrimitiveEntityData_1014_RowVer'),  -- LocationsNodes
-    (N'dbo.PrimitiveEntityData_2028', N'ix_PrimitiveEntityData_2028_RowVer');  -- LegalType (основная), реестр Contractor
+    (N'dbo.PrimitiveEntityData_2028', N'ix_PrimitiveEntityData_2028_RowVer'),  -- LegalType (основная), реестр Contractor
+    (N'dbo.PrimitiveEntityData_2010', N'ix_PrimitiveEntityData_2010_RowVer');  -- TransportRoute (основная)
 
 DECLARE @idxTable SYSNAME, @idxName SYSNAME, @idxSql NVARCHAR(MAX);
 

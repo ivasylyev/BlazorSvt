@@ -171,6 +171,18 @@
   <data name="HeaderMenu.Coefficient" xml:space="preserve">
     <value>Коэффициент</value>
   </data>
+  <data name="HeaderMenu.Relevance" xml:space="preserve">
+    <value>Актуальность</value>
+  </data>
+  <data name="HeaderMenu.Country" xml:space="preserve">
+    <value>Страна</value>
+  </data>
+  <data name="HeaderMenu.Region" xml:space="preserve">
+    <value>Регион</value>
+  </data>
+  <data name="HeaderMenu.TransportRoute" xml:space="preserve">
+    <value>Транспортный маршрут</value>
+  </data>
   <data name="HeaderMenu.Load" xml:space="preserve">
     <value>Загрузка</value>
   </data>

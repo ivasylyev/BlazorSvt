@@ -1,0 +1,16 @@
+@page "/relevance"
+@using BlazorSvt.Modules.Relevance.Detail
+@inherits BaseGridPage<RelevanceDto, RelevanceDetailDto>
+
+<GenericGrid TItem="RelevanceDto"
+             TDetailItem="RelevanceDetailDto"
+             PageTitle="@EL["RelevanceGrid.Title"]"
+             AllowDetailView="true"
+             DataProvider="DataProvider"
+             DetailDataProvider="DetailDataProvider"
+             DetailKeySelector="DetailKeySelector">
+
+    <DetailViewTemplate Context="detail">
+    </DetailViewTemplate>
+
+</GenericGrid>

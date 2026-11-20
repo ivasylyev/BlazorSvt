@@ -16,7 +16,7 @@
 ## Шаги (по каждому справочнику)
 
 1. Руководство RU и EN: перечень раздела 1 и строка таблицы меню (домен, пункт, заголовок страницы из раздела 1).
-2. Postman: папка `{код API}` по образцу соседней (Schema, Search first page с сохранением id, Get item, Export short, Export full) и переменная `{entity}Id` = `"0"`.
+2. Postman: папка `{код API}` по образцу соседней (Schema, Search first page с сохранением id, Get item, Export short, Export full) и переменная camelCase от `{Entity}Id` (`transportRouteId`, не `transportrouteId`) = `"0"`.
 3. `svt-api-v1-developers.md`: строка каталога; фразу «ещё не перенесён» поправить, если есть.
 
 ## После всех
