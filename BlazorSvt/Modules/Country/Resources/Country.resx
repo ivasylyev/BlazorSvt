@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <resheader name="resmimetype"><value>text/microsoft-resx</value></resheader>
+  <resheader name="version"><value>2.0</value></resheader>
+  <resheader name="reader"><value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value></resheader>
+  <resheader name="writer"><value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value></resheader>
+  <data name="CountryGrid.Title" xml:space="preserve"><value>Country</value></data>
+  <data name="CountryDto.Code" xml:space="preserve"><value>Code</value></data>
+  <data name="CountryDto.Name" xml:space="preserve"><value>Name</value></data>
+  <data name="CountryDto.ISOCode" xml:space="preserve"><value>ISO code</value></data>
+  <data name="CountryDto.PlanCode" xml:space="preserve"><value>Plan code</value></data>
+  <data name="CountryDto.Market" xml:space="preserve"><value>Macroregion</value></data>
+  <data name="CountryDto.ISOCode3" xml:space="preserve"><value>Designation</value></data>
+  <data name="CountryDto.Status" xml:space="preserve"><value>Status</value></data>
+  <data name="CountryDto.IsArchive" xml:space="preserve"><value>Archive</value></data>
+  <data name="CountryDto.CreationDate" xml:space="preserve"><value>Created</value></data>
+  <data name="CountryDto.LastChangeDate" xml:space="preserve"><value>Changed</value></data>
+  <data name="CountryDetailDto.Code" xml:space="preserve"><value>Code</value></data>
+  <data name="CountryDetailDto.NameRu" xml:space="preserve"><value>Country name (RU)</value></data>
+  <data name="CountryDetailDto.ISOCode" xml:space="preserve"><value>ISO code (ISO country code)</value></data>
+  <data name="CountryDetailDto.NameEn" xml:space="preserve"><value>Country name (EN)</value></data>
+  <data name="CountryDetailDto.PlanCode" xml:space="preserve"><value>Plan code (Country code for planning)</value></data>
+  <data name="CountryDetailDto.Market" xml:space="preserve"><value>Macroregion</value></data>
+  <data name="CountryDetailDto.ISOCode3" xml:space="preserve"><value>Designation (Country designation)</value></data>
+  <data name="CountryDetailDto.Status" xml:space="preserve"><value>Status (Record status)</value></data>
+  <data name="CountryDetailDto.CreationDate" xml:space="preserve"><value>Created</value></data>
+  <data name="CountryDetailDto.LastChangeDate" xml:space="preserve"><value>Changed</value></data>
+  <data name="CountryDetailDto.IsArchive" xml:space="preserve"><value>Archive</value></data>
+  <data name="CountryDetailDto.Group.0.Default" xml:space="preserve"><value>Default</value></data>
+</root>

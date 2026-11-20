@@ -1,0 +1,16 @@
+@page "/country"
+@using BlazorSvt.Modules.Country.Detail
+@inherits BaseGridPage<CountryDto, CountryDetailDto>
+
+<GenericGrid TItem="CountryDto"
+             TDetailItem="CountryDetailDto"
+             PageTitle="@EL["CountryGrid.Title"]"
+             AllowDetailView="true"
+             DataProvider="DataProvider"
+             DetailDataProvider="DetailDataProvider"
+             DetailKeySelector="DetailKeySelector">
+
+    <DetailViewTemplate Context="detail">
+    </DetailViewTemplate>
+
+</GenericGrid>

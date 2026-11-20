@@ -24,7 +24,8 @@ public sealed class ApiCatalogDataTests : IClassFixture<ApiDataTestFactory>
         "currencies",
         "product-groups",
         "transport-types-level-3",
-        "coefficients"
+        "coefficients",
+        "relevances"
     ];
 
     private static readonly (string Catalog, string EntityKey)[] CatalogKeys =
@@ -38,7 +39,8 @@ public sealed class ApiCatalogDataTests : IClassFixture<ApiDataTestFactory>
         ("currencies", "currencyId"),
         ("product-groups", "productGroupId"),
         ("transport-types-level-3", "transportTypeLevel3Id"),
-        ("coefficients", "coefficientId")
+        ("coefficients", "coefficientId"),
+        ("relevances", "relevanceId")
     ];
 
     private readonly ApiDataTestFactory factory;

@@ -180,21 +180,46 @@ TransportTypeLevel3 — стабильный словарь с enum. В мигр
 | `030.vw_ReportConstructor_SnapshotSource.sql` | Проекция из `dbo.vw_ReportConstructor`; выполняется до заливки |
 | `031.02.ReportConstructor_Insert.sql` | Полная заливка и курсор `v2.SyncState` по 2130, 1014, 1013, 1015 |
 | `032.03.ReportConstructor_CreateIndexes.sql` | Уникальный индекс, фильтры по `Code` и коротким enum, индексы по ключу и скрытым FK, full-text |
-| `033.All_Programmability.sql` | Полный снимок programmability, 52 скрипта (2026-11-19) |
+| `034.01.Relevance_CreateTable.sql` | Первое появление `v2.Relevance_Snapshot` |
+| `035.vw_Relevance_SnapshotSource.sql` | Проекция из `dbo.vw_Relevance`; выполняется до заливки |
+| `036.02.Relevance_Insert.sql` | Разовая заливка, без курсора `v2.SyncState` |
+| `037.03.Relevance_CreateIndexes.sql` | Уникальный индекс, фильтр по `Code`, индекс по ключу, full-text по `Name` |
+| `038.TransportRoute_AddRowVersion.sql` | RowVer и NC-индекс на `dbo.PrimitiveEntityData_2010` (TransportRoute) |
+| `039.01.TransportRoute_CreateTable.sql` | Первое появление `v2.TransportRoute_Snapshot` |
+| `040.vw_TransportRoute_SnapshotSource.sql` | Проекция из `dbo.vw_TransportRoute`; выполняется до заливки |
+| `041.02.TransportRoute_Insert.sql` | Полная заливка и курсор `v2.SyncState` по 2010, 1014, 1008 |
+| `042.03.TransportRoute_CreateIndexes.sql` | Уникальный индекс, фильтры по `Code` и коротким enum, индексы по ключу и скрытым FK узлов, full-text |
+| `043.01.Region_CreateTable.sql` | Первое появление `v2.Region_Snapshot` |
+| `044.vw_Region_SnapshotSource.sql` | Проекция из `dbo.vw_Region`; выполняется до заливки |
+| `045.02.Region_Insert.sql` | Полная заливка и курсор `v2.SyncState` по 1008, 1009 |
+| `046.03.Region_CreateIndexes.sql` | Уникальный индекс, фильтры по `Code` и коротким enum, индексы по ключу и `CountryId`, full-text |
+| `047.01.Country_CreateTable.sql` | Первое появление `v2.Country_Snapshot` |
+| `048.vw_Country_SnapshotSource.sql` | Проекция из `dbo.vw_Country`; выполняется до заливки |
+| `049.02.Country_Insert.sql` | Полная заливка и курсор `v2.SyncState` по `dbo.PrimitiveEntityData_1009` |
+| `050.03.Country_CreateIndexes.sql` | Уникальный индекс, фильтр по `Code` и `StatusId`, индекс по ключу, full-text |
+| `051.All_Programmability.sql` | Полный снимок programmability, 63 скрипта (2026-11-20) |
 
 Contractor (SVT-5290) — справочник с watermark-sync. Примитив LegalType, чтение из `dbo.vw_LegalType`. `001` добавляет `RowVer` на `dbo.PrimitiveEntityData_2028`.
 
-Coefficient — справочник с watermark-sync. `009` добавляет `RowVer` на `dbo.PrimitiveEntityData_2081`. CoefficientType (2077) и RateType (2048) — enum, в каскад не входят. `vw_Coefficient_Detail` и `sp_Coefficient_PopulateAffectedKeys` — в снимке `033`.
+Coefficient — справочник с watermark-sync. `009` добавляет `RowVer` на `dbo.PrimitiveEntityData_2081`. CoefficientType (2077) и RateType (2048) — enum, в каскад не входят. `vw_Coefficient_Detail` и `sp_Coefficient_PopulateAffectedKeys` — в снимке `051`.
 
-RateSyncClass — класс simple, разовый снимок. `RowVer` на `dbo.PrimitiveEntityData_2127` не добавлялся. `vw_RateSyncClass_Detail` — в снимке `033`. Процедуры PopulateAffectedKeys нет.
+RateSyncClass — класс simple, разовый снимок. `RowVer` на `dbo.PrimitiveEntityData_2127` не добавлялся. `vw_RateSyncClass_Detail` — в снимке `051`. Процедуры PopulateAffectedKeys нет.
 
-RateCalcType — класс simple, разовый снимок. `RowVer` на `dbo.PrimitiveEntityData_2092` не добавлялся. `vw_RateCalcType_Detail` — в снимке `033`. Процедуры PopulateAffectedKeys нет.
+RateCalcType — класс simple, разовый снимок. `RowVer` на `dbo.PrimitiveEntityData_2092` не добавлялся. `vw_RateCalcType_Detail` — в снимке `051`. Процедуры PopulateAffectedKeys нет.
 
-RateAutoSelectionSetting — справочник с watermark-sync. `023` добавляет новый `RowVer` на `dbo.PrimitiveEntityData_2101`. Других источников нет. `vw_RateAutoSelectionSetting_Detail` и `sp_RateAutoSelectionSetting_PopulateAffectedKeys` — в снимке `033`.
+RateAutoSelectionSetting — справочник с watermark-sync. `023` добавляет новый `RowVer` на `dbo.PrimitiveEntityData_2101`. Других источников нет. `vw_RateAutoSelectionSetting_Detail` и `sp_RateAutoSelectionSetting_PopulateAffectedKeys` — в снимке `051`.
 
-ReportConstructor — справочник с watermark-sync. `028` добавляет новый `RowVer` на `dbo.PrimitiveEntityData_2130`. `RowVer` на LocationsNodes (1014), ProductGroup (1013) и MTR (1015) уже был. `vw_ReportConstructor_Detail` и `sp_ReportConstructor_PopulateAffectedKeys` — в снимке `033`.
+ReportConstructor — справочник с watermark-sync. `028` добавляет новый `RowVer` на `dbo.PrimitiveEntityData_2130`. `RowVer` на LocationsNodes (1014), ProductGroup (1013) и MTR (1015) уже был. `vw_ReportConstructor_Detail` и `sp_ReportConstructor_PopulateAffectedKeys` — в снимке `051`.
 
-Файл `008` — прежнее имя снимка programmability: после дельты Coefficient его переименовали в `014`. Файл `014` — прежнее имя снимка: после дельты этого батча его переименовали в `033`. Актуальный полный снимок — `033`.
+Relevance — класс simple, разовый снимок. `RowVer` на `dbo.PrimitiveEntityData_2108` не добавлялся. `vw_Relevance_Detail` — в снимке `051`. Процедуры PopulateAffectedKeys нет.
+
+TransportRoute — справочник с watermark-sync. `038` добавляет новый `RowVer` и NC-индекс на `dbo.PrimitiveEntityData_2010`. `RowVer` на LocationsNodes (1014) и Region (1008) уже был. `vw_TransportRoute_Detail` и `sp_TransportRoute_PopulateAffectedKeys` — в снимке `051`.
+
+Region — справочник с watermark-sync. Новый `RowVer` не добавлялся: на `dbo.PrimitiveEntityData_1008` и `dbo.PrimitiveEntityData_1009` он уже есть. `vw_Region_Detail` и `sp_Region_PopulateAffectedKeys` — в снимке `051`.
+
+Country — справочник с watermark-sync. Новый `RowVer` не добавлялся: на `dbo.PrimitiveEntityData_1009` он уже есть. `vw_Country_Detail` и `sp_Country_PopulateAffectedKeys` — в снимке `051`.
+
+Файл `008` — прежнее имя снимка programmability: после дельты Coefficient его переименовали в `014`. Файл `014` — прежнее имя снимка: после дельты RateSyncClass, RateCalcType, RateAutoSelectionSetting и ReportConstructor его переименовали в `033`. Файл `033` — прежнее имя снимка: после дельты Relevance, TransportRoute, Region и Country его переименовали в `051`. Актуальный полный снимок — `051`.
 
 ## Чеклист нового релиза
 

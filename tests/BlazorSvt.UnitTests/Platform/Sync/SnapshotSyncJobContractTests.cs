@@ -6,6 +6,10 @@ using BlazorSvt.Modules.ParityRates.List;
 using BlazorSvt.Modules.ParityRates.Sync;
 using BlazorSvt.Modules.Coefficient.List;
 using BlazorSvt.Modules.Coefficient.Sync;
+using BlazorSvt.Modules.Country.List;
+using BlazorSvt.Modules.Country.Sync;
+using BlazorSvt.Modules.Region.List;
+using BlazorSvt.Modules.Region.Sync;
 using BlazorSvt.Modules.Contractor.List;
 using BlazorSvt.Modules.Contractor.Sync;
 using BlazorSvt.Modules.MTR.List;
@@ -20,6 +24,8 @@ using BlazorSvt.Modules.TransportLeg.List;
 using BlazorSvt.Modules.TransportLeg.Sync;
 using BlazorSvt.Modules.TransportRate.List;
 using BlazorSvt.Modules.TransportRate.Sync;
+using BlazorSvt.Modules.TransportRoute.List;
+using BlazorSvt.Modules.TransportRoute.Sync;
 using BlazorSvt.Platform.Grid.Services;
 using BlazorSvt.Platform.Sync;
 using FluentAssertions;
@@ -146,6 +152,33 @@ public class SnapshotSyncJobContractTests
                 "v2.vw_ReportConstructor_SnapshotSource",
                 "v2.ReportConstructor_PopulateAffectedKeys"
             },
+            {
+                new CountrySyncJob(),
+                typeof(CountryDto),
+                "Country",
+                "v2.Country_Snapshot",
+                nameof(CountryDto.CountryId),
+                "v2.vw_Country_SnapshotSource",
+                "v2.Country_PopulateAffectedKeys"
+            },
+            {
+                new RegionSyncJob(),
+                typeof(RegionDto),
+                "Region",
+                "v2.Region_Snapshot",
+                nameof(RegionDto.RegionId),
+                "v2.vw_Region_SnapshotSource",
+                "v2.Region_PopulateAffectedKeys"
+            },
+            {
+                new TransportRouteSyncJob(),
+                typeof(TransportRouteDto),
+                "TransportRoute",
+                "v2.TransportRoute_Snapshot",
+                nameof(TransportRouteDto.TransportRouteId),
+                "v2.vw_TransportRoute_SnapshotSource",
+                "v2.TransportRoute_PopulateAffectedKeys"
+            },
         };
 
     public static IEnumerable<object[]> AllJobs()
@@ -257,6 +290,27 @@ public class SnapshotSyncJobContractTests
         sources.Should().Equal(
             "dbo.PrimitiveEntityData_1015", // MTR (основная)
             "dbo.PrimitiveEntityData_1013"); // ProductGroup
+    }
+
+    [Fact]
+    public void RegionJob_TracksCountryCascade()
+    {
+        var sources = new RegionSyncJob().Sources.Select(s => s.Name);
+
+        sources.Should().Equal(
+            "dbo.PrimitiveEntityData_1008", // Region (основная)
+            "dbo.PrimitiveEntityData_1009"); // Country
+    }
+
+    [Fact]
+    public void TransportRouteJob_TracksNodesAndRegionCascade()
+    {
+        var sources = new TransportRouteSyncJob().Sources.Select(s => s.Name);
+
+        sources.Should().Equal(
+            "dbo.PrimitiveEntityData_2010", // TransportRoute (основная)
+            "dbo.PrimitiveEntityData_1014", // LocationsNodes
+            "dbo.PrimitiveEntityData_1008"); // Region
     }
 
     [Fact]
