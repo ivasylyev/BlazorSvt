@@ -15,32 +15,50 @@ public sealed class ApiCatalogDataTests : IClassFixture<ApiDataTestFactory>
 {
     private static readonly string[] CatalogCodes =
     [
-        "transport-legs",
         "transport-rates",
-        "average-rates-level3",
         "parity-rates",
+        "relevances",
+        "average-rates-level3",
+        "transport-legs",
         "locations-nodes",
         "rate-types",
+        "rate-sync-classes",
+        "rate-calc-types",
+        "rate-auto-selection-settings",
+        "report-constructors",
+        "contractors",
+        "coefficients",
         "currencies",
         "product-groups",
+        "products",
         "transport-types-level-3",
-        "coefficients",
-        "relevances"
+        "countries",
+        "regions",
+        "transport-routes"
     ];
 
     private static readonly (string Catalog, string EntityKey)[] CatalogKeys =
     [
-        ("transport-legs", "transportLegId"),
         ("transport-rates", "transportRateId"),
-        ("average-rates-level3", "averageRateLevel3Id"),
         ("parity-rates", "parityRatesId"),
+        ("relevances", "relevanceId"),
+        ("average-rates-level3", "averageRateLevel3Id"),
+        ("transport-legs", "transportLegId"),
         ("locations-nodes", "locationsNodesId"),
         ("rate-types", "rateTypeId"),
+        ("rate-sync-classes", "rateSyncClassId"),
+        ("rate-calc-types", "rateCalcTypeId"),
+        ("rate-auto-selection-settings", "rateAutoSelectionSettingId"),
+        ("report-constructors", "reportConstructorId"),
+        ("contractors", "contractorId"),
+        ("coefficients", "coefficientId"),
         ("currencies", "currencyId"),
         ("product-groups", "productGroupId"),
+        ("products", "mtrId"),
         ("transport-types-level-3", "transportTypeLevel3Id"),
-        ("coefficients", "coefficientId"),
-        ("relevances", "relevanceId")
+        ("countries", "countryId"),
+        ("regions", "regionId"),
+        ("transport-routes", "transportRouteId")
     ];
 
     private readonly ApiDataTestFactory factory;
