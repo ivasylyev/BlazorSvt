@@ -124,12 +124,14 @@ WHERE e.Name = N'{RegistryName}';
 | Currency | `CurrencyRuEn` (один файл, без пары Ru/En) |
 | Relevance | `RelevanceRu`, `RelevanceEn` |
 | TypeNode | `Modules/LocationsNodes/List/IdsEnum/TypeNodeRu`, `TypeNodeEn` |
+| RateSyncClass | `Platform/Domain/IdsEnum/RateSyncClassRu`, `RateSyncClassEn` |
+| RateCalcType | `Platform/Domain/IdsEnum/RateCalcTypeRu`, `RateCalcTypeEn` |
 
 `TransportType` в этот класс не входит. Enum уже есть: `Platform/Domain/IdsEnum/TransportTypeRu`, `TransportTypeEn`. Собственный RO-грид делается со watermark-sync: `RowVer`, `TransportTypeSyncJob`, `sp_TransportType_PopulateAffectedKeys`, инициализация `v2.SyncState`. Чужие гриды этот справочник в каскад не включают и показывают enum. То, что чужой грид не каскадит на справочник, разовый снимок для его собственного грида не задаёт.
 
 `ShipmentType` в класс не входит: отдельного enum нет. У TransportLeg тип отправки — сырой `ShipmentTypeCodeT`. Справочники «хранит константы» без enum не входят, пока enum не появится.
 
-`RateSyncClass` в этот класс не входит: в реестре это обычный RO со sync (backlog 15.10.13). Enum сам по себе класс не задаёт. `TypePlace` вне скоупа (исторический, вместо него TypeNode): свой RO-грид не делать; enum `LocationType*` остаётся для LocationsNodes.
+`RateSyncClass` входит в таблицу выше: enum уже есть, свой грид — разовый снимок, без `RowVer` и `SyncJob`. Enum сам по себе класс не задаёт: в класс справочник попадает решением, не фактом enum. `TypePlace` вне скоупа (исторический, вместо него TypeNode): свой RO-грид не делать; enum `LocationType*` остаётся для LocationsNodes.
 
 Решение для собственного RO-грида такого справочника (принято на RateType, то же для остальных строк таблицы):
 

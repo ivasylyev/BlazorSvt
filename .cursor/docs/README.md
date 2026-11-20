@@ -23,6 +23,7 @@ atlas
 |---|---|---|
 | [svt-architecture](svt/svt-architecture.md) | агент | Канон СВТ 2.0: на каждый вопрос один файл |
 | [add-reference-book](svt/add-reference-book.md) | агент | Read-only справочник из легаси. Редактор, загрузчик и заявки — вне скила |
+| [svt-catalog-migration-orchestrator](svt/svt-catalog-migration-orchestrator.md) | человек (явный вызов) | Конвейер миграции RO-справочников; канон правил — add-reference-book |
 | [create-programmability](svt/create-programmability.md) | человек `/create_programmability` и агент | Накат Programmability на localhost/`mdm` |
 | [publish-all-sql](svt/publish-all-sql.md) | человек `/publish_all_sql` и агент | Копия SQL в каталог деплоя `C:\publish\v2` |
 | [grill-with-docs](svt/grill-with-docs.md) | агент | Интервью по ещё не записанному плану; термин — в `glossary.md` |

@@ -141,6 +141,18 @@
   <data name="HeaderMenu.RateType" xml:space="preserve">
 	  <value>Rate type</value>
   </data>
+  <data name="HeaderMenu.RateSyncClass" xml:space="preserve">
+	  <value>Rate synchronization class</value>
+  </data>
+  <data name="HeaderMenu.RateCalcType" xml:space="preserve">
+	  <value>Rate calculation type</value>
+  </data>
+  <data name="HeaderMenu.RateAutoSelectionSetting" xml:space="preserve">
+	  <value>Rate auto-selection settings</value>
+  </data>
+  <data name="HeaderMenu.ReportConstructor" xml:space="preserve">
+	  <value>Report constructor</value>
+  </data>
   <data name="HeaderMenu.Currency" xml:space="preserve">
 	  <value>Currencies</value>
   </data>

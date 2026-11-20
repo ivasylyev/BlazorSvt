@@ -4,6 +4,10 @@ using BlazorSvt.Modules.Contractor.List;
 using BlazorSvt.Modules.Currency.List;
 using BlazorSvt.Modules.MTR.List;
 using BlazorSvt.Modules.ProductGroup.List;
+using BlazorSvt.Modules.RateAutoSelectionSetting.List;
+using BlazorSvt.Modules.RateCalcType.List;
+using BlazorSvt.Modules.ReportConstructor.List;
+using BlazorSvt.Modules.RateSyncClass.List;
 using BlazorSvt.Modules.RateType.List;
 using BlazorSvt.Modules.ParityRates.List;
 using BlazorSvt.Modules.TransportLeg.List;
@@ -91,6 +95,42 @@ public class GridColumnMetadataBuilderTests
 
         metadata.TableName.Should().Be("v2.RateType_Snapshot");
         metadata.EntityKeyPropertyName.Should().Be(nameof(RateTypeDto.RateTypeId));
+    }
+
+    [Fact]
+    public void GetMetadata_RateSyncClass_UsesSnapshotTableAndEntityKey()
+    {
+        var metadata = GridColumnMetadataBuilder.GetMetadata(typeof(RateSyncClassDto));
+
+        metadata.TableName.Should().Be("v2.RateSyncClass_Snapshot");
+        metadata.EntityKeyPropertyName.Should().Be(nameof(RateSyncClassDto.RateSyncClassId));
+    }
+
+    [Fact]
+    public void GetMetadata_RateCalcType_UsesSnapshotTableAndEntityKey()
+    {
+        var metadata = GridColumnMetadataBuilder.GetMetadata(typeof(RateCalcTypeDto));
+
+        metadata.TableName.Should().Be("v2.RateCalcType_Snapshot");
+        metadata.EntityKeyPropertyName.Should().Be(nameof(RateCalcTypeDto.RateCalcTypeId));
+    }
+
+    [Fact]
+    public void GetMetadata_RateAutoSelectionSetting_UsesSnapshotTableAndEntityKey()
+    {
+        var metadata = GridColumnMetadataBuilder.GetMetadata(typeof(RateAutoSelectionSettingDto));
+
+        metadata.TableName.Should().Be("v2.RateAutoSelectionSetting_Snapshot");
+        metadata.EntityKeyPropertyName.Should().Be(nameof(RateAutoSelectionSettingDto.RateAutoSelectionSettingId));
+    }
+
+    [Fact]
+    public void GetMetadata_ReportConstructor_UsesSnapshotTableAndEntityKey()
+    {
+        var metadata = GridColumnMetadataBuilder.GetMetadata(typeof(ReportConstructorDto));
+
+        metadata.TableName.Should().Be("v2.ReportConstructor_Snapshot");
+        metadata.EntityKeyPropertyName.Should().Be(nameof(ReportConstructorDto.ReportConstructorId));
     }
 
     [Fact]

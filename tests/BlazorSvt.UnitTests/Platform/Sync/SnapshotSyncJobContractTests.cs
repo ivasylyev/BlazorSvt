@@ -12,6 +12,10 @@ using BlazorSvt.Modules.MTR.List;
 using BlazorSvt.Modules.MTR.Sync;
 using BlazorSvt.Modules.ProductGroup.List;
 using BlazorSvt.Modules.ProductGroup.Sync;
+using BlazorSvt.Modules.RateAutoSelectionSetting.List;
+using BlazorSvt.Modules.RateAutoSelectionSetting.Sync;
+using BlazorSvt.Modules.ReportConstructor.List;
+using BlazorSvt.Modules.ReportConstructor.Sync;
 using BlazorSvt.Modules.TransportLeg.List;
 using BlazorSvt.Modules.TransportLeg.Sync;
 using BlazorSvt.Modules.TransportRate.List;
@@ -124,6 +128,24 @@ public class SnapshotSyncJobContractTests
                 "v2.vw_Coefficient_SnapshotSource",
                 "v2.Coefficient_PopulateAffectedKeys"
             },
+            {
+                new RateAutoSelectionSettingSyncJob(),
+                typeof(RateAutoSelectionSettingDto),
+                "RateAutoSelectionSetting",
+                "v2.RateAutoSelectionSetting_Snapshot",
+                nameof(RateAutoSelectionSettingDto.RateAutoSelectionSettingId),
+                "v2.vw_RateAutoSelectionSetting_SnapshotSource",
+                "v2.RateAutoSelectionSetting_PopulateAffectedKeys"
+            },
+            {
+                new ReportConstructorSyncJob(),
+                typeof(ReportConstructorDto),
+                "ReportConstructor",
+                "v2.ReportConstructor_Snapshot",
+                nameof(ReportConstructorDto.ReportConstructorId),
+                "v2.vw_ReportConstructor_SnapshotSource",
+                "v2.ReportConstructor_PopulateAffectedKeys"
+            },
         };
 
     public static IEnumerable<object[]> AllJobs()
@@ -217,6 +239,14 @@ public class SnapshotSyncJobContractTests
         var sources = new CoefficientSyncJob().Sources.Select(s => s.Name);
 
         sources.Should().Equal("dbo.PrimitiveEntityData_2081");
+    }
+
+    [Fact]
+    public void RateAutoSelectionSettingJob_TracksRateAutoSelectionSettingOnly()
+    {
+        var sources = new RateAutoSelectionSettingSyncJob().Sources.Select(s => s.Name);
+
+        sources.Should().Equal("dbo.PrimitiveEntityData_2101");
     }
 
     [Fact]
