@@ -5,6 +5,8 @@
 
 Эталоны: `AverageRateLevel3`, `TransportLeg`, `TransportRate`, `LocationsNodes`.
 
+Читать раздел «Правила». Строку поля искать по имени. Блоки `###` чужих справочников не читать.
+
 ---
 
 ## Правила
@@ -24,8 +26,8 @@
 | Exact pair | По умолчанию `{Entity}Dto.X` ↔ `{Entity}DetailDto.X` |
 | Белый список | Доп. семантические пары — см. [Белый список](#белый-список-семантических-пар) |
 | `Name` vs `NameRu`/`NameEn` | Grid `Name` сокращать; Detail `NameRu`/`NameEn` **не** авто-парить с `Name` |
-| Неизвестное поле | Сократить по правилам выше, **предложить пользователю на approve**, затем внести в этот глоссарий |
-| Обогащение | Новое общее поле или approve неизвестного → **дописать строку** в таблицу глоссария |
+| Неизвестное поле | Сократить по правилам выше, применить и назвать подпись в отчёте. Вопрос пользователю — только если два правила этой таблицы дают разные подписи |
+| Обогащение | Новое общее поле → **дописать строку** в таблицу глоссария. Отдельный approve на каждое поле не нужен |
 
 ### Источник «полного» имени для скобок Detail
 
@@ -51,7 +53,7 @@
 1. Взять ключи грида из `{Entity}GridSettingsService` (`L["{Entity}Dto.…"]`).
 2. Для каждого ключа:
    - если поле есть в [глоссарии](#глоссарий) → подставить RU/EN short в `{Entity}Dto.*`;
-   - если нет → предложить short (правила выше), получить approve, **дописать в глоссарий**, затем применить.
+   - если нет → сократить по правилам выше, применить и **дописать в глоссарий**. Подпись назвать в отчёте. Вопрос — только если два правила дают разные подписи.
 3. Для парного Detail (exact или белый список):
    - `full` = текущее значение Detail (после генерации из MDM — это MDM full);
    - если `short == full` → Detail не менять;
@@ -170,6 +172,10 @@
 | Подъём узла назначения до страны | `DestinationNodeToCountry` | До страны | — | To country | — |
 | Подъём продукта до группы продуктов | `ProductToProductGroup` | До группы | — | To group | — |
 | Любой тип транспорта | `AnyTransportKind` | Любой вид | — | Any kind | — |
+| Код ISO страны | `ISOCode` | Код ISO | — | ISO code | — |
+| Код для планирования | `PlanCode` | Код план. | — | Plan code | — |
+| Макрорегион | `Market` | Макрорегион | — | Macroregion | — |
+| Обозначение страны | `ISOCode3` | Обозначение | — | Designation | — |
 
 `RateTypeCode` в grid settings может отсутствовать — short применяют только если ключ реально используется в гриде; иначе ключ считается мёртвым для правки.
 
@@ -190,6 +196,7 @@
 | `SearchCode` | Код для поиска | Search code | Код поиска | Search code |
 | `ProductCode` | Код продукта | Product code | Код продукта | Product code |
 | `IsBasic_forCBD` | Основной тип транспорта для ЦБД | Basic transport type for CBD | Осн. ЦБД | CBD basic |
+| `Market` | Макрорегион | Macroregion | Макрорегион | Macroregion |
 
 ### Coefficient
 
@@ -235,3 +242,31 @@
 | `DestinationNodeToCountry` | Подъём узла назначения до страны | Raise destination node to country | До страны | To country |
 | `ProductToProductGroup` | Подъём продукта до группы продуктов | Raise product to product group | До группы | To group |
 | `AnyTransportKind` | Любой тип транспорта | Any transport kind | Любой вид | Any kind |
+
+### Region
+
+Согласовано для грида и карточки Region. `Code`, `Code_NSI`, `RegionCode` («Код региона» / `Region code`), `CountryName` и системные поля — из общего глоссария. `NameRu` и `NameEn` — две колонки; подписи не из строк `Name` / `NameEn`. У `Status` короткое имя общее, полное на карточке — «Статус записи» / `Record status`.
+
+| Key | RU полное | EN полное | RU short | EN short |
+|-----|-----------|-----------|----------|----------|
+| `RegionCodePlanning` | Код региона для планирования | Region code for planning | Код план. | Plan code |
+| `RegionCodeRF` | Код региона РФ | Russian region code | Код РФ | RF code |
+| `NameRu` | Регион (RU) | Регион (RU) | Регион (RU) | Регион (RU) |
+| `NameEn` | Регион (EN) | Регион (EN) | Регион (EN) | Регион (EN) |
+| `Market` | Макрорегион | Macroregion | Макрорегион | Macroregion |
+| `Status` (`StatusIdRu`/`En`) | Статус записи | Record status | Статус | Status |
+| `FederalDistricts` (`FederalDistrictsIdRu`/`En`) | Федеральные округа | Federal district | Фед. округ | Fed. district |
+
+### TransportRoute
+
+Согласовано для грида и карточки TransportRoute. `Code` в гриде — «Код» / `Code`, на карточке RU — «Код (Код СВТ)». `StartNode*` повторяет short `NodeFrom*`, `EndNode*` — `NodeTo*`. `ProxyNode*`, `RegionFrom*`, `RegionTo*` и `RouteTransportKindName` (как `TransportKindName`) — из общего глоссария. `CodeSAP` — тот же short, что `SAPCode`. Detail-only без сокращения: `ShortNameRu`, `ShortNameEN`, `NameEN`, `Leg_01Code`, `Leg_02Code`, `Leg_03Code`.
+
+| Key | RU полное | EN полное | RU short | EN short |
+|-----|-----------|-----------|----------|----------|
+| `Code` | Код СВТ | Code | Код | Code |
+| `CodeSAP` | Код SAP | SAP code | Код SAP | SAP code |
+| `Route` | Путь | Route | Путь | Route |
+| `IsActive` | Маршрут активен | Route is active | Активен | Active |
+| `ChainNodes` | Цепочка маршрута | Route chain | Цепочка | Chain |
+| `Leg1_TransportTypeName` (`Leg1_TransportTypeIdRu`/`En`) | Плечо 1.Тип транспорта | Leg 1 transport type | Тип 1 | Type 1 |
+| `Leg2_TransportTypeName` (`Leg2_TransportTypeIdRu`/`En`) | Плечо 2.Тип транспорта | Leg 2 transport type | Тип 2 | Type 2 |

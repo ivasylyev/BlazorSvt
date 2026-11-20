@@ -133,6 +133,10 @@ OpenAPI/Swagger UI: TrustedClients обязателен; **`X-On-Behalf-Of` дл
 | `rate-calc-types` | Способ расчёта ставки |
 | `rate-auto-selection-settings` | Настройка автоподбора ставок |
 | `report-constructors` | Конструктор отчётов |
+| `relevances` | Актуальность |
+| `transport-routes` | Транспортный маршрут |
+| `regions` | Регион |
+| `countries` | Страна |
 
 Актуальный список всегда берите из `GET /catalogs` или из OpenAPI. Новый справочник появляется после регистрации в СВТ 2.0 — отдельный «второй» контракт не нужен.
 

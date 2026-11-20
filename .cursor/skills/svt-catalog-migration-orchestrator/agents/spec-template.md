@@ -17,7 +17,7 @@
 | «Меню ЕО» → `VisibleToEditor` | |
 | Маршрут `@page` | `/{entity}` |
 | Код API (kebab, мн. ч.) | |
-| Ключ / имя переменной Postman | `{Entity}Id` / `{entity}Id` |
+| Ключ / имя переменной Postman | `{Entity}Id` / camelCase от него (`TransportRouteId` → `transportRouteId`) |
 | Период действия (`CatalogPeriod`) | нет / `StartDate`–`EndDate` / `StartDate`–`FinishDate` / `DateFrom`–`DateTo` |
 | Строка catalogs-scope (цитата) | |
 
@@ -49,7 +49,7 @@
 | Тип | Файл | Id | Член | Display RU | Display EN | NULL в данных | Пометка |
 |---|---|---|---|---|---|---|---|
 
-Пометка — ветка имени по §7 `add-reference-book/discovery.md` (Code / источник цепочки Name / транслит), коллизия, расхождение с существующим enum.
+Пометка — ветка имени по §7 `add-reference-book/discovery-rules.md` (Code / источник цепочки Name / транслит), коллизия, расхождение с существующим enum.
 
 ## 6. Sync (только complex)
 

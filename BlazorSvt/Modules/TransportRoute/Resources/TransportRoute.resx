@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <resheader name="resmimetype"><value>text/microsoft-resx</value></resheader>
+  <resheader name="version"><value>2.0</value></resheader>
+  <resheader name="reader"><value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value></resheader>
+  <resheader name="writer"><value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value></resheader>
+  <data name="TransportRouteGrid.Title" xml:space="preserve"><value>Transport route</value></data>
+  <data name="TransportRouteDto.Code" xml:space="preserve"><value>Code</value></data>
+  <data name="TransportRouteDto.CodeSAP" xml:space="preserve"><value>SAP code</value></data>
+  <data name="TransportRouteDto.Route" xml:space="preserve"><value>Route</value></data>
+  <data name="TransportRouteDto.StartNodeCode" xml:space="preserve"><value>From code</value></data>
+  <data name="TransportRouteDto.StartNodeName" xml:space="preserve"><value>From</value></data>
+  <data name="TransportRouteDto.RegionFromCode" xml:space="preserve"><value>Reg. from</value></data>
+  <data name="TransportRouteDto.RegionFromName" xml:space="preserve"><value>Region from</value></data>
+  <data name="TransportRouteDto.ProxyNodeCode" xml:space="preserve"><value>Proxy code</value></data>
+  <data name="TransportRouteDto.ProxyNodeName" xml:space="preserve"><value>Proxy</value></data>
+  <data name="TransportRouteDto.EndNodeCode" xml:space="preserve"><value>To code</value></data>
+  <data name="TransportRouteDto.EndNodeName" xml:space="preserve"><value>To</value></data>
+  <data name="TransportRouteDto.RegionToCode" xml:space="preserve"><value>Reg. to</value></data>
+  <data name="TransportRouteDto.RegionToName" xml:space="preserve"><value>Region to</value></data>
+  <data name="TransportRouteDto.RouteTransportKindName" xml:space="preserve"><value>Transport kind</value></data>
+  <data name="TransportRouteDto.IsActive" xml:space="preserve"><value>Active</value></data>
+  <data name="TransportRouteDto.Leg1_TransportTypeName" xml:space="preserve"><value>Type 1</value></data>
+  <data name="TransportRouteDto.Leg2_TransportTypeName" xml:space="preserve"><value>Type 2</value></data>
+  <data name="TransportRouteDto.ChainNodes" xml:space="preserve"><value>Chain</value></data>
+  <data name="TransportRouteDto.CreationDate" xml:space="preserve"><value>Created</value></data>
+  <data name="TransportRouteDto.LastChangeDate" xml:space="preserve"><value>Changed</value></data>
+  <data name="TransportRouteDto.IsArchive" xml:space="preserve"><value>Archive</value></data>
+  <data name="TransportRouteDetailDto.Code" xml:space="preserve"><value>Code</value></data>
+  <data name="TransportRouteDetailDto.CodeSAP" xml:space="preserve"><value>SAP code</value></data>
+  <data name="TransportRouteDetailDto.IsActive" xml:space="preserve"><value>Active (Route is active)</value></data>
+  <data name="TransportRouteDetailDto.Route" xml:space="preserve"><value>Route</value></data>
+  <data name="TransportRouteDetailDto.StartNodeName" xml:space="preserve"><value>From (Departure node)</value></data>
+  <data name="TransportRouteDetailDto.StartNodeCode" xml:space="preserve"><value>From code</value></data>
+  <data name="TransportRouteDetailDto.RegionFromName" xml:space="preserve"><value>Region from (Departure region)</value></data>
+  <data name="TransportRouteDetailDto.RegionFromCode" xml:space="preserve"><value>Reg. from</value></data>
+  <data name="TransportRouteDetailDto.ProxyNodeName" xml:space="preserve"><value>Proxy (Proxy node)</value></data>
+  <data name="TransportRouteDetailDto.ProxyNodeCode" xml:space="preserve"><value>Proxy code</value></data>
+  <data name="TransportRouteDetailDto.EndNodeName" xml:space="preserve"><value>To (Destination node)</value></data>
+  <data name="TransportRouteDetailDto.EndNodeCode" xml:space="preserve"><value>To code</value></data>
+  <data name="TransportRouteDetailDto.RegionToName" xml:space="preserve"><value>Region to (Destination region)</value></data>
+  <data name="TransportRouteDetailDto.RegionToCode" xml:space="preserve"><value>Reg. to</value></data>
+  <data name="TransportRouteDetailDto.RouteTransportKindName" xml:space="preserve"><value>Transport kind</value></data>
+  <data name="TransportRouteDetailDto.Leg1_TransportTypeName" xml:space="preserve"><value>Type 1 (Leg 1 transport type)</value></data>
+  <data name="TransportRouteDetailDto.Leg2_TransportTypeName" xml:space="preserve"><value>Type 2 (Leg 2 transport type)</value></data>
+  <data name="TransportRouteDetailDto.ShortNameRu" xml:space="preserve"><value>Short name (RU)</value></data>
+  <data name="TransportRouteDetailDto.ShortNameEN" xml:space="preserve"><value>Short name (EN)</value></data>
+  <data name="TransportRouteDetailDto.NameEN" xml:space="preserve"><value>Name (EN)</value></data>
+  <data name="TransportRouteDetailDto.ChainNodes" xml:space="preserve"><value>Chain (Route chain)</value></data>
+  <data name="TransportRouteDetailDto.Leg_01Code" xml:space="preserve"><value>Leg 01</value></data>
+  <data name="TransportRouteDetailDto.Leg_02Code" xml:space="preserve"><value>Leg 02</value></data>
+  <data name="TransportRouteDetailDto.Leg_03Code" xml:space="preserve"><value>Leg 03</value></data>
+  <data name="TransportRouteDetailDto.IsArchive" xml:space="preserve"><value>Archive</value></data>
+  <data name="TransportRouteDetailDto.CreationDate" xml:space="preserve"><value>Created</value></data>
+  <data name="TransportRouteDetailDto.LastChangeDate" xml:space="preserve"><value>Changed</value></data>
+  <data name="TransportRouteDetailDto.Group.0.Default" xml:space="preserve"><value>Default</value></data>
+</root>

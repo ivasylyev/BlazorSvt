@@ -32,7 +32,7 @@
 
 `{Entity}` — имя модуля, папки, DTO и снимка. `{LegacyName}` — имя основного примитива. Правило `_`, таблица переименований и список словарей с enum — в [`SKILL.md`](../../skills/add-reference-book/SKILL.md). `TransportType` в класс разового снимка не входит: собственный RO-грид делается со watermark-sync, хотя enum уже есть.
 
-Фазы читаются по одной: `discovery.md`, затем `sql.md`, затем `csharp.md`. Короткие заголовки грида после генерации resx — `grid-column-glossary.md`.
+Фазы читаются по одной: `discovery-rules.md`, затем `sql.md`, затем `csharp.md`. Запросы фазы 1 — `discovery-queries.md`, только на время `SELECT`. Короткие заголовки грида — раздел «Правила» в `grid-column-glossary.md` и поиск имени поля.
 
 Запросы к легаси и DDL в discovery выполняет read-only субагент. Если родитель Claude, его модель — Grok 4.7. Resx, SQL и C# остаются у родителя.
 

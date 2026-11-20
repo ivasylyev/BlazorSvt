@@ -1,5 +1,6 @@
 using BlazorSvt.Modules.AverageRateLevel3.List;
 using BlazorSvt.Modules.Coefficient.List;
+using BlazorSvt.Modules.Country.List;
 using BlazorSvt.Modules.Contractor.List;
 using BlazorSvt.Modules.Currency.List;
 using BlazorSvt.Modules.MTR.List;
@@ -9,9 +10,12 @@ using BlazorSvt.Modules.RateCalcType.List;
 using BlazorSvt.Modules.ReportConstructor.List;
 using BlazorSvt.Modules.RateSyncClass.List;
 using BlazorSvt.Modules.RateType.List;
+using BlazorSvt.Modules.Relevance.List;
+using BlazorSvt.Modules.Region.List;
 using BlazorSvt.Modules.ParityRates.List;
 using BlazorSvt.Modules.TransportLeg.List;
 using BlazorSvt.Modules.TransportRate.List;
+using BlazorSvt.Modules.TransportRoute.List;
 using BlazorSvt.Modules.TransportTypeLevel3.List;
 using BlazorSvt.Platform.Grid.Models;
 using BlazorSvt.Platform.Grid.Services;
@@ -95,6 +99,33 @@ public class GridColumnMetadataBuilderTests
 
         metadata.TableName.Should().Be("v2.RateType_Snapshot");
         metadata.EntityKeyPropertyName.Should().Be(nameof(RateTypeDto.RateTypeId));
+    }
+
+    [Fact]
+    public void GetMetadata_Relevance_UsesSnapshotTableAndEntityKey()
+    {
+        var metadata = GridColumnMetadataBuilder.GetMetadata(typeof(RelevanceDto));
+
+        metadata.TableName.Should().Be("v2.Relevance_Snapshot");
+        metadata.EntityKeyPropertyName.Should().Be(nameof(RelevanceDto.RelevanceId));
+    }
+
+    [Fact]
+    public void GetMetadata_Country_UsesSnapshotTableAndEntityKey()
+    {
+        var metadata = GridColumnMetadataBuilder.GetMetadata(typeof(CountryDto));
+
+        metadata.TableName.Should().Be("v2.Country_Snapshot");
+        metadata.EntityKeyPropertyName.Should().Be(nameof(CountryDto.CountryId));
+    }
+
+    [Fact]
+    public void GetMetadata_Region_UsesSnapshotTableAndEntityKey()
+    {
+        var metadata = GridColumnMetadataBuilder.GetMetadata(typeof(RegionDto));
+
+        metadata.TableName.Should().Be("v2.Region_Snapshot");
+        metadata.EntityKeyPropertyName.Should().Be(nameof(RegionDto.RegionId));
     }
 
     [Fact]
@@ -185,6 +216,15 @@ public class GridColumnMetadataBuilderTests
 
         metadata.TableName.Should().Be("v2.TransportTypeLevel3_Snapshot");
         metadata.EntityKeyPropertyName.Should().Be(nameof(TransportTypeLevel3Dto.TransportTypeLevel3Id));
+    }
+
+    [Fact]
+    public void GetMetadata_TransportRoute_UsesSnapshotTableAndEntityKey()
+    {
+        var metadata = GridColumnMetadataBuilder.GetMetadata(typeof(TransportRouteDto));
+
+        metadata.TableName.Should().Be("v2.TransportRoute_Snapshot");
+        metadata.EntityKeyPropertyName.Should().Be(nameof(TransportRouteDto.TransportRouteId));
     }
 
     [Fact]
