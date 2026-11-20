@@ -14,7 +14,7 @@
 
 ## Что читать
 
-`add-reference-book/sql.md`. Из `SKILL.md` — только «Системные поля snapshot» и, если класс simple, «Стабильный словарь с enum». Чеклист и файлы discovery не открывай. `Migrations/README.md` — раздел текущего релиза.
+`add-reference-book/sql.md`; если раздел 3а spec не «нет» — раздел «SQL» `add-reference-book/child-primitives.md`. Из `SKILL.md` — только «Системные поля snapshot» и, если класс simple, «Стабильный словарь с enum». Чеклист и файлы discovery не открывай. `Migrations/README.md` — раздел текущего релиза.
 
 ## Батч-отличия (поверх фаз 2–3)
 
@@ -27,8 +27,8 @@
 ## По каждому справочнику
 
 1. `Class` из раздела 1. Выполни фазы 2–3 `sql.md` для этого класса и spec (SoT → накат → «Верификация SQL»).
-2. Дельта в `Migrations/{VersionPrefix}/` на следующие номера: CreateTable, SnapshotSource, Insert, Indexes; Detail и PopulateAffectedKeys — в снимок. `complex` с новым `RowVer` — отдельная дельта до остального (порядок RowVer/курсор — как в `add-reference-book` / эталоне).
-3. `{BatchDir}\{Entity}\sql-report.md`: колонки снимка (имя, тип, NULL), имена detail-view и процедуры, номера дельты, числа проверок; `complex` — RowVer и SyncState. Отличие от spec — «ВОПРОСЫ».
+2. Дельта в `Migrations/{VersionPrefix}/` на следующие номера: CreateTable, SnapshotSource, Insert, Indexes; Detail, `vw_{Child}_Detail` и PopulateAffectedKeys — в снимок. Исправление готового модуля (только проекции детей) дельты не создаёт — только снимок. `complex` с новым `RowVer` — отдельная дельта до остального (порядок RowVer/курсор — как в `add-reference-book` / эталоне).
+3. `{BatchDir}\{Entity}\sql-report.md`: колонки снимка (имя, тип, NULL), имена detail-view, проекций детей с их колонками и процедуры, номера дельты, числа проверок; `complex` — RowVer и SyncState. Отличие от spec — «ВОПРОСЫ».
 
 ## После всех
 

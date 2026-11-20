@@ -168,3 +168,51 @@ WHERE DRu.[Value] = (
 ```
 
 Куда класть заголовок — [discovery-rules.md](discovery-rules.md) §5.
+
+## 6. Дочерние примитивы
+
+Список детей сущности. `ViewExists = 0` — view нет. `ParentKeyColumn` — колонка родителя во view ребёнка.
+
+```sql
+SELECT es.Id AS StructureId, es.ParentId, es.RelationshipType, es.RelationshipAttributeInfoId,
+       p.Id AS PrimitiveEntityInfoId, p.Name AS ChildLegacyName, p.[Description] AS ChildTitleRu,
+       pp.Name + 'Id' AS ParentKeyColumn,
+       CASE WHEN OBJECT_ID('dbo.vw_' + p.Name) IS NULL THEN 0 ELSE 1 END AS ViewExists,
+       CASE WHEN ps.ParentId IS NULL THEN 0 ELSE 1 END AS IsNested
+FROM dbo.EntityInfo e
+JOIN dbo.EntityStructure es ON es.EntityInfoId = e.Id
+JOIN dbo.EntityStructure ps ON ps.Id = es.ParentId
+JOIN dbo.PrimitiveEntityInfo p ON p.Id = es.PrimitiveEntityInfoId
+JOIN dbo.PrimitiveEntityInfo pp ON pp.Id = ps.PrimitiveEntityInfoId
+WHERE e.Name = N'{RegistryName}'
+ORDER BY es.Id;
+```
+
+Объём одного ребёнка:
+
+```sql
+SELECT COUNT(*) AS Total,
+       SUM(CASE WHEN PrimitiveEntityDataStateId = 1 THEN 1 ELSE 0 END) AS Active
+FROM dbo.vw_{ChildLegacyName};
+
+SELECT MAX(Total) AS MaxPerParent, MAX(Active) AS MaxActivePerParent
+FROM (
+    SELECT [{ParentKeyColumn}],
+           COUNT(*) AS Total,
+           SUM(CASE WHEN PrimitiveEntityDataStateId = 1 THEN 1 ELSE 0 END) AS Active
+    FROM dbo.vw_{ChildLegacyName}
+    GROUP BY [{ParentKeyColumn}]
+) t;
+```
+
+Ребёнок — основной примитив другой сущности:
+
+```sql
+SELECT e.Id, e.Name
+FROM dbo.EntityStructure es
+JOIN dbo.EntityInfo e ON e.Id = es.EntityInfoId
+WHERE es.PrimitiveEntityInfoId = {ChildPrimitiveEntityInfoId}
+  AND es.ParentId IS NULL;
+```
+
+Атрибуты, счётчики и переводы ребёнка — §1, §3, §5 с `{LegacyName}` = `{ChildLegacyName}`. Что делать с результатами — [child-primitives.md](child-primitives.md).
