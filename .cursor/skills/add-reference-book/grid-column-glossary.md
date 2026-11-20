@@ -286,3 +286,18 @@
 | `ChainNodes` | Цепочка маршрута | Route chain | Цепочка | Chain |
 | `Leg1_TransportTypeName` (`Leg1_TransportTypeIdRu`/`En`) | Плечо 1.Тип транспорта | Leg 1 transport type | Тип 1 | Type 1 |
 | `Leg2_TransportTypeName` (`Leg2_TransportTypeIdRu`/`En`) | Плечо 2.Тип транспорта | Leg 2 transport type | Тип 2 | Type 2 |
+
+Таблицы дочерних примитивов на карточке TransportRoute — полные имена, short не задаётся.
+
+| Key | RU полное | EN полное | RU short | EN short |
+|-----|-----------|-----------|----------|----------|
+| группа `TransportRouteLeg` | Плечо маршрута | Route leg | — | — |
+| `Code` | Код | Code | — | — |
+| `Step` | Этап | Stage | — | — |
+| `LegCode` | Плечо | Leg | — | — |
+| `NodeFrom` | Узел отправления | Departure node | — | — |
+| `ProxyNode` | Узел промежуточный | Proxy node | — | — |
+| `NodeTo` | Узел назначения | Destination node | — | — |
+| `TransportKind` | Вид транспорта | Means of transportation | — | — |
+| `Leg1_TransportType` | Плечо 1.Тип транспорта | Leg 1 transport type | — | — |
+| `Leg2_TransportType` | Плечо 2.Тип транспорта | Leg 2 transport type | — | — |

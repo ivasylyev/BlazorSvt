@@ -37,6 +37,6 @@
 
 Выполни фазы 4–5 `csharp.md` по spec и `sql-report.md` (enum из раздела 5, в том числе новый файл пары Ru/En, если его ещё нет; DTO, настройки, resx/глоссарий, модуль, меню, API, тесты класса). `Class=complex` — SyncJob, тесты контракта job по фазе 5 и сценарий `{Entity}_IncrementalSync_PropagatesLegacyChange` в `SnapshotSyncIntegrationTests` рядом с уже существующими: стимул в legacy, `RunIncrementalAsync`, проверка снимка, cleanup. `simple` — без `Sync/`, DTO в массив `stableWithoutSyncJob` в `CatalogContractCoverageTests`. Новый enum создан по решению «simple» из раздела 8 — допиши строку справочника с путями enum в таблицу «Стабильный словарь с enum» `add-reference-book/SKILL.md`.
 
-Дочерние примитивы раздела 3а — DTO, секции, регистрация, resx и тесты по `child-primitives.md`. Исправление готового модуля по дефекту ревьюера — только это, остальной модуль не трогать.
+Дочерние примитивы раздела 3а — DTO, секции, регистрация, resx и тесты по `child-primitives.md`. `Режим: доработка` в промпте или исправление по дефекту ревьюера — только это, дефект ревьюера для доработки не нужен. Остальной модуль, SyncJob, API и OpenAPI не трогай.
 
 После тестов — п.6 фазы 6 `csharp.md`: `EXEC v2.GetBlazorGridData` и `v2.ExportBlazorGridDetail` с параметрами из атрибутов своего модуля. Числа сверь с проверкой фазы 3 в `sql-report.md`; расхождение — «ВОПРОСЫ».

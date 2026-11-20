@@ -158,6 +158,7 @@ $fullManifest = @(
   'Modules\TransportRoute\Structure\02.TransportRoute_Insert.sql'
   'Modules\TransportRoute\Structure\03.TransportRoute_CreateIndexes.sql'
   'Modules\TransportRoute\Programmability\vw_TransportRoute_Detail.sql'
+  'Modules\TransportRoute\Programmability\vw_TransportRouteLeg_Detail.sql'
   'Modules\TransportRoute\Programmability\sp_TransportRoute_PopulateAffectedKeys.sql'
   'Modules\Region\Structure\01.Region_CreateTable.sql'
   'Modules\Region\Programmability\vw_Region_SnapshotSource.sql'
