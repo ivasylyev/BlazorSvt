@@ -1669,6 +1669,1026 @@
         }
       }
     },
+    "/api/v1/catalogs/rate-sync-classes/schema": {
+      "get": {
+        "tags": [
+          "rate-sync-classes"
+        ],
+        "summary": "Описание полей справочника rate-sync-classes",
+        "description": "Поля, типы, заголовки (по Accept-Language), операторы фильтра, значения enum, ссылки, период, ключ. Поддерживает ETag.",
+        "operationId": "getRateSyncClassesSchema",
+        "parameters": [
+          {
+            "name": "X-On-Behalf-Of",
+            "in": "header",
+            "description": "Пользователь, от имени которого выполняется запрос: DOMAIN\\user. Права определяются его ролями в СВТ.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "X-Correlation-ID",
+            "in": "header",
+            "description": "Идентификатор корреляции; возвращается в ответе. Если не передан — генерируется.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "description": "ru-RU (по умолчанию) или en-US: язык заголовков полей и текстов ошибок. Данные RU/EN возвращаются как есть.",
+            "schema": {
+              "type": "string"
+            },
+            "example": "ru-RU"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CatalogSchemaResponse"
+                }
+              }
+            }
+          },
+          "304": {
+            "description": "Not Modified"
+          }
+        }
+      }
+    },
+    "/api/v1/catalogs/rate-sync-classes/items/search": {
+      "post": {
+        "tags": [
+          "rate-sync-classes"
+        ],
+        "summary": "Поиск записей справочника rate-sync-classes",
+        "description": "Фильтры объединяются через И; сортировка по одному полю; pageSize 1–1000. По умолчанию без архивных записей. asOf — записи, действующие на дату.",
+        "operationId": "searchRateSyncClasses",
+        "parameters": [
+          {
+            "name": "X-On-Behalf-Of",
+            "in": "header",
+            "description": "Пользователь, от имени которого выполняется запрос: DOMAIN\\user. Права определяются его ролями в СВТ.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "X-Correlation-ID",
+            "in": "header",
+            "description": "Идентификатор корреляции; возвращается в ответе. Если не передан — генерируется.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "description": "ru-RU (по умолчанию) или en-US: язык заголовков полей и текстов ошибок. Данные RU/EN возвращаются как есть.",
+            "schema": {
+              "type": "string"
+            },
+            "example": "ru-RU"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CatalogSearchRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CatalogSearchResponseOfRateSyncClassDto"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HttpValidationProblemDetails"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/catalogs/rate-sync-classes/items/{id}": {
+      "get": {
+        "tags": [
+          "rate-sync-classes"
+        ],
+        "summary": "Карточка записи справочника rate-sync-classes",
+        "description": "id — ключ записи (поле entityKey из /schema). Поля — как в карточке СВТ.",
+        "operationId": "getRateSyncClassesItem",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          },
+          {
+            "name": "X-On-Behalf-Of",
+            "in": "header",
+            "description": "Пользователь, от имени которого выполняется запрос: DOMAIN\\user. Права определяются его ролями в СВТ.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "X-Correlation-ID",
+            "in": "header",
+            "description": "Идентификатор корреляции; возвращается в ответе. Если не передан — генерируется.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "description": "ru-RU (по умолчанию) или en-US: язык заголовков полей и текстов ошибок. Данные RU/EN возвращаются как есть.",
+            "schema": {
+              "type": "string"
+            },
+            "example": "ru-RU"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RateSyncClassDetailDto"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/catalogs/rate-sync-classes/export": {
+      "post": {
+        "tags": [
+          "rate-sync-classes"
+        ],
+        "summary": "Выгрузка справочника rate-sync-classes в Excel",
+        "description": "Файл .xlsx в ответе. kind=Short — колонки грида, kind=Full — поля карточки. Все колонки, без пользовательских настроек.",
+        "operationId": "exportRateSyncClasses",
+        "parameters": [
+          {
+            "name": "X-On-Behalf-Of",
+            "in": "header",
+            "description": "Пользователь, от имени которого выполняется запрос: DOMAIN\\user. Права определяются его ролями в СВТ.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "X-Correlation-ID",
+            "in": "header",
+            "description": "Идентификатор корреляции; возвращается в ответе. Если не передан — генерируется.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "description": "ru-RU (по умолчанию) или en-US: язык заголовков полей и текстов ошибок. Данные RU/EN возвращаются как есть.",
+            "schema": {
+              "type": "string"
+            },
+            "example": "ru-RU"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CatalogExportRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HttpValidationProblemDetails"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/catalogs/rate-calc-types/schema": {
+      "get": {
+        "tags": [
+          "rate-calc-types"
+        ],
+        "summary": "Описание полей справочника rate-calc-types",
+        "description": "Поля, типы, заголовки (по Accept-Language), операторы фильтра, значения enum, ссылки, период, ключ. Поддерживает ETag.",
+        "operationId": "getRateCalcTypesSchema",
+        "parameters": [
+          {
+            "name": "X-On-Behalf-Of",
+            "in": "header",
+            "description": "Пользователь, от имени которого выполняется запрос: DOMAIN\\user. Права определяются его ролями в СВТ.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "X-Correlation-ID",
+            "in": "header",
+            "description": "Идентификатор корреляции; возвращается в ответе. Если не передан — генерируется.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "description": "ru-RU (по умолчанию) или en-US: язык заголовков полей и текстов ошибок. Данные RU/EN возвращаются как есть.",
+            "schema": {
+              "type": "string"
+            },
+            "example": "ru-RU"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CatalogSchemaResponse"
+                }
+              }
+            }
+          },
+          "304": {
+            "description": "Not Modified"
+          }
+        }
+      }
+    },
+    "/api/v1/catalogs/rate-calc-types/items/search": {
+      "post": {
+        "tags": [
+          "rate-calc-types"
+        ],
+        "summary": "Поиск записей справочника rate-calc-types",
+        "description": "Фильтры объединяются через И; сортировка по одному полю; pageSize 1–1000. По умолчанию без архивных записей. asOf — записи, действующие на дату.",
+        "operationId": "searchRateCalcTypes",
+        "parameters": [
+          {
+            "name": "X-On-Behalf-Of",
+            "in": "header",
+            "description": "Пользователь, от имени которого выполняется запрос: DOMAIN\\user. Права определяются его ролями в СВТ.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "X-Correlation-ID",
+            "in": "header",
+            "description": "Идентификатор корреляции; возвращается в ответе. Если не передан — генерируется.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "description": "ru-RU (по умолчанию) или en-US: язык заголовков полей и текстов ошибок. Данные RU/EN возвращаются как есть.",
+            "schema": {
+              "type": "string"
+            },
+            "example": "ru-RU"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CatalogSearchRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CatalogSearchResponseOfRateCalcTypeDto"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HttpValidationProblemDetails"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/catalogs/rate-calc-types/items/{id}": {
+      "get": {
+        "tags": [
+          "rate-calc-types"
+        ],
+        "summary": "Карточка записи справочника rate-calc-types",
+        "description": "id — ключ записи (поле entityKey из /schema). Поля — как в карточке СВТ.",
+        "operationId": "getRateCalcTypesItem",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          },
+          {
+            "name": "X-On-Behalf-Of",
+            "in": "header",
+            "description": "Пользователь, от имени которого выполняется запрос: DOMAIN\\user. Права определяются его ролями в СВТ.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "X-Correlation-ID",
+            "in": "header",
+            "description": "Идентификатор корреляции; возвращается в ответе. Если не передан — генерируется.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "description": "ru-RU (по умолчанию) или en-US: язык заголовков полей и текстов ошибок. Данные RU/EN возвращаются как есть.",
+            "schema": {
+              "type": "string"
+            },
+            "example": "ru-RU"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RateCalcTypeDetailDto"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/catalogs/rate-calc-types/export": {
+      "post": {
+        "tags": [
+          "rate-calc-types"
+        ],
+        "summary": "Выгрузка справочника rate-calc-types в Excel",
+        "description": "Файл .xlsx в ответе. kind=Short — колонки грида, kind=Full — поля карточки. Все колонки, без пользовательских настроек.",
+        "operationId": "exportRateCalcTypes",
+        "parameters": [
+          {
+            "name": "X-On-Behalf-Of",
+            "in": "header",
+            "description": "Пользователь, от имени которого выполняется запрос: DOMAIN\\user. Права определяются его ролями в СВТ.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "X-Correlation-ID",
+            "in": "header",
+            "description": "Идентификатор корреляции; возвращается в ответе. Если не передан — генерируется.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "description": "ru-RU (по умолчанию) или en-US: язык заголовков полей и текстов ошибок. Данные RU/EN возвращаются как есть.",
+            "schema": {
+              "type": "string"
+            },
+            "example": "ru-RU"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CatalogExportRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HttpValidationProblemDetails"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/catalogs/rate-auto-selection-settings/schema": {
+      "get": {
+        "tags": [
+          "rate-auto-selection-settings"
+        ],
+        "summary": "Описание полей справочника rate-auto-selection-settings",
+        "description": "Поля, типы, заголовки (по Accept-Language), операторы фильтра, значения enum, ссылки, период, ключ. Поддерживает ETag.",
+        "operationId": "getRateAutoSelectionSettingsSchema",
+        "parameters": [
+          {
+            "name": "X-On-Behalf-Of",
+            "in": "header",
+            "description": "Пользователь, от имени которого выполняется запрос: DOMAIN\\user. Права определяются его ролями в СВТ.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "X-Correlation-ID",
+            "in": "header",
+            "description": "Идентификатор корреляции; возвращается в ответе. Если не передан — генерируется.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "description": "ru-RU (по умолчанию) или en-US: язык заголовков полей и текстов ошибок. Данные RU/EN возвращаются как есть.",
+            "schema": {
+              "type": "string"
+            },
+            "example": "ru-RU"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CatalogSchemaResponse"
+                }
+              }
+            }
+          },
+          "304": {
+            "description": "Not Modified"
+          }
+        }
+      }
+    },
+    "/api/v1/catalogs/rate-auto-selection-settings/items/search": {
+      "post": {
+        "tags": [
+          "rate-auto-selection-settings"
+        ],
+        "summary": "Поиск записей справочника rate-auto-selection-settings",
+        "description": "Фильтры объединяются через И; сортировка по одному полю; pageSize 1–1000. По умолчанию без архивных записей. asOf — записи, действующие на дату.",
+        "operationId": "searchRateAutoSelectionSettings",
+        "parameters": [
+          {
+            "name": "X-On-Behalf-Of",
+            "in": "header",
+            "description": "Пользователь, от имени которого выполняется запрос: DOMAIN\\user. Права определяются его ролями в СВТ.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "X-Correlation-ID",
+            "in": "header",
+            "description": "Идентификатор корреляции; возвращается в ответе. Если не передан — генерируется.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "description": "ru-RU (по умолчанию) или en-US: язык заголовков полей и текстов ошибок. Данные RU/EN возвращаются как есть.",
+            "schema": {
+              "type": "string"
+            },
+            "example": "ru-RU"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CatalogSearchRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CatalogSearchResponseOfRateAutoSelectionSettingDto"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HttpValidationProblemDetails"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/catalogs/rate-auto-selection-settings/items/{id}": {
+      "get": {
+        "tags": [
+          "rate-auto-selection-settings"
+        ],
+        "summary": "Карточка записи справочника rate-auto-selection-settings",
+        "description": "id — ключ записи (поле entityKey из /schema). Поля — как в карточке СВТ.",
+        "operationId": "getRateAutoSelectionSettingsItem",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          },
+          {
+            "name": "X-On-Behalf-Of",
+            "in": "header",
+            "description": "Пользователь, от имени которого выполняется запрос: DOMAIN\\user. Права определяются его ролями в СВТ.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "X-Correlation-ID",
+            "in": "header",
+            "description": "Идентификатор корреляции; возвращается в ответе. Если не передан — генерируется.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "description": "ru-RU (по умолчанию) или en-US: язык заголовков полей и текстов ошибок. Данные RU/EN возвращаются как есть.",
+            "schema": {
+              "type": "string"
+            },
+            "example": "ru-RU"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RateAutoSelectionSettingDetailDto"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/catalogs/rate-auto-selection-settings/export": {
+      "post": {
+        "tags": [
+          "rate-auto-selection-settings"
+        ],
+        "summary": "Выгрузка справочника rate-auto-selection-settings в Excel",
+        "description": "Файл .xlsx в ответе. kind=Short — колонки грида, kind=Full — поля карточки. Все колонки, без пользовательских настроек.",
+        "operationId": "exportRateAutoSelectionSettings",
+        "parameters": [
+          {
+            "name": "X-On-Behalf-Of",
+            "in": "header",
+            "description": "Пользователь, от имени которого выполняется запрос: DOMAIN\\user. Права определяются его ролями в СВТ.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "X-Correlation-ID",
+            "in": "header",
+            "description": "Идентификатор корреляции; возвращается в ответе. Если не передан — генерируется.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "description": "ru-RU (по умолчанию) или en-US: язык заголовков полей и текстов ошибок. Данные RU/EN возвращаются как есть.",
+            "schema": {
+              "type": "string"
+            },
+            "example": "ru-RU"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CatalogExportRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HttpValidationProblemDetails"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/catalogs/report-constructors/schema": {
+      "get": {
+        "tags": [
+          "report-constructors"
+        ],
+        "summary": "Описание полей справочника report-constructors",
+        "description": "Поля, типы, заголовки (по Accept-Language), операторы фильтра, значения enum, ссылки, период, ключ. Поддерживает ETag.",
+        "operationId": "getReportConstructorsSchema",
+        "parameters": [
+          {
+            "name": "X-On-Behalf-Of",
+            "in": "header",
+            "description": "Пользователь, от имени которого выполняется запрос: DOMAIN\\user. Права определяются его ролями в СВТ.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "X-Correlation-ID",
+            "in": "header",
+            "description": "Идентификатор корреляции; возвращается в ответе. Если не передан — генерируется.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "description": "ru-RU (по умолчанию) или en-US: язык заголовков полей и текстов ошибок. Данные RU/EN возвращаются как есть.",
+            "schema": {
+              "type": "string"
+            },
+            "example": "ru-RU"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CatalogSchemaResponse"
+                }
+              }
+            }
+          },
+          "304": {
+            "description": "Not Modified"
+          }
+        }
+      }
+    },
+    "/api/v1/catalogs/report-constructors/items/search": {
+      "post": {
+        "tags": [
+          "report-constructors"
+        ],
+        "summary": "Поиск записей справочника report-constructors",
+        "description": "Фильтры объединяются через И; сортировка по одному полю; pageSize 1–1000. По умолчанию без архивных записей. asOf — записи, действующие на дату.",
+        "operationId": "searchReportConstructors",
+        "parameters": [
+          {
+            "name": "X-On-Behalf-Of",
+            "in": "header",
+            "description": "Пользователь, от имени которого выполняется запрос: DOMAIN\\user. Права определяются его ролями в СВТ.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "X-Correlation-ID",
+            "in": "header",
+            "description": "Идентификатор корреляции; возвращается в ответе. Если не передан — генерируется.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "description": "ru-RU (по умолчанию) или en-US: язык заголовков полей и текстов ошибок. Данные RU/EN возвращаются как есть.",
+            "schema": {
+              "type": "string"
+            },
+            "example": "ru-RU"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CatalogSearchRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CatalogSearchResponseOfReportConstructorDto"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HttpValidationProblemDetails"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/catalogs/report-constructors/items/{id}": {
+      "get": {
+        "tags": [
+          "report-constructors"
+        ],
+        "summary": "Карточка записи справочника report-constructors",
+        "description": "id — ключ записи (поле entityKey из /schema). Поля — как в карточке СВТ.",
+        "operationId": "getReportConstructorsItem",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          },
+          {
+            "name": "X-On-Behalf-Of",
+            "in": "header",
+            "description": "Пользователь, от имени которого выполняется запрос: DOMAIN\\user. Права определяются его ролями в СВТ.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "X-Correlation-ID",
+            "in": "header",
+            "description": "Идентификатор корреляции; возвращается в ответе. Если не передан — генерируется.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "description": "ru-RU (по умолчанию) или en-US: язык заголовков полей и текстов ошибок. Данные RU/EN возвращаются как есть.",
+            "schema": {
+              "type": "string"
+            },
+            "example": "ru-RU"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ReportConstructorDetailDto"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/catalogs/report-constructors/export": {
+      "post": {
+        "tags": [
+          "report-constructors"
+        ],
+        "summary": "Выгрузка справочника report-constructors в Excel",
+        "description": "Файл .xlsx в ответе. kind=Short — колонки грида, kind=Full — поля карточки. Все колонки, без пользовательских настроек.",
+        "operationId": "exportReportConstructors",
+        "parameters": [
+          {
+            "name": "X-On-Behalf-Of",
+            "in": "header",
+            "description": "Пользователь, от имени которого выполняется запрос: DOMAIN\\user. Права определяются его ролями в СВТ.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "X-Correlation-ID",
+            "in": "header",
+            "description": "Идентификатор корреляции; возвращается в ответе. Если не передан — генерируется.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "Accept-Language",
+            "in": "header",
+            "description": "ru-RU (по умолчанию) или en-US: язык заголовков полей и текстов ошибок. Данные RU/EN возвращаются как есть.",
+            "schema": {
+              "type": "string"
+            },
+            "example": "ru-RU"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CatalogExportRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HttpValidationProblemDetails"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/v1/catalogs/contractors/schema": {
       "get": {
         "tags": [
@@ -4454,6 +5474,81 @@
           }
         }
       },
+      "CatalogSearchResponseOfRateAutoSelectionSettingDto": {
+        "required": [
+          "items",
+          "totalCount",
+          "dataAsOf"
+        ],
+        "type": "object",
+        "properties": {
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/RateAutoSelectionSettingDto"
+            }
+          },
+          "totalCount": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "dataAsOf": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          }
+        }
+      },
+      "CatalogSearchResponseOfRateCalcTypeDto": {
+        "required": [
+          "items",
+          "totalCount",
+          "dataAsOf"
+        ],
+        "type": "object",
+        "properties": {
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/RateCalcTypeDto"
+            }
+          },
+          "totalCount": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "dataAsOf": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          }
+        }
+      },
+      "CatalogSearchResponseOfRateSyncClassDto": {
+        "required": [
+          "items",
+          "totalCount",
+          "dataAsOf"
+        ],
+        "type": "object",
+        "properties": {
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/RateSyncClassDto"
+            }
+          },
+          "totalCount": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "dataAsOf": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          }
+        }
+      },
       "CatalogSearchResponseOfRateTypeDto": {
         "required": [
           "items",
@@ -4466,6 +5561,31 @@
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/RateTypeDto"
+            }
+          },
+          "totalCount": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "dataAsOf": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          }
+        }
+      },
+      "CatalogSearchResponseOfReportConstructorDto": {
+        "required": [
+          "items",
+          "totalCount",
+          "dataAsOf"
+        ],
+        "type": "object",
+        "properties": {
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ReportConstructorDto"
             }
           },
           "totalCount": {
@@ -5882,6 +7002,162 @@
         ],
         "nullable": true
       },
+      "NullableOfTransportKindEn": {
+        "enum": [
+          "Auto",
+          "Rail",
+          "Sea",
+          "Mix",
+          "Transshipment_land",
+          "Transshipment_sea",
+          "Transshipment_TK",
+          "Pipe",
+          null
+        ],
+        "nullable": true
+      },
+      "NullableOfTransportKindRu": {
+        "enum": [
+          "Auto",
+          "Rail",
+          "Sea",
+          "Mix",
+          "Transshipment_land",
+          "Transshipment_sea",
+          "Transshipment_TK",
+          "Pipe",
+          null
+        ],
+        "nullable": true
+      },
+      "NullableOfTransportTypeLevel3En": {
+        "enum": [
+          "Auto_20",
+          "Auto_10",
+          "Auto_6",
+          "Auto_4",
+          "Auto_1",
+          "Auto_BLK",
+          "Auto_cont_20",
+          "Auto_cont_40",
+          "Auto_C",
+          "Rail_35",
+          "Rail_95",
+          "Rail_VC_other",
+          "Rail_BLK",
+          "Rail_cont_20",
+          "Rail_cont_40",
+          "Rail_KV",
+          "Rail_TK_20",
+          "Rail_TK_30",
+          "Loading_Rack",
+          "Sea",
+          "Tanker_ECO",
+          "Tanker_HS",
+          "Tanker_MGC",
+          "Tanker",
+          "Mix_20",
+          "Mix_40",
+          "Auto_TK",
+          "Transshipment_land",
+          "Transshipment_sea",
+          "Transshipment_TK",
+          "Mix_TK",
+          "Pipe",
+          "Mix_rail_cont_20",
+          "Mix_rail_cont_40",
+          "Mix_auto_cont_20",
+          "Mix_auto_cont_40",
+          "Mix_sea",
+          "Auto_ferryboat_20t",
+          "Auto_polivoz",
+          "Auto_Barrel_20",
+          "Mix_auto_TK",
+          "Mix_rail_TK",
+          "Mix_auto_barrel",
+          "Mix_auto_port",
+          "Mix_sea_ref",
+          "Mix_sea_1",
+          "Mix_sea_2",
+          "Mix_sea_3",
+          "Mix_sea_4",
+          "Mix_sea_5",
+          "Mix_sea_6",
+          "Mix_rail_cont_40_1",
+          "Mix_rail_cont_40_2",
+          "Mix_rail_cont_40_3",
+          "Mix_rail_cont_40_4",
+          "Mix_rail_cont_40_5",
+          "Mix_rail_cont_40_6",
+          "Mix_sea_SMP",
+          null
+        ],
+        "nullable": true
+      },
+      "NullableOfTransportTypeLevel3Ru": {
+        "enum": [
+          "Auto_20",
+          "Auto_10",
+          "Auto_6",
+          "Auto_4",
+          "Auto_1",
+          "Auto_BLK",
+          "Auto_cont_20",
+          "Auto_cont_40",
+          "Auto_C",
+          "Rail_35",
+          "Rail_95",
+          "Rail_VC_other",
+          "Rail_BLK",
+          "Rail_cont_20",
+          "Rail_cont_40",
+          "Rail_KV",
+          "Rail_TK_20",
+          "Rail_TK_30",
+          "Loading_Rack",
+          "Sea",
+          "Tanker_ECO",
+          "Tanker_HS",
+          "Tanker_MGC",
+          "Tanker",
+          "Mix_20",
+          "Mix_40",
+          "Auto_TK",
+          "Transshipment_land",
+          "Transshipment_sea",
+          "Transshipment_TK",
+          "Mix_TK",
+          "Pipe",
+          "Mix_rail_cont_20",
+          "Mix_rail_cont_40",
+          "Mix_auto_cont_20",
+          "Mix_auto_cont_40",
+          "Mix_sea",
+          "Auto_ferryboat_20t",
+          "Auto_polivoz",
+          "Auto_Barrel_20",
+          "Mix_auto_TK",
+          "Mix_rail_TK",
+          "Mix_auto_barrel",
+          "Mix_auto_port",
+          "Mix_sea_ref",
+          "Mix_sea_1",
+          "Mix_sea_2",
+          "Mix_sea_3",
+          "Mix_sea_4",
+          "Mix_sea_5",
+          "Mix_sea_6",
+          "Mix_rail_cont_40_1",
+          "Mix_rail_cont_40_2",
+          "Mix_rail_cont_40_3",
+          "Mix_rail_cont_40_4",
+          "Mix_rail_cont_40_5",
+          "Mix_rail_cont_40_6",
+          "Mix_sea_SMP",
+          null
+        ],
+        "nullable": true
+      },
       "NullableOfUnitEn": {
         "enum": [
           "Piece",
@@ -6570,6 +7846,232 @@
           }
         }
       },
+      "RateAutoSelectionSettingDetailDto": {
+        "required": [
+          "code"
+        ],
+        "type": "object",
+        "properties": {
+          "rateAutoSelectionSettingId": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "code": {
+            "type": "string"
+          },
+          "destinationNodeToRegion": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "destinationNodeToCountry": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "productToProductGroup": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "anyTransportKind": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "creationDate": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "lastChangeDate": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "isArchive": {
+            "type": "boolean"
+          }
+        }
+      },
+      "RateAutoSelectionSettingDto": {
+        "required": [
+          "code"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "rateAutoSelectionSettingId": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "isArchive": {
+            "type": "boolean"
+          },
+          "code": {
+            "type": "string"
+          },
+          "destinationNodeToRegion": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "destinationNodeToCountry": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "productToProductGroup": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "anyTransportKind": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "creationDate": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "lastChangeDate": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          }
+        }
+      },
+      "RateCalcTypeDetailDto": {
+        "required": [
+          "code"
+        ],
+        "type": "object",
+        "properties": {
+          "rateCalcTypeId": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "code": {
+            "type": "string"
+          },
+          "creationDate": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "lastChangeDate": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "isArchive": {
+            "type": "boolean"
+          },
+          "name": {
+            "type": "string",
+            "nullable": true
+          },
+          "searchCode": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
+      "RateCalcTypeDto": {
+        "required": [
+          "code"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "rateCalcTypeId": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "code": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string",
+            "nullable": true
+          },
+          "searchCode": {
+            "type": "string",
+            "nullable": true
+          },
+          "isArchive": {
+            "type": "boolean"
+          },
+          "creationDate": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "lastChangeDate": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "RateSyncClassDetailDto": {
+        "required": [
+          "code"
+        ],
+        "type": "object",
+        "properties": {
+          "rateSyncClassId": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "code": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string",
+            "nullable": true
+          },
+          "isArchive": {
+            "type": "boolean"
+          },
+          "creationDate": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "lastChangeDate": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "RateSyncClassDto": {
+        "required": [
+          "code"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "rateSyncClassId": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "code": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string",
+            "nullable": true
+          },
+          "isArchive": {
+            "type": "boolean"
+          },
+          "creationDate": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "lastChangeDate": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
       "RateSyncClassEn": {
         "enum": [
           "DryHazardous",
@@ -6714,6 +8216,242 @@
           "Quarter",
           "Year",
           "Request"
+        ]
+      },
+      "ReportConstructorDetailDto": {
+        "required": [
+          "code",
+          "reportTypeIdRu",
+          "reportTypeIdEn"
+        ],
+        "type": "object",
+        "properties": {
+          "reportConstructorId": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "code": {
+            "type": "string"
+          },
+          "reportTypeIdRu": {
+            "$ref": "#/components/schemas/ReportDictionaryTypesRu"
+          },
+          "reportTypeIdEn": {
+            "$ref": "#/components/schemas/ReportDictionaryTypesEn"
+          },
+          "dateFrom": {
+            "type": "string",
+            "format": "date"
+          },
+          "dateTo": {
+            "type": "string",
+            "format": "date"
+          },
+          "nodeFromCode": {
+            "type": "string",
+            "nullable": true
+          },
+          "nodeFromNameRu": {
+            "type": "string",
+            "nullable": true
+          },
+          "nodeFromNameEn": {
+            "type": "string",
+            "nullable": true
+          },
+          "nodeToCode": {
+            "type": "string",
+            "nullable": true
+          },
+          "nodeToNameRu": {
+            "type": "string",
+            "nullable": true
+          },
+          "nodeToNameEn": {
+            "type": "string",
+            "nullable": true
+          },
+          "transportKindIdRu": {
+            "$ref": "#/components/schemas/NullableOfTransportKindRu"
+          },
+          "transportKindIdEn": {
+            "$ref": "#/components/schemas/NullableOfTransportKindEn"
+          },
+          "transportKindCode": {
+            "type": "string",
+            "nullable": true
+          },
+          "transportTypeIdRu": {
+            "$ref": "#/components/schemas/NullableOfTransportTypeLevel3Ru"
+          },
+          "transportTypeIdEn": {
+            "$ref": "#/components/schemas/NullableOfTransportTypeLevel3En"
+          },
+          "transportTypeCode": {
+            "type": "string",
+            "nullable": true
+          },
+          "productGroupCode": {
+            "type": "string",
+            "nullable": true
+          },
+          "productGroupNameRu": {
+            "type": "string",
+            "nullable": true
+          },
+          "productGroupNameEn": {
+            "type": "string",
+            "nullable": true
+          },
+          "productCode": {
+            "type": "string",
+            "nullable": true
+          },
+          "productNameRu": {
+            "type": "string",
+            "nullable": true
+          },
+          "productNameEn": {
+            "type": "string",
+            "nullable": true
+          },
+          "creationDate": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "lastChangeDate": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "isArchive": {
+            "type": "boolean"
+          }
+        }
+      },
+      "ReportConstructorDto": {
+        "required": [
+          "code",
+          "reportTypeIdRu",
+          "reportTypeIdEn"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "reportConstructorId": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "code": {
+            "type": "string"
+          },
+          "isArchive": {
+            "type": "boolean"
+          },
+          "reportTypeIdRu": {
+            "$ref": "#/components/schemas/ReportDictionaryTypesRu"
+          },
+          "reportTypeIdEn": {
+            "$ref": "#/components/schemas/ReportDictionaryTypesEn"
+          },
+          "dateFrom": {
+            "type": "string",
+            "format": "date"
+          },
+          "dateTo": {
+            "type": "string",
+            "format": "date"
+          },
+          "nodeFromCode": {
+            "type": "string",
+            "nullable": true
+          },
+          "nodeFromNameRu": {
+            "type": "string",
+            "nullable": true
+          },
+          "nodeFromNameEn": {
+            "type": "string",
+            "nullable": true
+          },
+          "nodeToCode": {
+            "type": "string",
+            "nullable": true
+          },
+          "nodeToNameRu": {
+            "type": "string",
+            "nullable": true
+          },
+          "nodeToNameEn": {
+            "type": "string",
+            "nullable": true
+          },
+          "transportKindCode": {
+            "type": "string",
+            "nullable": true
+          },
+          "transportKindIdRu": {
+            "$ref": "#/components/schemas/NullableOfTransportKindRu"
+          },
+          "transportKindIdEn": {
+            "$ref": "#/components/schemas/NullableOfTransportKindEn"
+          },
+          "transportTypeCode": {
+            "type": "string",
+            "nullable": true
+          },
+          "transportTypeIdRu": {
+            "$ref": "#/components/schemas/NullableOfTransportTypeLevel3Ru"
+          },
+          "transportTypeIdEn": {
+            "$ref": "#/components/schemas/NullableOfTransportTypeLevel3En"
+          },
+          "productGroupCode": {
+            "type": "string",
+            "nullable": true
+          },
+          "productGroupNameRu": {
+            "type": "string",
+            "nullable": true
+          },
+          "productGroupNameEn": {
+            "type": "string",
+            "nullable": true
+          },
+          "productCode": {
+            "type": "string",
+            "nullable": true
+          },
+          "productNameRu": {
+            "type": "string",
+            "nullable": true
+          },
+          "productNameEn": {
+            "type": "string",
+            "nullable": true
+          },
+          "creationDate": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "lastChangeDate": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "ReportDictionaryTypesEn": {
+        "enum": [
+          "Rates",
+          "AverageRates"
+        ]
+      },
+      "ReportDictionaryTypesRu": {
+        "enum": [
+          "Rates",
+          "AverageRates"
         ]
       },
       "SmartRateLookupMatch": {
@@ -8548,6 +10286,18 @@
     },
     {
       "name": "rate-types"
+    },
+    {
+      "name": "rate-sync-classes"
+    },
+    {
+      "name": "rate-calc-types"
+    },
+    {
+      "name": "rate-auto-selection-settings"
+    },
+    {
+      "name": "report-constructors"
     },
     {
       "name": "contractors"

@@ -1,0 +1,16 @@
+@page "/rateautoselectionsetting"
+@using BlazorSvt.Modules.RateAutoSelectionSetting.Detail
+@inherits BaseGridPage<RateAutoSelectionSettingDto, RateAutoSelectionSettingDetailDto>
+
+<GenericGrid TItem="RateAutoSelectionSettingDto"
+             TDetailItem="RateAutoSelectionSettingDetailDto"
+             PageTitle="@EL["RateAutoSelectionSettingGrid.Title"]"
+             AllowDetailView="true"
+             DataProvider="DataProvider"
+             DetailDataProvider="DetailDataProvider"
+             DetailKeySelector="DetailKeySelector">
+
+    <DetailViewTemplate Context="detail">
+    </DetailViewTemplate>
+
+</GenericGrid>

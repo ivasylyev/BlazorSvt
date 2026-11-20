@@ -47,7 +47,11 @@ VALUES
     -- Contractor (примитив LegalType)
     (N'dbo.PrimitiveEntityData_2028', N'LegalType (основная), реестр Contractor'),
     -- Coefficient
-    (N'dbo.PrimitiveEntityData_2081', N'Coefficient (основная)');
+    (N'dbo.PrimitiveEntityData_2081', N'Coefficient (основная)'),
+    -- RateAutoSelectionSetting
+    (N'dbo.PrimitiveEntityData_2101', N'RateAutoSelectionSetting (основная)'),
+    -- ReportConstructor
+    (N'dbo.PrimitiveEntityData_2130', N'ReportConstructor (основная)');
 
 DECLARE @tableName SYSNAME, @comment NVARCHAR(100), @sql NVARCHAR(MAX);
 

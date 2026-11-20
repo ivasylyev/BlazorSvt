@@ -141,6 +141,18 @@
   <data name="HeaderMenu.RateType" xml:space="preserve">
     <value>Тип ставки</value>
   </data>
+  <data name="HeaderMenu.RateSyncClass" xml:space="preserve">
+    <value>Класс синхронизации ставок</value>
+  </data>
+  <data name="HeaderMenu.RateCalcType" xml:space="preserve">
+    <value>Способ расчёта ставки</value>
+  </data>
+  <data name="HeaderMenu.RateAutoSelectionSetting" xml:space="preserve">
+    <value>Настройка автоподбора ставок</value>
+  </data>
+  <data name="HeaderMenu.ReportConstructor" xml:space="preserve">
+    <value>Конструктор отчётов</value>
+  </data>
   <data name="HeaderMenu.Currency" xml:space="preserve">
     <value>Валюты</value>
   </data>

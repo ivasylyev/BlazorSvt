@@ -1,0 +1,16 @@
+@page "/ratesyncclass"
+@using BlazorSvt.Modules.RateSyncClass.Detail
+@inherits BaseGridPage<RateSyncClassDto, RateSyncClassDetailDto>
+
+<GenericGrid TItem="RateSyncClassDto"
+             TDetailItem="RateSyncClassDetailDto"
+             PageTitle="@EL["RateSyncClassGrid.Title"]"
+             AllowDetailView="true"
+             DataProvider="DataProvider"
+             DetailDataProvider="DetailDataProvider"
+             DetailKeySelector="DetailKeySelector">
+
+    <DetailViewTemplate Context="detail">
+    </DetailViewTemplate>
+
+</GenericGrid>
