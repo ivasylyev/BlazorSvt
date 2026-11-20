@@ -21,6 +21,9 @@ public partial class GenericDetailView<TItem, TDetailItem> : SvtComponentBase, I
     [Inject]
     public ILogger<GenericDetailView<TItem, TDetailItem>> Logger { get; set; } = default!;
 
+    [Inject]
+    public IEnumerable<IDetailChildSection<TDetailItem>> ChildSections { get; set; } = default!;
+
     [Parameter]
     public TItem Item { get; set; } = default!;
     [Parameter]
@@ -32,6 +35,7 @@ public partial class GenericDetailView<TItem, TDetailItem> : SvtComponentBase, I
     private TDetailItem? detail;
     private bool isLoading;
     private string? errorMessage;
+    private IReadOnlyList<ChildSectionState> childSections = [];
 
     private bool HideEmptyDetailFields => GridOptions.Value.HideEmptyDetailFields;
 
@@ -50,8 +54,16 @@ public partial class GenericDetailView<TItem, TDetailItem> : SvtComponentBase, I
             isLoading = true;
             errorMessage = null;
             allExpanded = true;
+            childSections = [];
             detail = await DetailDataProvider(Item, cancellationToken);
             detailSettings ??= DetailSettingsService.GetGridDetailSettings(Lang);
+
+            if (detail is not null && ChildSections.Any())
+            {
+                isLoading = false;
+                StateHasChanged();
+                childSections = await LoadChildSectionsAsync(detail, cancellationToken);
+            }
         }
         catch (OperationCanceledException) when (cancellationToken.IsCancellationRequested)
         {
@@ -83,7 +95,39 @@ public partial class GenericDetailView<TItem, TDetailItem> : SvtComponentBase, I
         if (detail is null || detailSettings is null)
             return 0;
 
-        return detailSettings.GroupSettings.Count(g => g.Value.Any(IsFieldVisible));
+        return detailSettings.GroupSettings.Count(g => g.Value.Any(IsFieldVisible))
+            + childSections.Count(s => s.IsVisible);
+    }
+
+    private async Task<IReadOnlyList<ChildSectionState>> LoadChildSectionsAsync(
+        TDetailItem parent,
+        CancellationToken cancellationToken)
+    {
+        var lang = Lang;
+        var loads = ChildSections.Select(section => LoadChildSectionAsync(section, parent, lang, cancellationToken));
+        return await Task.WhenAll(loads);
+    }
+
+    private async Task<ChildSectionState> LoadChildSectionAsync(
+        IDetailChildSection<TDetailItem> section,
+        TDetailItem parent,
+        string lang,
+        CancellationToken cancellationToken)
+    {
+        try
+        {
+            return new ChildSectionState(section.Title, await section.LoadAsync(parent, lang, cancellationToken), null);
+        }
+        catch (Exception ex) when (!cancellationToken.IsCancellationRequested)
+        {
+            Logger.LogError(ex, "Failed to load child section {Section} for {ItemType}", section.GetType().Name, typeof(TItem).Name);
+            return new ChildSectionState(section.Title, null, ex.Message);
+        }
+    }
+
+    private sealed record ChildSectionState(string Title, DetailChildTable? Table, string? ErrorMessage)
+    {
+        public bool IsVisible => ErrorMessage is not null || Table?.HasRows == true;
     }
 
     private async Task ToggleAllAccordionItemsAsync()

@@ -70,11 +70,39 @@ public class DetailSettingsBuilderTests
         field.DisplaySelector(new SampleDto { NullableFlag = false }).ToString().Should().Be("Common.No");
     }
 
+    [Theory]
+    [InlineData(true, "Red")]
+    [InlineData(false, "Rouge")]
+    public void AddEnum_NullableEnum_UsesDisplayNameOrEmpty(bool isRu, string expected)
+    {
+        var settings = new DetailSettingsBuilder<SampleDto>(platform)
+            .AddEnum(isRu, "G", x => x.ColorRu, x => x.ColorEn, "Color")
+            .Build();
+
+        var field = settings.GroupSettings["G"].Single();
+        field.DisplaySelector(new SampleDto { ColorRu = SampleColorRu.Red, ColorEn = SampleColorEn.Red }).Should().Be(expected);
+        field.DisplaySelector(new SampleDto()).Should().Be(string.Empty);
+    }
+
     private sealed class SampleDto
     {
         public string? Name { get; set; }
         public bool Flag { get; set; }
         public bool? NullableFlag { get; set; }
+        public SampleColorRu? ColorRu { get; set; }
+        public SampleColorEn? ColorEn { get; set; }
+    }
+
+    private enum SampleColorRu
+    {
+        [System.ComponentModel.DataAnnotations.Display(Name = "Red")]
+        Red = 1
+    }
+
+    private enum SampleColorEn
+    {
+        [System.ComponentModel.DataAnnotations.Display(Name = "Rouge")]
+        Red = 1
     }
 }
 

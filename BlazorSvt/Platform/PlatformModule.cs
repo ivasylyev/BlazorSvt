@@ -18,6 +18,7 @@ public static class PlatformModule
         services.AddScoped<IGridPageSizeService, GridPageSizeService>();
         services.AddScoped(typeof(IGridQueryFactory<>), typeof(GridQueryFactory<>));
         services.AddScoped(typeof(IGridDataService<,>), typeof(GridDataService<,>));
+        services.AddScoped<IDetailChildDataService, DetailChildDataService>();
         services.AddScoped(typeof(GridReportExporter<,>), typeof(GridReportExporter<,>));
         services.AddScoped<IGridExcelExporter, GridExcelExporter>();
         services.AddScoped<IFileDownloadService, FileDownloadService>();

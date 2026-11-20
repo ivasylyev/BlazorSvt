@@ -1,0 +1,33 @@
+@inherits SvtComponentBase
+<div class="table-responsive">
+    <table class="table table-sm table-bordered mb-0">
+        <thead>
+            <tr>
+                @foreach (var header in Table.Headers)
+                {
+                    <th>@header</th>
+                }
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var row in Table.Rows)
+            {
+                <tr>
+                    @foreach (var cell in row)
+                    {
+                        <td>@cell</td>
+                    }
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+@if (Table.IsTruncated)
+{
+    <div class="text-muted small mt-1">@L["GenericDetailView.ChildRowsShown", Table.Rows.Count, Table.TotalCount]</div>
+}
+
+@code {
+    [Parameter, EditorRequired]
+    public DetailChildTable Table { get; set; } = default!;
+}

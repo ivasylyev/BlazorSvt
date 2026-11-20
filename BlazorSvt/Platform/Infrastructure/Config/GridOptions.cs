@@ -7,4 +7,9 @@ public class GridOptions
     /// Does not affect full Excel report export.
     /// </summary>
     public bool HideEmptyDetailFields { get; set; } = true;
+
+    /// <summary>
+    /// Max rows shown in a child primitive table on the detail panel.
+    /// </summary>
+    public int ChildSectionRowLimit { get; set; } = 100;
 }

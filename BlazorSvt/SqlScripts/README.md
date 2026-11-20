@@ -216,7 +216,11 @@ SqlScripts/
 | 4 | `Modules/Coefficient/Structure/02.Coefficient_Insert.sql` |
 | 5 | `Modules/Coefficient/Structure/03.Coefficient_CreateIndexes.sql` |
 | 6 | `Modules/Coefficient/Programmability/vw_Coefficient_Detail.sql` |
-| 7 | `Modules/Coefficient/Programmability/sp_Coefficient_PopulateAffectedKeys.sql` |
+| 7 | `Modules/Coefficient/Programmability/vw_CoefficientConditionValue_Detail.sql` |
+| 8 | `Modules/Coefficient/Programmability/vw_CoefficientComponentValue_Detail.sql` |
+| 9 | `Modules/Coefficient/Programmability/sp_Coefficient_PopulateAffectedKeys.sql` |
+
+`vw_CoefficientConditionValue_Detail` и `vw_CoefficientComponentValue_Detail` — таблицы дочерних примитивов на карточке (`dbo.PrimitiveEntityData_2080`, `dbo.PrimitiveEntityData_2083`); в снимок и полный Excel не входят.
 
 **RateSyncClass** (стабильный разовый снимок: без RowVer, SyncJob и PopulateAffectedKeys; проекция до Insert)
 

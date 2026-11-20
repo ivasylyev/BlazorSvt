@@ -123,6 +123,8 @@ $fullManifest = @(
   'Modules\Coefficient\Structure\02.Coefficient_Insert.sql'
   'Modules\Coefficient\Structure\03.Coefficient_CreateIndexes.sql'
   'Modules\Coefficient\Programmability\vw_Coefficient_Detail.sql'
+  'Modules\Coefficient\Programmability\vw_CoefficientConditionValue_Detail.sql'
+  'Modules\Coefficient\Programmability\vw_CoefficientComponentValue_Detail.sql'
   'Modules\Coefficient\Programmability\sp_Coefficient_PopulateAffectedKeys.sql'
   'Modules\RateSyncClass\Structure\01.RateSyncClass_CreateTable.sql'
   'Modules\RateSyncClass\Programmability\vw_RateSyncClass_SnapshotSource.sql'
