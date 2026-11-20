@@ -197,7 +197,7 @@ TransportTypeLevel3 — стабильный словарь с enum. В мигр
 | `048.vw_Country_SnapshotSource.sql` | Проекция из `dbo.vw_Country`; выполняется до заливки |
 | `049.02.Country_Insert.sql` | Полная заливка и курсор `v2.SyncState` по `dbo.PrimitiveEntityData_1009` |
 | `050.03.Country_CreateIndexes.sql` | Уникальный индекс, фильтр по `Code` и `StatusId`, индекс по ключу, full-text |
-| `051.All_Programmability.sql` | Полный снимок programmability, 63 скрипта (2026-11-20) |
+| `051.All_Programmability.sql` | Полный снимок programmability, 66 скриптов (2026-11-20) |
 
 Contractor (SVT-5290) — справочник с watermark-sync. Примитив LegalType, чтение из `dbo.vw_LegalType`. `001` добавляет `RowVer` на `dbo.PrimitiveEntityData_2028`.
 
@@ -213,7 +213,7 @@ ReportConstructor — справочник с watermark-sync. `028` добавл
 
 Relevance — класс simple, разовый снимок. `RowVer` на `dbo.PrimitiveEntityData_2108` не добавлялся. `vw_Relevance_Detail` — в снимке `051`. Процедуры PopulateAffectedKeys нет.
 
-TransportRoute — справочник с watermark-sync. `038` добавляет новый `RowVer` и NC-индекс на `dbo.PrimitiveEntityData_2010`. `RowVer` на LocationsNodes (1014) и Region (1008) уже был. `vw_TransportRoute_Detail` и `sp_TransportRoute_PopulateAffectedKeys` — в снимке `051`.
+TransportRoute — справочник с watermark-sync. `038` добавляет новый `RowVer` и NC-индекс на `dbo.PrimitiveEntityData_2010`. `RowVer` на LocationsNodes (1014) и Region (1008) уже был. `vw_TransportRoute_Detail` и `sp_TransportRoute_PopulateAffectedKeys` — в снимке `051`. `v2.vw_TransportRouteLeg_Detail` (дочерний примитив, `dbo.PrimitiveEntityData_2035`) добавлен в тот же снимок `051`, отдельной дельты нет.
 
 Region — справочник с watermark-sync. Новый `RowVer` не добавлялся: на `dbo.PrimitiveEntityData_1008` и `dbo.PrimitiveEntityData_1009` он уже есть. `vw_Region_Detail` и `sp_Region_PopulateAffectedKeys` — в снимке `051`.
 

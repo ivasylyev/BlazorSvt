@@ -6,6 +6,7 @@
 |---|---|
 | Состав экрана, порядок, подписи, ссылки, enum, каскад | [discovery-rules.md](discovery-rules.md) |
 | Запрос к `mdm`, DDL, счётчики, переводы, заголовки | [discovery-queries.md](discovery-queries.md) |
+| У справочника есть дочерний примитив | [child-primitives.md](child-primitives.md), раздел «Discovery» |
 
 Оркестратор называет роли один из этих файлов. Второй роль не открывает, пока её файл этого не сказал.
 

@@ -2,9 +2,10 @@
 name: add-reference-book
 description: >-
   Добавление read-only справочника BlazorSVT из легаси MDM: discovery атрибутов,
-  snapshot SQL, programmability, C#-модуль, grid и меню. Используй когда пользователь
-  просит добавить справочник, создать новый модуль справочника или перенести
-  PrimitiveEntityInfo из старой системы.
+  snapshot SQL, programmability, C#-модуль, grid, меню и таблицы дочерних примитивов
+  на карточке. Используй когда пользователь просит добавить справочник, создать новый
+  модуль справочника, перенести PrimitiveEntityInfo из старой системы или добавить
+  дочерние примитивы на карточку готового модуля.
 ---
 
 # Добавление справочника (read-only)
@@ -53,7 +54,7 @@ WHERE e.Name = N'{RegistryName}';
 - Имена совпали — `{LegacyName}` = `{Entity}` (после правила `_` и таблицы переименований).
 - Имена разошлись — `{LegacyName}` имя примитива, `{Entity}` имя реестра, если таблица ниже не говорит иное. Пример: реестр `Contractor` (`EntityInfo` 2054), примитив `LegalType` (2028), таблица `PrimitiveEntityData_2028`, представление `vw_LegalType`, словарь `pei/LegalType/ai`.
 - Представление — то, которое читает эту таблицу. Одноимённое реестру тонкое представление, которое её не проецирует, устарело (`vw_Contractor`). Замены джойнов — только в SoT (`Modules/**/Programmability`). Файлы уже выкаченной `Migrations/{версия}/` не переписывать: новый `All_Programmability` забирает SoT.
-- Строка с `ParentId IS NOT NULL` — дочерний примитив. В модуль он не входит, пока пользователь не включил его в скоуп. Примитив сущности из раздела «Вне скоупа» новой строкой реестра не становится.
+- Строка с `ParentId IS NOT NULL` — дочерний примитив. Он входит в модуль по умолчанию группой-таблицей на карточке; состав, исключения и вопросы — [child-primitives.md](child-primitives.md). Примитив сущности из раздела «Вне скоупа» новой строкой реестра не становится.
 
 Отдельные переименования (подчёркивания нет):
 
@@ -109,6 +110,7 @@ WHERE e.Name = N'{RegistryName}';
 | 1 | [discovery-rules.md](discovery-rules.md) | Состав экрана, ссылки, enum, каскад. Запросы — [discovery-queries.md](discovery-queries.md), только на время `SELECT` |
 | 2–3 | [sql.md](sql.md) | Structure + Programmability, деплой, верификация БД |
 | 4–6 | [csharp.md](csharp.md) | C#-модуль, API, тесты, финальная проверка |
+| 1–5 | [child-primitives.md](child-primitives.md) | У справочника есть дочерний примитив: группы-таблицы на карточке, в том числе у готового модуля |
 
 Короткие заголовки грида после генерации resx — раздел «Правила» в [grid-column-glossary.md](grid-column-glossary.md) и поиск имени поля. Блоки `###` чужих справочников не читать.
 
@@ -157,6 +159,7 @@ WHERE e.Name = N'{RegistryName}';
 - [ ] C# модуль (List/Detail/Sync), DI с `AddCatalogMenu`, resx (у стабильного словаря с enum папки `Sync/` нет) ([csharp.md](csharp.md))
 - [ ] `AddCatalogApi` (код, домен, период), `[ApiReference]` на кодах чужих справочников; снимок OpenAPI перегенерирован
 - [ ] Общие enum в `Platform/Domain/IdsEnum` (рефакторинг затронутых модулей)
+- [ ] Дочерние примитивы: проекции `v2.vw_{Child}_Detail`, секции карточки, тесты секций ([child-primitives.md](child-primitives.md)) — если у справочника есть дети
 - [ ] Unit: `GridColumnMetadataBuilderTests` + `SnapshotSyncJobContractTests` (второй — только если есть SyncJob)
 - [ ] Integration: grid + detail smoke + FTS
 - [ ] `dotnet build` / `dotnet test` OK

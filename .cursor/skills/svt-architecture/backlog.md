@@ -2265,6 +2265,7 @@ Gate D: write-through остановлен; легаси демонтирова�
 | [SVT-5256](../../../docs/tasks/SVT-5256-product-group.md) | 15.10.7 | RO ProductGroup / транспортные группы (Атлас=2), сделано, релиз 2.3.48 |
 | [SVT-5257](../../../docs/tasks/SVT-5257-mtr.md) | 15.10.8 | RO MTR (Атлас=3), сделано, релиз 2.3.48 |
 | [SVT-5258](../../../docs/tasks/SVT-5258-transport-type-level-3.md) | 15.10.6 | RO TransportType_level_3 (Атлас=4), сделано, релиз 2.3.48 |
+| [SVT-5309](../../../docs/tasks/SVT-5309-coefficient-child-primitives.md) | — | Таблицы дочерних примитивов на карточке Coefficient |
 
 Детальный расчёт — `docs/estimation/`
 (`python docs/estimation/generate_effort_estimate.py`).

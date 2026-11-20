@@ -228,7 +228,11 @@ SqlScripts/
 | 4 | `Modules/Coefficient/Structure/02.Coefficient_Insert.sql` |
 | 5 | `Modules/Coefficient/Structure/03.Coefficient_CreateIndexes.sql` |
 | 6 | `Modules/Coefficient/Programmability/vw_Coefficient_Detail.sql` |
-| 7 | `Modules/Coefficient/Programmability/sp_Coefficient_PopulateAffectedKeys.sql` |
+| 7 | `Modules/Coefficient/Programmability/vw_CoefficientConditionValue_Detail.sql` |
+| 8 | `Modules/Coefficient/Programmability/vw_CoefficientComponentValue_Detail.sql` |
+| 9 | `Modules/Coefficient/Programmability/sp_Coefficient_PopulateAffectedKeys.sql` |
+
+`vw_CoefficientConditionValue_Detail` и `vw_CoefficientComponentValue_Detail` — таблицы дочерних примитивов на карточке (`dbo.PrimitiveEntityData_2080`, `dbo.PrimitiveEntityData_2083`); в снимок и полный Excel не входят.
 
 **RateSyncClass** (стабильный разовый снимок: без RowVer, SyncJob и PopulateAffectedKeys; проекция до Insert)
 
@@ -294,7 +298,10 @@ SqlScripts/
 | 4 | `Modules/TransportRoute/Structure/02.TransportRoute_Insert.sql` |
 | 5 | `Modules/TransportRoute/Structure/03.TransportRoute_CreateIndexes.sql` |
 | 6 | `Modules/TransportRoute/Programmability/vw_TransportRoute_Detail.sql` |
-| 7 | `Modules/TransportRoute/Programmability/sp_TransportRoute_PopulateAffectedKeys.sql` |
+| 7 | `Modules/TransportRoute/Programmability/vw_TransportRouteLeg_Detail.sql` |
+| 8 | `Modules/TransportRoute/Programmability/sp_TransportRoute_PopulateAffectedKeys.sql` |
+
+`vw_TransportRouteLeg_Detail` — таблица дочернего примитива на карточке (`dbo.PrimitiveEntityData_2035`); в снимок маршрута, sync и полный Excel не входит.
 
 **Region** (представление `dbo.vw_Region`; RowVer на `dbo.PrimitiveEntityData_1008` и `1009` уже есть; каскад 1009)
 

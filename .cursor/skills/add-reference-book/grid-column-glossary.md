@@ -28,6 +28,7 @@
 | `Name` vs `NameRu`/`NameEn` | Grid `Name` сокращать; Detail `NameRu`/`NameEn` **не** авто-парить с `Name` |
 | Неизвестное поле | Сократить по правилам выше, применить и назвать подпись в отчёте. Вопрос пользователю — только если два правила этой таблицы дают разные подписи |
 | Обогащение | Новое общее поле → **дописать строку** в таблицу глоссария. Отдельный approve на каждое поле не нужен |
+| Дочерний примитив | Таблица на карточке — полные имена, short не задаётся. Блок «Таблицы дочерних примитивов на карточке {Entity}» в разделе справочника-родителя |
 
 ### Источник «полного» имени для скобок Detail
 
@@ -211,6 +212,21 @@
 | `OverallValue` | Значение на ставку в целом | Value for the rate as a whole | На ставку | Whole rate |
 | `RateTypeName` (`RateTypeIdRu`/`En`) | Тип ставки | Rate type | Тип ставки | Rate type |
 
+Таблицы дочерних примитивов на карточке Coefficient — полные имена, short не задаётся.
+
+| Key | RU полное | EN полное | RU short | EN short |
+|-----|-----------|-----------|----------|----------|
+| группа `CoefficientConditionValue` | Условие по коэффициенту | Coefficient conditions | — | — |
+| группа `CoefficientComponentValue` | Составляющая по коэффициенту | Coefficient components | — | — |
+| `Except` | Исключать | Exclude | — | — |
+| `TransportKind` | Вид транспорта | Transport kind | — | — |
+| `TransportTypeLevel2` | Тип транспорта (2 уровень) | Transport type (level 2) | — | — |
+| `VehicleType` | Тип подвижного состава | Rolling stock type | — | — |
+| `FromLocation` | Направление от | From | — | — |
+| `ToLocation` | Направление до | To | — | — |
+| `Component` | Составляющая | Component | — | — |
+| `Value` | Значение | Value | — | — |
+
 ### Contractor
 
 Согласовано для грида и карточки Contractor. У `Code` английское полное имя — `Code`. У `INN` английское полное уже содержит короткое, поэтому карточка EN — `INN (taxpayer identification number)`. Строки «карточка» короткими именами не заменяются: колонки short у них пустые, в resx пишется полное имя.
@@ -270,3 +286,18 @@
 | `ChainNodes` | Цепочка маршрута | Route chain | Цепочка | Chain |
 | `Leg1_TransportTypeName` (`Leg1_TransportTypeIdRu`/`En`) | Плечо 1.Тип транспорта | Leg 1 transport type | Тип 1 | Type 1 |
 | `Leg2_TransportTypeName` (`Leg2_TransportTypeIdRu`/`En`) | Плечо 2.Тип транспорта | Leg 2 transport type | Тип 2 | Type 2 |
+
+Таблицы дочерних примитивов на карточке TransportRoute — полные имена, short не задаётся.
+
+| Key | RU полное | EN полное | RU short | EN short |
+|-----|-----------|-----------|----------|----------|
+| группа `TransportRouteLeg` | Плечо маршрута | Route leg | — | — |
+| `Code` | Код | Code | — | — |
+| `Step` | Этап | Stage | — | — |
+| `LegCode` | Плечо | Leg | — | — |
+| `NodeFrom` | Узел отправления | Departure node | — | — |
+| `ProxyNode` | Узел промежуточный | Proxy node | — | — |
+| `NodeTo` | Узел назначения | Destination node | — | — |
+| `TransportKind` | Вид транспорта | Means of transportation | — | — |
+| `Leg1_TransportType` | Плечо 1.Тип транспорта | Leg 1 transport type | — | — |
+| `Leg2_TransportType` | Плечо 2.Тип транспорта | Leg 2 transport type | — | — |
