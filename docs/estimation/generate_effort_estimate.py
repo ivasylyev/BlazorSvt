@@ -168,12 +168,12 @@ _CATALOG_ROWS = (
     ("ShipmentType", "Тип отправки", "Низкая", 3, True, True, "Маршруты"),
     ("TypeNode", "Тип узла", "Низкая", 3, False, False, "Маршруты"),
     ("VehicleType", "Тип подвижного состава", "Низкая", 3, False, False, "Маршруты"),
-    ("ProductGroup", "Транспортные группы", "Низкая", 1, True, True, "Продукты"),
+    ("ProductGroup", "Транспортные группы", "Низкая", 1, False, False, "Продукты"),
     ("MTR", "Продукты", "Низкая", 1, False, False, "Продукты"),
-    ("PlanFact", "План-факт", "Низкая", 2, True, True, "Продукты"),
+    ("PlanFact", "План-факт", "Низкая", 2, False, False, "Продукты"),
     ("MTR_DPO", "Материалы DPO", "Средняя", 2, False, False, "Продукты"),
-    ("DangerClass", "Классы опасности", "Низкая", 3, True, True, "Продукты"),
-    ("TransportTypeForProduct", "Тип транспорта для продукта", "Низкая", 3, True, True, "Продукты"),
+    ("DangerClass", "Классы опасности", "Низкая", 3, False, False, "Продукты"),
+    ("TransportTypeForProduct", "Тип транспорта для продукта", "Низкая", 3, False, False, "Продукты"),
     ("WarehouseASVERP", "Склады АСВ – ERP", "Средняя", 1, True, True, "Склады и ограничения"),
     ("WarehouseASVERPLimitation", "Склады АСВ – ERP. Ограничения", "Средняя", 1, True, True, "Склады и ограничения"),
     ("OrganizationDPO", "Организации DPO", "Средняя", 2, False, False, "Склады и ограничения"),
@@ -228,6 +228,13 @@ RO_DONE_NOTE = {
     "TransportType_level_3": "на проде; Атлас=4; SVT-5258; стабильный словарь, разовый снимок, без watermark-sync",
 }
 WRITE_SKIP = {"TransportLegs"}  # E/L в тираже «Маршрутов» добавляет new_rows_after_renumber
+# Редакторы и загрузчики сняты. Два номера 0.7.2.* на справочник сохраняются, чтобы хвост не сдвинулся.
+SKIP_WRITE_KEEP_IDS = {
+    "ProductGroup",
+    "PlanFact",
+    "DangerClass",
+    "TransportTypeForProduct",
+}
 assert sum(1 for c in CATALOGS if c.name not in RO_SKIP) == 62
 # Seven catalog domains of the write wave. «Заявки» is not here: no catalogs, Gate A/B only.
 # «Вспомогательные» are former 0.8 (веха 10). Person-days of Gate A/B/C were not recalculated
@@ -602,6 +609,10 @@ def build_rows() -> list[Row]:
     # List order, not domain order: ParityRates stays at 0.7.2.4/0.7.2.5.
     for c in CATALOGS:
         if c.domain not in WRITE_DOMAINS_07 or c.name in WRITE_SKIP or c.name in OUT_OF_SCOPE:
+            continue
+        if c.name in SKIP_WRITE_KEEP_IDS:
+            nid_w()
+            nid_w()
             continue
         if not c.has_e and not c.has_l:
             continue
