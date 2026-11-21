@@ -35,4 +35,25 @@
   <data name="ContractorDetailDto.CreationDate" xml:space="preserve"><value>Created</value></data>
   <data name="ContractorDetailDto.LastChangeDate" xml:space="preserve"><value>Changed</value></data>
   <data name="ContractorDetailDto.Group.0.Default" xml:space="preserve"><value>Default</value></data>
+  <data name="AddressDto.Title" xml:space="preserve"><value>Addresses of contractors</value></data>
+  <data name="AddressDto.Code" xml:space="preserve"><value>Address ID</value></data>
+  <data name="AddressDto.AddressType" xml:space="preserve"><value>Address type</value></data>
+  <data name="AddressDto.City" xml:space="preserve"><value>City/town</value></data>
+  <data name="AddressDto.Status" xml:space="preserve"><value>Address status</value></data>
+  <data name="AddressDto.AddressKind" xml:space="preserve"><value>Address type</value></data>
+  <data name="AddressDto.Pobox" xml:space="preserve"><value>Pobox</value></data>
+  <data name="AddressDto.RegionCode" xml:space="preserve"><value>Region code</value></data>
+  <data name="AddressDto.District_ru" xml:space="preserve"><value>District</value></data>
+  <data name="AddressDto.Street" xml:space="preserve"><value>Street</value></data>
+  <data name="AddressDto.House" xml:space="preserve"><value>House</value></data>
+  <data name="AddressDto.OfficeApart" xml:space="preserve"><value>Office/apartment</value></data>
+  <data name="AddressDto.FullAddress_ru" xml:space="preserve"><value>Full address</value></data>
+  <data name="AddressDto.CoordinateW" xml:space="preserve"><value>Latitude</value></data>
+  <data name="AddressDto.CoordinateL" xml:space="preserve"><value>Longitude</value></data>
+  <data name="AddressDto.FIASCodeRegion" xml:space="preserve"><value>FIAS region code</value></data>
+  <data name="AddressDto.FIASCodeDistrict" xml:space="preserve"><value>FIAS district code</value></data>
+  <data name="AddressDto.FIASCodeSettlement" xml:space="preserve"><value>FIAS settlement code</value></data>
+  <data name="AddressDto.Region" xml:space="preserve"><value>Region</value></data>
+  <data name="AddressDto.Country" xml:space="preserve"><value>Country</value></data>
+  <data name="AddressDto.IsArchive" xml:space="preserve"><value>Archive</value></data>
 </root>

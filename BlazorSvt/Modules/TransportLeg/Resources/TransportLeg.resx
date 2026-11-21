@@ -341,4 +341,58 @@
   <data name="TransportLegDetailDto.Leg2_Distance" xml:space="preserve">
 	  <value>Leg 2. Distance</value>
   </data>
+  <data name="LegRateDto.Title" xml:space="preserve"><value>Leg rates</value></data>
+  <data name="LegRateDto.Code" xml:space="preserve"><value>Code</value></data>
+  <data name="LegRateDto.RateCode" xml:space="preserve"><value>Rate code</value></data>
+  <data name="LegRateDto.IsDefRate" xml:space="preserve"><value>Deflator</value></data>
+  <data name="LegRateDto.RateTypeName" xml:space="preserve"><value>Rate type</value></data>
+  <data name="LegRateDto.TransportTypeName" xml:space="preserve"><value>Type of vehicle</value></data>
+  <data name="LegRateDto.ProductGroupName" xml:space="preserve"><value>Product group</value></data>
+  <data name="LegRateDto.ProductName" xml:space="preserve"><value>Product</value></data>
+  <data name="LegRateDto.StartDate" xml:space="preserve"><value>Validity period from</value></data>
+  <data name="LegRateDto.EndDate" xml:space="preserve"><value>Validity period till</value></data>
+  <data name="LegRateDto.TotalCostTon" xml:space="preserve"><value>Total cost of transportation per ton (excluding VAT)</value></data>
+  <data name="LegRateDto.TotalCostTransport" xml:space="preserve"><value>Total cost of transportation per vehicle (excluding VAT)</value></data>
+  <data name="LegRateDto.Currency" xml:space="preserve"><value>Reference currency</value></data>
+  <data name="LegRateDto.IsArchive" xml:space="preserve"><value>Archive</value></data>
+  <data name="LegAverageRateLevel3Dto.Title" xml:space="preserve"><value>Rate Level3</value></data>
+  <data name="LegAverageRateLevel3Dto.Code" xml:space="preserve"><value>Code</value></data>
+  <data name="LegAverageRateLevel3Dto.AverageRateCode" xml:space="preserve"><value>Rate code</value></data>
+  <data name="LegAverageRateLevel3Dto.IsDefRate" xml:space="preserve"><value>Deflator</value></data>
+  <data name="LegAverageRateLevel3Dto.RateTypeName" xml:space="preserve"><value>Rate type</value></data>
+  <data name="LegAverageRateLevel3Dto.TransportTypeName" xml:space="preserve"><value>Type of vehicle</value></data>
+  <data name="LegAverageRateLevel3Dto.ProductGroupName" xml:space="preserve"><value>Product group</value></data>
+  <data name="LegAverageRateLevel3Dto.ProductName" xml:space="preserve"><value>Product</value></data>
+  <data name="LegAverageRateLevel3Dto.StartDate" xml:space="preserve"><value>Validity period from</value></data>
+  <data name="LegAverageRateLevel3Dto.EndDate" xml:space="preserve"><value>Validity period till</value></data>
+  <data name="LegAverageRateLevel3Dto.RateLevel3" xml:space="preserve"><value>Avg.rate of level 3 in ref.currency</value></data>
+  <data name="LegAverageRateLevel3Dto.EffectiveLoadOfTransportType" xml:space="preserve"><value>Effective loading of the transport vehicle type (in tons)</value></data>
+  <data name="LegAverageRateLevel3Dto.Currency" xml:space="preserve"><value>Reference currency</value></data>
+  <data name="LegAverageRateLevel3Dto.IsArchive" xml:space="preserve"><value>Archive</value></data>
+  <data name="LeadtimeDto.Title" xml:space="preserve"><value>Leadtime</value></data>
+  <data name="LeadtimeDto.Code" xml:space="preserve"><value>Leadtime code</value></data>
+  <data name="LeadtimeDto.StartDate" xml:space="preserve"><value>Validity period from</value></data>
+  <data name="LeadtimeDto.EndDate" xml:space="preserve"><value>Validity period till</value></data>
+  <data name="LeadtimeDto.ShipmentTypeName" xml:space="preserve"><value>Shipment type</value></data>
+  <data name="LeadtimeDto.LeadTimeIsActive" xml:space="preserve"><value>Leadtime is active</value></data>
+  <data name="LeadtimeDto.CommercialLT" xml:space="preserve"><value>Commercial leadtime</value></data>
+  <data name="LeadtimeDto.SearchTime" xml:space="preserve"><value>Search, days</value></data>
+  <data name="LeadtimeDto.LoadTime" xml:space="preserve"><value>Loading, days</value></data>
+  <data name="LeadtimeDto.TravelTime" xml:space="preserve"><value>In transit, days</value></data>
+  <data name="LeadtimeDto.DaysWaiting" xml:space="preserve"><value>Waiting, days</value></data>
+  <data name="LeadtimeDto.UnLoadTime" xml:space="preserve"><value>Unloading, days</value></data>
+  <data name="LeadtimeDto.TransportationTime" xml:space="preserve"><value>Transportation, days</value></data>
+  <data name="LeadtimeDto.Distance" xml:space="preserve"><value>Distance, km</value></data>
+  <data name="LeadtimeDto.Leg1_SearchTime" xml:space="preserve"><value>Leg 1. Search, days</value></data>
+  <data name="LeadtimeDto.Leg1_LoadTime" xml:space="preserve"><value>Leg 1. Loading, days</value></data>
+  <data name="LeadtimeDto.Leg1_TravelTime" xml:space="preserve"><value>Leg 1. In transit, days</value></data>
+  <data name="LeadtimeDto.Leg1_DaysWaiting" xml:space="preserve"><value>Leg 1. Waiting, days</value></data>
+  <data name="LeadtimeDto.Leg1_TransportationTime" xml:space="preserve"><value>Leg 1. Transportation</value></data>
+  <data name="LeadtimeDto.Leg1_Distance" xml:space="preserve"><value>Leg 1. Distance, km</value></data>
+  <data name="LeadtimeDto.Leg2_TravelTime" xml:space="preserve"><value>Leg 2. In transit, days</value></data>
+  <data name="LeadtimeDto.Leg2_DaysWaiting" xml:space="preserve"><value>Leg 2. Waiting, days</value></data>
+  <data name="LeadtimeDto.Leg2_UploadTime" xml:space="preserve"><value>Leg 2. Unloading, days</value></data>
+  <data name="LeadtimeDto.Leg2_TransportationTime" xml:space="preserve"><value>Leg 2. Transportation</value></data>
+  <data name="LeadtimeDto.Leg2_Distance" xml:space="preserve"><value>Leg 2. Distance, km</value></data>
+  <data name="LeadtimeDto.IsArchive" xml:space="preserve"><value>Archive</value></data>
   </root>

@@ -199,6 +199,18 @@
 | `IsBasic_forCBD` | Основной тип транспорта для ЦБД | Basic transport type for CBD | Осн. ЦБД | CBD basic |
 | `Market` | Макрорегион | Macroregion | Макрорегион | Macroregion |
 
+### AverageRateLevel3
+
+Таблицы дочерних примитивов на карточке AverageRateLevel3 — полные имена, short не задаётся.
+
+| Key | RU полное | EN полное | RU short | EN short |
+|-----|-----------|-----------|----------|----------|
+| группа `RatesOfAverageRate` | Ставки, вошедшие в расчет | Rate For Rate | — | — |
+| `Code` | Код | Code | — | — |
+| `TransportRateCode` | Код ставки | Rate code | — | — |
+| `TotalCostTon` | Общая стоимость за тонну | Total cost of transportation per ton (excluding VAT) | — | — |
+| `TotalCostTransport` | Общая стоимость за транспортное средство | Total cost of transportation per vehicle (excluding VAT) | — | — |
+
 ### Coefficient
 
 Согласовано для грида и карточки Coefficient. `Code` — как у Contractor: в гриде «Код» / `Code`, на карточке «Код (Код записи)» / `Code`. `Name` и тип ставки — по общему глоссарию выше.
@@ -247,6 +259,32 @@
 | `Customs` | карточка | Таможня | Customs | — | — |
 | `CustomCode` | карточка | Код таможни | Customs code | — | — |
 | `OrgAffiliation` | карточка | Организационная принадлежность | Organisational affiliation | — | — |
+
+Таблицы дочерних примитивов на карточке Contractor — полные имена, short не задаётся.
+
+| Key | RU полное | EN полное | RU short | EN short |
+|-----|-----------|-----------|----------|----------|
+| группа `Address` | Адреса контрагентов | Addresses of contractors | — | — |
+| `Code` | Идентификатор адреса | Address ID | — | — |
+| `AddressType` | Тип адреса | Address type | — | — |
+| `City` | Город/населенный пункт | City/town | — | — |
+| `Status` | Статус адреса | Address status | — | — |
+| `AddressKind` | Вид адреса | Address type | — | — |
+| `Pobox` | Индекс | Pobox | — | — |
+| `RegionCode` | Код региона | Region code | — | — |
+| `District_ru` | Район | District | — | — |
+| `Street` | Улица | Street | — | — |
+| `House` | Дом | House | — | — |
+| `OfficeApart` | Офис/квартира | Office/apartment | — | — |
+| `FullAddress_ru` | Полный адрес | Full address | — | — |
+| `CoordinateW` | Географические координаты широты | Latitude | — | — |
+| `CoordinateL` | Географические координаты долготы | Longitude | — | — |
+| `FIASCodeRegion` | Код ФИАС региона | FIAS region code | — | — |
+| `FIASCodeDistrict` | Код ФИАС района | FIAS district code | — | — |
+| `FIASCodeSettlement` | Код ФИАС города/населенного пункта | FIAS settlement code | — | — |
+| `Region` | Регион | Region | — | — |
+| `Country` | Страна | Country | — | — |
+| `IsArchive` | Архив | Archive | — | — |
 
 ### RateAutoSelectionSetting
 
@@ -301,3 +339,80 @@
 | `TransportKind` | Вид транспорта | Means of transportation | — | — |
 | `Leg1_TransportType` | Плечо 1.Тип транспорта | Leg 1 transport type | — | — |
 | `Leg2_TransportType` | Плечо 2.Тип транспорта | Leg 2 transport type | — | — |
+
+### TransportRate
+
+Таблицы дочерних примитивов на карточке TransportRate — полные имена, short не задаётся.
+
+| Key | RU полное | EN полное | RU short | EN short |
+|-----|-----------|-----------|----------|----------|
+| группа `TransportRateTenderServicePack` | Тендерный пакет услуг | Tender service pack | — | — |
+| `Code` | Код | Code | — | — |
+| `TenderServicePack` | Тендерный пакет услуг | Tender service pack | — | — |
+| `LotRate` | Ставка лота | Lot rate | — | — |
+| `LotCurrency` (`LotCurrencyId`) | Валюта лота | Lot currency | — | — |
+| группа `TransportRateCoefficient` | Применённые коэффициенты | Applied coefficients | — | — |
+| `CoefficientRateCode` | Код ставки с коэфициентом | Rate code with coefficient | — | — |
+| `StartDate` | Начало периода | Start of period | — | — |
+| `EndDate` | Окончание периода | End of period | — | — |
+| `CoefficientName` | Коэффициент | Coefficient | — | — |
+| `SourceRateCode` | Исходная ставка | Source rate | — | — |
+| `SourceRateKindName` | Вид исходной ставки | Source rate kind | — | — |
+
+### TransportLeg
+
+Таблицы дочерних примитивов на карточке TransportLeg — полные имена, short не задаётся.
+
+| Key | RU полное | EN полное | RU short | EN short |
+|-----|-----------|-----------|----------|----------|
+| группа `LegRate` | Ставки плеча | Leg rates | — | — |
+| `Code` | Код | Code | — | — |
+| `RateCode` | Код ставки | Rate code | — | — |
+| `IsDefRate` | Дефлятор | Deflator | — | — |
+| `RateType` | Тип ставки | Rate type | — | — |
+| `TransportType` | Тип транспорта | Type of vehicle | — | — |
+| `ProductGroup` | Группа продуктов | Product group | — | — |
+| `Product` | Продукт | Product | — | — |
+| `StartDate` | Период действия с | Validity period from | — | — |
+| `EndDate` | Период действия по | Validity period till | — | — |
+| `TotalCostTon` | Общая стоимость за тонну | Total cost of transportation per ton (excluding VAT) | — | — |
+| `TotalCostTransport` | Общая стоимость за транспортное средство | Total cost of transportation per vehicle (excluding VAT) | — | — |
+| `Currency` | Валюта-эталон | Reference currency | — | — |
+| группа `LegAverageRateLevel3` | Средневзвешенные ставки 3 уровня | Rate Level3 | — | — |
+| `Code` | Код | Code | — | — |
+| `AverageRateCode` | Код ставки | Rate code | — | — |
+| `IsDefRate` | Дефлятор | Deflator | — | — |
+| `RateType` | Тип ставки | Rate type | — | — |
+| `TransportType` | Тип транспорта | Type of vehicle | — | — |
+| `ProductGroup` | Группа продуктов | Product group | — | — |
+| `Product` | Продукт | Product | — | — |
+| `StartDate` | Период действия с | Validity period from | — | — |
+| `EndDate` | Период действия по | Validity period till | — | — |
+| `RateLevel3` | Ставка ср.взвеш. (т) в валюте-эталоне | Avg.rate of level 3 in ref.currency | — | — |
+| `EffectiveLoadOfTransportType` | Эффективная загрузка типа транспорта (в тоннах) | Effective loading of the transport vehicle type (in tons) | — | — |
+| `Currency` | Валюта-эталон | Reference currency | — | — |
+| группа `Leadtime` | Лидтаймы | Leadtime | — | — |
+| `Code` | Код Лидтайма | Leadtime code | — | — |
+| `StartDate` | Период действия с | Validity period from | — | — |
+| `EndDate` | Период действия по | Validity period till | — | — |
+| `ShipmentType` | Тип отправки | Shipment type | — | — |
+| `LeadTimeIsActive` | Лидтайм действует | Leadtime is active | — | — |
+| `CommercialLT` | Коммерческий лидтайм | Commercial leadtime | — | — |
+| `SearchTime` | Поиск, сут | Search, days | — | — |
+| `LoadTime` | Погрузка, сут | Loading, days | — | — |
+| `TravelTime` | В пути, сут | In transit, days | — | — |
+| `DaysWaiting` | Ожидание, сут | Waiting, days | — | — |
+| `UnLoadTime` | Разгрузка, сут | Unloading, days | — | — |
+| `TransportationTime` | Транспортировка, сут | Transportation, days | — | — |
+| `Distance` | Расстояние, км | Distance, km | — | — |
+| `Leg1_SearchTime` | Плечо 1.Поиск, сут | Leg 1. Search, days | — | — |
+| `Leg1_LoadTime` | Плечо 1.Погрузка, сут | Leg 1. Loading, days | — | — |
+| `Leg1_TravelTime` | Плечо 1.В пути, сут | Leg 1. In transit, days | — | — |
+| `Leg1_DaysWaiting` | Плечо 1.Ожидание, сут | Leg 1. Waiting, days | — | — |
+| `Leg1_TransportationTime` | Плечо 1.Транспортировка | Leg 1. Transportation | — | — |
+| `Leg1_Distance` | Плечо 1.Расстояние, км | Leg 1. Distance, km | — | — |
+| `Leg2_TravelTime` | Плечо 2.В пути, сут | Leg 2. In transit, days | — | — |
+| `Leg2_DaysWaiting` | Плечо 2.Ожидание, сут | Leg 2. Waiting, days | — | — |
+| `Leg2_UploadTime` | Плечо 2.Разгрузка, сут | Leg 2. Unloading, days | — | — |
+| `Leg2_TransportationTime` | Плечо 2.Транспортировка | Leg 2. Transportation | — | — |
+| `Leg2_Distance` | Плечо 2.Расстояние, км | Leg 2. Distance, km | — | — |

@@ -108,7 +108,11 @@ SqlScripts/
 | 3 | `Modules/TransportRate/Structure/02.TransportRate_Insert.sql` |
 | 4 | `Modules/TransportRate/Structure/03.TransportRate_CreateIndexes.sql` |
 | 5 | `Modules/TransportRate/Programmability/vw_TransportRate_Detail.sql` |
-| 6 | `Modules/TransportRate/Programmability/sp_TransportRate_PopulateAffectedKeys.sql` |
+| 6 | `Modules/TransportRate/Programmability/vw_TransportRateTenderServicePack_Detail.sql` |
+| 7 | `Modules/TransportRate/Programmability/vw_TransportRateCoefficient_Detail.sql` |
+| 8 | `Modules/TransportRate/Programmability/sp_TransportRate_PopulateAffectedKeys.sql` |
+
+`vw_TransportRateTenderServicePack_Detail` и `vw_TransportRateCoefficient_Detail` — таблицы дочерних примитивов на карточке (`dbo.PrimitiveEntityData_2089`, `dbo.PrimitiveEntityData_2106`); в снимок ставки, sync и полный Excel не входят.
 
 **ParityRates** (проекция создаётся до Insert — он из неё заливается)
 
@@ -130,7 +134,10 @@ SqlScripts/
 | 3 | `Modules/AverageRateLevel3/Structure/02.AverageRateLevel3_Insert.sql` |
 | 4 | `Modules/AverageRateLevel3/Structure/03.AverageRateLevel3_CreateIndexes.sql` |
 | 5 | `Modules/AverageRateLevel3/Programmability/vw_AverageRateLevel3_Detail.sql` |
-| 6 | `Modules/AverageRateLevel3/Programmability/sp_AverageRateLevel3_PopulateAffectedKeys.sql` |
+| 6 | `Modules/AverageRateLevel3/Programmability/vw_RatesOfAverageRate_Detail.sql` |
+| 7 | `Modules/AverageRateLevel3/Programmability/sp_AverageRateLevel3_PopulateAffectedKeys.sql` |
+
+`vw_RatesOfAverageRate_Detail` — таблица дочернего примитива на карточке (`dbo.PrimitiveEntityData_2058`); в снимок ставки 3 уровня, sync и полный Excel не входит.
 
 **TransportLeg** (проекция создаётся до Insert — он из неё заливается)
 
@@ -141,7 +148,12 @@ SqlScripts/
 | 3 | `Modules/TransportLeg/Structure/02.TransportLeg_Insert.sql` |
 | 4 | `Modules/TransportLeg/Structure/03.TransportLeg_CreateIndexes.sql` |
 | 5 | `Modules/TransportLeg/Programmability/vw_TransportLeg_Detail.sql` |
-| 6 | `Modules/TransportLeg/Programmability/sp_TransportLeg_PopulateAffectedKeys.sql` |
+| 6 | `Modules/TransportLeg/Programmability/vw_LegRate_Detail.sql` |
+| 7 | `Modules/TransportLeg/Programmability/vw_LegAverageRateLevel3_Detail.sql` |
+| 8 | `Modules/TransportLeg/Programmability/vw_Leadtime_Detail.sql` |
+| 9 | `Modules/TransportLeg/Programmability/sp_TransportLeg_PopulateAffectedKeys.sql` |
+
+`vw_LegRate_Detail`, `vw_LegAverageRateLevel3_Detail` и `vw_Leadtime_Detail` — таблицы дочерних примитивов на карточке (`dbo.PrimitiveEntityData_2044`, `dbo.PrimitiveEntityData_2059`, `dbo.PrimitiveEntityData_2126`); в снимок плеча, sync и полный Excel не входят.
 
 **LocationsNodes** (проекция создаётся до Insert — он из неё заливается)
 
@@ -216,7 +228,10 @@ SqlScripts/
 | 4 | `Modules/Contractor/Structure/02.Contractor_Insert.sql` |
 | 5 | `Modules/Contractor/Structure/03.Contractor_CreateIndexes.sql` |
 | 6 | `Modules/Contractor/Programmability/vw_Contractor_Detail.sql` |
-| 7 | `Modules/Contractor/Programmability/sp_Contractor_PopulateAffectedKeys.sql` |
+| 7 | `Modules/Contractor/Programmability/vw_Address_Detail.sql` |
+| 8 | `Modules/Contractor/Programmability/sp_Contractor_PopulateAffectedKeys.sql` |
+
+`vw_Address_Detail` — таблица дочернего примитива на карточке (`dbo.PrimitiveEntityData_2027`); в снимок контрагента, sync и полный Excel не входит.
 
 **Coefficient** (представление `dbo.vw_Coefficient`; RowVer на `dbo.PrimitiveEntityData_2081`; CoefficientType и RateType — enum, не отслеживаются)
 

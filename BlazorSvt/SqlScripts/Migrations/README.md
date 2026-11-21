@@ -48,7 +48,7 @@ Greenfield: `2.0.0` → `2.0.1` → `2.3.46` → `2.3.48` → `2.3.49`.
 Имя папки — `VersionPrefix` из `BlazorSvt/BlazorSvt.csproj` (сейчас `2.3.49`), без суффикса числа коммитов. Это не «следующий номер после 2.0.1» и не пункт бэклога `2.0.2`.
 
 1. Перед записью скриптов выяснить, выкачена ли папка текущего `VersionPrefix`. Выкаченная папка read-only: `VersionPrefix` поднимается, новая папка начинается с `001`, старая не правится. Папка, которая ещё не выкатывалась, продолжается следующим номером. Баг уже выкаченного релиза уходит новым скриптом в папку новой версии.
-2. В папке версии — дельта схемы (Structure, `ALTER`, индексы, data fix), затем **последним файлом полный снимок** всей programmability `v2` (`All_Programmability.sql`). В текущем релизе последний снимок — `2.3.49/033`. В `2.3.48` это `020` (2026-11-03). В `2.3.46` это `005`. В `2.0.1` такой пакет стоял дважды: `045` и `052`.
+2. В папке версии — дельта схемы (Structure, `ALTER`, индексы, data fix), затем **последним файлом полный снимок** всей programmability `v2` (`All_Programmability.sql`). В текущем релизе последний снимок — `2.3.49/051`. В `2.3.48` это `020` (2026-11-03). В `2.3.46` это `005`. В `2.0.1` такой пакет стоял дважды: `045` и `052`.
 3. Новая папка версии нумеруется с `001`. Невыкаченная папка продолжается следующим номером, а не с `001`. Исторические `038…` в `2.0.1` не переименовываем.
 4. SoT остаётся в `Platform/` и `Modules/`: локальный `Create-Programmability.ps1` читает его, а не `Migrations/`. В папку версии попадает копия дельты и снимок programmability.
 5. Публикация в `C:\publish` этим правилом не требуется.
@@ -197,7 +197,7 @@ TransportTypeLevel3 — стабильный словарь с enum. В мигр
 | `048.vw_Country_SnapshotSource.sql` | Проекция из `dbo.vw_Country`; выполняется до заливки |
 | `049.02.Country_Insert.sql` | Полная заливка и курсор `v2.SyncState` по `dbo.PrimitiveEntityData_1009` |
 | `050.03.Country_CreateIndexes.sql` | Уникальный индекс, фильтр по `Code` и `StatusId`, индекс по ключу, full-text |
-| `051.All_Programmability.sql` | Полный снимок programmability, 66 скриптов (2026-11-20) |
+| `051.All_Programmability.sql` | Полный снимок programmability, 73 скрипта (2026-11-21) |
 
 Contractor (SVT-5290) — справочник с watermark-sync. Примитив LegalType, чтение из `dbo.vw_LegalType`. `001` добавляет `RowVer` на `dbo.PrimitiveEntityData_2028`.
 
@@ -218,6 +218,14 @@ TransportRoute — справочник с watermark-sync. `038` добавля�
 Region — справочник с watermark-sync. Новый `RowVer` не добавлялся: на `dbo.PrimitiveEntityData_1008` и `dbo.PrimitiveEntityData_1009` он уже есть. `vw_Region_Detail` и `sp_Region_PopulateAffectedKeys` — в снимке `051`.
 
 Country — справочник с watermark-sync. Новый `RowVer` не добавлялся: на `dbo.PrimitiveEntityData_1009` он уже есть. `vw_Country_Detail` и `sp_Country_PopulateAffectedKeys` — в снимке `051`.
+
+TransportRate — доработка. Проекции детей `v2.vw_TransportRateTenderServicePack_Detail` (`dbo.PrimitiveEntityData_2089`) и `v2.vw_TransportRateCoefficient_Detail` (`dbo.PrimitiveEntityData_2106`) добавлены в снимок `051`, отдельной дельты нет. Structure, `vw_TransportRate_SnapshotSource`, `vw_TransportRate_Detail`, `PopulateAffectedKeys`, `RowVer` и SyncState не менялись.
+
+AverageRateLevel3 — доработка. Проекция ребёнка `v2.vw_RatesOfAverageRate_Detail` (`dbo.PrimitiveEntityData_2058`) добавлена в снимок `051`, отдельной дельты нет. Structure, `vw_AverageRateLevel3_SnapshotSource`, `vw_AverageRateLevel3_Detail`, `PopulateAffectedKeys`, `RowVer` и SyncState не менялись.
+
+Contractor — доработка. Проекция ребёнка `v2.vw_Address_Detail` (`dbo.PrimitiveEntityData_2027`, ключ родителя `LegalTypeId`) добавлена в снимок `051`, отдельной дельты нет. Structure, `vw_Contractor_SnapshotSource`, `vw_Contractor_Detail`, `PopulateAffectedKeys`, `RowVer` и SyncState не менялись.
+
+TransportLeg — доработка. Проекции детей `v2.vw_LegRate_Detail` (`dbo.PrimitiveEntityData_2044`), `v2.vw_LegAverageRateLevel3_Detail` (`dbo.PrimitiveEntityData_2059`) и `v2.vw_Leadtime_Detail` (`dbo.PrimitiveEntityData_2126`) добавлены в снимок `051`, отдельной дельты нет. Structure, `vw_TransportLeg_SnapshotSource`, `vw_TransportLeg_Detail`, `PopulateAffectedKeys`, `RowVer` и SyncState не менялись.
 
 Файл `008` — прежнее имя снимка programmability: после дельты Coefficient его переименовали в `014`. Файл `014` — прежнее имя снимка: после дельты RateSyncClass, RateCalcType, RateAutoSelectionSetting и ReportConstructor его переименовали в `033`. Файл `033` — прежнее имя снимка: после дельты Relevance, TransportRoute, Region и Country его переименовали в `051`. Актуальный полный снимок — `051`.
 

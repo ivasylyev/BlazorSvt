@@ -13,6 +13,8 @@ public static class TransportRateModule
     {
         services.AddScoped<IGridSettingsService<TransportRateDto>, TransportRateGridSettingsService>();
         services.AddScoped<IDetailSettingsService<TransportRateDetailDto>, TransportRateDetailSettingsService>();
+        services.AddScoped<IDetailChildSection<TransportRateDetailDto>, TransportRateTenderServicePackSection>();
+        services.AddScoped<IDetailChildSection<TransportRateDetailDto>, TransportRateCoefficientSection>();
 
         services.AddSingleton<ISnapshotSyncJob, TransportRateSyncJob>();
         services.AddCatalogMenu(new CatalogMenuContribution(
