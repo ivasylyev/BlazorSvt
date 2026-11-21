@@ -20,7 +20,7 @@
 - watermark-sync (снимок, SyncJob, RowVer, SyncState)
 - регистрация в API, код `contractors`
 
-На экран не выводить: примитив `Address`, атрибут `Status`, пустые `LegalForm` и `LevelOrg`. Расхождение состояния записи и Status на localhost не учитывать: на проде его нет.
+Адреса (`Address`) — дочерняя таблица на карточке. На экран не выводить: атрибут `Status`, пустые `LegalForm` и `LevelOrg`. Расхождение состояния записи и Status на localhost не учитывать: на проде его нет.
 
 Порядок колонок грида: `Code`, `NameSearch`, `Consignee`, `IsTrader`, `IsProcessing`, `IsSender`, `IsDebtor`, `IsCreditor`, `INN`. Подписи — `grid-column-glossary.md`, раздел Contractor.
 

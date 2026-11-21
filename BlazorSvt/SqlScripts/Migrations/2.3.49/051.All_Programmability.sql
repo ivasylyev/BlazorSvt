@@ -1623,7 +1623,8 @@ GO
 /*
     Карточка и полный Excel Contractor.
     Источник — dbo.vw_LegalType. vw_Contractor устарело.
-    Address, Status, LegalForm и LevelOrg не выводятся.
+    Адреса (Address) — дочерняя таблица карточки, не колонки этой проекции.
+    Status, LegalForm и LevelOrg не выводятся.
 */
 
 CREATE OR ALTER VIEW v2.vw_Contractor_Detail
@@ -1701,8 +1702,9 @@ GO
     Детекция изменившихся контрагентов.
     Источник: dbo.PrimitiveEntityData_2028 — LegalType (основная), реестр Contractor.
 
-    Address, StatusElement, LegalForm и LevelOrganization в каскад не входят:
-    на экран Contractor они не выводятся.
+    Address, StatusElement, LegalForm и LevelOrganization в каскад не входят.
+    Address — дочерняя таблица карточки, в снимок не входит.
+    Status, LegalForm и LevelOrg на экран не выводятся.
 */
 CREATE OR ALTER PROCEDURE v2.Contractor_PopulateAffectedKeys
     @Source NVARCHAR(200),
