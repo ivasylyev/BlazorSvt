@@ -64,6 +64,22 @@ public class GridColumnMetadataBuilderTests
     }
 
     [Fact]
+    public void BuildAllowedColumnsJson_DateTimeColumns_KeepTime_DateOnlyStayDate()
+    {
+        var json = GridColumnMetadataBuilder.BuildAllowedColumnsJson(typeof(TransportRateDto));
+        var columns = JArray.Parse(json);
+
+        columns.Single(c => c["ColumnName"]!.Value<string>() == nameof(TransportRateDto.CreationDate))
+            ["ColumnType"]!.Value<string>().Should().Be("DATETIME");
+        columns.Single(c => c["ColumnName"]!.Value<string>() == nameof(TransportRateDto.LastChangeDate))
+            ["ColumnType"]!.Value<string>().Should().Be("DATETIME");
+        columns.Single(c => c["ColumnName"]!.Value<string>() == nameof(TransportRateDto.StartDate))
+            ["ColumnType"]!.Value<string>().Should().Be("DATE");
+        columns.Single(c => c["ColumnName"]!.Value<string>() == nameof(TransportRateDto.EndDate))
+            ["ColumnType"]!.Value<string>().Should().Be("DATE");
+    }
+
+    [Fact]
     public void BuildAllowedColumnsJson_UsesSqlColumnNameWhenSpecified()
     {
         var json = GridColumnMetadataBuilder.BuildAllowedColumnsJson(typeof(TransportLegDto));

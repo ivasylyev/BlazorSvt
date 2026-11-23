@@ -28,7 +28,7 @@ public sealed class DetailSettingsBuilder<T>(IStringLocalizer<PlatformResources>
             Name = MemberName(property),
             Header = header,
             GroupHeader = groupHeader,
-            DisplaySelector = display ?? (dto => compiled(dto) is { } value ? value : string.Empty),
+            DisplaySelector = display ?? (dto => GridDateTime.Format(compiled(dto))),
             VisibleSelector = visible ?? (_ => true),
             HasMargin = hasMargin
         });
