@@ -57,7 +57,6 @@ public class TransportLegChildSectionsTests
 
         section.Title.Should().Be("LegRateDto.Title");
         table.Headers().Should().Equal(
-            "LegRateDto.Code",
             "LegRateDto.RateCode",
             "LegRateDto.IsDefRate",
             "LegRateDto.RateTypeName",
@@ -70,7 +69,6 @@ public class TransportLegChildSectionsTests
             "LegRateDto.TotalCostTransport",
             "LegRateDto.Currency");
         table.Cells().Single().Should().Equal(
-            "LR-1",
             "R-1",
             "Common.Yes",
             "Tender",
@@ -93,7 +91,7 @@ public class TransportLegChildSectionsTests
         var table = await section.LoadAsync(Parent(isArchive: false), "ru", CancellationToken.None);
 
         table.Cells().Single().Should().Equal(
-            "", "", "Common.No", "", "", "", "", "", "", "", "", "");
+            "", "Common.No", "", "", "", "", "", "", "", "", "");
     }
 
     [Fact]
@@ -121,7 +119,6 @@ public class TransportLegChildSectionsTests
 
         section.Title.Should().Be("LegAverageRateLevel3Dto.Title");
         table.Headers().Should().Equal(
-            "LegAverageRateLevel3Dto.Code",
             "LegAverageRateLevel3Dto.AverageRateCode",
             "LegAverageRateLevel3Dto.IsDefRate",
             "LegAverageRateLevel3Dto.RateTypeName",
@@ -134,7 +131,6 @@ public class TransportLegChildSectionsTests
             "LegAverageRateLevel3Dto.EffectiveLoadOfTransportType",
             "LegAverageRateLevel3Dto.Currency");
         table.Cells().Single().Should().Equal(
-            "AR-1",
             "A-1",
             "Common.No",
             "Indicative",
@@ -270,12 +266,12 @@ public class TransportLegChildSectionsTests
         var averageTable = await average.LoadAsync(Parent(isArchive: true), "ru", CancellationToken.None);
         var leadtimeTable = await leadtime.LoadAsync(Parent(isArchive: true), "ru", CancellationToken.None);
 
-        legRateTable.Headers().Should().HaveCount(13).And.EndWith("LegRateDto.IsArchive");
+        legRateTable.Headers().Should().HaveCount(12).And.EndWith("LegRateDto.IsArchive");
         legRateTable.Columns.Select(c => c.Name).Should().OnlyHaveUniqueItems();
         legRateTable.Cells().Select(r => r[^1]).Should().Equal("Common.Active", "Common.Archive");
         legRateTable.Columns[^1].Name.Should().Be("IsArchive");
         legRateTable.Rows.Select(r => r.IsArchive).Should().Equal(false, true);
-        averageTable.Headers().Should().HaveCount(13).And.EndWith("LegAverageRateLevel3Dto.IsArchive");
+        averageTable.Headers().Should().HaveCount(12).And.EndWith("LegAverageRateLevel3Dto.IsArchive");
         averageTable.Columns.Select(c => c.Name).Should().OnlyHaveUniqueItems();
         averageTable.Cells().Single()[^1].Should().Be("Common.Archive");
         leadtimeTable.Headers().Should().HaveCount(25).And.EndWith("LeadtimeDto.IsArchive");
@@ -303,14 +299,14 @@ public class TransportLegChildSectionsTests
         "Ставки плеча",
         new[]
         {
-            "Код", "Код ставки", "Дефлятор", "Тип ставки", "Тип транспорта", "Группа продуктов", "Продукт",
+            "Код ставки", "Дефлятор", "Тип ставки", "Тип транспорта", "Группа продуктов", "Продукт",
             "Период действия с", "Период действия по", "Общая стоимость за тонну",
             "Общая стоимость за транспортное средство", "Валюта-эталон", "Архив"
         },
         "Средневзвешенные ставки 3 уровня",
         new[]
         {
-            "Код", "Код ставки", "Дефлятор", "Тип ставки", "Тип транспорта", "Группа продуктов", "Продукт",
+            "Код ставки", "Дефлятор", "Тип ставки", "Тип транспорта", "Группа продуктов", "Продукт",
             "Период действия с", "Период действия по", "Ставка ср.взвеш. (т) в валюте-эталоне",
             "Эффективная загрузка типа транспорта (в тоннах)", "Валюта-эталон", "Архив"
         },
@@ -329,14 +325,14 @@ public class TransportLegChildSectionsTests
         "Leg rates",
         new[]
         {
-            "Code", "Rate code", "Deflator", "Rate type", "Type of vehicle", "Product group", "Product",
+            "Rate code", "Deflator", "Rate type", "Type of vehicle", "Product group", "Product",
             "Validity period from", "Validity period till", "Total cost of transportation per ton (excluding VAT)",
             "Total cost of transportation per vehicle (excluding VAT)", "Reference currency", "Archive"
         },
         "Rate Level3",
         new[]
         {
-            "Code", "Rate code", "Deflator", "Rate type", "Type of vehicle", "Product group", "Product",
+            "Rate code", "Deflator", "Rate type", "Type of vehicle", "Product group", "Product",
             "Validity period from", "Validity period till", "Avg.rate of level 3 in ref.currency",
             "Effective loading of the transport vehicle type (in tons)", "Reference currency", "Archive"
         },

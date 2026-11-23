@@ -368,7 +368,6 @@
 | Key | RU полное | EN полное | RU short | EN short |
 |-----|-----------|-----------|----------|----------|
 | группа `LegRate` | Ставки плеча | Leg rates | — | — |
-| `Code` | Код | Code | — | — |
 | `RateCode` | Код ставки | Rate code | — | — |
 | `IsDefRate` | Дефлятор | Deflator | — | — |
 | `RateType` | Тип ставки | Rate type | — | — |
@@ -381,7 +380,6 @@
 | `TotalCostTransport` | Общая стоимость за транспортное средство | Total cost of transportation per vehicle (excluding VAT) | — | — |
 | `Currency` | Валюта-эталон | Reference currency | — | — |
 | группа `LegAverageRateLevel3` | Средневзвешенные ставки 3 уровня | Rate Level3 | — | — |
-| `Code` | Код | Code | — | — |
 | `AverageRateCode` | Код ставки | Rate code | — | — |
 | `IsDefRate` | Дефлятор | Deflator | — | — |
 | `RateType` | Тип ставки | Rate type | — | — |
