@@ -65,15 +65,18 @@ SqlScripts/
 │   ├── Region/
 │   │   ├── Structure/
 │   │   └── Programmability/
-│   └── Country/
+│   ├── Country/
+│   │   ├── Structure/
+│   │   └── Programmability/
+│   └── TransportKind/
 │       ├── Structure/
-│       └── Programmability/
+│       └── Programmability/   # без PopulateAffectedKeys: разовая заливка
 ├── Migrations/             # Релизные артефакты наката (immutable после выката)
 │   ├── 2.0.0/              # baseline
 │   ├── 2.0.1/              # upgrade
 │   ├── 2.3.46/             # дельта RateType + снимок programmability
 │   ├── 2.3.48/             # очередь Атласа: Currency, ProductGroup, MTR, TransportTypeLevel3 + снимок programmability
-│   ├── 2.3.49/             # текущий VersionPrefix: Contractor, Coefficient, RateSyncClass, RateCalcType, RateAutoSelectionSetting, ReportConstructor, Relevance, TransportRoute, Region, Country + снимок programmability
+│   ├── 2.3.49/             # текущий VersionPrefix: Contractor, Coefficient, RateSyncClass, RateCalcType, RateAutoSelectionSetting, ReportConstructor, Relevance, TransportRoute, Region, Country, TransportKind + снимок programmability
 │   └── README.md           # конвенция релизов / два контура
 └── Translations_info.txt   # Справочник переводов полей (не для деплоя)
 ```
@@ -339,6 +342,16 @@ SqlScripts/
 | 4 | `Modules/Country/Structure/03.Country_CreateIndexes.sql` |
 | 5 | `Modules/Country/Programmability/vw_Country_Detail.sql` |
 | 6 | `Modules/Country/Programmability/sp_Country_PopulateAffectedKeys.sql` |
+
+**TransportKind** (стабильный разовый снимок: без RowVer, SyncJob и PopulateAffectedKeys; проекция до Insert)
+
+| # | Скрипт |
+|---|--------|
+| 1 | `Modules/TransportKind/Structure/01.TransportKind_CreateTable.sql` |
+| 2 | `Modules/TransportKind/Programmability/vw_TransportKind_SnapshotSource.sql` |
+| 3 | `Modules/TransportKind/Structure/02.TransportKind_Insert.sql` |
+| 4 | `Modules/TransportKind/Structure/03.TransportKind_CreateIndexes.sql` |
+| 5 | `Modules/TransportKind/Programmability/vw_TransportKind_Detail.sql` |
 
 ## Grid read-модель
 
