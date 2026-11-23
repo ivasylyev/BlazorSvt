@@ -33,7 +33,7 @@
                         @column.HeaderTemplate
                     }
                 </tr>
-                @if (AllowFiltering)
+                @if (IsFiltersRowVisible)
                 {
                     <tr class="@FiltersRowCssClass">
                         @if (AllowDetailView)

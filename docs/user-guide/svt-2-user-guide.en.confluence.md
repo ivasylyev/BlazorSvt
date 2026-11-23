@@ -124,7 +124,7 @@ Hover a domain in the top menu and choose a reference book. A table of records o
 * Data is view-only.
 * By default, *non-archive* (active) records are shown.
 * To view archive records, enable the *Archive* column in Settings and filter by it (section 6.5).
-* A filter row is under the column headers.
+* A filter row is under the column headers. If all records fit on one page and no filters are set, the filter row is hidden.
 * You can sort: click a column header.
 * Pagination is at the bottom (*«1 - 10 from … items»*). Use the arrows or page numbers.
 * The arrow on the left of a row opens the *detail card* (all fields of the record).

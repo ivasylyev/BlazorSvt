@@ -56,6 +56,13 @@ public static class GridFilterUtility
         return parsed < SqlDateTimeMin || parsed > SqlDateTimeMax;
     }
 
+    /// <summary>
+    /// Returns true when the filters row should be rendered with auto-hide enabled:
+    /// a filter value is set on a visible column, the item count is not known yet, or items do not fit on one page.
+    /// </summary>
+    public static bool ShouldShowFiltersRow(bool hasVisibleColumnFilters, int? totalCount, int pageSize) =>
+        hasVisibleColumnFilters || !totalCount.HasValue || totalCount.Value > pageSize;
+
     private static bool TryParseFilterDateTime(string filterValue, out DateTime parsed)
     {
         if (DateTime.TryParse(
