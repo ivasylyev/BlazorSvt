@@ -336,6 +336,11 @@ h1:focus {
     overflow-x: auto;
 }
 
+/* Вложенный Grid наследует .sibur-grid .table-responsive { min-height: 450px } — для детей сбрасываем */
+.sibur-grid .sibur-grid-detail-child-table .table-responsive {
+    min-height: 0;
+}
+
 /* Card */
 .sibur-card {
     background-color: rgba(0, 240, 255, 0.03) !important;

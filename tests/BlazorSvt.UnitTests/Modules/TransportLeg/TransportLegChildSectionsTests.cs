@@ -1,4 +1,4 @@
-using System.Globalization;
+﻿using System.Globalization;
 using BlazorSvt.Modules.TransportLeg;
 using BlazorSvt.Modules.TransportLeg.Detail;
 using BlazorSvt.Platform.Domain.IdsEnum;
@@ -56,7 +56,7 @@ public class TransportLegChildSectionsTests
         var table = await section.LoadAsync(Parent(isArchive: false), "en", CancellationToken.None);
 
         section.Title.Should().Be("LegRateDto.Title");
-        table.Headers.Should().Equal(
+        table.Headers().Should().Equal(
             "LegRateDto.Code",
             "LegRateDto.RateCode",
             "LegRateDto.IsDefRate",
@@ -69,7 +69,7 @@ public class TransportLegChildSectionsTests
             "LegRateDto.TotalCostTon",
             "LegRateDto.TotalCostTransport",
             "LegRateDto.Currency");
-        table.Rows.Single().Should().Equal(
+        table.Cells().Single().Should().Equal(
             "LR-1",
             "R-1",
             "Common.Yes",
@@ -92,7 +92,7 @@ public class TransportLegChildSectionsTests
 
         var table = await section.LoadAsync(Parent(isArchive: false), "ru", CancellationToken.None);
 
-        table.Rows.Single().Should().Equal(
+        table.Cells().Single().Should().Equal(
             "", "", "Common.No", "", "", "", "", "", "", "", "", "");
     }
 
@@ -120,7 +120,7 @@ public class TransportLegChildSectionsTests
         var table = await section.LoadAsync(Parent(isArchive: false), "en", CancellationToken.None);
 
         section.Title.Should().Be("LegAverageRateLevel3Dto.Title");
-        table.Headers.Should().Equal(
+        table.Headers().Should().Equal(
             "LegAverageRateLevel3Dto.Code",
             "LegAverageRateLevel3Dto.AverageRateCode",
             "LegAverageRateLevel3Dto.IsDefRate",
@@ -133,7 +133,7 @@ public class TransportLegChildSectionsTests
             "LegAverageRateLevel3Dto.RateLevel3",
             "LegAverageRateLevel3Dto.EffectiveLoadOfTransportType",
             "LegAverageRateLevel3Dto.Currency");
-        table.Rows.Single().Should().Equal(
+        table.Cells().Single().Should().Equal(
             "AR-1",
             "A-1",
             "Common.No",
@@ -161,7 +161,7 @@ public class TransportLegChildSectionsTests
 
         var table = await section.LoadAsync(Parent(isArchive: false), "ru", CancellationToken.None);
 
-        table.Rows.Single().Should().AllBe(string.Empty);
+        table.Cells().Single().Should().AllBe(string.Empty);
     }
 
     [Fact]
@@ -202,7 +202,7 @@ public class TransportLegChildSectionsTests
         var table = await section.LoadAsync(Parent(isArchive: false), "en", CancellationToken.None);
 
         section.Title.Should().Be("LeadtimeDto.Title");
-        table.Headers.Should().Equal(
+        table.Headers().Should().Equal(
             "LeadtimeDto.Code",
             "LeadtimeDto.StartDate",
             "LeadtimeDto.EndDate",
@@ -227,7 +227,7 @@ public class TransportLegChildSectionsTests
             "LeadtimeDto.Leg2_UploadTime",
             "LeadtimeDto.Leg2_TransportationTime",
             "LeadtimeDto.Leg2_Distance");
-        table.Rows.Single().Should().Equal(
+        table.Cells().Single().Should().Equal(
             "LT-1",
             Text(start),
             "",
@@ -270,12 +270,17 @@ public class TransportLegChildSectionsTests
         var averageTable = await average.LoadAsync(Parent(isArchive: true), "ru", CancellationToken.None);
         var leadtimeTable = await leadtime.LoadAsync(Parent(isArchive: true), "ru", CancellationToken.None);
 
-        legRateTable.Headers.Should().HaveCount(13).And.EndWith("LegRateDto.IsArchive");
-        legRateTable.Rows.Select(r => r[^1]).Should().Equal("Common.Active", "Common.Archive");
-        averageTable.Headers.Should().HaveCount(13).And.EndWith("LegAverageRateLevel3Dto.IsArchive");
-        averageTable.Rows.Single()[^1].Should().Be("Common.Archive");
-        leadtimeTable.Headers.Should().HaveCount(25).And.EndWith("LeadtimeDto.IsArchive");
-        leadtimeTable.Rows.Single()[^1].Should().Be("Common.Active");
+        legRateTable.Headers().Should().HaveCount(13).And.EndWith("LegRateDto.IsArchive");
+        legRateTable.Columns.Select(c => c.Name).Should().OnlyHaveUniqueItems();
+        legRateTable.Cells().Select(r => r[^1]).Should().Equal("Common.Active", "Common.Archive");
+        legRateTable.Columns[^1].Name.Should().Be("IsArchive");
+        legRateTable.Rows.Select(r => r.IsArchive).Should().Equal(false, true);
+        averageTable.Headers().Should().HaveCount(13).And.EndWith("LegAverageRateLevel3Dto.IsArchive");
+        averageTable.Columns.Select(c => c.Name).Should().OnlyHaveUniqueItems();
+        averageTable.Cells().Single()[^1].Should().Be("Common.Archive");
+        leadtimeTable.Headers().Should().HaveCount(25).And.EndWith("LeadtimeDto.IsArchive");
+        leadtimeTable.Columns.Select(c => c.Name).Should().OnlyHaveUniqueItems();
+        leadtimeTable.Cells().Single()[^1].Should().Be("Common.Active");
     }
 
     [Fact]
@@ -376,11 +381,11 @@ public class TransportLegChildSectionsTests
             var leadtimeTable = await leadtime.LoadAsync(Parent(isArchive: true), lang, CancellationToken.None);
 
             legRate.Title.Should().Be(legRateTitle);
-            legRateTable.Headers.Should().Equal(legRateHeaders);
+            legRateTable.Headers().Should().Equal(legRateHeaders);
             average.Title.Should().Be(averageTitle);
-            averageTable.Headers.Should().Equal(averageHeaders);
+            averageTable.Headers().Should().Equal(averageHeaders);
             leadtime.Title.Should().Be(leadtimeTitle);
-            leadtimeTable.Headers.Should().Equal(leadtimeHeaders);
+            leadtimeTable.Headers().Should().Equal(leadtimeHeaders);
         }
         finally
         {

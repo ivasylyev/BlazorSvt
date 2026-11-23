@@ -100,27 +100,219 @@ public class DetailSettingsBuilderTests
         field.DisplaySelector(new SampleDto()).Should().Be(string.Empty);
     }
 
+    // Сортировка — по значению свойства из Name, не по подписи. Подписи подобраны так, чтобы их порядок
+    // был обратным порядку значений: сортировка по подписи тест провалит.
+
+    private IStringLocalizer<PlatformResources> ReversedLabels()
+    {
+        var localizer = Substitute.For<IStringLocalizer<PlatformResources>>();
+        localizer["Common.Yes"].Returns(new LocalizedString("Common.Yes", "A-Yes"));
+        localizer["Common.No"].Returns(new LocalizedString("Common.No", "Z-No"));
+        localizer["Common.Archive"].Returns(new LocalizedString("Common.Archive", "A-Archive"));
+        localizer["Common.Active"].Returns(new LocalizedString("Common.Active", "Z-Active"));
+        return localizer;
+    }
+
+    private static List<SampleDto> Ordered(DetailSetting<SampleDto> setting, params SampleDto[] rows) =>
+        rows.OrderBy(setting.SortKeySelector.Compile()).ToList();
+
+    [Fact]
+    public void Add_SortKey_OrdersStringsByValue_NullFirst()
+    {
+        var setting = new DetailSettingsBuilder<SampleDto>(platform)
+            .Add("G", x => x.Name, "Name")
+            .Build().GroupSettings["G"].Single();
+
+        var ordered = Ordered(setting,
+            new SampleDto { Name = "b" }, new SampleDto { Name = null }, new SampleDto { Name = "a" });
+
+        setting.Name.Should().Be(nameof(SampleDto.Name));
+        ordered.Select(x => x.Name).Should().Equal(null, "a", "b");
+    }
+
+    [Fact]
+    public void Add_SortKey_OrdersNumbersByValue_NotByText()
+    {
+        var setting = new DetailSettingsBuilder<SampleDto>(platform)
+            .Add("G", x => x.Number, "Number")
+            .Build().GroupSettings["G"].Single();
+
+        var ordered = Ordered(setting,
+            new SampleDto { Number = 100 }, new SampleDto { Number = 9 }, new SampleDto { Number = 10 });
+
+        ordered.Select(x => x.Number).Should().Equal(9, 10, 100);
+    }
+
+    [Fact]
+    public void Add_SortKey_OrdersDatesByValue_NullFirst()
+    {
+        var setting = new DetailSettingsBuilder<SampleDto>(platform)
+            .Add("G", x => x.Changed, "Changed")
+            .Build().GroupSettings["G"].Single();
+        var early = new DateTime(2026, 1, 1);
+        var late = new DateTime(2026, 12, 31);
+
+        var ordered = Ordered(setting,
+            new SampleDto { Changed = late }, new SampleDto { Changed = null }, new SampleDto { Changed = early });
+
+        ordered.Select(x => x.Changed).Should().Equal(null, early, late);
+    }
+
+    [Theory]
+    [InlineData(true, nameof(SampleDto.NameRu))]
+    [InlineData(false, nameof(SampleDto.NameEn))]
+    public void AddLocalized_SortKey_UsesPropertyOfCurrentLanguage(bool isRu, string expectedName)
+    {
+        var setting = new DetailSettingsBuilder<SampleDto>(platform)
+            .AddLocalized(isRu, "G", x => x.NameRu, x => x.NameEn, "Name")
+            .Build().GroupSettings["G"].Single();
+
+        var ordered = Ordered(setting,
+            new SampleDto { NameRu = "я", NameEn = "b" },
+            new SampleDto { NameRu = "а", NameEn = "c" },
+            new SampleDto { NameRu = "б", NameEn = "a" });
+
+        setting.Name.Should().Be(expectedName);
+        var expected = isRu ? new[] { "а", "б", "я" } : new[] { "a", "b", "c" };
+        ordered.Select(x => isRu ? x.NameRu : x.NameEn).Should().Equal(expected);
+    }
+
+    [Theory]
+    [InlineData(true, nameof(SampleDto.SizeRu))]
+    [InlineData(false, nameof(SampleDto.SizeEn))]
+    public void AddEnum_SortKey_OrdersByEnumValue_NotByLabel(bool isRu, string expectedName)
+    {
+        var setting = new DetailSettingsBuilder<SampleDto>(platform)
+            .AddEnum(isRu, "G", x => x.SizeRu, x => x.SizeEn, "Size")
+            .Build().GroupSettings["G"].Single();
+
+        var ordered = Ordered(setting,
+            new SampleDto { SizeRu = SampleSizeRu.Large, SizeEn = SampleSizeEn.Large },
+            new SampleDto { SizeRu = SampleSizeRu.Small, SizeEn = SampleSizeEn.Small },
+            new SampleDto { SizeRu = SampleSizeRu.Medium, SizeEn = SampleSizeEn.Medium });
+
+        setting.Name.Should().Be(expectedName);
+        ordered.Select(x => (int)x.SizeRu).Should().Equal(1, 2, 3);
+        setting.DisplaySelector(ordered[0]).Should().NotBe(setting.DisplaySelector(ordered[2]));
+    }
+
+    [Theory]
+    [InlineData(true, nameof(SampleDto.ColorRu))]
+    [InlineData(false, nameof(SampleDto.ColorEn))]
+    public void AddEnum_NullableEnum_SortKey_OrdersByEnumValue_NullFirst(bool isRu, string expectedName)
+    {
+        var setting = new DetailSettingsBuilder<SampleDto>(platform)
+            .AddEnum(isRu, "G", x => x.ColorRu, x => x.ColorEn, "Color")
+            .Build().GroupSettings["G"].Single();
+
+        var ordered = Ordered(setting,
+            new SampleDto { ColorRu = SampleColorRu.Blue, ColorEn = SampleColorEn.Blue },
+            new SampleDto(),
+            new SampleDto { ColorRu = SampleColorRu.Red, ColorEn = SampleColorEn.Red });
+
+        setting.Name.Should().Be(expectedName);
+        ordered.Select(x => x.ColorRu).Should().Equal(null, SampleColorRu.Red, SampleColorRu.Blue);
+    }
+
+    [Fact]
+    public void AddYesNo_SortKey_OrdersByBoolValue_NotByLabel()
+    {
+        var setting = new DetailSettingsBuilder<SampleDto>(ReversedLabels())
+            .AddYesNo("G", x => x.Flag, "Flag")
+            .Build().GroupSettings["G"].Single();
+
+        var ordered = Ordered(setting, new SampleDto { Flag = true }, new SampleDto { Flag = false });
+
+        setting.Name.Should().Be(nameof(SampleDto.Flag));
+        ordered.Select(x => x.Flag).Should().Equal(false, true);
+        setting.DisplaySelector(ordered[0]).ToString().Should().Be("Z-No");
+    }
+
+    [Fact]
+    public void AddYesNo_NullableBool_SortKey_OrdersByBoolValue_NullFirst()
+    {
+        var setting = new DetailSettingsBuilder<SampleDto>(ReversedLabels())
+            .AddYesNo("G", x => x.NullableFlag, "Flag")
+            .Build().GroupSettings["G"].Single();
+
+        var ordered = Ordered(setting,
+            new SampleDto { NullableFlag = true }, new SampleDto { NullableFlag = null }, new SampleDto { NullableFlag = false });
+
+        setting.Name.Should().Be(nameof(SampleDto.NullableFlag));
+        ordered.Select(x => x.NullableFlag).Should().Equal(null, false, true);
+    }
+
+    [Fact]
+    public void AddArchiveStatus_SortKey_OrdersByBoolValue_NotByLabel()
+    {
+        var setting = new DetailSettingsBuilder<SampleDto>(ReversedLabels())
+            .AddArchiveStatus("G", x => x.IsArchive, "Archive")
+            .Build().GroupSettings["G"].Single();
+
+        var ordered = Ordered(setting, new SampleDto { IsArchive = true }, new SampleDto { IsArchive = false });
+
+        setting.Name.Should().Be(nameof(SampleDto.IsArchive));
+        ordered.Select(x => x.IsArchive).Should().Equal(false, true);
+        setting.DisplaySelector(ordered[0]).ToString().Should().Be("Z-Active");
+    }
+
     private sealed class SampleDto
     {
         public string? Name { get; set; }
+        public string? NameRu { get; set; }
+        public string? NameEn { get; set; }
+        public int Number { get; set; }
         public bool Flag { get; set; }
         public bool? NullableFlag { get; set; }
+        public bool IsArchive { get; set; }
         public DateTime Created { get; set; }
         public DateTime? Changed { get; set; }
         public SampleColorRu? ColorRu { get; set; }
         public SampleColorEn? ColorEn { get; set; }
+        public SampleSizeRu SizeRu { get; set; }
+        public SampleSizeEn SizeEn { get; set; }
     }
 
     private enum SampleColorRu
     {
         [System.ComponentModel.DataAnnotations.Display(Name = "Red")]
-        Red = 1
+        Red = 1,
+
+        [System.ComponentModel.DataAnnotations.Display(Name = "Azure")]
+        Blue = 2
     }
 
     private enum SampleColorEn
     {
         [System.ComponentModel.DataAnnotations.Display(Name = "Rouge")]
-        Red = 1
+        Red = 1,
+
+        [System.ComponentModel.DataAnnotations.Display(Name = "Azur")]
+        Blue = 2
+    }
+
+    private enum SampleSizeRu
+    {
+        [System.ComponentModel.DataAnnotations.Display(Name = "Zeta")]
+        Small = 1,
+
+        [System.ComponentModel.DataAnnotations.Display(Name = "Mu")]
+        Medium = 2,
+
+        [System.ComponentModel.DataAnnotations.Display(Name = "Alpha")]
+        Large = 3
+    }
+
+    private enum SampleSizeEn
+    {
+        [System.ComponentModel.DataAnnotations.Display(Name = "Zed")]
+        Small = 1,
+
+        [System.ComponentModel.DataAnnotations.Display(Name = "Em")]
+        Medium = 2,
+
+        [System.ComponentModel.DataAnnotations.Display(Name = "Ay")]
+        Large = 3
     }
 }
 
@@ -151,6 +343,7 @@ public class DetailDisplayValueTests
             Header = "Name",
             GroupHeader = "G",
             DisplaySelector = s => s.Name ?? string.Empty,
+            SortKeySelector = s => s.Name ?? string.Empty,
             VisibleSelector = s => s.Allowed
         };
 

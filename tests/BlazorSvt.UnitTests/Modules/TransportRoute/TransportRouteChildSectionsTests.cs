@@ -1,4 +1,4 @@
-using System.Globalization;
+﻿using System.Globalization;
 using BlazorSvt.Modules.TransportRoute;
 using BlazorSvt.Modules.TransportRoute.Detail;
 using BlazorSvt.Platform.Domain.IdsEnum;
@@ -33,7 +33,7 @@ public class TransportRouteChildSectionsTests
         var table = await section.LoadAsync(Parent(isArchive: false), "en", CancellationToken.None);
 
         section.Title.Should().Be("TransportRouteLegDto.Title");
-        table.Headers.Should().Equal(
+        table.Headers().Should().Equal(
             "TransportRouteLegDto.Code",
             "TransportRouteLegDto.Step",
             "TransportRouteLegDto.LegCode",
@@ -43,7 +43,7 @@ public class TransportRouteChildSectionsTests
             "TransportRouteLegDto.TransportKindName",
             "TransportRouteLegDto.Leg1_TransportTypeName",
             "TransportRouteLegDto.Leg2_TransportTypeName");
-        table.Rows.Single().Should().Equal(
+        table.Cells().Single().Should().Equal(
             "L-1",
             2.0000m.ToString(CultureInfo.CurrentCulture),
             "LEG-1",
@@ -65,8 +65,11 @@ public class TransportRouteChildSectionsTests
 
         var table = await section.LoadAsync(Parent(isArchive: true), "ru", CancellationToken.None);
 
-        table.Headers.Should().HaveCount(10).And.EndWith("TransportRouteLegDto.IsArchive");
-        table.Rows.Select(r => r[^1]).Should().Equal("Common.Active", "Common.Archive");
+        table.Headers().Should().HaveCount(10).And.EndWith("TransportRouteLegDto.IsArchive");
+        table.Columns.Select(c => c.Name).Should().OnlyHaveUniqueItems();
+        table.Cells().Select(r => r[^1]).Should().Equal("Common.Active", "Common.Archive");
+        table.Columns[^1].Name.Should().Be("IsArchive");
+        table.Rows.Select(r => r.IsArchive).Should().Equal(false, true);
     }
 
     [Fact]
@@ -112,7 +115,7 @@ public class TransportRouteChildSectionsTests
             var table = await section.LoadAsync(Parent(isArchive: true), lang, CancellationToken.None);
 
             section.Title.Should().Be(title);
-            table.Headers.Should().Equal(headers);
+            table.Headers().Should().Equal(headers);
         }
         finally
         {

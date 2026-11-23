@@ -1,33 +1,48 @@
+@typeparam TRow
 @inherits SvtComponentBase
-<div class="sibur-grid-detail-child-table">
-    <table class="table table-sm table-bordered mb-0">
-        <thead>
-            <tr>
-                @foreach (var header in Table.Headers)
-                {
-                    <th>@header</th>
-                }
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var row in Table.Rows)
-            {
-                <tr>
-                    @foreach (var cell in row)
-                    {
-                        <td>@cell</td>
-                    }
-                </tr>
-            }
-        </tbody>
-    </table>
-</div>
-@if (Table.IsTruncated)
+@using BlazorSvt.Platform.Grid.Services
+@inject IGridPageSizeService GridPageSizeService
+@if (pageSize is not null)
 {
-    <div class="text-muted small mt-1">@L["GenericDetailView.ChildRowsShown", Table.Rows.Count, Table.TotalCount]</div>
+    <div class="sibur-grid-detail-child-table">
+        <Grid TItem="TRow"
+              Class="table table-sm table-bordered mb-0"
+              Data="Table.Rows"
+              AllowFiltering="false"
+              AllowPaging="true"
+              AutoHidePaging="true"
+              AllowSorting="true"
+              PageSize="pageSize.Value"
+              PageSizeSelectorVisible="false"
+              PaginationItemsTextFormat="@L["GenericGrid.PaginationItemsTextFormat"]"
+              EmptyText="@L["GenericGrid.EmptyText"]"
+              Responsive="true">
+            <GridColumns>
+                @foreach (var column in Table.Columns)
+                {
+                    <GridColumn TItem="TRow"
+                                HeaderText="@column.Header"
+                                PropertyName="@column.Name"
+                                SortString="@column.Name"
+                                SortKeySelector="@column.SortKeySelector">
+                        @column.DisplaySelector(context)
+                    </GridColumn>
+                }
+            </GridColumns>
+        </Grid>
+    </div>
+    @if (Table.IsTruncated)
+    {
+        <div class="text-muted small mt-1">@L["GenericDetailView.ChildRowsShown", Table.Rows.Count, Table.TotalCount]</div>
+    }
 }
 
 @code {
+    private int? pageSize;
+
     [Parameter, EditorRequired]
-    public DetailChildTable Table { get; set; } = default!;
+    public DetailChildTable<TRow> Table { get; set; } = default!;
+
+    protected override async Task OnInitializedAsync() =>
+        pageSize = await GridPageSizeService.GetAsync();
 }

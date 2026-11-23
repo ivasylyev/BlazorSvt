@@ -100,6 +100,12 @@ public partial class GenericDetailView<TItem, TDetailItem> : SvtComponentBase, I
     private bool IsFieldVisible(DetailSetting<TDetailItem> setting) =>
         detail is not null && DetailDisplayValue.IsVisible(setting, detail, HideEmptyDetailFields);
 
+    private static Type ChildTableViewType(DetailChildTable table) =>
+        typeof(DetailChildTableView<>).MakeGenericType(table.RowType);
+
+    private static IDictionary<string, object?> ChildTableViewParameters(DetailChildTable table) =>
+        new Dictionary<string, object?> { [nameof(DetailChildTableView<object>.Table)] = table };
+
     private AccordionLayout BuildAccordion()
     {
         var children = childSections.Where(section => section.IsVisible).ToList();

@@ -6,6 +6,13 @@
 
 Platform не меняется: секция, загрузка, предел строк `Grid:ChildSectionRowLimit`, отбор по архиву родителя (`DetailChildRowStates`) и вывод в `GenericDetailView` уже есть. Дочерние строки не попадают в snapshot, sync, API, OpenAPI и полный Excel.
 
+**Вывод.** Секция отдаёт `DetailChildTable<TRow>`: типизированные строки `TRow` и колонки `DetailSetting<TRow>` в порядке вывода. `GenericDetailView` выводит её вложенным `Grid` из BlazorBootstrap (`DetailChildTableView<TRow>`, `Data` — загруженные строки, всё на клиенте):
+
+- Пагинация. Размер страницы — из `IGridPageSizeService`, общий с гридом справочника; переключателя размера нет. Пейджер скрыт (`AutoHidePaging`), если строки помещаются на одну страницу. Пейджер листает только загруженные строки; при `TotalCount` больше числа загруженных под ним «Показано N из M» / «Shown N of M» (`GenericDetailView.ChildRowsShown`).
+- Сортировка щелчком по заголовку колонки — по значению свойства из `DetailSetting.Name` (`DetailSetting.SortKeySelector`, его заполняет каждый метод `Add*` билдера), не по подписи: у enum, «Да/Нет» и статуса архива — по значению, не по тексту. Пустое значение идёт раньше непустого (`DetailSortKey`). Сортировка и страница сбрасываются при каждом раскрытии карточки (состояние не сохраняется).
+- Строки фильтров нет (`AllowFiltering="false"`).
+- Колонка выводит значение через `DisplaySelector`. Имена свойств колонок одной секции не повторяются: они ключи заголовка `Grid`.
+
 `{Child}` — имя дочернего примитива по правилу `_` шага 0 (`MTR_DPO_Directory` → `MTRDPODirectory`). `{ChildLegacyName}` — `PrimitiveEntityInfo.Name` ребёнка.
 
 ## Discovery
@@ -47,7 +54,7 @@ Platform не меняется: секция, загрузка, предел с�
 
 ## Тесты
 
-- Unit `tests/BlazorSvt.UnitTests/Modules/{Entity}/{Entity}ChildSectionsTests.cs`: порядок групп по регистрации в `Add{Entity}Module`, состав и порядок колонок, подписи и заголовки RU/EN из настоящих resx, не ключи.
+- Unit `tests/BlazorSvt.UnitTests/Modules/{Entity}/{Entity}ChildSectionsTests.cs`: порядок групп по регистрации в `Add{Entity}Module`, состав и порядок колонок (`table.Columns`, типизированные `table.Rows`; хелпер `Headers()` / `Cells()` — `tests/BlazorSvt.UnitTests/DetailChildTableTestExtensions.cs`), имена свойств колонок без повторов, подписи и заголовки RU/EN из настоящих resx, не ключи.
 - Integration `tests/BlazorSvt.IntegrationTests/Modules/{Entity}/{Entity}ChildSectionsIntegrationTests.cs`: по каждой проекции на родителе с неархивными детьми — строки есть, ссылки развёрнуты в имена.
 - Тесты `DetailChildRowStates`, предела строк и `AddEnum` уже есть в Platform — на модуль не повторять.
 - `OpenApiContractTests` проходит без перегенерации снимка.

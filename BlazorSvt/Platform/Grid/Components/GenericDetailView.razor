@@ -37,7 +37,7 @@ else if (detail is not null && BuildAccordion() is var layout)
                         }
                         else if (child.Table is { } table)
                         {
-                            <DetailChildTableView Table="table" />
+                            <DynamicComponent Type="ChildTableViewType(table)" Parameters="ChildTableViewParameters(table)" />
                         }
                     </Content>
                 </AccordionItem>
