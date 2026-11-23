@@ -15,13 +15,7 @@ internal static class GridDateTime
         ("yyyy-MM-dd HH:mm", "yyyy-MM-dd'T'HH:mm")
     ];
 
-    public static object Format<TProp>(TProp value)
-    {
-        if (value is DateTime dateTime)
-            return MoscowTime.FromUtc(dateTime);
-
-        return value is null ? string.Empty : value;
-    }
+    public static DateTime ToDisplay(DateTime utc) => MoscowTime.FromUtc(utc);
 
     public static string NormalizeFilterValue(string value)
     {

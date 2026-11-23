@@ -25,7 +25,7 @@ public sealed class GridColumnSettingsBuilder<T>(IStringLocalizer<PlatformResour
         {
             Name = MemberName(property),
             Header = header,
-            DisplaySelector = display ?? (dto => GridDateTime.Format(compiled(dto))),
+            DisplaySelector = display ?? (dto => GridValueFormatter.Format(compiled(dto))),
             SortSelector = ToSort(property),
             Visible = visible,
             Filterable = filterable
