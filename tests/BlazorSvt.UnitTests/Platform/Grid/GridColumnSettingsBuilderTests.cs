@@ -46,6 +46,22 @@ public class GridColumnSettingsBuilderTests
     }
 
     [Fact]
+    public void Add_WhenDateTime_ShowsMoscowWallClock()
+    {
+        var column = new GridColumnSettingsBuilder<ColumnFixture>(platform)
+            .Add(x => x.CreationDate, "Created", visible: false)
+            .Build()
+            .Single();
+
+        var shown = column.DisplaySelector(new ColumnFixture
+        {
+            CreationDate = new DateTime(2026, 11, 20, 9, 49, 18)
+        });
+
+        shown.Should().Be(new DateTime(2026, 11, 20, 12, 49, 18));
+    }
+
+    [Fact]
     public void AddYesNo_WhenBool_LocalizesYesAndNo()
     {
         var column = new GridColumnSettingsBuilder<ColumnFixture>(platform)

@@ -170,9 +170,14 @@ public static class GridColumnMetadataBuilder
             return GridColumnType.Id;
         }
 
-        if (type == typeof(DateTime) || type == typeof(DateOnly))
+        if (type == typeof(DateOnly))
         {
             return GridColumnType.Date;
+        }
+
+        if (type == typeof(DateTime))
+        {
+            return GridColumnType.DateTime;
         }
 
         if (type == typeof(decimal))
@@ -223,6 +228,7 @@ public static class GridColumnMetadataBuilder
             GridColumnType.Id => "ID",
             GridColumnType.Nvarchar => "NVARCHAR",
             GridColumnType.Date => "DATE",
+            GridColumnType.DateTime => "DATETIME",
             GridColumnType.Bit => "BIT",
             GridColumnType.Decimal => "DECIMAL",
             _ => throw new ArgumentOutOfRangeException(nameof(columnType), columnType, null)

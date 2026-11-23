@@ -44,6 +44,22 @@ public class DetailSettingsBuilderTests
     }
 
     [Fact]
+    public void Add_WhenDateTime_ShowsMoscowWallClock_AndNullStaysEmpty()
+    {
+        var settings = new DetailSettingsBuilder<SampleDto>(platform)
+            .Add("G", x => x.Created, "Created")
+            .Add("G", x => x.Changed, "Changed")
+            .Build();
+
+        var created = settings.GroupSettings["G"].Single(f => f.Name == nameof(SampleDto.Created));
+        var changed = settings.GroupSettings["G"].Single(f => f.Name == nameof(SampleDto.Changed));
+
+        created.DisplaySelector(new SampleDto { Created = new DateTime(2026, 11, 20, 22, 0, 0) })
+            .Should().Be(new DateTime(2026, 11, 21, 1, 0, 0));
+        changed.DisplaySelector(new SampleDto { Changed = null }).Should().Be(string.Empty);
+    }
+
+    [Fact]
     public void AddYesNo_KeepsBoolVisible_AndLocalizes()
     {
         var settings = new DetailSettingsBuilder<SampleDto>(platform)
@@ -75,6 +91,8 @@ public class DetailSettingsBuilderTests
         public string? Name { get; set; }
         public bool Flag { get; set; }
         public bool? NullableFlag { get; set; }
+        public DateTime Created { get; set; }
+        public DateTime? Changed { get; set; }
     }
 }
 
