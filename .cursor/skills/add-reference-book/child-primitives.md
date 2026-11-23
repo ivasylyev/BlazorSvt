@@ -6,11 +6,18 @@
 
 Platform не меняется: секция, загрузка, предел строк `Grid:ChildSectionRowLimit`, отбор по архиву родителя (`DetailChildRowStates`) и вывод в `GenericDetailView` уже есть. Дочерние строки не попадают в snapshot, sync, API, OpenAPI и полный Excel.
 
-**Вывод.** Секция отдаёт `DetailChildTable<TRow>`: типизированные строки `TRow` и колонки `DetailSetting<TRow>` в порядке вывода. `GenericDetailView` выводит её вложенным `Grid` из BlazorBootstrap (`DetailChildTableView<TRow>`, `Data` — загруженные строки, всё на клиенте):
+**Вывод.** Секция отдаёт `DetailChildTable<TRow>`: типизированные строки `TRow` и колонки `DetailSetting<TRow>` в порядке вывода. `GenericDetailView` выводит её вложенным `Grid` из BlazorBootstrap (`DetailChildTableView<TRow>`). `DataProvider` применяет страницу, сортировку и фильтры к уже загруженным строкам на клиенте (`DetailChildGridData`, внутри — `GridDataProviderRequest.ApplyTo`):
 
 - Пагинация. Размер страницы — из `IGridPageSizeService`, общий с гридом справочника; переключателя размера нет. Пейджер скрыт (`AutoHidePaging`), если строки помещаются на одну страницу. Пейджер листает только загруженные строки; при `TotalCount` больше числа загруженных под ним «Показано N из M» / «Shown N of M» (`GenericDetailView.ChildRowsShown`).
 - Сортировка щелчком по заголовку колонки — по значению свойства из `DetailSetting.Name` (`DetailSetting.SortKeySelector`, его заполняет каждый метод `Add*` билдера), не по подписи: у enum, «Да/Нет» и статуса архива — по значению, не по тексту. Пустое значение идёт раньше непустого (`DetailSortKey`). Сортировка и страница сбрасываются при каждом раскрытии карточки (состояние не сохраняется).
-- Строки фильтров нет (`AllowFiltering="false"`).
+- Фильтры (`AllowFiltering` + `AutoHideFiltering`): строка фильтров скрыта, пока строки помещаются на одну страницу и фильтр не задан. Фильтр привязан к свойству из `DetailSetting.Name` (тип колонки определяет вид фильтра). Операторы и подписи — те же, что у грида справочника (`GridFilterOperatorTranslations`). Поведение по типам:
+  - строка — вхождение без учёта регистра;
+  - число — разбор значения через `InvariantCulture` (поле `type=number` отдаёт точку);
+  - `DateOnly` — сравнение по дате; `DateTime` — значение фильтра приводится `GridDateTime.NormalizeFilterValue` (московское время → UTC), как для SQL-фильтра грида справочника;
+  - enum — выбор из подписей `DisplayAttribute` enum текущего языка (RU или EN — какое свойство в колонке);
+  - «Да/Нет» и статус архива — чекбокс библиотеки по значению `bool`, как на гриде справочника (подписей в фильтре нет);
+  - nullable enum и nullable `bool`: «равно» не выбирает пустые значения, «не равно» тоже (как `<>` в SQL).
+  Фильтры строит `ExpressionExtensions` локальной копии `blazorbootstrap/`; в ней исправлены приведение типов у nullable enum/bool и разбор чисел. Тип колонки, которого `GetPropertyTypeName` не знает (или нет оператора), фильтр не построит — тест `DetailChildSectionFiltersTests` проходит по всем колонкам всех секций и ловит это.
 - Колонка выводит значение через `DisplaySelector`. Имена свойств колонок одной секции не повторяются: они ключи заголовка `Grid`.
 
 `{Child}` — имя дочернего примитива по правилу `_` шага 0 (`MTR_DPO_Directory` → `MTRDPODirectory`). `{ChildLegacyName}` — `PrimitiveEntityInfo.Name` ребёнка.
@@ -56,7 +63,7 @@ Platform не меняется: секция, загрузка, предел с�
 
 - Unit `tests/BlazorSvt.UnitTests/Modules/{Entity}/{Entity}ChildSectionsTests.cs`: порядок групп по регистрации в `Add{Entity}Module`, состав и порядок колонок (`table.Columns`, типизированные `table.Rows`; хелпер `Headers()` / `Cells()` — `tests/BlazorSvt.UnitTests/DetailChildTableTestExtensions.cs`), имена свойств колонок без повторов, подписи и заголовки RU/EN из настоящих resx, не ключи.
 - Integration `tests/BlazorSvt.IntegrationTests/Modules/{Entity}/{Entity}ChildSectionsIntegrationTests.cs`: по каждой проекции на родителе с неархивными детьми — строки есть, ссылки развёрнуты в имена.
-- Тесты `DetailChildRowStates`, предела строк и `AddEnum` уже есть в Platform — на модуль не повторять.
+- Тесты `DetailChildRowStates`, предела строк, `AddEnum`, фильтра по типам (`DetailChildGridDataTests`) и «фильтр строится для каждой колонки секций шести модулей» (`DetailChildSectionFiltersTests`) уже есть в Platform — на модуль не повторять. Новая секция в `Add{Entity}Module` попадает в `DetailChildSectionFiltersTests` только если модуль добавлен в её список модулей (`SectionTypes`) — добавить `Add{Entity}Module()` туда.
 - `OpenApiContractTests` проходит без перегенерации снимка.
 
 ## Готовый модуль

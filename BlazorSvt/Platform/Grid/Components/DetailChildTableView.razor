@@ -5,17 +5,21 @@
 @if (pageSize is not null)
 {
     <div class="sibur-grid-detail-child-table">
-        <Grid TItem="TRow"
+        <Grid @key="Table"
+              TItem="TRow"
               Class="table table-sm table-bordered mb-0"
-              Data="Table.Rows"
-              AllowFiltering="false"
+              DataProvider="DataProvider"
+              AllowFiltering="true"
+              AutoHideFiltering="true"
               AllowPaging="true"
               AutoHidePaging="true"
               AllowSorting="true"
               PageSize="pageSize.Value"
               PageSizeSelectorVisible="false"
+              EnumFilterSelectText="@L["GenericGrid.EnumFilterSelectText"]"
               PaginationItemsTextFormat="@L["GenericGrid.PaginationItemsTextFormat"]"
               EmptyText="@L["GenericGrid.EmptyText"]"
+              FiltersTranslationProvider="GridFiltersTranslationProvider"
               Responsive="true">
             <GridColumns>
                 @foreach (var column in Table.Columns)
@@ -45,4 +49,10 @@
 
     protected override async Task OnInitializedAsync() =>
         pageSize = await GridPageSizeService.GetAsync();
+
+    private Task<GridDataProviderResult<TRow>> DataProvider(GridDataProviderRequest<TRow> request) =>
+        Task.FromResult(DetailChildGridData.Apply(Table.Rows, request));
+
+    private Task<IEnumerable<FilterOperatorInfo>> GridFiltersTranslationProvider() =>
+        Task.FromResult(GridFilterOperatorTranslations.Create(L));
 }
