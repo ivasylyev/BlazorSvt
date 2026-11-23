@@ -284,6 +284,12 @@ h1:focus {
     color: #00606a;
 }
 
+/* Шапка группы-таблицы дочернего примитива: плотнее общего #EAF2F2, текст тот же */
+.sibur-grid .accordion-item.sibur-grid-detail-child .accordion-button {
+    background-color: #c7e3e4 !important;
+    color: #00606a;
+}
+
 .sibur-grid .sibur-grid-detail-toggle-all {
     width: 100%;
     box-sizing: border-box;
