@@ -137,6 +137,7 @@ OpenAPI/Swagger UI: TrustedClients обязателен; **`X-On-Behalf-Of` дл
 | `transport-routes` | Транспортный маршрут |
 | `regions` | Регион |
 | `countries` | Страна |
+| `contractors` | Контрагенты |
 
 Актуальный список всегда берите из `GET /catalogs` или из OpenAPI. Новый справочник появляется после регистрации в СВТ 2.0 — отдельный «второй» контракт не нужен.
 

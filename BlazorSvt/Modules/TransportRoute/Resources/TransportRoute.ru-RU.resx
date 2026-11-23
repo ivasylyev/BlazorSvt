@@ -54,4 +54,15 @@
   <data name="TransportRouteDetailDto.CreationDate" xml:space="preserve"><value>Создано</value></data>
   <data name="TransportRouteDetailDto.LastChangeDate" xml:space="preserve"><value>Изменено</value></data>
   <data name="TransportRouteDetailDto.Group.0.Default" xml:space="preserve"><value>По умолчанию</value></data>
+  <data name="TransportRouteLegDto.Title" xml:space="preserve"><value>Плечо маршрута</value></data>
+  <data name="TransportRouteLegDto.Code" xml:space="preserve"><value>Код</value></data>
+  <data name="TransportRouteLegDto.Step" xml:space="preserve"><value>Этап</value></data>
+  <data name="TransportRouteLegDto.LegCode" xml:space="preserve"><value>Плечо</value></data>
+  <data name="TransportRouteLegDto.NodeFromName" xml:space="preserve"><value>Узел отправления</value></data>
+  <data name="TransportRouteLegDto.ProxyNodeName" xml:space="preserve"><value>Узел промежуточный</value></data>
+  <data name="TransportRouteLegDto.NodeToName" xml:space="preserve"><value>Узел назначения</value></data>
+  <data name="TransportRouteLegDto.TransportKindName" xml:space="preserve"><value>Вид транспорта</value></data>
+  <data name="TransportRouteLegDto.Leg1_TransportTypeName" xml:space="preserve"><value>Плечо 1.Тип транспорта</value></data>
+  <data name="TransportRouteLegDto.Leg2_TransportTypeName" xml:space="preserve"><value>Плечо 2.Тип транспорта</value></data>
+  <data name="TransportRouteLegDto.IsArchive" xml:space="preserve"><value>Архив</value></data>
 </root>

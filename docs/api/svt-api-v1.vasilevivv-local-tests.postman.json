@@ -26,7 +26,8 @@
     { "key": "relevanceId", "value": "0" },
     { "key": "transportRouteId", "value": "0" },
     { "key": "regionId", "value": "0" },
-    { "key": "countryId", "value": "0" }
+    { "key": "countryId", "value": "0" },
+    { "key": "contractorId", "value": "0" }
   ],
   "protocolProfileBehavior": {
     "strictSSL": false
@@ -1481,6 +1482,78 @@
               "raw": "{ \"kind\": \"Full\" }"
             },
             "url": "{{baseUrl}}/api/v1/catalogs/countries/export"
+          }
+        }
+      ]
+    },
+    {
+      "name": "contractors",
+      "item": [
+        {
+          "name": "Schema",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/api/v1/catalogs/contractors/schema"
+          }
+        },
+        {
+          "name": "Search first page",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const json = pm.response.json();",
+                  "if (json.items && json.items.length) {",
+                  "  pm.collectionVariables.set('contractorId', String(json.items[0].contractorId));",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"page\": 1,\n  \"pageSize\": 10\n}"
+            },
+            "url": "{{baseUrl}}/api/v1/catalogs/contractors/items/search"
+          }
+        },
+        {
+          "name": "Get item",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/api/v1/catalogs/contractors/items/{{contractorId}}",
+            "description": "Сначала Search first page."
+          }
+        },
+        {
+          "name": "Export short",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{ \"kind\": \"Short\" }"
+            },
+            "url": "{{baseUrl}}/api/v1/catalogs/contractors/export"
+          }
+        },
+        {
+          "name": "Export full",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{ \"kind\": \"Full\" }"
+            },
+            "url": "{{baseUrl}}/api/v1/catalogs/contractors/export"
           }
         }
       ]

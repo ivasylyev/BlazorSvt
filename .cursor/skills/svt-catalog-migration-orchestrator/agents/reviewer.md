@@ -27,7 +27,8 @@
 5. **Свои дельты и регистрация.** Порядок и состав по шагу 2 `{AgentsDir}\sql.md` (Detail и PopulateAffectedKeys — в снимке, не в дельте) / чеклисту `add-reference-book`; блок в `Publish-AllSql.ps1` и README.
 6. **Кодировка и побочные правки.** BOM/`^SE `/`0D 0D 0A`; в общих файлах нет удалённых чужих строк; RO и backlog не отмечены.
 7. **Документация.** Меню RU/EN, Postman, developers.md.
-8. **Тесты.** Unit целиком; integration `--filter "(FullyQualifiedName~{Entity}|FullyQualifiedName~OpenApiContractTests)&FullyQualifiedName!~IncrementalSync"` (тест инкремента пишет в легаси — его не запускаешь). Флаки в чужих — «РИСКИ».
+7а. **Дочерние примитивы.** По разделу 3а spec и `add-reference-book/child-primitives.md`: у каждого входящего ребёнка есть проекция, секция в порядке групп, колонки и подписи как в 3а, тесты секций; API и OpenAPI не изменились. Группы входящего ребёнка нет (в том числе при повторной проверке) — дефект `[sql|csharp]`.
+8. **Тесты.** Unit целиком; integration `--filter "(FullyQualifiedName~{Entity}|FullyQualifiedName~OpenApiContractTests)&FullyQualifiedName!~IncrementalSync"` (тесты секций `{Entity}ChildSections*` фильтр уже берёт) (тест инкремента пишет в легаси — его не запускаешь). Флаки в чужих — «РИСКИ».
 
 ## Ответ
 
@@ -39,7 +40,7 @@
 - что — варианты — данные за и против
 
 ПРОВЕРЕНО БЕЗ ЗАМЕЧАНИЙ
-- пункты 1–8, по строке
+- пункты 1–8 и 7а, по строке
 
 ТЕСТЫ
 - unit: N/N; integration: N/N (упавшие — с причиной)

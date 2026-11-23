@@ -661,4 +661,19 @@
   <data name="TransportRateDetailDto.Leg2_TotalCostTransportCNY" xml:space="preserve">
 	  <value>Leg 2. Total Cost Transport, CNY</value>
   </data>
+  <data name="TransportRateTenderServicePackDto.Title" xml:space="preserve"><value>Tender service pack</value></data>
+  <data name="TransportRateTenderServicePackDto.Code" xml:space="preserve"><value>Code</value></data>
+  <data name="TransportRateTenderServicePackDto.TenderServicePack" xml:space="preserve"><value>Tender service pack</value></data>
+  <data name="TransportRateTenderServicePackDto.LotRate" xml:space="preserve"><value>Lot rate</value></data>
+  <data name="TransportRateTenderServicePackDto.LotCurrency" xml:space="preserve"><value>Lot currency</value></data>
+  <data name="TransportRateTenderServicePackDto.IsArchive" xml:space="preserve"><value>Archive</value></data>
+  <data name="TransportRateCoefficientDto.Title" xml:space="preserve"><value>Applied coefficients</value></data>
+  <data name="TransportRateCoefficientDto.Code" xml:space="preserve"><value>Code</value></data>
+  <data name="TransportRateCoefficientDto.CoefficientRateCode" xml:space="preserve"><value>Rate code with coefficient</value></data>
+  <data name="TransportRateCoefficientDto.StartDate" xml:space="preserve"><value>Start of period</value></data>
+  <data name="TransportRateCoefficientDto.EndDate" xml:space="preserve"><value>End of period</value></data>
+  <data name="TransportRateCoefficientDto.CoefficientName" xml:space="preserve"><value>Coefficient</value></data>
+  <data name="TransportRateCoefficientDto.SourceRateCode" xml:space="preserve"><value>Source rate</value></data>
+  <data name="TransportRateCoefficientDto.SourceRateKindName" xml:space="preserve"><value>Source rate kind</value></data>
+  <data name="TransportRateCoefficientDto.IsArchive" xml:space="preserve"><value>Archive</value></data>
   </root>

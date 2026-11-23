@@ -13,6 +13,7 @@ public static class AverageRateLevel3Module
     {
         services.AddScoped<IGridSettingsService<AverageRateLevel3Dto>, AverageRateLevel3GridSettingsService>();
         services.AddScoped<IDetailSettingsService<AverageRateLevel3DetailDto>, AverageRateLevel3DetailSettingsService>();
+        services.AddScoped<IDetailChildSection<AverageRateLevel3DetailDto>, RatesOfAverageRateSection>();
 
         services.AddSingleton<ISnapshotSyncJob, AverageRateLevel3SyncJob>();
         services.AddCatalogMenu(new CatalogMenuContribution(

@@ -635,7 +635,7 @@ Kill switch `V2SyncEnabled` подтверждён. Алерты и подклю
 - [x] 15.10.7. RO ProductGroup: Транспортные группы (3.5 / 1 / —) — Продукты; пр. RO=1; Низкая; Атлас=2 (обобщение продукт → транспортная группа); SVT-5256; на проде; watermark-sync
 - [x] 15.10.8. RO MTR: Продукты (3.5 / 1 / —) — Продукты; пр. RO=1; Низкая; Атлас=3 (`productCode`); SVT-5257; на проде; watermark-sync
 - [x] 15.10.9. RO Currency: Валюты (3.5 / 1 / —) — Вспомогательные; пр. RO=1; Низкая; Атлас=1 (`currencyCode`); SVT-5255; на проде; стабильный словарь, разовый снимок, без watermark-sync
-- [ ] 15.10.10. RO Contractor: Контрагенты (3.5 / 0.6 / —) — Ставки; пр. RO=2; Низкая; SVT-5290; читать `vw_LegalType`; адреса, статус и пустые LegalForm/LevelOrg не выводить
+- [ ] 15.10.10. RO Contractor: Контрагенты (3.5 / 0.6 / —) — Ставки; пр. RO=2; Низкая; SVT-5290; читать `vw_LegalType`; адреса (`Address`) — дочерняя таблица на карточке; статус и пустые LegalForm/LevelOrg не выводить
 - [ ] 15.10.11. RO Coefficient: Коэффициент (5 / 1.1 / —) — Ставки; пр. RO=2; Средняя
 - [ ] 15.10.12. RO Priority_Rate: Приоритеты типов ставок (5 / 1.1 / —) — Ставки; пр. RO=2; Средняя; SVT-5291
 - [ ] 15.10.13. RO RateSyncClass: Класс синхронизации ставок (3.5 / 0.6 / —) — Ставки; пр. RO=2; Низкая
@@ -2265,6 +2265,7 @@ Gate D: write-through остановлен; легаси демонтирова�
 | [SVT-5256](../../../docs/tasks/SVT-5256-product-group.md) | 15.10.7 | RO ProductGroup / транспортные группы (Атлас=2), сделано, релиз 2.3.48 |
 | [SVT-5257](../../../docs/tasks/SVT-5257-mtr.md) | 15.10.8 | RO MTR (Атлас=3), сделано, релиз 2.3.48 |
 | [SVT-5258](../../../docs/tasks/SVT-5258-transport-type-level-3.md) | 15.10.6 | RO TransportType_level_3 (Атлас=4), сделано, релиз 2.3.48 |
+| [SVT-5309](../../../docs/tasks/SVT-5309-coefficient-child-primitives.md) | — | Таблицы дочерних примитивов на карточке Coefficient |
 
 Детальный расчёт — `docs/estimation/`
 (`python docs/estimation/generate_effort_estimate.py`).

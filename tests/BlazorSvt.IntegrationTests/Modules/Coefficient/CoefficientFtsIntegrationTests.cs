@@ -12,8 +12,9 @@ public class CoefficientFtsIntegrationTests(DatabaseFixture fixture) : Integrati
     public async Task GetBlazorGridData_WithNameContains_ReturnsRows()
     {
         var connectionString = RequireConnectionString();
+        // Индекс хранит имя целиком (2019_авто): CONTAINS ищет префикс токена, не подстроку в середине.
         var query = FtsFilterTestSupport.CreateQuery(
-            FtsFilterTestSupport.Contains(nameof(CoefficientDto.Name), "Авто"));
+            FtsFilterTestSupport.Contains(nameof(CoefficientDto.Name), "2023_авто"));
 
         var (rows, totalCount) = await GridSpTestHelper.ExecuteGetBlazorGridDataAsync<CoefficientDto>(
             connectionString,
@@ -23,6 +24,6 @@ public class CoefficientFtsIntegrationTests(DatabaseFixture fixture) : Integrati
         rows.Should().NotBeEmpty();
         totalCount.Should().BeGreaterThan(0);
         rows.Should().OnlyContain(r => !r.IsArchive);
-        rows.Should().OnlyContain(r => r.Name != null && r.Name.Contains("Авто", StringComparison.OrdinalIgnoreCase));
+        rows.Should().OnlyContain(r => r.Name != null && r.Name.Contains("2023_авто", StringComparison.OrdinalIgnoreCase));
     }
 }

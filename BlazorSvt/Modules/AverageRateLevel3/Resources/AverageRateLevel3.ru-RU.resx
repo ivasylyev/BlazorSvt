@@ -743,4 +743,22 @@
   <data name="AverageRateLevel3DetailDto.Leg2_TransportTypeNameRuEn" xml:space="preserve">
     <value>Плечо 2. Тип транспорта</value>
   </data>
+  <data name="RatesOfAverageRateDto.Title" xml:space="preserve">
+    <value>Ставки, вошедшие в расчет</value>
+  </data>
+  <data name="RatesOfAverageRateDto.Code" xml:space="preserve">
+    <value>Код</value>
+  </data>
+  <data name="RatesOfAverageRateDto.TransportRateCode" xml:space="preserve">
+    <value>Код ставки</value>
+  </data>
+  <data name="RatesOfAverageRateDto.TotalCostTon" xml:space="preserve">
+    <value>Общая стоимость за тонну</value>
+  </data>
+  <data name="RatesOfAverageRateDto.TotalCostTransport" xml:space="preserve">
+    <value>Общая стоимость за транспортное средство</value>
+  </data>
+  <data name="RatesOfAverageRateDto.IsArchive" xml:space="preserve">
+    <value>Архив</value>
+  </data>
 </root>

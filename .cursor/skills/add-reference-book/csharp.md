@@ -79,6 +79,7 @@ public required RateTypeEn RateTypeIdEn { get; set; }
 - `SanitizedGroupNameEn`: PascalCase, только буквы/цифры (пробелы и спецсимволы удалить)
 - Пустые значения (`null` / `""` / whitespace) скрываются в UI при `Grid:HideEmptyDetailFields` (default `true`) — не дублировать `visible: dto => x is not null` для обычных optional-строк
 - Явный `visible:` — только для условных блоков (proxy/leg, calc type и т.п.); скрытие пустых к нему AND в `GenericDetailView`
+- Группы-таблицы дочерних примитивов — отдельные секции, не поля `{Entity}DetailDto`: [child-primitives.md](child-primitives.md), разделы «C#» и «Тесты»
 
 ### Grid.razor
 

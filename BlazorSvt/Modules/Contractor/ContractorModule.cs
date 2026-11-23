@@ -13,6 +13,7 @@ public static class ContractorModule
     {
         services.AddScoped<IGridSettingsService<ContractorDto>, ContractorGridSettingsService>();
         services.AddScoped<IDetailSettingsService<ContractorDetailDto>, ContractorDetailSettingsService>();
+        services.AddScoped<IDetailChildSection<ContractorDetailDto>, AddressSection>();
 
         services.AddSingleton<ISnapshotSyncJob, ContractorSyncJob>();
         services.AddCatalogMenu(new CatalogMenuContribution(

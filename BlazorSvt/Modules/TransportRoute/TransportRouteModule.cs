@@ -13,6 +13,7 @@ public static class TransportRouteModule
     {
         services.AddScoped<IGridSettingsService<TransportRouteDto>, TransportRouteGridSettingsService>();
         services.AddScoped<IDetailSettingsService<TransportRouteDetailDto>, TransportRouteDetailSettingsService>();
+        services.AddScoped<IDetailChildSection<TransportRouteDetailDto>, TransportRouteLegSection>();
 
         services.AddSingleton<ISnapshotSyncJob, TransportRouteSyncJob>();
         services.AddCatalogMenu(new CatalogMenuContribution(

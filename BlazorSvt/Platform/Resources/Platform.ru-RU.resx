@@ -297,6 +297,9 @@
   <data name="GenericDetailView.Loading" xml:space="preserve">
     <value>Загрузка...</value>
   </data>
+  <data name="GenericDetailView.ChildRowsShown" xml:space="preserve">
+    <value>Показано {0} из {1}</value>
+  </data>
   <data name="LoadTimePanel.NotLoaded" xml:space="preserve">
     <value>Данные еще не загружены</value>
   </data>

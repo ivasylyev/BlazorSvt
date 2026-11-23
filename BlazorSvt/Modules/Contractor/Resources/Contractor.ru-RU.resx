@@ -35,4 +35,25 @@
   <data name="ContractorDetailDto.CreationDate" xml:space="preserve"><value>Создано</value></data>
   <data name="ContractorDetailDto.LastChangeDate" xml:space="preserve"><value>Изменено</value></data>
   <data name="ContractorDetailDto.Group.0.Default" xml:space="preserve"><value>По умолчанию</value></data>
+  <data name="AddressDto.Title" xml:space="preserve"><value>Адреса контрагентов</value></data>
+  <data name="AddressDto.Code" xml:space="preserve"><value>Идентификатор адреса</value></data>
+  <data name="AddressDto.AddressType" xml:space="preserve"><value>Тип адреса</value></data>
+  <data name="AddressDto.City" xml:space="preserve"><value>Город/населенный пункт</value></data>
+  <data name="AddressDto.Status" xml:space="preserve"><value>Статус адреса</value></data>
+  <data name="AddressDto.AddressKind" xml:space="preserve"><value>Вид адреса</value></data>
+  <data name="AddressDto.Pobox" xml:space="preserve"><value>Индекс</value></data>
+  <data name="AddressDto.RegionCode" xml:space="preserve"><value>Код региона</value></data>
+  <data name="AddressDto.District_ru" xml:space="preserve"><value>Район</value></data>
+  <data name="AddressDto.Street" xml:space="preserve"><value>Улица</value></data>
+  <data name="AddressDto.House" xml:space="preserve"><value>Дом</value></data>
+  <data name="AddressDto.OfficeApart" xml:space="preserve"><value>Офис/квартира</value></data>
+  <data name="AddressDto.FullAddress_ru" xml:space="preserve"><value>Полный адрес</value></data>
+  <data name="AddressDto.CoordinateW" xml:space="preserve"><value>Географические координаты широты</value></data>
+  <data name="AddressDto.CoordinateL" xml:space="preserve"><value>Географические координаты долготы</value></data>
+  <data name="AddressDto.FIASCodeRegion" xml:space="preserve"><value>Код ФИАС региона</value></data>
+  <data name="AddressDto.FIASCodeDistrict" xml:space="preserve"><value>Код ФИАС района</value></data>
+  <data name="AddressDto.FIASCodeSettlement" xml:space="preserve"><value>Код ФИАС города/населенного пункта</value></data>
+  <data name="AddressDto.Region" xml:space="preserve"><value>Регион</value></data>
+  <data name="AddressDto.Country" xml:space="preserve"><value>Страна</value></data>
+  <data name="AddressDto.IsArchive" xml:space="preserve"><value>Архив</value></data>
 </root>
