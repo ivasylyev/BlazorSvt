@@ -33,8 +33,8 @@ EXEC v2.GetBlazorGridData
             {"ColumnName": "ProductCode", "ColumnType": "ID"},
             {"ColumnName": "ProductNameRu", "ColumnType": "NVARCHAR"},
             {"ColumnName": "ProductNameEn", "ColumnType": "NVARCHAR"},
-            {"ColumnName": "CreationDate", "ColumnType": "DATE"},
-            {"ColumnName": "LastChangeDate", "ColumnType": "DATE"},
+            {"ColumnName": "CreationDate", "ColumnType": "DATETIME"},
+            {"ColumnName": "LastChangeDate", "ColumnType": "DATETIME"},
             {"ColumnName": "StartDate", "ColumnType": "DATE"},
             {"ColumnName": "EndDate", "ColumnType": "DATE"},
             {"ColumnName": "IsArchive", "ColumnType": "BIT"},
@@ -185,7 +185,7 @@ BEGIN
         ColumnType    NVARCHAR(20) '$.ColumnType'
     )
     WHERE ColumnName IS NOT NULL
-      AND UPPER(ColumnType) IN (N'NVARCHAR', N'ID', N'DATE', N'BIT', N'DECIMAL');
+      AND UPPER(ColumnType) IN (N'NVARCHAR', N'ID', N'DATE', N'DATETIME', N'BIT', N'DECIMAL');
 
     SET @SortKey = NULLIF(LTRIM(RTRIM(@SortKey)), N'');
     SET @SortDirection = UPPER(NULLIF(LTRIM(RTRIM(@SortDirection)), N''));
@@ -258,6 +258,12 @@ BEGIN
                         THEN CONVERT(NVARCHAR(10), CONVERT(DATE, TRY_CONVERT(DATETIME, ColumnValue)), 23)
                     ELSE NULL
                 END
+            WHEN N'DATETIME' THEN
+                CASE LEN(ColumnValue) - LEN(REPLACE(ColumnValue, N':', N''))
+                    WHEN 0 THEN CONVERT(NVARCHAR(16), TRY_CONVERT(DATETIME, ColumnValue), 126)
+                    WHEN 1 THEN CONVERT(NVARCHAR(16), TRY_CONVERT(DATETIME, ColumnValue + N':00'), 126)
+                    ELSE CONVERT(NVARCHAR(19), TRY_CONVERT(DATETIME, ColumnValue), 126)
+                END
             ELSE ColumnValue
         END,
         FtsValue = NULLIF(LTRIM(RTRIM(
@@ -276,7 +282,7 @@ BEGIN
             N'|', N' ')
         )), N'');
 
-    UPDATE @FilteredColumns
+    UPDATE FC
     SET FilterPart = CASE ColumnType         
             -- Логика для СТРОК c полнотекстовым поиском 
             WHEN N'NVARCHAR' THEN 
@@ -310,6 +316,31 @@ BEGIN
                 ELSE ''
                 END
 
+            -- Логика для ДАТЫ-ВРЕМЕНИ
+            WHEN N'DATETIME' THEN
+                CASE
+                    WHEN SqlOperator IS NULL OR SqlValue IS NULL THEN ''
+                    WHEN SqlOperator = N'=' THEN
+                        N'
+                    AND ' + SqlColumnName + N' >= ' + DT.RangeFrom + N' AND ' + SqlColumnName + N' < ' + DT.RangeTo + N' '
+                    WHEN SqlOperator = N'<>' THEN
+                        N'
+                    AND (' + SqlColumnName + N' < ' + DT.RangeFrom + N' OR ' + SqlColumnName + N' >= ' + DT.RangeTo + N') '
+                    WHEN SqlOperator = N'<' THEN
+                        N'
+                    AND ' + SqlColumnName + N' < ' + DT.RangeFrom + N' '
+                    WHEN SqlOperator = N'<=' THEN
+                        N'
+                    AND ' + SqlColumnName + N' < ' + DT.RangeTo + N' '
+                    WHEN SqlOperator = N'>' THEN
+                        N'
+                    AND ' + SqlColumnName + N' >= ' + DT.RangeTo + N' '
+                    WHEN SqlOperator = N'>=' THEN
+                        N'
+                    AND ' + SqlColumnName + N' >= ' + DT.RangeFrom + N' '
+                    ELSE ''
+                END
+
             -- Логика для ФЛАГОВ
             WHEN N'BIT' THEN 
                 CASE WHEN ColumnValue IN (N'True', N'true', N'1') THEN
@@ -324,7 +355,13 @@ BEGIN
             -- Логика по умолчанию для остальных типов
             ELSE ''
         END
-    FROM @FilteredColumns;
+    FROM @FilteredColumns FC
+    CROSS APPLY (
+        SELECT
+            RangeFrom = N'''' + SqlValue + IIF(LEN(SqlValue) = 16, N':00', N'') + N'''',
+            RangeTo = N'DATEADD(' + IIF(LEN(SqlValue) = 16, N'MINUTE', N'SECOND')
+                + N', 1, ''' + SqlValue + IIF(LEN(SqlValue) = 16, N':00', N'') + N''')'
+    ) DT;
 
 
     SELECT @FulltextFilterCount = COUNT(1) 

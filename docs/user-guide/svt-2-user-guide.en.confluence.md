@@ -23,7 +23,7 @@ h2. 1. What SVT 2.0 is and how it differs from the legacy system
 *SVT 2.0* is the new version of the Tariff Management System. At this stage you can *view* the reference books that have already been migrated.
 
 ||Action||Where to do it||
-|View migrated reference books (rates, rate type, coefficient, average rates, rate auto-selection settings, rate calculation type, rate synchronization class, report constructor, parities, transport legs, locations-nodes, means of transport (level 3), transport groups, products, currencies)|*SVT 2.0*|
+|View migrated reference books (rates, rate type, coefficient, average rates, rate auto-selection settings, rate calculation type, rate synchronization class, report constructor, contractors, parities, relevance, transport legs, locations-nodes, region, country, means of transport (level 3), transport groups, transport route, products, currencies)|*SVT 2.0*|
 |Load and change data for these reference books|*Legacy* SVT|
 |View reference books that are *not* migrated yet|*Legacy* SVT|
 
@@ -74,6 +74,7 @@ At the bottom of the page there is a footer bar: on the left, the load time of t
 |—|Home|Summary «Average rates by direction»|
 |Rates|Average Rate|Average Rate|
 |Rates|Coefficient|Coefficient|
+|Rates|Contractors|Contractors|
 |Rates|Rate auto-selection settings|Rate auto-selection settings|
 |Rates|Rate calculation type|Rate calculation type|
 |Rates|Rate synchronization class|Rate synchronization class|
@@ -81,9 +82,13 @@ At the bottom of the page there is a footer bar: on the left, the load time of t
 |Rates|Rate type|Rate type|
 |Rates|Report constructor|Report constructor|
 |Parities|Parity rates|Parity rates|
+|Parities|Relevance|Relevance|
+|Routes|Country|Country|
 |Routes|Locations-Nodes|Locations-Nodes|
 |Routes|Means of transport (level 3)|Means of transport (level 3)|
+|Routes|Region|Region|
 |Routes|Transport Legs|Transport Legs|
+|Routes|Transport route|Transport route|
 |Products|Transport groups|Transport groups|
 |Products|Materials and equipment|Materials and equipment|
 |Auxiliary|Currencies|Currencies|
@@ -120,7 +125,7 @@ Hover a domain in the top menu and choose a reference book. A table of records o
 * Data is view-only.
 * By default, *non-archive* (active) records are shown.
 * To view archive records, enable the *Archive* column in Settings and filter by it (section 6.5).
-* A filter row is under the column headers.
+* A filter row is under the column headers. If all records fit on one page and no filters are set, the filter row is hidden.
 * You can sort: click a column header.
 * Pagination is at the bottom (*«1 - 10 from … items»*). Use the arrows or page numbers.
 * The arrow on the left of a row opens the *detail card* (all fields of the record).

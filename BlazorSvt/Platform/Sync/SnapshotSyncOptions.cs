@@ -1,3 +1,5 @@
+using BlazorSvt.Platform.Infrastructure;
+
 namespace BlazorSvt.Platform.Sync;
 
 /// <summary>
@@ -23,7 +25,7 @@ public class SnapshotSyncOptions
     /// <summary>Часовой пояс для <see cref="ReconcileAtTime"/> и окон
     /// <see cref="BlackoutIntervals"/> (Windows TZ id, напр. "Russian Standard Time").
     /// При неизвестном id используется локальный пояс сервера.</summary>
-    public string TimeZone { get; set; } = "Russian Standard Time";
+    public string TimeZone { get; set; } = MoscowTime.TimeZoneId;
 
     /// <summary>Таймаут SQL-команд синхронизации (пачки до десятков тыс. строк).</summary>
     public int CommandTimeoutSeconds { get; set; } = 300;

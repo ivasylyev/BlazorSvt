@@ -2,6 +2,8 @@ using BlazorSvt.IntegrationTests.Infrastructure;
 using BlazorSvt.Modules.AverageRateLevel3.Detail;
 using BlazorSvt.Modules.Coefficient.Detail;
 using BlazorSvt.Modules.Coefficient.List;
+using BlazorSvt.Modules.Country.Detail;
+using BlazorSvt.Modules.Country.List;
 using BlazorSvt.Modules.Contractor.Detail;
 using BlazorSvt.Modules.Contractor.List;
 using BlazorSvt.Modules.Currency.Detail;
@@ -24,11 +26,17 @@ using BlazorSvt.Modules.RateSyncClass.Detail;
 using BlazorSvt.Modules.RateSyncClass.List;
 using BlazorSvt.Modules.RateType.Detail;
 using BlazorSvt.Modules.RateType.List;
+using BlazorSvt.Modules.Relevance.Detail;
+using BlazorSvt.Modules.Relevance.List;
+using BlazorSvt.Modules.Region.Detail;
+using BlazorSvt.Modules.Region.List;
 using BlazorSvt.Modules.ParityRates.List;
 using BlazorSvt.Modules.TransportLeg.Detail;
 using BlazorSvt.Modules.TransportLeg.List;
 using BlazorSvt.Modules.TransportRate.Detail;
 using BlazorSvt.Modules.TransportRate.List;
+using BlazorSvt.Modules.TransportRoute.Detail;
+using BlazorSvt.Modules.TransportRoute.List;
 using BlazorSvt.Modules.TransportTypeLevel3.Detail;
 using BlazorSvt.Modules.TransportTypeLevel3.List;
 using BlazorSvt.Platform.Grid.Models;
@@ -662,5 +670,172 @@ public class ModuleGridIntegrationTests(DatabaseFixture fixture) : IntegrationTe
         detail.ReportTypeIdRu.Should().Be(rows[0].ReportTypeIdRu);
         detail.DateFrom.Should().Be(rows[0].DateFrom);
         detail.LastChangeDate.Should().Be(rows[0].LastChangeDate);
+    }
+
+    [SkippableFact]
+    public async Task RelevanceGrid_ReturnsRows()
+    {
+        var connectionString = RequireConnectionString();
+
+        var (rows, totalCount) = await GridSpTestHelper.ExecuteGetBlazorGridDataAsync<RelevanceDto>(
+            connectionString,
+            typeof(RelevanceDto),
+            GridSpTestHelper.CreateDefaultQuery());
+
+        rows.Should().NotBeEmpty();
+        totalCount.Should().Be(4);
+        rows.Should().OnlyContain(r => !r.IsArchive);
+        rows.Should().OnlyContain(r => r.Code.Length > 0);
+    }
+
+    [SkippableFact]
+    public async Task RelevanceDetailView_ReturnsRowForGridEntityKey()
+    {
+        var connectionString = RequireConnectionString();
+
+        var (rows, _) = await GridSpTestHelper.ExecuteGetBlazorGridDataAsync<RelevanceDto>(
+            connectionString,
+            typeof(RelevanceDto),
+            GridSpTestHelper.CreateDefaultQuery(pageSize: 1));
+
+        var entityKey = rows[0].RelevanceId;
+
+        var detail = await GridSpTestHelper.QueryDetailViewAsync<RelevanceDetailDto>(
+            connectionString,
+            "v2.vw_Relevance_Detail",
+            "RelevanceId",
+            entityKey);
+
+        detail.Should().NotBeNull();
+        detail!.RelevanceId.Should().Be(entityKey);
+        detail.Code.Should().Be(rows[0].Code);
+        detail.Name.Should().Be(rows[0].Name);
+    }
+
+    [SkippableFact]
+    public async Task CountryGrid_ReturnsRows()
+    {
+        var connectionString = RequireConnectionString();
+
+        var (rows, totalCount) = await GridSpTestHelper.ExecuteGetBlazorGridDataAsync<CountryDto>(
+            connectionString,
+            typeof(CountryDto),
+            GridSpTestHelper.CreateDefaultQuery());
+
+        rows.Should().NotBeEmpty();
+        totalCount.Should().Be(256);
+        rows.Should().OnlyContain(r => !r.IsArchive);
+        rows.Should().OnlyContain(r => r.Code.Length > 0);
+    }
+
+    [SkippableFact]
+    public async Task CountryDetailView_ReturnsRowForGridEntityKey()
+    {
+        var connectionString = RequireConnectionString();
+
+        var (rows, _) = await GridSpTestHelper.ExecuteGetBlazorGridDataAsync<CountryDto>(
+            connectionString,
+            typeof(CountryDto),
+            GridSpTestHelper.CreateDefaultQuery(pageSize: 1));
+
+        var entityKey = rows[0].CountryId;
+
+        var detail = await GridSpTestHelper.QueryDetailViewAsync<CountryDetailDto>(
+            connectionString,
+            "v2.vw_Country_Detail",
+            "CountryId",
+            entityKey);
+
+        detail.Should().NotBeNull();
+        detail!.CountryId.Should().Be(entityKey);
+        detail.Code.Should().Be(rows[0].Code);
+        detail.NameRu.Should().Be(rows[0].NameRu);
+        detail.ISOCode.Should().Be(rows[0].ISOCode);
+        detail.StatusIdRu.Should().Be(rows[0].StatusIdRu);
+    }
+
+    [SkippableFact]
+    public async Task RegionGrid_ReturnsRows()
+    {
+        var connectionString = RequireConnectionString();
+
+        var (rows, totalCount) = await GridSpTestHelper.ExecuteGetBlazorGridDataAsync<RegionDto>(
+            connectionString,
+            typeof(RegionDto),
+            GridSpTestHelper.CreateDefaultQuery());
+
+        rows.Should().NotBeEmpty();
+        totalCount.Should().Be(2019);
+        rows.Should().OnlyContain(r => !r.IsArchive);
+        rows.Should().OnlyContain(r => r.Code.Length > 0);
+    }
+
+    [SkippableFact]
+    public async Task RegionDetailView_ReturnsRowForGridEntityKey()
+    {
+        var connectionString = RequireConnectionString();
+
+        var (rows, _) = await GridSpTestHelper.ExecuteGetBlazorGridDataAsync<RegionDto>(
+            connectionString,
+            typeof(RegionDto),
+            GridSpTestHelper.CreateDefaultQuery(pageSize: 1));
+
+        var entityKey = rows[0].RegionId;
+
+        var detail = await GridSpTestHelper.QueryDetailViewAsync<RegionDetailDto>(
+            connectionString,
+            "v2.vw_Region_Detail",
+            "RegionId",
+            entityKey);
+
+        detail.Should().NotBeNull();
+        detail!.RegionId.Should().Be(entityKey);
+        detail.Code.Should().Be(rows[0].Code);
+        detail.NameRu.Should().Be(rows[0].NameRu);
+        detail.StatusIdRu.Should().Be(rows[0].StatusIdRu);
+        detail.Market.Should().Be(rows[0].Market);
+    }
+
+    [SkippableFact]
+    public async Task TransportRouteGrid_ReturnsRows()
+    {
+        var connectionString = RequireConnectionString();
+
+        var (rows, totalCount) = await GridSpTestHelper.ExecuteGetBlazorGridDataAsync<TransportRouteDto>(
+            connectionString,
+            typeof(TransportRouteDto),
+            GridSpTestHelper.CreateDefaultQuery());
+
+        rows.Should().NotBeEmpty();
+        totalCount.Should().BeGreaterThan(0);
+        rows.Should().OnlyContain(r => !r.IsArchive);
+        rows.Should().OnlyContain(r => r.Code.Length > 0);
+        rows.Should().OnlyContain(r => r.IsActive);
+    }
+
+    [SkippableFact]
+    public async Task TransportRouteDetailView_ReturnsRowForGridEntityKey()
+    {
+        var connectionString = RequireConnectionString();
+
+        var (rows, _) = await GridSpTestHelper.ExecuteGetBlazorGridDataAsync<TransportRouteDto>(
+            connectionString,
+            typeof(TransportRouteDto),
+            GridSpTestHelper.CreateDefaultQuery(pageSize: 1));
+
+        var entityKey = rows[0].TransportRouteId;
+
+        var detail = await GridSpTestHelper.QueryDetailViewAsync<TransportRouteDetailDto>(
+            connectionString,
+            "v2.vw_TransportRoute_Detail",
+            "TransportRouteId",
+            entityKey);
+
+        detail.Should().NotBeNull();
+        detail!.TransportRouteId.Should().Be(entityKey);
+        detail.Code.Should().Be(rows[0].Code);
+        detail.RouteTransportKindIdRu.Should().Be(rows[0].RouteTransportKindIdRu);
+        detail.StartNodeNameRu.Should().Be(rows[0].StartNodeNameRu);
+        detail.ChainNodes.Should().Be(rows[0].ChainNodes);
     }
 }

@@ -13,6 +13,8 @@ public static class CoefficientModule
     {
         services.AddScoped<IGridSettingsService<CoefficientDto>, CoefficientGridSettingsService>();
         services.AddScoped<IDetailSettingsService<CoefficientDetailDto>, CoefficientDetailSettingsService>();
+        services.AddScoped<IDetailChildSection<CoefficientDetailDto>, CoefficientConditionValueSection>();
+        services.AddScoped<IDetailChildSection<CoefficientDetailDto>, CoefficientComponentValueSection>();
 
         services.AddSingleton<ISnapshotSyncJob, CoefficientSyncJob>();
         services.AddCatalogMenu(new CatalogMenuContribution(

@@ -10,11 +10,7 @@
 
 ## Как читать
 
-`git diff --stat {BaseRef}` и `git status --short`, затем нужные файлы. В diff есть чужие справочники батча: проверяй свой модуль, свои строки в общих файлах и свои номера дельт (из `{WorkDir}\sql-report.md`). Сгенерированные enum, OpenAPI и `All_Programmability.sql` — поиском. Канон целиком не читай; точечно:
-
-- §1, §4, §6–7 `add-reference-book/discovery.md`, «Верификация SQL» в `sql.md`, `grid-column-glossary.md`;
-- чеклист и раздел класса в `add-reference-book/SKILL.md`;
-- эталон файлов — из `SKILL.md` по `Class`.
+`git diff --stat {BaseRef}` и `git status --short`, затем нужные файлы. В diff есть чужие справочники батча: проверяй свой модуль, свои строки в общих файлах и свои номера дельт (из `{WorkDir}\sql-report.md`). Сгенерированные enum, OpenAPI и `All_Programmability.sql` — поиском. Канон — `add-reference-book/discovery-rules.md`. Запросы не открывай. Числа грида — раздел «Верификация SQL» в `sql.md`. Класс — таблица enum в `SKILL.md`. Подписи — поиск имени поля в глоссарии.
 
 Дефект — нарушение spec/решений/канона или поломка. Вкусовое — не дефект. Чужое по соседству — в «РИСКИ». Целостность нумерации папки и снимка уже проверил finalize — не дублируй; расхождение — «НА РЕШЕНИЕ».
 
@@ -24,14 +20,15 @@
 
 ## Что проверить
 
-1. **Spec и MDM.** Код совпадает со spec и решениями; порядок грида/карточки — с коротким/длинным списком MDM (§1, §4 `discovery.md`).
-2. **Ссылки и enum.** По §6–7 `discovery.md` и классу в `SKILL.md`.
+1. **Spec и MDM.** Код совпадает со spec и решениями; порядок грида/карточки — с коротким/длинным списком MDM (§1, §4 `discovery-rules.md`).
+2. **Ссылки и enum.** По §6–7 `discovery-rules.md` и классу в `SKILL.md`.
 3. **Класс.** `simple` / `complex` — пункты чеклиста `add-reference-book` (Sync/PopulateAffectedKeys/RowVer/SyncState или их отсутствие; тесты контракта).
 4. **База.** Строк снимка = проекции, дублей ключа нет; у complex — RowVer и SyncState на источники job.
 5. **Свои дельты и регистрация.** Порядок и состав по шагу 2 `{AgentsDir}\sql.md` (Detail и PopulateAffectedKeys — в снимке, не в дельте) / чеклисту `add-reference-book`; блок в `Publish-AllSql.ps1` и README.
 6. **Кодировка и побочные правки.** BOM/`^SE `/`0D 0D 0A`; в общих файлах нет удалённых чужих строк; RO и backlog не отмечены.
 7. **Документация.** Меню RU/EN, Postman, developers.md.
-8. **Тесты.** Unit целиком; integration `--filter "(FullyQualifiedName~{Entity}|FullyQualifiedName~OpenApiContractTests)&FullyQualifiedName!~IncrementalSync"` (тест инкремента пишет в легаси — его не запускаешь). Флаки в чужих — «РИСКИ».
+7а. **Дочерние примитивы.** По разделу 3а spec и `add-reference-book/child-primitives.md`: у каждого входящего ребёнка есть проекция, секция в порядке групп, колонки и подписи как в 3а, тесты секций; API и OpenAPI не изменились. Группы входящего ребёнка нет (в том числе при повторной проверке) — дефект `[sql|csharp]`.
+8. **Тесты.** Unit целиком; integration `--filter "(FullyQualifiedName~{Entity}|FullyQualifiedName~OpenApiContractTests)&FullyQualifiedName!~IncrementalSync"` (тесты секций `{Entity}ChildSections*` фильтр уже берёт) (тест инкремента пишет в легаси — его не запускаешь). Флаки в чужих — «РИСКИ».
 
 ## Ответ
 
@@ -43,7 +40,7 @@
 - что — варианты — данные за и против
 
 ПРОВЕРЕНО БЕЗ ЗАМЕЧАНИЙ
-- пункты 1–8, по строке
+- пункты 1–8 и 7а, по строке
 
 ТЕСТЫ
 - unit: N/N; integration: N/N (упавшие — с причиной)

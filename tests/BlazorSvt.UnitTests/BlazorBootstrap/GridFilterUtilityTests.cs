@@ -54,4 +54,32 @@ public class GridFilterUtilityTests
         GridFilterUtility.IsPendingDateFilter("String", "0002-09-30").Should().BeFalse();
         GridFilterUtility.IsPendingDateFilter("Int32", "0002-09-30").Should().BeFalse();
     }
+
+    [Theory]
+    [InlineData(0, 10)]
+    [InlineData(5, 10)]
+    [InlineData(10, 10)]
+    public void ShouldShowFiltersRow_WhenNoFiltersAndItemsFitOnePage_ReturnsFalse(int totalCount, int pageSize)
+    {
+        GridFilterUtility.ShouldShowFiltersRow(false, totalCount, pageSize).Should().BeFalse();
+    }
+
+    [Fact]
+    public void ShouldShowFiltersRow_WhenItemsExceedPageSize_ReturnsTrue()
+    {
+        GridFilterUtility.ShouldShowFiltersRow(false, 11, 10).Should().BeTrue();
+    }
+
+    [Fact]
+    public void ShouldShowFiltersRow_WhenFiltersSet_ReturnsTrue()
+    {
+        GridFilterUtility.ShouldShowFiltersRow(true, 3, 10).Should().BeTrue();
+        GridFilterUtility.ShouldShowFiltersRow(true, 0, 10).Should().BeTrue();
+    }
+
+    [Fact]
+    public void ShouldShowFiltersRow_WhenTotalCountUnknown_ReturnsTrue()
+    {
+        GridFilterUtility.ShouldShowFiltersRow(false, null, 10).Should().BeTrue();
+    }
 }

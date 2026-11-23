@@ -13,6 +13,9 @@ public static class TransportLegModule
     {
         services.AddScoped<IGridSettingsService<TransportLegDto>, TransportLegGridSettingsService>();
         services.AddScoped<IDetailSettingsService<TransportLegDetailDto>, TransportLegDetailSettingsService>();
+        services.AddScoped<IDetailChildSection<TransportLegDetailDto>, LegRateSection>();
+        services.AddScoped<IDetailChildSection<TransportLegDetailDto>, LegAverageRateLevel3Section>();
+        services.AddScoped<IDetailChildSection<TransportLegDetailDto>, LeadtimeSection>();
 
         services.AddSingleton<ISnapshotSyncJob, TransportLegSyncJob>();
         services.AddCatalogMenu(new CatalogMenuContribution(

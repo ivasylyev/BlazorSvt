@@ -5,8 +5,9 @@ GO
     Детекция изменившихся контрагентов.
     Источник: dbo.PrimitiveEntityData_2028 — LegalType (основная), реестр Contractor.
 
-    Address, StatusElement, LegalForm и LevelOrganization в каскад не входят:
-    на экран Contractor они не выводятся.
+    Address, StatusElement, LegalForm и LevelOrganization в каскад не входят.
+    Address — дочерняя таблица карточки, в снимок не входит.
+    Status, LegalForm и LevelOrg на экран не выводятся.
 */
 CREATE OR ALTER PROCEDURE v2.Contractor_PopulateAffectedKeys
     @Source NVARCHAR(200),

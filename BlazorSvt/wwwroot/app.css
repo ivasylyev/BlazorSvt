@@ -325,6 +325,11 @@ h1:focus {
     overflow-wrap: break-word;
 }
 
+/* Таблица дочернего примитива в карточке: высота по содержимому, без min-height грида */
+.sibur-grid-detail-child-table {
+    overflow-x: auto;
+}
+
 /* Card */
 .sibur-card {
     background-color: rgba(0, 240, 255, 0.03) !important;

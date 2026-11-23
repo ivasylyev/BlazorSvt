@@ -4,7 +4,9 @@ GO
 /*
     Карточка и полный Excel Coefficient.
     Источник — dbo.vw_Coefficient (dbo.PrimitiveEntityData_2081).
-    Дочерние CoefficientConditionValue и CoefficientComponentValue не выводятся.
+    Дочерние CoefficientConditionValue и CoefficientComponentValue — свои представления
+    v2.vw_CoefficientConditionValue_Detail и v2.vw_CoefficientComponentValue_Detail;
+    на карточке это таблицы, в полный Excel не входят.
 */
 
 CREATE OR ALTER VIEW v2.vw_Coefficient_Detail

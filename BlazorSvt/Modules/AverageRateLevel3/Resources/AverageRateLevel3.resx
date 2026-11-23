@@ -743,4 +743,22 @@
   <data name="AverageRateLevel3DetailDto.Leg2_TransportTypeNameRuEn" xml:space="preserve">
     <value>Leg 2. Transport type</value>
   </data>
+  <data name="RatesOfAverageRateDto.Title" xml:space="preserve">
+    <value>Rate For Rate</value>
+  </data>
+  <data name="RatesOfAverageRateDto.Code" xml:space="preserve">
+    <value>Code</value>
+  </data>
+  <data name="RatesOfAverageRateDto.TransportRateCode" xml:space="preserve">
+    <value>Rate code</value>
+  </data>
+  <data name="RatesOfAverageRateDto.TotalCostTon" xml:space="preserve">
+    <value>Total cost of transportation per ton (excluding VAT)</value>
+  </data>
+  <data name="RatesOfAverageRateDto.TotalCostTransport" xml:space="preserve">
+    <value>Total cost of transportation per vehicle (excluding VAT)</value>
+  </data>
+  <data name="RatesOfAverageRateDto.IsArchive" xml:space="preserve">
+    <value>Archive</value>
+  </data>
 </root>

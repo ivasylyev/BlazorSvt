@@ -4,7 +4,8 @@ namespace BlazorSvt.Modules.Contractor.Sync;
 
 /// <summary>
 /// Синхронизация Contractor: примитив LegalType, таблица dbo.PrimitiveEntityData_2028.
-/// vw_Contractor устарело. Address, Status, LegalForm и LevelOrganization не отслеживаются.
+/// vw_Contractor устарело. Address — дочерняя таблица карточки, в синхронизацию не входит.
+/// Status, LegalForm и LevelOrganization не отслеживаются.
 /// </summary>
 public sealed class ContractorSyncJob() : SnapshotSyncJob(
     "Contractor",

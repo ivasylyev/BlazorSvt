@@ -42,5 +42,20 @@ else if (detail is not null)
                 </AccordionItem>
             }
         }
+        @foreach (var section in childSections.Where(s => s.IsVisible))
+        {
+            <AccordionItem @key="section.Title" Title="@section.Title" Active="true">
+                <Content>
+                    @if (section.ErrorMessage is not null)
+                    {
+                        <div class="p-3 text-danger">@section.ErrorMessage</div>
+                    }
+                    else if (section.Table is { } table)
+                    {
+                        <DetailChildTableView Table="table" />
+                    }
+                </Content>
+            </AccordionItem>
+        }
     </Accordion>
 }

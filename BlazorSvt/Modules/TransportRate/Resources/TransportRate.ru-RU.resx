@@ -661,4 +661,19 @@
   <data name="TransportRateDetailDto.Leg2_TotalCostTransportCNY" xml:space="preserve">
     <value>Плечо 2.Ставка за ТС, CNY</value>
   </data>
+  <data name="TransportRateTenderServicePackDto.Title" xml:space="preserve"><value>Тендерный пакет услуг</value></data>
+  <data name="TransportRateTenderServicePackDto.Code" xml:space="preserve"><value>Код</value></data>
+  <data name="TransportRateTenderServicePackDto.TenderServicePack" xml:space="preserve"><value>Тендерный пакет услуг</value></data>
+  <data name="TransportRateTenderServicePackDto.LotRate" xml:space="preserve"><value>Ставка лота</value></data>
+  <data name="TransportRateTenderServicePackDto.LotCurrency" xml:space="preserve"><value>Валюта лота</value></data>
+  <data name="TransportRateTenderServicePackDto.IsArchive" xml:space="preserve"><value>Архив</value></data>
+  <data name="TransportRateCoefficientDto.Title" xml:space="preserve"><value>Применённые коэффициенты</value></data>
+  <data name="TransportRateCoefficientDto.Code" xml:space="preserve"><value>Код</value></data>
+  <data name="TransportRateCoefficientDto.CoefficientRateCode" xml:space="preserve"><value>Код ставки с коэфициентом</value></data>
+  <data name="TransportRateCoefficientDto.StartDate" xml:space="preserve"><value>Начало периода</value></data>
+  <data name="TransportRateCoefficientDto.EndDate" xml:space="preserve"><value>Окончание периода</value></data>
+  <data name="TransportRateCoefficientDto.CoefficientName" xml:space="preserve"><value>Коэффициент</value></data>
+  <data name="TransportRateCoefficientDto.SourceRateCode" xml:space="preserve"><value>Исходная ставка</value></data>
+  <data name="TransportRateCoefficientDto.SourceRateKindName" xml:space="preserve"><value>Вид исходной ставки</value></data>
+  <data name="TransportRateCoefficientDto.IsArchive" xml:space="preserve"><value>Архив</value></data>
 </root>

@@ -4,7 +4,8 @@ GO
 /*
     Карточка и полный Excel Contractor.
     Источник — dbo.vw_LegalType. vw_Contractor устарело.
-    Address, Status, LegalForm и LevelOrg не выводятся.
+    Адреса (Address) — дочерняя таблица карточки, не колонки этой проекции.
+    Status, LegalForm и LevelOrg не выводятся.
 */
 
 CREATE OR ALTER VIEW v2.vw_Contractor_Detail

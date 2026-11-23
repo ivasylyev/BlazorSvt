@@ -28,7 +28,7 @@ public sealed class DetailSettingsBuilder<T>(IStringLocalizer<PlatformResources>
             Name = MemberName(property),
             Header = header,
             GroupHeader = groupHeader,
-            DisplaySelector = display ?? (dto => compiled(dto) is { } value ? value : string.Empty),
+            DisplaySelector = display ?? (dto => GridValueFormatter.Format(compiled(dto))),
             VisibleSelector = visible ?? (_ => true),
             HasMargin = hasMargin
         });
@@ -78,6 +78,43 @@ public sealed class DetailSettingsBuilder<T>(IStringLocalizer<PlatformResources>
             visible,
             hasMargin,
             dto => typeof(TEn).GetDisplayName(compiledEn(dto).ToString()) ?? string.Empty);
+    }
+
+    public DetailSettingsBuilder<T> AddEnum<TRu, TEn>(
+        bool isRu,
+        string groupHeader,
+        Expression<Func<T, TRu?>> ruProperty,
+        Expression<Func<T, TEn?>> enProperty,
+        string header,
+        Func<T, bool>? visible = null,
+        bool hasMargin = false)
+        where TRu : struct, Enum
+        where TEn : struct, Enum
+    {
+        if (isRu)
+        {
+            var compiled = ruProperty.Compile();
+            return Add(
+                groupHeader,
+                ruProperty,
+                header,
+                visible,
+                hasMargin,
+                dto => compiled(dto) is { } value
+                    ? typeof(TRu).GetDisplayName(value.ToString()) ?? string.Empty
+                    : string.Empty);
+        }
+
+        var compiledEn = enProperty.Compile();
+        return Add(
+            groupHeader,
+            enProperty,
+            header,
+            visible,
+            hasMargin,
+            dto => compiledEn(dto) is { } value
+                ? typeof(TEn).GetDisplayName(value.ToString()) ?? string.Empty
+                : string.Empty);
     }
 
     public DetailSettingsBuilder<T> AddYesNo(

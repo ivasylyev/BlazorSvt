@@ -336,4 +336,58 @@
   <data name="TransportLegDetailDto.Leg2_Distance" xml:space="preserve">
     <value>Плечо 2. Расстояние, км </value>
   </data>
+  <data name="LegRateDto.Title" xml:space="preserve"><value>Ставки плеча</value></data>
+  <data name="LegRateDto.Code" xml:space="preserve"><value>Код</value></data>
+  <data name="LegRateDto.RateCode" xml:space="preserve"><value>Код ставки</value></data>
+  <data name="LegRateDto.IsDefRate" xml:space="preserve"><value>Дефлятор</value></data>
+  <data name="LegRateDto.RateTypeName" xml:space="preserve"><value>Тип ставки</value></data>
+  <data name="LegRateDto.TransportTypeName" xml:space="preserve"><value>Тип транспорта</value></data>
+  <data name="LegRateDto.ProductGroupName" xml:space="preserve"><value>Группа продуктов</value></data>
+  <data name="LegRateDto.ProductName" xml:space="preserve"><value>Продукт</value></data>
+  <data name="LegRateDto.StartDate" xml:space="preserve"><value>Период действия с</value></data>
+  <data name="LegRateDto.EndDate" xml:space="preserve"><value>Период действия по</value></data>
+  <data name="LegRateDto.TotalCostTon" xml:space="preserve"><value>Общая стоимость за тонну</value></data>
+  <data name="LegRateDto.TotalCostTransport" xml:space="preserve"><value>Общая стоимость за транспортное средство</value></data>
+  <data name="LegRateDto.Currency" xml:space="preserve"><value>Валюта-эталон</value></data>
+  <data name="LegRateDto.IsArchive" xml:space="preserve"><value>Архив</value></data>
+  <data name="LegAverageRateLevel3Dto.Title" xml:space="preserve"><value>Средневзвешенные ставки 3 уровня</value></data>
+  <data name="LegAverageRateLevel3Dto.Code" xml:space="preserve"><value>Код</value></data>
+  <data name="LegAverageRateLevel3Dto.AverageRateCode" xml:space="preserve"><value>Код ставки</value></data>
+  <data name="LegAverageRateLevel3Dto.IsDefRate" xml:space="preserve"><value>Дефлятор</value></data>
+  <data name="LegAverageRateLevel3Dto.RateTypeName" xml:space="preserve"><value>Тип ставки</value></data>
+  <data name="LegAverageRateLevel3Dto.TransportTypeName" xml:space="preserve"><value>Тип транспорта</value></data>
+  <data name="LegAverageRateLevel3Dto.ProductGroupName" xml:space="preserve"><value>Группа продуктов</value></data>
+  <data name="LegAverageRateLevel3Dto.ProductName" xml:space="preserve"><value>Продукт</value></data>
+  <data name="LegAverageRateLevel3Dto.StartDate" xml:space="preserve"><value>Период действия с</value></data>
+  <data name="LegAverageRateLevel3Dto.EndDate" xml:space="preserve"><value>Период действия по</value></data>
+  <data name="LegAverageRateLevel3Dto.RateLevel3" xml:space="preserve"><value>Ставка ср.взвеш. (т) в валюте-эталоне</value></data>
+  <data name="LegAverageRateLevel3Dto.EffectiveLoadOfTransportType" xml:space="preserve"><value>Эффективная загрузка типа транспорта (в тоннах)</value></data>
+  <data name="LegAverageRateLevel3Dto.Currency" xml:space="preserve"><value>Валюта-эталон</value></data>
+  <data name="LegAverageRateLevel3Dto.IsArchive" xml:space="preserve"><value>Архив</value></data>
+  <data name="LeadtimeDto.Title" xml:space="preserve"><value>Лидтаймы</value></data>
+  <data name="LeadtimeDto.Code" xml:space="preserve"><value>Код Лидтайма</value></data>
+  <data name="LeadtimeDto.StartDate" xml:space="preserve"><value>Период действия с</value></data>
+  <data name="LeadtimeDto.EndDate" xml:space="preserve"><value>Период действия по</value></data>
+  <data name="LeadtimeDto.ShipmentTypeName" xml:space="preserve"><value>Тип отправки</value></data>
+  <data name="LeadtimeDto.LeadTimeIsActive" xml:space="preserve"><value>Лидтайм действует</value></data>
+  <data name="LeadtimeDto.CommercialLT" xml:space="preserve"><value>Коммерческий лидтайм</value></data>
+  <data name="LeadtimeDto.SearchTime" xml:space="preserve"><value>Поиск, сут</value></data>
+  <data name="LeadtimeDto.LoadTime" xml:space="preserve"><value>Погрузка, сут</value></data>
+  <data name="LeadtimeDto.TravelTime" xml:space="preserve"><value>В пути, сут</value></data>
+  <data name="LeadtimeDto.DaysWaiting" xml:space="preserve"><value>Ожидание, сут</value></data>
+  <data name="LeadtimeDto.UnLoadTime" xml:space="preserve"><value>Разгрузка, сут</value></data>
+  <data name="LeadtimeDto.TransportationTime" xml:space="preserve"><value>Транспортировка, сут</value></data>
+  <data name="LeadtimeDto.Distance" xml:space="preserve"><value>Расстояние, км</value></data>
+  <data name="LeadtimeDto.Leg1_SearchTime" xml:space="preserve"><value>Плечо 1.Поиск, сут</value></data>
+  <data name="LeadtimeDto.Leg1_LoadTime" xml:space="preserve"><value>Плечо 1.Погрузка, сут</value></data>
+  <data name="LeadtimeDto.Leg1_TravelTime" xml:space="preserve"><value>Плечо 1.В пути, сут</value></data>
+  <data name="LeadtimeDto.Leg1_DaysWaiting" xml:space="preserve"><value>Плечо 1.Ожидание, сут</value></data>
+  <data name="LeadtimeDto.Leg1_TransportationTime" xml:space="preserve"><value>Плечо 1.Транспортировка</value></data>
+  <data name="LeadtimeDto.Leg1_Distance" xml:space="preserve"><value>Плечо 1.Расстояние, км</value></data>
+  <data name="LeadtimeDto.Leg2_TravelTime" xml:space="preserve"><value>Плечо 2.В пути, сут</value></data>
+  <data name="LeadtimeDto.Leg2_DaysWaiting" xml:space="preserve"><value>Плечо 2.Ожидание, сут</value></data>
+  <data name="LeadtimeDto.Leg2_UploadTime" xml:space="preserve"><value>Плечо 2.Разгрузка, сут</value></data>
+  <data name="LeadtimeDto.Leg2_TransportationTime" xml:space="preserve"><value>Плечо 2.Транспортировка</value></data>
+  <data name="LeadtimeDto.Leg2_Distance" xml:space="preserve"><value>Плечо 2.Расстояние, км</value></data>
+  <data name="LeadtimeDto.IsArchive" xml:space="preserve"><value>Архив</value></data>
 </root>
