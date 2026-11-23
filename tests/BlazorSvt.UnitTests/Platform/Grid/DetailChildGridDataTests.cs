@@ -204,6 +204,55 @@ public class DetailChildGridDataTests
         result.TotalCount.Should().Be(5);
     }
 
+    [Fact]
+    public void EnumFilterValues_OnlyValuesPresentInColumn_InDeclarationOrder()
+    {
+        var rows = new[]
+        {
+            new Row { Id = 1, Color = SampleColor.Blue },
+            new Row { Id = 2, Color = SampleColor.Red },
+            new Row { Id = 3, Color = SampleColor.Blue }
+        };
+
+        DetailChildGridData.EnumFilterValues(rows, nameof(Row.Color))
+            .Should().Equal(SampleColor.Red, SampleColor.Blue);
+
+        DetailChildGridData.EnumFilterValues(rows.Where(r => r.Id == 1), nameof(Row.Color))
+            .Should().Equal(SampleColor.Blue);
+    }
+
+    [Fact]
+    public void EnumFilterValues_Nullable_SkipsNull()
+    {
+        var rows = new[]
+        {
+            new Row { Id = 1, NullableColor = null },
+            new Row { Id = 2, NullableColor = SampleColor.Blue }
+        };
+
+        DetailChildGridData.EnumFilterValues(rows, nameof(Row.NullableColor))
+            .Should().Equal(SampleColor.Blue);
+    }
+
+    [Fact]
+    public void EnumFilterValues_NoValuesInColumn_ReturnsEmpty()
+    {
+        var rows = new[] { new Row { Id = 1, NullableColor = null } };
+
+        DetailChildGridData.EnumFilterValues(rows, nameof(Row.NullableColor)).Should().BeEmpty();
+        DetailChildGridData.EnumFilterValues(Array.Empty<Row>(), nameof(Row.Color)).Should().BeEmpty();
+    }
+
+    [Fact]
+    public void EnumFilterValues_NotEnumColumn_ReturnsNull()
+    {
+        var rows = new[] { new Row { Id = 1, Text = "x" } };
+
+        DetailChildGridData.EnumFilterValues(rows, nameof(Row.Text)).Should().BeNull();
+        DetailChildGridData.EnumFilterValues(rows, nameof(Row.Flag)).Should().BeNull();
+        DetailChildGridData.EnumFilterValues(rows, "Missing").Should().BeNull();
+    }
+
     private static List<int> Ids(IEnumerable<Row> rows, string property, string value, FilterOperator op) =>
         Apply(rows, property, value, op).Data!.Select(r => r.Id).ToList();
 

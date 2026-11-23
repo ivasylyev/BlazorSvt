@@ -24,11 +24,14 @@
             <GridColumns>
                 @foreach (var column in Table.Columns)
                 {
+                    enumFilterValues.TryGetValue(column.Name, out var filterValues);
                     <GridColumn TItem="TRow"
                                 HeaderText="@column.Header"
                                 PropertyName="@column.Name"
                                 SortString="@column.Name"
-                                SortKeySelector="@column.SortKeySelector">
+                                SortKeySelector="@column.SortKeySelector"
+                                Filterable="@(filterValues is null || filterValues.Count > 0)"
+                                FilterEnumValues="@filterValues">
                         @column.DisplaySelector(context)
                     </GridColumn>
                 }
@@ -47,8 +50,17 @@
     [Parameter, EditorRequired]
     public DetailChildTable<TRow> Table { get; set; } = default!;
 
+    // Выпадающий список фильтра enum-колонки — только значения, которые есть в колонке (по всем загруженным строкам).
+    private Dictionary<string, IReadOnlyList<Enum>> enumFilterValues = [];
+
     protected override async Task OnInitializedAsync() =>
         pageSize = await GridPageSizeService.GetAsync();
+
+    protected override void OnParametersSet() =>
+        enumFilterValues = Table.Columns
+            .Select(column => (column.Name, Values: DetailChildGridData.EnumFilterValues(Table.Rows, column.Name)))
+            .Where(x => x.Values is not null)
+            .ToDictionary(x => x.Name, x => x.Values!);
 
     private Task<GridDataProviderResult<TRow>> DataProvider(GridDataProviderRequest<TRow> request) =>
         Task.FromResult(DetailChildGridData.Apply(Table.Rows, request));
