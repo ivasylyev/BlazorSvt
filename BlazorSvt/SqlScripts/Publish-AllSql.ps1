@@ -179,6 +179,11 @@ $fullManifest = @(
   'Modules\Country\Structure\03.Country_CreateIndexes.sql'
   'Modules\Country\Programmability\vw_Country_Detail.sql'
   'Modules\Country\Programmability\sp_Country_PopulateAffectedKeys.sql'
+  'Modules\TransportKind\Structure\01.TransportKind_CreateTable.sql'
+  'Modules\TransportKind\Programmability\vw_TransportKind_SnapshotSource.sql'
+  'Modules\TransportKind\Structure\02.TransportKind_Insert.sql'
+  'Modules\TransportKind\Structure\03.TransportKind_CreateIndexes.sql'
+  'Modules\TransportKind\Programmability\vw_TransportKind_Detail.sql'
 )
 
 $programmabilityManifest = $fullManifest | Where-Object {

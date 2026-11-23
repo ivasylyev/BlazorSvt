@@ -183,6 +183,9 @@
   <data name="HeaderMenu.TransportRoute" xml:space="preserve">
     <value>Транспортный маршрут</value>
   </data>
+  <data name="HeaderMenu.TransportKind" xml:space="preserve">
+    <value>Вид транспорта</value>
+  </data>
   <data name="HeaderMenu.Load" xml:space="preserve">
     <value>Загрузка</value>
   </data>
