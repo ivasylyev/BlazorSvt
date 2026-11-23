@@ -43,7 +43,7 @@ public class GridQueryFactory<TItem> : IGridQueryFactory<TItem>
         // Бывает что request.Filters пустой из-за того что компонент не успел инициализироваться
         // ReSharper disable once ConditionIsAlwaysTrueOrFalseAccordingToNullableAPIContract
         if (request.Filters is not null)
-            return request.Filters.Select(ExtractEnumFilter).ToList();
+            return request.Filters.Select(ExtractFilter).ToList();
 
         return
         [
@@ -54,19 +54,22 @@ public class GridQueryFactory<TItem> : IGridQueryFactory<TItem>
         ];
     }
 
-    private static GridFilter ExtractEnumFilter(FilterItem filter)
+    private static GridFilter ExtractFilter(FilterItem filter)
     {
         var value = filter.Value;
         DtoProperties.TryGetValue(filter.PropertyName, out var propInfo);
-        if (propInfo != null)
+        if (propInfo != null && value != null)
         {
             // Проверяем, является ли тип перечислением (учитываем Nullable<Enum>)
             var propType = Nullable.GetUnderlyingType(propInfo.PropertyType) ?? propInfo.PropertyType;
-            // ReSharper disable once ConditionIsAlwaysTrueOrFalseAccordingToNullableAPIContract
-            if (propType.IsEnum && value != null)
+            if (propType.IsEnum)
             {
                 if (Enum.TryParse(propType, value, out var enumValue))
                     value = ((int)enumValue).ToString();
+            }
+            else if (propType == typeof(DateTime))
+            {
+                value = GridDateTime.NormalizeFilterValue(value);
             }
         }
 

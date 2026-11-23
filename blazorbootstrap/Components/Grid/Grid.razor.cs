@@ -146,6 +146,18 @@ public partial class Grid<TItem> : BlazorBootstrapComponentBase
         return filterableColumns.Select(column => new FilterItem(column.PropertyName, column.GetFilterValue(), column.GetFilterOperator(), column.StringComparison));
     }
 
+    private bool IsFiltersRowVisible =>
+        AllowFiltering
+        && (!AutoHideFiltering
+            || !AllowPaging
+            || GridFilterUtility.ShouldShowFiltersRow(HasVisibleColumnFilters(), totalCount, pageSize));
+
+    private bool HasVisibleColumnFilters() =>
+        columns.Any(column => column.IsVisible
+                              && column.Filterable
+                              && column.GetFilterOperator() != FilterOperator.None
+                              && !string.IsNullOrWhiteSpace(column.GetFilterValue()));
+
     private bool IsPendingFilter(FilterItem filter)
     {
         var column = columns.FirstOrDefault(c => c.PropertyName == filter.PropertyName);
@@ -851,6 +863,16 @@ public partial class Grid<TItem> : BlazorBootstrapComponentBase
     /// </remarks>
     [Parameter]
     public bool AutoHidePaging { get; set; }
+
+    /// <summary>
+    /// Automatically hides the filters row when paging is enabled, no filter value is set on a visible column
+    /// and the grid item count is less than or equal to the <see cref="PageSize" />.
+    /// </summary>
+    /// <remarks>
+    /// Default value is false.
+    /// </remarks>
+    [Parameter]
+    public bool AutoHideFiltering { get; set; }
 
     /// <summary>
     /// Gets or sets the content to be rendered within the component.

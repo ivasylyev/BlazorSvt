@@ -234,6 +234,62 @@ public class GridQueryFactoryTests
             && f.Operator == expectedOperator);
     }
 
+    [Theory]
+    [InlineData("2026-11-20T12:49", "2026-11-20T09:49", FilterOperator.GreaterThan)]
+    [InlineData("2026-11-20T12:49:30", "2026-11-20T09:49:30", FilterOperator.LessThanOrEquals)]
+    [InlineData("2026-11-20 01:15", "2026-11-19T22:15", FilterOperator.Equals)]
+    public void Create_WhenDateTimeFilterHasTime_ConvertsMoscowToUtc(
+        string entered,
+        string expectedUtc,
+        FilterOperator sourceOperator)
+    {
+        var request = new GridDataProviderRequest<TransportRateDto>
+        {
+            PageNumber = 1,
+            PageSize = 20,
+            Filters =
+            [
+                new FilterItem(nameof(TransportRateDto.CreationDate), entered, sourceOperator, StringComparison.Ordinal)
+            ],
+            Sorting = []
+        };
+
+        var query = _rateFactory.Create(request);
+
+        query.Filters.Should().ContainSingle()
+            .Which.Should().BeEquivalentTo(new GridFilter(
+                nameof(TransportRateDto.CreationDate),
+                expectedUtc,
+                sourceOperator switch
+                {
+                    FilterOperator.GreaterThan => GridFilterOperators.GreaterThanOperator,
+                    FilterOperator.LessThanOrEquals => GridFilterOperators.LessThanOrEqualsOperator,
+                    _ => GridFilterOperators.EqualsOperator
+                }));
+    }
+
+    [Fact]
+    public void Create_WhenDateTimeFilterIsDateOnly_KeepsCalendarDate()
+    {
+        var request = new GridDataProviderRequest<TransportRateDto>
+        {
+            PageNumber = 1,
+            PageSize = 20,
+            Filters =
+            [
+                new FilterItem(nameof(TransportRateDto.CreationDate), "2019-01-01", FilterOperator.GreaterThanOrEquals, StringComparison.Ordinal),
+                new FilterItem(nameof(TransportRateDto.StartDate), "2026-11-20", FilterOperator.LessThan, StringComparison.Ordinal)
+            ],
+            Sorting = []
+        };
+
+        var query = _rateFactory.Create(request);
+
+        query.Filters.Should().Equal(
+            new GridFilter(nameof(TransportRateDto.CreationDate), "2019-01-01", GridFilterOperators.GreaterThanOrEqualsOperator),
+            new GridFilter(nameof(TransportRateDto.StartDate), "2026-11-20", GridFilterOperators.LessThanOperator));
+    }
+
     private static GridDataProviderRequest<TransportLegDto> CreateRequest(
         IEnumerable<FilterItem>? filters = null,
         IEnumerable<SortingItem<TransportLegDto>>? sorting = null,

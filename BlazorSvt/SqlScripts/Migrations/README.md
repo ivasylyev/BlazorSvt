@@ -17,7 +17,7 @@ Migrations/
 ├── 2.3.48/            ← очередь Атласа (не править)
 │   └── 001.…020.…
 └── 2.3.49/            ← текущий VersionPrefix
-    └── 001.…033.…
+    └── 001.…051.…
 ```
 
 Публикация наружу (для DBA):
@@ -197,7 +197,7 @@ TransportTypeLevel3 — стабильный словарь с enum. В мигр
 | `048.vw_Country_SnapshotSource.sql` | Проекция из `dbo.vw_Country`; выполняется до заливки |
 | `049.02.Country_Insert.sql` | Полная заливка и курсор `v2.SyncState` по `dbo.PrimitiveEntityData_1009` |
 | `050.03.Country_CreateIndexes.sql` | Уникальный индекс, фильтр по `Code` и `StatusId`, индекс по ключу, full-text |
-| `051.All_Programmability.sql` | Полный снимок programmability, 73 скрипта (2026-11-21) |
+| `051.All_Programmability.sql` | Полный снимок programmability, 73 скрипта (2026-11-23) |
 
 Contractor (SVT-5290) — справочник с watermark-sync. Примитив LegalType, чтение из `dbo.vw_LegalType`. `001` добавляет `RowVer` на `dbo.PrimitiveEntityData_2028`.
 
