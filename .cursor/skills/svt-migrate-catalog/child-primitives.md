@@ -47,7 +47,7 @@ Platform не меняется: секция, загрузка, предел с�
 - Источник — `dbo.vw_{ChildLegacyName}`. Колонки: `{Entity}Id` (`CAST({ParentLegacyName}Id AS BIGINT)` — колонка родителя во view ребёнка), `Id`, `PrimitiveEntityDataStateId`, колонки таблицы.
 - Ссылки и поля цели связки — `LEFT JOIN` на `dbo.vw_*`. Отбор по родителю и состоянию — в запросе секции, не во view.
 - Комментарий `vw_{Entity}_Detail` «дочерние … не выводятся», если есть, — обновить.
-- Проекция идёт в `Publish-AllSql.ps1` после `vw_{Entity}_Detail.sql`, в таблицу модуля `SqlScripts/README.md` и в снимок `All_Programmability.sql` (не дельтой).
+- Проекция идёт в таблицу модуля `SqlScripts/README.md` и в снимок `All_Programmability.sql` (не дельтой).
 - Проверка после наката: `SELECT TOP 5 * FROM v2.vw_{Child}_Detail WHERE {Entity}Id = <родитель с неархивными детьми>` — строки есть, ссылки развёрнуты.
 
 ## C#

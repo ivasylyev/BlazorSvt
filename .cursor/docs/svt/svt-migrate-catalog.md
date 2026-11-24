@@ -16,7 +16,7 @@
 | Редактор или пакетная загрузка | backlog, с вехи 21 |
 | Заявки на расчёт | вехи 9–11 |
 | Накатить уже написанные SP на localhost | [`svt-create-programmability`](svt-create-programmability.md) |
-| Опубликовать скрипты в `C:\publish\v2` | [`svt-publish-all-sql`](svt-publish-all-sql.md) |
+| Собрать пакет версии в `C:\publish` | [`svt-publish`](svt-publish.md) |
 
 ## Что нужно до старта
 
@@ -66,4 +66,4 @@
 
 ## Куда встаёт
 
-Шаг после сверки с [`svt-architecture`](svt-architecture.md) / `catalogs-scope.md`. Дальше накат на localhost — [`svt-create-programmability`](svt-create-programmability.md), копия в каталог деплоя — [`svt-publish-all-sql`](svt-publish-all-sql.md). Цепочка — [`docs/README.md`](../README.md).
+Шаг после сверки с [`svt-architecture`](svt-architecture.md) / `catalogs-scope.md`. Дальше накат на localhost — [`svt-create-programmability`](svt-create-programmability.md), пакет версии — [`svt-publish`](svt-publish.md). Цепочка — [`docs/README.md`](../README.md).

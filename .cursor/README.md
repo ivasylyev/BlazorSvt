@@ -29,7 +29,7 @@
 
 | Command | Канон | Страница |
 |---------|--------|----------|
-| `/publish_all_sql` | skill `svt-publish-all-sql` | [svt-publish-all-sql.md](docs/svt/svt-publish-all-sql.md) |
+| `/publish` | skill `svt-publish` | [svt-publish.md](docs/svt/svt-publish.md) |
 | `/create_programmability` | skill `svt-create-programmability` | [svt-create-programmability.md](docs/svt/svt-create-programmability.md) |
 
 Перед выполнением slash-команды агент читает соответствующий skill. Текст command не должен расходиться со skill; при сомнении — skill.

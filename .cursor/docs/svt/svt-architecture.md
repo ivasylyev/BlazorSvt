@@ -13,7 +13,7 @@
 | Статус, скоуп, веха, Gate, риск, термин, чеклист, функция вне реестра | Строка таблицы «Канон» |
 | Новый read-only справочник | [`svt-migrate-catalog`](svt-migrate-catalog.md) |
 | Накат SP на localhost | [`svt-create-programmability`](svt-create-programmability.md) |
-| Публикация SQL в каталог деплоя | [`svt-publish-all-sql`](svt-publish-all-sql.md) |
+| Собрать пакет версии в `C:\publish` | [`svt-publish`](svt-publish.md) |
 | Эталон, кольцо, роли | [`atlas-methodology`](../atlas/atlas-methodology.md) |
 | Разделы 0 / 1а / 1б план-графика | [`atlas-plan-grafik-md-html`](../atlas/atlas-plan-grafik-md-html.md) |
 | Как писать текущий код модуля | правило `svt-development-patterns` |

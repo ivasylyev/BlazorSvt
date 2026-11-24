@@ -154,7 +154,7 @@ WHERE e.Name = N'{RegistryName}';
 - [ ] Комментарии «PED_* → справочник» в Insert Sources / PopulateAffectedKeys / SyncJob
 - [ ] RowVer (+ индекс) в `Sync/01.Legacy_AddRowVersion.sql` при новой основной таблице (у стабильного словаря с enum не добавлять)
 - [ ] SyncState init с `LastRowVersion` / `LastRunUtc` (у стабильного словаря с enum не инициализировать)
-- [ ] README + `Publish-AllSql.ps1` обновлены
+- [ ] `Migrations/README.md` и таблица модуля в `SqlScripts/README.md` обновлены
 - [ ] Structure / Programmability задеплоены и верифицированы
 - [ ] C# модуль (List/Detail/Sync), DI с `AddCatalogMenu`, resx (у стабильного словаря с enum папки `Sync/` нет) ([csharp.md](csharp.md))
 - [ ] `AddCatalogApi` (код, домен, период), `[ApiReference]` на кодах чужих справочников; снимок OpenAPI перегенерирован
@@ -169,5 +169,5 @@ WHERE e.Name = N'{RegistryName}';
 ## Связанные навыки
 
 - **svt-create-programmability** — накат Programmability на локальную `mdm` (`localhost`)
-- **svt-publish-all-sql** — публикация скриптов в `C:\publish\v2` (`-Mode All` / `Release` / …)
+- **svt-publish** — пакет версии в `C:\publish\{VersionPrefix}`: приложение, склейка миграции, zip. Локальный накат склейки — режим `local`
 - **svt-architecture** — архитектурный контекст и антипаттерны

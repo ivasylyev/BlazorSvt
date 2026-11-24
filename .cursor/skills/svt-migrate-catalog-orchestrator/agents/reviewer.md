@@ -24,7 +24,7 @@
 2. **Ссылки и enum.** По §6–7 `discovery-rules.md` и классу в `SKILL.md`.
 3. **Класс.** `simple` / `complex` — пункты чеклиста `svt-migrate-catalog` (Sync/PopulateAffectedKeys/RowVer/SyncState или их отсутствие; тесты контракта).
 4. **База.** Строк снимка = проекции, дублей ключа нет; у complex — RowVer и SyncState на источники job.
-5. **Свои дельты и регистрация.** Порядок и состав по шагу 2 `{AgentsDir}\sql.md` (Detail и PopulateAffectedKeys — в снимке, не в дельте) / чеклисту `svt-migrate-catalog`; блок в `Publish-AllSql.ps1` и README.
+5. **Свои дельты и регистрация.** Порядок и состав по шагу 2 `{AgentsDir}\sql.md` (Detail и PopulateAffectedKeys — в снимке, не в дельте) / чеклисту `svt-migrate-catalog`; `Migrations/README.md` и таблица модуля в `SqlScripts/README.md`.
 6. **Кодировка и побочные правки.** BOM/`^SE `/`0D 0D 0A`; в общих файлах нет удалённых чужих строк; RO и backlog не отмечены.
 7. **Документация.** Меню RU/EN, Postman, developers.md.
 7а. **Дочерние примитивы.** По разделу 3а spec и `svt-migrate-catalog/child-primitives.md`: у каждого входящего ребёнка есть проекция, секция в порядке групп, колонки и подписи как в 3а, тесты секций; API и OpenAPI не изменились. Группы входящего ребёнка нет (в том числе при повторной проверке) — дефект `[sql|csharp]`.

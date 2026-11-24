@@ -493,24 +493,20 @@ END
 Скрипт берёт имя базы, логин и пароль из `appsettings.json` и подключается к `localhost`. Поле Server из строки не использует. Выполняет Platform и все модули; при ошибке останавливается.
 В Cursor: `/create_programmability`.
 
-## Публикация SQL для деплоя
+## Публикация пакета версии
 
 Релизные скрипты наката хранятся в `Migrations/` (см. `Migrations/README.md`). SoT разработки — `Platform/` / `Modules/` / `Sync/`.
 
 ```powershell
-# Все версии → C:\publish\v2\{2.0.0,2.0.1,…}
-.\BlazorSvt\SqlScripts\Publish-AllSql.ps1 -Mode All
+# Приложение + склейка текущей папки миграции → C:\publish\{VersionPrefix}\ и zip рядом
+.\BlazorSvt\SqlScripts\svt-publish.ps1 -Mode all
 
-# Один релиз
-.\BlazorSvt\SqlScripts\Publish-AllSql.ps1 -Mode Release -Version 2.0.1
-
-# Актуальный Programmability из SoT → C:\publish\v2\programmability\
-.\BlazorSvt\SqlScripts\Publish-AllSql.ps1 -Mode Programmability
-
-# Legacy: плоский greenfield-снимок из SoT (не история релизов)
-.\BlazorSvt\SqlScripts\Publish-AllSql.ps1 -Mode FromSource
+# Только приложение / только склейка / то же, что all, плюс sqlcmd на localhost
+.\BlazorSvt\SqlScripts\svt-publish.ps1 -Mode app
+.\BlazorSvt\SqlScripts\svt-publish.ps1 -Mode sql
+.\BlazorSvt\SqlScripts\svt-publish.ps1 -Mode local
 ```
 
-Накат на стенд: папки миграций по порядку версий → затем Programmability. Новый справочник: Structure-дельта в `Migrations/X.Y.Z/` + обновить SoT и манифест `FromSource`/`Programmability` в `Publish-AllSql.ps1` + таблицы порядка выше.
+Накат на стенд: папки миграций по порядку версий. Новый справочник: Structure-дельта в `Migrations/X.Y.Z/`, снимок programmability последним файлом папки, SoT и таблицы порядка выше. Скрипт пакета манифест файлов не ведёт: в склейку попадают `*.sql` одной папки версии по имени.
 
-В Cursor: `/publish_all_sql`.
+В Cursor: `/publish`.

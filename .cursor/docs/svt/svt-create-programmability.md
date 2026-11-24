@@ -2,7 +2,7 @@
 
 ## Что делает
 
-`svt-create-programmability` накатывает SQL Programmability на локальную базу `mdm` (`localhost`): все `*.sql` из `SqlScripts/Platform/Programmability/` и `SqlScripts/Modules/*/Programmability/`. Structure-скрипты остаются на месте. Снимок `All_Programmability.sql` этот запуск не пишет. Каталог деплоя собирает [`svt-publish-all-sql`](svt-publish-all-sql.md).
+`svt-create-programmability` накатывает SQL Programmability на локальную базу `mdm` (`localhost`): все `*.sql` из `SqlScripts/Platform/Programmability/` и `SqlScripts/Modules/*/Programmability/`. Structure-скрипты остаются на месте. Снимок `All_Programmability.sql` этот запуск не пишет. Пакет версии собирает [`svt-publish`](svt-publish.md).
 
 ## Когда брать
 
@@ -11,7 +11,7 @@
 | Ситуация | Куда |
 |---|---|
 | Обновить SP, fn и view схемы v2 на локальной `mdm` | Этот скил |
-| Собрать файлы деплоя в `C:\publish\v2` | [`svt-publish-all-sql`](svt-publish-all-sql.md) |
+| Собрать пакет версии в `C:\publish` | [`svt-publish`](svt-publish.md) |
 | Написать новый справочник | [`svt-migrate-catalog`](svt-migrate-catalog.md); накат — после SQL-фазы |
 
 ## Что нужно до старта
@@ -28,9 +28,9 @@
 
 ## Частые вопросы
 
-**После запуска обновился `C:\publish\v2`.**
+**После запуска обновился `C:\publish`.**
 
-Накат идёт на локальную `mdm`. Копия в каталог деплоя — [`svt-publish-all-sql`](svt-publish-all-sql.md).
+Накат идёт на локальную `mdm`. Пакет версии — [`svt-publish`](svt-publish.md).
 
 **Выполнятся ли Structure-скрипты.**
 
@@ -44,4 +44,4 @@
 
 ## Куда встаёт
 
-Шаг после того, как [`svt-migrate-catalog`](svt-migrate-catalog.md) положил Programmability в SoT. Рядом [`svt-publish-all-sql`](svt-publish-all-sql.md) копирует исходники в каталог деплоя. Цепочка — [`docs/README.md`](../README.md).
+Шаг после того, как [`svt-migrate-catalog`](svt-migrate-catalog.md) положил Programmability в SoT. Рядом [`svt-publish`](svt-publish.md) собирает пакет версии. Цепочка — [`docs/README.md`](../README.md).

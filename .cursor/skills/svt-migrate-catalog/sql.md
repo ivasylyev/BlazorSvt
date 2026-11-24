@@ -31,7 +31,7 @@ BlazorSvt/SqlScripts/Modules/{Entity}/
     └── sp_{Entity}_PopulateAffectedKeys.sql   # нет у стабильного словаря с enum
 ```
 
-`sp_{Entity}_PopulateAffectedKeys.sql` не создавать для стабильного словаря с enum и не добавлять его в `Publish-AllSql.ps1`. Для остальных обновить манифест в порядке: CreateTable → SnapshotSource → Insert → Indexes → Detail → PopulateAffectedKeys.
+`sp_{Entity}_PopulateAffectedKeys.sql` не создавать для стабильного словаря с enum. Для остальных файл лежит в SoT и попадает в снимок `All_Programmability.sql`, не отдельной дельтой папки версии.
 
 Релизная копия — `SqlScripts/Migrations/{VersionPrefix}/`, `{VersionPrefix}` из `BlazorSvt/BlazorSvt.csproj`. Перед первой копией выяснить, выкачена ли эта папка (канон — пользователь; папка с пометкой «не править» в README миграций уже выкачена).
 

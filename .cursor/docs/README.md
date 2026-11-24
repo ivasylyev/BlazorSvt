@@ -10,7 +10,7 @@
 svt-architecture
   → svt-migrate-catalog
       → svt-create-programmability   (накат на localhost)
-      → svt-publish-all-sql          (копия в каталог деплоя)
+      → svt-publish                  (пакет версии в C:\publish)
 atlas-methodology
   → atlas-plan-grafik-md-html
 grill-with-docs
@@ -25,7 +25,7 @@ grill-with-docs
 | [svt-migrate-catalog](svt/svt-migrate-catalog.md) | агент | Read-only справочник из легаси. Редактор, загрузчик и заявки — вне скила |
 | [svt-migrate-catalog-orchestrator](svt/svt-migrate-catalog-orchestrator.md) | человек (явный вызов) | Конвейер миграции RO-справочников; канон правил — svt-migrate-catalog |
 | [svt-create-programmability](svt/svt-create-programmability.md) | человек `/create_programmability` и агент | Накат Programmability на localhost/`mdm` |
-| [svt-publish-all-sql](svt/svt-publish-all-sql.md) | человек `/publish_all_sql` и агент | Копия SQL в каталог деплоя `C:\publish\v2` |
+| [svt-publish](svt/svt-publish.md) | человек `/publish` и агент | Пакет версии в `C:\publish\{версия}` и zip |
 
 ## Атлас
 
