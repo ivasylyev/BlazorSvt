@@ -50,8 +50,8 @@
     }
     else if (PropertyTypeName == StringConstants.PropertyTypeNameBoolean)
     {
-        <div class="d-flex align-items-center" style="height: 38px;"> <!-- 38px — стандартная высота form-control в Bootstrap 5 -->
-            <input @key="inputKey" class="form-check-input" type="checkbox" checked="@IsFilterChecked" value="@filterValue" @onchange="@(async args => await OnFilterValueChangedAsync(args))" />
+        <div class="d-flex align-items-center form-check form-switch sibur-switch-color mb-0" style="height: 38px;"> <!-- 38px — стандартная высота form-control в Bootstrap 5; form-switch — переключатель вместо чекбокса (СВТ) -->
+            <input @key="inputKey" class="form-check-input" type="checkbox" role="switch" checked="@IsFilterChecked" value="@filterValue" @onchange="@(async args => await OnFilterValueChangedAsync(args))" />
         </div>
     }
     else if (PropertyTypeName == StringConstants.PropertyTypeNameEnum)

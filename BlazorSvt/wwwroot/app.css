@@ -44,7 +44,6 @@
     --coral: #FC786E;
     --beige-light: #FFE6D7;
     --gray-50: #5A5A5A;
-    --gray-30: #B3B3B3;        /* между серыми 40% и 20% из гайда; добавлен по запросу, в гайде нет */
     --gray-20: #CCCCCC;
     --gray-10: #E5E5E5;
 
@@ -52,7 +51,7 @@
        Новый тон добавляется только по согласованию. */
     --svt-hover: #F0F3F3;      /* hover строки */
     --svt-selected: #E6F4F4;   /* выбранная строка */
-    --svt-head: #F0F3F3;       /* шапка таблицы */
+    --svt-head: #F2F2F2;       /* шапка таблицы: серый 10% из гайда #E5E5E5, осветлённый вдвое (к белому) */
     --svt-line: #D6DEE0;       /* линии (тёмно-зелёный 16%, как в прототипе) */
 
     --ink: var(--dark-green);
@@ -120,9 +119,13 @@ h1:focus {
 
 
 /*Site Header*/
+.bb-top-row {
+    background-color: var(--gray-10);
+    border-bottom-color: var(--svt-line);
+}
+
 .sibur-header-wrapper {
-    /*background-color: #008c95;*/
-    background-color: rgba(0, 140, 149, 0.2) !important;
+    /* Фон шапки светло-серый #E5E5E5 (из .bb-top-row) */
     /* Компенсация горизонтальных отступов контейнера px-4 (1.5rem) */
     margin-left: -1.5rem;
     margin-right: -1.5rem;
@@ -138,7 +141,21 @@ h1:focus {
 
 /*Site Bottom*/
 .bg-body-tertiary {
-    background-color: rgba(0, 140, 149, 0.2) !important;
+    background-color: var(--gray-10) !important;
+    border-top: 1px solid var(--svt-line);
+}
+
+/* Логотип в шапке: в самом SVG уже заложено охранное поле (половина высоты логотипа) */
+.sibur-logo-link {
+    display: inline-flex;
+    align-items: center;
+    margin-right: 0.5rem;
+}
+
+.sibur-logo {
+    height: 40px;
+    width: auto;
+    display: block;
 }
 
 /*Button*/
@@ -185,6 +202,12 @@ h1:focus {
     }
 
 
+
+/* Активный пункт меню: остаётся тёмно-зелёным и при наведении */
+.sibur-dark-btn.sibur-nav-active:hover {
+    background-color: var(--dark-green) !important;
+    color: var(--white) !important;
+}
 
 .sibur-dark-inverted-btn {
     background-color: var(--white) !important;
@@ -247,6 +270,12 @@ h1:focus {
         /* Кольцо фокуса кнопки из темы через box-shadow */
         box-shadow: 0 0 0 0.25rem rgba(0, 140, 149, 0.25);
     }
+
+/* Фокус «выключено» (тумблер): бегунок в ДНК СИБУР вместо голубого Bootstrap */
+.sibur-switch-color .form-switch .form-check-input:focus:not(:checked),
+.sibur-switch-color.form-switch .form-check-input:focus:not(:checked) {
+    --bs-form-switch-bg: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='-4 -4 8 8'%3e%3ccircle r='3' fill='%23008C95'/%3e%3c/svg%3e");
+}
 
 /* Ховер для включённого тумблера */
 .sibur-switch-color .form-check-input:checked:hover {
