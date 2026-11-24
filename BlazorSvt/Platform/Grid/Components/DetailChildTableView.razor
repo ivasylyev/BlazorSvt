@@ -1,33 +1,70 @@
+@typeparam TRow
 @inherits SvtComponentBase
-<div class="sibur-grid-detail-child-table">
-    <table class="table table-sm table-bordered mb-0">
-        <thead>
-            <tr>
-                @foreach (var header in Table.Headers)
-                {
-                    <th>@header</th>
-                }
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var row in Table.Rows)
-            {
-                <tr>
-                    @foreach (var cell in row)
-                    {
-                        <td>@cell</td>
-                    }
-                </tr>
-            }
-        </tbody>
-    </table>
-</div>
-@if (Table.IsTruncated)
+@using BlazorSvt.Platform.Grid.Services
+@inject IGridPageSizeService GridPageSizeService
+@if (pageSize is not null)
 {
-    <div class="text-muted small mt-1">@L["GenericDetailView.ChildRowsShown", Table.Rows.Count, Table.TotalCount]</div>
+    <div class="sibur-grid-detail-child-table">
+        <Grid @key="Table"
+              TItem="TRow"
+              Class="table table-sm table-bordered mb-0"
+              DataProvider="DataProvider"
+              AllowFiltering="true"
+              AutoHideFiltering="true"
+              AllowPaging="true"
+              AutoHidePaging="true"
+              AllowSorting="true"
+              PageSize="pageSize.Value"
+              PageSizeSelectorVisible="false"
+              EnumFilterSelectText="@L["GenericGrid.EnumFilterSelectText"]"
+              PaginationItemsTextFormat="@L["GenericGrid.PaginationItemsTextFormat"]"
+              EmptyText="@L["GenericGrid.EmptyText"]"
+              FiltersTranslationProvider="GridFiltersTranslationProvider"
+              Responsive="true">
+            <GridColumns>
+                @foreach (var column in Table.Columns)
+                {
+                    enumFilterValues.TryGetValue(column.Name, out var filterValues);
+                    <GridColumn TItem="TRow"
+                                HeaderText="@column.Header"
+                                PropertyName="@column.Name"
+                                SortString="@column.Name"
+                                SortKeySelector="@column.SortKeySelector"
+                                Filterable="@(filterValues is null || filterValues.Count > 0)"
+                                FilterEnumValues="@filterValues">
+                        @column.DisplaySelector(context)
+                    </GridColumn>
+                }
+            </GridColumns>
+        </Grid>
+    </div>
+    @if (Table.IsTruncated)
+    {
+        <div class="text-muted small mt-1">@L["GenericDetailView.ChildRowsShown", Table.Rows.Count, Table.TotalCount]</div>
+    }
 }
 
 @code {
+    private int? pageSize;
+
     [Parameter, EditorRequired]
-    public DetailChildTable Table { get; set; } = default!;
+    public DetailChildTable<TRow> Table { get; set; } = default!;
+
+    // Выпадающий список фильтра enum-колонки — только значения, которые есть в колонке (по всем загруженным строкам).
+    private Dictionary<string, IReadOnlyList<Enum>> enumFilterValues = [];
+
+    protected override async Task OnInitializedAsync() =>
+        pageSize = await GridPageSizeService.GetAsync();
+
+    protected override void OnParametersSet() =>
+        enumFilterValues = Table.Columns
+            .Select(column => (column.Name, Values: DetailChildGridData.EnumFilterValues(Table.Rows, column.Name)))
+            .Where(x => x.Values is not null)
+            .ToDictionary(x => x.Name, x => x.Values!);
+
+    private Task<GridDataProviderResult<TRow>> DataProvider(GridDataProviderRequest<TRow> request) =>
+        Task.FromResult(DetailChildGridData.Apply(Table.Rows, request));
+
+    private Task<IEnumerable<FilterOperatorInfo>> GridFiltersTranslationProvider() =>
+        Task.FromResult(GridFilterOperatorTranslations.Create(L));
 }

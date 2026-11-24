@@ -29,6 +29,7 @@ public sealed class DetailSettingsBuilder<T>(IStringLocalizer<PlatformResources>
             Header = header,
             GroupHeader = groupHeader,
             DisplaySelector = display ?? (dto => GridValueFormatter.Format(compiled(dto))),
+            SortKeySelector = ToSortKey(compiled),
             VisibleSelector = visible ?? (_ => true),
             HasMargin = hasMargin
         });
@@ -172,6 +173,9 @@ public sealed class DetailSettingsBuilder<T>(IStringLocalizer<PlatformResources>
             hasMargin,
             dto => compiled(dto) ? platform["Common.Archive"] : platform["Common.Active"]);
     }
+
+    private static Expression<Func<T, IComparable>> ToSortKey<TProp>(Func<T, TProp> getter) =>
+        dto => new DetailSortKey(getter(dto) as IComparable);
 
     private static string MemberName<TProp>(Expression<Func<T, TProp>> property) =>
         property.Body switch

@@ -141,7 +141,7 @@ h3. 5.1. Detail card
 
 # Find the required row.
 # Click the arrow on the left of the row.
-# Field groups open (you can expand and collapse them). *Collapse all* / *Expand all* control all groups at once.
+# Field groups open expanded; you can collapse them. Groups that contain tables sit above them and start collapsed: the rows appear after a click on the header. *Collapse all* / *Expand all* control all groups at once.
 
 !4-averare-rate-en.png|width=800,alt="Average Rate detail card"!
 

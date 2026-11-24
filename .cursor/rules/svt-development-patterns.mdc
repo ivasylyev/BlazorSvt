@@ -8,7 +8,7 @@ alwaysApply: false
 
 ## Добавление справочника (read-only grid)
 
-Полный алгоритм — skill `add-reference-book` (`SKILL.md` → `discovery.md` → `sql.md` → `csharp.md`). Именование, sync, API-регистрация и структура модуля — только там. Правило `svt-add-reference-book` — указатель при работе в Modules/SqlScripts.
+Полный алгоритм — skill `svt-migrate-catalog` (`SKILL.md` → `discovery.md` → `sql.md` → `csharp.md`). Именование, sync, API-регистрация и структура модуля — только там. Правило `svt-add-reference-book` — указатель при работе в Modules/SqlScripts.
 
 ## Модульная регистрация
 
@@ -93,14 +93,14 @@ Serilog (`Host/Program.cs`, секция `Serilog` в `appsettings.json`). Пр�
 | `EntityInfo.Id` (UI / URL легаси `/masterdata/{id}`, реестр catalogs-scope) | RateType **2085**, TypeNode **2151**, TypePlace **1002** | `EntityInfo`, ссылки Confluence/легаси |
 | Номер таблицы `dbo.PrimitiveEntityData_XXXX` = `PrimitiveEntityInfo.Id` основного примитива | RateType **2048**, TypeNode **2132**, TypePlace **1007** | `EntityStructure` (`ParentId IS NULL`), DDL sync, `PopulateAffectedKeys`, consts SyncJob |
 
-Один справочник — два разных числа. Связь — запрос шага 0 skill `add-reference-book`. В SQL и C# для PED всегда комментируй имя сущности рядом с номером таблицы.
+Один справочник — два разных числа. Связь — запрос шага 0 skill `svt-migrate-catalog`. В SQL и C# для PED всегда комментируй имя сущности рядом с номером таблицы.
 
 ### Справочники вне каскада чужих гридов
 
 Чужой SyncJob не включает их в `Sources` и не заводит на них ветку `PopulateAffectedKeys`.
 Колонки `*_Id` в snapshot остаются, если используются в grid-DTO (фильтрация, enum).
 
-Своего `RowVer`, SyncJob и `PopulateAffectedKeys` нет у всех строк таблицы, кроме `TransportType`. Свой RO-грид `TransportType` — skill `add-reference-book`, раздел «Стабильный словарь с enum».
+Своего `RowVer`, SyncJob и `PopulateAffectedKeys` нет у всех строк таблицы, кроме `TransportType`. Свой RO-грид `TransportType` — skill `svt-migrate-catalog`, раздел «Стабильный словарь с enum».
 
 | Справочник | Таблица legacy | Модули |
 |------------|----------------|--------|
@@ -119,7 +119,7 @@ Serilog (`Host/Program.cs`, секция `Serilog` в `appsettings.json`). Пр�
 `sp_{Entity}_PopulateAffectedKeys`, `{Entity}SyncJob` → `AddSingleton<ISnapshotSyncJob, …>()`,
 RowVer на основной PED-таблице. Источники из таблицы выше в каскад не включать без явного решения.
 
-Свой RO-грид стабильного словаря с enum — другой список. Состав и шаги только в skill `add-reference-book`, раздел «Стабильный словарь с enum». Отсутствие sync само по себе грид не задаёт.
+Свой RO-грид стабильного словаря с enum — другой список. Состав и шаги только в skill `svt-migrate-catalog`, раздел «Стабильный словарь с enum». Отсутствие sync само по себе грид не задаёт.
 
 Дочерние/связанные сущности (типа `RatesOfAverageRate`) — в каскад **только** если пользователь
 явно попросил; часто legacy меняет родителя и детей одновременно.

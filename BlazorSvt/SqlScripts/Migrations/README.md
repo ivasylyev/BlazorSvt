@@ -20,16 +20,13 @@ Migrations/
     └── 001.…056.…
 ```
 
-Публикация наружу (для DBA):
+Пакет одной версии (приложение, склейка этой папки, zip) собирает skill `svt-publish`:
 
 ```powershell
-.\BlazorSvt\SqlScripts\Publish-AllSql.ps1 -Mode All
-.\BlazorSvt\SqlScripts\Publish-AllSql.ps1 -Mode Release -Version 2.0.1
-.\BlazorSvt\SqlScripts\Publish-AllSql.ps1 -Mode Programmability
-.\BlazorSvt\SqlScripts\Publish-AllSql.ps1 -Mode FromSource   # legacy: плоский снимок из SoT
+.\BlazorSvt\SqlScripts\svt-publish.ps1 -Mode all
 ```
 
-По умолчанию целевая папка: `C:\publish\v2` (можно `-TargetPath`).
+Папка пакета — `C:\publish\{VersionPrefix}`, zip — рядом. Цепочку всех папок `Migrations/` этот скрипт не собирает. На уже развёрнутую базу по-прежнему кладут ещё не применённые папки по порядку версий; greenfield — та же цепочка ниже.
 
 ## Два контура
 
@@ -51,7 +48,7 @@ Greenfield: `2.0.0` → `2.0.1` → `2.3.46` → `2.3.48` → `2.3.49`.
 2. В папке версии — дельта схемы (Structure, `ALTER`, индексы, data fix), затем **последним файлом полный снимок** всей programmability `v2` (`All_Programmability.sql`). В текущем релизе последний снимок — `2.3.49/056`. В `2.3.48` это `020` (2026-11-03). В `2.3.46` это `005`. В `2.0.1` такой пакет стоял дважды: `045` и `052`.
 3. Новая папка версии нумеруется с `001`. Невыкаченная папка продолжается следующим номером, а не с `001`. Исторические `038…` в `2.0.1` не переименовываем.
 4. SoT остаётся в `Platform/` и `Modules/`: локальный `Create-Programmability.ps1` читает его, а не `Migrations/`. В папку версии попадает копия дельты и снимок programmability.
-5. Публикация в `C:\publish` этим правилом не требуется.
+5. Запись скриптов в папку версии пакет не собирает. Пакет — `svt-publish.ps1` (skill `svt-publish`).
 
 ## Снимок All_Programmability
 

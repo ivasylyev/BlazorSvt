@@ -71,6 +71,7 @@ public partial class GenericDetailView<TItem, TDetailItem> : SvtComponentBase, I
                     return;
 
                 childSections = loadedSections;
+                allExpanded = DetailAccordionPlan.AllExpanded(BuildAccordion().Sections);
             }
         }
         catch (OperationCanceledException) when (cancellationToken.IsCancellationRequested)
@@ -99,13 +100,23 @@ public partial class GenericDetailView<TItem, TDetailItem> : SvtComponentBase, I
     private bool IsFieldVisible(DetailSetting<TDetailItem> setting) =>
         detail is not null && DetailDisplayValue.IsVisible(setting, detail, HideEmptyDetailFields);
 
-    private int GetVisibleGroupCount()
-    {
-        if (detail is null || detailSettings is null)
-            return 0;
+    private static Type ChildTableViewType(DetailChildTable table) =>
+        typeof(DetailChildTableView<>).MakeGenericType(table.RowType);
 
-        return detailSettings.GroupSettings.Count(g => g.Value.Any(IsFieldVisible))
-            + childSections.Count(s => s.IsVisible);
+    private static IDictionary<string, object?> ChildTableViewParameters(DetailChildTable table) =>
+        new Dictionary<string, object?> { [nameof(DetailChildTableView<object>.Table)] = table };
+
+    private AccordionLayout BuildAccordion()
+    {
+        var children = childSections.Where(section => section.IsVisible).ToList();
+        var fieldGroups = detailSettings!
+            .GroupSettings
+            .Where(group => group.Value.Any(IsFieldVisible))
+            .ToList();
+        var sections = DetailAccordionPlan.Build(
+            children.Select(child => new DetailChildAccordionInput(child.ErrorMessage is not null)).ToList(),
+            fieldGroups.Count);
+        return new AccordionLayout(children, fieldGroups, sections);
     }
 
     private async Task<IReadOnlyList<ChildSectionState>> LoadChildSectionsAsync(
@@ -138,6 +149,11 @@ public partial class GenericDetailView<TItem, TDetailItem> : SvtComponentBase, I
     {
         public bool IsVisible => ErrorMessage is not null || Table?.HasRows == true;
     }
+
+    private sealed record AccordionLayout(
+        IReadOnlyList<ChildSectionState> Children,
+        IReadOnlyList<KeyValuePair<string, IReadOnlyCollection<DetailSetting<TDetailItem>>>> FieldGroups,
+        IReadOnlyList<DetailAccordionSection> Sections);
 
     private async Task ToggleAllAccordionItemsAsync()
     {
