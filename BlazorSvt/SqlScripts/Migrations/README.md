@@ -17,7 +17,7 @@ Migrations/
 ├── 2.3.48/            ← очередь Атласа (не править)
 │   └── 001.…020.…
 └── 2.3.49/            ← текущий VersionPrefix
-    └── 001.…056.…
+    └── 001.…058.…
 ```
 
 Пакет одной версии (приложение, склейка этой папки, zip) собирает skill `svt-publish`:
@@ -45,7 +45,7 @@ Greenfield: `2.0.0` → `2.0.1` → `2.3.46` → `2.3.48` → `2.3.49`.
 Имя папки — `VersionPrefix` из `BlazorSvt/BlazorSvt.csproj` (сейчас `2.3.49`), без суффикса числа коммитов. Это не «следующий номер после 2.0.1» и не пункт бэклога `2.0.2`.
 
 1. Перед записью скриптов выяснить, выкачена ли папка текущего `VersionPrefix`. Выкаченная папка read-only: `VersionPrefix` поднимается, новая папка начинается с `001`, старая не правится. Папка, которая ещё не выкатывалась, продолжается следующим номером. Баг уже выкаченного релиза уходит новым скриптом в папку новой версии.
-2. В папке версии — дельта схемы (Structure, `ALTER`, индексы, data fix), затем **последним файлом полный снимок** всей programmability `v2` (`All_Programmability.sql`). В текущем релизе последний снимок — `2.3.49/056`. В `2.3.48` это `020` (2026-11-03). В `2.3.46` это `005`. В `2.0.1` такой пакет стоял дважды: `045` и `052`.
+2. В папке версии — дельта схемы (Structure, `ALTER`, индексы, data fix), затем **последним файлом полный снимок** всей programmability `v2` (`All_Programmability.sql`). В текущем релизе последний снимок — `2.3.49/058`. В `2.3.48` это `020` (2026-11-03). В `2.3.46` это `005`. В `2.0.1` такой пакет стоял дважды: `045` и `052`.
 3. Новая папка версии нумеруется с `001`. Невыкаченная папка продолжается следующим номером, а не с `001`. Исторические `038…` в `2.0.1` не переименовываем.
 4. SoT остаётся в `Platform/` и `Modules/`: локальный `Create-Programmability.ps1` читает его, а не `Migrations/`. В папку версии попадает копия дельты и снимок programmability.
 5. Запись скриптов в папку версии пакет не собирает. Пакет — `svt-publish.ps1` (skill `svt-publish`).
@@ -199,6 +199,8 @@ TransportTypeLevel3 — стабильный словарь с enum. В мигр
 | `054.02.TransportKind_Insert.sql` | Разовая заливка, без курсора `v2.SyncState` |
 | `055.03.TransportKind_CreateIndexes.sql` | Уникальный индекс, фильтры по `Code` и `StatusId`, индекс по ключу, full-text по `Code`, `Name`, `NameEnRu`, `Level`, `KindCode` |
 | `056.All_Programmability.sql` | Полный снимок programmability, 75 скриптов (2026-11-23) |
+| `057.SVT-5317_NumericCodes.sql` | SVT-5317: `Code` → `INT` у RateSyncClass, ReportConstructor, Coefficient, RateAutoSelectionSetting, TransportRoute, RateType, Country, MTR, Contractor; `Country.ISOCode`, `Currency.Digital`, `Currency.Code_NSI` → `INT`. Идемпотентно, в конце проверка типов с `THROW` |
+| `058.All_Programmability.sql` | Полный снимок programmability, 75 скриптов (2026-11-24): `INT`-коды в проекциях, поиск по началу значения (`LIKE`) в `GetBlazorGridData` для колонок без full-text |
 
 Contractor (SVT-5290) — справочник с watermark-sync. Примитив LegalType, чтение из `dbo.vw_LegalType`. `001` добавляет `RowVer` на `dbo.PrimitiveEntityData_2028`.
 
@@ -230,7 +232,7 @@ TransportLeg — доработка. Проекции детей `v2.vw_LegRate_
 
 TransportKind — класс simple, разовый снимок. `RowVer` на `dbo.PrimitiveEntityData_2008` не добавлялся. `vw_TransportKind_Detail` — в снимке `056`. Процедуры PopulateAffectedKeys нет.
 
-Файл `008` — прежнее имя снимка programmability: после дельты Coefficient его переименовали в `014`. Файл `014` — прежнее имя снимка: после дельты RateSyncClass, RateCalcType, RateAutoSelectionSetting и ReportConstructor его переименовали в `033`. Файл `033` — прежнее имя снимка: после дельты Relevance, TransportRoute, Region и Country его переименовали в `051`. Файл `051` — прежнее имя снимка: после дельты TransportKind его переименовали в `056`. Актуальный полный снимок — `056`.
+Файл `008` — прежнее имя снимка programmability: после дельты Coefficient его переименовали в `014`. Файл `014` — прежнее имя снимка: после дельты RateSyncClass, RateCalcType, RateAutoSelectionSetting и ReportConstructor его переименовали в `033`. Файл `033` — прежнее имя снимка: после дельты Relevance, TransportRoute, Region и Country его переименовали в `051`. Файл `051` — прежнее имя снимка: после дельты TransportKind его переименовали в `056`. Файл `056` не переименовывался: он уже накатан на дев и тест. После дельты `057` (SVT-5317) полный снимок — `058`. Актуальный полный снимок — `058`.
 
 ## Чеклист нового релиза
 

@@ -13,7 +13,7 @@ public class RateAutoSelectionSettingDto
     public bool IsArchive { get; set; }
 
     [GridColumn]
-    public required string Code { get; set; }
+    public required long Code { get; set; }
 
     [GridColumn]
     public bool? DestinationNodeToRegion { get; set; }

@@ -15,9 +15,9 @@ GO
 CREATE OR ALTER VIEW v2.vw_Country_SnapshotSource
 AS
     SELECT
-        LEFT(c.Code, 50)                                                         AS Code,
+        TRY_CAST(c.Code AS INT)                                                 AS Code,
         LEFT(c.Name_ru, 4000)                                                    AS NameRu,
-        c.ISOCode                                                                AS ISOCode,
+        CAST(c.ISOCode AS INT)                                                   AS ISOCode,
         LEFT(c.Name_en, 4000)                                                    AS NameEn,
         LEFT(c.PlanCode, 4000)                                                   AS PlanCode,
         LEFT(c.Market, 4000)                                                     AS Market,

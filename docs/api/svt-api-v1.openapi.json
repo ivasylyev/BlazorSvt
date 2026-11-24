@@ -7114,7 +7114,8 @@
             "format": "date-time"
           },
           "code": {
-            "type": "string"
+            "type": "integer",
+            "format": "int64"
           },
           "coefficientTypeIdRu": {
             "$ref": "#/components/schemas/CoefficientTypeRu"
@@ -7169,7 +7170,8 @@
             "format": "int64"
           },
           "code": {
-            "type": "string"
+            "type": "integer",
+            "format": "int64"
           },
           "isArchive": {
             "type": "boolean"
@@ -7248,7 +7250,8 @@
             "format": "date-time"
           },
           "code": {
-            "type": "string"
+            "type": "integer",
+            "format": "int64"
           },
           "nameSearch": {
             "type": "string",
@@ -7313,7 +7316,8 @@
             "format": "int64"
           },
           "code": {
-            "type": "string"
+            "type": "integer",
+            "format": "int64"
           },
           "isArchive": {
             "type": "boolean"
@@ -7365,15 +7369,16 @@
             "format": "int64"
           },
           "code": {
-            "type": "string"
+            "type": "integer",
+            "format": "int64"
           },
           "nameRu": {
             "type": "string",
             "nullable": true
           },
           "isoCode": {
-            "type": "number",
-            "format": "double",
+            "type": "integer",
+            "format": "int64",
             "nullable": true
           },
           "nameEn": {
@@ -7427,7 +7432,8 @@
             "format": "int64"
           },
           "code": {
-            "type": "string"
+            "type": "integer",
+            "format": "int64"
           },
           "isArchive": {
             "type": "boolean"
@@ -7437,8 +7443,8 @@
             "nullable": true
           },
           "isoCode": {
-            "type": "number",
-            "format": "double",
+            "type": "integer",
+            "format": "int64",
             "nullable": true
           },
           "nameEn": {
@@ -7456,12 +7462,6 @@
           "isoCode3": {
             "type": "string",
             "nullable": true
-          },
-          "statusIdRu": {
-            "$ref": "#/components/schemas/NullableOfStatusElementRu"
-          },
-          "statusIdEn": {
-            "$ref": "#/components/schemas/NullableOfStatusElementEn"
           },
           "creationDate": {
             "type": "string",
@@ -7496,12 +7496,13 @@
             "nullable": true
           },
           "digital": {
-            "type": "number",
-            "format": "double",
+            "type": "integer",
+            "format": "int64",
             "nullable": true
           },
           "code_NSI": {
-            "type": "string",
+            "type": "integer",
+            "format": "int64",
             "nullable": true
           },
           "isArchive": {
@@ -7543,12 +7544,13 @@
             "nullable": true
           },
           "digital": {
-            "type": "number",
-            "format": "double",
+            "type": "integer",
+            "format": "int64",
             "nullable": true
           },
           "code_NSI": {
-            "type": "string",
+            "type": "integer",
+            "format": "int64",
             "nullable": true
           },
           "isArchive": {
@@ -8317,7 +8319,8 @@
             "format": "date-time"
           },
           "code": {
-            "type": "string"
+            "type": "integer",
+            "format": "int64"
           },
           "nameFullRu": {
             "type": "string",
@@ -8406,7 +8409,8 @@
             "format": "int64"
           },
           "code": {
-            "type": "string"
+            "type": "integer",
+            "format": "int64"
           },
           "isArchive": {
             "type": "boolean"
@@ -9405,7 +9409,8 @@
             "format": "int64"
           },
           "code": {
-            "type": "string"
+            "type": "integer",
+            "format": "int64"
           },
           "destinationNodeToRegion": {
             "type": "boolean",
@@ -9455,7 +9460,8 @@
             "type": "boolean"
           },
           "code": {
-            "type": "string"
+            "type": "integer",
+            "format": "int64"
           },
           "destinationNodeToRegion": {
             "type": "boolean",
@@ -9567,7 +9573,8 @@
             "format": "int64"
           },
           "code": {
-            "type": "string"
+            "type": "integer",
+            "format": "int64"
           },
           "name": {
             "type": "string",
@@ -9601,7 +9608,8 @@
             "format": "int64"
           },
           "code": {
-            "type": "string"
+            "type": "integer",
+            "format": "int64"
           },
           "name": {
             "type": "string",
@@ -9647,7 +9655,8 @@
             "format": "int64"
           },
           "code": {
-            "type": "string"
+            "type": "integer",
+            "format": "int64"
           },
           "name": {
             "type": "string",
@@ -9697,7 +9706,8 @@
             "format": "int64"
           },
           "code": {
-            "type": "string"
+            "type": "integer",
+            "format": "int64"
           },
           "name": {
             "type": "string",
@@ -9838,9 +9848,7 @@
       },
       "RegionDto": {
         "required": [
-          "code",
-          "statusIdRu",
-          "statusIdEn"
+          "code"
         ],
         "type": "object",
         "properties": {
@@ -9893,12 +9901,6 @@
           "market": {
             "type": "string",
             "nullable": true
-          },
-          "statusIdRu": {
-            "$ref": "#/components/schemas/StatusElementRu"
-          },
-          "statusIdEn": {
-            "$ref": "#/components/schemas/StatusElementEn"
           },
           "federalDistrictsIdRu": {
             "$ref": "#/components/schemas/NullableOfFederalDistrictsRu"
@@ -10009,7 +10011,8 @@
             "format": "int64"
           },
           "code": {
-            "type": "string"
+            "type": "integer",
+            "format": "int64"
           },
           "reportTypeIdRu": {
             "$ref": "#/components/schemas/ReportDictionaryTypesRu"
@@ -10123,7 +10126,8 @@
             "format": "int64"
           },
           "code": {
-            "type": "string"
+            "type": "integer",
+            "format": "int64"
           },
           "isArchive": {
             "type": "boolean"
@@ -11781,7 +11785,8 @@
             "format": "int64"
           },
           "code": {
-            "type": "string"
+            "type": "integer",
+            "format": "int64"
           },
           "codeSAP": {
             "type": "string",
@@ -11930,7 +11935,8 @@
             "format": "int64"
           },
           "code": {
-            "type": "string"
+            "type": "integer",
+            "format": "int64"
           },
           "codeSAP": {
             "type": "string",

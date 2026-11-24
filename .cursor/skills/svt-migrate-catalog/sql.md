@@ -63,6 +63,7 @@ UNION ALL SELECT N'dbo.PrimitiveEntityData_1014'  -- LocationsNodes
   - whitelist Codes (`NodeFromCode`, …)
   - **все прочие NVARCHAR-поля короткого списка / грида** (свободный текст: `Comment`, `DataSource`, `Methodology`, …)
   - `Code` сущности: **только** если `NVARCHAR` **и** значения — осмысленный текст для поиска. Если `Code` — GUID / UUID-строка (как у ParityRates) — **FTS не ставить**, достаточно фильтрованных NCIX по `Code`
+  - `NVARCHAR`-колонку без full-text `v2.GetBlazorGridData` фильтрует через `LIKE N'значение%'` с любой длины ввода; колонку с full-text — через `CONTAINS`, от 3 символов
   - числовой `Code` (`INT`) — FTS не нужен, только фильтрованные индексы
   - `decimal` / даты / bit / Id — **не** в FTS
 - `ALTER FULLTEXT … SET STOPLIST = OFF`

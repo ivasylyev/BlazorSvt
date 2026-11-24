@@ -15,7 +15,7 @@ AS
         CASE WHEN ISNULL(c.PrimitiveEntityDataStateId, 2) = 2 THEN 1 ELSE 0 END  AS IsArchive,
         c.CreationDate                                                           AS CreationDate,
         ISNULL(c.LastChangeDate, c.CreationDate)                                 AS LastChangeDate,
-        LEFT(c.Code, 50)                                                         AS Code,
+        TRY_CAST(c.Code AS INT)                                                 AS Code,
         LEFT(c.NameSearch, 4000)                                                 AS NameSearch,
         ISNULL(c.Consignee, 0)                                                   AS Consignee,
         ISNULL(c.IsTrader, 0)                                                    AS IsTrader,

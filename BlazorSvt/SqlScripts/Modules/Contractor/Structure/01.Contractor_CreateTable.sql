@@ -51,7 +51,7 @@ GO
 CREATE TABLE v2.Contractor_Snapshot (
     Id              BIGINT NOT NULL,
     ContractorId    BIGINT NOT NULL,
-    Code            NVARCHAR(50) NOT NULL,
+    Code            INT          NOT NULL,
     IsArchive       BIT NOT NULL,
 
     NameSearch      NVARCHAR(4000) NULL,

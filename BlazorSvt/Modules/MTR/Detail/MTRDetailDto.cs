@@ -9,7 +9,7 @@ public class MTRDetailDto
     public bool IsArchive { get; set; }
     public DateTime CreationDate { get; set; }
     public DateTime LastChangeDate { get; set; }
-    public required string Code { get; set; }
+    public required long Code { get; set; }
     public string? NameFullRu { get; set; }
     public string? NameShortRu { get; set; }
     public string? NameFullEn { get; set; }

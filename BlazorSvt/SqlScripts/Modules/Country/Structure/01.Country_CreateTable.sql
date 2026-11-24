@@ -49,9 +49,9 @@ INCREMENT BY 1;
 GO
 
 CREATE TABLE v2.Country_Snapshot (
-    Code                NVARCHAR(50) NOT NULL,
+    Code                INT          NOT NULL,
     NameRu              NVARCHAR(4000) NULL,
-    ISOCode             DECIMAL(19, 4) NULL,
+    ISOCode             INT NULL,
     NameEn              NVARCHAR(4000) NULL,
     PlanCode            NVARCHAR(4000) NULL,
     Market              NVARCHAR(4000) NULL,

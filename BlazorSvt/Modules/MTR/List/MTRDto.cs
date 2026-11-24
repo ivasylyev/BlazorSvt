@@ -13,7 +13,7 @@ public class MTRDto
     public long MTRId { get; set; }
 
     [GridColumn]
-    public required string Code { get; set; }
+    public required long Code { get; set; }
 
     [GridColumn]
     public bool IsArchive { get; set; }

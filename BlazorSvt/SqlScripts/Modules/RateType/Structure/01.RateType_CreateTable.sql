@@ -52,7 +52,7 @@ CREATE TABLE v2.RateType_Snapshot (
     Id                  INT NOT NULL,
     RateTypeId          BIGINT NOT NULL,
     IsArchive           BIT NOT NULL,
-    Code                NVARCHAR(50) NOT NULL,
+    Code                INT          NOT NULL,
     Name                NVARCHAR(4000) NOT NULL,
     IsUseNomination     BIT NOT NULL,
     IsDeflated          BIT NOT NULL,

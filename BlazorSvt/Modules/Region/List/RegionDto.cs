@@ -44,12 +44,6 @@ public class RegionDto
     [GridColumn]
     public string? Market { get; set; }
 
-    [GridColumn(SqlColumn = "StatusId")]
-    public required StatusElementRu StatusIdRu { get; set; }
-
-    [GridColumn(SqlColumn = "StatusId")]
-    public required StatusElementEn StatusIdEn { get; set; }
-
     [GridColumn(SqlColumn = "FederalDistrictsId")]
     public FederalDistrictsRu? FederalDistrictsIdRu { get; set; }
 

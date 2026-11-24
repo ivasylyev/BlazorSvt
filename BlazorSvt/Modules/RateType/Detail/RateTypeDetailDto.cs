@@ -5,7 +5,7 @@ public class RateTypeDetailDto
 {
     public long RateTypeId { get; set; }
 
-    public required string Code { get; set; }
+    public required long Code { get; set; }
 
     public string? Name { get; set; }
 

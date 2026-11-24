@@ -17,7 +17,7 @@ CREATE OR ALTER VIEW v2.vw_Coefficient_SnapshotSource
 AS
     SELECT
         CAST(c.Id AS BIGINT)                                                     AS CoefficientId,
-        LEFT(c.Code, 50)                                                         AS Code,
+        TRY_CAST(c.Code AS INT)                                                 AS Code,
         CASE WHEN ISNULL(c.PrimitiveEntityDataStateId, 2) = 2 THEN 1 ELSE 0 END  AS IsArchive,
 
         CAST(c.[Type] AS BIGINT)                                                 AS CoefficientTypeId,

@@ -18,7 +18,7 @@ AS
     SELECT
         CAST(r.Id AS BIGINT)                                                     AS ReportConstructorId,
         CASE WHEN ISNULL(r.PrimitiveEntityDataStateId, 2) = 2 THEN 1 ELSE 0 END  AS IsArchive,
-        LEFT(r.Code, 50)                                                         AS Code,
+        TRY_CAST(r.Code AS INT)                                                 AS Code,
         CAST(r.ReportType AS BIGINT)                                             AS ReportTypeId,
         CAST(r.DateFrom AS DATETIME2(7))                                         AS DateFrom,
         CAST(r.DateTo AS DATETIME2(7))                                           AS DateTo,

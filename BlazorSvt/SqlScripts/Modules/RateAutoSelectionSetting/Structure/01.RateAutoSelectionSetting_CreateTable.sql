@@ -52,7 +52,7 @@ CREATE TABLE v2.RateAutoSelectionSetting_Snapshot (
     Id                          BIGINT NOT NULL,
     RateAutoSelectionSettingId  BIGINT NOT NULL,
     IsArchive                   BIT NOT NULL,
-    Code                        NVARCHAR(50) NOT NULL,
+    Code                        INT          NOT NULL,
     DestinationNodeToRegion     BIT NULL,
     DestinationNodeToCountry    BIT NULL,
     ProductToProductGroup       BIT NULL,

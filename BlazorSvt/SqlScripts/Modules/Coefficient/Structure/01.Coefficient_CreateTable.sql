@@ -51,7 +51,7 @@ GO
 CREATE TABLE v2.Coefficient_Snapshot (
     Id                      BIGINT NOT NULL,
     CoefficientId           BIGINT NOT NULL,
-    Code                    NVARCHAR(50) NOT NULL,
+    Code                    INT          NOT NULL,
     IsArchive               BIT NOT NULL,
 
     CoefficientTypeId       BIGINT NULL,

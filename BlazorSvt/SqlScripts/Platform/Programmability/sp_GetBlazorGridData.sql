@@ -121,11 +121,13 @@ BEGIN
         ColumnName    SYSNAME NOT NULL,
         SqlColumnName NVARCHAR(258) NOT NULL,
         ColumnType    NVARCHAR(20) NOT NULL,
+        IsFullText    BIT NOT NULL,
         ColumnValue   NVARCHAR(4000) NULL,
         Operator      NVARCHAR(50) NULL,
         SqlOperator   NVARCHAR(2) NULL,
         SqlValue      NVARCHAR(4000) NULL,
         FtsValue      NVARCHAR(4000) NULL,
+        LikeValue     NVARCHAR(4000) NULL,
         FilterPart    NVARCHAR(MAX) NULL
     )
     DECLARE
@@ -230,11 +232,12 @@ BEGIN
     END;
 
     
-    INSERT INTO @FilteredColumns (ColumnName, SqlColumnName, ColumnType, ColumnValue, Operator)
+    INSERT INTO @FilteredColumns (ColumnName, SqlColumnName, ColumnType, IsFullText, ColumnValue, Operator)
     SELECT
         AC.ColumnName,
         QUOTENAME(AC.SqlColumnName),
         AC.ColumnType,
+        ISNULL(COLUMNPROPERTY(@TableObjectId, AC.SqlColumnName, 'IsFulltextIndexed'), 0),
         ISNULL(LTRIM(RTRIM(JS.[Value])), N'') AS ColumnValue,
         JS.Operator
     FROM OPENJSON(@FilterJson)
@@ -280,13 +283,29 @@ BEGIN
                     N')', N' '),
                 N'&', N' '),
             N'|', N' ')
-        )), N'');
+        )), N''),
+        LikeValue = NULLIF(
+            REPLACE(
+                REPLACE(
+                    REPLACE(
+                        REPLACE(ColumnValue, N'[', N'[[]'),
+                    N'%', N'[%]'),
+                N'_', N'[_]'),
+            N'''', N''''''),
+        N'');
 
     UPDATE FC
     SET FilterPart = CASE ColumnType         
-            -- Логика для СТРОК c полнотекстовым поиском 
+            -- Логика для СТРОК без полнотекстового индекса: поиск по началу значения с любой длины
             WHEN N'NVARCHAR' THEN 
-                CASE WHEN LEN(FtsValue) > 2 THEN
+                CASE WHEN IsFullText = 0 THEN
+                    CASE WHEN LikeValue IS NOT NULL THEN
+                        N'
+                    AND ' + SqlColumnName + N' LIKE N''' + LikeValue + N'%'' '
+                    ELSE ''
+                    END
+            -- Логика для СТРОК c полнотекстовым поиском 
+                WHEN LEN(FtsValue) > 2 THEN
                     N'
                     AND CONTAINS(' + SqlColumnName + ', N''"' + FtsValue + '*"'') '
                 ELSE '' 
@@ -367,6 +386,7 @@ BEGIN
     SELECT @FulltextFilterCount = COUNT(1) 
     FROM  @FilteredColumns
     WHERE ColumnType = N'NVARCHAR'
+      AND IsFullText = 1
       AND LEN(FtsValue) > 2
 
     -- Запрос считается сложным, если есть 2 и более полнотекстовых фильтров с сортировкой.
@@ -386,7 +406,7 @@ BEGIN
     -- Для сложных запросов полнотекстовый поиск исключается из условия Where и включается в специаьно созданную для результатов поиска промежуточную таблицу
     SELECT @MainWhereClause = STRING_AGG(FilterPart, '')
     FROM @FilteredColumns
-    WHERE (ColumnType <> 'NVARCHAR' OR @IsComplexQuery = 0)
+    WHERE (ColumnType <> 'NVARCHAR' OR IsFullText = 0 OR @IsComplexQuery = 0)
 
     SET @MainWhereClause = CONCAT('WHERE 1 = 1', @MainWhereClause)
 
@@ -403,6 +423,7 @@ BEGIN
                 RN = ROW_NUMBER() OVER (ORDER BY ColumnName)
             FROM @FilteredColumns
             WHERE ColumnType = N'NVARCHAR' 
+                  AND IsFullText = 1
                   AND FtsValue IS NOT NULL
                   AND LEN(FtsValue) > 2
         )

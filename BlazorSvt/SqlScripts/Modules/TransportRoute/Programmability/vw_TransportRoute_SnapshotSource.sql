@@ -16,7 +16,7 @@ GO
 CREATE OR ALTER VIEW v2.vw_TransportRoute_SnapshotSource
 AS
     SELECT
-        LEFT(r.Code, 50)                                                         AS Code,
+        TRY_CAST(r.Code AS INT)                                                 AS Code,
         LEFT(r.CodeSAP, 50)                                                      AS CodeSAP,
         LEFT(r.Route, 4000)                                                      AS Route,
 

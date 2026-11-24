@@ -22,7 +22,6 @@ GO
 
 CREATE FULLTEXT INDEX ON v2.Contractor_Snapshot
 (
-    Code        LANGUAGE 1033,
     NameSearch  LANGUAGE 1049,
     INN         LANGUAGE 1033
 )

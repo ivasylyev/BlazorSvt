@@ -20,7 +20,7 @@ CREATE UNIQUE NONCLUSTERED INDEX UX_ReportConstructor_Snapshot_Id
     ON [PRIMARY];
 GO
 
--- Code записи — короткие цифровые строки, в full-text не входит.
+-- Code записи — INT, в full-text не входит.
 CREATE FULLTEXT INDEX ON v2.ReportConstructor_Snapshot
 (
     NodeFromCode        LANGUAGE 1033,

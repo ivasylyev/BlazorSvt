@@ -19,10 +19,10 @@ public class CurrencyDto
     public string? Symbolic { get; set; }
 
     [GridColumn]
-    public decimal? Digital { get; set; }
+    public long? Digital { get; set; }
 
     [GridColumn]
-    public string? Code_NSI { get; set; }
+    public long? Code_NSI { get; set; }
 
     [GridColumn]
     public bool IsArchive { get; set; }

@@ -20,7 +20,7 @@ CREATE UNIQUE NONCLUSTERED INDEX UX_RateSyncClass_Snapshot_Id
     ON [PRIMARY];
 GO
 
--- Code — короткие цифровые строки, в full-text не входит.
+-- Code — INT, в full-text не входит.
 CREATE FULLTEXT INDEX ON v2.RateSyncClass_Snapshot
 (
     Name LANGUAGE 1049

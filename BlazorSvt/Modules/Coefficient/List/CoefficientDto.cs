@@ -12,7 +12,7 @@ public class CoefficientDto
     public long CoefficientId { get; set; }
 
     [GridColumn]
-    public required string Code { get; set; }
+    public required long Code { get; set; }
 
     [GridColumn]
     public bool IsArchive { get; set; }

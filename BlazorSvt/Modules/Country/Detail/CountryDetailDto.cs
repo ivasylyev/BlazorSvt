@@ -6,9 +6,9 @@ namespace BlazorSvt.Modules.Country.Detail;
 public class CountryDetailDto
 {
     public long CountryId { get; set; }
-    public required string Code { get; set; }
+    public required long Code { get; set; }
     public string? NameRu { get; set; }
-    public decimal? ISOCode { get; set; }
+    public long? ISOCode { get; set; }
     public string? NameEn { get; set; }
     public string? PlanCode { get; set; }
     public string? Market { get; set; }

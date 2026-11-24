@@ -7,7 +7,7 @@ public class ContractorDetailDto
     public bool IsArchive { get; set; }
     public DateTime CreationDate { get; set; }
     public DateTime LastChangeDate { get; set; }
-    public required string Code { get; set; }
+    public required long Code { get; set; }
     public string? NameSearch { get; set; }
     public bool Consignee { get; set; }
     public bool IsTrader { get; set; }

@@ -9,7 +9,7 @@ public class CoefficientDetailDto
     public bool IsArchive { get; set; }
     public DateTime CreationDate { get; set; }
     public DateTime LastChangeDate { get; set; }
-    public required string Code { get; set; }
+    public required long Code { get; set; }
     public required CoefficientTypeRu CoefficientTypeIdRu { get; set; }
     public required CoefficientTypeEn CoefficientTypeIdEn { get; set; }
     public string? Name { get; set; }

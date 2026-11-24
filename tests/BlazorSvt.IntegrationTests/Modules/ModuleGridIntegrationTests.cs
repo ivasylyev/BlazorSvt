@@ -291,7 +291,7 @@ public class ModuleGridIntegrationTests(DatabaseFixture fixture) : IntegrationTe
 
         detail.Should().NotBeNull();
         detail!.RateTypeId.Should().Be(entityKey);
-        detail.Code.Should().NotBeNullOrWhiteSpace();
+        detail.Code.Should().Be(rows[0].Code);
     }
 
     [SkippableFact]
@@ -402,7 +402,7 @@ public class ModuleGridIntegrationTests(DatabaseFixture fixture) : IntegrationTe
 
         detail.Should().NotBeNull();
         detail!.ContractorId.Should().Be(entityKey);
-        detail.Code.Should().NotBeNullOrWhiteSpace();
+        detail.Code.Should().Be(rows[0].Code);
     }
 
     [SkippableFact]
@@ -439,7 +439,7 @@ public class ModuleGridIntegrationTests(DatabaseFixture fixture) : IntegrationTe
 
         detail.Should().NotBeNull();
         detail!.CoefficientId.Should().Be(entityKey);
-        detail.Code.Should().NotBeNullOrWhiteSpace();
+        detail.Code.Should().Be(rows[0].Code);
         detail.CoefficientTypeIdRu.Should().Be(rows[0].CoefficientTypeIdRu);
         detail.RateTypeIdRu.Should().Be(rows[0].RateTypeIdRu);
     }
@@ -478,7 +478,7 @@ public class ModuleGridIntegrationTests(DatabaseFixture fixture) : IntegrationTe
 
         detail.Should().NotBeNull();
         detail!.MTRId.Should().Be(entityKey);
-        detail.Code.Should().NotBeNullOrWhiteSpace();
+        detail.Code.Should().Be(rows[0].Code);
     }
 
     [SkippableFact]
@@ -552,7 +552,7 @@ public class ModuleGridIntegrationTests(DatabaseFixture fixture) : IntegrationTe
 
         detail.Should().NotBeNull();
         detail!.RateSyncClassId.Should().Be(entityKey);
-        detail.Code.Should().NotBeNullOrWhiteSpace();
+        detail.Code.Should().Be(rows[0].Code);
     }
 
     [SkippableFact]
@@ -604,7 +604,7 @@ public class ModuleGridIntegrationTests(DatabaseFixture fixture) : IntegrationTe
 
         rows.Should().NotBeEmpty();
         totalCount.Should().BeGreaterThan(0);
-        rows[0].Code.Should().Be("3");
+        rows[0].Code.Should().Be(3);
         rows[0].RateAutoSelectionSettingId.Should().Be(10609266);
     }
 
@@ -646,7 +646,7 @@ public class ModuleGridIntegrationTests(DatabaseFixture fixture) : IntegrationTe
         rows.Should().NotBeEmpty();
         totalCount.Should().Be(12);
         rows.Should().OnlyContain(r => r.LastChangeDate != default);
-        rows.Should().OnlyContain(r => r.Code.Length > 0);
+        rows.Should().OnlyContain(r => r.Code > 0);
     }
 
     [SkippableFact]
@@ -728,7 +728,7 @@ public class ModuleGridIntegrationTests(DatabaseFixture fixture) : IntegrationTe
         rows.Should().NotBeEmpty();
         totalCount.Should().Be(256);
         rows.Should().OnlyContain(r => !r.IsArchive);
-        rows.Should().OnlyContain(r => r.Code.Length > 0);
+        rows.Should().OnlyContain(r => r.Code > 0);
     }
 
     [SkippableFact]
@@ -754,7 +754,6 @@ public class ModuleGridIntegrationTests(DatabaseFixture fixture) : IntegrationTe
         detail.Code.Should().Be(rows[0].Code);
         detail.NameRu.Should().Be(rows[0].NameRu);
         detail.ISOCode.Should().Be(rows[0].ISOCode);
-        detail.StatusIdRu.Should().Be(rows[0].StatusIdRu);
     }
 
     [SkippableFact]
@@ -795,7 +794,6 @@ public class ModuleGridIntegrationTests(DatabaseFixture fixture) : IntegrationTe
         detail!.RegionId.Should().Be(entityKey);
         detail.Code.Should().Be(rows[0].Code);
         detail.NameRu.Should().Be(rows[0].NameRu);
-        detail.StatusIdRu.Should().Be(rows[0].StatusIdRu);
         detail.Market.Should().Be(rows[0].Market);
     }
 
@@ -812,7 +810,7 @@ public class ModuleGridIntegrationTests(DatabaseFixture fixture) : IntegrationTe
         rows.Should().NotBeEmpty();
         totalCount.Should().BeGreaterThan(0);
         rows.Should().OnlyContain(r => !r.IsArchive);
-        rows.Should().OnlyContain(r => r.Code.Length > 0);
+        rows.Should().OnlyContain(r => r.Code > 0);
         rows.Should().OnlyContain(r => r.IsActive);
     }
 

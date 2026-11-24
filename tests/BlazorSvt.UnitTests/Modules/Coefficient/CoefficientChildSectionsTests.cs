@@ -197,7 +197,7 @@ public class CoefficientChildSectionsTests
     {
         CoefficientId = CoefficientId,
         IsArchive = isArchive,
-        Code = "C",
+        Code = 1,
         CoefficientTypeIdRu = CoefficientTypeRu.Deflator,
         CoefficientTypeIdEn = CoefficientTypeEn.Deflator,
         RateTypeIdRu = default,

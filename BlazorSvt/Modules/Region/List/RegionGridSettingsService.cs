@@ -24,11 +24,9 @@ public class RegionGridSettingsService(
         b.Add(x => x.Code_NSI, L["RegionDto.Code_NSI"]);
         b.Add(x => x.RegionCodePlanning, L["RegionDto.RegionCodePlanning"]);
         b.Add(x => x.RegionCodeRF, L["RegionDto.RegionCodeRF"]);
-        b.Add(x => x.NameRu, L["RegionDto.NameRu"]);
-        b.Add(x => x.NameEn, L["RegionDto.NameEn"]);
+        b.AddLocalized(isRu, x => x.NameRu, x => x.NameEn, L["RegionDto.Name"]);
         b.AddLocalized(isRu, x => x.CountryNameRu, x => x.CountryNameEn, L["RegionDto.CountryName"]);
         b.Add(x => x.Market, L["RegionDto.Market"]);
-        b.AddEnum(isRu, x => x.StatusIdRu, x => x.StatusIdEn, L["RegionDto.Status"]);
         AddEnum(b, isRu, x => x.FederalDistrictsIdRu, x => x.FederalDistrictsIdEn, L["RegionDto.FederalDistricts"]);
         b.AddSystemColumns(
             x => x.CreationDate,

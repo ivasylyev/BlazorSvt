@@ -154,7 +154,7 @@ public class TransportRouteChildSectionsTests
     {
         TransportRouteId = TransportRouteId,
         IsArchive = isArchive,
-        Code = "R",
+        Code = 1,
         RouteTransportKindIdRu = TransportKindRu.Mix,
         RouteTransportKindIdEn = TransportKindEn.Mix
     };

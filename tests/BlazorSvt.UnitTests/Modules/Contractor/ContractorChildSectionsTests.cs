@@ -188,7 +188,7 @@ public class ContractorChildSectionsTests
     {
         ContractorId = ContractorId,
         IsArchive = isArchive,
-        Code = "C"
+        Code = 1
     };
 
     private static string Text(decimal? value) =>
