@@ -5,14 +5,15 @@
     <div class="d-flex align-items-center w-100">
 
         <div class="d-flex align-items-center gap-2">
-            <a href="" class="sibur-logo-link" aria-label="СИБУР">
+            @* Логотип ведёт в корень сайта (href="/"), кнопка «Главная» — на корень приложения (относительно base href, например /v2/) *@
+            <a href="/" class="sibur-logo-link" aria-label="СИБУР">
                 <img src="images/sibur-logo-light-theme.svg" alt="СИБУР" class="sibur-logo" />
             </a>
             <Button Class="@GetButtonClass(IsHomeActive())"
                     Type="ButtonType.Link"
-                    To="">
-                <Icon Name="@IconName.HouseDoorFill" Class="me-2"/>
-                @L["HeaderMenu.Home"]
+                    To=""
+                    aria-label="@L["HeaderMenu.Home"]">
+                <Icon Name="@IconName.HouseDoorFill" />
             </Button>
 
             @foreach (var group in DomainGroups)
