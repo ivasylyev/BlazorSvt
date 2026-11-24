@@ -11,9 +11,10 @@
             </a>
             <Button Class="@GetButtonClass(IsHomeActive())"
                     Type="ButtonType.Link"
-                    To=""
-                    aria-label="@L["HeaderMenu.Home"]">
+                    To="">
                 <Icon Name="@IconName.HouseDoorFill" />
+                @* Подпись для скринридеров. Не aria-label на Button: Blazor.Bootstrap теряет href, если компоненту переданы произвольные атрибуты *@
+                <span class="visually-hidden">@L["HeaderMenu.Home"]</span>
             </Button>
 
             @foreach (var group in DomainGroups)
