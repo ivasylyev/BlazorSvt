@@ -3,7 +3,7 @@
 @inherits SvtComponentBase
 @if (errorMessage is not null)
 {
-    <div class="p-3 text-danger">@errorMessage</div>
+    <div class="alert alert-danger mb-0">@errorMessage</div>
 }
 else if (isLoading || detailSettings is null)
 {
@@ -33,7 +33,7 @@ else if (detail is not null && BuildAccordion() is var layout)
                     <Content>
                         @if (child.ErrorMessage is not null)
                         {
-                            <div class="p-3 text-danger">@child.ErrorMessage</div>
+                            <div class="alert alert-danger mb-0">@child.ErrorMessage</div>
                         }
                         else if (child.Table is { } table)
                         {

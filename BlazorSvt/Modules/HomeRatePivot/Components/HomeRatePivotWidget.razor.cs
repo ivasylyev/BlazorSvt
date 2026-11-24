@@ -16,7 +16,8 @@ public partial class HomeRatePivotWidget : SvtComponentBase, IDisposable
         "Month.Jul", "Month.Aug", "Month.Sep", "Month.Oct", "Month.Nov", "Month.Dec"
     ];
 
-    private static readonly string BarColor = ColorUtility.CategoricalTwelveColors[0];
+    // Первый ряд графика — ДНК СИБУР (sibur_style.md)
+    private const string BarColor = "#008C95";
 
     [Inject]
     private IHomeRatePivotService PivotService { get; set; } = default!;
