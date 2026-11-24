@@ -18,6 +18,32 @@ public static class ExpressionExtensions
 
     #region Boolean
 
+    /// <summary>
+    /// Приводит константу фильтра к типу свойства: <c>Equal</c>/<c>NotEqual</c> не определены для
+    /// <c>Nullable&lt;T&gt;</c> и <c>T</c> (nullable bool, nullable enum).
+    /// </summary>
+    private static Expression ToPropertyType(ConstantExpression? value, Expression property)
+    {
+        if (value is null || value.Type == property.Type)
+            return value!;
+
+        return value.Value is null
+            ? Expression.Default(property.Type)
+            : Expression.Convert(value, property.Type);
+    }
+
+    /// <summary>
+    /// «Не равно» для nullable-свойства не выбирает пустые значения — как <c>&lt;&gt;</c> в SQL и как
+    /// «не равно» для чисел в этом классе.
+    /// </summary>
+    private static Expression NotEqualExcludingNull(Expression property, Expression value)
+    {
+        var notEqual = Expression.NotEqual(property, value);
+        return property.Type.IsNullableType()
+            ? Expression.AndAlso(Expression.NotEqual(property, Expression.Constant(null, property.Type)), notEqual)
+            : notEqual;
+    }
+
     public static ConstantExpression GetBooleanConstantExpression(FilterItem filterItem, string propertyTypeName)
     {
         ConstantExpression? value = null;
@@ -34,7 +60,7 @@ public static class ExpressionExtensions
     public static Expression<Func<TItem, bool>> GetBooleanEqualExpressionDelegate<TItem>(ParameterExpression parameterExpression, FilterItem filterItem, string propertyTypeName)
     {
         var property = Expression.Property(parameterExpression, filterItem.PropertyName);
-        var expression = Expression.Equal(property, GetBooleanConstantExpression(filterItem, propertyTypeName));
+        var expression = Expression.Equal(property, ToPropertyType(GetBooleanConstantExpression(filterItem, propertyTypeName), property));
 
         return Expression.Lambda<Func<TItem, bool>>(expression, parameterExpression);
     }
@@ -42,7 +68,7 @@ public static class ExpressionExtensions
     public static Expression<Func<TItem, bool>> GetBooleanNotEqualExpressionDelegate<TItem>(ParameterExpression parameterExpression, FilterItem filterItem, string propertyTypeName)
     {
         var property = Expression.Property(parameterExpression, filterItem.PropertyName);
-        var expression = Expression.NotEqual(property, GetBooleanConstantExpression(filterItem, propertyTypeName));
+        var expression = NotEqualExcludingNull(property, ToPropertyType(GetBooleanConstantExpression(filterItem, propertyTypeName), property));
 
         return Expression.Lambda<Func<TItem, bool>>(expression, parameterExpression);
     }
@@ -320,7 +346,7 @@ public static class ExpressionExtensions
     public static Expression<Func<TItem, bool>> GetEnumEqualExpressionDelegate<TItem>(ParameterExpression parameterExpression, FilterItem filterItem, Type propertyType, string propertyTypeName)
     {
         var property = Expression.Property(parameterExpression, filterItem.PropertyName);
-        var expression = Expression.Equal(property, GetEnumConstantExpression<TItem>(filterItem, propertyType, propertyTypeName));
+        var expression = Expression.Equal(property, ToPropertyType(GetEnumConstantExpression<TItem>(filterItem, propertyType, propertyTypeName), property));
 
         return Expression.Lambda<Func<TItem, bool>>(expression, parameterExpression);
     }
@@ -328,7 +354,7 @@ public static class ExpressionExtensions
     public static Expression<Func<TItem, bool>> GetEnumNotEqualExpressionDelegate<TItem>(ParameterExpression parameterExpression, FilterItem filterItem, Type propertyType, string propertyTypeName)
     {
         var property = Expression.Property(parameterExpression, filterItem.PropertyName);
-        var expression = Expression.NotEqual(property, GetEnumConstantExpression<TItem>(filterItem, propertyType, propertyTypeName));
+        var expression = NotEqualExcludingNull(property, ToPropertyType(GetEnumConstantExpression<TItem>(filterItem, propertyType, propertyTypeName), property));
 
         return Expression.Lambda<Func<TItem, bool>>(expression, parameterExpression);
     }
@@ -453,32 +479,32 @@ public static class ExpressionExtensions
 
         if (propertyTypeName == StringConstants.PropertyTypeNameInt16)
         {
-            _ = short.TryParse(filterItem.Value, out var filterValue);
+            _ = short.TryParse(filterItem.Value, System.Globalization.NumberStyles.Integer, System.Globalization.CultureInfo.InvariantCulture, out var filterValue);
             constantExpression = Expression.Constant((short?)filterValue);
         }
         else if (propertyTypeName == StringConstants.PropertyTypeNameInt32)
         {
-            _ = int.TryParse(filterItem.Value, out var filterValue);
+            _ = int.TryParse(filterItem.Value, System.Globalization.NumberStyles.Integer, System.Globalization.CultureInfo.InvariantCulture, out var filterValue);
             constantExpression = Expression.Constant((int?)filterValue);
         }
         else if (propertyTypeName == StringConstants.PropertyTypeNameInt64)
         {
-            _ = long.TryParse(filterItem.Value, out var filterValue);
+            _ = long.TryParse(filterItem.Value, System.Globalization.NumberStyles.Integer, System.Globalization.CultureInfo.InvariantCulture, out var filterValue);
             constantExpression = Expression.Constant((long?)filterValue);
         }
         else if (propertyTypeName == StringConstants.PropertyTypeNameSingle)
         {
-            _ = float.TryParse(filterItem.Value, out var filterValue);
+            _ = float.TryParse(filterItem.Value, (System.Globalization.NumberStyles.Float | System.Globalization.NumberStyles.AllowThousands), System.Globalization.CultureInfo.InvariantCulture, out var filterValue);
             constantExpression = Expression.Constant((float?)filterValue);
         }
         else if (propertyTypeName == StringConstants.PropertyTypeNameDecimal)
         {
-            _ = decimal.TryParse(filterItem.Value, out var filterValue);
+            _ = decimal.TryParse(filterItem.Value, System.Globalization.NumberStyles.Number, System.Globalization.CultureInfo.InvariantCulture, out var filterValue);
             constantExpression = Expression.Constant((decimal?)filterValue);
         }
         else if (propertyTypeName == StringConstants.PropertyTypeNameDouble)
         {
-            _ = double.TryParse(filterItem.Value, out var filterValue);
+            _ = double.TryParse(filterItem.Value, (System.Globalization.NumberStyles.Float | System.Globalization.NumberStyles.AllowThousands), System.Globalization.CultureInfo.InvariantCulture, out var filterValue);
             constantExpression = Expression.Constant((double?)filterValue);
         }
 

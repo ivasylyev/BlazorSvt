@@ -23,7 +23,7 @@ h2. 1. What SVT 2.0 is and how it differs from the legacy system
 *SVT 2.0* is the new version of the Tariff Management System. At this stage you can *view* the reference books that have already been migrated.
 
 ||Action||Where to do it||
-|View migrated reference books (rates, rate type, coefficient, average rates, rate auto-selection settings, rate calculation type, rate synchronization class, report constructor, contractors, parities, relevance, transport legs, locations-nodes, region, country, means of transport (level 3), transport groups, transport route, products, currencies)|*SVT 2.0*|
+|View migrated reference books (rates, rate type, coefficient, average rates, rate auto-selection settings, rate calculation type, rate synchronization class, report constructor, contractors, parities, relevance, transport legs, locations-nodes, region, country, means of transport, means of transport (level 3), transport groups, transport route, products, currencies)|*SVT 2.0*|
 |Load and change data for these reference books|*Legacy* SVT|
 |View reference books that are *not* migrated yet|*Legacy* SVT|
 
@@ -85,6 +85,7 @@ At the bottom of the page there is a footer bar: on the left, the load time of t
 |Parities|Relevance|Relevance|
 |Routes|Country|Country|
 |Routes|Locations-Nodes|Locations-Nodes|
+|Routes|Means of transport|Means of transport|
 |Routes|Means of transport (level 3)|Means of transport (level 3)|
 |Routes|Region|Region|
 |Routes|Transport Legs|Transport Legs|
@@ -140,7 +141,7 @@ h3. 5.1. Detail card
 
 # Find the required row.
 # Click the arrow on the left of the row.
-# Field groups open (you can expand and collapse them). *Collapse all* / *Expand all* control all groups at once.
+# Field groups open expanded; you can collapse them. Groups that contain tables sit above them and start collapsed: the rows appear after a click on the header. *Collapse all* / *Expand all* control all groups at once.
 
 !4-averare-rate-en.png|width=800,alt="Average Rate detail card"!
 

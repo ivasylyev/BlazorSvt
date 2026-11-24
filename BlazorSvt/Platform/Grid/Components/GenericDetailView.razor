@@ -9,11 +9,11 @@ else if (isLoading || detailSettings is null)
 {
     <div class="p-3">@L["GenericDetailView.Loading"]</div>
 }
-else if (detail is not null)
+else if (detail is not null && BuildAccordion() is var layout)
 {
     @Template?.Invoke(detail)
 
-    @if (GetVisibleGroupCount() >= 2)
+    @if (layout.Sections.Count >= 2)
     {
         <button type="button"
                 class="accordion-button sibur-grid-detail-toggle-all"
@@ -24,14 +24,31 @@ else if (detail is not null)
     }
 
     <Accordion @ref="accordion" AlwaysOpen="true">
-        @foreach (var groupPair in detailSettings.GroupSettings)
+        @foreach (var slot in layout.Sections)
         {
-            if (groupPair.Value.Any(IsFieldVisible))
+            if (slot.Kind == DetailAccordionSectionKind.ChildTable)
             {
-                <AccordionItem Title="@groupPair.Key" Active="true">
+                var child = layout.Children[slot.SourceIndex];
+                <AccordionItem @key="@($"child:{child.Title}")" Title="@child.Title" Active="@slot.StartsExpanded" Class="sibur-grid-detail-child">
+                    <Content>
+                        @if (child.ErrorMessage is not null)
+                        {
+                            <div class="p-3 text-danger">@child.ErrorMessage</div>
+                        }
+                        else if (child.Table is { } table)
+                        {
+                            <DynamicComponent Type="ChildTableViewType(table)" Parameters="ChildTableViewParameters(table)" />
+                        }
+                    </Content>
+                </AccordionItem>
+            }
+            else
+            {
+                var group = layout.FieldGroups[slot.SourceIndex];
+                <AccordionItem @key="@($"group:{group.Key}")" Title="@group.Key" Active="@slot.StartsExpanded">
                     <Content>
                         <div class="sibur-grid-detail-container">
-                            @foreach (var setting in groupPair.Value.Where(IsFieldVisible))
+                            @foreach (var setting in group.Value.Where(IsFieldVisible))
                             {
                                 var marginClass = setting.HasMargin ? "mt-4" : string.Empty;
                                 <div class="sibur-grid-detail-label @marginClass">@setting.Header:</div>
@@ -41,21 +58,6 @@ else if (detail is not null)
                     </Content>
                 </AccordionItem>
             }
-        }
-        @foreach (var section in childSections.Where(s => s.IsVisible))
-        {
-            <AccordionItem @key="section.Title" Title="@section.Title" Active="true">
-                <Content>
-                    @if (section.ErrorMessage is not null)
-                    {
-                        <div class="p-3 text-danger">@section.ErrorMessage</div>
-                    }
-                    else if (section.Table is { } table)
-                    {
-                        <DetailChildTableView Table="table" />
-                    }
-                </Content>
-            </AccordionItem>
         }
     </Accordion>
 }

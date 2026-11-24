@@ -1,4 +1,4 @@
-using System.Globalization;
+﻿using System.Globalization;
 using BlazorSvt.Modules.AverageRateLevel3;
 using BlazorSvt.Modules.AverageRateLevel3.Detail;
 using BlazorSvt.Platform.Grid.Models;
@@ -34,12 +34,12 @@ public class AverageRateLevel3ChildSectionsTests
         var table = await section.LoadAsync(Parent(isArchive: false), "en", CancellationToken.None);
 
         section.Title.Should().Be("RatesOfAverageRateDto.Title");
-        table.Headers.Should().Equal(
+        table.Headers().Should().Equal(
             "RatesOfAverageRateDto.Code",
             "RatesOfAverageRateDto.TransportRateCode",
             "RatesOfAverageRateDto.TotalCostTon",
             "RatesOfAverageRateDto.TotalCostTransport");
-        table.Rows.Single().Should().Equal(
+        table.Cells().Single().Should().Equal(
             "R-1",
             "TR-9",
             Convert.ToString(ton, CultureInfo.CurrentCulture),
@@ -56,8 +56,11 @@ public class AverageRateLevel3ChildSectionsTests
 
         var table = await section.LoadAsync(Parent(isArchive: true), "ru", CancellationToken.None);
 
-        table.Headers.Should().HaveCount(5).And.EndWith("RatesOfAverageRateDto.IsArchive");
-        table.Rows.Select(r => r[^1]).Should().Equal("Common.Active", "Common.Archive");
+        table.Headers().Should().HaveCount(5).And.EndWith("RatesOfAverageRateDto.IsArchive");
+        table.Columns.Select(c => c.Name).Should().OnlyHaveUniqueItems();
+        table.Cells().Select(r => r[^1]).Should().Equal("Common.Active", "Common.Archive");
+        table.Columns[^1].Name.Should().Be("IsArchive");
+        table.Rows.Select(r => r.IsArchive).Should().Equal(false, true);
     }
 
     [Fact]
@@ -104,7 +107,7 @@ public class AverageRateLevel3ChildSectionsTests
             var table = await section.LoadAsync(Parent(isArchive: true), lang, CancellationToken.None);
 
             section.Title.Should().Be(title);
-            table.Headers.Should().Equal(headers);
+            table.Headers().Should().Equal(headers);
         }
         finally
         {

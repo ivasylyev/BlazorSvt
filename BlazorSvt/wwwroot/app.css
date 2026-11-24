@@ -284,6 +284,12 @@ h1:focus {
     color: #00606a;
 }
 
+/* Шапка группы-таблицы дочернего примитива: плотнее общего #EAF2F2, текст тот же */
+.sibur-grid .accordion-item.sibur-grid-detail-child .accordion-button {
+    background-color: #c7e3e4 !important;
+    color: #00606a;
+}
+
 .sibur-grid .sibur-grid-detail-toggle-all {
     width: 100%;
     box-sizing: border-box;
@@ -328,6 +334,11 @@ h1:focus {
 /* Таблица дочернего примитива в карточке: высота по содержимому, без min-height грида */
 .sibur-grid-detail-child-table {
     overflow-x: auto;
+}
+
+/* Вложенный Grid наследует .sibur-grid .table-responsive { min-height: 450px } — для детей сбрасываем */
+.sibur-grid .sibur-grid-detail-child-table .table-responsive {
+    min-height: 0;
 }
 
 /* Card */

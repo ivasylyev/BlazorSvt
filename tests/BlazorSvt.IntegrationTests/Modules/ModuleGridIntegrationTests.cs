@@ -37,8 +37,11 @@ using BlazorSvt.Modules.TransportRate.Detail;
 using BlazorSvt.Modules.TransportRate.List;
 using BlazorSvt.Modules.TransportRoute.Detail;
 using BlazorSvt.Modules.TransportRoute.List;
+using BlazorSvt.Modules.TransportKind.Detail;
+using BlazorSvt.Modules.TransportKind.List;
 using BlazorSvt.Modules.TransportTypeLevel3.Detail;
 using BlazorSvt.Modules.TransportTypeLevel3.List;
+using BlazorSvt.Platform.Domain.IdsEnum;
 using BlazorSvt.Platform.Grid.Models;
 using FluentAssertions;
 
@@ -837,5 +840,50 @@ public class ModuleGridIntegrationTests(DatabaseFixture fixture) : IntegrationTe
         detail.RouteTransportKindIdRu.Should().Be(rows[0].RouteTransportKindIdRu);
         detail.StartNodeNameRu.Should().Be(rows[0].StartNodeNameRu);
         detail.ChainNodes.Should().Be(rows[0].ChainNodes);
+    }
+
+    [SkippableFact]
+    public async Task TransportKindGrid_ReturnsRows()
+    {
+        var connectionString = RequireConnectionString();
+
+        var (rows, totalCount) = await GridSpTestHelper.ExecuteGetBlazorGridDataAsync<TransportKindDto>(
+            connectionString,
+            typeof(TransportKindDto),
+            GridSpTestHelper.CreateDefaultQuery());
+
+        rows.Should().NotBeEmpty();
+        totalCount.Should().Be(8);
+        rows.Should().OnlyContain(r => !r.IsArchive);
+        rows.Should().OnlyContain(r => r.Code.Length > 0);
+        rows.Should().OnlyContain(r => r.StatusIdRu == StatusElementRu.Active);
+    }
+
+    [SkippableFact]
+    public async Task TransportKindDetailView_ReturnsRowForGridEntityKey()
+    {
+        var connectionString = RequireConnectionString();
+
+        var (rows, _) = await GridSpTestHelper.ExecuteGetBlazorGridDataAsync<TransportKindDto>(
+            connectionString,
+            typeof(TransportKindDto),
+            GridSpTestHelper.CreateDefaultQuery(pageSize: 1));
+
+        var entityKey = rows[0].TransportKindId;
+
+        var detail = await GridSpTestHelper.QueryDetailViewAsync<TransportKindDetailDto>(
+            connectionString,
+            "v2.vw_TransportKind_Detail",
+            "TransportKindId",
+            entityKey);
+
+        detail.Should().NotBeNull();
+        detail!.TransportKindId.Should().Be(entityKey);
+        detail.Code.Should().Be(rows[0].Code);
+        detail.Name.Should().Be(rows[0].Name);
+        detail.NameEnRu.Should().Be(rows[0].NameEnRu);
+        detail.Level.Should().Be(rows[0].Level);
+        detail.KindCode.Should().Be(rows[0].KindCode);
+        detail.StatusIdRu.Should().Be(rows[0].StatusIdRu);
     }
 }

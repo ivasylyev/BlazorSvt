@@ -21,7 +21,6 @@ public class LegAverageRateLevel3Section(
         var b = new DetailSettingsBuilder<LegAverageRateLevel3Dto>(platform);
         var group = Title;
 
-        b.Add(group, x => x.Code, L["LegAverageRateLevel3Dto.Code"]);
         b.Add(group, x => x.AverageRateCode, L["LegAverageRateLevel3Dto.AverageRateCode"]);
         b.AddYesNo(group, x => x.IsDefRate, L["LegAverageRateLevel3Dto.IsDefRate"]);
         b.AddEnum(isRu, group, x => x.RateTypeIdRu, x => x.RateTypeIdEn, L["LegAverageRateLevel3Dto.RateTypeName"]);

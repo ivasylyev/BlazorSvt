@@ -1,0 +1,16 @@
+@page "/transportkind"
+@using BlazorSvt.Modules.TransportKind.Detail
+@inherits BaseGridPage<TransportKindDto, TransportKindDetailDto>
+
+<GenericGrid TItem="TransportKindDto"
+             TDetailItem="TransportKindDetailDto"
+             PageTitle="@EL["TransportKindGrid.Title"]"
+             AllowDetailView="true"
+             DataProvider="DataProvider"
+             DetailDataProvider="DetailDataProvider"
+             DetailKeySelector="DetailKeySelector">
+
+    <DetailViewTemplate Context="detail">
+    </DetailViewTemplate>
+
+</GenericGrid>

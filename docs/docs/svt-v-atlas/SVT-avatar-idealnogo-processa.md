@@ -6,7 +6,7 @@
 
 Рабочий файл эталона сейчас — `SVT-правки-от-Кати.html`. Канон `SVT-idealnyy-process2.html` не править, пока не сказали вернуть правки.
 
-Промпты лежат в папке [`avatar-prompty-idealnogo-processa/`](avatar-prompty-idealnogo-processa/). Тексты те же, что в skill `atlas` → `shablony/2/`. Чужое кольцо план-факта (Ш1…Ш8, агенты А-01) в документ СВТ не копировать.
+Промпты лежат в папке [`avatar-prompty-idealnogo-processa/`](avatar-prompty-idealnogo-processa/). Тексты те же, что в skill `atlas-methodology` → `shablony/2/`. Чужое кольцо план-факта (Ш1…Ш8, агенты А-01) в документ СВТ не копировать.
 
 `SVT-avatar-rubenchik.html` — другой аватар: критик пакета, не метод. Его голос в эталон как факт не переносить.
 

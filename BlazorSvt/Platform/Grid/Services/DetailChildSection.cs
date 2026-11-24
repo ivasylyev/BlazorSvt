@@ -1,5 +1,3 @@
-using System.Globalization;
-
 namespace BlazorSvt.Platform.Grid.Services;
 
 /// <summary>
@@ -25,7 +23,7 @@ public abstract class DetailChildSection<TDetailItem, TRow>(IDetailChildDataServ
     /// <summary>Колонки в порядке вывода; группа билдера значения не имеет.</summary>
     protected abstract DetailSettingsCollection<TRow> BuildColumns(string lang, bool parentIsArchive);
 
-    public async Task<DetailChildTable> LoadAsync(TDetailItem parent, string lang, CancellationToken cancellationToken)
+    public async Task<DetailChildTable<TRow>> LoadAsync(TDetailItem parent, string lang, CancellationToken cancellationToken)
     {
         var parentIsArchive = ParentIsArchive(parent);
         var page = await dataService.GetRowsAsync<TRow>(
@@ -35,12 +33,12 @@ public abstract class DetailChildSection<TDetailItem, TRow>(IDetailChildDataServ
 
         var columns = BuildColumns(lang, parentIsArchive).GroupSettings.Values.Single().ToList();
 
-        var rows = page.Rows
-            .Select(row => (IReadOnlyList<string>)columns
-                .Select(column => Convert.ToString(column.DisplaySelector(row), CultureInfo.CurrentCulture) ?? string.Empty)
-                .ToList())
-            .ToList();
-
-        return new DetailChildTable(columns.Select(c => c.Header).ToList(), rows, page.TotalCount);
+        return new DetailChildTable<TRow>(columns, page.Rows, page.TotalCount);
     }
+
+    async Task<DetailChildTable> IDetailChildSection<TDetailItem>.LoadAsync(
+        TDetailItem parent,
+        string lang,
+        CancellationToken cancellationToken) =>
+        await LoadAsync(parent, lang, cancellationToken);
 }

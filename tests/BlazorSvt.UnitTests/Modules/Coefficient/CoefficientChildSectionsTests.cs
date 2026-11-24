@@ -1,4 +1,4 @@
-using System.Globalization;
+﻿using System.Globalization;
 using BlazorSvt.Modules.Coefficient;
 using BlazorSvt.Modules.Coefficient.Detail;
 using BlazorSvt.Platform.Domain.IdsEnum;
@@ -64,7 +64,7 @@ public class CoefficientChildSectionsTests
         var table = await section.LoadAsync(Parent(isArchive: false), "en", CancellationToken.None);
 
         section.Title.Should().Be("CoefficientConditionValueDto.Title");
-        table.Headers.Should().Equal(
+        table.Headers().Should().Equal(
             "CoefficientConditionValueDto.Code",
             "CoefficientConditionValueDto.Except",
             "CoefficientConditionValueDto.TransportKindName",
@@ -72,7 +72,7 @@ public class CoefficientChildSectionsTests
             "CoefficientConditionValueDto.VehicleTypeName",
             "CoefficientConditionValueDto.FromLocationName",
             "CoefficientConditionValueDto.ToLocationName");
-        table.Rows.Single().Should().Equal(
+        table.Cells().Single().Should().Equal(
             "162", "Common.No", "Multimodal", "Rail tank container", "Wagon", "From node", "To node");
     }
 
@@ -84,7 +84,7 @@ public class CoefficientChildSectionsTests
 
         var table = await section.LoadAsync(Parent(isArchive: false), "ru", CancellationToken.None);
 
-        table.Rows.Single().Should().AllBe(string.Empty);
+        table.Cells().Single().Should().AllBe(string.Empty);
     }
 
     [Fact]
@@ -97,8 +97,11 @@ public class CoefficientChildSectionsTests
 
         var table = await section.LoadAsync(Parent(isArchive: true), "en", CancellationToken.None);
 
-        table.Headers.Should().HaveCount(8).And.EndWith("CoefficientConditionValueDto.IsArchive");
-        table.Rows.Select(r => r[^1]).Should().Equal("Common.Active", "Common.Archive");
+        table.Headers().Should().HaveCount(8).And.EndWith("CoefficientConditionValueDto.IsArchive");
+        table.Columns.Select(c => c.Name).Should().OnlyHaveUniqueItems();
+        table.Cells().Select(r => r[^1]).Should().Equal("Common.Active", "Common.Archive");
+        table.Columns[^1].Name.Should().Be("IsArchive");
+        table.Rows.Select(r => r.IsArchive).Should().Equal(false, true);
     }
 
     [Fact]
@@ -114,11 +117,11 @@ public class CoefficientChildSectionsTests
         var table = await section.LoadAsync(Parent(isArchive: false), "en", CancellationToken.None);
 
         section.Title.Should().Be("CoefficientComponentValueDto.Title");
-        table.Headers.Should().Equal(
+        table.Headers().Should().Equal(
             "CoefficientComponentValueDto.Code",
             "CoefficientComponentValueDto.ComponentName",
             "CoefficientComponentValueDto.Value");
-        table.Rows.Single().Should().Equal("670", "General", 1.0500m.ToString(CultureInfo.CurrentCulture));
+        table.Cells().Single().Should().Equal("670", "General", 1.0500m.ToString(CultureInfo.CurrentCulture));
         table.TotalCount.Should().Be(14);
         table.IsTruncated.Should().BeTrue();
     }
@@ -175,9 +178,9 @@ public class CoefficientChildSectionsTests
             var componentTable = await component.LoadAsync(Parent(isArchive: true), lang, CancellationToken.None);
 
             condition.Title.Should().Be(conditionTitle);
-            conditionTable.Headers.Should().Equal(conditionHeaders);
+            conditionTable.Headers().Should().Equal(conditionHeaders);
             component.Title.Should().Be(componentTitle);
-            componentTable.Headers.Should().Equal(componentHeaders);
+            componentTable.Headers().Should().Equal(componentHeaders);
         }
         finally
         {

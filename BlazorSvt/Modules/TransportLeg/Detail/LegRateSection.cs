@@ -21,7 +21,6 @@ public class LegRateSection(
         var b = new DetailSettingsBuilder<LegRateDto>(platform);
         var group = Title;
 
-        b.Add(group, x => x.Code, L["LegRateDto.Code"]);
         b.Add(group, x => x.RateCode, L["LegRateDto.RateCode"]);
         b.AddYesNo(group, x => x.IsDefRate, L["LegRateDto.IsDefRate"]);
         b.AddEnum(isRu, group, x => x.RateTypeIdRu, x => x.RateTypeIdEn, L["LegRateDto.RateTypeName"]);

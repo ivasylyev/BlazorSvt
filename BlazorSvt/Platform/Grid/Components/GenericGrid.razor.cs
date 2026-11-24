@@ -136,27 +136,8 @@ public partial class GenericGrid<TItem, TDetailItem> : SvtComponentBase, IDispos
         await grid.RefreshDataAsync();
     }
 
-    private async Task<IEnumerable<FilterOperatorInfo>> GridFiltersTranslationProvider()
-    {
-        var filters = new List<FilterOperatorInfo>
-        {
-            // Текстовые фильтры
-            new("*a*", L["FilterOperator.Contains"], FilterOperator.Contains),
-            new("!*a*", L["FilterOperator.DoesNotContain"], FilterOperator.DoesNotContain),
-            new("a**", L["FilterOperator.StartsWith"], FilterOperator.StartsWith),
-            new("**a", L["FilterOperator.EndsWith"], FilterOperator.EndsWith),
-            new("=", L["FilterOperator.Equals"], FilterOperator.Equals),
-            new("!=", L["FilterOperator.NotEquals"], FilterOperator.NotEquals),
-            // Числовые фильтры и даты
-            new("<", L["FilterOperator.LessThan"], FilterOperator.LessThan),
-            new("<=", L["FilterOperator.LessThanOrEquals"], FilterOperator.LessThanOrEquals),
-            new(">", L["FilterOperator.GreaterThan"], FilterOperator.GreaterThan),
-            new(">=", L["FilterOperator.GreaterThanOrEquals"], FilterOperator.GreaterThanOrEquals),
-            // Общие
-            new("x", L["FilterOperator.Clear"], FilterOperator.Clear)
-        };
-        return await Task.FromResult(filters);
-    }
+    private Task<IEnumerable<FilterOperatorInfo>> GridFiltersTranslationProvider() =>
+        Task.FromResult(GridFilterOperatorTranslations.Create(L));
 
     #endregion
 

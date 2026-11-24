@@ -16,6 +16,7 @@ using BlazorSvt.Modules.ParityRates.List;
 using BlazorSvt.Modules.TransportLeg.List;
 using BlazorSvt.Modules.TransportRate.List;
 using BlazorSvt.Modules.TransportRoute.List;
+using BlazorSvt.Modules.TransportKind.List;
 using BlazorSvt.Modules.TransportTypeLevel3.List;
 using BlazorSvt.Platform.Grid.Models;
 using BlazorSvt.Platform.Grid.Services;
@@ -241,6 +242,15 @@ public class GridColumnMetadataBuilderTests
 
         metadata.TableName.Should().Be("v2.TransportRoute_Snapshot");
         metadata.EntityKeyPropertyName.Should().Be(nameof(TransportRouteDto.TransportRouteId));
+    }
+
+    [Fact]
+    public void GetMetadata_TransportKind_UsesSnapshotTableAndEntityKey()
+    {
+        var metadata = GridColumnMetadataBuilder.GetMetadata(typeof(TransportKindDto));
+
+        metadata.TableName.Should().Be("v2.TransportKind_Snapshot");
+        metadata.EntityKeyPropertyName.Should().Be(nameof(TransportKindDto.TransportKindId));
     }
 
     [Fact]

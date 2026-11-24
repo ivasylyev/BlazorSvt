@@ -166,7 +166,7 @@ dotnet run --project BlazorSvt/BlazorSvt.csproj
 
 ## Добавление нового справочника
 
-Алгоритм целиком — skill `.cursor/skills/add-reference-book/` (`SKILL.md`, затем фазы `discovery.md`, `sql.md`, `csharp.md`). Образец обычного справочника — `Modules/TransportRate/`. Стабильный словарь с enum (без `SyncJob`) описан в том же навыке.
+Алгоритм целиком — skill `.cursor/skills/svt-migrate-catalog/` (`SKILL.md`, затем фазы `discovery.md`, `sql.md`, `csharp.md`). Образец обычного справочника — `Modules/TransportRate/`. Стабильный словарь с enum (без `SyncJob`) описан в том же навыке.
 
 ---
 

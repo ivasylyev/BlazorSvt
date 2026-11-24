@@ -65,15 +65,18 @@ SqlScripts/
 │   ├── Region/
 │   │   ├── Structure/
 │   │   └── Programmability/
-│   └── Country/
+│   ├── Country/
+│   │   ├── Structure/
+│   │   └── Programmability/
+│   └── TransportKind/
 │       ├── Structure/
-│       └── Programmability/
+│       └── Programmability/   # без PopulateAffectedKeys: разовая заливка
 ├── Migrations/             # Релизные артефакты наката (immutable после выката)
 │   ├── 2.0.0/              # baseline
 │   ├── 2.0.1/              # upgrade
 │   ├── 2.3.46/             # дельта RateType + снимок programmability
 │   ├── 2.3.48/             # очередь Атласа: Currency, ProductGroup, MTR, TransportTypeLevel3 + снимок programmability
-│   ├── 2.3.49/             # текущий VersionPrefix: Contractor, Coefficient, RateSyncClass, RateCalcType, RateAutoSelectionSetting, ReportConstructor, Relevance, TransportRoute, Region, Country + снимок programmability
+│   ├── 2.3.49/             # текущий VersionPrefix: Contractor, Coefficient, RateSyncClass, RateCalcType, RateAutoSelectionSetting, ReportConstructor, Relevance, TransportRoute, Region, Country, TransportKind + снимок programmability
 │   └── README.md           # конвенция релизов / два контура
 └── Translations_info.txt   # Справочник переводов полей (не для деплоя)
 ```
@@ -340,6 +343,16 @@ SqlScripts/
 | 5 | `Modules/Country/Programmability/vw_Country_Detail.sql` |
 | 6 | `Modules/Country/Programmability/sp_Country_PopulateAffectedKeys.sql` |
 
+**TransportKind** (стабильный разовый снимок: без RowVer, SyncJob и PopulateAffectedKeys; проекция до Insert)
+
+| # | Скрипт |
+|---|--------|
+| 1 | `Modules/TransportKind/Structure/01.TransportKind_CreateTable.sql` |
+| 2 | `Modules/TransportKind/Programmability/vw_TransportKind_SnapshotSource.sql` |
+| 3 | `Modules/TransportKind/Structure/02.TransportKind_Insert.sql` |
+| 4 | `Modules/TransportKind/Structure/03.TransportKind_CreateIndexes.sql` |
+| 5 | `Modules/TransportKind/Programmability/vw_TransportKind_Detail.sql` |
+
 ## Grid read-модель
 
 Список колонок для grid (`@AllowedColumnsJson`, `@SelectList`) формируется в C# из атрибутов `[GridSnapshot]` и `[GridColumn]` на `{Entity}Dto`.  
@@ -406,7 +419,7 @@ SQL-логика вынесена в процедуры. Все обращени
 **Справочники вне каскада чужих гридов** — список и номера `PrimitiveEntityData_*` в `.cursor/rules/svt-development-patterns.mdc`. Свой watermark-sync в этой таблице есть только у `TransportType`. Колонки `*_Id` в snapshot остаются, если нужны grid-DTO.
 У TransportLeg тип отправки — сырой `ShipmentTypeCodeT` (не FK/enum на `2142`).
 
-Свой RO-грид стабильного словаря с enum — другой список, только в skill `add-reference-book`. Для него: разовая заливка, без `RowVer`, `SyncJob`, `PopulateAffectedKeys` и `SyncState`. Отсутствие sync само по себе грид не задаёт.
+Свой RO-грид стабильного словаря с enum — другой список, только в skill `svt-migrate-catalog`. Для него: разовая заливка, без `RowVer`, `SyncJob`, `PopulateAffectedKeys` и `SyncState`. Отсутствие sync само по себе грид не задаёт.
 
 **Удаления.** Ловятся не инкрементом, а `reconciliation` (anti-join snapshot ↔
 проекция), который воркер запускает раз в сутки. Допустимо, что физически
@@ -474,30 +487,26 @@ END
 ## Накат Programmability (localhost)
 
 ```powershell
-.\BlazorSvt\SqlScripts\Create-Programmability.ps1
+.\BlazorSvt\SqlScripts\svt-create-programmability.ps1
 ```
 
 Скрипт берёт имя базы, логин и пароль из `appsettings.json` и подключается к `localhost`. Поле Server из строки не использует. Выполняет Platform и все модули; при ошибке останавливается.
 В Cursor: `/create_programmability`.
 
-## Публикация SQL для деплоя
+## Публикация пакета версии
 
 Релизные скрипты наката хранятся в `Migrations/` (см. `Migrations/README.md`). SoT разработки — `Platform/` / `Modules/` / `Sync/`.
 
 ```powershell
-# Все версии → C:\publish\v2\{2.0.0,2.0.1,…}
-.\BlazorSvt\SqlScripts\Publish-AllSql.ps1 -Mode All
+# Приложение + склейка текущей папки миграции → C:\publish\{VersionPrefix}\ и zip рядом
+.\BlazorSvt\SqlScripts\svt-publish.ps1 -Mode all
 
-# Один релиз
-.\BlazorSvt\SqlScripts\Publish-AllSql.ps1 -Mode Release -Version 2.0.1
-
-# Актуальный Programmability из SoT → C:\publish\v2\programmability\
-.\BlazorSvt\SqlScripts\Publish-AllSql.ps1 -Mode Programmability
-
-# Legacy: плоский greenfield-снимок из SoT (не история релизов)
-.\BlazorSvt\SqlScripts\Publish-AllSql.ps1 -Mode FromSource
+# Только приложение / только склейка / то же, что all, плюс sqlcmd на localhost
+.\BlazorSvt\SqlScripts\svt-publish.ps1 -Mode app
+.\BlazorSvt\SqlScripts\svt-publish.ps1 -Mode sql
+.\BlazorSvt\SqlScripts\svt-publish.ps1 -Mode local
 ```
 
-Накат на стенд: папки миграций по порядку версий → затем Programmability. Новый справочник: Structure-дельта в `Migrations/X.Y.Z/` + обновить SoT и манифест `FromSource`/`Programmability` в `Publish-AllSql.ps1` + таблицы порядка выше.
+Накат на стенд: папки миграций по порядку версий. Новый справочник: Structure-дельта в `Migrations/X.Y.Z/`, снимок programmability последним файлом папки, SoT и таблицы порядка выше. Скрипт пакета манифест файлов не ведёт: в склейку попадают `*.sql` одной папки версии по имени.
 
-В Cursor: `/publish_all_sql`.
+В Cursor: `/publish`.

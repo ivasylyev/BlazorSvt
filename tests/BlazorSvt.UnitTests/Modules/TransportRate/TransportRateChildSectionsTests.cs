@@ -1,4 +1,4 @@
-using System.Globalization;
+﻿using System.Globalization;
 using BlazorSvt.Modules.TransportRate;
 using BlazorSvt.Modules.TransportRate.Detail;
 using BlazorSvt.Platform.Domain.IdsEnum;
@@ -42,12 +42,12 @@ public class TransportRateChildSectionsTests
         var table = await section.LoadAsync(Parent(isArchive: false), "en", CancellationToken.None);
 
         section.Title.Should().Be("TransportRateTenderServicePackDto.Title");
-        table.Headers.Should().Equal(
+        table.Headers().Should().Equal(
             "TransportRateTenderServicePackDto.Code",
             "TransportRateTenderServicePackDto.TenderServicePack",
             "TransportRateTenderServicePackDto.LotRate",
             "TransportRateTenderServicePackDto.LotCurrency");
-        table.Rows.Single().Should().Equal(
+        table.Cells().Single().Should().Equal(
             "P-1",
             "Pack",
             Convert.ToString(12.50m, CultureInfo.CurrentCulture),
@@ -67,7 +67,7 @@ public class TransportRateChildSectionsTests
 
         var table = await section.LoadAsync(Parent(isArchive: false), "ru", CancellationToken.None);
 
-        table.Rows.Single().Should().AllBe(string.Empty);
+        table.Cells().Single().Should().AllBe(string.Empty);
     }
 
     [Fact]
@@ -80,8 +80,11 @@ public class TransportRateChildSectionsTests
 
         var table = await section.LoadAsync(Parent(isArchive: true), "en", CancellationToken.None);
 
-        table.Headers.Should().HaveCount(5).And.EndWith("TransportRateTenderServicePackDto.IsArchive");
-        table.Rows.Select(r => r[^1]).Should().Equal("Common.Active", "Common.Archive");
+        table.Headers().Should().HaveCount(5).And.EndWith("TransportRateTenderServicePackDto.IsArchive");
+        table.Columns.Select(c => c.Name).Should().OnlyHaveUniqueItems();
+        table.Cells().Select(r => r[^1]).Should().Equal("Common.Active", "Common.Archive");
+        table.Columns[^1].Name.Should().Be("IsArchive");
+        table.Rows.Select(r => r.IsArchive).Should().Equal(false, true);
     }
 
     [Fact]
@@ -107,7 +110,7 @@ public class TransportRateChildSectionsTests
         var table = await section.LoadAsync(Parent(isArchive: false), "en", CancellationToken.None);
 
         section.Title.Should().Be("TransportRateCoefficientDto.Title");
-        table.Headers.Should().Equal(
+        table.Headers().Should().Equal(
             "TransportRateCoefficientDto.Code",
             "TransportRateCoefficientDto.CoefficientRateCode",
             "TransportRateCoefficientDto.StartDate",
@@ -115,7 +118,7 @@ public class TransportRateChildSectionsTests
             "TransportRateCoefficientDto.CoefficientName",
             "TransportRateCoefficientDto.SourceRateCode",
             "TransportRateCoefficientDto.SourceRateKindName");
-        table.Rows.Single().Should().Equal(
+        table.Cells().Single().Should().Equal(
             "C-1",
             "R-1",
             Convert.ToString(start, CultureInfo.CurrentCulture),
@@ -135,8 +138,11 @@ public class TransportRateChildSectionsTests
 
         var table = await section.LoadAsync(Parent(isArchive: true), "ru", CancellationToken.None);
 
-        table.Headers.Should().HaveCount(8).And.EndWith("TransportRateCoefficientDto.IsArchive");
-        table.Rows.Select(r => r[^1]).Should().Equal("Common.Active", "Common.Archive");
+        table.Headers().Should().HaveCount(8).And.EndWith("TransportRateCoefficientDto.IsArchive");
+        table.Columns.Select(c => c.Name).Should().OnlyHaveUniqueItems();
+        table.Cells().Select(r => r[^1]).Should().Equal("Common.Active", "Common.Archive");
+        table.Columns[^1].Name.Should().Be("IsArchive");
+        table.Rows.Select(r => r.IsArchive).Should().Equal(false, true);
     }
 
     [Fact]
@@ -189,9 +195,9 @@ public class TransportRateChildSectionsTests
             var coefficientTable = await coefficient.LoadAsync(Parent(isArchive: true), lang, CancellationToken.None);
 
             tender.Title.Should().Be(tenderTitle);
-            tenderTable.Headers.Should().Equal(tenderHeaders);
+            tenderTable.Headers().Should().Equal(tenderHeaders);
             coefficient.Title.Should().Be(coefficientTitle);
-            coefficientTable.Headers.Should().Equal(coefficientHeaders);
+            coefficientTable.Headers().Should().Equal(coefficientHeaders);
         }
         finally
         {

@@ -1,4 +1,4 @@
-using System.Globalization;
+﻿using System.Globalization;
 using BlazorSvt.Modules.Contractor;
 using BlazorSvt.Modules.Contractor.Detail;
 using BlazorSvt.Platform.Domain.IdsEnum;
@@ -34,7 +34,7 @@ public class ContractorChildSectionsTests
         var table = await section.LoadAsync(Parent(isArchive: false), "en", CancellationToken.None);
 
         section.Title.Should().Be("AddressDto.Title");
-        table.Headers.Should().Equal(
+        table.Headers().Should().Equal(
             "AddressDto.Code",
             "AddressDto.AddressType",
             "AddressDto.City",
@@ -54,7 +54,7 @@ public class ContractorChildSectionsTests
             "AddressDto.FIASCodeSettlement",
             "AddressDto.Region",
             "AddressDto.Country");
-        table.Rows.Single().Should().Equal(
+        table.Cells().Single().Should().Equal(
             "ADDR-1",
             "Legal",
             "Tobolsk",
@@ -86,8 +86,11 @@ public class ContractorChildSectionsTests
 
         var table = await section.LoadAsync(Parent(isArchive: true), "ru", CancellationToken.None);
 
-        table.Headers.Should().HaveCount(20).And.EndWith("AddressDto.IsArchive");
-        table.Rows.Select(r => r[^1]).Should().Equal("Common.Active", "Common.Archive");
+        table.Headers().Should().HaveCount(20).And.EndWith("AddressDto.IsArchive");
+        table.Columns.Select(c => c.Name).Should().OnlyHaveUniqueItems();
+        table.Cells().Select(r => r[^1]).Should().Equal("Common.Active", "Common.Archive");
+        table.Columns[^1].Name.Should().Be("IsArchive");
+        table.Rows.Select(r => r.IsArchive).Should().Equal(false, true);
     }
 
     [Fact]
@@ -139,7 +142,7 @@ public class ContractorChildSectionsTests
             var table = await section.LoadAsync(Parent(isArchive: true), lang, CancellationToken.None);
 
             section.Title.Should().Be(title);
-            table.Headers.Should().Equal(headers);
+            table.Headers().Should().Equal(headers);
         }
         finally
         {

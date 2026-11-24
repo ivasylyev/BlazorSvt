@@ -32,6 +32,7 @@ public sealed class ApiCatalogDataTests : IClassFixture<ApiDataTestFactory>
         "product-groups",
         "products",
         "transport-types-level-3",
+        "transport-kinds",
         "countries",
         "regions",
         "transport-routes"
@@ -56,6 +57,7 @@ public sealed class ApiCatalogDataTests : IClassFixture<ApiDataTestFactory>
         ("product-groups", "productGroupId"),
         ("products", "mtrId"),
         ("transport-types-level-3", "transportTypeLevel3Id"),
+        ("transport-kinds", "transportKindId"),
         ("countries", "countryId"),
         ("regions", "regionId"),
         ("transport-routes", "transportRouteId")

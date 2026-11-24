@@ -1,4 +1,4 @@
-using System.Globalization;
+﻿using System.Globalization;
 using BlazorSvt.Modules.TransportLeg;
 using BlazorSvt.Modules.TransportLeg.Detail;
 using BlazorSvt.Platform.Domain.IdsEnum;
@@ -56,8 +56,7 @@ public class TransportLegChildSectionsTests
         var table = await section.LoadAsync(Parent(isArchive: false), "en", CancellationToken.None);
 
         section.Title.Should().Be("LegRateDto.Title");
-        table.Headers.Should().Equal(
-            "LegRateDto.Code",
+        table.Headers().Should().Equal(
             "LegRateDto.RateCode",
             "LegRateDto.IsDefRate",
             "LegRateDto.RateTypeName",
@@ -69,8 +68,7 @@ public class TransportLegChildSectionsTests
             "LegRateDto.TotalCostTon",
             "LegRateDto.TotalCostTransport",
             "LegRateDto.Currency");
-        table.Rows.Single().Should().Equal(
-            "LR-1",
+        table.Cells().Single().Should().Equal(
             "R-1",
             "Common.Yes",
             "Tender",
@@ -92,8 +90,8 @@ public class TransportLegChildSectionsTests
 
         var table = await section.LoadAsync(Parent(isArchive: false), "ru", CancellationToken.None);
 
-        table.Rows.Single().Should().Equal(
-            "", "", "Common.No", "", "", "", "", "", "", "", "", "");
+        table.Cells().Single().Should().Equal(
+            "", "Common.No", "", "", "", "", "", "", "", "", "");
     }
 
     [Fact]
@@ -120,8 +118,7 @@ public class TransportLegChildSectionsTests
         var table = await section.LoadAsync(Parent(isArchive: false), "en", CancellationToken.None);
 
         section.Title.Should().Be("LegAverageRateLevel3Dto.Title");
-        table.Headers.Should().Equal(
-            "LegAverageRateLevel3Dto.Code",
+        table.Headers().Should().Equal(
             "LegAverageRateLevel3Dto.AverageRateCode",
             "LegAverageRateLevel3Dto.IsDefRate",
             "LegAverageRateLevel3Dto.RateTypeName",
@@ -133,8 +130,7 @@ public class TransportLegChildSectionsTests
             "LegAverageRateLevel3Dto.RateLevel3",
             "LegAverageRateLevel3Dto.EffectiveLoadOfTransportType",
             "LegAverageRateLevel3Dto.Currency");
-        table.Rows.Single().Should().Equal(
-            "AR-1",
+        table.Cells().Single().Should().Equal(
             "A-1",
             "Common.No",
             "Indicative",
@@ -161,7 +157,7 @@ public class TransportLegChildSectionsTests
 
         var table = await section.LoadAsync(Parent(isArchive: false), "ru", CancellationToken.None);
 
-        table.Rows.Single().Should().AllBe(string.Empty);
+        table.Cells().Single().Should().AllBe(string.Empty);
     }
 
     [Fact]
@@ -202,7 +198,7 @@ public class TransportLegChildSectionsTests
         var table = await section.LoadAsync(Parent(isArchive: false), "en", CancellationToken.None);
 
         section.Title.Should().Be("LeadtimeDto.Title");
-        table.Headers.Should().Equal(
+        table.Headers().Should().Equal(
             "LeadtimeDto.Code",
             "LeadtimeDto.StartDate",
             "LeadtimeDto.EndDate",
@@ -227,7 +223,7 @@ public class TransportLegChildSectionsTests
             "LeadtimeDto.Leg2_UploadTime",
             "LeadtimeDto.Leg2_TransportationTime",
             "LeadtimeDto.Leg2_Distance");
-        table.Rows.Single().Should().Equal(
+        table.Cells().Single().Should().Equal(
             "LT-1",
             Text(start),
             "",
@@ -270,12 +266,17 @@ public class TransportLegChildSectionsTests
         var averageTable = await average.LoadAsync(Parent(isArchive: true), "ru", CancellationToken.None);
         var leadtimeTable = await leadtime.LoadAsync(Parent(isArchive: true), "ru", CancellationToken.None);
 
-        legRateTable.Headers.Should().HaveCount(13).And.EndWith("LegRateDto.IsArchive");
-        legRateTable.Rows.Select(r => r[^1]).Should().Equal("Common.Active", "Common.Archive");
-        averageTable.Headers.Should().HaveCount(13).And.EndWith("LegAverageRateLevel3Dto.IsArchive");
-        averageTable.Rows.Single()[^1].Should().Be("Common.Archive");
-        leadtimeTable.Headers.Should().HaveCount(25).And.EndWith("LeadtimeDto.IsArchive");
-        leadtimeTable.Rows.Single()[^1].Should().Be("Common.Active");
+        legRateTable.Headers().Should().HaveCount(12).And.EndWith("LegRateDto.IsArchive");
+        legRateTable.Columns.Select(c => c.Name).Should().OnlyHaveUniqueItems();
+        legRateTable.Cells().Select(r => r[^1]).Should().Equal("Common.Active", "Common.Archive");
+        legRateTable.Columns[^1].Name.Should().Be("IsArchive");
+        legRateTable.Rows.Select(r => r.IsArchive).Should().Equal(false, true);
+        averageTable.Headers().Should().HaveCount(12).And.EndWith("LegAverageRateLevel3Dto.IsArchive");
+        averageTable.Columns.Select(c => c.Name).Should().OnlyHaveUniqueItems();
+        averageTable.Cells().Single()[^1].Should().Be("Common.Archive");
+        leadtimeTable.Headers().Should().HaveCount(25).And.EndWith("LeadtimeDto.IsArchive");
+        leadtimeTable.Columns.Select(c => c.Name).Should().OnlyHaveUniqueItems();
+        leadtimeTable.Cells().Single()[^1].Should().Be("Common.Active");
     }
 
     [Fact]
@@ -298,14 +299,14 @@ public class TransportLegChildSectionsTests
         "Ставки плеча",
         new[]
         {
-            "Код", "Код ставки", "Дефлятор", "Тип ставки", "Тип транспорта", "Группа продуктов", "Продукт",
+            "Код ставки", "Дефлятор", "Тип ставки", "Тип транспорта", "Группа продуктов", "Продукт",
             "Период действия с", "Период действия по", "Общая стоимость за тонну",
             "Общая стоимость за транспортное средство", "Валюта-эталон", "Архив"
         },
         "Средневзвешенные ставки 3 уровня",
         new[]
         {
-            "Код", "Код ставки", "Дефлятор", "Тип ставки", "Тип транспорта", "Группа продуктов", "Продукт",
+            "Код ставки", "Дефлятор", "Тип ставки", "Тип транспорта", "Группа продуктов", "Продукт",
             "Период действия с", "Период действия по", "Ставка ср.взвеш. (т) в валюте-эталоне",
             "Эффективная загрузка типа транспорта (в тоннах)", "Валюта-эталон", "Архив"
         },
@@ -324,14 +325,14 @@ public class TransportLegChildSectionsTests
         "Leg rates",
         new[]
         {
-            "Code", "Rate code", "Deflator", "Rate type", "Type of vehicle", "Product group", "Product",
+            "Rate code", "Deflator", "Rate type", "Type of vehicle", "Product group", "Product",
             "Validity period from", "Validity period till", "Total cost of transportation per ton (excluding VAT)",
             "Total cost of transportation per vehicle (excluding VAT)", "Reference currency", "Archive"
         },
         "Rate Level3",
         new[]
         {
-            "Code", "Rate code", "Deflator", "Rate type", "Type of vehicle", "Product group", "Product",
+            "Rate code", "Deflator", "Rate type", "Type of vehicle", "Product group", "Product",
             "Validity period from", "Validity period till", "Avg.rate of level 3 in ref.currency",
             "Effective loading of the transport vehicle type (in tons)", "Reference currency", "Archive"
         },
@@ -376,11 +377,11 @@ public class TransportLegChildSectionsTests
             var leadtimeTable = await leadtime.LoadAsync(Parent(isArchive: true), lang, CancellationToken.None);
 
             legRate.Title.Should().Be(legRateTitle);
-            legRateTable.Headers.Should().Equal(legRateHeaders);
+            legRateTable.Headers().Should().Equal(legRateHeaders);
             average.Title.Should().Be(averageTitle);
-            averageTable.Headers.Should().Equal(averageHeaders);
+            averageTable.Headers().Should().Equal(averageHeaders);
             leadtime.Title.Should().Be(leadtimeTitle);
-            leadtimeTable.Headers.Should().Equal(leadtimeHeaders);
+            leadtimeTable.Headers().Should().Equal(leadtimeHeaders);
         }
         finally
         {

@@ -45,4 +45,4 @@ MDM логистических маршрутов, тарифов и склад�
 
 Discovery, sqlcmd, Programmability, integration-тесты: сервер **`localhost`**, база **`mdm`**. Логин/пароль — из `Database:MdmDb`. Поле Server из строки **не** использовать. `appsettings.json` не менять. Перед integration-тестами: `BLAZORSVT_TEST_CONNECTION` с `Server=localhost`.
 
-Slash-команды SQL (`publish_all_sql`, `create_programmability`) — канон в одноимённых skills; см. `.cursor/README.md`.
+Slash-команды SQL: `publish` — канон в skill `svt-publish`, `create_programmability` — в skill `svt-create-programmability`; см. `.cursor/README.md`.
