@@ -11,11 +11,11 @@
 | Ситуация | Куда |
 |---|---|
 | Статус, скоуп, веха, Gate, риск, термин, чеклист, функция вне реестра | Строка таблицы «Канон» |
-| Новый read-only справочник | [`add-reference-book`](add-reference-book.md) |
-| Накат SP на localhost | [`create-programmability`](create-programmability.md) |
-| Публикация SQL в каталог деплоя | [`publish-all-sql`](publish-all-sql.md) |
-| Эталон, кольцо, роли | [`atlas`](../atlas/atlas.md) |
-| Разделы 0 / 1а / 1б план-графика | [`plan-grafik-md-html`](../atlas/plan-grafik-md-html.md) |
+| Новый read-only справочник | [`svt-migrate-catalog`](svt-migrate-catalog.md) |
+| Накат SP на localhost | [`svt-create-programmability`](svt-create-programmability.md) |
+| Публикация SQL в каталог деплоя | [`svt-publish-all-sql`](svt-publish-all-sql.md) |
+| Эталон, кольцо, роли | [`atlas-methodology`](../atlas/atlas-methodology.md) |
+| Разделы 0 / 1а / 1б план-графика | [`atlas-plan-grafik-md-html`](../atlas/atlas-plan-grafik-md-html.md) |
 | Как писать текущий код модуля | правило `svt-development-patterns` |
 | Обязательные ограничения архитектуры | правило `svt-architecture-principles` |
 
@@ -45,4 +45,4 @@
 
 ## Куда встаёт
 
-Контекст перед работой по треку СВТ. [`add-reference-book`](add-reference-book.md) сверяет справочник с `catalogs-scope.md`. Правила `svt-architecture-principles` и `svt-development-patterns` держат ограничения и паттерны кода. Цепочка — [`docs/README.md`](../README.md).
+Контекст перед работой по треку СВТ. [`svt-migrate-catalog`](svt-migrate-catalog.md) сверяет справочник с `catalogs-scope.md`. Правила `svt-architecture-principles` и `svt-development-patterns` держат ограничения и паттерны кода. Цепочка — [`docs/README.md`](../README.md).

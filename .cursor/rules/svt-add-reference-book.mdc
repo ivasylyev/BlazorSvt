@@ -6,8 +6,8 @@ alwaysApply: false
 
 # Добавление справочника
 
-При команде «добавить справочник» или создании файлов в `Modules/{Entity}/` / `SqlScripts/Modules/{Entity}/` — **сначала прочитай skill** `add-reference-book` (`.cursor/skills/add-reference-book/SKILL.md`) и следуй ему полностью.
+При команде «добавить справочник» или создании файлов в `Modules/{Entity}/` / `SqlScripts/Modules/{Entity}/` — **сначала прочитай skill** `svt-migrate-catalog` (`.cursor/skills/svt-migrate-catalog/SKILL.md`) и следуй ему полностью.
 
-Канон: `SKILL.md` → по фазам `discovery.md` → `sql.md` → `csharp.md`. Короткие заголовки грида — [grid-column-glossary.md](../skills/add-reference-book/grid-column-glossary.md).
+Канон: `SKILL.md` → по фазам `discovery.md` → `sql.md` → `csharp.md`. Короткие заголовки грида — [grid-column-glossary.md](../skills/svt-migrate-catalog/grid-column-glossary.md).
 
 Не дублировать алгоритм здесь. C# — только после успешного деплоя и верификации SQL.

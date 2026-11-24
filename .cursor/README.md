@@ -21,16 +21,16 @@
 | `svt-architecture-principles.mdc` | alwaysApply | Обязательные ограничения архитектуры |
 | `ne-udalyat-sami.mdc` | alwaysApply | Не удалять без явного названия, не придумывать факты |
 | `svt-development-patterns.mdc` | `BlazorSvt/**/*` | Паттерны модулей, grid, API, sync, тесты |
-| `svt-add-reference-book.mdc` | Modules / SqlScripts Modules | Указатель на skill `add-reference-book` |
-| `svt-atlas.mdc` | `docs/docs/svt-v-atlas/**` | Указатель на skill `atlas` (эталонные документы) |
+| `svt-add-reference-book.mdc` | Modules / SqlScripts Modules | Указатель на skill `svt-migrate-catalog` |
+| `svt-atlas.mdc` | `docs/docs/svt-v-atlas/**` | Указатель на skill `atlas-methodology` (эталонные документы) |
 | `svt-exec-html.mdc` | план для руководства | Вёрстка HTML для Капли/Аветисова |
 
 ## Commands → Skills
 
 | Command | Канон | Страница |
 |---------|--------|----------|
-| `/publish_all_sql` | skill `publish-all-sql` | [publish-all-sql.md](docs/svt/publish-all-sql.md) |
-| `/create_programmability` | skill `create-programmability` | [create-programmability.md](docs/svt/create-programmability.md) |
+| `/publish_all_sql` | skill `svt-publish-all-sql` | [svt-publish-all-sql.md](docs/svt/svt-publish-all-sql.md) |
+| `/create_programmability` | skill `svt-create-programmability` | [svt-create-programmability.md](docs/svt/svt-create-programmability.md) |
 
 Перед выполнением slash-команды агент читает соответствующий skill. Текст command не должен расходиться со skill; при сомнении — skill.
 
@@ -38,5 +38,5 @@
 
 - Длинный статус прода и полный план — в skill `svt-architecture`, таблица «Канон» в `SKILL.md`. AlwaysApply эту таблицу не дублирует
 - Страницы скилов для человека — `.cursor/docs/`. Каталог — `.cursor/docs/README.md`. Индекс документов продукта — `docs/README.md` в корне репозитория. Пакет architecture review — `docs/output-review-package/README.md`
-- Алгоритм нового справочника — в `add-reference-book`, rule только указывает
-- Методология эталона / кольцо / промпты Атласа — в `atlas`. Синхронизация разделов 0 / 1а / 1б план-графика — в `plan-grafik-md-html`
+- Алгоритм нового справочника — в `svt-migrate-catalog`, rule только указывает
+- Методология эталона / кольцо / промпты Атласа — в `atlas-methodology`. Синхронизация разделов 0 / 1а / 1б план-графика — в `atlas-plan-grafik-md-html`

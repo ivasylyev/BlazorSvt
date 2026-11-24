@@ -419,7 +419,7 @@ SQL-логика вынесена в процедуры. Все обращени
 **Справочники вне каскада чужих гридов** — список и номера `PrimitiveEntityData_*` в `.cursor/rules/svt-development-patterns.mdc`. Свой watermark-sync в этой таблице есть только у `TransportType`. Колонки `*_Id` в snapshot остаются, если нужны grid-DTO.
 У TransportLeg тип отправки — сырой `ShipmentTypeCodeT` (не FK/enum на `2142`).
 
-Свой RO-грид стабильного словаря с enum — другой список, только в skill `add-reference-book`. Для него: разовая заливка, без `RowVer`, `SyncJob`, `PopulateAffectedKeys` и `SyncState`. Отсутствие sync само по себе грид не задаёт.
+Свой RO-грид стабильного словаря с enum — другой список, только в skill `svt-migrate-catalog`. Для него: разовая заливка, без `RowVer`, `SyncJob`, `PopulateAffectedKeys` и `SyncState`. Отсутствие sync само по себе грид не задаёт.
 
 **Удаления.** Ловятся не инкрементом, а `reconciliation` (anti-join snapshot ↔
 проекция), который воркер запускает раз в сутки. Допустимо, что физически
@@ -487,7 +487,7 @@ END
 ## Накат Programmability (localhost)
 
 ```powershell
-.\BlazorSvt\SqlScripts\Create-Programmability.ps1
+.\BlazorSvt\SqlScripts\svt-create-programmability.ps1
 ```
 
 Скрипт берёт имя базы, логин и пароль из `appsettings.json` и подключается к `localhost`. Поле Server из строки не использует. Выполняет Platform и все модули; при ошибке останавливается.

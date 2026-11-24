@@ -2,7 +2,7 @@
 
 Опубликовать SQL-скрипты деплоя в `C:\publish\v2` (или `-TargetPath`).
 
-**Канон:** skill `publish-all-sql` (`.cursor/skills/publish-all-sql/SKILL.md`). Прочитай его и выполни.
+**Канон:** skill `svt-publish-all-sql` (`.cursor/skills/svt-publish-all-sql/SKILL.md`). Прочитай его и выполни.
 
 Кратко (по умолчанию):
 

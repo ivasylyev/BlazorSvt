@@ -30,7 +30,7 @@ description: >-
 | Чеклист перед кодом | [pre-implementation-checklist.md](pre-implementation-checklist.md) |
 | Обязательные ограничения | правило `svt-architecture-principles` |
 | Как писать текущий код | правило `svt-development-patterns` |
-| Новый RO-справочник | skill `add-reference-book` |
+| Новый RO-справочник | skill `svt-migrate-catalog` |
 | Контракт HTTP | `docs/api/svt-api-v1.openapi.json` |
 | Как вызывать API | `docs/api/svt-api-v1-developers.md` |
 | Решения и риски API | [architecture.md](architecture.md) §6.6.1 |
