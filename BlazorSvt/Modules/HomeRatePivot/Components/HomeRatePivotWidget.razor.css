@@ -3,6 +3,12 @@
     white-space: nowrap;
 }
 
+/* Выбранная строка (table-active): производный тон --svt-selected вместо серого Bootstrap rgba(0,0,0,.1) */
+.home-rate-pivot-grid-col ::deep .home-rate-pivot-table {
+    --bs-table-active-bg: var(--svt-selected);
+    --bs-table-active-color: var(--dark-green);
+}
+
 .home-rate-pivot-grid-col ::deep .home-rate-pivot-table thead th {
     background-color: var(--svt-head);
     color: var(--dark-green);
