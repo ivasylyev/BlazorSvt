@@ -467,6 +467,14 @@ h1:focus {
     box-shadow: inset 4px 0 0 var(--dnk-sibur), var(--bs-accordion-btn-focus-box-shadow);
 }
 
+/* Hover шапок аккордеона (группы, дочерние таблицы, «Раскрыть все»): тот же тон, что у hover в фильтрах; на сером --svt-head тон hover строки (#F0F3F3) не виден */
+.sibur-grid .accordion-item .accordion-button:hover,
+.sibur-grid .accordion-item.sibur-grid-detail-child .accordion-button:hover,
+.sibur-grid .sibur-grid-detail-toggle-all:hover {
+    background-color: var(--svt-selected) !important;
+    cursor: pointer;
+}
+
 .sibur-grid .sibur-grid-detail-toggle-all {
     width: 100%;
     box-sizing: border-box;
