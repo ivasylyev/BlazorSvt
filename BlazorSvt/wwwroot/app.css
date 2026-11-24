@@ -35,16 +35,74 @@
     unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
 }
 
+/* Фирменные цвета СИБУР (docs/docs/sibur_style.md) */
 :root {
+    --white: #FFFFFF;
+    --dark-green: #00313C;
+    --dnk-sibur: #008C95;
+    --mint: #77E2C3;
+    --coral: #FC786E;
+    --beige-light: #FFE6D7;
+    --gray-50: #5A5A5A;
+    --gray-30: #B3B3B3;        /* между серыми 40% и 20% из гайда; добавлен по запросу, в гайде нет */
+    --gray-20: #CCCCCC;
+    --gray-10: #E5E5E5;
+
+    /* Производные осветлённые тона от тёмно-зелёного и ДНК СИБУР: согласовано, только четыре роли.
+       Новый тон добавляется только по согласованию. */
+    --svt-hover: #F0F3F3;      /* hover строки */
+    --svt-selected: #E6F4F4;   /* выбранная строка */
+    --svt-head: #F0F3F3;       /* шапка таблицы */
+    --svt-line: #D6DEE0;       /* линии (тёмно-зелёный 16%, как в прототипе) */
+
+    --ink: var(--dark-green);
+    --ink-muted: var(--gray-50);
+
     --bs-body-font-family: "Roboto", Arial, sans-serif;
+    --bs-body-color: #00313C;
+    --bs-body-color-rgb: 0, 49, 60;
+    --bs-link-color: #008C95;
+    --bs-link-color-rgb: 0, 140, 149;
+    --bs-link-hover-color: #00313C;
+    --bs-link-hover-color-rgb: 0, 49, 60;
+    --bs-focus-ring-color: rgba(0, 140, 149, 0.25);
 }
 
 body {
     font-family: "Roboto", Arial, sans-serif;
+    color: var(--dark-green);
+}
+
+h1, h2, h3, h4, h5, h6 {
+    font-weight: 700;
 }
 
 h1:focus {
     outline: none;
+}
+
+/* Фокус: заметная обводка ДНК СИБУР */
+:focus-visible {
+    outline: 2px solid var(--dnk-sibur);
+    outline-offset: 2px;
+}
+
+.btn:focus-visible,
+.btn-check:focus-visible + .btn {
+    outline: 2px solid var(--dnk-sibur);
+    outline-offset: 2px;
+    box-shadow: none;
+}
+
+.form-control:focus,
+.form-select:focus {
+    border-color: var(--dnk-sibur);
+    box-shadow: 0 0 0 0.25rem rgba(0, 140, 149, 0.25);
+}
+
+.form-check-input:focus {
+    border-color: var(--dnk-sibur);
+    box-shadow: 0 0 0 0.25rem rgba(0, 140, 149, 0.25);
 }
 
 .blazor-error-boundary {
@@ -84,56 +142,59 @@ h1:focus {
 }
 
 /*Button*/
+/* Вторичная кнопка: белая, тёмно-зелёная обводка и текст (белый текст на ДНК СИБУР в малом размере не читается: 4.0:1) */
 .sibur-dna-btn {
-    background-color: #008c95 !important;
-    border: 1px solid #008c95 !important;
-    color: white !important;
+    background-color: var(--white) !important;
+    border: 1px solid var(--dark-green) !important;
+    color: var(--dark-green) !important;
     font-weight: bold !important;
     transition: 0.3s;
 }
 
     .sibur-dna-btn:hover {
-        background-color: white !important;
-        color: #008c95 !important;
+        background-color: var(--svt-hover) !important;
+        color: var(--dark-green) !important;
     }
 
 
+/* Предупреждающее действие: коралловая плашка, тёмно-зелёный текст (5.3:1) */
 .sibur-warn-btn {
-    background-color: #EF9987 !important;
-    border: 1px solid #EF9987 !important;
-    color: white !important;
+    background-color: var(--coral) !important;
+    border: 1px solid var(--coral) !important;
+    color: var(--dark-green) !important;
     font-weight: bold !important;
     transition: 0.3s;
 }
     .sibur-warn-btn:hover {
-        background-color: #FFE6D7 !important;
-        color: black !important;
+        background-color: var(--beige-light) !important;
+        color: var(--dark-green) !important;
     }
 
 
+/* Основная кнопка: тёмно-зелёная, белый текст */
 .sibur-dark-btn {
-    background-color: #00606a !important;
-    border: 1px solid #00606a !important;
-    color: white !important;
+    background-color: var(--dark-green) !important;
+    border: 1px solid var(--dark-green) !important;
+    color: var(--white) !important;
     font-weight: bold !important;
     transition: 0.3s;
 }
     .sibur-dark-btn:hover {
-        background-color: white !important;
-        color: #00606a !important;
+        background-color: var(--white) !important;
+        color: var(--dark-green) !important;
     }
 
 
 
 .sibur-dark-inverted-btn {
-    background-color: white !important;
-    border: 1px solid #00606a !important;
-    color: #00606a !important;
+    background-color: var(--white) !important;
+    border: 1px solid var(--dark-green) !important;
+    color: var(--dark-green) !important;
     font-weight: bold !important;
 }
 
 .sibur-header-user {
-    color: #00606a;
+    color: var(--dark-green);
     font-weight: bold;
     cursor: default;
 }
@@ -162,16 +223,16 @@ h1:focus {
 
 .sibur-domain-menu-panel .dropdown-item:hover,
 .sibur-domain-menu-panel .dropdown-item:focus {
-    color: var(--bs-dropdown-link-hover-color, #1e2125);
-    background-color: var(--bs-dropdown-link-hover-bg, #e9ecef);
+    color: var(--dark-green);
+    background-color: var(--svt-hover);
 }
 
 .dropdown-item.active,
 .dropdown-item:active,
 .sibur-domain-menu-panel .dropdown-item.active,
 .sibur-domain-menu-panel .dropdown-item:active {
-    color: #fff;
-    background-color: #008c95;
+    color: var(--white);
+    background-color: var(--dark-green);
 }
 
 /* Switch  */
@@ -189,7 +250,7 @@ h1:focus {
 
 /* Ховер для включённого тумблера */
 .sibur-switch-color .form-check-input:checked:hover {
-        background-color: #007a82; /* Цвет темнее для эффекта наведения */
+        background-color: var(--dark-green); /* При наведении — тёмно-зелёный */
     }
 
 
@@ -216,16 +277,54 @@ h1:focus {
 .sibur-grid .table {
     table-layout: auto;
     width: 100%;
+    /* Без чередования заливки: строки белые, разделяют их линии; hover — производный тон */
+    --bs-table-striped-bg: transparent;
+    --bs-table-striped-color: var(--dark-green);
+    --bs-table-hover-bg: var(--svt-hover);
+    --bs-table-hover-color: var(--dark-green);
+    --bs-table-border-color: var(--svt-line);
 }
 
     .sibur-grid .table th {
         white-space: nowrap;
-        background-color: #f8f9fa;
+        background-color: var(--svt-head);
     }
 
     .sibur-grid .table td {
         max-width: 200px;
     }
+
+/* Строки фильтров в шапке: оператор и значение сливаются с фоном шапки, форму держит только серая рамка */
+.sibur-grid thead .btn-light {
+    --bs-btn-bg: transparent;
+    --bs-btn-border-color: transparent;
+    --bs-btn-color: var(--dark-green);
+    --bs-btn-hover-bg: var(--svt-selected);
+    --bs-btn-hover-border-color: transparent;
+    --bs-btn-hover-color: var(--dark-green);
+    --bs-btn-active-bg: var(--svt-selected);
+    --bs-btn-active-border-color: transparent;
+    --bs-btn-active-color: var(--dark-green);
+}
+
+.sibur-grid thead .form-control:not(:focus) {
+    background-color: transparent;
+    border-color: var(--gray-20);
+}
+
+/* При наведении — тот же тон, что у кнопок операторов и выпадающего списка */
+.sibur-grid thead .form-control:not(:focus):hover {
+    background-color: var(--svt-selected);
+}
+
+.sibur-grid thead .form-check-input:not(:checked):not(:focus) {
+    background-color: transparent;
+    border-color: var(--gray-20);
+}
+
+.sibur-grid thead .form-check-input:not(:checked):not(:focus):hover {
+    background-color: var(--svt-selected);
+}
 
 
 .sibur-grid .cell-truncate {
@@ -237,57 +336,41 @@ h1:focus {
 }
 
 
-/* Нечётные строки (чередование заливки) */
-.sibur-grid .table-striped > tbody > tr:nth-of-type(odd) td {
-    background-color: rgba(0, 240, 255, 0.03) !important;
-    /* background-color: #ffffff !important; */
-}
-
-/* Чётные строки */
-.sibur-grid .table-striped > tbody > tr:nth-of-type(even) td {
-    background-color: rgba(0, 240, 255, 0.03) !important;
-    /* background-color: #ffffff !important; */
-}
-
-/* Ховер строки при наведении */
-.sibur-grid .table-hover > tbody > tr:hover td {
-    background-color: rgba(0, 240, 255, 0.06) !important;
-}
-
 /* Цвет ссылок номеров страниц */
 .sibur-grid .pagination .page-link {
-    color: #008c95;
+    color: var(--dark-green);
 }
 
 /* Цвет активного (текущего) элемента */
 .sibur-grid .pagination .page-item.active .page-link {
-    background-color: #008c95;
-    border-color: #008c95;
-    color: white;
+    background-color: var(--dark-green);
+    border-color: var(--dark-green);
+    color: var(--white);
 }
 
 /* Цвет при наведении на номер страницы */
 .sibur-grid .pagination .page-link:hover {
-    color: #00606a; /* Цвет темнее для эффекта наведения */
+    background-color: var(--svt-hover);
+    color: var(--dark-green);
 }
 
 /* Цвет для disabled-кнопок ("Previous"/"Next") */
 .sibur-grid .pagination .page-item.disabled .page-link {
-    color: #6c757d; 
+    color: var(--gray-50);
 }
 
 /* Аккордеон раскрытия строки деталей грида */
 
 .sibur-grid .accordion-button {
-    background-color: #EAF2F2 !important;
+    background-color: var(--svt-head) !important;
     font-weight: bold;
-    color: #00606a;
+    color: var(--dark-green);
 }
 
-/* Шапка группы-таблицы дочернего примитива: плотнее общего #EAF2F2, текст тот же */
+/* Шапка группы-таблицы дочернего примитива: плотнее общего тона шапки, текст тот же */
 .sibur-grid .accordion-item.sibur-grid-detail-child .accordion-button {
-    background-color: #c7e3e4 !important;
-    color: #00606a;
+    background-color: var(--svt-selected) !important;
+    color: var(--dark-green);
 }
 
 .sibur-grid .sibur-grid-detail-toggle-all {
@@ -305,7 +388,7 @@ h1:focus {
 }
 
 .sibur-grid .accordion-body {
-    background-color: rgba(0, 240, 255, 0.03) !important;
+    background-color: var(--white) !important;
 }
 
 
@@ -318,15 +401,15 @@ h1:focus {
 }
 
 .sibur-grid-detail-label {
-    color: #000;
-    
+    color: var(--dark-green);
+
     word-wrap: break-word;
     overflow-wrap: break-word;
 }
 
 .sibur-grid-detail-value {
     font-weight: bold;
-    color: #555;
+    color: var(--gray-50);
     word-wrap: break-word;
     overflow-wrap: break-word;
 }
@@ -343,8 +426,8 @@ h1:focus {
 
 /* Card */
 .sibur-card {
-    background-color: rgba(0, 240, 255, 0.03) !important;
-    border: 1px solid rgba(0, 240, 255, 0.1);
+    background-color: var(--white) !important;
+    border: 1px solid var(--svt-line);
 }
 
 /* Layout: sticky footer — at viewport bottom when short, below content when tall */
