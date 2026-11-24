@@ -230,8 +230,11 @@ h1:focus {
     display: none;
     top: 100%;
     left: 0;
+    /* Тот же отступ, что у Bootstrap при открытии кликом (popper), чтобы меню не «прыгало» */
+    margin-top: var(--bs-dropdown-spacer, 0.125rem);
 }
 
+/* Открытие: наведение мыши (как раньше) и, через data-bs-toggle="dropdown" на кнопке, клик, Enter/Space, стрелки; Esc и клик вне меню закрывают */
 .sibur-domain-menu:hover .sibur-domain-menu-panel {
     display: block;
 }
@@ -364,6 +367,59 @@ h1:focus {
     display: block;
 }
 
+
+/* Выпадающий список «Записей на странице»: подсветка пунктов в цветах СИБУР вместо системного синего.
+   Системный список браузера этого не позволяет, поэтому в Chrome/Edge 135+ включаем настраиваемый select (appearance: base-select).
+   В остальных браузерах остаётся обычный список. */
+@supports (appearance: base-select) {
+    .sibur-grid select.form-select {
+        appearance: base-select;
+        background-image: none;
+        color: var(--dark-green);
+        /* Значение и стрелка в одну строку */
+        display: inline-flex;
+        flex-wrap: nowrap;
+        align-items: center;
+        justify-content: space-between;
+        gap: 0.5rem;
+        width: auto;
+        min-width: 4.5rem;
+        white-space: nowrap;
+        padding-right: 0.75rem;
+    }
+
+    .sibur-grid select.form-select::picker-icon {
+        flex: none;
+        margin: 0;
+    }
+
+    .sibur-grid select.form-select::picker(select) {
+        appearance: base-select;
+        background-color: var(--white);
+        border: 1px solid var(--gray-20);
+        border-radius: 0.375rem;
+        padding: 0.25rem;
+    }
+
+    .sibur-grid select.form-select option {
+        color: var(--dark-green);
+        background-color: var(--white);
+        padding: 0.375rem 0.75rem;
+        border-radius: 0.25rem;
+    }
+
+    .sibur-grid select.form-select option:hover,
+    .sibur-grid select.form-select option:focus-visible {
+        background-color: var(--svt-hover);
+        color: var(--dark-green);
+    }
+
+    .sibur-grid select.form-select option:checked {
+        background-color: var(--svt-selected);
+        color: var(--dark-green);
+        font-weight: 700;
+    }
+}
 
 /* Цвет ссылок номеров страниц */
 .sibur-grid .pagination .page-link {

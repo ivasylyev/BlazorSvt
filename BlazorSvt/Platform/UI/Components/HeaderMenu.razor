@@ -20,7 +20,9 @@
                 <div class="sibur-domain-menu">
                     <button type="button"
                             class="btn dropdown-toggle @GetButtonClass(IsDomainActive(group))"
-                            aria-haspopup="true">
+                            data-bs-toggle="dropdown"
+                            aria-haspopup="true"
+                            aria-expanded="false">
                         @L[group.TextResourceKey]
                     </button>
                     <ul class="dropdown-menu sibur-domain-menu-panel">
