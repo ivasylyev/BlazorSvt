@@ -4,7 +4,7 @@
         <Content>
             @if (Exception is not null)
             {
-                <div class="card card-body bg-dark text-light">
+                <div class="card card-body sibur-error-details">
                     <div class="mt-2"><strong>@L["ErrorDisplay.Message"]</strong> @Exception.Message</div>
                     <div class="mt-2"><strong>@L["ErrorDisplay.Type"]</strong> @Exception.GetType().Name</div>
                     <div class="mt-4"><strong>@L["ErrorDisplay.StackTrace"]</strong></div>

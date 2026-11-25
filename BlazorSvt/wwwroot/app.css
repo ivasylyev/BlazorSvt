@@ -35,36 +35,169 @@
     unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
 }
 
+/* Фирменные цвета СИБУР (docs/docs/sibur_style.md) */
 :root {
+    --white: #FFFFFF;
+    --dark-green: #00313C;
+    --dnk-sibur: #008C95;
+    --mint: #77E2C3;
+    --coral: #FC786E;
+    --beige-light: #FFE6D7;
+    --gray-50: #5A5A5A;
+    --gray-20: #CCCCCC;
+    --gray-10: #E5E5E5;
+
+    /* Производные осветлённые тона от тёмно-зелёного и ДНК СИБУР: согласовано, только четыре роли.
+       Новый тон добавляется только по согласованию. */
+    --svt-hover: #F0F3F3;      /* hover строки */
+    --svt-selected: #E6F4F4;   /* выбранная строка */
+    --svt-head: #F2F2F2;       /* шапка таблицы: серый 10% из гайда #E5E5E5, осветлённый вдвое (к белому) */
+    --svt-line: #D6DEE0;       /* линии (тёмно-зелёный 16%, как в прототипе) */
+
     --bs-body-font-family: "Roboto", Arial, sans-serif;
+    --bs-body-color: #00313C;
+    --bs-body-color-rgb: 0, 49, 60;
+    --bs-link-color: #008C95;
+    --bs-link-color-rgb: 0, 140, 149;
+    --bs-link-hover-color: #00313C;
+    --bs-link-hover-color-rgb: 0, 49, 60;
+    --bs-focus-ring-color: rgba(0, 140, 149, 0.25);
+    /* Линии Bootstrap (модалки, аккордеон, таблицы) и приглушённый текст (text-muted) — из палитры */
+    --bs-border-color: var(--svt-line);
+    --bs-secondary-color: var(--gray-50);
+    --bs-secondary-color-rgb: 90, 90, 90;
 }
 
+/* Типографика: Roboto; цвет текста — тёмно-зелёный, заголовки — Roboto Bold */
 body {
     font-family: "Roboto", Arial, sans-serif;
+    color: var(--dark-green);
 }
 
+h1, h2, h3, h4, h5, h6 {
+    font-weight: 700;
+}
+
+/* Blazor переводит фокус на h1 после навигации: рамку фокуса у заголовка не показываем */
 h1:focus {
     outline: none;
 }
 
-.blazor-error-boundary {
-    background: url(data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNTYiIGhlaWdodD0iNDkiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiIG92ZXJmbG93PSJoaWRkZW4iPjxkZWZzPjxjbGlwUGF0aCBpZD0iY2xpcDAiPjxyZWN0IHg9IjIzNSIgeT0iNTEiIHdpZHRoPSI1NiIgaGVpZ2h0PSI0OSIvPjwvY2xpcFBhdGg+PC9kZWZzPjxnIGNsaXAtcGF0aD0idXJsKCNjbGlwMCkiIHRyYW5zZm9ybT0idHJhbnNsYXRlKC0yMzUgLTUxKSI+PHBhdGggZD0iTTI2My41MDYgNTFDMjY0LjcxNyA1MSAyNjUuODEzIDUxLjQ4MzcgMjY2LjYwNiA1Mi4yNjU4TDI2Ny4wNTIgNTIuNzk4NyAyNjcuNTM5IDUzLjYyODMgMjkwLjE4NSA5Mi4xODMxIDI5MC41NDUgOTIuNzk1IDI5MC42NTYgOTIuOTk2QzI5MC44NzcgOTMuNTEzIDI5MSA5NC4wODE1IDI5MSA5NC42NzgyIDI5MSA5Ny4wNjUxIDI4OS4wMzggOTkgMjg2LjYxNyA5OUwyNDAuMzgzIDk5QzIzNy45NjMgOTkgMjM2IDk3LjA2NTEgMjM2IDk0LjY3ODIgMjM2IDk0LjM3OTkgMjM2LjAzMSA5NC4wODg2IDIzNi4wODkgOTMuODA3MkwyMzYuMzM4IDkzLjAxNjIgMjM2Ljg1OCA5Mi4xMzE0IDI1OS40NzMgNTMuNjI5NCAyNTkuOTYxIDUyLjc5ODUgMjYwLjQwNyA1Mi4yNjU4QzI2MS4yIDUxLjQ4MzcgMjYyLjI5NiA1MSAyNjMuNTA2IDUxWk0yNjMuNTg2IDY2LjAxODNDMjYwLjczNyA2Ni4wMTgzIDI1OS4zMTMgNjcuMTI0NSAyNTkuMzEzIDY5LjMzNyAyNTkuMzEzIDY5LjYxMDIgMjU5LjMzMiA2OS44NjA4IDI1OS4zNzEgNzAuMDg4N0wyNjEuNzk1IDg0LjAxNjEgMjY1LjM4IDg0LjAxNjEgMjY3LjgyMSA2OS43NDc1QzI2Ny44NiA2OS43MzA5IDI2Ny44NzkgNjkuNTg3NyAyNjcuODc5IDY5LjMxNzkgMjY3Ljg3OSA2Ny4xMTgyIDI2Ni40NDggNjYuMDE4MyAyNjMuNTg2IDY2LjAxODNaTTI2My41NzYgODYuMDU0N0MyNjEuMDQ5IDg2LjA1NDcgMjU5Ljc4NiA4Ny4zMDA1IDI1OS43ODYgODkuNzkyMSAyNTkuNzg2IDkyLjI4MzcgMjYxLjA0OSA5My41Mjk1IDI2My41NzYgOTMuNTI5NSAyNjYuMTE2IDkzLjUyOTUgMjY3LjM4NyA5Mi4yODM3IDI2Ny4zODcgODkuNzkyMSAyNjcuMzg3IDg3LjMwMDUgMjY2LjExNiA4Ni4wNTQ3IDI2My41NzYgODYuMDU0N1oiIGZpbGw9IiNGRkU1MDAiIGZpbGwtcnVsZT0iZXZlbm9kZCIvPjwvZz48L3N2Zz4=) no-repeat 1rem/1.8rem, #b32121;
-    padding: 1rem 1rem 1rem 3.7rem;
-    color: white;
+/* Фокус: заметная обводка ДНК СИБУР */
+:focus-visible {
+    outline: 2px solid var(--dnk-sibur);
+    outline-offset: 2px;
 }
 
-    .blazor-error-boundary::after {
-        content: "An error has occurred."
-    }
+/* Фокус с клавиатуры у кнопок */
+.btn:focus-visible {
+    outline: 2px solid var(--dnk-sibur);
+    outline-offset: 2px;
+    box-shadow: none;
+}
+
+/* Фокус полей ввода и списков */
+.form-control:focus,
+.form-select:focus {
+    border-color: var(--dnk-sibur);
+    box-shadow: 0 0 0 0.25rem rgba(0, 140, 149, 0.25);
+}
+
+/* Фокус флажков и переключателей */
+.form-check-input:focus {
+    border-color: var(--dnk-sibur);
+    box-shadow: 0 0 0 0.25rem rgba(0, 140, 149, 0.25);
+}
+
+/* Плашки сообщений (Bootstrap alert, Blazor.Bootstrap Alert).
+   Ошибка: коралловая рамка 0.75rem вокруг белого поля с тёмно-зелёным текстом и иконкой (текст на белом, не на коралловом). Успех: мятная плашка, тёмно-зелёный текст (8.9:1) и иконка.
+   Оранжевый и красный не используются (sibur_style.md). */
+.alert-danger,
+.alert-success {
+    --bs-alert-color: var(--dark-green);
+    --bs-alert-link-color: var(--dark-green);
+    position: relative;
+    padding-left: 3.25rem;
+}
+
+.alert-danger {
+    --bs-alert-bg: var(--white);
+    --bs-alert-border-color: var(--coral);
+    --bs-alert-border-width: 0.75rem;
+}
+
+.alert-success {
+    --bs-alert-bg: var(--mint);
+    --bs-alert-border-color: var(--mint);
+}
+
+.alert-danger:not(.accordion-item)::before,
+.alert-success::before,
+.accordion-item.alert-danger .accordion-button::before {
+    content: "";
+    width: 1.5rem;
+    height: 1.5rem;
+    background-repeat: no-repeat;
+    background-size: contain;
+}
+
+.alert-danger:not(.accordion-item)::before,
+.alert-success::before {
+    position: absolute;
+    left: 1rem;
+    top: 1rem;
+}
+
+.alert-danger:not(.accordion-item)::before,
+.accordion-item.alert-danger .accordion-button::before {
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3e%3cpath d='M12 2L1 21h22z' fill='%23FC786E'/%3e%3cpath d='M12 9v6' stroke='%2300313C' stroke-width='2' stroke-linecap='round'/%3e%3ccircle cx='12' cy='18' r='1.2' fill='%2300313C'/%3e%3c/svg%3e");
+}
+
+.alert-success::before {
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3e%3ccircle cx='12' cy='12' r='10' fill='%2300313C'/%3e%3cpath d='M7 12.5l3.2 3.2L17 9' fill='none' stroke='%2377E2C3' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3e%3c/svg%3e");
+}
+
+/* ErrorDisplay: плашка-аккордеон; коралловая рамка вокруг белой шапки, иконка стоит в шапке */
+.accordion-item.alert-danger {
+    --bs-alert-bg: var(--coral);
+    --bs-alert-border-width: 1px;
+    --bs-accordion-active-bg: var(--white);
+    padding: 0.75rem;
+}
+
+.accordion-item.alert-danger .accordion-collapse {
+    background-color: var(--white);
+}
+
+.accordion-item.alert-danger .accordion-button {
+    gap: 0.75rem;
+    font-weight: bold;
+    color: var(--dark-green);
+}
+
+.accordion-item.alert-danger .accordion-button::before {
+    flex: none;
+}
+
+/* Стек ошибки в ErrorDisplay: тёмно-зелёная подложка, белый текст */
+.sibur-error-details {
+    background-color: var(--dark-green);
+    color: var(--white);
+}
+/* Глобально: элементы .d-flex переносятся на следующую строку при нехватке ширины */
 .d-flex {
     flex-wrap: wrap;
 }
 
 
-/*Site Header*/
+/* Шапка сайта */
+.bb-top-row {
+    background-color: var(--gray-10);
+    border-bottom-color: var(--svt-line);
+}
+
 .sibur-header-wrapper {
-    /*background-color: #008c95;*/
-    background-color: rgba(0, 140, 149, 0.2) !important;
+    /* Фон шапки светло-серый #E5E5E5 (из .bb-top-row) */
     /* Компенсация горизонтальных отступов контейнера px-4 (1.5rem) */
     margin-left: -1.5rem;
     margin-right: -1.5rem;
@@ -78,66 +211,84 @@ h1:focus {
     align-items: center;
 }
 
-/*Site Bottom*/
+/* Подвал сайта */
 .bg-body-tertiary {
-    background-color: rgba(0, 140, 149, 0.2) !important;
+    background-color: var(--gray-10) !important;
+    border-top: 1px solid var(--svt-line);
 }
 
-/*Button*/
+/* Логотип в шапке: в самом SVG уже заложено охранное поле (половина высоты логотипа) */
+.sibur-logo-link {
+    display: inline-flex;
+    align-items: center;
+    margin-right: 0.5rem;
+}
+
+.sibur-logo {
+    height: 40px;
+    width: auto;
+    display: block;
+}
+
+/* Кнопки: классы sibur-dna-btn, sibur-warn-btn, sibur-dark-btn ставятся на Button, DropdownToggleButton и button */
+/* Вторичная кнопка: белая, тёмно-зелёная обводка и текст (белый текст на ДНК СИБУР в малом размере не читается: 4.0:1) */
 .sibur-dna-btn {
-    background-color: #008c95 !important;
-    border: 1px solid #008c95 !important;
-    color: white !important;
+    background-color: var(--white) !important;
+    border: 1px solid var(--dark-green) !important;
+    color: var(--dark-green) !important;
     font-weight: bold !important;
     transition: 0.3s;
 }
 
     .sibur-dna-btn:hover {
-        background-color: white !important;
-        color: #008c95 !important;
+        background-color: var(--svt-hover) !important;
+        color: var(--dark-green) !important;
     }
 
 
+/* Предупреждающее действие: коралловая плашка, тёмно-зелёный текст (5.3:1) */
 .sibur-warn-btn {
-    background-color: #EF9987 !important;
-    border: 1px solid #EF9987 !important;
-    color: white !important;
+    background-color: var(--coral) !important;
+    border: 1px solid var(--coral) !important;
+    color: var(--dark-green) !important;
     font-weight: bold !important;
     transition: 0.3s;
 }
     .sibur-warn-btn:hover {
-        background-color: #FFE6D7 !important;
-        color: black !important;
+        background-color: var(--beige-light) !important;
+        color: var(--dark-green) !important;
     }
 
 
+/* Основная кнопка: тёмно-зелёная, белый текст */
 .sibur-dark-btn {
-    background-color: #00606a !important;
-    border: 1px solid #00606a !important;
-    color: white !important;
+    background-color: var(--dark-green) !important;
+    border: 1px solid var(--dark-green) !important;
+    color: var(--white) !important;
     font-weight: bold !important;
     transition: 0.3s;
 }
     .sibur-dark-btn:hover {
-        background-color: white !important;
-        color: #00606a !important;
+        background-color: var(--white) !important;
+        color: var(--dark-green) !important;
     }
 
 
 
-.sibur-dark-inverted-btn {
-    background-color: white !important;
-    border: 1px solid #00606a !important;
-    color: #00606a !important;
-    font-weight: bold !important;
+/* Активный пункт меню: остаётся тёмно-зелёным и при наведении */
+.sibur-dark-btn.sibur-nav-active:hover {
+    background-color: var(--dark-green) !important;
+    color: var(--white) !important;
 }
 
+/* Имя пользователя в шапке */
 .sibur-header-user {
-    color: #00606a;
+    color: var(--dark-green);
     font-weight: bold;
     cursor: default;
 }
 
+/* Меню доменов в шапке (HeaderMenu): контейнер кнопки и выпадающей панели */
 .sibur-domain-menu {
     position: relative;
 }
@@ -146,12 +297,16 @@ h1:focus {
     display: none;
     top: 100%;
     left: 0;
+    /* Тот же отступ, что у Bootstrap при открытии кликом (popper), чтобы меню не «прыгало» */
+    margin-top: var(--bs-dropdown-spacer, 0.125rem);
 }
 
+/* Открытие: наведение мыши (как раньше) и, через data-bs-toggle="dropdown" на кнопке, клик, Enter/Space, стрелки; Esc и клик вне меню закрывают */
 .sibur-domain-menu:hover .sibur-domain-menu-panel {
     display: block;
 }
 
+/* Пункты меню доменов: во всю ширину панели, hover и фокус в тонах СИБУР */
 .sibur-domain-menu-panel .dropdown-item {
     display: block;
     width: 100%;
@@ -162,23 +317,24 @@ h1:focus {
 
 .sibur-domain-menu-panel .dropdown-item:hover,
 .sibur-domain-menu-panel .dropdown-item:focus {
-    color: var(--bs-dropdown-link-hover-color, #1e2125);
-    background-color: var(--bs-dropdown-link-hover-bg, #e9ecef);
+    color: var(--dark-green);
+    background-color: var(--svt-hover);
 }
 
+/* Выбранный и нажатый пункт любого выпадающего меню: тёмно-зелёный с белым текстом вместо синего Bootstrap */
 .dropdown-item.active,
 .dropdown-item:active,
 .sibur-domain-menu-panel .dropdown-item.active,
 .sibur-domain-menu-panel .dropdown-item:active {
-    color: #fff;
-    background-color: #008c95;
+    color: var(--white);
+    background-color: var(--dark-green);
 }
 
-/* Switch  */
+/* Переключатели (sibur-switch-color): настройки колонок и фильтр по булевым полям */
 /* Цвет фона включённого тумблера */
 .sibur-switch-color .form-check-input:checked {
-    background-color: #008c95;
-    border-color: #008c95;
+    background-color: var(--dnk-sibur);
+    border-color: var(--dnk-sibur);
 }
 
 /* Фокус «включено» (тумблер) */
@@ -187,15 +343,21 @@ h1:focus {
         box-shadow: 0 0 0 0.25rem rgba(0, 140, 149, 0.25);
     }
 
+/* Фокус «выключено» (тумблер): бегунок в ДНК СИБУР вместо голубого Bootstrap */
+.sibur-switch-color .form-switch .form-check-input:focus:not(:checked),
+.sibur-switch-color.form-switch .form-check-input:focus:not(:checked) {
+    --bs-form-switch-bg: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='-4 -4 8 8'%3e%3ccircle r='3' fill='%23008C95'/%3e%3c/svg%3e");
+}
+
 /* Ховер для включённого тумблера */
 .sibur-switch-color .form-check-input:checked:hover {
-        background-color: #007a82; /* Цвет темнее для эффекта наведения */
+        background-color: var(--dark-green); /* При наведении — тёмно-зелёный */
     }
 
 
-/* Grid  */
+/* Грид (GenericGrid, дочерние таблицы карточки) */
 
-/* Keep grid body tall enough for filter dropdowns when few rows are visible */
+/* Минимальная высота тела грида, чтобы выпадающие списки фильтров помещались при малом числе строк */
 .sibur-grid .table-responsive {
     min-height: 450px;
 }
@@ -213,21 +375,61 @@ h1:focus {
     width: max-content !important;
 }
 
+/* Таблица грида: автоширина колонок, без чередования строк, hover и линии в тонах СИБУР */
 .sibur-grid .table {
     table-layout: auto;
     width: 100%;
+    /* Без чередования заливки: строки белые, разделяют их линии; hover — производный тон */
+    --bs-table-striped-bg: transparent;
+    --bs-table-striped-color: var(--dark-green);
+    --bs-table-hover-bg: var(--svt-hover);
+    --bs-table-hover-color: var(--dark-green);
+    --bs-table-border-color: var(--svt-line);
 }
 
     .sibur-grid .table th {
         white-space: nowrap;
-        background-color: #f8f9fa;
+        background-color: var(--svt-head);
     }
 
     .sibur-grid .table td {
         max-width: 200px;
     }
 
+/* Строки фильтров в шапке: оператор и значение сливаются с фоном шапки, форму держит только серая рамка */
+.sibur-grid thead .btn-light {
+    --bs-btn-bg: transparent;
+    --bs-btn-border-color: transparent;
+    --bs-btn-color: var(--dark-green);
+    --bs-btn-hover-bg: var(--svt-selected);
+    --bs-btn-hover-border-color: transparent;
+    --bs-btn-hover-color: var(--dark-green);
+    --bs-btn-active-bg: var(--svt-selected);
+    --bs-btn-active-border-color: transparent;
+    --bs-btn-active-color: var(--dark-green);
+}
 
+.sibur-grid thead .form-control:not(:focus) {
+    background-color: transparent;
+    border-color: var(--gray-20);
+}
+
+/* При наведении — тот же тон, что у кнопок операторов и выпадающего списка */
+.sibur-grid thead .form-control:not(:focus):hover {
+    background-color: var(--svt-selected);
+}
+
+.sibur-grid thead .form-check-input:not(:checked):not(:focus) {
+    background-color: transparent;
+    border-color: var(--gray-20);
+}
+
+.sibur-grid thead .form-check-input:not(:checked):not(:focus):hover {
+    background-color: var(--svt-selected);
+}
+
+
+/* Длинное значение ячейки обрезается многоточием (GenericGrid) */
 .sibur-grid .cell-truncate {
     overflow: hidden;
     text-overflow: ellipsis;
@@ -237,66 +439,123 @@ h1:focus {
 }
 
 
-/* Нечётные строки (чередование заливки) */
-.sibur-grid .table-striped > tbody > tr:nth-of-type(odd) td {
-    background-color: rgba(0, 240, 255, 0.03) !important;
-    /* background-color: #ffffff !important; */
+/* Выпадающий список «Записей на странице»: подсветка пунктов в цветах СИБУР вместо системного синего.
+   Системный список браузера этого не позволяет, поэтому в Chrome/Edge 135+ включаем настраиваемый select (appearance: base-select).
+   В остальных браузерах остаётся обычный список. */
+@supports (appearance: base-select) {
+    .sibur-grid select.form-select {
+        appearance: base-select;
+        background-image: none;
+        color: var(--dark-green);
+        /* Значение и стрелка в одну строку */
+        display: inline-flex;
+        flex-wrap: nowrap;
+        align-items: center;
+        justify-content: space-between;
+        gap: 0.5rem;
+        width: auto;
+        min-width: 4.5rem;
+        white-space: nowrap;
+        padding-right: 0.75rem;
+    }
+
+    .sibur-grid select.form-select::picker-icon {
+        flex: none;
+        margin: 0;
+    }
+
+    .sibur-grid select.form-select::picker(select) {
+        appearance: base-select;
+        background-color: var(--white);
+        border: 1px solid var(--gray-20);
+        border-radius: 0.375rem;
+        padding: 0.25rem;
+    }
+
+    .sibur-grid select.form-select option {
+        color: var(--dark-green);
+        background-color: var(--white);
+        padding: 0.375rem 0.75rem;
+        border-radius: 0.25rem;
+    }
+
+    .sibur-grid select.form-select option:hover,
+    .sibur-grid select.form-select option:focus-visible {
+        background-color: var(--svt-hover);
+        color: var(--dark-green);
+    }
+
+    .sibur-grid select.form-select option:checked {
+        background-color: var(--svt-selected);
+        color: var(--dark-green);
+        font-weight: 700;
+    }
 }
 
-/* Чётные строки */
-.sibur-grid .table-striped > tbody > tr:nth-of-type(even) td {
-    background-color: rgba(0, 240, 255, 0.03) !important;
-    /* background-color: #ffffff !important; */
+/* Пагинация грида */
+/* Цвет ссылок номеров страниц; фокус с клавиатуры — ДНК СИБУР вместо синего Bootstrap */
+.sibur-grid .pagination {
+    --bs-pagination-focus-color: var(--dark-green);
+    --bs-pagination-focus-bg: var(--svt-hover);
+    --bs-pagination-focus-box-shadow: 0 0 0 0.25rem rgba(0, 140, 149, 0.25);
 }
 
-/* Ховер строки при наведении */
-.sibur-grid .table-hover > tbody > tr:hover td {
-    background-color: rgba(0, 240, 255, 0.06) !important;
-}
-
-/* Цвет ссылок номеров страниц */
 .sibur-grid .pagination .page-link {
-    color: #008c95;
+    color: var(--dark-green);
 }
 
 /* Цвет активного (текущего) элемента */
 .sibur-grid .pagination .page-item.active .page-link {
-    background-color: #008c95;
-    border-color: #008c95;
-    color: white;
+    background-color: var(--dark-green);
+    border-color: var(--dark-green);
+    color: var(--white);
 }
 
 /* Цвет при наведении на номер страницы */
 .sibur-grid .pagination .page-link:hover {
-    color: #00606a; /* Цвет темнее для эффекта наведения */
+    background-color: var(--svt-hover);
+    color: var(--dark-green);
 }
 
 /* Цвет для disabled-кнопок ("Previous"/"Next") */
 .sibur-grid .pagination .page-item.disabled .page-link {
-    color: #6c757d; 
+    color: var(--gray-50);
 }
 
-/* Аккордеон раскрытия строки деталей грида */
-
+/* Аккордеон карточки записи в гриде: шапки групп полей */
 .sibur-grid .accordion-button {
-    background-color: #EAF2F2 !important;
+    background-color: var(--svt-head) !important;
     font-weight: bold;
-    color: #00606a;
+    color: var(--dark-green);
 }
 
-/* Шапка группы-таблицы дочернего примитива: плотнее общего #EAF2F2, текст тот же */
+/* Шапка группы-таблицы дочернего примитива: тот же серый фон, что у остальных шапок; тип блока обозначает полоса ДНК СИБУР слева */
 .sibur-grid .accordion-item.sibur-grid-detail-child .accordion-button {
-    background-color: #c7e3e4 !important;
-    color: #00606a;
+    background-color: var(--svt-head) !important;
+    color: var(--dark-green);
+    box-shadow: inset 4px 0 0 var(--dnk-sibur);
 }
 
+.sibur-grid .accordion-item.sibur-grid-detail-child .accordion-button:focus {
+    box-shadow: inset 4px 0 0 var(--dnk-sibur), var(--bs-accordion-btn-focus-box-shadow);
+}
+
+/* Hover шапок аккордеона (группы, дочерние таблицы, «Раскрыть все»): тот же тон, что у hover в фильтрах; на сером --svt-head тон hover строки (#F0F3F3) не виден */
+.sibur-grid .accordion-item .accordion-button:hover,
+.sibur-grid .accordion-item.sibur-grid-detail-child .accordion-button:hover,
+.sibur-grid .sibur-grid-detail-toggle-all:hover {
+    background-color: var(--svt-selected) !important;
+    cursor: pointer;
+}
+
+/* Кнопка «Раскрыть все / Свернуть все» над аккордеоном карточки */
 .sibur-grid .sibur-grid-detail-toggle-all {
     width: 100%;
     box-sizing: border-box;
     cursor: pointer;
     margin-bottom: 1px;
     /* Match accordion-item: border insets the button face like headers inside .accordion-item */
-    border: var(--bs-accordion-border-width, 1px) solid var(--bs-accordion-border-color, rgba(0, 0, 0, 0.125));
+    border: var(--bs-accordion-border-width, 1px) solid var(--bs-accordion-border-color, var(--svt-line));
     padding: var(--bs-accordion-btn-padding-y, 1rem) var(--bs-accordion-btn-padding-x, 1.25rem);
 }
 
@@ -304,8 +563,9 @@ h1:focus {
     display: none;
 }
 
+/* Тело аккордеона карточки: белый фон */
 .sibur-grid .accordion-body {
-    background-color: rgba(0, 240, 255, 0.03) !important;
+    background-color: var(--white) !important;
 }
 
 
@@ -317,16 +577,18 @@ h1:focus {
     gap: 10px;
 }
 
+/* Подпись поля в карточке */
 .sibur-grid-detail-label {
-    color: #000;
-    
+    color: var(--dark-green);
+
     word-wrap: break-word;
     overflow-wrap: break-word;
 }
 
+/* Значение поля в карточке */
 .sibur-grid-detail-value {
     font-weight: bold;
-    color: #555;
+    color: var(--gray-50);
     word-wrap: break-word;
     overflow-wrap: break-word;
 }
@@ -341,13 +603,55 @@ h1:focus {
     min-height: 0;
 }
 
-/* Card */
+/* Карточки sibur-card: главная, загрузка, страницы «нет доступа» и «сервис недоступен» */
 .sibur-card {
-    background-color: rgba(0, 240, 255, 0.03) !important;
-    border: 1px solid rgba(0, 240, 255, 0.1);
+    background-color: var(--white) !important;
+    border: 1px solid var(--svt-line);
 }
 
-/* Layout: sticky footer — at viewport bottom when short, below content when tall */
+/* Аккордеон (карточка записи): раскрытая шапка, стрелка и фокус в тёмно-зелёном и ДНК СИБУР вместо синего Bootstrap */
+.accordion {
+    --bs-accordion-active-color: var(--dark-green);
+    --bs-accordion-active-bg: var(--svt-head);
+    --bs-accordion-btn-icon: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='none' stroke='%2300313C' stroke-linecap='round' stroke-linejoin='round'%3e%3cpath d='M2 5L8 11L14 5'/%3e%3c/svg%3e");
+    --bs-accordion-btn-active-icon: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='none' stroke='%2300313C' stroke-linecap='round' stroke-linejoin='round'%3e%3cpath d='M2 5L8 11L14 5'/%3e%3c/svg%3e");
+    --bs-accordion-btn-focus-box-shadow: 0 0 0 0.25rem rgba(0, 140, 149, 0.25);
+}
+
+/* Фокус шапки аккордеона: рамка ДНК СИБУР */
+.accordion-button:focus {
+    border-color: var(--dnk-sibur);
+}
+
+/* Модальные окна (настройки, подтверждение отчёта): линии и заголовок в цветах СИБУР */
+.modal {
+    --bs-modal-border-color: var(--svt-line);
+    --bs-modal-header-border-color: var(--svt-line);
+    --bs-modal-footer-border-color: var(--svt-line);
+}
+
+.modal-title {
+    font-weight: 700;
+    color: var(--dark-green);
+}
+
+/* Кнопка закрытия модалки и алертов: кольцо фокуса ДНК СИБУР вместо синего Bootstrap */
+.btn-close:focus {
+    box-shadow: 0 0 0 0.25rem rgba(0, 140, 149, 0.25);
+}
+
+/* Выпадающие меню (язык, «Выгрузить», фильтры): hover, рамка и текст в тонах СИБУР вместо серого и синего Bootstrap */
+.dropdown-menu {
+    --bs-dropdown-color: var(--dark-green);
+    --bs-dropdown-link-color: var(--dark-green);
+    --bs-dropdown-link-hover-color: var(--dark-green);
+    --bs-dropdown-link-hover-bg: var(--svt-hover);
+    --bs-dropdown-link-active-color: var(--white);
+    --bs-dropdown-link-active-bg: var(--dark-green);
+    --bs-dropdown-border-color: var(--svt-line);
+}
+
+/* Раскладка: подвал прижат к низу окна при коротком содержимом и уходит вниз при длинном */
 main {
     display: flex;
     flex-direction: column;
@@ -361,13 +665,9 @@ main > article {
     flex-direction: column;
 }
 
-/* Home page card stretches to full content height */
+/* Главная: контейнер растягивается на всю высоту содержимого */
 .home-page {
     flex: 1 1 auto;
     display: flex;
     flex-direction: column;
-}
-
-.home-page-card {
-    flex: 1 1 auto;
 }
