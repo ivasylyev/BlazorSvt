@@ -130,9 +130,13 @@ WHERE e.Name = N'{RegistryName}';
 | RateCalcType | `Platform/Domain/IdsEnum/RateCalcTypeRu`, `RateCalcTypeEn` |
 | CoefficientType | `Platform/Domain/IdsEnum/CoefficientTypeRu`, `CoefficientTypeEn` |
 
-`TransportType` в этот класс не входит. Enum уже есть: `Platform/Domain/IdsEnum/TransportTypeRu`, `TransportTypeEn`. Собственный RO-грид делается со watermark-sync: `RowVer`, `TransportTypeSyncJob`, `sp_TransportType_PopulateAffectedKeys`, инициализация `v2.SyncState`. Чужие гриды этот справочник в каскад не включают и показывают enum. То, что чужой грид не каскадит на справочник, разовый снимок для его собственного грида не задаёт.
+`TransportType` и `ShipmentType` входят в класс «стабильный словарь с enum». У `TransportType` enum уже есть: `TransportTypeRu`, `TransportTypeEn`. Перед заливкой сверить неархивные строки `vw_TransportType` с enum: `Id` и состав членов. Расхождение — стоп и вопрос, enum не перегенерировать. У `ShipmentType` пары нет: `ShipmentTypeRu` / `ShipmentTypeEn` создаются при переносе, имена членов — из `Code`. Оба грида — разовый снимок, без `RowVer`, SyncJob, `PopulateAffectedKeys` и `v2.SyncState`. Чужие гриды эти справочники в каскад не включают. `ShipmentTypeCodeT` у TransportLeg остаётся сырым `NVARCHAR`.
 
-`ShipmentType` в класс не входит: отдельного enum нет. У TransportLeg тип отправки — сырой `ShipmentTypeCodeT`. Справочники «хранит константы» без enum не входят, пока enum не появится.
+`Federal_Districts`, `DangerClass`, `VehicleType` и `IntegrationDataType` входят в этот класс. У `Federal_Districts` и `DangerClass` enum уже есть. У `VehicleType` и `IntegrationDataType` enum создаётся при переносе. Свой грид — разовый снимок. Расхождение существующего enum с неархивными строками (`Id` и состав членов) — стоп и вопрос, enum не перегенерировать.
+
+`TransportTypeForProduct` в класс не входит и enum не получает. Свой грид — разовый снимок, без `RowVer`, SyncJob, `PopulateAffectedKeys` и `v2.SyncState`.
+
+`PlanFact`, `MTR_DPO`, `Integration`, `FeatureToggle` и `CurrencyRate` в класс не входят: свой грид — watermark-sync, enum нет.
 
 `Basis`, `CoefficientCondition`, `CoefficientComponent`, `RateComponentType` и `RateKind` входят в этот класс. Enum создаётся при переносе RO-грида по `discovery-rules.md` §7: пара `{Entity}Ru` / `{Entity}En` в `Platform/Domain/IdsEnum`, значение члена = `Id` из `vw_{LegacyName}`. Неархивных строк 100 или больше — стоп и вопрос, enum не создавать. После появления файлов строка дописывается в таблицу выше. Дальше шаги RateType: разовый снимок, без `RowVer`, `SyncJob`, `PopulateAffectedKeys` и `v2.SyncState`. `Priority_Rate` в класс не входит.
 
