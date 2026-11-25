@@ -1,4 +1,5 @@
 using System.Linq.Expressions;
+using System.Reflection;
 using BlazorBootstrap;
 using Microsoft.Extensions.Localization;
 
@@ -28,7 +29,8 @@ public sealed class GridColumnSettingsBuilder<T>(IStringLocalizer<PlatformResour
             DisplaySelector = display ?? (dto => GridValueFormatter.Format(compiled(dto))),
             SortSelector = ToSort(property),
             Visible = visible,
-            Filterable = filterable
+            Filterable = filterable,
+            WithoutFullText = IsWithoutFullText(property)
         });
         return this;
     }
@@ -168,6 +170,19 @@ public sealed class GridColumnSettingsBuilder<T>(IStringLocalizer<PlatformResour
     /// <summary>Колонка «Автор изм.» (перед датой изменения): скрыта по умолчанию, заголовок из Platform-ресурсов.</summary>
     public GridColumnSettingsBuilder<T> AddLastChangeUser(Expression<Func<T, string?>> lastChangeUser) =>
         Add(lastChangeUser, platform["Common.LastChangeUser"], visible: false);
+
+    private static bool IsWithoutFullText<TProp>(Expression<Func<T, TProp>> property)
+    {
+        var member = property.Body switch
+        {
+            MemberExpression direct => direct.Member,
+            UnaryExpression { Operand: MemberExpression inner } => inner.Member,
+            _ => null
+        };
+
+        return member is PropertyInfo propertyInfo
+            && propertyInfo.GetCustomAttribute<GridColumnAttribute>()?.WithoutFullText == true;
+    }
 
     private static string MemberName<TProp>(Expression<Func<T, TProp>> property) =>
         property.Body switch

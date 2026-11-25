@@ -1,4 +1,4 @@
-﻿using BlazorSvt.Platform.Api.Catalogs;
+using BlazorSvt.Platform.Api.Catalogs;
 using BlazorSvt.Platform.Domain.IdsEnum;
 
 namespace BlazorSvt.Modules.TransportLeg.List;
@@ -108,13 +108,13 @@ public class TransportLegDto
     [GridColumn]
     public string? RegionToNameEn { get; set; }
 
-    [GridColumn]
+    [GridColumn(WithoutFullText = true)]
     public string? CreationUserName { get; set; }
 
     [GridColumn]
     public DateTime CreationDate { get; set; }
 
-    [GridColumn]
+    [GridColumn(WithoutFullText = true)]
     public string? LastChangeUserName { get; set; }
 
     [GridColumn]

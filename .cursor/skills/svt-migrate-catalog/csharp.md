@@ -66,7 +66,7 @@ public required RateTypeEn RateTypeIdEn { get; set; }
 - Системные колонки — одним вызовом `b.AddSystemColumns(x => x.CreationUserName, x => x.CreationDate, x => x.LastChangeUserName, x => x.LastChangeDate, x => x.IsArchive, …)` в конце списка: порядок «Автор, Создано, Автор изм., Изменено, Архив». Заголовки авторов берутся из `Platform.resx` (`Common.CreationUser` / `Common.LastChangeUser`), в resx модуля их не писать
 - `IsArchive`: `Visible = false`, `FilterValue = "False"` **всегда**
 - `CreationUserName`, `CreationDate`, `LastChangeUserName`, `LastChangeDate`: `Visible = false` **всегда** (без `FilterValue`)
-- В list-DTO и detail-DTO: `public string? CreationUserName` перед `CreationDate`, `public string? LastChangeUserName` перед `LastChangeDate` (list — с `[GridColumn]`)
+- В list-DTO и detail-DTO: `public string? CreationUserName` перед `CreationDate`, `public string? LastChangeUserName` перед `LastChangeDate` (list — с `[GridColumn(WithoutFullText = true)]`: full-text на авторах нет)
 - `LastChangeDate` в DTO — `DateTime`, не `DateTime?`. В снимке колонка `NOT NULL`: пустая дата легаси уже заменена на `CreationDate` (`ISNULL(LastChangeDate, CreationDate)`)
 - **Короткий словарь (enum):** видимая колонка `{X}IdRu`/`{X}IdEn` с `GetDisplayName`; без `Code`/`Name*`.
 - **Длинный словарь:** видимая `{X}NameRu`/`{X}NameEn`; **без Id**, без дублирующей скрытой Name-колонки.

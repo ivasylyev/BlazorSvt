@@ -1,3 +1,4 @@
+using System.Reflection;
 using BlazorSvt.Modules.AverageRateLevel3.List;
 using BlazorSvt.Modules.Coefficient.List;
 using BlazorSvt.Modules.Country.List;
@@ -29,6 +30,31 @@ namespace BlazorSvt.UnitTests.Platform.Grid;
 [Trait("Category", "Unit")]
 public class GridColumnMetadataBuilderTests
 {
+    [Fact]
+    public void WithoutFullText_MarksPrefixSearchColumns()
+    {
+        var dtoTypes = typeof(TransportRateDto).Assembly.GetTypes()
+            .Where(type => type.GetCustomAttribute<GridSnapshotAttribute>() is not null);
+
+        foreach (var type in dtoTypes)
+        {
+            foreach (var name in new[] { "CreationUserName", "LastChangeUserName" })
+            {
+                var property = type.GetProperty(name);
+                property.Should().NotBeNull($"{type.Name} должен иметь {name}");
+                property!.GetCustomAttribute<GridColumnAttribute>()!
+                    .WithoutFullText.Should().BeTrue($"{type.Name}.{name} без full-text");
+            }
+        }
+
+        AttributeOf<ParityRatesDto>(nameof(ParityRatesDto.Code)).WithoutFullText.Should().BeTrue();
+        AttributeOf<RelevanceDto>(nameof(RelevanceDto.Code)).WithoutFullText.Should().BeTrue();
+        AttributeOf<TransportRateDto>(nameof(TransportRateDto.NodeFromNameRu)).WithoutFullText.Should().BeFalse();
+    }
+
+    private static GridColumnAttribute AttributeOf<T>(string propertyName) =>
+        typeof(T).GetProperty(propertyName)!.GetCustomAttribute<GridColumnAttribute>()!;
+
     [Fact]
     public void BuildAllowedColumnsJson_IncludesOnlyFilterableColumns()
     {

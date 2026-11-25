@@ -1,4 +1,4 @@
-﻿using BlazorSvt.Platform.Api.Catalogs;
+using BlazorSvt.Platform.Api.Catalogs;
 using BlazorSvt.Platform.Domain.IdsEnum;
 
 namespace BlazorSvt.Modules.AverageRateLevel3.List;
@@ -24,13 +24,13 @@ public class AverageRateLevel3Dto
     [GridColumn]
     public DateOnly EndDate { get; set; }
 
-    [GridColumn]
+    [GridColumn(WithoutFullText = true)]
     public string? CreationUserName { get; set; }
 
     [GridColumn]
     public DateTime CreationDate { get; set; }
 
-    [GridColumn]
+    [GridColumn(WithoutFullText = true)]
     public string? LastChangeUserName { get; set; }
 
     [GridColumn]

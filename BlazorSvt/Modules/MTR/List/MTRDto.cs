@@ -60,13 +60,13 @@ public class MTRDto
     [GridColumn(SqlColumn = "DangerClassId")]
     public DangerClassEn? DangerClassIdEn { get; set; }
 
-    [GridColumn]
+    [GridColumn(WithoutFullText = true)]
     public string? CreationUserName { get; set; }
 
     [GridColumn]
     public DateTime CreationDate { get; set; }
 
-    [GridColumn]
+    [GridColumn(WithoutFullText = true)]
     public string? LastChangeUserName { get; set; }
 
     [GridColumn]

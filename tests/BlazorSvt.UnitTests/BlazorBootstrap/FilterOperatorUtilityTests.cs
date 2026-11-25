@@ -68,4 +68,28 @@ public class FilterOperatorUtilityTests
         result.Should().Contain(x => x.FilterOperator == FilterOperator.Equals);
         result.Select(x => x.FilterOperator).Should().Equal(ComparisonAndClearOperators);
     }
+
+    [Fact]
+    public void GetFilterOperators_WithoutFullText_KeepsContainsOperatorAndShowsStartsWithLabel()
+    {
+        var translations = new[]
+        {
+            new FilterOperatorInfo("*a*", "Содержит", FilterOperator.Contains),
+            new FilterOperatorInfo("a**", "Начинается с", FilterOperator.StartsWith),
+            new FilterOperatorInfo("x", "Сброс", FilterOperator.Clear)
+        };
+
+        var result = FilterOperatorUtility.GetFilterOperators("String", translations, withoutFullText: true).ToList();
+
+        result.Select(x => x.FilterOperator).Should().Equal(FilterOperator.Contains, FilterOperator.Clear);
+        result[0].Should().BeEquivalentTo(new FilterOperatorInfo("a**", "Начинается с", FilterOperator.Contains));
+    }
+
+    [Fact]
+    public void GetStringFilterOperators_WithoutFullText_UsesStartsWithLabel()
+    {
+        var result = FilterOperatorUtility.GetStringFilterOperators(withoutFullText: true).ToList();
+
+        result[0].Should().BeEquivalentTo(new FilterOperatorInfo("a**", "Starts with", FilterOperator.Contains));
+    }
 }
