@@ -112,7 +112,12 @@ Serilog (`Host/Program.cs`, секция `Serilog` в `appsettings.json`). Пр�
 | TransportTypeLevel3 | `dbo.PrimitiveEntityData_2023` | свой RO-модуль `TransportTypeLevel3` |
 | Currency | `dbo.PrimitiveEntityData_2016` | TransportRate, AverageRateLevel3; свой RO-модуль `Currency` |
 | Relevance | `dbo.PrimitiveEntityData_2108` | ParityRates |
-| CoefficientType | `dbo.PrimitiveEntityData_2077` | Coefficient |
+| Basis | `dbo.PrimitiveEntityData_2015` | TransportRate, AverageRateLevel3; свой RO-модуль, разовый снимок |
+| CoefficientType | `dbo.PrimitiveEntityData_2077` | Coefficient; свой RO-модуль, разовый снимок |
+| CoefficientCondition | `dbo.PrimitiveEntityData_2078` | свой RO-модуль, разовый снимок |
+| CoefficientComponent | `dbo.PrimitiveEntityData_2082` | Coefficient; свой RO-модуль, разовый снимок |
+| RateComponentType | `dbo.PrimitiveEntityData_2097` | свой RO-модуль, разовый снимок |
+| RateKind | `dbo.PrimitiveEntityData_2105` | TransportRate; свой RO-модуль, разовый снимок |
 | ETSNG | `dbo.PrimitiveEntityData_2019` | MTR (легаси, скрыт от пользователей, не меняется с 2019 г.) |
 
 При добавлении нового справочника к синхронизации: `vw_{Entity}_SnapshotSource`,

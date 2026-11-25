@@ -128,10 +128,13 @@ WHERE e.Name = N'{RegistryName}';
 | TypeNode | `Modules/LocationsNodes/List/IdsEnum/TypeNodeRu`, `TypeNodeEn` |
 | RateSyncClass | `Platform/Domain/IdsEnum/RateSyncClassRu`, `RateSyncClassEn` |
 | RateCalcType | `Platform/Domain/IdsEnum/RateCalcTypeRu`, `RateCalcTypeEn` |
+| CoefficientType | `Platform/Domain/IdsEnum/CoefficientTypeRu`, `CoefficientTypeEn` |
 
 `TransportType` в этот класс не входит. Enum уже есть: `Platform/Domain/IdsEnum/TransportTypeRu`, `TransportTypeEn`. Собственный RO-грид делается со watermark-sync: `RowVer`, `TransportTypeSyncJob`, `sp_TransportType_PopulateAffectedKeys`, инициализация `v2.SyncState`. Чужие гриды этот справочник в каскад не включают и показывают enum. То, что чужой грид не каскадит на справочник, разовый снимок для его собственного грида не задаёт.
 
 `ShipmentType` в класс не входит: отдельного enum нет. У TransportLeg тип отправки — сырой `ShipmentTypeCodeT`. Справочники «хранит константы» без enum не входят, пока enum не появится.
+
+`Basis`, `CoefficientCondition`, `CoefficientComponent`, `RateComponentType` и `RateKind` входят в этот класс. Enum создаётся при переносе RO-грида по `discovery-rules.md` §7: пара `{Entity}Ru` / `{Entity}En` в `Platform/Domain/IdsEnum`, значение члена = `Id` из `vw_{LegacyName}`. Неархивных строк 100 или больше — стоп и вопрос, enum не создавать. После появления файлов строка дописывается в таблицу выше. Дальше шаги RateType: разовый снимок, без `RowVer`, `SyncJob`, `PopulateAffectedKeys` и `v2.SyncState`. `Priority_Rate` в класс не входит.
 
 `RateSyncClass` входит в таблицу выше: enum уже есть, свой грид — разовый снимок, без `RowVer` и `SyncJob`. Enum сам по себе класс не задаёт: в класс справочник попадает решением, не фактом enum. `TypePlace` вне скоупа (исторический, вместо него TypeNode): свой RO-грид не делать; enum `LocationType*` остаётся для LocationsNodes.
 
