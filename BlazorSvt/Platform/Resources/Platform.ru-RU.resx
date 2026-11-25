@@ -408,6 +408,10 @@
   <data name="Common.Active" xml:space="preserve">
     <value>Актив</value>
   </data>
+  <data name="Common.CreationUser" xml:space="preserve"><value>Автор</value></data>
+  <data name="Common.LastChangeUser" xml:space="preserve"><value>Автор изм.</value></data>
+  <data name="Common.CreationUser.Long" xml:space="preserve"><value>Автор</value></data>
+  <data name="Common.LastChangeUser.Long" xml:space="preserve"><value>Автор последних изменений</value></data>
   <data name="Api.Error.invalid_request" xml:space="preserve"><value>Некорректный запрос.</value></data>
   <data name="Api.Error.validation_failed" xml:space="preserve"><value>Ошибка в параметрах запроса. См. errors.</value></data>
   <data name="Api.Error.unauthenticated" xml:space="preserve"><value>Вызывающий не аутентифицирован.</value></data>

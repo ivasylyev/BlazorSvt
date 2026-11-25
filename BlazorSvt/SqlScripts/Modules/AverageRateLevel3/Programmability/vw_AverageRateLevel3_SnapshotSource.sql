@@ -19,7 +19,9 @@ AS
         ISNULL(ar.IsDefRate, 0)                                         AS IsDefRate,
         ar.StartDate                                                    AS StartDate,
         ar.EndDate                                                      AS EndDate,
+        cu.DisplayName                                                  AS CreationUserName,
         ar.CreationDate                                                 AS CreationDate,
+        lu.DisplayName                                                  AS LastChangeUserName,
         ISNULL(ar.LastChangeDate, ar.CreationDate)                        AS LastChangeDate,
         ar.RateLevel3                                                   AS RateLevel3,
         ISNULL(ar.EffectiveLoadOfTransportType, 0)                      AS EffectiveLoadOfTransportType,
@@ -62,6 +64,8 @@ AS
     JOIN vw_TransportKind tk (NOLOCK) ON ar.TransportKind = tk.Id
     JOIN vw_TransportType_level_3 tt (NOLOCK) ON ar.TransportType = tt.Id
     JOIN vw_Currency cur (NOLOCK) ON ar.CurrencyStandard = cur.Id
+    LEFT JOIN v2.vw_UserDisplayName cu ON cu.UserId = ar.CreationUserId
+    LEFT JOIN v2.vw_UserDisplayName lu ON lu.UserId = ISNULL(ar.LastChangeUserId, ar.CreationUserId)
     WHERE ar.RateLevel3 IS NOT NULL
       AND TRY_CAST(LEFT(ar.Code, 10) AS INT) IS NOT NULL
       AND TRY_CAST(LEFT(rt.Code, 2) AS INT) IS NOT NULL

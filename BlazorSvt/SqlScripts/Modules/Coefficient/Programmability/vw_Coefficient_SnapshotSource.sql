@@ -34,9 +34,13 @@ AS
         LEFT(rt.Code, 50)                                                        AS RateTypeCode,
         LEFT(rt.Name, 100)                                                       AS RateTypeNameRu,
 
+        cu.DisplayName                                                           AS CreationUserName,
         c.CreationDate                                                           AS CreationDate,
+        lu.DisplayName                                                           AS LastChangeUserName,
         ISNULL(c.LastChangeDate, c.CreationDate)                                 AS LastChangeDate
     FROM dbo.vw_Coefficient c (NOLOCK)
     LEFT JOIN dbo.vw_CoefficientType ct (NOLOCK) ON c.[Type] = ct.Id
-    LEFT JOIN dbo.vw_RateType rt (NOLOCK) ON c.RateType = rt.Id;
+    LEFT JOIN dbo.vw_RateType rt (NOLOCK) ON c.RateType = rt.Id
+    LEFT JOIN v2.vw_UserDisplayName cu ON cu.UserId = c.CreationUserId
+    LEFT JOIN v2.vw_UserDisplayName lu ON lu.UserId = ISNULL(c.LastChangeUserId, c.CreationUserId);
 GO

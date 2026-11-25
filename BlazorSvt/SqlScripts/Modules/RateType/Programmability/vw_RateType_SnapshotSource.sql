@@ -23,8 +23,12 @@ AS
         ISNULL(r.IsDeflated, 0)                                         AS IsDeflated,
         LEFT(r.Comment, 4000)                                           AS Comment,
         ISNULL(r.IsIntoSyncClass, 0)                                    AS IsIntoSyncClass,
+        cu.DisplayName                                                  AS CreationUserName,
         r.CreationDate                                                  AS CreationDate,
+        lu.DisplayName                                                  AS LastChangeUserName,
         ISNULL(r.LastChangeDate, r.CreationDate)                        AS LastChangeDate
     FROM dbo.vw_RateType r
+    LEFT JOIN v2.vw_UserDisplayName cu ON cu.UserId = r.CreationUserId
+    LEFT JOIN v2.vw_UserDisplayName lu ON lu.UserId = ISNULL(r.LastChangeUserId, r.CreationUserId)
     WHERE r.Name IS NOT NULL;
 GO

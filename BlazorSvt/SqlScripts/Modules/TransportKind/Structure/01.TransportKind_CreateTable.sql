@@ -58,7 +58,9 @@ CREATE TABLE v2.TransportKind_Snapshot (
     Id                  BIGINT NOT NULL,
     TransportKindId     BIGINT NOT NULL,
     IsArchive           BIT NOT NULL,
+    CreationUserName    NVARCHAR(255) NULL,
     CreationDate        DATETIME NOT NULL,
+    LastChangeUserName  NVARCHAR(255) NULL,
     LastChangeDate      DATETIME NOT NULL,
 
     CONSTRAINT PK_TransportKind_Snapshot PRIMARY KEY CLUSTERED (IsArchive, Id)

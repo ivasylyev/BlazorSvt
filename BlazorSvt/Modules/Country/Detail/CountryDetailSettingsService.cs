@@ -23,7 +23,9 @@ public class CountryDetailSettingsService(
         b.Add(group, x => x.Market, L["CountryDetailDto.Market"]);
         b.Add(group, x => x.ISOCode3, L["CountryDetailDto.ISOCode3"]);
         AddEnum(b, isRu, group, x => x.StatusIdRu, x => x.StatusIdEn, L["CountryDetailDto.Status"]);
+        b.AddCreationUser(group, x => x.CreationUserName);
         b.Add(group, x => x.CreationDate, L["CountryDetailDto.CreationDate"]);
+        b.AddLastChangeUser(group, x => x.LastChangeUserName);
         b.Add(group, x => x.LastChangeDate, L["CountryDetailDto.LastChangeDate"]);
         b.AddArchiveStatus(group, x => x.IsArchive, L["CountryDetailDto.IsArchive"]);
 

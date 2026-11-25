@@ -38,7 +38,9 @@ public class TransportRouteGridSettingsService(
         AddEnum(b, isRu, x => x.Leg2_TransportTypeIdRu, x => x.Leg2_TransportTypeIdEn, L["TransportRouteDto.Leg2_TransportTypeName"]);
         b.Add(x => x.ChainNodes, L["TransportRouteDto.ChainNodes"]);
         b.AddSystemColumns(
+            x => x.CreationUserName,
             x => x.CreationDate,
+            x => x.LastChangeUserName,
             x => x.LastChangeDate,
             x => x.IsArchive,
             L["TransportRouteDto.CreationDate"],

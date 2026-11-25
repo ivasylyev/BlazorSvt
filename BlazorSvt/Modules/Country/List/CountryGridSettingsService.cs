@@ -24,7 +24,9 @@ public class CountryGridSettingsService(
         b.Add(x => x.PlanCode, L["CountryDto.PlanCode"]);
         b.Add(x => x.Market, L["CountryDto.Market"]);
         b.Add(x => x.ISOCode3, L["CountryDto.ISOCode3"]);
+        b.AddCreationUser(x => x.CreationUserName);
         b.Add(x => x.CreationDate, L["CountryDto.CreationDate"], visible: false);
+        b.AddLastChangeUser(x => x.LastChangeUserName);
         b.Add(x => x.LastChangeDate, L["CountryDto.LastChangeDate"], visible: false);
         b.Add(
             x => x.IsArchive,

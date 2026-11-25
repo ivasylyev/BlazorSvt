@@ -25,7 +25,11 @@ AS
         CAST(c.Status AS BIGINT)                                                 AS StatusId,
         CAST(c.Id AS BIGINT)                                                     AS CountryId,
         CASE WHEN ISNULL(c.PrimitiveEntityDataStateId, 2) = 2 THEN 1 ELSE 0 END  AS IsArchive,
+        cu.DisplayName                                                           AS CreationUserName,
         c.CreationDate                                                           AS CreationDate,
+        lu.DisplayName                                                           AS LastChangeUserName,
         c.LastChangeDate                                                         AS LastChangeDate
-    FROM dbo.vw_Country c (NOLOCK);
+    FROM dbo.vw_Country c (NOLOCK)
+    LEFT JOIN v2.vw_UserDisplayName cu ON cu.UserId = c.CreationUserId
+    LEFT JOIN v2.vw_UserDisplayName lu ON lu.UserId = ISNULL(c.LastChangeUserId, c.CreationUserId);
 GO

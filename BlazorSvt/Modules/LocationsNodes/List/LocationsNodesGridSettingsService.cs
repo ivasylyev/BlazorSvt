@@ -26,7 +26,9 @@ public class LocationsNodesGridSettingsService(
         b.AddLocalized(isRu, x => x.RegionNameRu, x => x.RegionNameEn, L["LocationsNodesDto.RegionName"]);
         b.AddLocalized(isRu, x => x.CountryNameRu, x => x.CountryNameEn, L["LocationsNodesDto.CountryName"]);
         b.AddSystemColumns(
+            x => x.CreationUserName,
             x => x.CreationDate,
+            x => x.LastChangeUserName,
             x => x.LastChangeDate,
             x => x.IsArchive,
             L["LocationsNodesDto.CreationDate"],

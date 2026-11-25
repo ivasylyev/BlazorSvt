@@ -32,6 +32,22 @@ public class DetailSettingsBuilderTests
     }
 
     [Fact]
+    public void AddCreationUserAndAddLastChangeUser_UseLongHeaders()
+    {
+        var fields = new DetailSettingsBuilder<SampleDto>(platform)
+            .AddCreationUser("G", x => x.Name, hasMargin: true)
+            .AddLastChangeUser("G", x => x.NameRu)
+            .Build()
+            .GroupSettings["G"]
+            .ToList();
+
+        fields.Select(f => f.Name).Should().Equal(nameof(SampleDto.Name), nameof(SampleDto.NameRu));
+        fields.Select(f => f.Header).Should().Equal("Common.CreationUser.Long", "Common.LastChangeUser.Long");
+        fields.Select(f => f.HasMargin).Should().Equal(true, false);
+        fields[0].DisplaySelector(new SampleDto { Name = "Иванов И.И." }).Should().Be("Иванов И.И.");
+    }
+
+    [Fact]
     public void Add_RespectsExplicitVisible()
     {
         var settings = new DetailSettingsBuilder<SampleDto>(platform)

@@ -36,7 +36,9 @@ public class ReportConstructorGridSettingsService(
         b.Add(x => x.ProductCode, L["ReportConstructorDto.ProductCode"], visible: false);
         b.AddLocalized(isRu, x => x.ProductNameRu, x => x.ProductNameEn, L["ReportConstructorDto.ProductName"]);
         b.AddSystemColumns(
+            x => x.CreationUserName,
             x => x.CreationDate,
+            x => x.LastChangeUserName,
             x => x.LastChangeDate,
             x => x.IsArchive,
             L["ReportConstructorDto.CreationDate"],

@@ -60,7 +60,9 @@ CREATE TABLE v2.Country_Snapshot (
     Id                  BIGINT NOT NULL,
     CountryId           BIGINT NOT NULL,
     IsArchive           BIT NOT NULL,
+    CreationUserName    NVARCHAR(255) NULL,
     CreationDate        DATETIME NOT NULL,
+    LastChangeUserName  NVARCHAR(255) NULL,
     LastChangeDate      DATETIME NULL,
 
     CONSTRAINT PK_Country_Snapshot PRIMARY KEY CLUSTERED (IsArchive, Id)

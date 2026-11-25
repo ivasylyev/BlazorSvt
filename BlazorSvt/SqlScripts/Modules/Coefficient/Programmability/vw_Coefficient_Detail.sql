@@ -14,7 +14,9 @@ AS
     SELECT
         CAST(c.Id AS BIGINT)                                                     AS CoefficientId,
         CASE WHEN ISNULL(c.PrimitiveEntityDataStateId, 2) = 2 THEN 1 ELSE 0 END  AS IsArchive,
+        cu.DisplayName                                                           AS CreationUserName,
         c.CreationDate                                                           AS CreationDate,
+        lu.DisplayName                                                           AS LastChangeUserName,
         ISNULL(c.LastChangeDate, c.CreationDate)                                 AS LastChangeDate,
         TRY_CAST(c.Code AS INT)                                                 AS Code,
 
@@ -29,5 +31,7 @@ AS
 
         CAST(c.RateType AS BIGINT)                                               AS RateTypeIdRu,
         CAST(c.RateType AS BIGINT)                                               AS RateTypeIdEn
-    FROM dbo.vw_Coefficient c (NOLOCK);
+    FROM dbo.vw_Coefficient c (NOLOCK)
+    LEFT JOIN v2.vw_UserDisplayName cu ON cu.UserId = c.CreationUserId
+    LEFT JOIN v2.vw_UserDisplayName lu ON lu.UserId = ISNULL(c.LastChangeUserId, c.CreationUserId);
 GO

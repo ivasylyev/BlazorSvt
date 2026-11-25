@@ -27,7 +27,9 @@ public class ContractorGridSettingsService(
         b.Add(x => x.IsCreditor, L["ContractorDto.IsCreditor"]);
         b.Add(x => x.INN, L["ContractorDto.INN"]);
         b.AddSystemColumns(
+            x => x.CreationUserName,
             x => x.CreationDate,
+            x => x.LastChangeUserName,
             x => x.LastChangeDate,
             x => x.IsArchive,
             L["ContractorDto.CreationDate"],

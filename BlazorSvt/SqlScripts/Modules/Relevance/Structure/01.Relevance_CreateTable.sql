@@ -54,7 +54,9 @@ CREATE TABLE v2.Relevance_Snapshot (
     Id                  BIGINT NOT NULL,
     RelevanceId         BIGINT NOT NULL,
     IsArchive           BIT NOT NULL,
+    CreationUserName    NVARCHAR(255) NULL,
     CreationDate        DATETIME NOT NULL,
+    LastChangeUserName  NVARCHAR(255) NULL,
     LastChangeDate      DATETIME NOT NULL,
 
     CONSTRAINT PK_Relevance_Snapshot PRIMARY KEY CLUSTERED (IsArchive, Id)

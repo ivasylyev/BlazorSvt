@@ -13,7 +13,9 @@ INSERT INTO v2.RateCalcType_Snapshot (
     ,Code
     ,Name
     ,SearchCode
+    ,CreationUserName
     ,CreationDate
+    ,LastChangeUserName
     ,LastChangeDate
 )
 SELECT
@@ -22,7 +24,9 @@ SELECT
     ,Code
     ,Name
     ,SearchCode
+    ,CreationUserName
     ,CreationDate
+    ,LastChangeUserName
     ,LastChangeDate
 FROM v2.vw_RateCalcType_SnapshotSource;
 GO

@@ -11,7 +11,9 @@ AS
     SELECT
         RegionId,
         Code,
+        CreationUserName,
         CreationDate,
+        LastChangeUserName,
         LastChangeDate,
         IsArchive,
         NameRu,

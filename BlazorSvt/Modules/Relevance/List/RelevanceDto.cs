@@ -19,7 +19,13 @@ public class RelevanceDto
     public bool IsArchive { get; set; }
 
     [GridColumn]
+    public string? CreationUserName { get; set; }
+
+    [GridColumn]
     public DateTime CreationDate { get; set; }
+
+    [GridColumn]
+    public string? LastChangeUserName { get; set; }
 
     [GridColumn]
     public DateTime LastChangeDate { get; set; }

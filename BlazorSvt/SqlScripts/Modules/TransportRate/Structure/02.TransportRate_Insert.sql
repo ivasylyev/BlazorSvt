@@ -18,7 +18,9 @@ INSERT INTO v2.TransportRate_Snapshot (
     ,IsDefRate
     ,StartDate
     ,EndDate
+    ,CreationUserName
     ,CreationDate
+    ,LastChangeUserName
     ,LastChangeDate
 
     ,TotalCostTon
@@ -64,7 +66,9 @@ SELECT
     ,IsDefRate
     ,StartDate
     ,EndDate
+    ,CreationUserName
     ,CreationDate
+    ,LastChangeUserName
     ,LastChangeDate
 
     ,TotalCostTon

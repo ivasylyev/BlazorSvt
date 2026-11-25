@@ -17,7 +17,9 @@ AS
         IsDeflated,
         Comment,
         IsIntoSyncClass,
+        CreationUserName,
         CreationDate,
+        LastChangeUserName,
         LastChangeDate
     FROM v2.vw_RateType_SnapshotSource;
 GO

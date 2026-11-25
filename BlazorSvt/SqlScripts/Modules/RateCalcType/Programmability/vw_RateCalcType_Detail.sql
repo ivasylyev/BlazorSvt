@@ -11,7 +11,9 @@ AS
     SELECT
         RateCalcTypeId,
         Code,
+        CreationUserName,
         CreationDate,
+        LastChangeUserName,
         LastChangeDate,
         IsArchive,
         Name,

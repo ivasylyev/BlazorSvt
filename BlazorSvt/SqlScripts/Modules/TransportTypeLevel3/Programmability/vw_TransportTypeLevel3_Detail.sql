@@ -24,7 +24,9 @@ AS
         OrionCode,
         StatusId        AS StatusIdRu,
         StatusId        AS StatusIdEn,
+        CreationUserName,
         CreationDate,
+        LastChangeUserName,
         LastChangeDate
     FROM v2.vw_TransportTypeLevel3_SnapshotSource;
 GO

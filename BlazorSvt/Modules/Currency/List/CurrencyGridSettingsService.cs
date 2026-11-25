@@ -22,7 +22,9 @@ public class CurrencyGridSettingsService(
         b.Add(x => x.Digital, L["CurrencyDto.Digital"]);
         b.Add(x => x.Code_NSI, L["CurrencyDto.Code_NSI"]);
         b.AddSystemColumns(
+            x => x.CreationUserName,
             x => x.CreationDate,
+            x => x.LastChangeUserName,
             x => x.LastChangeDate,
             x => x.IsArchive,
             L["CurrencyDto.CreationDate"],

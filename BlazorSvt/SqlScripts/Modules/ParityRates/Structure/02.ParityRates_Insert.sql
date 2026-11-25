@@ -11,7 +11,9 @@ INSERT INTO v2.ParityRates_Snapshot (
     ,IsArchive
     ,StartDate
     ,EndDate
+    ,CreationUserName
     ,CreationDate
+    ,LastChangeUserName
     ,LastChangeDate
     ,Code
     ,RelevanceId
@@ -62,7 +64,9 @@ SELECT
     ,IsArchive
     ,StartDate
     ,EndDate
+    ,CreationUserName
     ,CreationDate
+    ,LastChangeUserName
     ,LastChangeDate
     ,Code
     ,RelevanceId

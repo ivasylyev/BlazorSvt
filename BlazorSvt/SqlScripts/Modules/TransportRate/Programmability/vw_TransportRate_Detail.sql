@@ -34,7 +34,9 @@ AS
     ,CASE WHEN ISNULL(r.PrimitiveEntityDataStateId, 2) = 2 THEN 1 ELSE 0 END 
                                     AS IsArchive
     ,ISNULL(r.IsDefRate, 0)         AS IsDefRate
+    ,cu.DisplayName 	            AS CreationUserName
     ,r.CreationDate 	            AS CreationDate
+    ,lu.DisplayName 	            AS LastChangeUserName
     ,r.LastChangeDate 	            AS LastChangeDate
     ,ar.Code		                AS AverageRateCode
     ,ar.RateLevel3 		            AS AverageRateLevel3TotalCostTon
@@ -184,6 +186,8 @@ AS
     ,lt.Leg2_TransportationTime 	AS LeadTimeLeg2_TransportationTime
     ,lt.Leg2_Distance 		        AS LeadTimeLeg2_Distance
     FROM vw_TransportRate AS r 
+    LEFT JOIN v2.vw_UserDisplayName cu ON cu.UserId = r.CreationUserId
+    LEFT JOIN v2.vw_UserDisplayName lu ON lu.UserId = ISNULL(r.LastChangeUserId, r.CreationUserId)
     CROSS APPLY (
         SELECT TOP 1
             rar.AverageRateLevel3Id

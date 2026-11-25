@@ -26,7 +26,9 @@ public class ContractorDetailSettingsService(
         b.Add(group, x => x.CustomCode, L["ContractorDetailDto.CustomCode"]);
         b.Add(group, x => x.OrgAffiliation, L["ContractorDetailDto.OrgAffiliation"]);
         b.Add(group, x => x.Consignee, L["ContractorDetailDto.Consignee"]);
+        b.AddCreationUser(group, x => x.CreationUserName);
         b.Add(group, x => x.CreationDate, L["ContractorDetailDto.CreationDate"]);
+        b.AddLastChangeUser(group, x => x.LastChangeUserName);
         b.Add(group, x => x.LastChangeDate, L["ContractorDetailDto.LastChangeDate"]);
         b.AddArchiveStatus(group, x => x.IsArchive, L["ContractorDetailDto.IsArchive"]);
 

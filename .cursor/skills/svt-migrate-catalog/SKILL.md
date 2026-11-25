@@ -94,6 +94,7 @@ WHERE e.Name = N'{RegistryName}';
 - `Code`. Тип — [discovery-rules.md](discovery-rules.md) §2: `INT` по ответу пользователя, иначе `NVARCHAR`
 - `IsArchive` (`CASE WHEN ISNULL(PrimitiveEntityDataStateId, 2) = 2 THEN 1 ELSE 0 END`)
 - `CreationDate`, `LastChangeDate`. `LastChangeDate` в снимке — `DATETIME NOT NULL`. Пустое значение легаси заменять на дату создания: `ISNULL(LastChangeDate, CreationDate)`. В DTO тип `DateTime`
+- `CreationUserName` («Автор») перед `CreationDate`, `LastChangeUserName` («Автор изм.») перед `LastChangeDate` — `NVARCHAR(255) NULL`. ФИО из `v2.vw_UserDisplayName` по `CreationUserId` и `ISNULL(LastChangeUserId, CreationUserId)` легаси-представления (SVT-5320). В DTO тип `string?`
 
 **Бизнес-флаги** (например `CanBeUsed`) — только если есть в коротком списке (см. [discovery-rules.md](discovery-rules.md) §1).
 

@@ -28,7 +28,9 @@ public class TransportTypeLevel3GridSettingsService(
         b.Add(x => x.OrionCode, L["TransportTypeLevel3Dto.OrionCode"]);
         b.AddEnum(isRu, x => x.StatusIdRu, x => x.StatusIdEn, L["TransportTypeLevel3Dto.Status"]);
         b.AddSystemColumns(
+            x => x.CreationUserName,
             x => x.CreationDate,
+            x => x.LastChangeUserName,
             x => x.LastChangeDate,
             x => x.IsArchive,
             L["TransportTypeLevel3Dto.CreationDate"],

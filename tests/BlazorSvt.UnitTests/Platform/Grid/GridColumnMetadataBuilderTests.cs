@@ -81,6 +81,18 @@ public class GridColumnMetadataBuilderTests
     }
 
     [Fact]
+    public void BuildAllowedColumnsJson_AuthorColumns_AreNvarchar()
+    {
+        var json = GridColumnMetadataBuilder.BuildAllowedColumnsJson(typeof(TransportRateDto));
+        var columns = JArray.Parse(json);
+
+        columns.Single(c => c["ColumnName"]!.Value<string>() == nameof(TransportRateDto.CreationUserName))
+            ["ColumnType"]!.Value<string>().Should().Be("NVARCHAR");
+        columns.Single(c => c["ColumnName"]!.Value<string>() == nameof(TransportRateDto.LastChangeUserName))
+            ["ColumnType"]!.Value<string>().Should().Be("NVARCHAR");
+    }
+
+    [Fact]
     public void BuildAllowedColumnsJson_UsesSqlColumnNameWhenSpecified()
     {
         var json = GridColumnMetadataBuilder.BuildAllowedColumnsJson(typeof(TransportLegDto));

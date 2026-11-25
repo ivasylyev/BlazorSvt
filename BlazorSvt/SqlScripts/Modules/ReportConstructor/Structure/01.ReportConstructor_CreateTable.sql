@@ -76,7 +76,9 @@ CREATE TABLE v2.ReportConstructor_Snapshot (
     ProductNameRu           NVARCHAR(255) NULL,
     ProductNameEn           NVARCHAR(255) NULL,
     ProductId               BIGINT NULL,
+    CreationUserName        NVARCHAR(255) NULL,
     CreationDate            DATETIME NOT NULL,
+    LastChangeUserName      NVARCHAR(255) NULL,
     LastChangeDate          DATETIME NOT NULL,
 
     CONSTRAINT PK_ReportConstructor_Snapshot PRIMARY KEY CLUSTERED (IsArchive, Id)

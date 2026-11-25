@@ -20,11 +20,13 @@ public class GridColumnSettingsBuilderTests
     }
 
     [Fact]
-    public void AddSystemColumns_WhenBuilt_HidesAuditColumnsAndLocalizesArchive()
+    public void AddSystemColumns_WhenBuilt_PutsHiddenAuthorBeforeEachDateAndLocalizesArchive()
     {
         var columns = new GridColumnSettingsBuilder<ColumnFixture>(platform)
             .AddSystemColumns(
+                x => x.CreationUser,
                 x => x.CreationDate,
+                x => x.LastChangeUser,
                 x => x.LastChangeDate,
                 x => x.Flag,
                 "Created",
@@ -33,10 +35,15 @@ public class GridColumnSettingsBuilderTests
             .Build();
 
         columns.Select(c => c.Name).Should().Equal(
+            nameof(ColumnFixture.CreationUser),
             nameof(ColumnFixture.CreationDate),
+            nameof(ColumnFixture.LastChangeUser),
             nameof(ColumnFixture.LastChangeDate),
             nameof(ColumnFixture.Flag));
         columns.Should().OnlyContain(c => c.Visible == false);
+        columns[0].Header.Should().Be("Common.CreationUser");
+        columns[2].Header.Should().Be("Common.LastChangeUser");
+        columns[0].DisplaySelector(new ColumnFixture { CreationUser = null }).Should().Be(string.Empty);
 
         var archive = columns.Single(c => c.Name == nameof(ColumnFixture.Flag));
         archive.Filterable.Should().BeTrue();
@@ -176,6 +183,8 @@ public class GridColumnSettingsBuilderTests
         public string? Name { get; set; }
         public bool Flag { get; set; }
         public DateOnly StartDate { get; set; }
+        public string? CreationUser { get; set; }
+        public string? LastChangeUser { get; set; }
         public DateTime CreationDate { get; set; }
         public DateTime LastChangeDate { get; set; }
         public TransportKindRu KindRu { get; set; }

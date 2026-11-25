@@ -31,7 +31,9 @@ public class MTRGridSettingsService(
         b.Add(x => x.MtrType, L["MTRDto.MtrType"]);
         AddEnum(b, isRu, x => x.DangerClassIdRu, x => x.DangerClassIdEn, L["MTRDto.DangerClass"]);
         b.AddSystemColumns(
+            x => x.CreationUserName,
             x => x.CreationDate,
+            x => x.LastChangeUserName,
             x => x.LastChangeDate,
             x => x.IsArchive,
             L["MTRDto.CreationDate"],

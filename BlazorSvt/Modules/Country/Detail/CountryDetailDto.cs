@@ -15,7 +15,9 @@ public class CountryDetailDto
     public string? ISOCode3 { get; set; }
     public StatusElementRu? StatusIdRu { get; set; }
     public StatusElementEn? StatusIdEn { get; set; }
+    public string? CreationUserName { get; set; }
     public DateTime CreationDate { get; set; }
+    public string? LastChangeUserName { get; set; }
     public DateTime? LastChangeDate { get; set; }
     public bool IsArchive { get; set; }
 }

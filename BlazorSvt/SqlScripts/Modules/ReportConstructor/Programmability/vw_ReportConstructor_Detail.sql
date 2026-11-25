@@ -35,7 +35,9 @@ AS
         ProductCode,
         ProductNameRu,
         ProductNameEn,
+        CreationUserName,
         CreationDate,
+        LastChangeUserName,
         LastChangeDate,
         IsArchive
     FROM v2.vw_ReportConstructor_SnapshotSource;

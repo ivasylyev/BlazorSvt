@@ -32,7 +32,9 @@ AS
         CAST(m.Status AS BIGINT) AS StatusIdRu,
         CAST(m.Status AS BIGINT) AS StatusIdEn,
         LEFT(m.ProductCode, 50) AS ProductCode,
+        s.CreationUserName,
         s.CreationDate,
+        s.LastChangeUserName,
         s.LastChangeDate
     FROM v2.vw_MTR_SnapshotSource s
     JOIN dbo.vw_MTR m (NOLOCK) ON m.Id = s.MTRId;

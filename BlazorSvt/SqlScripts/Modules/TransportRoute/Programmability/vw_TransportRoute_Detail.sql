@@ -45,7 +45,9 @@ AS
         LEFT(l02.Code, 50)                                                  AS Leg_02Code,
         LEFT(l03.Code, 50)                                                  AS Leg_03Code,
         s.IsArchive,
+        s.CreationUserName,
         s.CreationDate,
+        s.LastChangeUserName,
         s.LastChangeDate
     FROM v2.vw_TransportRoute_SnapshotSource s
     JOIN dbo.vw_TransportRoute r (NOLOCK) ON r.Id = s.TransportRouteId

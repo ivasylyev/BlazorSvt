@@ -17,7 +17,9 @@ INSERT INTO v2.Contractor_Snapshot (
     ,IsDebtor
     ,IsCreditor
     ,INN
+    ,CreationUserName
     ,CreationDate
+    ,LastChangeUserName
     ,LastChangeDate
 )
 SELECT
@@ -32,7 +34,9 @@ SELECT
     ,IsDebtor
     ,IsCreditor
     ,INN
+    ,CreationUserName
     ,CreationDate
+    ,LastChangeUserName
     ,LastChangeDate
 FROM v2.vw_Contractor_SnapshotSource;
 GO

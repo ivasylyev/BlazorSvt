@@ -54,7 +54,9 @@ CREATE TABLE v2.ParityRates_Snapshot (
     IsArchive                   BIT NOT NULL,
     StartDate                   DATETIME NOT NULL,
     EndDate                     DATETIME NOT NULL,
+    CreationUserName            NVARCHAR(255) NULL,
     CreationDate                DATETIME NOT NULL,
+    LastChangeUserName          NVARCHAR(255) NULL,
     LastChangeDate              DATETIME NOT NULL,
 
     Code                        NVARCHAR(50) NOT NULL,

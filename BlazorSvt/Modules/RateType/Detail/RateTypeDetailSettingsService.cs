@@ -18,7 +18,9 @@ public class RateTypeDetailSettingsService(
         b.AddYesNo(group, x => x.IsDeflated, L["RateTypeDetailDto.IsDeflated"]);
         b.Add(group, x => x.Comment, L["RateTypeDetailDto.Comment"]);
         b.AddYesNo(group, x => x.IsIntoSyncClass, L["RateTypeDetailDto.IsIntoSyncClass"]);
+        b.AddCreationUser(group, x => x.CreationUserName);
         b.Add(group, x => x.CreationDate, L["RateTypeDetailDto.CreationDate"]);
+        b.AddLastChangeUser(group, x => x.LastChangeUserName);
         b.Add(group, x => x.LastChangeDate, L["RateTypeDetailDto.LastChangeDate"]);
         b.AddArchiveStatus(group, x => x.IsArchive, L["RateTypeDetailDto.IsArchive"]);
 

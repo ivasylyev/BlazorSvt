@@ -43,7 +43,9 @@ INSERT INTO v2.MTR_Snapshot (
     ,DangerClassCode
     ,DangerClassNameRu
 
+    ,CreationUserName
     ,CreationDate
+    ,LastChangeUserName
     ,LastChangeDate
 )
 SELECT
@@ -77,7 +79,9 @@ SELECT
     ,DangerClassCode
     ,DangerClassNameRu
 
+    ,CreationUserName
     ,CreationDate
+    ,LastChangeUserName
     ,LastChangeDate
 FROM v2.vw_MTR_SnapshotSource;
 GO

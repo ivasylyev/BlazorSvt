@@ -12,7 +12,9 @@ INSERT INTO v2.RateSyncClass_Snapshot (
     ,IsArchive
     ,Code
     ,Name
+    ,CreationUserName
     ,CreationDate
+    ,LastChangeUserName
     ,LastChangeDate
 )
 SELECT
@@ -20,7 +22,9 @@ SELECT
     ,IsArchive
     ,Code
     ,Name
+    ,CreationUserName
     ,CreationDate
+    ,LastChangeUserName
     ,LastChangeDate
 FROM v2.vw_RateSyncClass_SnapshotSource;
 GO

@@ -34,7 +34,13 @@ public class CountryDto
     public string? ISOCode3 { get; set; }
 
     [GridColumn]
+    public string? CreationUserName { get; set; }
+
+    [GridColumn]
     public DateTime CreationDate { get; set; }
+
+    [GridColumn]
+    public string? LastChangeUserName { get; set; }
 
     [GridColumn]
     public DateTime? LastChangeDate { get; set; }

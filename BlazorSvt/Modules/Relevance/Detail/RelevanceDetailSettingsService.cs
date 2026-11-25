@@ -14,7 +14,9 @@ public class RelevanceDetailSettingsService(
 
         b.Add(group, x => x.Code, L["RelevanceDetailDto.Code"]);
         b.Add(group, x => x.Name, L["RelevanceDetailDto.Name"]);
+        b.AddCreationUser(group, x => x.CreationUserName);
         b.Add(group, x => x.CreationDate, L["RelevanceDetailDto.CreationDate"]);
+        b.AddLastChangeUser(group, x => x.LastChangeUserName);
         b.Add(group, x => x.LastChangeDate, L["RelevanceDetailDto.LastChangeDate"]);
         b.AddArchiveStatus(group, x => x.IsArchive, L["RelevanceDetailDto.IsArchive"]);
 
