@@ -16,7 +16,7 @@ AS
         CASE WHEN ISNULL(c.PrimitiveEntityDataStateId, 2) = 2 THEN 1 ELSE 0 END  AS IsArchive,
         c.CreationDate                                                           AS CreationDate,
         ISNULL(c.LastChangeDate, c.CreationDate)                                 AS LastChangeDate,
-        LEFT(c.Code, 50)                                                         AS Code,
+        TRY_CAST(c.Code AS INT)                                                 AS Code,
 
         CAST(c.[Type] AS BIGINT)                                                 AS CoefficientTypeIdRu,
         CAST(c.[Type] AS BIGINT)                                                 AS CoefficientTypeIdEn,

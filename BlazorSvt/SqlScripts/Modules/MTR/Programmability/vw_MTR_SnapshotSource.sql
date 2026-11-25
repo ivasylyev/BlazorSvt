@@ -24,7 +24,7 @@ CREATE OR ALTER VIEW v2.vw_MTR_SnapshotSource
 AS
     SELECT
         CAST(m.Id AS BIGINT)                                                     AS MTRId,
-        LEFT(m.Code, 50)                                                         AS Code,
+        TRY_CAST(m.Code AS INT)                                                 AS Code,
         CASE WHEN ISNULL(m.PrimitiveEntityDataStateId, 2) = 2 THEN 1 ELSE 0 END  AS IsArchive,
 
         LEFT(m.NameFull_ru, 4000)                                                AS NameFullRu,

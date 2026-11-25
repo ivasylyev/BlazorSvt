@@ -1,6 +1,6 @@
 ﻿/*
   Auto-generated: All v2 Programmability
-  Generated: 2026-11-23 17:19:38
+  Generated: 2026-11-24 22:20:36
   Scripts: 75
   Order: Create-Programmability.ps1 (Platform -> Modules by name)
 */
@@ -288,11 +288,13 @@ BEGIN
         ColumnName    SYSNAME NOT NULL,
         SqlColumnName NVARCHAR(258) NOT NULL,
         ColumnType    NVARCHAR(20) NOT NULL,
+        IsFullText    BIT NOT NULL,
         ColumnValue   NVARCHAR(4000) NULL,
         Operator      NVARCHAR(50) NULL,
         SqlOperator   NVARCHAR(2) NULL,
         SqlValue      NVARCHAR(4000) NULL,
         FtsValue      NVARCHAR(4000) NULL,
+        LikeValue     NVARCHAR(4000) NULL,
         FilterPart    NVARCHAR(MAX) NULL
     )
     DECLARE
@@ -397,11 +399,12 @@ BEGIN
     END;
 
     
-    INSERT INTO @FilteredColumns (ColumnName, SqlColumnName, ColumnType, ColumnValue, Operator)
+    INSERT INTO @FilteredColumns (ColumnName, SqlColumnName, ColumnType, IsFullText, ColumnValue, Operator)
     SELECT
         AC.ColumnName,
         QUOTENAME(AC.SqlColumnName),
         AC.ColumnType,
+        ISNULL(COLUMNPROPERTY(@TableObjectId, AC.SqlColumnName, 'IsFulltextIndexed'), 0),
         ISNULL(LTRIM(RTRIM(JS.[Value])), N'') AS ColumnValue,
         JS.Operator
     FROM OPENJSON(@FilterJson)
@@ -447,13 +450,29 @@ BEGIN
                     N')', N' '),
                 N'&', N' '),
             N'|', N' ')
-        )), N'');
+        )), N''),
+        LikeValue = NULLIF(
+            REPLACE(
+                REPLACE(
+                    REPLACE(
+                        REPLACE(ColumnValue, N'[', N'[[]'),
+                    N'%', N'[%]'),
+                N'_', N'[_]'),
+            N'''', N''''''),
+        N'');
 
     UPDATE FC
     SET FilterPart = CASE ColumnType         
-            -- Логика для СТРОК c полнотекстовым поиском 
+            -- Логика для СТРОК без полнотекстового индекса: поиск по началу значения с любой длины
             WHEN N'NVARCHAR' THEN 
-                CASE WHEN LEN(FtsValue) > 2 THEN
+                CASE WHEN IsFullText = 0 THEN
+                    CASE WHEN LikeValue IS NOT NULL THEN
+                        N'
+                    AND ' + SqlColumnName + N' LIKE N''' + LikeValue + N'%'' '
+                    ELSE ''
+                    END
+            -- Логика для СТРОК c полнотекстовым поиском 
+                WHEN LEN(FtsValue) > 2 THEN
                     N'
                     AND CONTAINS(' + SqlColumnName + ', N''"' + FtsValue + '*"'') '
                 ELSE '' 
@@ -534,6 +553,7 @@ BEGIN
     SELECT @FulltextFilterCount = COUNT(1) 
     FROM  @FilteredColumns
     WHERE ColumnType = N'NVARCHAR'
+      AND IsFullText = 1
       AND LEN(FtsValue) > 2
 
     -- Запрос считается сложным, если есть 2 и более полнотекстовых фильтров с сортировкой.
@@ -553,7 +573,7 @@ BEGIN
     -- Для сложных запросов полнотекстовый поиск исключается из условия Where и включается в специаьно созданную для результатов поиска промежуточную таблицу
     SELECT @MainWhereClause = STRING_AGG(FilterPart, '')
     FROM @FilteredColumns
-    WHERE (ColumnType <> 'NVARCHAR' OR @IsComplexQuery = 0)
+    WHERE (ColumnType <> 'NVARCHAR' OR IsFullText = 0 OR @IsComplexQuery = 0)
 
     SET @MainWhereClause = CONCAT('WHERE 1 = 1', @MainWhereClause)
 
@@ -570,6 +590,7 @@ BEGIN
                 RN = ROW_NUMBER() OVER (ORDER BY ColumnName)
             FROM @FilteredColumns
             WHERE ColumnType = N'NVARCHAR' 
+                  AND IsFullText = 1
                   AND FtsValue IS NOT NULL
                   AND LEN(FtsValue) > 2
         )
@@ -1503,7 +1524,7 @@ AS
         CASE WHEN ISNULL(c.PrimitiveEntityDataStateId, 2) = 2 THEN 1 ELSE 0 END  AS IsArchive,
         c.CreationDate                                                           AS CreationDate,
         ISNULL(c.LastChangeDate, c.CreationDate)                                 AS LastChangeDate,
-        LEFT(c.Code, 50)                                                         AS Code,
+        TRY_CAST(c.Code AS INT)                                                 AS Code,
 
         CAST(c.[Type] AS BIGINT)                                                 AS CoefficientTypeIdRu,
         CAST(c.[Type] AS BIGINT)                                                 AS CoefficientTypeIdEn,
@@ -1543,7 +1564,7 @@ CREATE OR ALTER VIEW v2.vw_Coefficient_SnapshotSource
 AS
     SELECT
         CAST(c.Id AS BIGINT)                                                     AS CoefficientId,
-        LEFT(c.Code, 50)                                                         AS Code,
+        TRY_CAST(c.Code AS INT)                                                 AS Code,
         CASE WHEN ISNULL(c.PrimitiveEntityDataStateId, 2) = 2 THEN 1 ELSE 0 END  AS IsArchive,
 
         CAST(c.[Type] AS BIGINT)                                                 AS CoefficientTypeId,
@@ -1755,7 +1776,7 @@ AS
         CASE WHEN ISNULL(c.PrimitiveEntityDataStateId, 2) = 2 THEN 1 ELSE 0 END  AS IsArchive,
         c.CreationDate                                                           AS CreationDate,
         ISNULL(c.LastChangeDate, c.CreationDate)                                 AS LastChangeDate,
-        LEFT(c.Code, 50)                                                         AS Code,
+        TRY_CAST(c.Code AS INT)                                                 AS Code,
         LEFT(c.NameSearch, 4000)                                                 AS NameSearch,
         ISNULL(c.Consignee, 0)                                                   AS Consignee,
         ISNULL(c.IsTrader, 0)                                                    AS IsTrader,
@@ -1794,7 +1815,7 @@ CREATE OR ALTER VIEW v2.vw_Contractor_SnapshotSource
 AS
     SELECT
         CAST(c.Id AS BIGINT)                                                     AS ContractorId,
-        LEFT(c.Code, 50)                                                         AS Code,
+        TRY_CAST(c.Code AS INT)                                                 AS Code,
         CASE WHEN ISNULL(c.PrimitiveEntityDataStateId, 2) = 2 THEN 1 ELSE 0 END  AS IsArchive,
 
         LEFT(c.NameSearch, 4000)                                                 AS NameSearch,
@@ -1905,9 +1926,9 @@ GO
 CREATE OR ALTER VIEW v2.vw_Country_SnapshotSource
 AS
     SELECT
-        LEFT(c.Code, 50)                                                         AS Code,
+        TRY_CAST(c.Code AS INT)                                                 AS Code,
         LEFT(c.Name_ru, 4000)                                                    AS NameRu,
-        c.ISOCode                                                                AS ISOCode,
+        CAST(c.ISOCode AS INT)                                                   AS ISOCode,
         LEFT(c.Name_en, 4000)                                                    AS NameEn,
         LEFT(c.PlanCode, 4000)                                                   AS PlanCode,
         LEFT(c.Market, 4000)                                                     AS Market,
@@ -2013,8 +2034,8 @@ AS
         LEFT(c.Code, 50)                                                         AS Code,
         LEFT(c.Name, 4000)                                                       AS Name,
         LEFT(c.Symbolic, 4000)                                                   AS Symbolic,
-        c.Digital                                                                AS Digital,
-        LEFT(c.Code_NSI, 50)                                                     AS Code_NSI,
+        CAST(c.Digital AS INT)                                                   AS Digital,
+        TRY_CAST(c.Code_NSI AS INT)                                              AS Code_NSI,
         c.CreationDate                                                           AS CreationDate,
         ISNULL(c.LastChangeDate, c.CreationDate)                                 AS LastChangeDate
     FROM dbo.vw_Currency c;
@@ -2392,7 +2413,7 @@ CREATE OR ALTER VIEW v2.vw_MTR_SnapshotSource
 AS
     SELECT
         CAST(m.Id AS BIGINT)                                                     AS MTRId,
-        LEFT(m.Code, 50)                                                         AS Code,
+        TRY_CAST(m.Code AS INT)                                                 AS Code,
         CASE WHEN ISNULL(m.PrimitiveEntityDataStateId, 2) = 2 THEN 1 ELSE 0 END  AS IsArchive,
 
         LEFT(m.NameFull_ru, 4000)                                                AS NameFullRu,
@@ -2974,7 +2995,7 @@ AS
     SELECT
         CAST(r.Id AS BIGINT)                                                     AS RateAutoSelectionSettingId,
         CASE WHEN ISNULL(r.PrimitiveEntityDataStateId, 2) = 2 THEN 1 ELSE 0 END  AS IsArchive,
-        LEFT(r.Code, 50)                                                         AS Code,
+        TRY_CAST(r.Code AS INT)                                                 AS Code,
         r.DestinationNodeToRegion                                                AS DestinationNodeToRegion,
         r.DestinationNodeToCountry                                               AS DestinationNodeToCountry,
         r.ProductToProductGroup                                                  AS ProductToProductGroup,
@@ -3124,7 +3145,7 @@ AS
     SELECT
         CAST(r.Id AS BIGINT)                                                     AS RateSyncClassId,
         CASE WHEN ISNULL(r.PrimitiveEntityDataStateId, 2) = 2 THEN 1 ELSE 0 END  AS IsArchive,
-        LEFT(r.Code, 50)                                                         AS Code,
+        TRY_CAST(r.Code AS INT)                                                 AS Code,
         LEFT(r.Name, 2000)                                                       AS Name,
         r.CreationDate                                                           AS CreationDate,
         ISNULL(r.LastChangeDate, r.CreationDate)                                 AS LastChangeDate
@@ -3184,7 +3205,7 @@ AS
     SELECT
         CAST(r.Id AS BIGINT)                                            AS RateTypeId,
         CASE WHEN ISNULL(r.PrimitiveEntityDataStateId, 2) = 2 THEN 1 ELSE 0 END AS IsArchive,
-        LEFT(r.Code, 50)                                                AS Code,
+        TRY_CAST(r.Code AS INT)                                         AS Code,
         LEFT(r.Name, 4000)                                              AS Name,
         ISNULL(r.IsUseNomination, 0)                                    AS IsUseNomination,
         ISNULL(r.IsDeflated, 0)                                         AS IsDeflated,
@@ -3462,7 +3483,7 @@ AS
     SELECT
         CAST(r.Id AS BIGINT)                                                     AS ReportConstructorId,
         CASE WHEN ISNULL(r.PrimitiveEntityDataStateId, 2) = 2 THEN 1 ELSE 0 END  AS IsArchive,
-        LEFT(r.Code, 50)                                                         AS Code,
+        TRY_CAST(r.Code AS INT)                                                 AS Code,
         CAST(r.ReportType AS BIGINT)                                             AS ReportTypeId,
         CAST(r.DateFrom AS DATETIME2(7))                                         AS DateFrom,
         CAST(r.DateTo AS DATETIME2(7))                                           AS DateTo,
@@ -4796,7 +4817,7 @@ GO
 CREATE OR ALTER VIEW v2.vw_TransportRoute_SnapshotSource
 AS
     SELECT
-        LEFT(r.Code, 50)                                                         AS Code,
+        TRY_CAST(r.Code AS INT)                                                 AS Code,
         LEFT(r.CodeSAP, 50)                                                      AS CodeSAP,
         LEFT(r.Route, 4000)                                                      AS Route,
 

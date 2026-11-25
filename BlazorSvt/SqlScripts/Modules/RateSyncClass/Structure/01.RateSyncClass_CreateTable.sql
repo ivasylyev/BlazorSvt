@@ -52,7 +52,7 @@ CREATE TABLE v2.RateSyncClass_Snapshot (
     Id                  BIGINT NOT NULL,
     RateSyncClassId     BIGINT NOT NULL,
     IsArchive           BIT NOT NULL,
-    Code                NVARCHAR(50) NOT NULL,
+    Code                INT          NOT NULL,
     Name                NVARCHAR(2000) NULL,
     CreationDate        DATETIME NOT NULL,
     LastChangeDate      DATETIME NOT NULL,

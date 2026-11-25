@@ -101,8 +101,8 @@ public sealed class SnapshotSyncIntegrationTests(DatabaseFixture fixture) : Inte
             LegacyTable: "dbo.PrimitiveEntityData_2101",
             LegacyColumn: "Code", // vw_RateAutoSelectionSetting.Code
             SnapshotColumn: "Code",
-            CreateStimulusValue: original => $"SVT{Random.Shared.Next(100_000, 999_999):D6}",
-            ParseLegacyValue: value => (string)value!,
+            CreateStimulusValue: original => Random.Shared.Next(100_000, 999_999).ToString(),
+            ParseLegacyValue: value => Convert.ToInt64(value),
             FormatLegacyValue: value => (string)value));
     }
 
@@ -114,8 +114,8 @@ public sealed class SnapshotSyncIntegrationTests(DatabaseFixture fixture) : Inte
             LegacyTable: "dbo.PrimitiveEntityData_2130",
             LegacyColumn: "Code", // vw_ReportConstructor.Code
             SnapshotColumn: "Code",
-            CreateStimulusValue: original => $"SVT{Random.Shared.Next(100_000, 999_999):D6}",
-            ParseLegacyValue: value => (string)value!,
+            CreateStimulusValue: original => Random.Shared.Next(100_000, 999_999).ToString(),
+            ParseLegacyValue: value => Convert.ToInt64(value),
             FormatLegacyValue: value => (string)value));
     }
 

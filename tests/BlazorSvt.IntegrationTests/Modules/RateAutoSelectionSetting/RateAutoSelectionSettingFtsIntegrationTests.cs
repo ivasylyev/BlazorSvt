@@ -9,11 +9,12 @@ namespace BlazorSvt.IntegrationTests.Modules.RateAutoSelectionSetting;
 public class RateAutoSelectionSettingFtsIntegrationTests(DatabaseFixture fixture) : IntegrationTestBase(fixture)
 {
     [SkippableFact]
-    public async Task GetBlazorGridData_WithCodeContains_ReturnsRows()
+    public async Task GetBlazorGridData_WithCodeEquals_ReturnsRows()
     {
+        // Code — INT (SVT-5317): фильтр точный, работает с одной цифры.
         var connectionString = RequireConnectionString();
         var query = FtsFilterTestSupport.CreateQuery(
-            FtsFilterTestSupport.Contains(nameof(RateAutoSelectionSettingDto.Code), "3"));
+            FtsFilterTestSupport.IdEquals(nameof(RateAutoSelectionSettingDto.Code), 3));
 
         var (rows, totalCount) = await GridSpTestHelper.ExecuteGetBlazorGridDataAsync<RateAutoSelectionSettingDto>(
             connectionString,
@@ -23,16 +24,15 @@ public class RateAutoSelectionSettingFtsIntegrationTests(DatabaseFixture fixture
         rows.Should().NotBeEmpty();
         totalCount.Should().BeGreaterThan(0);
         rows.Should().OnlyContain(r => !r.IsArchive);
-        rows.Should().OnlyContain(r => r.Code.Contains("3", StringComparison.OrdinalIgnoreCase));
+        rows.Should().OnlyContain(r => r.Code == 3);
     }
 
     [SkippableFact]
-    public async Task GetBlazorGridData_WithCodeContainsLongerThanThreshold_RunsFullText()
+    public async Task GetBlazorGridData_WithMissingCode_ReturnsEmpty()
     {
-        // Единственный Code — «3». GetBlazorGridData вызывает CONTAINS только при длине больше 2.
         var connectionString = RequireConnectionString();
         var query = FtsFilterTestSupport.CreateQuery(
-            FtsFilterTestSupport.Contains(nameof(RateAutoSelectionSettingDto.Code), "333"));
+            FtsFilterTestSupport.IdEquals(nameof(RateAutoSelectionSettingDto.Code), 333));
 
         var (rows, totalCount) = await GridSpTestHelper.ExecuteGetBlazorGridDataAsync<RateAutoSelectionSettingDto>(
             connectionString,

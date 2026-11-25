@@ -15,7 +15,7 @@ CREATE OR ALTER VIEW v2.vw_Contractor_SnapshotSource
 AS
     SELECT
         CAST(c.Id AS BIGINT)                                                     AS ContractorId,
-        LEFT(c.Code, 50)                                                         AS Code,
+        TRY_CAST(c.Code AS INT)                                                 AS Code,
         CASE WHEN ISNULL(c.PrimitiveEntityDataStateId, 2) = 2 THEN 1 ELSE 0 END  AS IsArchive,
 
         LEFT(c.NameSearch, 4000)                                                 AS NameSearch,

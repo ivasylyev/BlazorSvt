@@ -5,7 +5,7 @@ public class RateAutoSelectionSettingDetailDto
 {
     public long RateAutoSelectionSettingId { get; set; }
 
-    public required string Code { get; set; }
+    public required long Code { get; set; }
 
     public bool? DestinationNodeToRegion { get; set; }
 

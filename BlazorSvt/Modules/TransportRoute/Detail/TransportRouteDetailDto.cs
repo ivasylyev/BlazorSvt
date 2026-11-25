@@ -6,7 +6,7 @@ namespace BlazorSvt.Modules.TransportRoute.Detail;
 public class TransportRouteDetailDto
 {
     public long TransportRouteId { get; set; }
-    public required string Code { get; set; }
+    public required long Code { get; set; }
     public string? CodeSAP { get; set; }
     public bool IsActive { get; set; }
     public string? Route { get; set; }

@@ -13,7 +13,7 @@ public class TransportRouteDto
     public long TransportRouteId { get; set; }
 
     [GridColumn]
-    public required string Code { get; set; }
+    public required long Code { get; set; }
 
     [GridColumn]
     public string? CodeSAP { get; set; }

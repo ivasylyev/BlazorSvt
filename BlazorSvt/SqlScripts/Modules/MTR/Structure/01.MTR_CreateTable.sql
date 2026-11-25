@@ -51,7 +51,7 @@ GO
 CREATE TABLE v2.MTR_Snapshot (
     Id                   BIGINT NOT NULL,
     MTRId                BIGINT NOT NULL,
-    Code                 NVARCHAR(50) NOT NULL,
+    Code                 INT          NOT NULL,
     IsArchive            BIT NOT NULL,
 
     NameFullRu           NVARCHAR(4000) NULL,

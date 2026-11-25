@@ -301,12 +301,13 @@
 
 ### Region
 
-Согласовано для грида и карточки Region. `Code`, `Code_NSI`, `RegionCode` («Код региона» / `Region code`), `CountryName` и системные поля — из общего глоссария. `NameRu` и `NameEn` — две колонки; подписи не из строк `Name` / `NameEn`. У `Status` короткое имя общее, полное на карточке — «Статус записи» / `Record status`.
+Согласовано для грида и карточки Region. `Code`, `Code_NSI`, `RegionCode` («Код региона» / `Region code`), `CountryName` и системные поля — из общего глоссария. В гриде `NameRu` и `NameEn` — одна колонка по языку интерфейса, ключ `Name` (как у плеч); на карточке — два поля, подписи не из строк `Name` / `NameEn`. `Status` в гриде нет (SVT-5317); на карточке полное имя — «Статус записи» / `Record status`.
 
 | Key | RU полное | EN полное | RU short | EN short |
 |-----|-----------|-----------|----------|----------|
 | `RegionCodePlanning` | Код региона для планирования | Region code for planning | Код план. | Plan code |
 | `RegionCodeRF` | Код региона РФ | Russian region code | Код РФ | RF code |
+| `Name` | Регион | Region | Регион | Region |
 | `NameRu` | Регион (RU) | Регион (RU) | Регион (RU) | Регион (RU) |
 | `NameEn` | Регион (EN) | Регион (EN) | Регион (EN) | Регион (EN) |
 | `Market` | Макрорегион | Macroregion | Макрорегион | Macroregion |

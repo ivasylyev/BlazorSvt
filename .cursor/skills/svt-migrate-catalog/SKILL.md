@@ -91,7 +91,7 @@ WHERE e.Name = N'{RegistryName}';
 
 - `Id` (SEQUENCE + DEFAULT)
 - `{Entity}Id` (бизнес-ключ, `CAST(Id AS …)` из `vw_{LegacyName}`)
-- `Code`
+- `Code`. Тип — [discovery-rules.md](discovery-rules.md) §2: `INT` по ответу пользователя, иначе `NVARCHAR`
 - `IsArchive` (`CASE WHEN ISNULL(PrimitiveEntityDataStateId, 2) = 2 THEN 1 ELSE 0 END`)
 - `CreationDate`, `LastChangeDate`. `LastChangeDate` в снимке — `DATETIME NOT NULL`. Пустое значение легаси заменять на дату создания: `ISNULL(LastChangeDate, CreationDate)`. В DTO тип `DateTime`
 

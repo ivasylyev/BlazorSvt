@@ -13,7 +13,7 @@ public class ReportConstructorDto
     public long ReportConstructorId { get; set; }
 
     [GridColumn]
-    public required string Code { get; set; }
+    public required long Code { get; set; }
 
     [GridColumn]
     public bool IsArchive { get; set; }

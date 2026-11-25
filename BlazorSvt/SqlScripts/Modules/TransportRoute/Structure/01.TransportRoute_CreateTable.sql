@@ -49,7 +49,7 @@ INCREMENT BY 1;
 GO
 
 CREATE TABLE v2.TransportRoute_Snapshot (
-    Code                            NVARCHAR(50) NOT NULL,
+    Code                            INT          NOT NULL,
     CodeSAP                         NVARCHAR(50) NULL,
     Route                           NVARCHAR(4000) NULL,
     StartNodeId                     BIGINT NULL,

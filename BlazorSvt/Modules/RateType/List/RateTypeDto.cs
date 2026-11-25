@@ -10,7 +10,7 @@ public class RateTypeDto
     public long RateTypeId { get; set; }
 
     [GridColumn]
-    public required string Code { get; set; }
+    public required long Code { get; set; }
 
     [GridColumn]
     public string? Name { get; set; }

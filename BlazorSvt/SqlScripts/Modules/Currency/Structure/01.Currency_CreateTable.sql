@@ -55,8 +55,8 @@ CREATE TABLE v2.Currency_Snapshot (
     Code                NVARCHAR(50) NOT NULL,
     Name                NVARCHAR(4000) NULL,
     Symbolic            NVARCHAR(4000) NULL,
-    Digital             DECIMAL(19, 4) NULL,
-    Code_NSI            NVARCHAR(50) NULL,
+    Digital             INT NULL,
+    Code_NSI            INT NULL,
     CreationDate        DATETIME NOT NULL,
     LastChangeDate      DATETIME NOT NULL,
 

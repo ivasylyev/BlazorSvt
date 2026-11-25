@@ -46,4 +46,27 @@ public class ParityRatesFtsIntegrationTests(DatabaseFixture fixture) : Integrati
         totalCount.Should().BeGreaterThan(0);
         rows.Should().OnlyContain(r => !r.IsArchive);
     }
+
+    [SkippableFact]
+    public async Task GetBlazorGridData_WithCodePrefix_UsesLikeWithoutFullText()
+    {
+        // Code — GUID-строка без full-text (SVT-5317): поиск по началу значения через LIKE с любой длины.
+        var connectionString = RequireConnectionString();
+        var (sample, _) = await GridSpTestHelper.ExecuteGetBlazorGridDataAsync<ParityRatesDto>(
+            connectionString,
+            typeof(ParityRatesDto),
+            FtsFilterTestSupport.CreateQuery());
+        Skip.If(sample.Count == 0, "Нет активных паритетов.");
+        var prefix = sample[0].Code[..2];
+
+        var (rows, totalCount) = await GridSpTestHelper.ExecuteGetBlazorGridDataAsync<ParityRatesDto>(
+            connectionString,
+            typeof(ParityRatesDto),
+            FtsFilterTestSupport.CreateQuery(
+                FtsFilterTestSupport.Contains(nameof(ParityRatesDto.Code), prefix)));
+
+        rows.Should().NotBeEmpty();
+        totalCount.Should().BeGreaterThan(0);
+        rows.Should().OnlyContain(r => r.Code.StartsWith(prefix, StringComparison.OrdinalIgnoreCase));
+    }
 }

@@ -6,7 +6,7 @@ namespace BlazorSvt.Modules.ReportConstructor.Detail;
 public class ReportConstructorDetailDto
 {
     public long ReportConstructorId { get; set; }
-    public required string Code { get; set; }
+    public required long Code { get; set; }
     public required ReportDictionaryTypesRu ReportTypeIdRu { get; set; }
     public required ReportDictionaryTypesEn ReportTypeIdEn { get; set; }
     public DateOnly DateFrom { get; set; }

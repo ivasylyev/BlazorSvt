@@ -52,7 +52,7 @@ CREATE TABLE v2.ReportConstructor_Snapshot (
     Id                      BIGINT NOT NULL,
     ReportConstructorId     BIGINT NOT NULL,
     IsArchive               BIT NOT NULL,
-    Code                    NVARCHAR(50) NOT NULL,
+    Code                    INT          NOT NULL,
     ReportTypeId            BIGINT NOT NULL,
     DateFrom                DATETIME2(7) NULL,
     DateTo                  DATETIME2(7) NULL,

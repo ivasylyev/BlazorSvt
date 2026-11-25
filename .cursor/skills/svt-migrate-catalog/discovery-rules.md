@@ -18,6 +18,13 @@
 Колонки view, которых нет в коротком списке — **игнорировать**.  
 Длины `NVARCHAR` — из `dbo\Tables` legacy + `LEFT(..., N)` в Insert.
 
+**Тип `Code`.** Запрос — [discovery-queries.md](discovery-queries.md) §2а. В легаси `Code` всегда `nvarchar(100)`, по типу колонки число не отличить. Кто ставит код, задаёт `AttributeInfo.ValueGeneratorId` (`dbo.ValueGenerator`): `1` Guid и `2` OrdinalNumber — система, `3` Manual — пользователь.
+
+- `NotInt = 0`: все коды, включая архивные, — целые и помещаются в `INT`. **Стоп, вопрос пользователю** с рекомендацией `INT`. В вопросе назвать генератор. При Manual — риск: нецелый код, который введут в легаси, даст `NULL` в проекции, и синхронизация строки упадёт на `NOT NULL`.
+- Иначе — `NVARCHAR` длиной из легаси. Генератор сам по себе тип не задаёт: у ProductGroup генератор `2`, а коды `T1`…`T9`.
+- Guid (`1`) — `NVARCHAR`, не `uniqueidentifier`: поиск по началу кода (`LIKE`) работает только по строке. Full-text на нём нет — [sql.md](sql.md), фаза 2, 03.
+- Ответ `INT`: проекция `TRY_CAST(x.Code AS INT) AS Code`, снимок `Code INT NOT NULL`, в list- и detail-DTO `long Code`. Образец — `TransportRate`, `TransportRoute`.
+
 ## 3. Фильтр неиспользуемых атрибутов
 
 Счётчик — [discovery-queries.md](discovery-queries.md) §3.
