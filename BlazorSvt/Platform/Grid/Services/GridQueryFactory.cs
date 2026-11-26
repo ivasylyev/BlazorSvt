@@ -64,8 +64,23 @@ public class GridQueryFactory<TItem> : IGridQueryFactory<TItem>
             var propType = Nullable.GetUnderlyingType(propInfo.PropertyType) ?? propInfo.PropertyType;
             if (propType.IsEnum)
             {
-                if (Enum.TryParse(propType, value, out var enumValue))
+                if (filter.Operator == FilterOperator.In)
+                {
+                    // Мультивыбор: имена членов enum через запятую → числовые ItemId через запятую
+                    var ids = value
+                        .Split(',', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries)
+                        .Select(name => Enum.TryParse(propType, name, out var enumValue) ? (int)enumValue : (int?)null)
+                        .Where(id => id is not null)
+                        .Select(id => id!.Value)
+                        .ToList();
+
+                    if (ids.Count > 0)
+                        value = string.Join(',', ids);
+                }
+                else if (Enum.TryParse(propType, value, out var enumValue))
+                {
                     value = ((int)enumValue).ToString();
+                }
             }
             else if (propType == typeof(DateTime))
             {
@@ -87,6 +102,7 @@ public class GridQueryFactory<TItem> : IGridQueryFactory<TItem>
             FilterOperator.StartsWith => GridFilterOperators.StartsWithOperator,
             FilterOperator.EndsWith => GridFilterOperators.EndsWithOperator,
             FilterOperator.Equals => GridFilterOperators.EqualsOperator,
+            FilterOperator.In => GridFilterOperators.InOperator,
             FilterOperator.NotEquals => GridFilterOperators.NotEqualsOperator,
             FilterOperator.LessThan => GridFilterOperators.LessThanOperator,
             FilterOperator.LessThanOrEquals => GridFilterOperators.LessThanOrEqualsOperator,

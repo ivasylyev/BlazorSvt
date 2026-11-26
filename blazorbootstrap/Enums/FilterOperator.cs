@@ -77,5 +77,10 @@ public enum FilterOperator
     /// <summary>
     /// Clear the current filter.
     /// </summary>
-    Clear
+    Clear,
+
+    /// <summary>
+    /// Satisfied if the current value is one of the specified values (multi-select).
+    /// </summary>
+    In
 }

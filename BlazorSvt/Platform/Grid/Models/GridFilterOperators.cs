@@ -7,6 +7,7 @@ public static class GridFilterOperators
     public const string StartsWithOperator = "StartsWith";
     public const string EndsWithOperator = "EndsWith";
     public const string EqualsOperator = "Equals";
+    public const string InOperator = "In";
     public const string NotEqualsOperator = "NotEquals";
     public const string LessThanOperator = "LessThan";
     public const string LessThanOrEqualsOperator = "LessThanOrEquals";

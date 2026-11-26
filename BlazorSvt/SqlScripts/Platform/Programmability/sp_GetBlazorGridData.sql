@@ -88,6 +88,7 @@ EXEC v2.GetBlazorGridData
     @SortDirection=N'ASC',
     @FilterJson=N'[
         {"PropertyName":"RateTypeIdRu","Value":"543746","Operator":"Equals"},
+        {"PropertyName":"TransportKindIdRu","Value":"543746,543799","Operator":"In"},
         {"PropertyName":"NodeFromNameRu","Value":"казань","Operator":"Contains"},
         {"PropertyName":"ProxyNodeNameRu","Value":"находка","Operator":"Contains"},
         {"PropertyName":"IsArchive","Value":"False","Operator":"Equals"}
@@ -126,6 +127,7 @@ BEGIN
         Operator      NVARCHAR(50) NULL,
         SqlOperator   NVARCHAR(2) NULL,
         SqlValue      NVARCHAR(4000) NULL,
+        InValues      NVARCHAR(4000) NULL,
         FtsValue      NVARCHAR(4000) NULL,
         LikeValue     NVARCHAR(4000) NULL,
         FilterPart    NVARCHAR(MAX) NULL
@@ -294,6 +296,23 @@ BEGIN
             N'''', N''''''),
         N'');
 
+    -- Мультивыбор ID: список значений через запятую → проверенный список BIGINT для IN (...)
+    UPDATE FC
+    SET InValues = Parsed.List
+    FROM @FilteredColumns FC
+    CROSS APPLY
+    (
+        SELECT STRING_AGG(CONVERT(NVARCHAR(30), items.ItemId), N',') AS List
+        FROM
+        (
+            SELECT DISTINCT TRY_CONVERT(BIGINT, LTRIM(RTRIM(S.value))) AS ItemId
+            FROM STRING_SPLIT(FC.ColumnValue, N',') S
+        ) items
+        WHERE items.ItemId IS NOT NULL
+    ) Parsed
+    WHERE FC.ColumnType = N'ID'
+      AND UPPER(FC.Operator) = N'IN';
+
     UPDATE FC
     SET FilterPart = CASE ColumnType         
             -- Логика для СТРОК без полнотекстового индекса: поиск по началу значения с любой длины
@@ -313,7 +332,10 @@ BEGIN
                 
             -- Логика для ID INT
             WHEN N'ID' THEN
-                CASE WHEN SqlOperator IS NOT NULL AND SqlValue IS NOT NULL THEN
+                CASE WHEN InValues IS NOT NULL THEN
+                    N'
+                    AND ' + SqlColumnName + N' IN (' + InValues + N') '
+                WHEN SqlOperator IS NOT NULL AND SqlValue IS NOT NULL THEN
                     N'
                     AND ' + SqlColumnName + N' ' + SqlOperator + N' ' + SqlValue + N' '
                 ELSE ''

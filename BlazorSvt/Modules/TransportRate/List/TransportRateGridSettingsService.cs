@@ -21,11 +21,11 @@ public class TransportRateGridSettingsService(
 
         b.Add(x => x.Code, L["TransportRateDto.Code"]);
         b.AddYesNo(x => x.IsDefRate, L["TransportRateDto.IsDefRate"]);
-        b.AddEnum(isRu, x => x.RateTypeIdRu, x => x.RateTypeIdEn, L["TransportRateDto.RateTypeName"]);
+        b.AddEnum(isRu, x => x.RateTypeIdRu, x => x.RateTypeIdEn, L["TransportRateDto.RateTypeName"], multiSelect: true);
         b.Add(x => x.TransportKindCode, L["TransportRateDto.TransportKindCode"], visible: false);
-        b.AddEnum(isRu, x => x.TransportKindIdRu, x => x.TransportKindIdEn, L["TransportRateDto.TransportKindName"], filterValuesRu: TransportKindSets.MainRu, filterValuesEn: TransportKindSets.MainEn);
+        b.AddEnum(isRu, x => x.TransportKindIdRu, x => x.TransportKindIdEn, L["TransportRateDto.TransportKindName"], filterValuesRu: TransportKindSets.MainRu, filterValuesEn: TransportKindSets.MainEn, multiSelect: true);
         b.Add(x => x.TransportTypeCode, L["TransportRateDto.TransportTypeCode"], visible: false);
-        b.AddEnum(isRu, x => x.TransportTypeIdRu, x => x.TransportTypeIdEn, L["TransportRateDto.TransportTypeName"], filterValuesRu: TransportTypeLevel3Sets.MainRu, filterValuesEn: TransportTypeLevel3Sets.MainEn);
+        b.AddEnum(isRu, x => x.TransportTypeIdRu, x => x.TransportTypeIdEn, L["TransportRateDto.TransportTypeName"], filterValuesRu: TransportTypeLevel3Sets.MainRu, filterValuesEn: TransportTypeLevel3Sets.MainEn, multiSelect: true);
         b.Add(x => x.NodeFromCode, L["TransportRateDto.NodeFromCode"], visible: false);
         b.AddLocalized(isRu, x => x.NodeFromNameRu, x => x.NodeFromNameEn, L["TransportRateDto.NodeFromName"]);
         b.Add(x => x.ProxyNodeCode, L["TransportRateDto.ProxyNodeCode"], visible: false);

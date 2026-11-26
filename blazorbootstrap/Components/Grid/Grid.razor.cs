@@ -741,7 +741,8 @@ public partial class Grid<TItem> : BlazorBootstrapComponentBase
             {
                 var allowedFilterOperators = FilterOperatorUtility.GetFilterOperators(column.GetPropertyTypeName());
 
-                if (allowedFilterOperators != null && allowedFilterOperators.Any(x => x.FilterOperator == item.Operator))
+                var operatorAllowed = allowedFilterOperators != null && allowedFilterOperators.Any(x => x.FilterOperator == item.Operator);
+                if (operatorAllowed || (column.FilterMultiSelect && item.Operator == FilterOperator.In))
                 {
                     column.SetFilterOperator(item.Operator);
                     column.SetFilterValue(item.Value);

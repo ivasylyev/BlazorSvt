@@ -137,6 +137,83 @@ public class GridQueryFactoryTests
             && f.Operator == GridFilterOperators.EqualsOperator);
     }
 
+    [Fact]
+    public void Create_WhenEnumInFilterProvided_ConvertsEachValueToNumericString()
+    {
+        var request = CreateRequest(filters:
+        [
+            new FilterItem(
+                nameof(TransportLegDto.TransportKindIdRu),
+                $"{nameof(TransportKindRu.Auto)},{nameof(TransportKindRu.Rail)}",
+                FilterOperator.In,
+                StringComparison.Ordinal)
+        ]);
+
+        var query = _factory.Create(request);
+
+        query.Filters.Should().ContainSingle(f =>
+            f.PropertyName == nameof(TransportLegDto.TransportKindIdRu)
+            && f.Value == $"{(int)TransportKindRu.Auto},{(int)TransportKindRu.Rail}"
+            && f.Operator == GridFilterOperators.InOperator);
+    }
+
+    [Fact]
+    public void Create_WhenEnumInFilterHasSingleValue_ConvertsToNumericString()
+    {
+        var request = CreateRequest(filters:
+        [
+            new FilterItem(
+                nameof(TransportLegDto.TransportKindIdRu),
+                nameof(TransportKindRu.Rail),
+                FilterOperator.In,
+                StringComparison.Ordinal)
+        ]);
+
+        var query = _factory.Create(request);
+
+        query.Filters.Should().ContainSingle(f =>
+            f.Value == ((int)TransportKindRu.Rail).ToString()
+            && f.Operator == GridFilterOperators.InOperator);
+    }
+
+    [Fact]
+    public void Create_WhenEnumInFilterHasUnparsedItem_DropsItKeepsValid()
+    {
+        var request = CreateRequest(filters:
+        [
+            new FilterItem(
+                nameof(TransportLegDto.TransportKindIdRu),
+                $"Nope,{nameof(TransportKindRu.Rail)}",
+                FilterOperator.In,
+                StringComparison.Ordinal)
+        ]);
+
+        var query = _factory.Create(request);
+
+        query.Filters.Should().ContainSingle(f =>
+            f.Value == ((int)TransportKindRu.Rail).ToString()
+            && f.Operator == GridFilterOperators.InOperator);
+    }
+
+    [Fact]
+    public void Create_WhenEnumInFilterAllUnparsed_KeepsOriginalString()
+    {
+        var request = CreateRequest(filters:
+        [
+            new FilterItem(
+                nameof(TransportLegDto.TransportKindIdRu),
+                "Nope,Unknown",
+                FilterOperator.In,
+                StringComparison.Ordinal)
+        ]);
+
+        var query = _factory.Create(request);
+
+        query.Filters.Should().ContainSingle(f =>
+            f.Value == "Nope,Unknown"
+            && f.Operator == GridFilterOperators.InOperator);
+    }
+
     [Theory]
     [InlineData("Nope")]
     [InlineData("rail")]

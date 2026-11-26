@@ -69,6 +69,7 @@ public required RateTypeEn RateTypeIdEn { get; set; }
 - В list-DTO и detail-DTO: `public string? CreationUserName` перед `CreationDate`, `public string? LastChangeUserName` перед `LastChangeDate` (list — с `[GridColumn(WithoutFullText = true)]`: full-text на авторах нет)
 - `LastChangeDate` в DTO — `DateTime`, не `DateTime?`. В снимке колонка `NOT NULL`: пустая дата легаси уже заменена на `CreationDate` (`ISNULL(LastChangeDate, CreationDate)`)
 - **Короткий словарь (enum):** видимая колонка `{X}IdRu`/`{X}IdEn` с `GetDisplayName`; без `Code`/`Name*`.
+- **Мультивыбор enum-фильтра:** для полей «Тип ставки» (`RateTypeId*`), «Вид транспорта» (`TransportKindId*`, `RouteTransportKindId*`) и «Тип транспорта» (`TransportTypeId*`, `Leg*_TransportTypeId*`) в `AddEnum`/`Add` передавать `multiSelect: true` — в гриде чекбокс-список, SQL `IN (...)`. Остальные enum-колонки — одиночный выбор.
 - **Длинный словарь:** видимая `{X}NameRu`/`{X}NameEn`; **без Id**, без дублирующей скрытой Name-колонки.
 - **Whitelist Code** (`NodeToCode`, `RegionCode`, …): `{X}Code` — `Visible = false`, `Filterable = true` (пользователь может включить в настройках).
 - `Filterable = true` для текстовых и enum; `false` для вычисляемых числовых полей

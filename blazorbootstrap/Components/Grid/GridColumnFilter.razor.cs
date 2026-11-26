@@ -25,6 +25,11 @@ public partial class GridColumnFilter : BlazorBootstrapComponentBase
 
     private string? selectedFilterSymbol;
 
+    /// <summary>
+    /// Выбранные значения мульти-фильтра enum — имена членов enum.
+    /// </summary>
+    private readonly HashSet<string> selectedEnumNames = new(StringComparer.OrdinalIgnoreCase);
+
     #endregion
 
     #region Methods
@@ -34,6 +39,7 @@ public partial class GridColumnFilter : BlazorBootstrapComponentBase
         filterOperators = await GetFilterOperatorsAsync(PropertyTypeName!);
         filterOperator = FilterOperator;
         filterValue = FilterValue;
+        SyncSelectedEnumNames();
 
         await base.OnInitializedAsync();
     }
@@ -44,6 +50,7 @@ public partial class GridColumnFilter : BlazorBootstrapComponentBase
         {
             lastResetTrigger = ResetTrigger;
             filterValue = FilterValue;
+            SyncSelectedEnumNames();
             inputKey++;
         }
         SetDefaultFilter();
@@ -82,7 +89,7 @@ public partial class GridColumnFilter : BlazorBootstrapComponentBase
         else if (PropertyTypeName == StringConstants.PropertyTypeNameEnum)
         {
             if (filterOperator is FilterOperator.None or FilterOperator.Clear)
-                filterOperator = FilterOperator.Equals;
+                filterOperator = MultiSelect ? FilterOperator.In : FilterOperator.Equals;
         }
         else if (PropertyTypeName == StringConstants.PropertyTypeNameGuid)
         {
@@ -93,6 +100,18 @@ public partial class GridColumnFilter : BlazorBootstrapComponentBase
 
     private async Task<IEnumerable<FilterOperatorInfo>> GetFilterOperatorsAsync(string propertyTypeName)
     {
+        // Мультивыбор enum: список операторов не нужен, значения выбираются чекбоксами.
+        // Оставляем только сброс — оператор всегда In.
+        if (MultiSelect && propertyTypeName == StringConstants.PropertyTypeNameEnum)
+        {
+            var clear = new FilterOperatorInfo("x", "Clear", FilterOperator.Clear);
+            if (FiltersTranslationProvider is null)
+                return new[] { clear };
+
+            var translations = await FiltersTranslationProvider.Invoke();
+            return new[] { translations?.FirstOrDefault(x => x.FilterOperator == FilterOperator.Clear) ?? clear };
+        }
+
         if (FiltersTranslationProvider is null)
             return FilterOperatorUtility.GetFilterOperators(PropertyTypeName!, WithoutFullText);
 
@@ -112,11 +131,58 @@ public partial class GridColumnFilter : BlazorBootstrapComponentBase
             await GridColumnFilterChanged.InvokeAsync(new FilterEventArgs(filterValue!, filterOperator));
     }
 
+    private async Task OnEnumMultiFilterValueChangedAsync(string? enumName)
+    {
+        if (enumName is null)
+            return;
+
+        if (!selectedEnumNames.Remove(enumName))
+            selectedEnumNames.Add(enumName);
+
+        // Порядок значений в строке фильтра — как в выпадающем списке, не в порядке кликов:
+        // одинаковый состав даёт одинаковый FilterItem (это сравнивает HasSameEffectiveFiltersAsLastQuery).
+        filterValue = string.Join(
+            ',',
+            EnumFilterItems
+                .Select(item => Enum.GetName(PropertyType!, item))
+                .Where(name => name is not null && selectedEnumNames.Contains(name)));
+
+        if (GridColumnFilterChanged.HasDelegate)
+            await GridColumnFilterChanged.InvokeAsync(new FilterEventArgs(filterValue, filterOperator));
+    }
+
+    /// <summary>
+    /// Восстанавливает отмеченные значения чекбоксов из строки фильтра (после сброса и при инициализации).
+    /// </summary>
+    private void SyncSelectedEnumNames()
+    {
+        selectedEnumNames.Clear();
+
+        if (!MultiSelect
+            || PropertyTypeName != StringConstants.PropertyTypeNameEnum
+            || PropertyType is null
+            || string.IsNullOrWhiteSpace(filterValue))
+            return;
+
+        var knownNames = Enum.GetNames(PropertyType);
+        foreach (var name in filterValue.Split(',', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries))
+        {
+            if (knownNames.Contains(name, StringComparer.OrdinalIgnoreCase))
+                selectedEnumNames.Add(name);
+        }
+    }
+
+    private string SelectedEnumFilterText =>
+        PropertyType is null
+            ? string.Empty
+            : string.Join(", ", selectedEnumNames.Select(name => PropertyType.GetDisplayName(name)));
+
     private async Task OnFilterOperatorChangedAsync(FilterOperatorInfo filterOperatorInfo)
     {
         if (filterOperatorInfo.FilterOperator == FilterOperator.Clear)
         {
             SetDefaultFilter();
+            selectedEnumNames.Clear();
 
             if (PropertyTypeName == StringConstants.PropertyTypeNameBoolean)
                 filterValue = null;
@@ -175,6 +241,16 @@ public partial class GridColumnFilter : BlazorBootstrapComponentBase
 
     [Parameter]
     public IReadOnlyList<Enum>? FilterEnumValues { get; set; }
+
+    /// <summary>
+    /// If <see langword="true" />, the enum filter renders a checkbox list and sends
+    /// <see cref="FilterOperator.In" /> with a comma-separated list of enum names.
+    /// </summary>
+    /// <remarks>
+    /// Default value is false.
+    /// </remarks>
+    [Parameter]
+    public bool MultiSelect { get; set; }
 
     private IEnumerable<object> EnumFilterItems =>
         FilterEnumValues ?? Enum.GetValues(PropertyType!).Cast<object>();
