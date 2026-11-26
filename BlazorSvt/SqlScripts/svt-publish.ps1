@@ -160,6 +160,57 @@ function Get-LocalSqlCredential {
     }
 }
 
+function Get-PublishSqlName {
+    param([string]$FileName)
+    return $FileName.Replace("'", "''")
+}
+
+function Get-PublishStartBatch {
+    param([string]$FileName)
+
+    $name = Get-PublishSqlName -FileName $FileName
+    $lines = @(
+        "PRINT 'Starting $name';"
+        'DECLARE @svt_publish_mark datetime2(7) = SYSDATETIME();'
+        'EXEC sys.sp_set_session_context N''svt_publish_started'', @svt_publish_mark;'
+    )
+    return ($lines -join "`r`n")
+}
+
+function Get-PublishFinishBatch {
+    param([string]$FileName)
+
+    $name = Get-PublishSqlName -FileName $FileName
+    $lines = @(
+        'DECLARE @svt_publish_finished datetime2(7) = SYSDATETIME();'
+        'DECLARE @svt_publish_started datetime2(7) = CAST(SESSION_CONTEXT(N''svt_publish_started'') AS datetime2(7));'
+        'DECLARE @svt_publish_ms bigint = DATEDIFF_BIG(MILLISECOND, @svt_publish_started, @svt_publish_finished);'
+        'DECLARE @svt_publish_min bigint = @svt_publish_ms / 60000;'
+        'DECLARE @svt_publish_sec int = (@svt_publish_ms % 60000) / 1000;'
+        'DECLARE @svt_publish_fff int = @svt_publish_ms % 1000;'
+        "PRINT 'Finished $name in ' + CONVERT(varchar(20), @svt_publish_min) + ':' + RIGHT('0' + CONVERT(varchar(2), @svt_publish_sec), 2) + '.' + RIGHT('000' + CONVERT(varchar(3), @svt_publish_fff), 3);"
+    )
+    return ($lines -join "`r`n")
+}
+
+function Get-PublishJunctionBatch {
+    param([string]$PreviousName, [string]$NextName)
+
+    $finish = Get-PublishFinishBatch -FileName $PreviousName
+    $start = Get-PublishStartBatch -FileName $NextName
+    return $finish + "`r`n" + $start
+}
+
+function Read-PublishSqlFile {
+    param([string]$Path)
+
+    $text = [System.IO.File]::ReadAllText($Path)
+    $text = $text.TrimStart([char]0xFEFF)
+    $text = $text -replace "`r`n", "`n" -replace "`r", "`n"
+    $text = $text.TrimEnd("`n")
+    return ($text -replace "`n", "`r`n")
+}
+
 function Write-ConcatenatedSql {
     param([string]$SourceDir, [string]$DestinationPath)
 
@@ -169,12 +220,20 @@ function Write-ConcatenatedSql {
     }
 
     $parts = New-Object System.Collections.Generic.List[string]
-    foreach ($file in $files) {
-        $text = [System.IO.File]::ReadAllText($file.FullName)
-        $text = $text.TrimStart([char]0xFEFF)
-        $text = $text -replace "`r`n", "`n" -replace "`r", "`n"
-        $text = $text.TrimEnd("`n")
-        $parts.Add(($text -replace "`n", "`r`n"))
+    for ($i = 0; $i -lt $files.Count; $i++) {
+        $file = $files[$i]
+        if ($i -eq 0) {
+            $parts.Add((Get-PublishStartBatch -FileName $file.Name))
+        }
+
+        $parts.Add((Read-PublishSqlFile -Path $file.FullName))
+
+        if ($i -lt ($files.Count - 1)) {
+            $parts.Add((Get-PublishJunctionBatch -PreviousName $file.Name -NextName $files[$i + 1].Name))
+        }
+        else {
+            $parts.Add((Get-PublishFinishBatch -FileName $file.Name))
+        }
     }
 
     $body = ($parts -join "`r`nGO`r`n") + "`r`n"
