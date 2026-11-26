@@ -9,7 +9,7 @@ Third number (human-with-AI) exists only at former вехи 1 (=25) and 2 (=60);
 from __future__ import annotations
 
 import csv
-from dataclasses import dataclass
+from dataclasses import dataclass, replace
 from datetime import date
 from pathlib import Path
 from typing import Iterable
@@ -377,7 +377,9 @@ def build_rows() -> list[Row]:
         R(S, "0.0.8", "0.0.8.1", "Состав экранов показа: заявки, редактор, загрузчик (Шаг: Прототип)", "Todo", 2.0, 1.0, 0.0, "грид справочника уже на проде, в показ не входит"),
         R(S, "0.0.8", "0.0.8.2", "[SVT-5308] Создание первого прототипа заявок: Локальный HTML с примерами данных (Шаг: Прототип)", "Todo", 5.0, 2.5, 0.0),
         R(S, "0.0.8", "0.0.8.3", "Показ и список замечаний (Шаг: Прототип)", "Todo", 2.0, 1.5, 0.0),
-        R(S, "0.0.9", "0.0.9.1", "Стабилизация выполнена", "Done", 20.0, 15.0, 1.0, "легаси, текущие объёмы"),
+        # Бывшая «Стабилизация выполнена» (20 / 15) разнесена на 12 задач 1.1.1–1.1.12 пропорционально часам Jira;
+        # первая — здесь, остальные — в new_rows_after_renumber.
+        R(S, "0.0.9", "0.0.9.1", "[SVT-5228] Отработка поручений от А. Рубенчика по 1-й встрече", "Done", 4.7, 3.5, 1.0),
         R(S, "0.0.10", "0.0.10.1", "[SVT-5232] Проработать Идеальный процесс- атлас СВТ", "Done", 20.0, 15.0, 1.0, "передача документа, не утверждение"),
         R(S, "0.0.10", "0.0.10.2", "[SVT-5245] Согласовать в бизнесом идеальный процесс Атлас (Шаг: Квалификация)", "Todo", 2.0, 1.5, 0.0),
         R(S, "0.0.10", "0.0.10.3", "Юзкейсы ролей собраны (Шаг: Клиентский опыт)", "Todo", 6.0, 3.0, 0.0, "шесть ролей эталона 2.7"),
@@ -1020,6 +1022,28 @@ def write_backlog_estimate_sidecar(path: Path, rows: list[Row]) -> None:
     )
 
 
+# Выполненные пункты вехи 15 без задачи в Jira: сделаны в свободное время (backlog.md, префикс `[Overtime]`).
+OVERTIME_ITEMS = (
+    {f"15.1.{i}" for i in range(1, 5)} | {f"15.2.{i}" for i in range(1, 5)} | {f"15.3.{i}" for i in range(1, 4)}
+    | {f"15.4.{i}" for i in range(1, 15)} | {f"15.5.{i}" for i in range(1, 7)} | {f"15.6.{i}" for i in range(1, 7)}
+    | {f"15.7.{i}" for i in range(1, 9)} | {f"15.10.{i}" for i in range(1, 6)}
+    | {"8.1.1", "8.1.3", "8.1.6", "8.1.7"}
+)
+# Пункты с задачей Jira, номер которой в названии backlog.md (после номера пункта).
+JIRA_ITEMS = {"8.1.2": "SVT-4997", "8.1.5": "SVT-5048"}
+
+
+def mark_overtime(rows: list[Row]) -> list[Row]:
+    out = []
+    for r in rows:
+        if r.item in OVERTIME_ITEMS:
+            r = replace(r, title=f"[Overtime] {r.title}")
+        elif r.item in JIRA_ITEMS:
+            r = replace(r, title=f"[{JIRA_ITEMS[r.item]}] {r.title}")
+        out.append(r)
+    return out
+
+
 def new_rows_after_renumber() -> list[Row]:
     """Задачи, которых не было до перенумерации. Номера — renumber_map.json и backlog.md."""
     legs = next(c for c in CATALOGS if c.name == "TransportLegs")
@@ -1031,6 +1055,19 @@ def new_rows_after_renumber() -> list[Row]:
         R("33", "33.1", "33.1.2", f"Загрузчик {legs.name}: {legs.title} (Шаг: Разработка)", "Todo", ld[0], ld[1], 0.0, note),
     ]
     rows += [
+        R("1", "1.1", "1.1.2", "[SVT-5226] Исследовать гипотезы для ускорения и стабилизации СВТ", "Done", 3.1, 2.4, 1.0),
+        R("1", "1.1", "1.1.3", "[SVT-5222] Оптимизировать работу процедуры chk.TransportRateNonUnique", "Done", 1.6, 1.2, 1.0),
+        R("1", "1.1", "1.1.4", "[SVT-5223] Оптимизировать работу процедуры chk.AverageRateLegNotFound", "Done", 1.6, 1.2, 1.0),
+        R("1", "1.1", "1.1.5", "[SVT-5224] Оптимизировать работу процедуры chk.TransportRateLegNotFound", "Done", 1.6, 1.2, 1.0),
+        R("1", "1.1", "1.1.6",
+          "[SVT-5225] Оптимизировать работу процедуры chk.TransportRateMMIncorrectCalculateFromComponentToTotal",
+          "Done", 1.6, 1.2, 1.0),
+        R("1", "1.1", "1.1.7", "[SVT-5227] Оптимизировать пересчет ставок в валюты", "Done", 1.6, 1.2, 1.0),
+        R("1", "1.1", "1.1.8", "[SVT-5230] Оптимизировать обработчик заявок", "Done", 0.4, 0.3, 1.0),
+        R("1", "1.1", "1.1.9", "[SVT-5231] Разработать расширенное логирование загрузчика", "Done", 1.6, 1.2, 1.0),
+        R("1", "1.1", "1.1.10", "[SVT-5241] Удалить лишние ключи для таблиц чтобы уменьшить блокировки", "Done", 0.8, 0.6, 1.0),
+        R("1", "1.1", "1.1.11", "[SVT-5246] Приоритезация и планирование исправления ошибок", "Done", 0.4, 0.3, 1.0),
+        R("1", "1.1", "1.1.12", "[SVT-5239] Подвести итоги по отработке поручений А. Рубенчика", "Done", 1.0, 0.7, 1.0),
         R("15", "15.1", "15.1.5", "[SVT-5312] Добавить логирование вызовов проверки здоровья", "Todo", 2.0, 1.0, 0.0),
         R(
             "15", "15.2", "15.2.5", "[SVT-5326] Редизайн сайта по «ДНК» Сибура", "Todo", 3.0, 1.0, 0.0,
@@ -1053,7 +1090,9 @@ def main() -> None:
     from renumber import renumber_rows
     from wbs_layout import apply_new_wbs
 
-    rows = [scale_framework(r) for r in renumber_rows(apply_new_wbs(build_rows()), new_rows_after_renumber())]
+    rows = mark_overtime(
+        [scale_framework(r) for r in renumber_rows(apply_new_wbs(build_rows()), new_rows_after_renumber())]
+    )
     stage_index = {stage: index for index, stage in enumerate(STAGE_ORDER)}
     rows.sort(key=lambda row: stage_index[row.stage])
     OUT.mkdir(parents=True, exist_ok=True)
