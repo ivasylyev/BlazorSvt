@@ -1,6 +1,6 @@
 ﻿/*
   Auto-generated: All v2 Programmability
-  Generated: 2026-11-25 16:36:08
+  Generated: 2026-11-26 18:02:11
   Scripts: 76
   Order: svt-create-programmability.ps1 (Platform -> Modules by name)
 */
@@ -277,6 +277,7 @@ EXEC v2.GetBlazorGridData
     @SortDirection=N'ASC',
     @FilterJson=N'[
         {"PropertyName":"RateTypeIdRu","Value":"543746","Operator":"Equals"},
+        {"PropertyName":"TransportKindIdRu","Value":"543746,543799","Operator":"In"},
         {"PropertyName":"NodeFromNameRu","Value":"казань","Operator":"Contains"},
         {"PropertyName":"ProxyNodeNameRu","Value":"находка","Operator":"Contains"},
         {"PropertyName":"IsArchive","Value":"False","Operator":"Equals"}
@@ -315,6 +316,7 @@ BEGIN
         Operator      NVARCHAR(50) NULL,
         SqlOperator   NVARCHAR(2) NULL,
         SqlValue      NVARCHAR(4000) NULL,
+        InValues      NVARCHAR(4000) NULL,
         FtsValue      NVARCHAR(4000) NULL,
         LikeValue     NVARCHAR(4000) NULL,
         FilterPart    NVARCHAR(MAX) NULL
@@ -443,18 +445,20 @@ BEGIN
         SqlValue = CASE ColumnType
             WHEN N'ID' THEN CONVERT(NVARCHAR(30), TRY_CONVERT(BIGINT, ColumnValue))
             WHEN N'DECIMAL' THEN CONVERT(NVARCHAR(50), TRY_CONVERT(DECIMAL(38, 10), ColumnValue))
-            -- DATETIME range (1753-01-01..9999-12-31): reject intermediate type=date values (e.g. 0002-09-30)
+            -- DATETIME range (1753-01-01..9999-12-31): reject intermediate type=date values (e.g. 0002-09-30).
+            -- Парсинг через DATETIME2 и литералы 'yyyymmdd'/ISO-T: TRY_CONVERT(DATETIME, 'yyyy-MM-dd')
+            -- и сравнение колонки datetime с 'yyyy-MM-dd' читают дату как 'yyyy-dd-MM' при DATEFORMAT dmy (русский логин).
             WHEN N'DATE' THEN
                 CASE
-                    WHEN TRY_CONVERT(DATETIME, ColumnValue) IS NOT NULL
-                        THEN CONVERT(NVARCHAR(10), CONVERT(DATE, TRY_CONVERT(DATETIME, ColumnValue)), 23)
+                    WHEN TRY_CONVERT(DATETIME2, ColumnValue) >= '1753-01-01'
+                        THEN CONVERT(NVARCHAR(8), TRY_CONVERT(DATETIME2, ColumnValue), 112)
                     ELSE NULL
                 END
             WHEN N'DATETIME' THEN
-                CASE LEN(ColumnValue) - LEN(REPLACE(ColumnValue, N':', N''))
-                    WHEN 0 THEN CONVERT(NVARCHAR(16), TRY_CONVERT(DATETIME, ColumnValue), 126)
-                    WHEN 1 THEN CONVERT(NVARCHAR(16), TRY_CONVERT(DATETIME, ColumnValue + N':00'), 126)
-                    ELSE CONVERT(NVARCHAR(19), TRY_CONVERT(DATETIME, ColumnValue), 126)
+                CASE
+                    WHEN TRY_CONVERT(DATETIME2, ColumnValue + IIF(LEN(ColumnValue) - LEN(REPLACE(ColumnValue, N':', N'')) = 1, N':00', N'')) >= '1753-01-01'
+                        THEN CONVERT(NVARCHAR(19), TRY_CONVERT(DATETIME2, ColumnValue + IIF(LEN(ColumnValue) - LEN(REPLACE(ColumnValue, N':', N'')) = 1, N':00', N'')), 126)
+                    ELSE NULL
                 END
             ELSE ColumnValue
         END,
@@ -483,6 +487,23 @@ BEGIN
             N'''', N''''''),
         N'');
 
+    -- Мультивыбор ID: список значений через запятую → проверенный список BIGINT для IN (...)
+    UPDATE FC
+    SET InValues = Parsed.List
+    FROM @FilteredColumns FC
+    CROSS APPLY
+    (
+        SELECT STRING_AGG(CONVERT(NVARCHAR(30), items.ItemId), N',') AS List
+        FROM
+        (
+            SELECT DISTINCT TRY_CONVERT(BIGINT, LTRIM(RTRIM(S.value))) AS ItemId
+            FROM STRING_SPLIT(FC.ColumnValue, N',') S
+        ) items
+        WHERE items.ItemId IS NOT NULL
+    ) Parsed
+    WHERE FC.ColumnType = N'ID'
+      AND UPPER(FC.Operator) = N'IN';
+
     UPDATE FC
     SET FilterPart = CASE ColumnType         
             -- Логика для СТРОК без полнотекстового индекса: поиск по началу значения с любой длины
@@ -502,7 +523,10 @@ BEGIN
                 
             -- Логика для ID INT
             WHEN N'ID' THEN
-                CASE WHEN SqlOperator IS NOT NULL AND SqlValue IS NOT NULL THEN
+                CASE WHEN InValues IS NOT NULL THEN
+                    N'
+                    AND ' + SqlColumnName + N' IN (' + InValues + N') '
+                WHEN SqlOperator IS NOT NULL AND SqlValue IS NOT NULL THEN
                     N'
                     AND ' + SqlColumnName + N' ' + SqlOperator + N' ' + SqlValue + N' '
                 ELSE ''
@@ -564,11 +588,16 @@ BEGIN
             ELSE ''
         END
     FROM @FilteredColumns FC
+    -- Шаг диапазона по числу ':' во входном значении: голая дата — день, до минут — минута, с секундами — секунда
     CROSS APPLY (
         SELECT
-            RangeFrom = N'''' + SqlValue + IIF(LEN(SqlValue) = 16, N':00', N'') + N'''',
-            RangeTo = N'DATEADD(' + IIF(LEN(SqlValue) = 16, N'MINUTE', N'SECOND')
-                + N', 1, ''' + SqlValue + IIF(LEN(SqlValue) = 16, N':00', N'') + N''')'
+            RangeFrom = N'''' + SqlValue + N'''',
+            RangeTo = N'DATEADD(' + CASE LEN(FC.ColumnValue) - LEN(REPLACE(FC.ColumnValue, N':', N''))
+                        WHEN 0 THEN N'DAY'
+                        WHEN 1 THEN N'MINUTE'
+                        ELSE N'SECOND'
+                    END
+                + N', 1, ''' + SqlValue + N''')'
     ) DT;
 
 
