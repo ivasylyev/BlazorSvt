@@ -68,7 +68,9 @@ CREATE TABLE v2.Region_Snapshot (
     RegionId                BIGINT NOT NULL,
     Code                    NVARCHAR(50) NOT NULL,
     IsArchive               BIT NOT NULL,
+    CreationUserName        NVARCHAR(255) NULL,
     CreationDate            DATETIME NOT NULL,
+    LastChangeUserName      NVARCHAR(255) NULL,
     LastChangeDate          DATETIME NOT NULL,
 
     CONSTRAINT PK_Region_Snapshot PRIMARY KEY CLUSTERED (IsArchive, Id)

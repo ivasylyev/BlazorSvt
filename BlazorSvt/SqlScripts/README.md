@@ -76,7 +76,8 @@ SqlScripts/
 │   ├── 2.0.1/              # upgrade
 │   ├── 2.3.46/             # дельта RateType + снимок programmability
 │   ├── 2.3.48/             # очередь Атласа: Currency, ProductGroup, MTR, TransportTypeLevel3 + снимок programmability
-│   ├── 2.3.49/             # текущий VersionPrefix: Contractor, Coefficient, RateSyncClass, RateCalcType, RateAutoSelectionSetting, ReportConstructor, Relevance, TransportRoute, Region, Country, TransportKind + снимок programmability
+│   ├── 2.3.49/             # Contractor, Coefficient, RateSyncClass, RateCalcType, RateAutoSelectionSetting, ReportConstructor, Relevance, TransportRoute, Region, Country, TransportKind + снимок programmability
+│   ├── 2.3.50/             # текущий VersionPrefix: SVT-5320 «Автор» / «Автор изм.» в 21 snapshot + снимок programmability
 │   └── README.md           # конвенция релизов / два контура
 └── Translations_info.txt   # Справочник переводов полей (не для деплоя)
 ```
@@ -99,6 +100,7 @@ SqlScripts/
 | 10 | `Platform/Programmability/sp_Sync_GetHighWatermark.sql` |
 | 11 | `Platform/Programmability/sp_Sync_UpsertAffected.sql` |
 | 12 | `Platform/Programmability/sp_Sync_Reconcile.sql` |
+| 13 | `Platform/Programmability/vw_UserDisplayName.sql` — ФИО автора для `CreationUserName` / `LastChangeUserName` в проекциях модулей (до них) |
 
 ### 2. Modules (по одному модулю: Structure → Programmability)
 
@@ -375,7 +377,7 @@ Full export: `v2.ExportBlazorGridDetail` (Platform) — `@DetailViewName` и `@E
 
 Также без ошибки отбрасывается фильтр по полю, которого нет в `@AllowedColumnsJson`. Операторов «одно из списка», «пусто» и «не пусто» нет.
 
-Процедуру это поведение не меняет: проверку делает вызывающий код. API для Атласа (`CatalogQueryTranslator`) отклоняет такие фильтры ответом 400 до вызова процедуры. Грид пока не проверяет: текстовые операторы в UI вводят в заблуждение (backlog 0.3.2.12–0.3.2.14).
+Процедуру это поведение не меняет: проверку делает вызывающий код. API для Атласа (`CatalogQueryTranslator`) отклоняет такие фильтры ответом 400 до вызова процедуры. Грид для `NVARCHAR` без full-text (`[GridColumn(WithoutFullText = true)]`) показывает «a**» / «Начинается с»; оператор в запросе остаётся Contains. Колонка с full-text — «*a*» / «Содержит».
 
 ## Синхронизация legacy → snapshot (одностороннее, eventual consistency)
 
@@ -416,6 +418,8 @@ SQL-логика вынесена в процедуры. Все обращени
 **Каскад.** Snapshot денормализован (имена/коды из Region, LocationsNodes и
 т.д.). Изменение справочника-источника инвалидирует зависимые строки через
 скрытые FK-колонки snapshot (`*_Id`) — курсор ведётся по каждой таблице-источнику.
+
+**Автор записи (SVT-5320).** `CreationUserName` / `LastChangeUserName` в snapshot — ФИО из `dbo.[User]` через `v2.vw_UserDisplayName` (Name, при пустом — Login) по `CreationUserId` / `ISNULL(LastChangeUserId, CreationUserId)`. Автор меняется вместе с `RowVer` строки и приходит штатным инкрементом. У `dbo.[User]` нет `RowVer`: переименование пользователя в snapshot не каскадируется — ФИО обновится при следующем изменении строки или перезаливке (принятый риск).
 
 **Справочники вне каскада чужих гридов** — список и номера `PrimitiveEntityData_*` в `.cursor/rules/svt-development-patterns.mdc`. Свой watermark-sync в этой таблице есть только у `TransportType`. Колонки `*_Id` в snapshot остаются, если нужны grid-DTO.
 У TransportLeg тип отправки — сырой `ShipmentTypeCodeT` (не FK/enum на `2142`).

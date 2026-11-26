@@ -63,7 +63,9 @@ AS
         LEFT(rt.Name_en, 60)            AS RegionToNameEn,
         LEFT(rt.Name_ru, 60)            AS RegionToNameRu,
 
+        cu.DisplayName                  AS CreationUserName,
         l.CreationDate                  AS CreationDate,
+        lu.DisplayName                  AS LastChangeUserName,
         ISNULL(l.LastChangeDate, l.CreationDate) AS LastChangeDate,
 
         -- Скрытые FK для каскадной инвалидации (не в гриде)
@@ -76,6 +78,8 @@ AS
 
     FROM vw_TransportLeg l (NOLOCK)
     JOIN vw_TransportKind tk (NOLOCK) ON l.TransportKind = tk.Id
+    LEFT JOIN v2.vw_UserDisplayName cu ON cu.UserId = l.CreationUserId
+    LEFT JOIN v2.vw_UserDisplayName lu ON lu.UserId = ISNULL(l.LastChangeUserId, l.CreationUserId)
 
     JOIN vw_LocationsNodes nf (NOLOCK) ON l.NodeFrom = nf.Id
     LEFT JOIN vw_Region rf (NOLOCK) ON rf.Id = nf.Region

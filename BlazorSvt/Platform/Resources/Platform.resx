@@ -412,6 +412,10 @@
   <data name="Common.Active" xml:space="preserve">
 	  <value>Active</value>
   </data>
+  <data name="Common.CreationUser" xml:space="preserve"><value>Author</value></data>
+  <data name="Common.LastChangeUser" xml:space="preserve"><value>Last change author</value></data>
+  <data name="Common.CreationUser.Long" xml:space="preserve"><value>Author</value></data>
+  <data name="Common.LastChangeUser.Long" xml:space="preserve"><value>Last change author</value></data>
   <data name="Api.Error.invalid_request" xml:space="preserve"><value>The request is malformed.</value></data>
   <data name="Api.Error.validation_failed" xml:space="preserve"><value>Request parameters are invalid. See errors.</value></data>
   <data name="Api.Error.unauthenticated" xml:space="preserve"><value>The caller is not authenticated.</value></data>

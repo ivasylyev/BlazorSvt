@@ -1,4 +1,5 @@
 using System.Linq.Expressions;
+using System.Reflection;
 using BlazorBootstrap;
 using Microsoft.Extensions.Localization;
 
@@ -28,7 +29,8 @@ public sealed class GridColumnSettingsBuilder<T>(IStringLocalizer<PlatformResour
             DisplaySelector = display ?? (dto => GridValueFormatter.Format(compiled(dto))),
             SortSelector = ToSort(property),
             Visible = visible,
-            Filterable = filterable
+            Filterable = filterable,
+            WithoutFullText = IsWithoutFullText(property)
         });
         return this;
     }
@@ -130,14 +132,18 @@ public sealed class GridColumnSettingsBuilder<T>(IStringLocalizer<PlatformResour
     }
 
     public GridColumnSettingsBuilder<T> AddSystemColumns(
+        Expression<Func<T, string?>> creationUser,
         Expression<Func<T, DateTime>> creationDate,
+        Expression<Func<T, string?>> lastChangeUser,
         Expression<Func<T, DateTime>> lastChangeDate,
         Expression<Func<T, bool>> isArchive,
         string creationDateHeader,
         string lastChangeDateHeader,
         string isArchiveHeader)
     {
+        AddCreationUser(creationUser);
         Add(creationDate, creationDateHeader, visible: false);
+        AddLastChangeUser(lastChangeUser);
         Add(lastChangeDate, lastChangeDateHeader, visible: false);
 
         var compiledArchive = isArchive.Compile();
@@ -155,6 +161,27 @@ public sealed class GridColumnSettingsBuilder<T>(IStringLocalizer<PlatformResour
         };
         columns.Add(archive);
         return this;
+    }
+
+    /// <summary>Колонка «Автор» (перед датой создания): скрыта по умолчанию, заголовок из Platform-ресурсов.</summary>
+    public GridColumnSettingsBuilder<T> AddCreationUser(Expression<Func<T, string?>> creationUser) =>
+        Add(creationUser, platform["Common.CreationUser"], visible: false);
+
+    /// <summary>Колонка «Автор изм.» (перед датой изменения): скрыта по умолчанию, заголовок из Platform-ресурсов.</summary>
+    public GridColumnSettingsBuilder<T> AddLastChangeUser(Expression<Func<T, string?>> lastChangeUser) =>
+        Add(lastChangeUser, platform["Common.LastChangeUser"], visible: false);
+
+    private static bool IsWithoutFullText<TProp>(Expression<Func<T, TProp>> property)
+    {
+        var member = property.Body switch
+        {
+            MemberExpression direct => direct.Member,
+            UnaryExpression { Operand: MemberExpression inner } => inner.Member,
+            _ => null
+        };
+
+        return member is PropertyInfo propertyInfo
+            && propertyInfo.GetCustomAttribute<GridColumnAttribute>()?.WithoutFullText == true;
     }
 
     private static string MemberName<TProp>(Expression<Func<T, TProp>> property) =>

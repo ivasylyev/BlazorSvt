@@ -21,7 +21,9 @@ public class RateAutoSelectionSettingGridSettingsService(
         b.Add(x => x.DestinationNodeToCountry, L["RateAutoSelectionSettingDto.DestinationNodeToCountry"], display: dto => YesNo(dto.DestinationNodeToCountry));
         b.Add(x => x.ProductToProductGroup, L["RateAutoSelectionSettingDto.ProductToProductGroup"], display: dto => YesNo(dto.ProductToProductGroup));
         b.Add(x => x.AnyTransportKind, L["RateAutoSelectionSettingDto.AnyTransportKind"], display: dto => YesNo(dto.AnyTransportKind));
+        b.AddCreationUser(x => x.CreationUserName);
         b.Add(x => x.CreationDate, L["RateAutoSelectionSettingDto.CreationDate"], visible: false);
+        b.AddLastChangeUser(x => x.LastChangeUserName);
         b.Add(x => x.LastChangeDate, L["RateAutoSelectionSettingDto.LastChangeDate"], visible: false);
         b.Add(
             x => x.IsArchive,

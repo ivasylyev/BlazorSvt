@@ -5533,9 +5533,17 @@
           "isDefRate": {
             "type": "boolean"
           },
+          "creationUserName": {
+            "type": "string",
+            "nullable": true
+          },
           "creationDate": {
             "type": "string",
             "format": "date-time"
+          },
+          "lastChangeUserName": {
+            "type": "string",
+            "nullable": true
           },
           "lastChangeDate": {
             "type": "string",
@@ -6151,9 +6159,17 @@
             "type": "string",
             "format": "date"
           },
+          "creationUserName": {
+            "type": "string",
+            "nullable": true
+          },
           "creationDate": {
             "type": "string",
             "format": "date-time"
+          },
+          "lastChangeUserName": {
+            "type": "string",
+            "nullable": true
           },
           "lastChangeDate": {
             "type": "string",
@@ -7105,9 +7121,17 @@
           "isArchive": {
             "type": "boolean"
           },
+          "creationUserName": {
+            "type": "string",
+            "nullable": true
+          },
           "creationDate": {
             "type": "string",
             "format": "date-time"
+          },
+          "lastChangeUserName": {
+            "type": "string",
+            "nullable": true
           },
           "lastChangeDate": {
             "type": "string",
@@ -7206,9 +7230,17 @@
           "rateTypeIdEn": {
             "$ref": "#/components/schemas/RateTypeEn"
           },
+          "creationUserName": {
+            "type": "string",
+            "nullable": true
+          },
           "creationDate": {
             "type": "string",
             "format": "date-time"
+          },
+          "lastChangeUserName": {
+            "type": "string",
+            "nullable": true
           },
           "lastChangeDate": {
             "type": "string",
@@ -7241,9 +7273,17 @@
           "isArchive": {
             "type": "boolean"
           },
+          "creationUserName": {
+            "type": "string",
+            "nullable": true
+          },
           "creationDate": {
             "type": "string",
             "format": "date-time"
+          },
+          "lastChangeUserName": {
+            "type": "string",
+            "nullable": true
           },
           "lastChangeDate": {
             "type": "string",
@@ -7348,9 +7388,17 @@
             "type": "string",
             "nullable": true
           },
+          "creationUserName": {
+            "type": "string",
+            "nullable": true
+          },
           "creationDate": {
             "type": "string",
             "format": "date-time"
+          },
+          "lastChangeUserName": {
+            "type": "string",
+            "nullable": true
           },
           "lastChangeDate": {
             "type": "string",
@@ -7403,9 +7451,17 @@
           "statusIdEn": {
             "$ref": "#/components/schemas/NullableOfStatusElementEn"
           },
+          "creationUserName": {
+            "type": "string",
+            "nullable": true
+          },
           "creationDate": {
             "type": "string",
             "format": "date-time"
+          },
+          "lastChangeUserName": {
+            "type": "string",
+            "nullable": true
           },
           "lastChangeDate": {
             "type": "string",
@@ -7463,9 +7519,17 @@
             "type": "string",
             "nullable": true
           },
+          "creationUserName": {
+            "type": "string",
+            "nullable": true
+          },
           "creationDate": {
             "type": "string",
             "format": "date-time"
+          },
+          "lastChangeUserName": {
+            "type": "string",
+            "nullable": true
           },
           "lastChangeDate": {
             "type": "string",
@@ -7508,9 +7572,17 @@
           "isArchive": {
             "type": "boolean"
           },
+          "creationUserName": {
+            "type": "string",
+            "nullable": true
+          },
           "creationDate": {
             "type": "string",
             "format": "date-time"
+          },
+          "lastChangeUserName": {
+            "type": "string",
+            "nullable": true
           },
           "lastChangeDate": {
             "type": "string",
@@ -7556,9 +7628,17 @@
           "isArchive": {
             "type": "boolean"
           },
+          "creationUserName": {
+            "type": "string",
+            "nullable": true
+          },
           "creationDate": {
             "type": "string",
             "format": "date-time"
+          },
+          "lastChangeUserName": {
+            "type": "string",
+            "nullable": true
           },
           "lastChangeDate": {
             "type": "string",
@@ -7787,9 +7867,17 @@
           "isArchive": {
             "type": "boolean"
           },
+          "creationUserName": {
+            "type": "string",
+            "nullable": true
+          },
           "creationDate": {
             "type": "string",
             "format": "date-time"
+          },
+          "lastChangeUserName": {
+            "type": "string",
+            "nullable": true
           },
           "lastChangeDate": {
             "type": "string",
@@ -8263,9 +8351,17 @@
             "type": "string",
             "nullable": true
           },
+          "creationUserName": {
+            "type": "string",
+            "nullable": true
+          },
           "creationDate": {
             "type": "string",
             "format": "date-time"
+          },
+          "lastChangeUserName": {
+            "type": "string",
+            "nullable": true
           },
           "lastChangeDate": {
             "type": "string",
@@ -8310,9 +8406,17 @@
           "isArchive": {
             "type": "boolean"
           },
+          "creationUserName": {
+            "type": "string",
+            "nullable": true
+          },
           "creationDate": {
             "type": "string",
             "format": "date-time"
+          },
+          "lastChangeUserName": {
+            "type": "string",
+            "nullable": true
           },
           "lastChangeDate": {
             "type": "string",
@@ -8467,9 +8571,17 @@
           "dangerClassIdEn": {
             "$ref": "#/components/schemas/NullableOfDangerClassEn"
           },
+          "creationUserName": {
+            "type": "string",
+            "nullable": true
+          },
           "creationDate": {
             "type": "string",
             "format": "date-time"
+          },
+          "lastChangeUserName": {
+            "type": "string",
+            "nullable": true
           },
           "lastChangeDate": {
             "type": "string",
@@ -8862,9 +8974,17 @@
           "isArchive": {
             "type": "boolean"
           },
+          "creationUserName": {
+            "type": "string",
+            "nullable": true
+          },
           "creationDate": {
             "type": "string",
             "format": "date-time"
+          },
+          "lastChangeUserName": {
+            "type": "string",
+            "nullable": true
           },
           "lastChangeDate": {
             "type": "string",
@@ -9079,9 +9199,17 @@
             "type": "string",
             "format": "date"
           },
+          "creationUserName": {
+            "type": "string",
+            "nullable": true
+          },
           "creationDate": {
             "type": "string",
             "format": "date-time"
+          },
+          "lastChangeUserName": {
+            "type": "string",
+            "nullable": true
           },
           "lastChangeDate": {
             "type": "string",
@@ -9270,9 +9398,17 @@
           "isArchive": {
             "type": "boolean"
           },
+          "creationUserName": {
+            "type": "string",
+            "nullable": true
+          },
           "creationDate": {
             "type": "string",
             "format": "date-time"
+          },
+          "lastChangeUserName": {
+            "type": "string",
+            "nullable": true
           },
           "lastChangeDate": {
             "type": "string",
@@ -9388,9 +9524,17 @@
           "rateSyncClassIdEn": {
             "$ref": "#/components/schemas/RateSyncClassEn"
           },
+          "creationUserName": {
+            "type": "string",
+            "nullable": true
+          },
           "creationDate": {
             "type": "string",
             "format": "date-time"
+          },
+          "lastChangeUserName": {
+            "type": "string",
+            "nullable": true
           },
           "lastChangeDate": {
             "type": "string",
@@ -9428,9 +9572,17 @@
             "type": "boolean",
             "nullable": true
           },
+          "creationUserName": {
+            "type": "string",
+            "nullable": true
+          },
           "creationDate": {
             "type": "string",
             "format": "date-time"
+          },
+          "lastChangeUserName": {
+            "type": "string",
+            "nullable": true
           },
           "lastChangeDate": {
             "type": "string",
@@ -9479,9 +9631,17 @@
             "type": "boolean",
             "nullable": true
           },
+          "creationUserName": {
+            "type": "string",
+            "nullable": true
+          },
           "creationDate": {
             "type": "string",
             "format": "date-time"
+          },
+          "lastChangeUserName": {
+            "type": "string",
+            "nullable": true
           },
           "lastChangeDate": {
             "type": "string",
@@ -9503,9 +9663,17 @@
           "code": {
             "type": "string"
           },
+          "creationUserName": {
+            "type": "string",
+            "nullable": true
+          },
           "creationDate": {
             "type": "string",
             "format": "date-time"
+          },
+          "lastChangeUserName": {
+            "type": "string",
+            "nullable": true
           },
           "lastChangeDate": {
             "type": "string",
@@ -9552,9 +9720,17 @@
           "isArchive": {
             "type": "boolean"
           },
+          "creationUserName": {
+            "type": "string",
+            "nullable": true
+          },
           "creationDate": {
             "type": "string",
             "format": "date-time"
+          },
+          "lastChangeUserName": {
+            "type": "string",
+            "nullable": true
           },
           "lastChangeDate": {
             "type": "string",
@@ -9583,9 +9759,17 @@
           "isArchive": {
             "type": "boolean"
           },
+          "creationUserName": {
+            "type": "string",
+            "nullable": true
+          },
           "creationDate": {
             "type": "string",
             "format": "date-time"
+          },
+          "lastChangeUserName": {
+            "type": "string",
+            "nullable": true
           },
           "lastChangeDate": {
             "type": "string",
@@ -9618,9 +9802,17 @@
           "isArchive": {
             "type": "boolean"
           },
+          "creationUserName": {
+            "type": "string",
+            "nullable": true
+          },
           "creationDate": {
             "type": "string",
             "format": "date-time"
+          },
+          "lastChangeUserName": {
+            "type": "string",
+            "nullable": true
           },
           "lastChangeDate": {
             "type": "string",
@@ -9681,9 +9873,17 @@
           "isArchive": {
             "type": "boolean"
           },
+          "creationUserName": {
+            "type": "string",
+            "nullable": true
+          },
           "creationDate": {
             "type": "string",
             "format": "date-time"
+          },
+          "lastChangeUserName": {
+            "type": "string",
+            "nullable": true
           },
           "lastChangeDate": {
             "type": "string",
@@ -9732,9 +9932,17 @@
           "isArchive": {
             "type": "boolean"
           },
+          "creationUserName": {
+            "type": "string",
+            "nullable": true
+          },
           "creationDate": {
             "type": "string",
             "format": "date-time"
+          },
+          "lastChangeUserName": {
+            "type": "string",
+            "nullable": true
           },
           "lastChangeDate": {
             "type": "string",
@@ -9775,9 +9983,17 @@
           "code": {
             "type": "string"
           },
+          "creationUserName": {
+            "type": "string",
+            "nullable": true
+          },
           "creationDate": {
             "type": "string",
             "format": "date-time"
+          },
+          "lastChangeUserName": {
+            "type": "string",
+            "nullable": true
           },
           "lastChangeDate": {
             "type": "string",
@@ -9908,9 +10124,17 @@
           "federalDistrictsIdEn": {
             "$ref": "#/components/schemas/NullableOfFederalDistrictsEn"
           },
+          "creationUserName": {
+            "type": "string",
+            "nullable": true
+          },
           "creationDate": {
             "type": "string",
             "format": "date-time"
+          },
+          "lastChangeUserName": {
+            "type": "string",
+            "nullable": true
           },
           "lastChangeDate": {
             "type": "string",
@@ -9935,9 +10159,17 @@
             "type": "string",
             "nullable": true
           },
+          "creationUserName": {
+            "type": "string",
+            "nullable": true
+          },
           "creationDate": {
             "type": "string",
             "format": "date-time"
+          },
+          "lastChangeUserName": {
+            "type": "string",
+            "nullable": true
           },
           "lastChangeDate": {
             "type": "string",
@@ -9972,9 +10204,17 @@
           "isArchive": {
             "type": "boolean"
           },
+          "creationUserName": {
+            "type": "string",
+            "nullable": true
+          },
           "creationDate": {
             "type": "string",
             "format": "date-time"
+          },
+          "lastChangeUserName": {
+            "type": "string",
+            "nullable": true
           },
           "lastChangeDate": {
             "type": "string",
@@ -10096,9 +10336,17 @@
             "type": "string",
             "nullable": true
           },
+          "creationUserName": {
+            "type": "string",
+            "nullable": true
+          },
           "creationDate": {
             "type": "string",
             "format": "date-time"
+          },
+          "lastChangeUserName": {
+            "type": "string",
+            "nullable": true
           },
           "lastChangeDate": {
             "type": "string",
@@ -10214,9 +10462,17 @@
             "type": "string",
             "nullable": true
           },
+          "creationUserName": {
+            "type": "string",
+            "nullable": true
+          },
           "creationDate": {
             "type": "string",
             "format": "date-time"
+          },
+          "lastChangeUserName": {
+            "type": "string",
+            "nullable": true
           },
           "lastChangeDate": {
             "type": "string",
@@ -10547,9 +10803,17 @@
             "type": "string",
             "nullable": true
           },
+          "creationUserName": {
+            "type": "string",
+            "nullable": true
+          },
           "creationDate": {
             "type": "string",
             "format": "date-time"
+          },
+          "lastChangeUserName": {
+            "type": "string",
+            "nullable": true
           },
           "lastChangeDate": {
             "type": "string",
@@ -10602,9 +10866,17 @@
           "isArchive": {
             "type": "boolean"
           },
+          "creationUserName": {
+            "type": "string",
+            "nullable": true
+          },
           "creationDate": {
             "type": "string",
             "format": "date-time"
+          },
+          "lastChangeUserName": {
+            "type": "string",
+            "nullable": true
           },
           "lastChangeDate": {
             "type": "string",
@@ -10831,9 +11103,17 @@
             "type": "string",
             "nullable": true
           },
+          "creationUserName": {
+            "type": "string",
+            "nullable": true
+          },
           "creationDate": {
             "type": "string",
             "format": "date-time"
+          },
+          "lastChangeUserName": {
+            "type": "string",
+            "nullable": true
           },
           "lastChangeDate": {
             "type": "string",
@@ -10976,9 +11256,17 @@
             "type": "string",
             "nullable": true
           },
+          "creationUserName": {
+            "type": "string",
+            "nullable": true
+          },
           "creationDate": {
             "type": "string",
             "format": "date-time"
+          },
+          "lastChangeUserName": {
+            "type": "string",
+            "nullable": true
           },
           "lastChangeDate": {
             "type": "string",
@@ -11024,9 +11312,17 @@
           "isDefRate": {
             "type": "boolean"
           },
+          "creationUserName": {
+            "type": "string",
+            "nullable": true
+          },
           "creationDate": {
             "type": "string",
             "format": "date-time"
+          },
+          "lastChangeUserName": {
+            "type": "string",
+            "nullable": true
           },
           "lastChangeDate": {
             "type": "string",
@@ -11668,9 +11964,17 @@
             "type": "string",
             "format": "date"
           },
+          "creationUserName": {
+            "type": "string",
+            "nullable": true
+          },
           "creationDate": {
             "type": "string",
             "format": "date-time"
+          },
+          "lastChangeUserName": {
+            "type": "string",
+            "nullable": true
           },
           "lastChangeDate": {
             "type": "string",
@@ -11908,9 +12212,17 @@
           "isArchive": {
             "type": "boolean"
           },
+          "creationUserName": {
+            "type": "string",
+            "nullable": true
+          },
           "creationDate": {
             "type": "string",
             "format": "date-time"
+          },
+          "lastChangeUserName": {
+            "type": "string",
+            "nullable": true
           },
           "lastChangeDate": {
             "type": "string",
@@ -12034,9 +12346,17 @@
           "isArchive": {
             "type": "boolean"
           },
+          "creationUserName": {
+            "type": "string",
+            "nullable": true
+          },
           "creationDate": {
             "type": "string",
             "format": "date-time"
+          },
+          "lastChangeUserName": {
+            "type": "string",
+            "nullable": true
           },
           "lastChangeDate": {
             "type": "string",
@@ -12141,9 +12461,17 @@
           "isArchive": {
             "type": "boolean"
           },
+          "creationUserName": {
+            "type": "string",
+            "nullable": true
+          },
           "creationDate": {
             "type": "string",
             "format": "date-time"
+          },
+          "lastChangeUserName": {
+            "type": "string",
+            "nullable": true
           },
           "lastChangeDate": {
             "type": "string",
@@ -12219,9 +12547,17 @@
           "isArchive": {
             "type": "boolean"
           },
+          "creationUserName": {
+            "type": "string",
+            "nullable": true
+          },
           "creationDate": {
             "type": "string",
             "format": "date-time"
+          },
+          "lastChangeUserName": {
+            "type": "string",
+            "nullable": true
           },
           "lastChangeDate": {
             "type": "string",

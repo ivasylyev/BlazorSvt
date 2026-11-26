@@ -53,12 +53,16 @@ AS
         LEFT(dc.Code, 50)                                                        AS DangerClassCode,
         LEFT(dc.Name, 4000)                                                      AS DangerClassNameRu,
 
+        cu.DisplayName                                                           AS CreationUserName,
         m.CreationDate                                                           AS CreationDate,
+        lu.DisplayName                                                           AS LastChangeUserName,
         ISNULL(m.LastChangeDate, m.CreationDate)                                 AS LastChangeDate
 
     FROM dbo.vw_MTR m (NOLOCK)
     LEFT JOIN dbo.vw_ProductGroup pg (NOLOCK) ON m.TransportName = pg.Id
     LEFT JOIN dbo.vw_ETSNG e (NOLOCK) ON m.ETSNGCode = e.Id
     LEFT JOIN dbo.vw_Unit u (NOLOCK) ON m.Unit = u.Id
-    LEFT JOIN dbo.vw_DangerClass dc (NOLOCK) ON m.DangerClass = dc.Id;
+    LEFT JOIN dbo.vw_DangerClass dc (NOLOCK) ON m.DangerClass = dc.Id
+    LEFT JOIN v2.vw_UserDisplayName cu ON cu.UserId = m.CreationUserId
+    LEFT JOIN v2.vw_UserDisplayName lu ON lu.UserId = ISNULL(m.LastChangeUserId, m.CreationUserId);
 GO

@@ -68,7 +68,9 @@ CREATE TABLE v2.Coefficient_Snapshot (
     RateTypeCode            NVARCHAR(50) NULL,
     RateTypeNameRu          NVARCHAR(100) NULL,
 
+    CreationUserName        NVARCHAR(255) NULL,
     CreationDate            DATETIME NOT NULL,
+    LastChangeUserName      NVARCHAR(255) NULL,
     LastChangeDate          DATETIME NOT NULL,
 
     CONSTRAINT PK_Coefficient_Snapshot PRIMARY KEY CLUSTERED (IsArchive, Id)

@@ -13,7 +13,9 @@ public class RateCalcTypeDetailSettingsService(
         var group = L["RateCalcTypeDetailDto.Group.0.Default"];
 
         b.Add(group, x => x.Code, L["RateCalcTypeDetailDto.Code"]);
+        b.AddCreationUser(group, x => x.CreationUserName);
         b.Add(group, x => x.CreationDate, L["RateCalcTypeDetailDto.CreationDate"]);
+        b.AddLastChangeUser(group, x => x.LastChangeUserName);
         b.Add(group, x => x.LastChangeDate, L["RateCalcTypeDetailDto.LastChangeDate"]);
         b.AddArchiveStatus(group, x => x.IsArchive, L["RateCalcTypeDetailDto.IsArchive"]);
         b.Add(group, x => x.Name, L["RateCalcTypeDetailDto.Name"]);

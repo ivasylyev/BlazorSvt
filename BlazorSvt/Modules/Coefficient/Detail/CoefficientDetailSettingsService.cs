@@ -21,7 +21,9 @@ public class CoefficientDetailSettingsService(
         b.AddYesNo(group, x => x.Active, L["CoefficientDetailDto.Active"]);
         b.AddYesNo(group, x => x.OverallValue, L["CoefficientDetailDto.OverallValue"]);
         b.AddEnum(isRu, group, x => x.RateTypeIdRu, x => x.RateTypeIdEn, L["CoefficientDetailDto.RateTypeName"]);
+        b.AddCreationUser(group, x => x.CreationUserName);
         b.Add(group, x => x.CreationDate, L["CoefficientDetailDto.CreationDate"]);
+        b.AddLastChangeUser(group, x => x.LastChangeUserName);
         b.Add(group, x => x.LastChangeDate, L["CoefficientDetailDto.LastChangeDate"]);
         b.AddArchiveStatus(group, x => x.IsArchive, L["CoefficientDetailDto.IsArchive"]);
 

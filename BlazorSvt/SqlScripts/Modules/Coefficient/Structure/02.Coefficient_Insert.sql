@@ -23,7 +23,9 @@ INSERT INTO v2.Coefficient_Snapshot (
     ,RateTypeId
     ,RateTypeCode
     ,RateTypeNameRu
+    ,CreationUserName
     ,CreationDate
+    ,LastChangeUserName
     ,LastChangeDate
 )
 SELECT
@@ -41,7 +43,9 @@ SELECT
     ,RateTypeId
     ,RateTypeCode
     ,RateTypeNameRu
+    ,CreationUserName
     ,CreationDate
+    ,LastChangeUserName
     ,LastChangeDate
 FROM v2.vw_Coefficient_SnapshotSource;
 GO

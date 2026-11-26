@@ -23,7 +23,9 @@ public class TransportTypeLevel3DetailSettingsService(
         b.Add(group, x => x.SAPCode, L["TransportTypeLevel3DetailDto.SAPCode"]);
         b.Add(group, x => x.OrionCode, L["TransportTypeLevel3DetailDto.OrionCode"]);
         b.AddEnum(isRu, group, x => x.StatusIdRu, x => x.StatusIdEn, L["TransportTypeLevel3DetailDto.Status"]);
+        b.AddCreationUser(group, x => x.CreationUserName);
         b.Add(group, x => x.CreationDate, L["TransportTypeLevel3DetailDto.CreationDate"]);
+        b.AddLastChangeUser(group, x => x.LastChangeUserName);
         b.Add(group, x => x.LastChangeDate, L["TransportTypeLevel3DetailDto.LastChangeDate"]);
         b.AddArchiveStatus(group, x => x.IsArchive, L["TransportTypeLevel3DetailDto.IsArchive"]);
 

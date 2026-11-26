@@ -25,7 +25,9 @@ public class ProductGroupDetailSettingsService(
         b.AddYesNo(group, x => x.SVTUseProductGroupWhenNoProductRateExists, L["ProductGroupDetailDto.SVTUseProductGroupWhenNoProductRateExists"]);
         b.Add(group, x => x.NameEn, L["ProductGroupDetailDto.NameEn"]);
         b.AddEnum(isRu, group, x => x.RateSyncClassIdRu, x => x.RateSyncClassIdEn, L["ProductGroupDetailDto.RateSyncClass"]);
+        b.AddCreationUser(group, x => x.CreationUserName);
         b.Add(group, x => x.CreationDate, L["ProductGroupDetailDto.CreationDate"]);
+        b.AddLastChangeUser(group, x => x.LastChangeUserName);
         b.Add(group, x => x.LastChangeDate, L["ProductGroupDetailDto.LastChangeDate"]);
         b.AddArchiveStatus(group, x => x.IsArchive, L["ProductGroupDetailDto.IsArchive"]);
 

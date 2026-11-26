@@ -20,7 +20,9 @@ public class RateCalcTypeGridSettingsService(
         b.Add(x => x.Name, L["RateCalcTypeDto.Name"]);
         b.Add(x => x.SearchCode, L["RateCalcTypeDto.SearchCode"]);
         b.AddSystemColumns(
+            x => x.CreationUserName,
             x => x.CreationDate,
+            x => x.LastChangeUserName,
             x => x.LastChangeDate,
             x => x.IsArchive,
             L["RateCalcTypeDto.CreationDate"],

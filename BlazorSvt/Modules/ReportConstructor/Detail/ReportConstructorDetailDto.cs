@@ -29,7 +29,9 @@ public class ReportConstructorDetailDto
     public string? ProductCode { get; set; }
     public string? ProductNameRu { get; set; }
     public string? ProductNameEn { get; set; }
+    public string? CreationUserName { get; set; }
     public DateTime CreationDate { get; set; }
+    public string? LastChangeUserName { get; set; }
     public DateTime LastChangeDate { get; set; }
     public bool IsArchive { get; set; }
 }

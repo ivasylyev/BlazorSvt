@@ -30,7 +30,9 @@ public class MTRDetailSettingsService(
         AddEnum(b, isRu, group, x => x.DangerClassIdRu, x => x.DangerClassIdEn, L["MTRDetailDto.DangerClass"]);
         AddEnum(b, isRu, group, x => x.StatusIdRu, x => x.StatusIdEn, L["MTRDetailDto.Status"]);
         b.Add(group, x => x.ProductCode, L["MTRDetailDto.ProductCode"]);
+        b.AddCreationUser(group, x => x.CreationUserName);
         b.Add(group, x => x.CreationDate, L["MTRDetailDto.CreationDate"]);
+        b.AddLastChangeUser(group, x => x.LastChangeUserName);
         b.Add(group, x => x.LastChangeDate, L["MTRDetailDto.LastChangeDate"]);
         b.AddArchiveStatus(group, x => x.IsArchive, L["MTRDetailDto.IsArchive"]);
 

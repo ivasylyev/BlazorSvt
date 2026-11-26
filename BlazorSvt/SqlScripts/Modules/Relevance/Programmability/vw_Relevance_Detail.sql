@@ -12,7 +12,9 @@ AS
         RelevanceId,
         Code,
         Name,
+        CreationUserName,
         CreationDate,
+        LastChangeUserName,
         LastChangeDate,
         IsArchive
     FROM v2.vw_Relevance_SnapshotSource;

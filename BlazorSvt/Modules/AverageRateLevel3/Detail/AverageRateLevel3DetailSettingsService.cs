@@ -37,7 +37,9 @@ public class AverageRateLevel3DetailSettingsService(
         b.Add(g1, x => x.TypeName, L["AverageRateLevel3DetailDto.RateTypeName"]);
         b.Add(g1, x => x.TypeCode, L["AverageRateLevel3DetailDto.RateTypeCode"]);
         b.AddYesNo(g1, x => x.IsDefRate, L["AverageRateLevel3DetailDto.IsDefRate"]);
-        b.Add(g1, x => x.CreationDate, L["AverageRateLevel3DetailDto.CreationDate"], hasMargin: true);
+        b.AddCreationUser(g1, x => x.CreationUserName, hasMargin: true);
+        b.Add(g1, x => x.CreationDate, L["AverageRateLevel3DetailDto.CreationDate"]);
+        b.AddLastChangeUser(g1, x => x.LastChangeUserName);
         b.Add(g1, x => x.LastChangeDate, L["AverageRateLevel3DetailDto.LastChangeDate"]);
         b.AddArchiveStatus(g1, x => x.IsArchive, L["AverageRateLevel3DetailDto.IsArchive"]);
 

@@ -23,6 +23,7 @@ alwaysApply: false
 - `GenericGrid` / `GenericDetailView` — переиспользуемые компоненты
 - `IGridDataService<TDto,TDetail>` + `GridQueryFactory` — запросы к read-модели через `v2.GetBlazorGridData`
 - `[GridSnapshot]` + `[GridColumn]` на list-DTO → `GridColumnMetadataBuilder` собирает `@AllowedColumnsJson` и `@SelectList`
+- Фильтруемая `NVARCHAR` вне full-text индекса: `[GridColumn(WithoutFullText = true)]`. Фильтр грида показывает «a**» / «Начинается с», оператор остаётся Contains — SQL ищет `LIKE N'значение%'`. Колонка в full-text индексе — без флага («*a*» / «Содержит»). `CreationUserName` и `LastChangeUserName` full-text нет
 - Настройки колонок/деталей — через `IGridSettingsService` / `IDetailSettingsService` (UI-слой, отдельно от SQL-метаданных)
 - `DetailSettingsBuilder` — бизнес-`visible:` полей детальной панели; скрытие пустых (`null`/`""`/whitespace) — `Grid:HideEmptyDetailFields` в `GenericDetailView` (UI only, не full report). Bool/числа/даты остаются видимыми; чтобы скрыть `0`, кастомный `display` → пустая строка
 

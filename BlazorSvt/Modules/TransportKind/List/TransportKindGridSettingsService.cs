@@ -26,7 +26,9 @@ public class TransportKindGridSettingsService(
         b.Add(x => x.Level, L["TransportKindDto.Level"]);
         b.Add(x => x.KindCode, L["TransportKindDto.KindCode"]);
         b.AddSystemColumns(
+            x => x.CreationUserName,
             x => x.CreationDate,
+            x => x.LastChangeUserName,
             x => x.LastChangeDate,
             x => x.IsArchive,
             L["TransportKindDto.CreationDate"],

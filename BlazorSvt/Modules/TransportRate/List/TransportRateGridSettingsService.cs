@@ -42,7 +42,9 @@ public class TransportRateGridSettingsService(
         b.Add(x => x.TotalCostTransport, L["TransportRateDto.TotalCostTransport"]);
         b.AddEnum(x => x.CurrencyId, L["TransportRateDto.Currency"], filterValues: CurrencyRuEnSets.Main);
         b.AddSystemColumns(
+            x => x.CreationUserName,
             x => x.CreationDate,
+            x => x.LastChangeUserName,
             x => x.LastChangeDate,
             x => x.IsArchive,
             L["TransportRateDto.CreationDate"],

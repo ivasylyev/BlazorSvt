@@ -8,7 +8,9 @@ public class TransportRateDetailDto
 
     public bool IsArchive { get; set; }
     public bool IsDefRate { get; set; }
+    public string? CreationUserName { get; set; }
     public DateTime CreationDate { get; set; }
+    public string? LastChangeUserName { get; set; }
     public DateTime LastChangeDate { get; set; }
 
     public required string AverageRateCode { get; set; }

@@ -44,7 +44,9 @@ public class TransportLegGridSettingsService(
         b.Add(x => x.UnLoadTimeT, L["TransportLegDto.UnLoadTime"], visible: false, filterable: false);
         b.Add(x => x.TransportationTimeT, L["TransportLegDto.TransportationTime"], filterable: false);
         b.AddSystemColumns(
+            x => x.CreationUserName,
             x => x.CreationDate,
+            x => x.LastChangeUserName,
             x => x.LastChangeDate,
             x => x.IsArchive,
             L["TransportLegDto.CreationDate"],

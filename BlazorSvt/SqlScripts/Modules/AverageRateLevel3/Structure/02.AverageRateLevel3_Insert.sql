@@ -7,7 +7,9 @@ INSERT INTO v2.AverageRateLevel3_Snapshot (
     ,IsDefRate
     ,StartDate
     ,EndDate
+    ,CreationUserName
     ,CreationDate
+    ,LastChangeUserName
     ,LastChangeDate
     ,RateLevel3
     ,EffectiveLoadOfTransportType
@@ -47,7 +49,9 @@ SELECT
     ,IsDefRate
     ,StartDate
     ,EndDate
+    ,CreationUserName
     ,CreationDate
+    ,LastChangeUserName
     ,LastChangeDate
     ,RateLevel3
     ,EffectiveLoadOfTransportType

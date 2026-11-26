@@ -252,6 +252,12 @@ public partial class GridColumn<TItem> : BlazorBootstrapComponentBase
     public FilterOperator FilterOperator { get; set; } = FilterOperator.None;
 
     /// <summary>
+    /// NVARCHAR без full-text: подпись фильтра «начинается с», оператор остаётся Contains.
+    /// </summary>
+    [Parameter]
+    public bool WithoutFullText { get; set; }
+
+    /// <summary>
     /// Gets or sets the filter textbox width in pixels.
     /// </summary>
     /// <remarks>

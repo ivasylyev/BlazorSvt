@@ -44,13 +44,16 @@ public static class FilterOperatorUtility
         return result;
     }
 
-    public static IEnumerable<FilterOperatorInfo> GetFilterOperators(string propertyTypeName, IEnumerable<FilterOperatorInfo> filtersTranslations)
+    public static IEnumerable<FilterOperatorInfo> GetFilterOperators(
+        string propertyTypeName,
+        IEnumerable<FilterOperatorInfo> filtersTranslations,
+        bool withoutFullText = false)
     {
         if (filtersTranslations is null || !filtersTranslations.Any())
-            return GetFilterOperators(propertyTypeName);
+            return GetFilterOperators(propertyTypeName, withoutFullText);
 
         var filters = new List<FilterOperatorInfo>();
-        var defaultFilters = GetFilterOperators(propertyTypeName);
+        var defaultFilters = GetFilterOperators(propertyTypeName, withoutFullText);
 
         foreach (var filter in defaultFilters)
         {
@@ -62,10 +65,26 @@ public static class FilterOperatorUtility
                 filters.Add(filter with { Symbol = filterTranslation.Symbol, Text = filterTranslation.Text });
         }
 
+        // Перевод ищется по оператору. Для NVARCHAR без full-text оператор остаётся Contains,
+        // а подпись берётся у «начинается с»: SQL ищет LIKE по началу значения.
+        if (withoutFullText)
+        {
+            var startsWith = filtersTranslations.FirstOrDefault(x => x.FilterOperator == FilterOperator.StartsWith);
+            for (var i = 0; i < filters.Count; i++)
+            {
+                if (filters[i].FilterOperator != FilterOperator.Contains)
+                    continue;
+
+                filters[i] = startsWith is null
+                    ? filters[i] with { Symbol = "a**", Text = "Starts with" }
+                    : filters[i] with { Symbol = startsWith.Symbol, Text = startsWith.Text };
+            }
+        }
+
         return filters;
     }
 
-    public static IEnumerable<FilterOperatorInfo> GetFilterOperators(string propertyTypeName)
+    public static IEnumerable<FilterOperatorInfo> GetFilterOperators(string propertyTypeName, bool withoutFullText = false)
     {
         if (propertyTypeName is StringConstants.PropertyTypeNameInt16
                                 or StringConstants.PropertyTypeNameInt32
@@ -77,7 +96,7 @@ public static class FilterOperatorUtility
 
         if (propertyTypeName is StringConstants.PropertyTypeNameString
                                 or StringConstants.PropertyTypeNameChar)
-            return GetStringFilterOperators();
+            return GetStringFilterOperators(withoutFullText);
 
         if (propertyTypeName is StringConstants.PropertyTypeNameDateOnly
                                 or StringConstants.PropertyTypeNameDateTime)
@@ -120,11 +139,13 @@ public static class FilterOperatorUtility
         return result;
     }
 
-    public static IEnumerable<FilterOperatorInfo> GetStringFilterOperators()
+    public static IEnumerable<FilterOperatorInfo> GetStringFilterOperators(bool withoutFullText = false)
     {
         List<FilterOperatorInfo> result = new()
         {
-            new FilterOperatorInfo("*a*", "Contains", FilterOperator.Contains),
+            withoutFullText
+                ? new FilterOperatorInfo("a**", "Starts with", FilterOperator.Contains)
+                : new FilterOperatorInfo("*a*", "Contains", FilterOperator.Contains),
             // new FilterOperatorInfo("!*a*", "Does not contain", FilterOperator.DoesNotContain),
             // new FilterOperatorInfo("a**", "Starts with", FilterOperator.StartsWith),
             // new FilterOperatorInfo("**a", "Ends with", FilterOperator.EndsWith),

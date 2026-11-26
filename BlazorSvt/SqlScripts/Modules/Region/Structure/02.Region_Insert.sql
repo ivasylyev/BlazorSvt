@@ -28,7 +28,9 @@ INSERT INTO v2.Region_Snapshot (
     ,RegionId
     ,Code
     ,IsArchive
+    ,CreationUserName
     ,CreationDate
+    ,LastChangeUserName
     ,LastChangeDate
 )
 SELECT
@@ -50,7 +52,9 @@ SELECT
     ,RegionId
     ,Code
     ,IsArchive
+    ,CreationUserName
     ,CreationDate
+    ,LastChangeUserName
     ,LastChangeDate
 FROM v2.vw_Region_SnapshotSource;
 GO

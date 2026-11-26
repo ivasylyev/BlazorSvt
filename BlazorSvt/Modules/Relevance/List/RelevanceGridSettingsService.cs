@@ -19,7 +19,9 @@ public class RelevanceGridSettingsService(
         b.Add(x => x.Code, L["RelevanceDto.Code"]);
         b.Add(x => x.Name, L["RelevanceDto.Name"]);
         b.AddSystemColumns(
+            x => x.CreationUserName,
             x => x.CreationDate,
+            x => x.LastChangeUserName,
             x => x.LastChangeDate,
             x => x.IsArchive,
             L["RelevanceDto.CreationDate"],

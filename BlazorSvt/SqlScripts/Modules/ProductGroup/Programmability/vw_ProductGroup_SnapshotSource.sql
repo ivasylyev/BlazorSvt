@@ -35,9 +35,13 @@ AS
         LEFT(rsc.Code, 50)                                                       AS RateSyncClassCode,
         LEFT(rsc.Name, 2000)                                                     AS RateSyncClassNameRu,
 
+        cu.DisplayName                                                           AS CreationUserName,
         pg.CreationDate                                                          AS CreationDate,
+        lu.DisplayName                                                           AS LastChangeUserName,
         ISNULL(pg.LastChangeDate, pg.CreationDate)                               AS LastChangeDate
 
     FROM dbo.vw_ProductGroup pg (NOLOCK)
-    LEFT JOIN dbo.vw_RateSyncClass rsc (NOLOCK) ON pg.RateSyncClass = rsc.Id;
+    LEFT JOIN dbo.vw_RateSyncClass rsc (NOLOCK) ON pg.RateSyncClass = rsc.Id
+    LEFT JOIN v2.vw_UserDisplayName cu ON cu.UserId = pg.CreationUserId
+    LEFT JOIN v2.vw_UserDisplayName lu ON lu.UserId = ISNULL(pg.LastChangeUserId, pg.CreationUserId);
 GO

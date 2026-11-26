@@ -50,8 +50,14 @@ public class RegionDto
     [GridColumn(SqlColumn = "FederalDistrictsId")]
     public FederalDistrictsEn? FederalDistrictsIdEn { get; set; }
 
+    [GridColumn(WithoutFullText = true)]
+    public string? CreationUserName { get; set; }
+
     [GridColumn]
     public DateTime CreationDate { get; set; }
+
+    [GridColumn(WithoutFullText = true)]
+    public string? LastChangeUserName { get; set; }
 
     [GridColumn]
     public DateTime LastChangeDate { get; set; }
