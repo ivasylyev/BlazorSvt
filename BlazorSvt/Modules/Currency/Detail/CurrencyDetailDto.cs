@@ -17,7 +17,11 @@ public class CurrencyDetailDto
 
     public bool IsArchive { get; set; }
 
+    public string? CreationUserName { get; set; }
+
     public DateTime CreationDate { get; set; }
+
+    public string? LastChangeUserName { get; set; }
 
     public DateTime LastChangeDate { get; set; }
 }

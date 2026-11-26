@@ -29,7 +29,9 @@ public class RegionGridSettingsService(
         b.Add(x => x.Market, L["RegionDto.Market"]);
         AddEnum(b, isRu, x => x.FederalDistrictsIdRu, x => x.FederalDistrictsIdEn, L["RegionDto.FederalDistricts"]);
         b.AddSystemColumns(
+            x => x.CreationUserName,
             x => x.CreationDate,
+            x => x.LastChangeUserName,
             x => x.LastChangeDate,
             x => x.IsArchive,
             L["RegionDto.CreationDate"],

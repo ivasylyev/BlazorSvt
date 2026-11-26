@@ -13,7 +13,9 @@ AS
         IsArchive,
         Code,
         Name,
+        CreationUserName,
         CreationDate,
+        LastChangeUserName,
         LastChangeDate
     FROM v2.vw_RateSyncClass_SnapshotSource;
 GO

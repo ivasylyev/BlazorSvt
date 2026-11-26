@@ -62,7 +62,9 @@ CREATE TABLE v2.TransportTypeLevel3_Snapshot (
     SAPCode                 NVARCHAR(4000) NULL,
     OrionCode               NVARCHAR(4000) NULL,
     StatusId                INT NOT NULL,
+    CreationUserName        NVARCHAR(255) NULL,
     CreationDate            DATETIME NOT NULL,
+    LastChangeUserName      NVARCHAR(255) NULL,
     LastChangeDate          DATETIME NOT NULL,
 
     CONSTRAINT PK_TransportTypeLevel3_Snapshot PRIMARY KEY CLUSTERED (IsArchive, Id)

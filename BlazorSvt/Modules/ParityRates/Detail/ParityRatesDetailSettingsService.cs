@@ -22,7 +22,9 @@ public class ParityRatesDetailSettingsService(
         b.Add(g0, x => x.Code, L["ParityRatesDetailDto.Code"]);
         b.Add(g0, x => x.RelevanceName, L["ParityRatesDetailDto.RelevanceName"]);
         b.Add(g0, x => x.RelevanceCode, L["ParityRatesDetailDto.RelevanceCode"]);
-        b.Add(g0, x => x.CreationDate, L["ParityRatesDetailDto.CreationDate"], hasMargin: true);
+        b.AddCreationUser(g0, x => x.CreationUserName, hasMargin: true);
+        b.Add(g0, x => x.CreationDate, L["ParityRatesDetailDto.CreationDate"]);
+        b.AddLastChangeUser(g0, x => x.LastChangeUserName);
         b.Add(g0, x => x.LastChangeDate, L["ParityRatesDetailDto.LastChangeDate"]);
         b.AddArchiveStatus(g0, x => x.IsArchive, L["ParityRatesDetailDto.IsArchive"]);
 

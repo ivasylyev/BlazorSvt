@@ -63,7 +63,9 @@ CREATE TABLE v2.Contractor_Snapshot (
     IsCreditor      BIT NOT NULL,
     INN             NVARCHAR(4000) NULL,
 
+    CreationUserName NVARCHAR(255) NULL,
     CreationDate    DATETIME NOT NULL,
+    LastChangeUserName NVARCHAR(255) NULL,
     LastChangeDate  DATETIME NOT NULL,
 
     CONSTRAINT PK_Contractor_Snapshot PRIMARY KEY CLUSTERED (IsArchive, Id)

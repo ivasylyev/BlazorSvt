@@ -49,7 +49,9 @@ AS
         LEFT(p.NameShort_en, 255)                                                AS ProductNameEn,
         CAST(r.Product AS BIGINT)                                                AS ProductId,
 
+        cu.DisplayName                                                           AS CreationUserName,
         r.CreationDate                                                           AS CreationDate,
+        lu.DisplayName                                                           AS LastChangeUserName,
         ISNULL(r.LastChangeDate, r.CreationDate)                                 AS LastChangeDate
     FROM dbo.vw_ReportConstructor r (NOLOCK)
     LEFT JOIN dbo.vw_LocationsNodes nf (NOLOCK) ON r.NodeFrom = nf.Id
@@ -57,5 +59,7 @@ AS
     LEFT JOIN dbo.vw_TransportKind tk (NOLOCK) ON r.TransportKind = tk.Id
     LEFT JOIN dbo.vw_TransportType_level_3 tt (NOLOCK) ON r.TransportType = tt.Id
     LEFT JOIN dbo.vw_ProductGroup pg (NOLOCK) ON r.ProductGroup = pg.Id
-    LEFT JOIN dbo.vw_MTR p (NOLOCK) ON r.Product = p.Id;
+    LEFT JOIN dbo.vw_MTR p (NOLOCK) ON r.Product = p.Id
+    LEFT JOIN v2.vw_UserDisplayName cu ON cu.UserId = r.CreationUserId
+    LEFT JOIN v2.vw_UserDisplayName lu ON lu.UserId = ISNULL(r.LastChangeUserId, r.CreationUserId);
 GO

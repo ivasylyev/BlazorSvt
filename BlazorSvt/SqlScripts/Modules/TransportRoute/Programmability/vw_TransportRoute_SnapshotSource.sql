@@ -66,7 +66,9 @@ AS
 
         CAST(r.Id AS BIGINT)                                                     AS TransportRouteId,
         CASE WHEN ISNULL(r.PrimitiveEntityDataStateId, 2) = 2 THEN 1 ELSE 0 END  AS IsArchive,
+        cu.DisplayName                                                           AS CreationUserName,
         r.CreationDate                                                           AS CreationDate,
+        lu.DisplayName                                                           AS LastChangeUserName,
         ISNULL(r.LastChangeDate, r.CreationDate)                                 AS LastChangeDate
     FROM dbo.vw_TransportRoute r (NOLOCK)
     LEFT JOIN dbo.vw_LocationsNodes sn (NOLOCK) ON r.StartNode = sn.Id
@@ -76,5 +78,7 @@ AS
     LEFT JOIN dbo.vw_Region rt (NOLOCK) ON en.Region = rt.Id
     LEFT JOIN dbo.vw_TransportKind tk (NOLOCK) ON r.RouteTransportKind = tk.Id
     LEFT JOIN dbo.vw_TransportType_level_3 l1 (NOLOCK) ON r.Leg1_TransportType = l1.Id
-    LEFT JOIN dbo.vw_TransportType_level_3 l2 (NOLOCK) ON r.Leg2_TransportType = l2.Id;
+    LEFT JOIN dbo.vw_TransportType_level_3 l2 (NOLOCK) ON r.Leg2_TransportType = l2.Id
+    LEFT JOIN v2.vw_UserDisplayName cu ON cu.UserId = r.CreationUserId
+    LEFT JOIN v2.vw_UserDisplayName lu ON lu.UserId = ISNULL(r.LastChangeUserId, r.CreationUserId);
 GO

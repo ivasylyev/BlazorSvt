@@ -34,7 +34,9 @@ AS
     ,CASE WHEN ISNULL(ar.PrimitiveEntityDataStateId, 2) = 2 THEN 1 ELSE 0 END 
                                     AS IsArchive
     ,ISNULL(ar.IsDefRate, 0)         AS IsDefRate
+    ,cu.DisplayName  	            AS CreationUserName
     ,ar.CreationDate 	            AS CreationDate
+    ,lu.DisplayName  	            AS LastChangeUserName
     ,ar.LastChangeDate 	            AS LastChangeDate
     ,trc.TransportRateCodes          AS TransportRateCodes
     ,CAST(ar.CalcDate AS DATE)       AS CalcDate
@@ -177,6 +179,8 @@ AS
     ,lt.Leg2_TransportationTime 	AS LeadTimeLeg2_TransportationTime
     ,lt.Leg2_Distance 		        AS LeadTimeLeg2_Distance
     FROM vw_AverageRateLevel3 AS ar
+    LEFT JOIN v2.vw_UserDisplayName cu ON cu.UserId = ar.CreationUserId
+    LEFT JOIN v2.vw_UserDisplayName lu ON lu.UserId = ISNULL(ar.LastChangeUserId, ar.CreationUserId)
 
     OUTER APPLY (
         SELECT STRING_AGG(CAST(r.Code AS NVARCHAR(50)), ', ') AS TransportRateCodes

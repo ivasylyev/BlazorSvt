@@ -16,7 +16,9 @@ INSERT INTO v2.TransportKind_Snapshot (
     ,KindCode
     ,TransportKindId
     ,IsArchive
+    ,CreationUserName
     ,CreationDate
+    ,LastChangeUserName
     ,LastChangeDate
 )
 SELECT
@@ -28,7 +30,9 @@ SELECT
     ,KindCode
     ,TransportKindId
     ,IsArchive
+    ,CreationUserName
     ,CreationDate
+    ,LastChangeUserName
     ,LastChangeDate
 FROM v2.vw_TransportKind_SnapshotSource;
 GO

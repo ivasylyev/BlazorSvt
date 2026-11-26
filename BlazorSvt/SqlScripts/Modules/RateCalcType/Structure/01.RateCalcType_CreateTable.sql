@@ -55,7 +55,9 @@ CREATE TABLE v2.RateCalcType_Snapshot (
     Code                NVARCHAR(50) NOT NULL,
     Name                NVARCHAR(50) NULL,
     SearchCode          NVARCHAR(50) NULL,
+    CreationUserName    NVARCHAR(255) NULL,
     CreationDate        DATETIME NOT NULL,
+    LastChangeUserName  NVARCHAR(255) NULL,
     LastChangeDate      DATETIME NOT NULL,
 
     CONSTRAINT PK_RateCalcType_Snapshot PRIMARY KEY CLUSTERED (IsArchive, Id)

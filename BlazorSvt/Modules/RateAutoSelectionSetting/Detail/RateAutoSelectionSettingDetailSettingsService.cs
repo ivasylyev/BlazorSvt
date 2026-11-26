@@ -17,7 +17,9 @@ public class RateAutoSelectionSettingDetailSettingsService(
         b.AddYesNo(group, x => x.DestinationNodeToCountry, L["RateAutoSelectionSettingDetailDto.DestinationNodeToCountry"]);
         b.AddYesNo(group, x => x.ProductToProductGroup, L["RateAutoSelectionSettingDetailDto.ProductToProductGroup"]);
         b.AddYesNo(group, x => x.AnyTransportKind, L["RateAutoSelectionSettingDetailDto.AnyTransportKind"]);
+        b.AddCreationUser(group, x => x.CreationUserName);
         b.Add(group, x => x.CreationDate, L["RateAutoSelectionSettingDetailDto.CreationDate"]);
+        b.AddLastChangeUser(group, x => x.LastChangeUserName);
         b.Add(group, x => x.LastChangeDate, L["RateAutoSelectionSettingDetailDto.LastChangeDate"]);
         b.AddArchiveStatus(group, x => x.IsArchive, L["RateAutoSelectionSettingDetailDto.IsArchive"]);
 

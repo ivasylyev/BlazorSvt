@@ -40,7 +40,9 @@ INSERT INTO v2.LocationsNodes_Snapshot (
     ,CountryNameRu
     ,CountryNameEn
 
+    ,CreationUserName
     ,CreationDate
+    ,LastChangeUserName
     ,LastChangeDate
 )
 SELECT
@@ -71,7 +73,9 @@ SELECT
     ,CountryNameRu
     ,CountryNameEn
 
+    ,CreationUserName
     ,CreationDate
+    ,LastChangeUserName
     ,LastChangeDate
 FROM v2.vw_LocationsNodes_SnapshotSource;
 GO

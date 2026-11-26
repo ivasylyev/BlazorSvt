@@ -174,6 +174,19 @@ public sealed class DetailSettingsBuilder<T>(IStringLocalizer<PlatformResources>
             dto => compiled(dto) ? platform["Common.Archive"] : platform["Common.Active"]);
     }
 
+    /// <summary>Поле «Автор» (карточка и полный отчёт), ставится перед датой создания.</summary>
+    public DetailSettingsBuilder<T> AddCreationUser(
+        string groupHeader,
+        Expression<Func<T, string?>> creationUser,
+        bool hasMargin = false) =>
+        Add(groupHeader, creationUser, platform["Common.CreationUser.Long"], hasMargin: hasMargin);
+
+    /// <summary>Поле «Автор последних изменений» (карточка и полный отчёт), ставится перед датой изменения.</summary>
+    public DetailSettingsBuilder<T> AddLastChangeUser(
+        string groupHeader,
+        Expression<Func<T, string?>> lastChangeUser) =>
+        Add(groupHeader, lastChangeUser, platform["Common.LastChangeUser.Long"]);
+
     private static Expression<Func<T, IComparable>> ToSortKey<TProp>(Func<T, TProp> getter) =>
         dto => new DetailSortKey(getter(dto) as IComparable);
 

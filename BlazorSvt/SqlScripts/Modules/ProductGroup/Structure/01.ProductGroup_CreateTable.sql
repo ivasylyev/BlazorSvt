@@ -69,7 +69,9 @@ CREATE TABLE v2.ProductGroup_Snapshot (
     RateSyncClassCode                           NVARCHAR(50) NULL,
     RateSyncClassNameRu                         NVARCHAR(2000) NULL,
 
+    CreationUserName                            NVARCHAR(255) NULL,
     CreationDate                                DATETIME NOT NULL,
+    LastChangeUserName                          NVARCHAR(255) NULL,
     LastChangeDate                              DATETIME NOT NULL,
 
     CONSTRAINT PK_ProductGroup_Snapshot PRIMARY KEY CLUSTERED (IsArchive, Id)

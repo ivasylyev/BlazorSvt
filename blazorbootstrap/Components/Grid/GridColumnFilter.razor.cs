@@ -94,14 +94,14 @@ public partial class GridColumnFilter : BlazorBootstrapComponentBase
     private async Task<IEnumerable<FilterOperatorInfo>> GetFilterOperatorsAsync(string propertyTypeName)
     {
         if (FiltersTranslationProvider is null)
-            return FilterOperatorUtility.GetFilterOperators(PropertyTypeName!);
+            return FilterOperatorUtility.GetFilterOperators(PropertyTypeName!, WithoutFullText);
 
         var filters = await FiltersTranslationProvider.Invoke();
 
         if (!(filters?.Any() ?? false))
-            return FilterOperatorUtility.GetFilterOperators(PropertyTypeName!);
+            return FilterOperatorUtility.GetFilterOperators(PropertyTypeName!, WithoutFullText);
 
-        return FilterOperatorUtility.GetFilterOperators(PropertyTypeName!, filters!);
+        return FilterOperatorUtility.GetFilterOperators(PropertyTypeName!, filters!, WithoutFullText);
     }
 
     private async Task OnEnumFilterValueChangedAsync(object enumValue)
@@ -198,6 +198,12 @@ public partial class GridColumnFilter : BlazorBootstrapComponentBase
     public string? FilterButtonCSSClass { get; set; }
 
     private string filterButtonColorString => FilterButtonColor.ToButtonColorClass();
+
+    /// <summary>
+    /// NVARCHAR без full-text: подпись «a**» / «Начинается с», оператор остаётся Contains.
+    /// </summary>
+    [Parameter]
+    public bool WithoutFullText { get; set; }
 
     /// <summary>
     /// Gets or sets filter operator.

@@ -164,6 +164,8 @@ public class ModuleGridIntegrationTests(DatabaseFixture fixture) : IntegrationTe
 
         detail.Should().NotBeNull();
         detail!.TransportLegId.Should().Be(entityKey);
+        detail.CreationUserName.Should().Be(rows[0].CreationUserName);
+        detail.LastChangeUserName.Should().Be(rows[0].LastChangeUserName);
         detail.Code.Should().NotBeNullOrWhiteSpace();
     }
 
@@ -187,6 +189,8 @@ public class ModuleGridIntegrationTests(DatabaseFixture fixture) : IntegrationTe
 
         detail.Should().NotBeNull();
         detail!.TransportRateId.Should().Be(entityKey);
+        detail.CreationUserName.Should().Be(rows[0].CreationUserName);
+        detail.LastChangeUserName.Should().Be(rows[0].LastChangeUserName);
     }
 
     [SkippableFact]
@@ -209,6 +213,8 @@ public class ModuleGridIntegrationTests(DatabaseFixture fixture) : IntegrationTe
 
         detail.Should().NotBeNull();
         detail!.ParityRatesId.Should().Be(entityKey);
+        detail.CreationUserName.Should().Be(rows[0].CreationUserName);
+        detail.LastChangeUserName.Should().Be(rows[0].LastChangeUserName);
         detail.Code.Should().NotBeNullOrWhiteSpace();
     }
 
@@ -232,6 +238,8 @@ public class ModuleGridIntegrationTests(DatabaseFixture fixture) : IntegrationTe
 
         detail.Should().NotBeNull();
         detail!.LocationsNodesId.Should().Be(entityKey);
+        detail.CreationUserName.Should().Be(rows[0].CreationUserName);
+        detail.LastChangeUserName.Should().Be(rows[0].LastChangeUserName);
         detail.Code.Should().NotBeNullOrWhiteSpace();
     }
 
@@ -255,6 +263,8 @@ public class ModuleGridIntegrationTests(DatabaseFixture fixture) : IntegrationTe
 
         detail.Should().NotBeNull();
         detail!.AverageRateLevel3Id.Should().Be(entityKey);
+        detail.CreationUserName.Should().Be(rows[0].CreationUserName);
+        detail.LastChangeUserName.Should().Be(rows[0].LastChangeUserName);
     }
 
     [SkippableFact]
@@ -291,6 +301,8 @@ public class ModuleGridIntegrationTests(DatabaseFixture fixture) : IntegrationTe
 
         detail.Should().NotBeNull();
         detail!.RateTypeId.Should().Be(entityKey);
+        detail.CreationUserName.Should().Be(rows[0].CreationUserName);
+        detail.LastChangeUserName.Should().Be(rows[0].LastChangeUserName);
         detail.Code.Should().Be(rows[0].Code);
     }
 
@@ -328,6 +340,8 @@ public class ModuleGridIntegrationTests(DatabaseFixture fixture) : IntegrationTe
 
         detail.Should().NotBeNull();
         detail!.CurrencyId.Should().Be(entityKey);
+        detail.CreationUserName.Should().Be(rows[0].CreationUserName);
+        detail.LastChangeUserName.Should().Be(rows[0].LastChangeUserName);
         detail.Code.Should().NotBeNullOrWhiteSpace();
     }
 
@@ -365,6 +379,8 @@ public class ModuleGridIntegrationTests(DatabaseFixture fixture) : IntegrationTe
 
         detail.Should().NotBeNull();
         detail!.ProductGroupId.Should().Be(entityKey);
+        detail.CreationUserName.Should().Be(rows[0].CreationUserName);
+        detail.LastChangeUserName.Should().Be(rows[0].LastChangeUserName);
         detail.Code.Should().NotBeNullOrWhiteSpace();
     }
 
@@ -402,6 +418,8 @@ public class ModuleGridIntegrationTests(DatabaseFixture fixture) : IntegrationTe
 
         detail.Should().NotBeNull();
         detail!.ContractorId.Should().Be(entityKey);
+        detail.CreationUserName.Should().Be(rows[0].CreationUserName);
+        detail.LastChangeUserName.Should().Be(rows[0].LastChangeUserName);
         detail.Code.Should().Be(rows[0].Code);
     }
 
@@ -439,6 +457,8 @@ public class ModuleGridIntegrationTests(DatabaseFixture fixture) : IntegrationTe
 
         detail.Should().NotBeNull();
         detail!.CoefficientId.Should().Be(entityKey);
+        detail.CreationUserName.Should().Be(rows[0].CreationUserName);
+        detail.LastChangeUserName.Should().Be(rows[0].LastChangeUserName);
         detail.Code.Should().Be(rows[0].Code);
         detail.CoefficientTypeIdRu.Should().Be(rows[0].CoefficientTypeIdRu);
         detail.RateTypeIdRu.Should().Be(rows[0].RateTypeIdRu);
@@ -478,6 +498,8 @@ public class ModuleGridIntegrationTests(DatabaseFixture fixture) : IntegrationTe
 
         detail.Should().NotBeNull();
         detail!.MTRId.Should().Be(entityKey);
+        detail.CreationUserName.Should().Be(rows[0].CreationUserName);
+        detail.LastChangeUserName.Should().Be(rows[0].LastChangeUserName);
         detail.Code.Should().Be(rows[0].Code);
     }
 
@@ -515,6 +537,8 @@ public class ModuleGridIntegrationTests(DatabaseFixture fixture) : IntegrationTe
 
         detail.Should().NotBeNull();
         detail!.TransportTypeLevel3Id.Should().Be(entityKey);
+        detail.CreationUserName.Should().Be(rows[0].CreationUserName);
+        detail.LastChangeUserName.Should().Be(rows[0].LastChangeUserName);
         detail.Code.Should().NotBeNullOrWhiteSpace();
     }
 
@@ -552,6 +576,8 @@ public class ModuleGridIntegrationTests(DatabaseFixture fixture) : IntegrationTe
 
         detail.Should().NotBeNull();
         detail!.RateSyncClassId.Should().Be(entityKey);
+        detail.CreationUserName.Should().Be(rows[0].CreationUserName);
+        detail.LastChangeUserName.Should().Be(rows[0].LastChangeUserName);
         detail.Code.Should().Be(rows[0].Code);
     }
 
@@ -589,6 +615,8 @@ public class ModuleGridIntegrationTests(DatabaseFixture fixture) : IntegrationTe
 
         detail.Should().NotBeNull();
         detail!.RateCalcTypeId.Should().Be(entityKey);
+        detail.CreationUserName.Should().Be(rows[0].CreationUserName);
+        detail.LastChangeUserName.Should().Be(rows[0].LastChangeUserName);
         detail.Code.Should().NotBeNullOrWhiteSpace();
     }
 
@@ -628,6 +656,8 @@ public class ModuleGridIntegrationTests(DatabaseFixture fixture) : IntegrationTe
 
         detail.Should().NotBeNull();
         detail!.RateAutoSelectionSettingId.Should().Be(entityKey);
+        detail.CreationUserName.Should().Be(rows[0].CreationUserName);
+        detail.LastChangeUserName.Should().Be(rows[0].LastChangeUserName);
         detail.Code.Should().Be(rows[0].Code);
         detail.DestinationNodeToRegion.Should().Be(rows[0].DestinationNodeToRegion);
         detail.AnyTransportKind.Should().Be(rows[0].AnyTransportKind);
@@ -669,6 +699,8 @@ public class ModuleGridIntegrationTests(DatabaseFixture fixture) : IntegrationTe
 
         detail.Should().NotBeNull();
         detail!.ReportConstructorId.Should().Be(entityKey);
+        detail.CreationUserName.Should().Be(rows[0].CreationUserName);
+        detail.LastChangeUserName.Should().Be(rows[0].LastChangeUserName);
         detail.Code.Should().Be(rows[0].Code);
         detail.ReportTypeIdRu.Should().Be(rows[0].ReportTypeIdRu);
         detail.DateFrom.Should().Be(rows[0].DateFrom);
@@ -687,6 +719,7 @@ public class ModuleGridIntegrationTests(DatabaseFixture fixture) : IntegrationTe
 
         rows.Should().NotBeEmpty();
         totalCount.Should().Be(4);
+        rows.Should().OnlyContain(r => !string.IsNullOrEmpty(r.CreationUserName) && !string.IsNullOrEmpty(r.LastChangeUserName));
         rows.Should().OnlyContain(r => !r.IsArchive);
         rows.Should().OnlyContain(r => r.Code.Length > 0);
     }
@@ -711,6 +744,8 @@ public class ModuleGridIntegrationTests(DatabaseFixture fixture) : IntegrationTe
 
         detail.Should().NotBeNull();
         detail!.RelevanceId.Should().Be(entityKey);
+        detail.CreationUserName.Should().Be(rows[0].CreationUserName);
+        detail.LastChangeUserName.Should().Be(rows[0].LastChangeUserName);
         detail.Code.Should().Be(rows[0].Code);
         detail.Name.Should().Be(rows[0].Name);
     }
@@ -751,6 +786,8 @@ public class ModuleGridIntegrationTests(DatabaseFixture fixture) : IntegrationTe
 
         detail.Should().NotBeNull();
         detail!.CountryId.Should().Be(entityKey);
+        detail.CreationUserName.Should().Be(rows[0].CreationUserName);
+        detail.LastChangeUserName.Should().Be(rows[0].LastChangeUserName);
         detail.Code.Should().Be(rows[0].Code);
         detail.NameRu.Should().Be(rows[0].NameRu);
         detail.ISOCode.Should().Be(rows[0].ISOCode);
@@ -792,6 +829,8 @@ public class ModuleGridIntegrationTests(DatabaseFixture fixture) : IntegrationTe
 
         detail.Should().NotBeNull();
         detail!.RegionId.Should().Be(entityKey);
+        detail.CreationUserName.Should().Be(rows[0].CreationUserName);
+        detail.LastChangeUserName.Should().Be(rows[0].LastChangeUserName);
         detail.Code.Should().Be(rows[0].Code);
         detail.NameRu.Should().Be(rows[0].NameRu);
         detail.Market.Should().Be(rows[0].Market);
@@ -834,6 +873,8 @@ public class ModuleGridIntegrationTests(DatabaseFixture fixture) : IntegrationTe
 
         detail.Should().NotBeNull();
         detail!.TransportRouteId.Should().Be(entityKey);
+        detail.CreationUserName.Should().Be(rows[0].CreationUserName);
+        detail.LastChangeUserName.Should().Be(rows[0].LastChangeUserName);
         detail.Code.Should().Be(rows[0].Code);
         detail.RouteTransportKindIdRu.Should().Be(rows[0].RouteTransportKindIdRu);
         detail.StartNodeNameRu.Should().Be(rows[0].StartNodeNameRu);
@@ -877,6 +918,8 @@ public class ModuleGridIntegrationTests(DatabaseFixture fixture) : IntegrationTe
 
         detail.Should().NotBeNull();
         detail!.TransportKindId.Should().Be(entityKey);
+        detail.CreationUserName.Should().Be(rows[0].CreationUserName);
+        detail.LastChangeUserName.Should().Be(rows[0].LastChangeUserName);
         detail.Code.Should().Be(rows[0].Code);
         detail.Name.Should().Be(rows[0].Name);
         detail.NameEnRu.Should().Be(rows[0].NameEnRu);

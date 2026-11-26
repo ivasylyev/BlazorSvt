@@ -14,7 +14,9 @@ public class RateSyncClassDetailSettingsService(
 
         b.Add(group, x => x.Code, L["RateSyncClassDetailDto.Code"]);
         b.Add(group, x => x.Name, L["RateSyncClassDetailDto.Name"]);
+        b.AddCreationUser(group, x => x.CreationUserName);
         b.Add(group, x => x.CreationDate, L["RateSyncClassDetailDto.CreationDate"]);
+        b.AddLastChangeUser(group, x => x.LastChangeUserName);
         b.Add(group, x => x.LastChangeDate, L["RateSyncClassDetailDto.LastChangeDate"]);
         b.AddArchiveStatus(group, x => x.IsArchive, L["RateSyncClassDetailDto.IsArchive"]);
 

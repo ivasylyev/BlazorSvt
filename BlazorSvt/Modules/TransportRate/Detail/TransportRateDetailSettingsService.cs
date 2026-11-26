@@ -42,7 +42,9 @@ public class TransportRateDetailSettingsService(
         b.Add(g1, x => x.TenderNumber, L["TransportRateDetailDto.TenderNumber"], visible: dto => dto.TenderNumber is not null);
         b.Add(g1, x => x.AdditionalAgreementNumber, L["TransportRateDetailDto.AdditionalAgreementNumber"], visible: dto => dto.AdditionalAgreementNumber is not null);
         b.AddYesNo(g1, x => x.IsDefRate, L["TransportRateDetailDto.IsDefRate"]);
-        b.Add(g1, x => x.CreationDate, L["TransportRateDetailDto.CreationDate"], hasMargin: true);
+        b.AddCreationUser(g1, x => x.CreationUserName, hasMargin: true);
+        b.Add(g1, x => x.CreationDate, L["TransportRateDetailDto.CreationDate"]);
+        b.AddLastChangeUser(g1, x => x.LastChangeUserName);
         b.Add(g1, x => x.LastChangeDate, L["TransportRateDetailDto.LastChangeDate"]);
         b.AddArchiveStatus(g1, x => x.IsArchive, L["TransportRateDetailDto.IsArchive"]);
 

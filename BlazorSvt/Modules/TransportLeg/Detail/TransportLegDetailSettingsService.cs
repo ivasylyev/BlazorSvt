@@ -23,7 +23,9 @@ public class TransportLegDetailSettingsService(
 
         b.Add(g1, x => x.Code, L["TransportLegDetailDto.Code"]);
         b.AddYesNo(g1, x => x.CanBeUsed, L["TransportLegDetailDto.CanBeUsed"]);
-        b.Add(g1, x => x.CreationDate, L["TransportLegDetailDto.CreationDate"], hasMargin: true);
+        b.AddCreationUser(g1, x => x.CreationUserName, hasMargin: true);
+        b.Add(g1, x => x.CreationDate, L["TransportLegDetailDto.CreationDate"]);
+        b.AddLastChangeUser(g1, x => x.LastChangeUserName);
         b.Add(g1, x => x.LastChangeDate, L["TransportLegDetailDto.LastChangeDate"]);
         b.AddArchiveStatus(g1, x => x.IsArchive, L["TransportLegDetailDto.IsArchive"], hasMargin: true);
 

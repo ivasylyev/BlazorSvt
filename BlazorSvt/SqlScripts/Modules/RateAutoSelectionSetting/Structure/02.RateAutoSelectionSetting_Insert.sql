@@ -16,7 +16,9 @@ INSERT INTO v2.RateAutoSelectionSetting_Snapshot (
     ,DestinationNodeToCountry
     ,ProductToProductGroup
     ,AnyTransportKind
+    ,CreationUserName
     ,CreationDate
+    ,LastChangeUserName
     ,LastChangeDate
 )
 SELECT
@@ -27,7 +29,9 @@ SELECT
     ,DestinationNodeToCountry
     ,ProductToProductGroup
     ,AnyTransportKind
+    ,CreationUserName
     ,CreationDate
+    ,LastChangeUserName
     ,LastChangeDate
 FROM v2.vw_RateAutoSelectionSetting_SnapshotSource;
 GO

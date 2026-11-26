@@ -26,7 +26,9 @@ public class CoefficientGridSettingsService(
         b.AddYesNo(x => x.OverallValue, L["CoefficientDto.OverallValue"]);
         b.AddEnum(isRu, x => x.RateTypeIdRu, x => x.RateTypeIdEn, L["CoefficientDto.RateTypeName"]);
         b.AddSystemColumns(
+            x => x.CreationUserName,
             x => x.CreationDate,
+            x => x.LastChangeUserName,
             x => x.LastChangeDate,
             x => x.IsArchive,
             L["CoefficientDto.CreationDate"],

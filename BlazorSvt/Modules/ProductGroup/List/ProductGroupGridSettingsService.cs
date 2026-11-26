@@ -30,7 +30,9 @@ public class ProductGroupGridSettingsService(
         b.Add(x => x.NameEn, L["ProductGroupDto.NameEn"]);
         b.AddEnum(isRu, x => x.RateSyncClassIdRu, x => x.RateSyncClassIdEn, L["ProductGroupDto.RateSyncClass"]);
         b.AddSystemColumns(
+            x => x.CreationUserName,
             x => x.CreationDate,
+            x => x.LastChangeUserName,
             x => x.LastChangeDate,
             x => x.IsArchive,
             L["ProductGroupDto.CreationDate"],

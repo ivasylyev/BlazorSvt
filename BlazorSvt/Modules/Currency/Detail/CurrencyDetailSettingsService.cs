@@ -17,7 +17,9 @@ public class CurrencyDetailSettingsService(
         b.Add(group, x => x.Symbolic, L["CurrencyDetailDto.Symbolic"]);
         b.Add(group, x => x.Digital, L["CurrencyDetailDto.Digital"]);
         b.Add(group, x => x.Code_NSI, L["CurrencyDetailDto.Code_NSI"]);
+        b.AddCreationUser(group, x => x.CreationUserName);
         b.Add(group, x => x.CreationDate, L["CurrencyDetailDto.CreationDate"]);
+        b.AddLastChangeUser(group, x => x.LastChangeUserName);
         b.Add(group, x => x.LastChangeDate, L["CurrencyDetailDto.LastChangeDate"]);
         b.AddArchiveStatus(group, x => x.IsArchive, L["CurrencyDetailDto.IsArchive"]);
 

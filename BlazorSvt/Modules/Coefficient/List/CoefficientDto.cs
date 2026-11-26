@@ -44,8 +44,14 @@ public class CoefficientDto
     [GridColumn(SqlColumn = "RateTypeId")]
     public required RateTypeEn RateTypeIdEn { get; set; }
 
+    [GridColumn(WithoutFullText = true)]
+    public string? CreationUserName { get; set; }
+
     [GridColumn]
     public DateTime CreationDate { get; set; }
+
+    [GridColumn(WithoutFullText = true)]
+    public string? LastChangeUserName { get; set; }
 
     [GridColumn]
     public DateTime LastChangeDate { get; set; }

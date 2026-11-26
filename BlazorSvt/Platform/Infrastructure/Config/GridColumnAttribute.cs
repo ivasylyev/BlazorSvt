@@ -35,6 +35,12 @@ public sealed class GridColumnAttribute : Attribute
     /// <summary>Участвует ли колонка в фильтрации (@AllowedColumnsJson).</summary>
     public bool Filterable { get; init; } = true;
 
+    /// <summary>
+    /// NVARCHAR без full-text. Фильтр грида показывает «a**» / «Начинается с»,
+    /// оператор остаётся Contains: SQL ищет по началу значения (<c>LIKE N'значение%'</c>).
+    /// </summary>
+    public bool WithoutFullText { get; init; }
+
     /// <summary>Включать ли колонку в @SelectList grid.</summary>
     public bool IncludeInSelect { get; init; } = true;
 

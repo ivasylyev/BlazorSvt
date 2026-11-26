@@ -19,7 +19,9 @@ public class RateSyncClassGridSettingsService(
         b.Add(x => x.Code, L["RateSyncClassDto.Code"]);
         b.Add(x => x.Name, L["RateSyncClassDto.Name"]);
         b.AddSystemColumns(
+            x => x.CreationUserName,
             x => x.CreationDate,
+            x => x.LastChangeUserName,
             x => x.LastChangeDate,
             x => x.IsArchive,
             L["RateSyncClassDto.CreationDate"],

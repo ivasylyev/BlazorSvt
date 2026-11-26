@@ -42,7 +42,9 @@ public class AverageRateLevel3GridSettingsService(
         b.Add(x => x.EffectiveLoadOfTransportType, L["AverageRateLevel3Dto.EffectiveLoadOfTransportType"]);
         b.AddEnum(x => x.CurrencyId, L["AverageRateLevel3Dto.Currency"], filterValues: CurrencyRuEnSets.Main);
         b.AddSystemColumns(
+            x => x.CreationUserName,
             x => x.CreationDate,
+            x => x.LastChangeUserName,
             x => x.LastChangeDate,
             x => x.IsArchive,
             L["AverageRateLevel3Dto.CreationDate"],

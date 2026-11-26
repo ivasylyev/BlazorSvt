@@ -17,7 +17,9 @@ AS
         StatusId        AS StatusIdEn,
         Level,
         KindCode,
+        CreationUserName,
         CreationDate,
+        LastChangeUserName,
         LastChangeDate,
         IsArchive
     FROM v2.vw_TransportKind_SnapshotSource;

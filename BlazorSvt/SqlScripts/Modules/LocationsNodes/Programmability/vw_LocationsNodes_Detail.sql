@@ -137,7 +137,9 @@ AS
         n.[4_level_CityEN] AS Level4CityEN,
         n.[4_level_City_FIAS] AS Level4CityFias,
 
+        cu.DisplayName AS CreationUserName,
         n.CreationDate AS CreationDate,
+        lu.DisplayName AS LastChangeUserName,
         ISNULL(n.LastChangeDate, n.CreationDate) AS LastChangeDate
 
     FROM vw_LocationsNodes n (NOLOCK)
@@ -146,4 +148,6 @@ AS
     LEFT JOIN vw_TypeNode tn (NOLOCK) ON n.TypeNode = tn.Id
     LEFT JOIN vw_Region r (NOLOCK) ON n.Region = r.Id
     LEFT JOIN vw_Country c (NOLOCK) ON n.Country = c.Id
+    LEFT JOIN v2.vw_UserDisplayName cu ON cu.UserId = n.CreationUserId
+    LEFT JOIN v2.vw_UserDisplayName lu ON lu.UserId = ISNULL(n.LastChangeUserId, n.CreationUserId)
 GO

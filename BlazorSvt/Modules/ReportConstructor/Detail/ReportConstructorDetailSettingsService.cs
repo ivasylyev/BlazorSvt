@@ -31,6 +31,8 @@ public class ReportConstructorDetailSettingsService(
         b.AddLocalized(isRu, group, x => x.ProductGroupNameRu, x => x.ProductGroupNameEn, L["ReportConstructorDetailDto.ProductGroupName"]);
         b.Add(group, x => x.ProductCode, L["ReportConstructorDetailDto.ProductCode"]);
         b.AddLocalized(isRu, group, x => x.ProductNameRu, x => x.ProductNameEn, L["ReportConstructorDetailDto.ProductName"]);
+        b.AddCreationUser(group, x => x.CreationUserName);
+        b.AddLastChangeUser(group, x => x.LastChangeUserName);
 
         return b.Build();
     }

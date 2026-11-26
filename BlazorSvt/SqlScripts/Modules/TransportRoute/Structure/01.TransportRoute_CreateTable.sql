@@ -89,7 +89,9 @@ CREATE TABLE v2.TransportRoute_Snapshot (
     Id                              BIGINT NOT NULL,
     TransportRouteId                BIGINT NOT NULL,
     IsArchive                       BIT NOT NULL,
+    CreationUserName                NVARCHAR(255) NULL,
     CreationDate                    DATETIME NOT NULL,
+    LastChangeUserName              NVARCHAR(255) NULL,
     LastChangeDate                  DATETIME NOT NULL,
 
     CONSTRAINT PK_TransportRoute_Snapshot PRIMARY KEY CLUSTERED (IsArchive, Id)

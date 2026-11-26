@@ -27,7 +27,11 @@ AS
         ISNULL(c.IsCreditor, 0)                                                  AS IsCreditor,
         LEFT(c.INN, 4000)                                                        AS INN,
 
+        cu.DisplayName                                                           AS CreationUserName,
         c.CreationDate                                                           AS CreationDate,
+        lu.DisplayName                                                           AS LastChangeUserName,
         ISNULL(c.LastChangeDate, c.CreationDate)                                 AS LastChangeDate
-    FROM dbo.vw_LegalType c;
+    FROM dbo.vw_LegalType c
+    LEFT JOIN v2.vw_UserDisplayName cu ON cu.UserId = c.CreationUserId
+    LEFT JOIN v2.vw_UserDisplayName lu ON lu.UserId = ISNULL(c.LastChangeUserId, c.CreationUserId);
 GO

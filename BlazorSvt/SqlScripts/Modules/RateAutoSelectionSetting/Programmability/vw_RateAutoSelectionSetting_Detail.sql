@@ -16,7 +16,9 @@ AS
         DestinationNodeToCountry,
         ProductToProductGroup,
         AnyTransportKind,
+        CreationUserName,
         CreationDate,
+        LastChangeUserName,
         LastChangeDate,
         IsArchive
     FROM v2.vw_RateAutoSelectionSetting_SnapshotSource;

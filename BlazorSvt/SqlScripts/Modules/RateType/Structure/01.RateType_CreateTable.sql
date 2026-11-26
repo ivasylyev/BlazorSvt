@@ -58,7 +58,9 @@ CREATE TABLE v2.RateType_Snapshot (
     IsDeflated          BIT NOT NULL,
     Comment             NVARCHAR(4000) NULL,
     IsIntoSyncClass     BIT NOT NULL,
+    CreationUserName    NVARCHAR(255) NULL,
     CreationDate        DATETIME NOT NULL,
+    LastChangeUserName  NVARCHAR(255) NULL,
     LastChangeDate      DATETIME NOT NULL,
 
     CONSTRAINT PK_RateType_Snapshot PRIMARY KEY CLUSTERED (IsArchive, Id)

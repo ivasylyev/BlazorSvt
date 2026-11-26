@@ -50,6 +50,8 @@ public class TransportRouteDetailDto
     public string? Leg_03Code { get; set; }
 
     public bool IsArchive { get; set; }
+    public string? CreationUserName { get; set; }
     public DateTime CreationDate { get; set; }
+    public string? LastChangeUserName { get; set; }
     public DateTime LastChangeDate { get; set; }
 }

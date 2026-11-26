@@ -36,7 +36,9 @@ INSERT INTO v2.ReportConstructor_Snapshot (
     ,ProductNameRu
     ,ProductNameEn
     ,ProductId
+    ,CreationUserName
     ,CreationDate
+    ,LastChangeUserName
     ,LastChangeDate
 )
 SELECT
@@ -66,7 +68,9 @@ SELECT
     ,ProductNameRu
     ,ProductNameEn
     ,ProductId
+    ,CreationUserName
     ,CreationDate
+    ,LastChangeUserName
     ,LastChangeDate
 FROM v2.vw_ReportConstructor_SnapshotSource;
 GO

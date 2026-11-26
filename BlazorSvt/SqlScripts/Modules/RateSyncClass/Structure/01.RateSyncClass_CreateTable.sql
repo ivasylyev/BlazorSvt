@@ -54,7 +54,9 @@ CREATE TABLE v2.RateSyncClass_Snapshot (
     IsArchive           BIT NOT NULL,
     Code                INT          NOT NULL,
     Name                NVARCHAR(2000) NULL,
+    CreationUserName    NVARCHAR(255) NULL,
     CreationDate        DATETIME NOT NULL,
+    LastChangeUserName  NVARCHAR(255) NULL,
     LastChangeDate      DATETIME NOT NULL,
 
     CONSTRAINT PK_RateSyncClass_Snapshot PRIMARY KEY CLUSTERED (IsArchive, Id)
