@@ -42,7 +42,7 @@
     }
     else if (PropertyTypeName == StringConstants.PropertyTypeNameDateOnly)
     {
-        <input @key="inputKey" class="form-control" style="@filterStyle" type="date" lang="@CultureInfo.CurrentUICulture.Name" value="@filterValue" @oninput="@(async args => await OnFilterValueChangedAsync(args))" />
+        <input @key="inputKey" class="form-control" style="@filterStyle" type="date" lang="@CultureInfo.CurrentUICulture.Name" value="@filterValue" onpaste="svtDateFilterPaste(event)" @oninput="@(async args => await OnFilterValueChangedAsync(args))" />
     }
     else if (PropertyTypeName == StringConstants.PropertyTypeNameDateTime)
     {
@@ -54,7 +54,7 @@
                 <option value="minute">@DateTimePrecisionLabel("minute")</option>
             </select>
         }
-        <input @key="inputKey" class="form-control" style="@filterStyle" type="@DateTimeInputType" step="@DateTimeStep" lang="@CultureInfo.CurrentUICulture.Name" value="@filterValue" @oninput="@(async args => await OnFilterValueChangedAsync(args))" />
+        <input @key="inputKey" class="form-control" style="@filterStyle" type="@DateTimeInputType" step="@DateTimeStep" lang="@CultureInfo.CurrentUICulture.Name" value="@filterValue" onpaste="svtDateFilterPaste(event)" @oninput="@(async args => await OnFilterValueChangedAsync(args))" />
     }
     else if (PropertyTypeName == StringConstants.PropertyTypeNameBoolean)
     {
