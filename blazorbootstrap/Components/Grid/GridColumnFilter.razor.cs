@@ -23,6 +23,12 @@ public partial class GridColumnFilter : BlazorBootstrapComponentBase
 
     private string? filterValue;
 
+    /// <summary>
+    /// Точность DateTime-фильтра: day / hour / minute — определяет шаг диапазона в SQL.
+    /// Значения примитивны намеренно: datetime-local не умеет частичные значения.
+    /// </summary>
+    private string dateTimePrecision = "minute";
+
     private string? selectedFilterSymbol;
 
     /// <summary>
@@ -38,7 +44,10 @@ public partial class GridColumnFilter : BlazorBootstrapComponentBase
     {
         filterOperators = await GetFilterOperatorsAsync(PropertyTypeName!);
         filterOperator = FilterOperator;
-        filterValue = FilterValue;
+        dateTimePrecision = InferDateTimePrecision(FilterValue);
+        filterValue = PropertyTypeName == StringConstants.PropertyTypeNameDateTime
+            ? AdaptDateTimeValueToPrecision(FilterValue, dateTimePrecision)
+            : FilterValue;
         SyncSelectedEnumNames();
 
         await base.OnInitializedAsync();
@@ -49,7 +58,10 @@ public partial class GridColumnFilter : BlazorBootstrapComponentBase
         if (ResetTrigger != lastResetTrigger)
         {
             lastResetTrigger = ResetTrigger;
-            filterValue = FilterValue;
+            dateTimePrecision = InferDateTimePrecision(FilterValue);
+            filterValue = PropertyTypeName == StringConstants.PropertyTypeNameDateTime
+                ? AdaptDateTimeValueToPrecision(FilterValue, dateTimePrecision)
+                : FilterValue;
             SyncSelectedEnumNames();
             inputKey++;
         }
@@ -197,7 +209,7 @@ public partial class GridColumnFilter : BlazorBootstrapComponentBase
         SetSelectedFilterSymbol();
 
         if (GridColumnFilterChanged.HasDelegate)
-            await GridColumnFilterChanged.InvokeAsync(new FilterEventArgs(filterValue!, filterOperator));
+            await GridColumnFilterChanged.InvokeAsync(new FilterEventArgs(EffectiveFilterValue!, filterOperator));
     }
 
     private async Task OnFilterValueChangedAsync(ChangeEventArgs args)
@@ -205,8 +217,82 @@ public partial class GridColumnFilter : BlazorBootstrapComponentBase
         filterValue = args?.Value?.ToString();
 
         if (GridColumnFilterChanged.HasDelegate)
-            await GridColumnFilterChanged.InvokeAsync(new FilterEventArgs(filterValue!, filterOperator));
+            await GridColumnFilterChanged.InvokeAsync(new FilterEventArgs(EffectiveFilterValue!, filterOperator));
     }
+
+    /// <summary>
+    /// Смена точности DateTime-фильтра: значение подгоняется под валидный для контрола формат,
+    /// в FilterItem уходит усечённое до выбранной точности значение.
+    /// </summary>
+    private async Task OnDateTimePrecisionChangedAsync(ChangeEventArgs args)
+    {
+        dateTimePrecision = args?.Value?.ToString() ?? "minute";
+        filterValue = AdaptDateTimeValueToPrecision(filterValue, dateTimePrecision);
+        inputKey++;
+
+        if (GridColumnFilterChanged.HasDelegate)
+            await GridColumnFilterChanged.InvokeAsync(new FilterEventArgs(EffectiveFilterValue!, filterOperator));
+    }
+
+    /// <summary>
+    /// Что реально уходит в FilterItem — datetime-local не умеет частичные значения, поэтому точность режем вручную.
+    /// </summary>
+    private string? EffectiveFilterValue =>
+        PropertyTypeName == StringConstants.PropertyTypeNameDateTime && !string.IsNullOrEmpty(filterValue)
+            ? dateTimePrecision switch
+            {
+                "day" => filterValue.Length > 10 ? filterValue[..10] : filterValue,
+                "hour" => filterValue.Length > 13 ? filterValue[..13] : filterValue,
+                _ => filterValue.Length > 16 ? filterValue[..16] : filterValue
+            }
+            : filterValue;
+
+    /// <summary>
+    /// Точность из длины значения: 10 — день, 13 — час, 16 и больше — минута.
+    /// </summary>
+    private static string InferDateTimePrecision(string? value) =>
+        value?.Length switch
+        {
+            <= 10 => "day",
+            <= 13 => "hour",
+            _ => "minute"
+        };
+
+    /// <summary>
+    /// Приводит значение к валидному для контрола формату: type=date принимает только дату,
+    /// datetime-local — дату и минуты (час держится на :00 через step).
+    /// </summary>
+    private static string? AdaptDateTimeValueToPrecision(string? value, string precision)
+    {
+        if (string.IsNullOrEmpty(value) || value.Length < 10)
+            return value;
+
+        return precision switch
+        {
+            "day" => value[..10],
+            "hour" => (value.Length >= 13 ? value[..13] : value[..10] + "T00") + ":00",
+            _ => value.Length >= 16 ? value[..16] : value[..10] + "T00:00"
+        };
+    }
+
+    private string DateTimeInputType => dateTimePrecision == "day" ? "date" : "datetime-local";
+
+    private string? DateTimeStep => dateTimePrecision == "hour" ? "3600" : null;
+
+    /// <summary>
+    /// Точность показываем только для = и != — им шаг диапазона определяет весь интервал.
+    /// Остальные операторы сравнивают с мгновением: скрытой точности достаточно усекать значение.
+    /// </summary>
+    private bool ShowDateTimePrecision =>
+        filterOperator is FilterOperator.Equals or FilterOperator.NotEquals;
+
+    private static string DateTimePrecisionLabel(string precision) =>
+        CultureInfo.CurrentUICulture.TwoLetterISOLanguageName == "ru"
+            ? precision switch { "day" => "День", "hour" => "Час", _ => "Минута" }
+            : precision switch { "day" => "Day", "hour" => "Hour", _ => "Minute" };
+
+    private string DateTimePrecisionTitle =>
+        CultureInfo.CurrentUICulture.TwoLetterISOLanguageName == "ru" ? "Точность" : "Precision";
 
     private void SetSelectedFilterSymbol()
     {

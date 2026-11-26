@@ -125,6 +125,7 @@ BEGIN
         IsFullText    BIT NOT NULL,
         ColumnValue   NVARCHAR(4000) NULL,
         Operator      NVARCHAR(50) NULL,
+        Precision     NVARCHAR(10) NULL,
         SqlOperator   NVARCHAR(2) NULL,
         SqlValue      NVARCHAR(4000) NULL,
         InValues      NVARCHAR(4000) NULL,
@@ -234,19 +235,21 @@ BEGIN
     END;
 
     
-    INSERT INTO @FilteredColumns (ColumnName, SqlColumnName, ColumnType, IsFullText, ColumnValue, Operator)
+    INSERT INTO @FilteredColumns (ColumnName, SqlColumnName, ColumnType, IsFullText, ColumnValue, Operator, Precision)
     SELECT
         AC.ColumnName,
         QUOTENAME(AC.SqlColumnName),
         AC.ColumnType,
         ISNULL(COLUMNPROPERTY(@TableObjectId, AC.SqlColumnName, 'IsFulltextIndexed'), 0),
         ISNULL(LTRIM(RTRIM(JS.[Value])), N'') AS ColumnValue,
-        JS.Operator
+        JS.Operator,
+        JS.Precision
     FROM OPENJSON(@FilterJson)
     WITH (
         PropertyName     NVARCHAR(100)  '$.PropertyName',
         [Value]          NVARCHAR(MAX)  '$.Value',
-        Operator         NVARCHAR(50)   '$.Operator'
+        Operator         NVARCHAR(50)   '$.Operator',
+        Precision        NVARCHAR(10)   '$.Precision'
     ) JS
     JOIN @AllowedColumns AC
         ON JS.PropertyName = AC.ColumnName
@@ -267,8 +270,18 @@ BEGIN
                 END
             WHEN N'DATETIME' THEN
                 CASE
-                    WHEN TRY_CONVERT(DATETIME2, ColumnValue + IIF(LEN(ColumnValue) - LEN(REPLACE(ColumnValue, N':', N'')) = 1, N':00', N'')) >= '1753-01-01'
-                        THEN CONVERT(NVARCHAR(19), TRY_CONVERT(DATETIME2, ColumnValue + IIF(LEN(ColumnValue) - LEN(REPLACE(ColumnValue, N':', N'')) = 1, N':00', N'')), 126)
+                    WHEN TRY_CONVERT(DATETIME2, ColumnValue +
+                            CASE LEN(ColumnValue) - LEN(REPLACE(ColumnValue, N':', N''))
+                                WHEN 1 THEN N':00'
+                                WHEN 0 THEN IIF(LEN(ColumnValue) > 10, N':00:00', N'')
+                                ELSE N''
+                            END) >= '1753-01-01'
+                        THEN CONVERT(NVARCHAR(19), TRY_CONVERT(DATETIME2, ColumnValue +
+                            CASE LEN(ColumnValue) - LEN(REPLACE(ColumnValue, N':', N''))
+                                WHEN 1 THEN N':00'
+                                WHEN 0 THEN IIF(LEN(ColumnValue) > 10, N':00:00', N'')
+                                ELSE N''
+                            END), 126)
                     ELSE NULL
                 END
             ELSE ColumnValue
@@ -399,13 +412,15 @@ BEGIN
             ELSE ''
         END
     FROM @FilteredColumns FC
-    -- Шаг диапазона по числу ':' во входном значении: голая дата — день, до минут — минута, с секундами — секунда
+    -- Шаг диапазона: Precision из @FilterJson, иначе по длине входа — дата → день, дата+час → час, до минут — минута, дальше — секунда
     CROSS APPLY (
         SELECT
             RangeFrom = N'''' + SqlValue + N'''',
-            RangeTo = N'DATEADD(' + CASE LEN(FC.ColumnValue) - LEN(REPLACE(FC.ColumnValue, N':', N''))
-                        WHEN 0 THEN N'DAY'
-                        WHEN 1 THEN N'MINUTE'
+            RangeTo = N'DATEADD(' + CASE
+                        WHEN UPPER(FC.Precision) IN (N'DAY', N'HOUR', N'MINUTE', N'SECOND') THEN UPPER(FC.Precision)
+                        WHEN LEN(FC.ColumnValue) <= 10 THEN N'DAY'
+                        WHEN LEN(FC.ColumnValue) <= 13 THEN N'HOUR'
+                        WHEN LEN(FC.ColumnValue) <= 16 THEN N'MINUTE'
                         ELSE N'SECOND'
                     END
                 + N', 1, ''' + SqlValue + N''')'

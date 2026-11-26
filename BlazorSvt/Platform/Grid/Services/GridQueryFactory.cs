@@ -57,6 +57,7 @@ public class GridQueryFactory<TItem> : IGridQueryFactory<TItem>
     private static GridFilter ExtractFilter(FilterItem filter)
     {
         var value = filter.Value;
+        string? precision = null;
         DtoProperties.TryGetValue(filter.PropertyName, out var propInfo);
         if (propInfo != null && value != null)
         {
@@ -84,6 +85,7 @@ public class GridQueryFactory<TItem> : IGridQueryFactory<TItem>
             }
             else if (propType == typeof(DateTime))
             {
+                precision = GridDateTime.GetFilterPrecision(value);
                 value = GridDateTime.NormalizeFilterValue(value);
             }
         }
@@ -91,7 +93,8 @@ public class GridQueryFactory<TItem> : IGridQueryFactory<TItem>
         return new GridFilter(
             filter.PropertyName,
             value,
-            ToGridFilterOperator(filter.Operator));
+            ToGridFilterOperator(filter.Operator),
+            precision);
     }
 
     private static string ToGridFilterOperator(FilterOperator filterOperator) =>

@@ -63,8 +63,21 @@ public static class GridFilterUtility
     public static bool ShouldShowFiltersRow(bool hasVisibleColumnFilters, int? totalCount, int pageSize) =>
         hasVisibleColumnFilters || !totalCount.HasValue || totalCount.Value > pageSize;
 
+    /// <summary>
+    /// Форматы «дата + час» — свободный TryParse их не читает, а UI-фильтр такие шлёт (точность «час»).
+    /// </summary>
+    private static readonly string[] HourFormats = { "yyyy-MM-dd'T'HH", "yyyy-MM-dd HH" };
+
     private static bool TryParseFilterDateTime(string filterValue, out DateTime parsed)
     {
+        if (DateTime.TryParseExact(
+                filterValue,
+                HourFormats,
+                CultureInfo.InvariantCulture,
+                DateTimeStyles.None,
+                out parsed))
+            return true;
+
         if (DateTime.TryParse(
                 filterValue,
                 CultureInfo.InvariantCulture,

@@ -312,12 +312,17 @@ public class GridQueryFactoryTests
     }
 
     [Theory]
-    [InlineData("2026-11-20T12:49", "2026-11-20T09:49", FilterOperator.GreaterThan)]
-    [InlineData("2026-11-20T12:49:30", "2026-11-20T09:49:30", FilterOperator.LessThanOrEquals)]
-    [InlineData("2026-11-20 01:15", "2026-11-19T22:15", FilterOperator.Equals)]
+    [InlineData("2026-11-20T12:49", "2026-11-20T09:49", "minute", FilterOperator.GreaterThan)]
+    [InlineData("2026-11-20T12:49:00", "2026-11-20T09:49", "minute", FilterOperator.GreaterThan)]
+    [InlineData("2026-11-20T12:49:30", "2026-11-20T09:49:30", "second", FilterOperator.LessThanOrEquals)]
+    [InlineData("2026-11-20 01:15", "2026-11-19T22:15", "minute", FilterOperator.Equals)]
+    [InlineData("2026-11-20T12", "2026-11-20T09", "hour", FilterOperator.Equals)]
+    [InlineData("2026-11-20 12", "2026-11-20T09", "hour", FilterOperator.Equals)]
+    [InlineData("2026-11-20", "2026-11-19T21:00", "day", FilterOperator.Equals)]
     public void Create_WhenDateTimeFilterHasTime_ConvertsMoscowToUtc(
         string entered,
         string expectedUtc,
+        string expectedPrecision,
         FilterOperator sourceOperator)
     {
         var request = new GridDataProviderRequest<TransportRateDto>
@@ -342,11 +347,12 @@ public class GridQueryFactoryTests
                     FilterOperator.GreaterThan => GridFilterOperators.GreaterThanOperator,
                     FilterOperator.LessThanOrEquals => GridFilterOperators.LessThanOrEqualsOperator,
                     _ => GridFilterOperators.EqualsOperator
-                }));
+                },
+                expectedPrecision));
     }
 
     [Fact]
-    public void Create_WhenDateTimeFilterIsDateOnly_KeepsCalendarDate()
+    public void Create_WhenDateTimeFilterIsDateOnly_ConvertsMoscowDayToUtcWithDayPrecision()
     {
         var request = new GridDataProviderRequest<TransportRateDto>
         {
@@ -363,7 +369,7 @@ public class GridQueryFactoryTests
         var query = _rateFactory.Create(request);
 
         query.Filters.Should().Equal(
-            new GridFilter(nameof(TransportRateDto.CreationDate), "2019-01-01", GridFilterOperators.GreaterThanOrEqualsOperator),
+            new GridFilter(nameof(TransportRateDto.CreationDate), "2018-12-31T21:00", GridFilterOperators.GreaterThanOrEqualsOperator, "day"),
             new GridFilter(nameof(TransportRateDto.StartDate), "2026-11-20", GridFilterOperators.LessThanOperator));
     }
 

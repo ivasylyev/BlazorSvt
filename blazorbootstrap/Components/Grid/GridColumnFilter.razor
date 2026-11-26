@@ -46,7 +46,15 @@
     }
     else if (PropertyTypeName == StringConstants.PropertyTypeNameDateTime)
     {
-        <input @key="inputKey" class="form-control" style="@filterStyle" type="datetime-local" lang="@CultureInfo.CurrentUICulture.Name" value="@filterValue" @oninput="@(async args => await OnFilterValueChangedAsync(args))" />
+        @if (ShowDateTimePrecision)
+        {
+            <select @key="@($"precision{inputKey}")" class="form-select me-1 flex-shrink-0" style="width:auto" value="@dateTimePrecision" @onchange="OnDateTimePrecisionChangedAsync" title="@DateTimePrecisionTitle">
+                <option value="day">@DateTimePrecisionLabel("day")</option>
+                <option value="hour">@DateTimePrecisionLabel("hour")</option>
+                <option value="minute">@DateTimePrecisionLabel("minute")</option>
+            </select>
+        }
+        <input @key="inputKey" class="form-control" style="@filterStyle" type="@DateTimeInputType" step="@DateTimeStep" lang="@CultureInfo.CurrentUICulture.Name" value="@filterValue" @oninput="@(async args => await OnFilterValueChangedAsync(args))" />
     }
     else if (PropertyTypeName == StringConstants.PropertyTypeNameBoolean)
     {
