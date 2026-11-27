@@ -14,6 +14,7 @@
 | Новый read-only справочник | [`svt-migrate-catalog`](svt-migrate-catalog.md) |
 | Накат SP на localhost | [`svt-create-programmability`](svt-create-programmability.md) |
 | Собрать пакет версии в `C:\publish` | [`svt-publish`](svt-publish.md) |
+| Собрать zip пакета архитектурного ревью | [`svt-create-review-package`](svt-create-review-package.md) |
 | Эталон, кольцо, роли | [`atlas-methodology`](../atlas/atlas-methodology.md) |
 | Разделы 0 / 1а / 1б план-графика | [`atlas-plan-grafik-md-html`](../atlas/atlas-plan-grafik-md-html.md) |
 | Как писать текущий код модуля | правило `svt-development-patterns` |
@@ -21,7 +22,7 @@
 
 ## Канон
 
-Таблица «вопрос → файл» — [`SKILL.md`](../../skills/svt-architecture/SKILL.md), раздел «Канон». Пакет на ревью — [`README.md`](../../skills/svt-architecture/README.md) папки скила и `docs/output-review-package/README.md`.
+Таблица «вопрос → файл» — [`SKILL.md`](../../skills/svt-architecture/SKILL.md), раздел «Канон». Оглавление пакета на ревью — [`README.md`](../../skills/svt-architecture/README.md) папки скила. Таблица файлов и ссылок Confluence — `docs/output-review-package/README.md`. Сборка zip — [`svt-create-review-package`](svt-create-review-package.md).
 
 ## Частые вопросы
 

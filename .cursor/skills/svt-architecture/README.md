@@ -31,7 +31,7 @@
 | № | Файл | Состояние | Статус |
 |---|---|---|---|
 | 1 | [`01-as-is-legacy.png`](01-as-is-legacy.png) | Легаси (As-Is): распределённый монолит, Elastic, RabbitMQ, Angular | Текущее состояние прод |
-| 2 | [`02-to-be-current-program.png`](02-to-be-current-program.png) | Целевая архитектура **текущей программы** трансформации (итог вехи 34 / Gate D): та же ВМ и Windows Server 2016/IIS, модульный монолит .NET Blazor, без Elastic/RabbitMQ | Согласуется в рамках этого ревью |
+| 2 | [`02-to-be-current-program.png`](02-to-be-current-program.png) | Целевая архитектура **текущей программы** трансформации (итог вехи 16 / Gate D): та же ВМ и Windows Server 2016/IIS, модульный монолит .NET Blazor, без Elastic/RabbitMQ | Согласуется в рамках этого ревью |
 | 3 | [`03-future-containers-out-of-scope.png`](03-future-containers-out-of-scope.png) | Возможное будущее состояние — контейнеризация (Docker/Kubernetes) | **Вне скоупа текущей программы**; отдельная будущая инициатива с отдельным бизнес-кейсом |
 
 ## Почему три, а не одна схема
@@ -49,5 +49,4 @@
 (sticky/affinity, см. `architecture.md` §6.1) не должен архитектурно исключать последующий переход
 на многоузловой/K8s-деплой.
 
-Пакет для передачи собирает [`Build-ReviewPackage.ps1`](../../../docs/output-review-package/Build-ReviewPackage.ps1)
-по [`README`](../../../docs/output-review-package/README.md). Скрипт кладёт zip рядом с папкой и удаляет сгенерированные копии из неё. Zip в git не коммитится.
+Сборку zip ведёт skill [`svt-create-review-package`](../svt-create-review-package/SKILL.md). Таблица файлов — [`README`](../../../docs/output-review-package/README.md) пакета.

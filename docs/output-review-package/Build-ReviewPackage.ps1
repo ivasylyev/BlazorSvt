@@ -24,17 +24,46 @@ New-Item -ItemType Directory -Force -Path $destinationPath | Out-Null
 $utf8 = New-Object System.Text.UTF8Encoding $false
 $readmePath = Join-Path $packageDir "README.md"
 $readme = [System.IO.File]::ReadAllText($readmePath, $utf8)
+$readmeLines = $readme -split "\r?\n", -1
+$headerIndex = -1
+for ($i = 0; $i -lt $readmeLines.Count; $i++) {
+    if ($readmeLines[$i] -match '^\|.*Confluence') {
+        $headerIndex = $i
+        break
+    }
+}
+if ($headerIndex -lt 0) {
+    throw "README.md has no Confluence table."
+}
 $pages = New-Object System.Collections.Generic.List[object]
-foreach ($m in [regex]::Matches($readme, '\|\s*`([^`]+)`\s*\|\s*\[([^\]]+)\]\((https://[^)]+)\)\s*\|')) {
+for ($i = $headerIndex + 1; $i -lt $readmeLines.Count; $i++) {
+    $line = $readmeLines[$i]
+    if ($line -notmatch '^\|') { break }
+    if ($line -match '^\|\s*-') { continue }
+    if ($line -notmatch '`([^`]+)`') {
+        throw "Confluence table row has no canon file name: $line"
+    }
+    $name = $Matches[1]
+    $title = $null
+    $url = $null
+    if ($line -match '\[([^\]]+)\]\((https://[^)]+)\)') {
+        $title = $Matches[1]
+        $url = $Matches[2]
+    }
     $pages.Add([pscustomobject]@{
-        Name  = $m.Groups[1].Value
-        Title = $m.Groups[2].Value
-        Url   = $m.Groups[3].Value
+        Name  = $name
+        Title = $title
+        Url   = $url
     })
 }
-if ($pages.Count -ne 4) {
-    throw "README.md must list exactly 4 canon files in the Confluence table (found $($pages.Count))."
+if ($pages.Count -eq 0) {
+    throw "README.md Confluence table has no canon files."
 }
+$duplicateNames = @($pages | Group-Object Name | Where-Object { $_.Count -gt 1 } | ForEach-Object { $_.Name })
+if ($duplicateNames.Count -gt 0) {
+    throw "Duplicate canon file in Confluence table: $($duplicateNames -join ', ')"
+}
+$published = @($pages | Where-Object { $_.Url })
 
 function Convert-ToConfluence([string]$text, $pageList) {
     foreach ($p in $pageList) {
@@ -55,33 +84,31 @@ function Convert-ToConfluence([string]$text, $pageList) {
 }
 
 $skillDir = Join-Path $repoRoot ".cursor\skills\svt-architecture"
-$companions = @(
-    "risks.md",
-    "glossary.md",
-    "delivery-steps.md",
-    "cutover.md",
-    "outside-registry.md",
-    "status.md",
-    "pre-implementation-checklist.md",
-    "review-conditions.md",
-    "mitigations.md"
-)
 foreach ($p in $pages) {
-    $source = Join-Path $skillDir $p.Name
+    if ($p.Name -eq "SVT-idealnyy-process-2.7.html") {
+        $source = Join-Path $repoRoot "docs\docs\svt-v-atlas\SVT-idealnyy-process-2.7.html"
+    }
+    elseif ($p.Name -eq "review-current-state.html") {
+        $source = Join-Path $packageDir "review-current-state.html"
+    }
+    else {
+        $source = Join-Path $skillDir $p.Name
+    }
     if (-not (Test-Path -LiteralPath $source)) {
         throw "Missing canon file: $source"
     }
-    $raw = [System.IO.File]::ReadAllText($source, $utf8)
-    $converted = Convert-ToConfluence $raw $pages
     $outFile = Join-Path $destinationPath $p.Name
-    [System.IO.File]::WriteAllText($outFile, $converted, $utf8)
-}
-foreach ($name in $companions) {
-    $source = Join-Path $skillDir $name
-    if (-not (Test-Path -LiteralPath $source)) {
-        throw "Missing canon file: $source"
+    if ([System.IO.Path]::GetFullPath($source) -eq [System.IO.Path]::GetFullPath($outFile)) {
+        continue
     }
-    Copy-Item -LiteralPath $source -Destination (Join-Path $destinationPath $name) -Force
+    if ($p.Url) {
+        $raw = [System.IO.File]::ReadAllText($source, $utf8)
+        $converted = Convert-ToConfluence $raw $published
+        [System.IO.File]::WriteAllText($outFile, $converted, $utf8)
+    }
+    else {
+        Copy-Item -LiteralPath $source -Destination $outFile -Force
+    }
 }
 
 $pngs = @(
@@ -92,13 +119,6 @@ $pngs = @(
 foreach ($png in $pngs) {
     Copy-Item -LiteralPath (Join-Path $skillDir $png) -Destination (Join-Path $destinationPath $png) -Force
 }
-
-$idealSource = Join-Path $repoRoot "docs\docs\svt-v-atlas\SVT-idealnyy-process-2.7.html"
-$idealDest = Join-Path $destinationPath "SVT-idealnyy-process-2.7.html"
-if (-not (Test-Path -LiteralPath $idealSource)) {
-    throw "Missing ideal-process canon: $idealSource"
-}
-Copy-Item -LiteralPath $idealSource -Destination $idealDest -Force
 
 if ($NoZip) {
     Write-Output "Package written to $destinationPath (zip skipped)."
@@ -124,8 +144,7 @@ finally {
     Remove-Item -LiteralPath $stagingParent -Recurse -Force
 }
 
-$generatedNames = @($pages | ForEach-Object { $_.Name }) + $companions + @("reference.md") + $pngs + @(
-    "SVT-idealnyy-process-2.7.html",
+$generatedNames = @($pages | Where-Object { $_.Name -ne "review-current-state.html" } | ForEach-Object { $_.Name }) + @("reference.md") + $pngs + @(
     "SVT-idealnyy-process2.html"
 )
 foreach ($name in $generatedNames) {

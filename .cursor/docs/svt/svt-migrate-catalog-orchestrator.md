@@ -14,7 +14,7 @@
 | Та же задача без явного вызова | [`svt-migrate-catalog`](svt-migrate-catalog.md) |
 | Поправить правила фаз, именование, таблицу enum-класса | [`svt-migrate-catalog`](svt-migrate-catalog.md) |
 | Справочник вне скоупа | Остановиться. Состав — `catalogs-scope.md` в [`svt-architecture`](svt-architecture.md) |
-| Редактор или пакетная загрузка | backlog, с вехи 10 |
+| Редактор или пакетная загрузка | backlog, с вехи 6 |
 | Накатить уже написанные SP на localhost | [`svt-create-programmability`](svt-create-programmability.md) |
 | Собрать пакет версии в `C:\publish` | [`svt-publish`](svt-publish.md) |
 

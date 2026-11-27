@@ -2,35 +2,29 @@
 
 Плоская копия для передачи на ревью. **Не источник истины.** Канон — `.cursor/skills/svt-architecture/` (`architecture.md`, `roadmap.md`, `cutover.md`, `risks.md`, `review-conditions.md`, `mitigations.md`, `glossary.md`, `delivery-steps.md`, `backlog.md`, `catalogs-scope.md`, `status.md`, `outside-registry.md`, `pre-implementation-checklist.md`, диаграммы `01-as-is-legacy.png`, `02-to-be-current-program.png`, `03-future-containers-out-of-scope.png`) и `docs/docs/svt-v-atlas/SVT-idealnyy-process-2.7.html`.
 
-Страницы Confluence из таблицы ниже обновляются из этого пакета (скрипт копирует канон навыка), не наоборот.
+Строки таблицы со ссылкой на Confluence обновляются из этого пакета (скрипт копирует канон навыка), не наоборот. Пустая ячейка ссылки — страница ещё не заведена.
 
-В git в этой папке лежат только этот README, `Build-ReviewPackage.ps1` и снимок заключения [`review-current-state.html`](review-current-state.html) (07.08.2026, статус прода не обновляется). Скрипт собирает `docs/output-review-package.zip` и после успешного zip удаляет из этой папки сгенерированные markdown, диаграммы и HTML идеального процесса. Zip в git не коммитится. `-NoZip` оставляет файлы в `-Destination`.
+В git в этой папке лежат только этот README, `Build-ReviewPackage.ps1` и снимок заключения [`review-current-state.html`](review-current-state.html) (07.08.2026, статус прода не обновляется). Zip в git не коммитится.
 
-## Сборка
+Процедура сборки — skill `svt-create-review-package`. Таблица ниже — вход скрипта `Build-ReviewPackage.ps1`: строка со ссылкой заменяется на страницу Confluence, пустая ячейка копируется как есть.
 
-Из корня репозитория:
-
-```powershell
-.\docs\output-review-package\Build-ReviewPackage.ps1
-```
-
-Скрипт:
-
-1. Копирует markdown и три диаграммы из `.cursor/skills/svt-architecture/`.
-2. Заменяет ссылки и явные упоминания четырёх файлов из таблицы (включая самоссылки) на Confluence. Таблица ниже — и инструкция, и вход скрипта: ровно четыре строки. `risks.md`, `glossary.md`, `delivery-steps.md`, `cutover.md`, `outside-registry.md`, `status.md`, `pre-implementation-checklist.md`, `review-conditions.md` и `mitigations.md` копируются рядом и на Confluence не публикуются.
-
-| Файл канона | Страница Confluence |
-|---|---|
-| `architecture.md` | [01. Архитектура трансформации СВТ: проблемы и решение](https://confluence.sibur.local/pages/viewpage.action?pageId=573815762) |
-| `roadmap.md` | [02. План трансформации СВТ](https://confluence.sibur.local/pages/viewpage.action?pageId=573815766) |
-| `backlog.md` | [03. Бэклог трансформации СВТ](https://confluence.sibur.local/pages/viewpage.action?pageId=583080778) |
-| `catalogs-scope.md` | [04. Список справочников для трансформации СВТ](https://confluence.sibur.local/pages/viewpage.action?pageId=573822390) |
-
-3. Копирует `docs/docs/svt-v-atlas/SVT-idealnyy-process-2.7.html` в эту папку как есть. Ссылки на соседние файлы Атласа внутри пакета не открываются: в пакет входит только этот HTML.
-4. Относительные ссылки вида `../../../…` из навыка переписывает в `../../…`: пакет на одну папку ближе к корню репозитория.
-5. `review-current-state.html`, этот README и skills не меняет.
-6. Кладёт zip рядом с папкой: `docs/output-review-package.zip`. В корне архива — папка `output-review-package/` без скрипта сборки. Старый zip перезаписывается.
-7. Удаляет из этой папки скопированные markdown, три диаграммы и `SVT-idealnyy-process-2.7.html`. README, скрипт и `review-current-state.html` остаются. При `-Destination` вне этой папки файлы там сохраняются, а сгенерированные копии в этой папке всё равно удаляются.
+| № | Файл | Зачем | Страница Confluence |
+|---|---|---|---|
+| 1 | `glossary.md` | Термины. Открыть до остальных текстов | |
+| 2 | `status.md` | Где контур сейчас | |
+| 3 | `architecture.md` | Обоснование, альтернативы, целевое состояние. Сразу после него — схемы 1–3 ниже | [01. Архитектура трансформации СВТ: проблемы и решение](https://confluence.sibur.local/pages/viewpage.action?pageId=573815762) |
+| 4 | `SVT-idealnyy-process-2.7.html` | Идеальный процесс, версия 2.7 (канон, в пакет копируется скриптом) | |
+| 5 | `catalogs-scope.md` | Реестр справочников: скоуп, домены, RO/E/L | [04. Список справочников для трансформации СВТ](https://confluence.sibur.local/pages/viewpage.action?pageId=573822390) |
+| 6 | `roadmap.md` | Порядок доменов, сводка вех, критический путь | [02. План трансформации СВТ](https://confluence.sibur.local/pages/viewpage.action?pageId=573815766) |
+| 7 | `delivery-steps.md` | Двенадцать шагов поставки. Подписи «Шаг» в бэклоге | |
+| 8 | `backlog.md` | Чеклист работ | [03. Бэклог трансформации СВТ](https://confluence.sibur.local/pages/viewpage.action?pageId=583080778) |
+| 9 | `cutover.md` | Правила перехода и критерии Gate A/B/C/D | |
+| 10 | `risks.md` | Риски и меры | |
+| 11 | `review-conditions.md` | Условия условного одобрения, реестр D-* | |
+| 12 | `mitigations.md` | Приложения: модель угроз, SoD, миграции, SLI/SLO, метрики пилотов, протокол нагрузки | |
+| 13 | `outside-registry.md` | Функции вне реестра справочников | |
+| 14 | `pre-implementation-checklist.md` | Чеклист перед кодом | |
+| 15 | `review-current-state.html` | Снимок повторного architecture review (07.08.2026, статус прода не обновляется) | |
 
 Скоуп согласования: **условное одобрение** направления (см. `review-conditions.md` в zip, раздел §6.9; реестр там же, приложения митигаций — `mitigations.md`).
 
@@ -57,4 +51,4 @@
 | 2 | `02-to-be-current-program.png` | Целевая архитектура текущей программы (Gate D) | Согласуется в рамках ревью |
 | 3 | `03-future-containers-out-of-scope.png` | Контейнеризация | **Вне скоупа** текущей программы |
 
-Исполнение типа E (прогон 7.8.10, CI 7.9.8, алерты 8.1.3, SCA 4.5.1, калибровка 10.19, …) — в [03. Бэклог трансформации СВТ](https://confluence.sibur.local/pages/viewpage.action?pageId=583080778), не выдаётся за закрытое.
+Исполнение типа E (прогон 4.1.10, CI 4.2.8, алерты 4.5.3, SCA 4.4.5, калибровка 6.17, …) — в [03. Бэклог трансформации СВТ](https://confluence.sibur.local/pages/viewpage.action?pageId=583080778), не выдаётся за закрытое.
