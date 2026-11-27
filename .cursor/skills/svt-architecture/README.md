@@ -49,5 +49,4 @@
 (sticky/affinity, см. `architecture.md` §6.1) не должен архитектурно исключать последующий переход
 на многоузловой/K8s-деплой.
 
-Пакет для передачи собирает [`Build-ReviewPackage.ps1`](../../../docs/output-review-package/Build-ReviewPackage.ps1)
-по [`README`](../../../docs/output-review-package/README.md). Скрипт кладёт zip рядом с папкой и удаляет сгенерированные копии из неё. Zip в git не коммитится.
+Сборку zip ведёт skill [`svt-create-review-package`](../svt-create-review-package/SKILL.md). Таблица файлов — [`README`](../../../docs/output-review-package/README.md) пакета.

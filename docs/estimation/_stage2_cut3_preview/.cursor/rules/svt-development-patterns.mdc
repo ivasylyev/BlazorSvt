@@ -1,0 +1,184 @@
+---
+description: Паттерны разработки BlazorSVT — модули, grid, import, SQL, логирование, тестирование
+globs: BlazorSvt/**/*
+alwaysApply: false
+---
+
+# Паттерны разработки BlazorSVT
+
+## Добавление справочника (read-only grid)
+
+Полный алгоритм — skill `svt-migrate-catalog` (`SKILL.md` → `discovery.md` → `sql.md` → `csharp.md`). Именование, sync, API-регистрация и структура модуля — только там. Правило `svt-add-reference-book` — указатель при работе в Modules/SqlScripts.
+
+## Модульная регистрация
+
+Каждый модуль — `public static class *Module` с `Add*Module(IServiceCollection)`. Зависимости только через Platform-интерфейсы, не через другие Modules напрямую — это **hard architecture violation**, не стиль (единая сборка `BlazorSvt.csproj`, границу компилятор не проверяет; проверяется `ModuleBoundaryTests` — включение в CI пайплайна BlazorSvt ещё открыто, `backlog.md` 4.2.8 / `review-conditions.md` D-ARCH). Общие IdsEnum — `Platform/Domain/IdsEnum/`.
+
+- **Нельзя**: `Modules/{X}` импортирует класс/DTO из `Modules/{Y}` (X≠Y) напрямую (`using BlazorSvt.Modules.{Y}...`)
+- **Можно** (эталон в коде): cross-reference данные на чтении резолвятся в SQL-снапшоте, а не в C# — см. `TransportRateDto` (`NodeFromCode`/`NodeFromNameRu`/`NodeFromNameEn` из джойна с `LocationsNodes` в snapshot-view, не ссылка на класс модуля); общие enum — в `Platform/Domain/IdsEnum/`, не в модуле-источнике
+- На запись (будущие редакторы/загрузчики, с вехи 6): cross-domain FK-валидация — через общий Platform-сервис, параметризованный таблицей/колонкой, не через прямую ссылку на класс чужого модуля
+
+## Grid-фреймворк
+
+- `GenericGrid` / `GenericDetailView` — переиспользуемые компоненты
+- `IGridDataService<TDto,TDetail>` + `GridQueryFactory` — запросы к read-модели через `v2.GetBlazorGridData`
+- `[GridSnapshot]` + `[GridColumn]` на list-DTO → `GridColumnMetadataBuilder` собирает `@AllowedColumnsJson` и `@SelectList`
+- Фильтруемая `NVARCHAR` вне full-text индекса: `[GridColumn(WithoutFullText = true)]`. Фильтр грида показывает «a**» / «Начинается с», оператор остаётся Contains — SQL ищет `LIKE N'значение%'`. Колонка в full-text индексе — без флага («*a*» / «Содержит»). `CreationUserName` и `LastChangeUserName` full-text нет
+- Настройки колонок/деталей — через `IGridSettingsService` / `IDetailSettingsService` (UI-слой, отдельно от SQL-метаданных)
+- `DetailSettingsBuilder` — бизнес-`visible:` полей детальной панели; скрытие пустых (`null`/`""`/whitespace) — `Grid:HideEmptyDetailFields` в `GenericDetailView` (UI only, не full report). Bool/числа/даты остаются видимыми; чтобы скрыть `0`, кастомный `display` → пустая строка
+
+## Import / batch (целевой паттерн)
+
+- FluentValidation-валидаторы в `Import/Validators/`
+- Staging через `IStagingRepository<T>` → единый pipeline с будущими редакторами (**сейчас stub**: `BulkInsertAsync` бросает `NotImplementedException`; на проде `AccessAction.Import` всегда deny)
+- Не дублировать валидацию в Razor-компонентах
+- Структурированные логи пайплайна: старт (файл/размер/тип), число строк, validation fail, success, exception
+
+## SQL
+
+- **Read**: snapshot-таблицы, `v2.GetBlazorGridData`, `v2.ExportBlazorGridDetail`, `vw_*_Detail` — только выборка
+- **Write** (будущее): отдельные команды в C#, не бизнес-логика в SP
+- Dapper + `SqlDateOnlyTypeHandler`; доступ к БД через `DbConnectionLogDecorator` → `LoggedOperation` (тайминг, ошибки, параметры в scope). `DapperLogExtensions` — только хелпер `ToDictionary` для параметров
+- **`THROW`:** внутри `BEGIN…END` всегда с ведущей `;` — `BEGIN ;THROW 50000, N'…', 1; END` (иначе VS/SSDT ругается; без `BEGIN…END` ломается sqlcmd)
+
+## Логирование
+
+Serilog (`Host/Program.cs`, секция `Serilog` в `appsettings.json`). Принцип — `svt-architecture-principles` (наблюдаемость).
+
+- **DB**: только через `DbConnectionLogDecorator` / `LoggedOperation`; не писать «голый» Dapper в обход обёртки
+- **UI**: не глотать исключения без `LogError` (`ErrorDisplay` / ErrorBoundary, `GenericDetailView`, catch в страницах)
+- **Import/batch**: события пайплайна (см. выше); Warning при несматченных заголовках Excel
+- **Корреляция**: HTTP — `MiddlewareDecorator` (`ShortCorrelationId`, `UserLogin`, `Channel`; входящий `X-Correlation-ID` принимается и возвращается в ответе); Blazor circuit — `CircuitCorrelationHandler` (`CircuitId` + `ShortCorrelationId` + `UserLogin`, `Channel = Blazor`); sync — `SyncCycleId` на цикл в `SnapshotSyncScheduler`
+- **API**: `Channel = Api` (`/api/mcp` — `Mcp`), `UserLogin` — конечный пользователь из `X-On-Behalf-Of`, `ApiClient` — служебная учётка. На вызов — одна строка `{API|MCP} {операция} {справочник} for {пользователь} via {клиент}: {статус} {код исхода}, rows, ms` (`ApiAccessMiddleware`; файловый шаблон выводит только текст сообщения). Код исхода — `ApiCallLog.ErrorCode` (`-` при успехе; ставят `ApiProblems` и `SvtMcpTool`). Операция MCP — имя инструмента или `mcp_*`. Тела запросов не логировать
+- **Sync health**: duration, cursor lag / affected в `SnapshotSyncExecutor`; ошибки entity изолированы в scheduler
+- **Аудит изменений данных** (кто/что/когда) — field-level аудит с вехи 10 (10.6), до этого отсутствие аудита — принятый риск (чеклист architecture skill)
+
+## Доступ (Windows Auth + роли)
+
+Каркас: `Platform/Access/`. IIS Windows Authentication, `hostingModel="inprocess"`. На circuit: Windows-логин → роли из `dbo.User`/`dbo.UserRole`. Сверка с AD (`UserRole` add/delete по прямым группам `DOMAIN\Group`) — только если `Auth:SynchronizeUserRoles=true`; иначе AD не вызывается. Любая роль → read (`IAccessGuard.Ensure(AccessAction.Read)`). `/load` закрыт (`AccessAction.Import`, только `Auth:IgnoreAccessControl` в Development). Без ролей — `access-denied`; сбой AD при включённой сверке — `auth-unavailable`. Доменная запись в модели прав — с ролевой модели 6.1: не флаги на `ICurrentUser`, а новый `AccessAction` и `RoleNames`. Сам write-through, редактор и загрузчик — с вехи 6.
+
+**API (`/api`)** — та же Windows-аутентификация IIS. Вызывающий должен быть в `Api:TrustedClients` (список учёток `DOMAIN\svc`), иначе 403 `client_not_trusted` на весь `/api`, включая OpenAPI. На `/api/v1` обязателен `X-On-Behalf-Of: DOMAIN\user`; права — **только** по ролям этого пользователя (`UserAccessSynchronizer.SynchronizeOnBehalfAsync`: сохранённые роли `dbo.UserRole`, AD не опрашивается): нет в `dbo.User` → 403 `user_not_registered`, нет ролей → 403 `user_has_no_roles`. Права служебной учётки не используются. Сервисы проверяют `IAccessGuard` так же, как для Blazor.
+
+## API и MCP
+
+Контракт, маршруты, решения и риски — `architecture.md` §6.6.1 (skill `svt-architecture`). Статус пилота — `status.md` того же навыка.
+
+При правке кода:
+
+- Новый справочник в API — `AddCatalogApi` в модуле. Без регистрации падает `CatalogApiCoverageTests`. Ссылки на чужие справочники — `[ApiReference]`.
+- Снимок контракта — `docs/api/svt-api-v1.openapi.json`. Изменение валит `OpenApiContractTests`. Осознанное обновление — `UPDATE_OPENAPI_SNAPSHOT=1`, затем согласование с Атласом.
+- Подбор ставки: шаги и ранжирование в C# (`LookupStepBuilder`, `SmartRateRanker`). Строки берутся из уже существующего представления, где есть все поля шага. Если они есть в снимке `v2.*_Snapshot`, читать снимок: он быстрее. Если в снимке полей не хватает — читать детальное представление `v2.vw_*_Detail`.
+- MCP: флаг `Api:McpEnabled` по умолчанию выключен. На PROD не включать до T6. Имена инструментов не менять; новые аргументы — только необязательные.
+
+## Синхронизация legacy → snapshot
+
+Инкрементальная односторонняя синхронизация: `Platform/Sync/` (оркестрация) + SQL-процедуры
+(`v2.Sync_*`, `v2.{Entity}_PopulateAffectedKeys`). Детали — `SqlScripts/README.md`.
+Два выключателя: `Sync:Enabled` (деплой) и `V2SyncEnabled` в `dbo.vw_FeatureToggle` (оперативный kill switch).
+
+**Детекция** — `RowVer` (rowversion) на базовых `dbo.PrimitiveEntityData_*`; курсоры в `v2.SyncState`
+(`LastRowVersion`, `LastRunUtc` — не `LastRowVer`).
+**Каскад** — изменение справочника-источника инвалидирует зависимые строки snapshot через скрытые FK (`*_Id`).
+**Удаления** — только через суточный `v2.Sync_Reconcile` (anti-join).
+
+**Комментарии к таблицам:** у каждого `dbo.PrimitiveEntityData_XXXX` (Insert Sources, `IF`/`FROM`
+в PopulateAffectedKeys, consts в SyncJob) — inline-комментарий с именем справочника
+(`-- AverageRateLevel3 (основная)`, `-- LocationsNodes`, …).
+
+### Два пространства идентификаторов легаси
+
+Не путать:
+
+| Пространство | Пример | Где смотреть |
+|--------------|--------|--------------|
+| `EntityInfo.Id` (UI / URL легаси `/masterdata/{id}`, реестр catalogs-scope) | RateType **2085**, TypeNode **2151**, TypePlace **1002** | `EntityInfo`, ссылки Confluence/легаси |
+| Номер таблицы `dbo.PrimitiveEntityData_XXXX` = `PrimitiveEntityInfo.Id` основного примитива | RateType **2048**, TypeNode **2132**, TypePlace **1007** | `EntityStructure` (`ParentId IS NULL`), DDL sync, `PopulateAffectedKeys`, consts SyncJob |
+
+Один справочник — два разных числа. Связь — запрос шага 0 skill `svt-migrate-catalog`. В SQL и C# для PED всегда комментируй имя сущности рядом с номером таблицы.
+
+### Справочники вне каскада чужих гридов
+
+Чужой SyncJob не включает их в `Sources` и не заводит на них ветку `PopulateAffectedKeys`.
+Колонки `*_Id` в snapshot остаются, если используются в grid-DTO (фильтрация, enum).
+
+Своего `RowVer`, SyncJob и `PopulateAffectedKeys` нет у всех строк таблицы.
+
+| Справочник | Таблица legacy | Модули |
+|------------|----------------|--------|
+| TypePlace (LocationType) | `dbo.PrimitiveEntityData_1007` | LocationsNodes |
+| TypeNode | `dbo.PrimitiveEntityData_2132` | LocationsNodes |
+| TransportKind | `dbo.PrimitiveEntityData_2008` | TransportLeg, TransportRate, AverageRateLevel3 |
+| RateType | `dbo.PrimitiveEntityData_2048` | TransportRate, AverageRateLevel3, Coefficient; свой RO-модуль `RateType` |
+| TransportType | `dbo.PrimitiveEntityData_2009` | TransportRate, AverageRateLevel3 |
+| TransportTypeLevel3 | `dbo.PrimitiveEntityData_2023` | свой RO-модуль `TransportTypeLevel3` |
+| Currency | `dbo.PrimitiveEntityData_2016` | TransportRate, AverageRateLevel3; свой RO-модуль `Currency` |
+| Relevance | `dbo.PrimitiveEntityData_2108` | ParityRates |
+| Basis | `dbo.PrimitiveEntityData_2015` | TransportRate, AverageRateLevel3; свой RO-модуль, разовый снимок |
+| CoefficientType | `dbo.PrimitiveEntityData_2077` | Coefficient; свой RO-модуль, разовый снимок |
+| CoefficientCondition | `dbo.PrimitiveEntityData_2078` | свой RO-модуль, разовый снимок |
+| CoefficientComponent | `dbo.PrimitiveEntityData_2082` | Coefficient; свой RO-модуль, разовый снимок |
+| RateComponentType | `dbo.PrimitiveEntityData_2097` | свой RO-модуль, разовый снимок |
+| RateKind | `dbo.PrimitiveEntityData_2105` | TransportRate; свой RO-модуль, разовый снимок |
+| ETSNG | `dbo.PrimitiveEntityData_2019` | MTR (легаси, скрыт от пользователей, не меняется с 2019 г.) |
+
+При добавлении нового справочника к синхронизации: `vw_{Entity}_SnapshotSource`,
+`sp_{Entity}_PopulateAffectedKeys`, `{Entity}SyncJob` → `AddSingleton<ISnapshotSyncJob, …>()`,
+RowVer на основной PED-таблице. Источники из таблицы выше в каскад не включать без явного решения.
+
+Свой RO-грид стабильного словаря с enum — другой список. Состав и шаги только в skill `svt-migrate-catalog`, раздел «Стабильный словарь с enum». Отсутствие sync само по себе грид не задаёт.
+
+Дочерние/связанные сущности (типа `RatesOfAverageRate`) — в каскад **только** если пользователь
+явно попросил; часто legacy меняет родителя и детей одновременно.
+
+## Blazor best practices
+
+- Interactive Server; `SvtComponentBase` для общего поведения
+- Локализация: `Platform/Resources/Platform.resx` (общий UI) + `Modules/{Entity}/Resources/{Entity}.resx` (справочник); `IStringLocalizer<PlatformResources>` / `IStringLocalizer<Resources.{Entity}>`
+- Минимальный scope изменений; следовать существующим соглашениям модуля
+
+## Тестирование
+
+### Проекты и стек
+
+| Проект | Назначение |
+|--------|------------|
+| `tests/BlazorSvt.UnitTests/` | Unit-тесты Platform и contract DTO |
+| `tests/BlazorSvt.IntegrationTests/` | Read-only тесты SP/view на локальной `mdm` (`localhost`) |
+
+Стек: **xUnit**, **NSubstitute**, **FluentAssertions**. Integration: **Xunit.SkippableFact** (skip при недоступной БД).
+
+### Unit-тесты (без БД)
+
+- `GridQueryFactory` — маппинг фильтров, сортировки, enum → int, дефолтный `IsArchive=False`
+- `GridColumnMetadataBuilder` — contract list-DTO: table name, entity key, `@AllowedColumnsJson`, `@SelectList`
+- `DetailDisplayValue` / `DetailSettingsBuilder` — видимость detail-полей и `HideEmptyDetailFields`
+- `SnapshotSyncJobContractTests` — metadata SyncJob + Sources
+- `Platform/Access` — `UserRoleReconciler`, `AccessGuard`, `UserAccessSynchronizer` (без живого AD)
+- Новый справочник → unit contract-тест для `{Entity}Dto` и SyncJob (SyncJob не тестировать у стабильного словаря с enum: job нет)
+- **API**: `CatalogQueryTranslatorTests` (фильтры, ошибки по полям), `ApiJsonTests` (формат контракта), `SmartRateLookup/*` (шаги, ранжирование, сервис на подменённом репозитории), on-behalf в `UserAccessSynchronizerTests`; MCP — `McpToolTests` (отбор полей, аргументы, конверт ошибки, операции журнала)
+- `CatalogApiCoverageTests` — каждый `[GridSnapshot]`-DTO и каждый пункт меню справочника зарегистрирован в API; новый справочник без `AddCatalogApi` валит тест
+
+**Import** (`Validators`, `ExcelParser`) — пока без тестов (прототип).
+
+### Integration-тесты (read-only, локальная `mdm`)
+
+- `v2.GetBlazorGridData` — пагинация, фильтры, сортировка на существующих данных
+- `vw_{Entity}_Detail` — detail view по ключу из grid
+- **FTS** — `{Entity}FtsIntegrationTests` + `FtsFilterTestSupport` (эталон: TransportRate / AverageRateLevel3)
+- **AD** — `ActiveDirectorySmokeTests` (skip, если нет домена/DC)
+- **API по HTTP** — `Api/ApiHttpTests` на `ApiTestFactory` (`WebApplicationFactory<Program>`, тестовая схема аутентификации из заголовка `X-Test-User`, подменённые репозитории; БД не нужна): доступ, заголовки, ошибки, сериализация
+- **MCP по HTTP** — `Api/McpHttpTests` на `McpTestFactory` (флаг включён) и `ApiTestFactory` (выключен): клиент SDK, `tools/list`, вызовы инструментов, предел 25, `mcp_disabled`, пакеты
+- **Контракт** — `Api/OpenApiContractTests`: `/api/openapi/v1.json` = `docs/api/svt-api-v1.openapi.json`
+- **Ручной smoke API** — `docs/api/svt-api-v1.vasilevivv-local-tests.postman.json` (не заменяет автотесты)
+- **Паритет подбора** — `SmartRateLookupParityTests`: последние запросы CRM из `mdm_integ.dbo.TransportRateCRM` по каждому уровню; эталон — `mdm_integ.dbo.CalcTransportRateCRM @Debug = 1`; skip без `mdm_integ`. Изменил подбор — прогнать
+- **Без** синтетических INSERT и Docker/Testcontainers
+- Перед запуском задай `BLAZORSVT_TEST_CONNECTION`: строка `Database:MdmDb` с `Server=localhost` (логин и пароль из неё же). Поле Server из `appsettings.json` не использовать, файл не менять. Без переменной тесты идут на сервер из `appsettings.json`
+- Эталоны: `ModuleGridIntegrationTests.cs`, `Modules/*/…FtsIntegrationTests.cs`
+
+### Запуск
+
+```powershell
+dotnet test                                          # все
+dotnet test --filter "Category=Unit"                 # без БД
+dotnet test --filter "Category=Integration"          # только SQL
+```

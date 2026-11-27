@@ -31,12 +31,13 @@
 |---------|--------|----------|
 | `/publish` | skill `svt-publish` | [svt-publish.md](docs/svt/svt-publish.md) |
 | `/create_programmability` | skill `svt-create-programmability` | [svt-create-programmability.md](docs/svt/svt-create-programmability.md) |
+| `/create_review_package` | skill `svt-create-review-package` | [svt-create-review-package.md](docs/svt/svt-create-review-package.md) |
 
 Перед выполнением slash-команды агент читает соответствующий skill. Текст command не должен расходиться со skill; при сомнении — skill.
 
 ## Что куда не класть
 
 - Длинный статус прода и полный план — в skill `svt-architecture`, таблица «Канон» в `SKILL.md`. AlwaysApply эту таблицу не дублирует
-- Страницы скилов для человека — `.cursor/docs/`. Каталог — `.cursor/docs/README.md`. Индекс документов продукта — `docs/README.md` в корне репозитория. Пакет architecture review — `docs/output-review-package/README.md`
+- Страницы скилов для человека — `.cursor/docs/`. Каталог — `.cursor/docs/README.md`. Индекс документов продукта — `docs/README.md` в корне репозитория. Пакет architecture review: процедура — skill `svt-create-review-package`, таблица файлов — `docs/output-review-package/README.md`
 - Алгоритм нового справочника — в `svt-migrate-catalog`, rule только указывает
 - Методология эталона / кольцо / промпты Атласа — в `atlas-methodology`. Синхронизация разделов 0 / 1а / 1б план-графика — в `atlas-plan-grafik-md-html`

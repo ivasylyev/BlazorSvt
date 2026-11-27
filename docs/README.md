@@ -19,7 +19,7 @@
 |---|---|
 | `docs/api/` | Техническое и бизнес-описание API. Контракт — `svt-api-v1.openapi.json`. Локальная Postman-коллекция контрактом не является |
 | `docs/tasks/` | Снимки постановок, в том числе ещё не сделанных. Не исходные требования и не процедура. Состав скоупа — `catalogs-scope.md`, алгоритм нового справочника — skill `svt-migrate-catalog`. Новый снимок пишет skill `to-spec` |
-| `docs/output-review-package/` | Процедура пакета на architecture review. Процедура — `README.md` этой папки. `review-current-state.html` — снимок заключения 07.08.2026 |
+| `docs/output-review-package/` | Таблица файлов пакета на architecture review и снимок `review-current-state.html` (07.08.2026). Процедура сборки — skill `svt-create-review-package` |
 
 ## Снимки (статус прода не обновляется)
 

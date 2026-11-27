@@ -3,8 +3,8 @@
 
 SoT of numeric estimates. build_rows() keeps former ids; apply_new_wbs assigns вехи 1–14, renumber.py maps them to вехи 1–63
 (18.11.2026), renumber_cut.py drops the removed вехи and maps the rest to вехи 1–34 (26.11.2026),
-renumber_cut2.py merges them into вехи 1–16 (27.11.2026)
-to match `.cursor/skills/svt-architecture/backlog.md` and `roadmap.md`.
+renumber_cut2.py merges them into вехи 1–16 (27.11.2026), renumber_cut3.py applies the registry of stage 2
+(restructure_plan_cut3.json, renumber_map_cut3.json; 27.11.2026) — to match `.cursor/skills/svt-architecture/backlog.md` and `roadmap.md`.
 Consistency with backlog.md / roadmap.md is checked by `check_consistency.py`.
 Volumes (RO / RO+E / RO+E+L) from catalogs-scope.md.
 Third number (human-with-AI) exists only at former вехи 1 (=25) and 2 (=60); elsewhere «—».
@@ -24,9 +24,11 @@ OUT = Path(__file__).resolve().parent
 HUMAN_BY_STAGE: dict[str, float] = {}
 
 # Вехи 1–16. Конвейер: build_rows (старые id) → apply_new_wbs (wbs_layout.py) → renumber.py (вехи 1–63,
-# 18.11.2026) → renumber_cut.py (вехи 1–34, 26.11.2026) → renumber_cut2.py (вехи 1–16, 27.11.2026).
+# 18.11.2026) → renumber_cut.py (вехи 1–34, 26.11.2026) → renumber_cut2.py (вехи 1–16, 27.11.2026) →
+# renumber_cut3.py (вехи 1–16 после этапа 2 реструктуризации, 27.11.2026: перенос пакетов и задач, 18 новых задач).
 # Правила на входе конвейера (FRAMEWORK_PACKAGES, OVERTIME_ITEMS, JIRA_ITEMS, new_rows_after_renumber, GEN_ALIAS) —
-# в нумерации 1–63; id в текстах, которые генератор пишет после конвейера (нормы, Confluence), — в нумерации 1–16.
+# в нумерации 1–63; метки [Overtime]/[SVT-…] у 3.5.5, 3.5.6, 3.9.7 ставит renumber_cut3.py.
+# id в текстах, которые генератор пишет после конвейера (нормы, Confluence), — в нумерации канона 27.11.2026.
 STAGE_ORDER = [str(n) for n in range(1, 17)]
 
 
@@ -93,7 +95,7 @@ RO_COMPLEX = (8.0, 1.6)
 # RO уже на проде остаются на прежних нормах: ретро не пересчитывается.
 RO_DONE_NORMS = {"Низкая": (3.5, 1.0), "Средняя": (5.0, 1.5), "Высокая": (8.0, 2.5)}
 # Первый типовой редактор/загрузчик домена — ED_TYPICAL/LD_TYPICAL, остальные — *_REPEAT.
-# Повтор — гипотеза до пилотов редактора и загрузчика «Ставок» (6.9, 6.16).
+# Повтор — гипотеза до пилотов редактора и загрузчика «Ставок» (6.9, 6.15).
 ED_TYPICAL = (6.0, 2.0)
 ED_REPEAT = (6.0, 1.0)
 ED_COMPLEX = (22.0, 11.0)
@@ -971,12 +973,12 @@ def write_confluence_part_iii(
         ("Единица", "человеко-день", "1 чел.-день ≈ 6–7 ч чистой работы"),
         ("Scope", "A — полная трудоёмкость", "ретро по коду + остаток"),
         ("Агент", "Cursor: strong (arch/framework) + fast (тираж)", "skills только в колонке «с агентом»"),
-        ("Статус оценки", "промежуточная, 18.11.2026", "по категориям работ (6.19.1); D-EST открыт; единого коэффициента нет"),
+        ("Статус оценки", "промежуточная, 18.11.2026", "по категориям работ (6.17.1); D-EST открыт; единого коэффициента нет"),
         ("RO simple / typical / complex", f"{RO_SIMPLE[0]}/{RO_SIMPLE[1]} · {RO_TYPICAL[0]}/{RO_TYPICAL[1]} · {RO_COMPLEX[0]}/{RO_COMPLEX[1]}", "с ИИ: факт разработки + накат и тест (2 ч / 3 ч / 4 ч); RO на проде — прежние 1.0/1.5/2.5"),
-        ("Editor ~10 правил: первый / повтор в домене; ~100 правил", f"{ED_TYPICAL[0]}/{ED_TYPICAL[1]} · {ED_REPEAT[0]}/{ED_REPEAT[1]}; {ED_COMPLEX[0]}/{ED_COMPLEX[1]}", "повтор — гипотеза до пилотов редактора и загрузчика «Ставок» (6.9, 6.16)"),
-        ("Loader typical: первый / повтор в домене; complex", f"{LD_TYPICAL[0]}/{LD_TYPICAL[1]} · {LD_REPEAT[0]}/{LD_REPEAT[1]}; {LD_COMPLEX[0]}/{LD_COMPLEX[1]}", "повтор — гипотеза до пилотов редактора и загрузчика «Ставок» (6.9, 6.16)"),
-        ("Фреймворки записи 6.3, 6.6, 6.12, 6.13, 6.14", f"с ИИ × {FRAMEWORK_AI_FACTOR}", "ретро-оценка прежней вехи 2 (60 / 105.2), не залогировано"),
-        ("Тиражи с ИИ на единицу", "отчёт 1.0 · дашборд 1.0 · отчёт интеграции 0.3 · API записи домена 0.5 (у «Ставок» 1.5)", "повтор — гипотеза до пилотов редактора и загрузчика «Ставок» (6.9, 6.16)"),
+        ("Editor ~10 правил: первый / повтор в домене; ~100 правил", f"{ED_TYPICAL[0]}/{ED_TYPICAL[1]} · {ED_REPEAT[0]}/{ED_REPEAT[1]}; {ED_COMPLEX[0]}/{ED_COMPLEX[1]}", "повтор — гипотеза до пилотов редактора и загрузчика «Ставок» (6.9, 6.15)"),
+        ("Loader typical: первый / повтор в домене; complex", f"{LD_TYPICAL[0]}/{LD_TYPICAL[1]} · {LD_REPEAT[0]}/{LD_REPEAT[1]}; {LD_COMPLEX[0]}/{LD_COMPLEX[1]}", "повтор — гипотеза до пилотов редактора и загрузчика «Ставок» (6.9, 6.15)"),
+        ("Фреймворки записи 6.3, 6.6, 6.11, 6.12, 6.13", f"с ИИ × {FRAMEWORK_AI_FACTOR}", "ретро-оценка прежней вехи 2 (60 / 105.2), не залогировано"),
+        ("Тиражи с ИИ на единицу", "отчёт 1.0 · дашборд 1.0 · отчёт интеграции 0.3 · API записи домена 0.5 (у «Ставок» 1.5)", "повтор — гипотеза до пилотов редактора и загрузчика «Ставок» (6.9, 6.15)"),
         ("Аналитика", "работа с людьми: с ИИ = без ИИ; документы 0.4; генерация прототипа 0.2", "без скидки за тираж"),
         ("Не пересчитывалось", "колонка «Без ИИ» (кроме листьев аналитики), стабилизация, Gate, ОПЭ", ""),
         (
@@ -1130,14 +1132,18 @@ def main() -> None:
     from renumber import renumber_rows
     from renumber_cut import cut_rows
     from renumber_cut2 import cut2_rows
+    from renumber_cut3 import cut3_rows
     from wbs_layout import apply_new_wbs
 
     # Правила scale_framework, mark_overtime, FRAMEWORK_PACKAGES, OVERTIME_ITEMS и JIRA_ITEMS — в нумерации 1–63;
     # cut_rows снимает пункты вех, убранных 26.11.2026, и переводит номера на вехи 1–34;
-    # cut2_rows последним переводит вехи 1–34 в вехи 1–16 (27.11.2026) — номера backlog.md и roadmap.md.
-    rows = cut2_rows(cut_rows(mark_overtime(
+    # cut2_rows переводит вехи 1–34 в вехи 1–16 (27.11.2026);
+    # cut3_rows последним применяет реестр этапа 2 (27.11.2026) — номера backlog.md и roadmap.md на сегодня.
+    cut3_report: list[str] = []
+    cut3_markers: list[str] = []
+    rows = cut3_rows(cut2_rows(cut_rows(mark_overtime(
         [scale_framework(r) for r in renumber_rows(apply_new_wbs(build_rows()), new_rows_after_renumber())]
-    )))
+    ))), markers=cut3_markers, report=cut3_report)
     stage_index = {stage: index for index, stage in enumerate(STAGE_ORDER)}
     rows.sort(key=lambda row: stage_index[row.stage])
     OUT.mkdir(parents=True, exist_ok=True)
@@ -1251,21 +1257,21 @@ def main() -> None:
         ["Scope", "A — полная трудоёмкость", "сделанное (ретро) + остаток"],
         ["WBS", "backlog.md, ids {веха}.{пакет}.{задача}", "не путать с review-conditions.md"],
         ["Agent stack", "Cursor: strong models (arch/framework) + fast (тираж); senior review", ""],
-        ["Статус оценки", "промежуточная, 18.11.2026", "категории работ 6.19.1; D-EST открыт; единого коэффициента нет"],
+        ["Статус оценки", "промежуточная, 18.11.2026", "категории работ 6.17.1; D-EST открыт; единого коэффициента нет"],
         ["RO simple", f"{RO_SIMPLE[0]} / {RO_SIMPLE[1]}", "Низкая; с ИИ: 2 ч разработки + 2 ч накат и тест"],
         ["RO typical", f"{RO_TYPICAL[0]} / {RO_TYPICAL[1]}", "Средняя; с ИИ: 4 ч + 3 ч, интерполяция"],
         ["RO complex", f"{RO_COMPLEX[0]} / {RO_COMPLEX[1]}", "Высокая; с ИИ: 1 день + 4 ч"],
         ["RO на проде", "3.5/1.0 · 5.0/1.5 · 8.0/2.5", "прежние нормы; ретро не пересчитывается"],
         ["RO hardest (пилот)", "12+framework feedback", "Rates; уже на проде (пилот чтения)"],
         ["Editor typical (~10 rules), первый в домене", f"{ED_TYPICAL[0]} / {ED_TYPICAL[1]}", "Низкая+Средняя"],
-        ["Editor typical, повтор в домене", f"{ED_REPEAT[0]} / {ED_REPEAT[1]}", "гипотеза до пилотов редактора и загрузчика «Ставок» (6.9, 6.16)"],
+        ["Editor typical, повтор в домене", f"{ED_REPEAT[0]} / {ED_REPEAT[1]}", "гипотеза до пилотов редактора и загрузчика «Ставок» (6.9, 6.15)"],
         ["Editor complex (~100 rules)", f"{ED_COMPLEX[0]} / {ED_COMPLEX[1]}", "Высокая (Rates, TransportRoute)"],
         ["Loader typical, первый в домене", f"{LD_TYPICAL[0]} / {LD_TYPICAL[1]}", "reuse валидаторов"],
-        ["Loader typical, повтор в домене", f"{LD_REPEAT[0]} / {LD_REPEAT[1]}", "гипотеза до пилотов редактора и загрузчика «Ставок» (6.9, 6.16)"],
+        ["Loader typical, повтор в домене", f"{LD_REPEAT[0]} / {LD_REPEAT[1]}", "гипотеза до пилотов редактора и загрузчика «Ставок» (6.9, 6.15)"],
         ["Loader complex", f"{LD_COMPLEX[0]} / {LD_COMPLEX[1]}", "Высокая"],
-        ["Фреймворки записи 6.3, 6.6, 6.12, 6.13, 6.14", f"с ИИ × {FRAMEWORK_AI_FACTOR}", "ретро-оценка прежней вехи 2: 60 / 105.2; не залогировано"],
-        ["Тиражи с ИИ на единицу", "отчёт 1.0 · дашборд 1.0 · отчёт интеграции 0.3", "4.14.4, 14.1.7, 15.1.7; без ИИ не менялось"],
-        ["API записи домена", "3 / 1.5 у «Ставок»; 3 / 0.5 у остальных", "повтор — гипотеза до пилотов редактора и загрузчика «Ставок» (6.9, 6.16)"],
+        ["Фреймворки записи 6.3, 6.6, 6.11, 6.12, 6.13", f"с ИИ × {FRAMEWORK_AI_FACTOR}", "ретро-оценка прежней вехи 2: 60 / 105.2; не залогировано"],
+        ["Тиражи с ИИ на единицу", "отчёт 1.0 · дашборд 1.0 · отчёт интеграции 0.3", "4.8.4, 14.1.7, 15.1.7; без ИИ не менялось"],
+        ["API записи домена", "3 / 1.5 у «Ставок»; 3 / 0.5 у остальных", "повтор — гипотеза до пилотов редактора и загрузчика «Ставок» (6.9, 6.15)"],
         [
             "Объёмы",
             "61 в скоупе = 19 только RO + 5 RO+E + 37 RO+E+L; редакторы 42; загрузчики 37; 40 вне скоупа",
@@ -1314,6 +1320,14 @@ def main() -> None:
     print("=== SUMMARY BY STAGE ===")
     for row in stage_data:
         print("\t".join(str(x) for x in row))
+    print()
+    print("=== renumber_cut3: применённые операции реестра ===")
+    for line in cut3_report:
+        print(line)
+    if cut3_markers:
+        print("=== renumber_cut3: токены, которых нет в карте (в тексте не заменены) ===")
+        for line in cut3_markers:
+            print(line)
     print()
     print("Files written to", OUT)
 

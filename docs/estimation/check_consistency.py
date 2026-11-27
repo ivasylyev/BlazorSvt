@@ -34,8 +34,8 @@ SUMMARY = HERE / "00_summary_by_stage.tsv"
 
 TOL_ITEM = 0.05
 TOL_SUM = 0.1
-TOTAL_NO_AI = 2144.8
-TOTAL_WITH_AI = 998.91
+TOTAL_NO_AI = 2172.8
+TOTAL_WITH_AI = 1012.91
 MILESTONES = list(range(1, 17))
 
 # Известные расхождения, возникшие НЕ из-за перенумерации. Ключ — (проверка, номер); значение — почему.
@@ -162,7 +162,8 @@ def main() -> int:
     rep = Report()
 
     # Выгрузка устарела относительно генератора/карты?
-    for src in ("generate_effort_estimate.py", "renumber_cut2.py", "renumber_map_cut2.json"):
+    for src in ("generate_effort_estimate.py", "renumber_cut2.py", "renumber_map_cut2.json",
+                "renumber_cut3.py", "renumber_map_cut3.json", "restructure_plan_cut3.json"):
         if (HERE / src).stat().st_mtime > TRIPLES.stat().st_mtime + 1:
             rep.warnings.append(f"{src} новее {TRIPLES.name}: возможно, выгрузка не перегенерирована")
 
