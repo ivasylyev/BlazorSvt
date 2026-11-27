@@ -10,9 +10,17 @@
 
 ## Что читать
 
-`svt-migrate-catalog/discovery-rules.md`; при дочерних примитивах в разделе 1 — раздел «Discovery» `svt-migrate-catalog/child-primitives.md`. Запросы к базе — из `discovery-queries.md`, после выборки этот файл не перечитывай. Вложенных субагентов не запускай. Resx и SQL репозитория не пиши. Глоссарий — раздел «Правила» и поиск имён полей. Таблицу enum в `SKILL.md` открывай только при `Class=simple`. Строку catalogs-scope и строки словарей-ссылок — `Grep`. Замечание «поменять столбцы» не выполнять — в раздел 9.
+Сначала факт-лист (шаг 0 ниже), затем `svt-migrate-catalog/discovery-rules.md`; при дочерних примитивах в разделе 1 — раздел «Discovery» `svt-migrate-catalog/child-primitives.md`. `discovery-queries.md` открывай только для полей, которых нет в факт-листе (типичные пробелы: цель ссылки без совпадения имён, метрики каскада конкретной ссылки, `stg.Load*`, сверка состава `PopulateAffectedKeys` с SoT, члены словаря-цели). Вложенных субагентов не запускай. Resx и SQL репозитория не пиши. Глоссарий — раздел «Правила» и поиск имён полей. Таблицу enum в `SKILL.md` открывай только при `Class=simple`. Строку catalogs-scope и строки словарей-ссылок — `Grep`. Замечание «поменять столбцы» не выполнять — в раздел 9.
 
 ## Шаги
+
+0. Факт-лист. Если `{WorkDir}\facts.md` ещё нет — сгенерируй:
+
+```powershell
+powershell -NoProfile -ExecutionPolicy Bypass -File "{RepoRoot}\.cursor\skills\svt-migrate-catalog\scripts\generate-discovery-facts.ps1" -RegistryName {ИмяРеестра} -OutFile "{WorkDir}\facts.md"
+```
+
+`{ИмяРеестра}` — строка «Имя реестра» раздела 1 spec; пусто — `{Entity}`. Временные `.sql` для добора складывай в `%TEMP%`, не в `SqlScripts`: путь с кириллицей ломает `sqlcmd -i`.
 
 1. Проверь скоуп и класс (`Class` из параметров и раздела 1). По данным класс другой — «ВОПРОСЫ».
 2. Подтверди `{LegacyName}`, PED и легаси-view по шагу 0 / разделу 1; таблицу PED — по `OBJECT_DEFINITION` view.

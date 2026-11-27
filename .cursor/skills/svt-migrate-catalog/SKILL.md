@@ -108,7 +108,7 @@ WHERE e.Name = N'{RegistryName}';
 
 | Фаза | Файл | Содержание |
 |------|------|------------|
-| 1 | [discovery-rules.md](discovery-rules.md) | Состав экрана, ссылки, enum, каскад. Запросы — [discovery-queries.md](discovery-queries.md), только на время `SELECT` |
+| 1 | [discovery-rules.md](discovery-rules.md) | Состав экрана, ссылки, enum, каскад. Факты — `scripts/generate-discovery-facts.ps1` → facts.md; [discovery-queries.md](discovery-queries.md) — только для пробелов факт-листа |
 | 2–3 | [sql.md](sql.md) | Structure + Programmability, деплой, верификация БД |
 | 4–6 | [csharp.md](csharp.md) | C#-модуль, API, тесты, финальная проверка |
 | 1–5 | [child-primitives.md](child-primitives.md) | У справочника есть дочерний примитив: группы-таблицы на карточке, в том числе у готового модуля |
@@ -155,7 +155,7 @@ WHERE e.Name = N'{RegistryName}';
 ## Чеклист
 
 - [ ] Имена `{LegacyName}` и `{Entity}` получены
-- [ ] Короткий и длинный списки + фильтрация неиспользуемых ([discovery-rules.md](discovery-rules.md), запросы — [discovery-queries.md](discovery-queries.md))
+- [ ] Короткий и длинный списки + фильтрация неиспользуемых ([discovery-rules.md](discovery-rules.md); факты — facts.md скрипта, пробелы — [discovery-queries.md](discovery-queries.md))
 - [ ] Переводы из Dictionary в `Modules/{Entity}/Resources/{Entity}.resx` + `HeaderMenu.{Entity}` в Platform.resx
 - [ ] SQL Structure 01–03 + SnapshotSource + Detail + PopulateAffectedKeys (у стабильного словаря с enum PopulateAffectedKeys нет) ([sql.md](sql.md))
 - [ ] Все новые/изменённые `.sql` в SqlScripts — UTF-8 with BOM
