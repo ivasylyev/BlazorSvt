@@ -158,11 +158,19 @@ The filter types below are shown for the *Average Rate* reference book. Other bo
 
 h3. 6.1. Drop-down list
 
-Used for fields such as *Rate type*, *Transport kind*, *Transport type*, *Currency*.
+Used for fields such as *Currency*:
 
 # In the filter row under the column, open the list (often labeled *Select*).
 # Choose a value (for example, *Tender*).
 # The table refreshes.
+
+h4. 6.1.1. Checkbox list (several values at once)
+
+For *Rate type*, *Transport kind* and *Transport type* the list has checkboxes — you can select *several* values at once. The table shows rows with *any* of the selected values.
+
+# Open the list in the filter under the column — it stays open.
+# Check the required values (for example, *Tender* and *Preferential*).
+# The table refreshes after each click. To remove a value, uncheck it; to clear everything, uncheck all values or click *Reset Filters*.
 
 !5-average-rate-filter-dropdown-en.png|width=800,alt="Filter: rate type"!
 

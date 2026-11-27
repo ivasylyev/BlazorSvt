@@ -88,6 +88,7 @@ EXEC v2.GetBlazorGridData
     @SortDirection=N'ASC',
     @FilterJson=N'[
         {"PropertyName":"RateTypeIdRu","Value":"543746","Operator":"Equals"},
+        {"PropertyName":"TransportKindIdRu","Value":"543746,543799","Operator":"In"},
         {"PropertyName":"NodeFromNameRu","Value":"казань","Operator":"Contains"},
         {"PropertyName":"ProxyNodeNameRu","Value":"находка","Operator":"Contains"},
         {"PropertyName":"IsArchive","Value":"False","Operator":"Equals"}
@@ -124,8 +125,10 @@ BEGIN
         IsFullText    BIT NOT NULL,
         ColumnValue   NVARCHAR(4000) NULL,
         Operator      NVARCHAR(50) NULL,
+        Precision     NVARCHAR(10) NULL,
         SqlOperator   NVARCHAR(2) NULL,
         SqlValue      NVARCHAR(4000) NULL,
+        InValues      NVARCHAR(4000) NULL,
         FtsValue      NVARCHAR(4000) NULL,
         LikeValue     NVARCHAR(4000) NULL,
         FilterPart    NVARCHAR(MAX) NULL
@@ -232,19 +235,21 @@ BEGIN
     END;
 
     
-    INSERT INTO @FilteredColumns (ColumnName, SqlColumnName, ColumnType, IsFullText, ColumnValue, Operator)
+    INSERT INTO @FilteredColumns (ColumnName, SqlColumnName, ColumnType, IsFullText, ColumnValue, Operator, Precision)
     SELECT
         AC.ColumnName,
         QUOTENAME(AC.SqlColumnName),
         AC.ColumnType,
         ISNULL(COLUMNPROPERTY(@TableObjectId, AC.SqlColumnName, 'IsFulltextIndexed'), 0),
         ISNULL(LTRIM(RTRIM(JS.[Value])), N'') AS ColumnValue,
-        JS.Operator
+        JS.Operator,
+        JS.Precision
     FROM OPENJSON(@FilterJson)
     WITH (
         PropertyName     NVARCHAR(100)  '$.PropertyName',
         [Value]          NVARCHAR(MAX)  '$.Value',
-        Operator         NVARCHAR(50)   '$.Operator'
+        Operator         NVARCHAR(50)   '$.Operator',
+        Precision        NVARCHAR(10)   '$.Precision'
     ) JS
     JOIN @AllowedColumns AC
         ON JS.PropertyName = AC.ColumnName
@@ -254,18 +259,30 @@ BEGIN
         SqlValue = CASE ColumnType
             WHEN N'ID' THEN CONVERT(NVARCHAR(30), TRY_CONVERT(BIGINT, ColumnValue))
             WHEN N'DECIMAL' THEN CONVERT(NVARCHAR(50), TRY_CONVERT(DECIMAL(38, 10), ColumnValue))
-            -- DATETIME range (1753-01-01..9999-12-31): reject intermediate type=date values (e.g. 0002-09-30)
+            -- DATETIME range (1753-01-01..9999-12-31): reject intermediate type=date values (e.g. 0002-09-30).
+            -- Парсинг через DATETIME2 и литералы 'yyyymmdd'/ISO-T: TRY_CONVERT(DATETIME, 'yyyy-MM-dd')
+            -- и сравнение колонки datetime с 'yyyy-MM-dd' читают дату как 'yyyy-dd-MM' при DATEFORMAT dmy (русский логин).
             WHEN N'DATE' THEN
                 CASE
-                    WHEN TRY_CONVERT(DATETIME, ColumnValue) IS NOT NULL
-                        THEN CONVERT(NVARCHAR(10), CONVERT(DATE, TRY_CONVERT(DATETIME, ColumnValue)), 23)
+                    WHEN TRY_CONVERT(DATETIME2, ColumnValue) >= '1753-01-01'
+                        THEN CONVERT(NVARCHAR(8), TRY_CONVERT(DATETIME2, ColumnValue), 112)
                     ELSE NULL
                 END
             WHEN N'DATETIME' THEN
-                CASE LEN(ColumnValue) - LEN(REPLACE(ColumnValue, N':', N''))
-                    WHEN 0 THEN CONVERT(NVARCHAR(16), TRY_CONVERT(DATETIME, ColumnValue), 126)
-                    WHEN 1 THEN CONVERT(NVARCHAR(16), TRY_CONVERT(DATETIME, ColumnValue + N':00'), 126)
-                    ELSE CONVERT(NVARCHAR(19), TRY_CONVERT(DATETIME, ColumnValue), 126)
+                CASE
+                    WHEN TRY_CONVERT(DATETIME2, ColumnValue +
+                            CASE LEN(ColumnValue) - LEN(REPLACE(ColumnValue, N':', N''))
+                                WHEN 1 THEN N':00'
+                                WHEN 0 THEN IIF(LEN(ColumnValue) > 10, N':00:00', N'')
+                                ELSE N''
+                            END) >= '1753-01-01'
+                        THEN CONVERT(NVARCHAR(19), TRY_CONVERT(DATETIME2, ColumnValue +
+                            CASE LEN(ColumnValue) - LEN(REPLACE(ColumnValue, N':', N''))
+                                WHEN 1 THEN N':00'
+                                WHEN 0 THEN IIF(LEN(ColumnValue) > 10, N':00:00', N'')
+                                ELSE N''
+                            END), 126)
+                    ELSE NULL
                 END
             ELSE ColumnValue
         END,
@@ -294,6 +311,23 @@ BEGIN
             N'''', N''''''),
         N'');
 
+    -- Мультивыбор ID: список значений через запятую → проверенный список BIGINT для IN (...)
+    UPDATE FC
+    SET InValues = Parsed.List
+    FROM @FilteredColumns FC
+    CROSS APPLY
+    (
+        SELECT STRING_AGG(CONVERT(NVARCHAR(30), items.ItemId), N',') AS List
+        FROM
+        (
+            SELECT DISTINCT TRY_CONVERT(BIGINT, LTRIM(RTRIM(S.value))) AS ItemId
+            FROM STRING_SPLIT(FC.ColumnValue, N',') S
+        ) items
+        WHERE items.ItemId IS NOT NULL
+    ) Parsed
+    WHERE FC.ColumnType = N'ID'
+      AND UPPER(FC.Operator) = N'IN';
+
     UPDATE FC
     SET FilterPart = CASE ColumnType         
             -- Логика для СТРОК без полнотекстового индекса: поиск по началу значения с любой длины
@@ -313,7 +347,10 @@ BEGIN
                 
             -- Логика для ID INT
             WHEN N'ID' THEN
-                CASE WHEN SqlOperator IS NOT NULL AND SqlValue IS NOT NULL THEN
+                CASE WHEN InValues IS NOT NULL THEN
+                    N'
+                    AND ' + SqlColumnName + N' IN (' + InValues + N') '
+                WHEN SqlOperator IS NOT NULL AND SqlValue IS NOT NULL THEN
                     N'
                     AND ' + SqlColumnName + N' ' + SqlOperator + N' ' + SqlValue + N' '
                 ELSE ''
@@ -375,11 +412,18 @@ BEGIN
             ELSE ''
         END
     FROM @FilteredColumns FC
+    -- Шаг диапазона: Precision из @FilterJson, иначе по длине входа — дата → день, дата+час → час, до минут — минута, дальше — секунда
     CROSS APPLY (
         SELECT
-            RangeFrom = N'''' + SqlValue + IIF(LEN(SqlValue) = 16, N':00', N'') + N'''',
-            RangeTo = N'DATEADD(' + IIF(LEN(SqlValue) = 16, N'MINUTE', N'SECOND')
-                + N', 1, ''' + SqlValue + IIF(LEN(SqlValue) = 16, N':00', N'') + N''')'
+            RangeFrom = N'''' + SqlValue + N'''',
+            RangeTo = N'DATEADD(' + CASE
+                        WHEN UPPER(FC.Precision) IN (N'DAY', N'HOUR', N'MINUTE', N'SECOND') THEN UPPER(FC.Precision)
+                        WHEN LEN(FC.ColumnValue) <= 10 THEN N'DAY'
+                        WHEN LEN(FC.ColumnValue) <= 13 THEN N'HOUR'
+                        WHEN LEN(FC.ColumnValue) <= 16 THEN N'MINUTE'
+                        ELSE N'SECOND'
+                    END
+                + N', 1, ''' + SqlValue + N''')'
     ) DT;
 
 

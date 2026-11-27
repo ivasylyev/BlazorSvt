@@ -359,6 +359,31 @@ public static class ExpressionExtensions
         return Expression.Lambda<Func<TItem, bool>>(expression, parameterExpression);
     }
 
+    /// <summary>
+    /// «Одно из» для enum: значение фильтра — имена членов enum через запятую.
+    /// Ни одно имя не распознано — фильтр не применяется (матчит всё), как в SQL.
+    /// </summary>
+    public static Expression<Func<TItem, bool>> GetEnumInExpressionDelegate<TItem>(ParameterExpression parameterExpression, FilterItem filterItem, Type propertyType, string propertyTypeName)
+    {
+        var property = Expression.Property(parameterExpression, filterItem.PropertyName);
+        var names = filterItem.Value?.Split(',', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries) ?? Array.Empty<string>();
+
+        Expression? expression = null;
+
+        foreach (var name in names)
+        {
+            if (!Enum.TryParse(propertyType, name, out var parsed) || parsed is null)
+                continue;
+
+            var equal = Expression.Equal(property, ToPropertyType(Expression.Constant(parsed), property));
+            expression = expression is null ? equal : Expression.OrElse(expression, equal);
+        }
+
+        expression ??= Expression.Constant(true);
+
+        return Expression.Lambda<Func<TItem, bool>>(expression, parameterExpression);
+    }
+
     #endregion Enum
 
     #region Guid
@@ -453,6 +478,7 @@ public static class ExpressionExtensions
             {
                 FilterOperator.Equals => GetEnumEqualExpressionDelegate<TItem>(parameterExpression, filterItem, propertyType!, propertyTypeName),
                 FilterOperator.NotEquals => GetEnumNotEqualExpressionDelegate<TItem>(parameterExpression, filterItem, propertyType!, propertyTypeName),
+                FilterOperator.In => GetEnumInExpressionDelegate<TItem>(parameterExpression, filterItem, propertyType!, propertyTypeName),
                 _ => GetEnumEqualExpressionDelegate<TItem>(parameterExpression, filterItem, propertyType!, propertyTypeName)
             };
 

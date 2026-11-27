@@ -57,6 +57,7 @@ public class GridQueryFactory<TItem> : IGridQueryFactory<TItem>
     private static GridFilter ExtractFilter(FilterItem filter)
     {
         var value = filter.Value;
+        string? precision = null;
         DtoProperties.TryGetValue(filter.PropertyName, out var propInfo);
         if (propInfo != null && value != null)
         {
@@ -64,11 +65,27 @@ public class GridQueryFactory<TItem> : IGridQueryFactory<TItem>
             var propType = Nullable.GetUnderlyingType(propInfo.PropertyType) ?? propInfo.PropertyType;
             if (propType.IsEnum)
             {
-                if (Enum.TryParse(propType, value, out var enumValue))
+                if (filter.Operator == FilterOperator.In)
+                {
+                    // Мультивыбор: имена членов enum через запятую → числовые ItemId через запятую
+                    var ids = value
+                        .Split(',', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries)
+                        .Select(name => Enum.TryParse(propType, name, out var enumValue) ? (int)enumValue : (int?)null)
+                        .Where(id => id is not null)
+                        .Select(id => id!.Value)
+                        .ToList();
+
+                    if (ids.Count > 0)
+                        value = string.Join(',', ids);
+                }
+                else if (Enum.TryParse(propType, value, out var enumValue))
+                {
                     value = ((int)enumValue).ToString();
+                }
             }
             else if (propType == typeof(DateTime))
             {
+                precision = GridDateTime.GetFilterPrecision(value);
                 value = GridDateTime.NormalizeFilterValue(value);
             }
         }
@@ -76,7 +93,8 @@ public class GridQueryFactory<TItem> : IGridQueryFactory<TItem>
         return new GridFilter(
             filter.PropertyName,
             value,
-            ToGridFilterOperator(filter.Operator));
+            ToGridFilterOperator(filter.Operator),
+            precision);
     }
 
     private static string ToGridFilterOperator(FilterOperator filterOperator) =>
@@ -87,6 +105,7 @@ public class GridQueryFactory<TItem> : IGridQueryFactory<TItem>
             FilterOperator.StartsWith => GridFilterOperators.StartsWithOperator,
             FilterOperator.EndsWith => GridFilterOperators.EndsWithOperator,
             FilterOperator.Equals => GridFilterOperators.EqualsOperator,
+            FilterOperator.In => GridFilterOperators.InOperator,
             FilterOperator.NotEquals => GridFilterOperators.NotEqualsOperator,
             FilterOperator.LessThan => GridFilterOperators.LessThanOperator,
             FilterOperator.LessThanOrEquals => GridFilterOperators.LessThanOrEqualsOperator,

@@ -19,7 +19,8 @@ public sealed class GridColumnSettingsBuilder<T>(IStringLocalizer<PlatformResour
         string header,
         bool visible = true,
         bool filterable = true,
-        Func<T, object>? display = null)
+        Func<T, object>? display = null,
+        bool multiSelect = false)
     {
         var compiled = property.Compile();
         columns.Add(new GridColumnSetting<T>
@@ -30,7 +31,8 @@ public sealed class GridColumnSettingsBuilder<T>(IStringLocalizer<PlatformResour
             SortSelector = ToSort(property),
             Visible = visible,
             Filterable = filterable,
-            WithoutFullText = IsWithoutFullText(property)
+            WithoutFullText = IsWithoutFullText(property),
+            FilterMultiSelect = multiSelect
         });
         return this;
     }
@@ -54,7 +56,8 @@ public sealed class GridColumnSettingsBuilder<T>(IStringLocalizer<PlatformResour
         bool visible = true,
         bool filterable = true,
         IReadOnlyList<TRu>? filterValuesRu = null,
-        IReadOnlyList<TEn>? filterValuesEn = null)
+        IReadOnlyList<TEn>? filterValuesEn = null,
+        bool multiSelect = false)
         where TRu : Enum
         where TEn : Enum
     {
@@ -66,7 +69,8 @@ public sealed class GridColumnSettingsBuilder<T>(IStringLocalizer<PlatformResour
                 header,
                 visible,
                 filterable,
-                dto => typeof(TRu).GetDisplayName(compiled(dto).ToString()) ?? string.Empty);
+                dto => typeof(TRu).GetDisplayName(compiled(dto).ToString()) ?? string.Empty,
+                multiSelect);
             columns[^1].FilterEnumValues = filterValuesRu?.Cast<Enum>().ToList();
             return this;
         }
@@ -77,7 +81,8 @@ public sealed class GridColumnSettingsBuilder<T>(IStringLocalizer<PlatformResour
             header,
             visible,
             filterable,
-            dto => typeof(TEn).GetDisplayName(compiledEn(dto).ToString()) ?? string.Empty);
+            dto => typeof(TEn).GetDisplayName(compiledEn(dto).ToString()) ?? string.Empty,
+            multiSelect);
         columns[^1].FilterEnumValues = filterValuesEn?.Cast<Enum>().ToList();
         return this;
     }
@@ -87,7 +92,8 @@ public sealed class GridColumnSettingsBuilder<T>(IStringLocalizer<PlatformResour
         string header,
         bool visible = true,
         bool filterable = true,
-        IReadOnlyList<TEnum>? filterValues = null)
+        IReadOnlyList<TEnum>? filterValues = null,
+        bool multiSelect = false)
         where TEnum : Enum
     {
         var compiled = property.Compile();
@@ -96,7 +102,8 @@ public sealed class GridColumnSettingsBuilder<T>(IStringLocalizer<PlatformResour
             header,
             visible,
             filterable,
-            dto => typeof(TEnum).GetDisplayName(compiled(dto).ToString()) ?? string.Empty);
+            dto => typeof(TEnum).GetDisplayName(compiled(dto).ToString()) ?? string.Empty,
+            multiSelect);
         columns[^1].FilterEnumValues = filterValues?.Cast<Enum>().ToList();
         return this;
     }

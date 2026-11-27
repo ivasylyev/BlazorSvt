@@ -109,7 +109,7 @@ public partial class GridColumn<TItem> : BlazorBootstrapComponentBase
         else if (propertyTypeName == StringConstants.PropertyTypeNameEnum)
         {
             if (filterOperator == FilterOperator.None)
-                FilterOperator = filterOperator = FilterOperator.Equals;
+                FilterOperator = filterOperator = FilterMultiSelect ? FilterOperator.In : FilterOperator.Equals;
         }
         else if (propertyTypeName == StringConstants.PropertyTypeNameGuid)
         {
@@ -286,6 +286,16 @@ public partial class GridColumn<TItem> : BlazorBootstrapComponentBase
 
     [Parameter]
     public IReadOnlyList<Enum>? FilterEnumValues { get; set; }
+
+    /// <summary>
+    /// If <see langword="true" />, the enum column filter allows selecting several values at once
+    /// (checkbox list instead of a single-value dropdown).
+    /// </summary>
+    /// <remarks>
+    /// Default value is false.
+    /// </remarks>
+    [Parameter]
+    public bool FilterMultiSelect { get; set; }
 
     /// <summary>
     /// Indicates whether the column is frozen.

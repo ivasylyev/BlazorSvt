@@ -244,7 +244,7 @@ TransportKind — класс simple, разовый снимок. `RowVer` на 
 | `001.vw_UserDisplayName.sql` | SVT-5320: `v2.vw_UserDisplayName` — ФИО из `dbo.[User]` (Name, при пустом — Login). Нужна до `002` и `003` |
 | `002.SVT-5320_SnapshotSource.sql` | Копия 21 проекции `vw_*_SnapshotSource` с `CreationUserName` / `LastChangeUserName`. Идёт до `ALTER TABLE`: лишние колонки проекции `Sync_UpsertAffected` не мешают, окна сбоя sync нет. Нужна и для `004`: `vw_*_Detail` ссылается на новые колонки проекции и в снимке стоит раньше неё |
 | `003.SVT-5320_Snapshot_AddUserColumns.sql` | `ALTER TABLE ADD CreationUserName / LastChangeUserName NVARCHAR(255) NULL` в 21 snapshot (идемпотентно, отсутствующая таблица пропускается) и backfill из легаси-вью пачками по 50 тыс. внутри партиции `IsArchive`. В конце проверка колонок с `THROW`. Локально около 40 с на 2,9 млн строк |
-| `004.All_Programmability.sql` | Полный снимок programmability, 76 скриптов (2026-11-25): `vw_UserDisplayName`, авторы в `vw_*_SnapshotSource` и `vw_*_Detail` |
+| `004.All_Programmability.sql` | Полный снимок programmability, 76 скриптов (2026-11-26): `vw_UserDisplayName`, авторы в `vw_*_SnapshotSource` и `vw_*_Detail`; `GetBlazorGridData` — парсинг дат фильтров без зависимости от языка сессии, голая дата в DATETIME-фильтре = весь день, точность фильтра день/час/минута/секунда (`Precision` в `@FilterJson`, иначе по длине значения); втянут ранее пропущенный `IN`-мультивыбор по ID (`InValues`) |
 
 SVT-5320 — колонки «Автор» и «Автор изм.» в гридах, карточках и Excel-отчётах 21 справочника. `PopulateAffectedKeys`, `RowVer`, SyncState и индексы не менялись. Переименование пользователя в `dbo.[User]` в snapshot не каскадируется — см. `SqlScripts/README.md`, раздел синхронизации.
 
