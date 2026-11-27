@@ -10,14 +10,14 @@
 
 | | |
 |---|---|
-| Контур | Read-only справочники, грид, карточка, выгрузка Excel. Сквозные отчёты (пакет 16.4) и дашборды (веха 61) ещё не сделаны |
+| Контур | Read-only справочники, грид, карточка, выгрузка Excel. Сквозные отчёты (пакет 8.4) и дашборды (веха 32) ещё не сделаны |
 | На проде | TransportRate, AverageRateLevel3, LocationsNodes, ParityRates, TransportLeg, RateType, Currency, ProductGroup, MTR, TransportTypeLevel3 |
 | Имена в реестре | `Rates` → `TransportRate`, `TransportLegs` → `TransportLeg`, `TransportType_level_3` → `TransportTypeLevel3` |
 | Без watermark-sync | RateType, Currency, TransportTypeLevel3: разовый снимок |
 | Очередь Атласа | Релиз 2.3.48, все четыре на проде. Currency и TransportTypeLevel3 — разовый снимок. ProductGroup и MTR — watermark-sync |
 | Ещё в коде | 11 RO не на проде. Watermark-sync: Contractor, Coefficient, RateAutoSelectionSetting, ReportConstructor, Country, Region, TransportRoute. Разовый снимок: RateSyncClass, RateCalcType, Relevance, TransportKind. Плюс `HomeRatePivot`, `SmartRateLookup`. `HomeRatePivot` читает снимки AverageRateLevel3 и LocationsNodes; отбор ставки — в тексте SQL |
 | Доступ и sync | Windows Auth, роли `dbo.Role` (любая роль = read). Watermark-sync для остальных справочников на проде |
-| API | Пилот `/api/v1`, только чтение: все зарегистрированные модули и умный подбор. Код едет с приложением. Вызов Атласом с PROD не открыт, пока не закрыты [backlog.md](backlog.md) 9.1.8 и 9.1.9. [architecture.md](architecture.md) §«API для внешних фронтендов» |
+| API | Пилот `/api/v1`, только чтение: все зарегистрированные модули и умный подбор. Код едет с приложением. Вызов Атласом с PROD не открыт, пока не закрыты [backlog.md](backlog.md) 4.4.8 и 4.4.9. [architecture.md](architecture.md) §«API для внешних фронтендов» |
 | MCP | `/api/mcp`. Флаг `Api:McpEnabled` по умолчанию выключен; на PROD — после T6 |
 | Import | Прототип Excel, валидаторы и UI. Staging не подключён. На проде Import закрыт |
 | Тесты | Каркас unit и integration в `tests/` |
