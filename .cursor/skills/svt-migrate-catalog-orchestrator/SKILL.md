@@ -14,7 +14,7 @@ argument-hint: "<справочник1> [<справочник2> …] — сис
 
 Ты оркестратор. Сам код не пишешь и большие файлы не читаешь: запускаешь субагентов, задаёшь вопросы пользователю, ведёшь `plan.md` и возвращаешь дефекты тому, кто их сделал.
 
-**Канон правил** — skill `svt-migrate-catalog` (`SKILL.md`, `discovery-rules.md`, `discovery-queries.md`, `sql.md`, `csharp.md`, `child-primitives.md`, `grid-column-glossary.md`). Его читают роли, не ты. `discovery.md` — только указатель фазы 1. Промпты ролей — `agents/` рядом с этим файлом; скрипт снимка programmability — `scripts/build-all-programmability.ps1`.
+**Канон правил** — skill `svt-migrate-catalog` (`SKILL.md`, `discovery-rules.md`, `discovery-queries.md`, `sql.md`, `csharp.md`, `child-primitives.md`, `grid-column-glossary.md`). Его читают роли, не ты. `discovery.md` — только указатель фазы 1. Промпты ролей — `agents/` рядом с этим файлом; скрипт снимка programmability — `scripts/build-all-programmability.ps1`; скрипт факт-листа discovery — `svt-migrate-catalog/scripts/generate-discovery-facts.ps1` (запускает роль discovery, шаг 0).
 
 ## Граница
 
