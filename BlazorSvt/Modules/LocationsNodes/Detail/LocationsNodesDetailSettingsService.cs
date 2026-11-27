@@ -15,7 +15,9 @@ public class LocationsNodesDetailSettingsService(
         var group = L["LocationsNodesDetailDto.Group.0.Default"];
 
         b.Add(group, x => x.Code, L["LocationsNodesDetailDto.Code"]);
+        b.AddCreationUser(group, x => x.CreationUserName);
         b.Add(group, x => x.CreationDate, L["LocationsNodesDetailDto.CreationDate"]);
+        b.AddLastChangeUser(group, x => x.LastChangeUserName);
         b.Add(group, x => x.LastChangeDate, L["LocationsNodesDetailDto.LastChangeDate"]);
         b.AddArchiveStatus(group, x => x.IsArchive, L["LocationsNodesDetailDto.IsArchive"]);
 

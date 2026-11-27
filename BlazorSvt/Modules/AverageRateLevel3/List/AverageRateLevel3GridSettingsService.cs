@@ -21,11 +21,11 @@ public class AverageRateLevel3GridSettingsService(
 
         b.Add(x => x.Code, L["AverageRateLevel3Dto.Code"]);
         b.AddYesNo(x => x.IsDefRate, L["AverageRateLevel3Dto.IsDefRate"]);
-        b.AddEnum(isRu, x => x.RateTypeIdRu, x => x.RateTypeIdEn, L["AverageRateLevel3Dto.RateTypeName"]);
+        b.AddEnum(isRu, x => x.RateTypeIdRu, x => x.RateTypeIdEn, L["AverageRateLevel3Dto.RateTypeName"], multiSelect: true);
         b.Add(x => x.TransportKindCode, L["AverageRateLevel3Dto.TransportKindCode"], visible: false);
-        b.AddEnum(isRu, x => x.TransportKindIdRu, x => x.TransportKindIdEn, L["AverageRateLevel3Dto.TransportKindName"], filterValuesRu: TransportKindSets.MainRu, filterValuesEn: TransportKindSets.MainEn);
+        b.AddEnum(isRu, x => x.TransportKindIdRu, x => x.TransportKindIdEn, L["AverageRateLevel3Dto.TransportKindName"], filterValuesRu: TransportKindSets.MainRu, filterValuesEn: TransportKindSets.MainEn, multiSelect: true);
         b.Add(x => x.TransportTypeCode, L["AverageRateLevel3Dto.TransportTypeCode"], visible: false);
-        b.AddEnum(isRu, x => x.TransportTypeIdRu, x => x.TransportTypeIdEn, L["AverageRateLevel3Dto.TransportTypeName"], filterValuesRu: TransportTypeLevel3Sets.MainRu, filterValuesEn: TransportTypeLevel3Sets.MainEn);
+        b.AddEnum(isRu, x => x.TransportTypeIdRu, x => x.TransportTypeIdEn, L["AverageRateLevel3Dto.TransportTypeName"], filterValuesRu: TransportTypeLevel3Sets.MainRu, filterValuesEn: TransportTypeLevel3Sets.MainEn, multiSelect: true);
         b.Add(x => x.NodeFromCode, L["AverageRateLevel3Dto.NodeFromCode"], visible: false);
         b.AddLocalized(isRu, x => x.NodeFromNameRu, x => x.NodeFromNameEn, L["AverageRateLevel3Dto.NodeFromName"]);
         b.Add(x => x.ProxyNodeCode, L["AverageRateLevel3Dto.ProxyNodeCode"], visible: false);
@@ -42,7 +42,9 @@ public class AverageRateLevel3GridSettingsService(
         b.Add(x => x.EffectiveLoadOfTransportType, L["AverageRateLevel3Dto.EffectiveLoadOfTransportType"]);
         b.AddEnum(x => x.CurrencyId, L["AverageRateLevel3Dto.Currency"], filterValues: CurrencyRuEnSets.Main);
         b.AddSystemColumns(
+            x => x.CreationUserName,
             x => x.CreationDate,
+            x => x.LastChangeUserName,
             x => x.LastChangeDate,
             x => x.IsArchive,
             L["AverageRateLevel3Dto.CreationDate"],

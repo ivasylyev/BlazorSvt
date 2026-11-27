@@ -55,9 +55,11 @@ CREATE TABLE v2.Currency_Snapshot (
     Code                NVARCHAR(50) NOT NULL,
     Name                NVARCHAR(4000) NULL,
     Symbolic            NVARCHAR(4000) NULL,
-    Digital             DECIMAL(19, 4) NULL,
-    Code_NSI            NVARCHAR(50) NULL,
+    Digital             INT NULL,
+    Code_NSI            INT NULL,
+    CreationUserName    NVARCHAR(255) NULL,
     CreationDate        DATETIME NOT NULL,
+    LastChangeUserName  NVARCHAR(255) NULL,
     LastChangeDate      DATETIME NOT NULL,
 
     CONSTRAINT PK_Currency_Snapshot PRIMARY KEY CLUSTERED (IsArchive, Id)

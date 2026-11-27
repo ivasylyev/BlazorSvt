@@ -12,7 +12,9 @@ INSERT INTO v2.Relevance_Snapshot (
     ,Name
     ,RelevanceId
     ,IsArchive
+    ,CreationUserName
     ,CreationDate
+    ,LastChangeUserName
     ,LastChangeDate
 )
 SELECT
@@ -20,7 +22,9 @@ SELECT
     ,Name
     ,RelevanceId
     ,IsArchive
+    ,CreationUserName
     ,CreationDate
+    ,LastChangeUserName
     ,LastChangeDate
 FROM v2.vw_Relevance_SnapshotSource;
 GO

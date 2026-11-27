@@ -52,12 +52,14 @@ CREATE TABLE v2.RateAutoSelectionSetting_Snapshot (
     Id                          BIGINT NOT NULL,
     RateAutoSelectionSettingId  BIGINT NOT NULL,
     IsArchive                   BIT NOT NULL,
-    Code                        NVARCHAR(50) NOT NULL,
+    Code                        INT          NOT NULL,
     DestinationNodeToRegion     BIT NULL,
     DestinationNodeToCountry    BIT NULL,
     ProductToProductGroup       BIT NULL,
     AnyTransportKind            BIT NULL,
+    CreationUserName            NVARCHAR(255) NULL,
     CreationDate                DATETIME NOT NULL,
+    LastChangeUserName          NVARCHAR(255) NULL,
     LastChangeDate              DATETIME NULL,
 
     CONSTRAINT PK_RateAutoSelectionSetting_Snapshot PRIMARY KEY CLUSTERED (IsArchive, Id)

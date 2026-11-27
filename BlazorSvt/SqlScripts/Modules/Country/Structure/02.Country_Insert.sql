@@ -20,7 +20,9 @@ INSERT INTO v2.Country_Snapshot (
     ,StatusId
     ,CountryId
     ,IsArchive
+    ,CreationUserName
     ,CreationDate
+    ,LastChangeUserName
     ,LastChangeDate
 )
 SELECT
@@ -34,7 +36,9 @@ SELECT
     ,StatusId
     ,CountryId
     ,IsArchive
+    ,CreationUserName
     ,CreationDate
+    ,LastChangeUserName
     ,LastChangeDate
 FROM v2.vw_Country_SnapshotSource;
 GO

@@ -17,14 +17,18 @@ AS
     SELECT
         CAST(r.Id AS BIGINT)                                            AS RateTypeId,
         CASE WHEN ISNULL(r.PrimitiveEntityDataStateId, 2) = 2 THEN 1 ELSE 0 END AS IsArchive,
-        LEFT(r.Code, 50)                                                AS Code,
+        TRY_CAST(r.Code AS INT)                                         AS Code,
         LEFT(r.Name, 4000)                                              AS Name,
         ISNULL(r.IsUseNomination, 0)                                    AS IsUseNomination,
         ISNULL(r.IsDeflated, 0)                                         AS IsDeflated,
         LEFT(r.Comment, 4000)                                           AS Comment,
         ISNULL(r.IsIntoSyncClass, 0)                                    AS IsIntoSyncClass,
+        cu.DisplayName                                                  AS CreationUserName,
         r.CreationDate                                                  AS CreationDate,
+        lu.DisplayName                                                  AS LastChangeUserName,
         ISNULL(r.LastChangeDate, r.CreationDate)                        AS LastChangeDate
     FROM dbo.vw_RateType r
+    LEFT JOIN v2.vw_UserDisplayName cu ON cu.UserId = r.CreationUserId
+    LEFT JOIN v2.vw_UserDisplayName lu ON lu.UserId = ISNULL(r.LastChangeUserId, r.CreationUserId)
     WHERE r.Name IS NOT NULL;
 GO

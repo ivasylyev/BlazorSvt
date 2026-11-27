@@ -23,7 +23,7 @@ public class TransportLegGridSettingsService(
         b.AddYesNo(x => x.CanBeUsed, L["TransportLegDto.CanBeUsed"]);
         b.Add(x => x.ShipmentTypeCodeT, L["TransportLegDto.ShipmentTypeCodeT"]);
         b.Add(x => x.TransportKindCode, L["TransportLegDto.TransportKindCode"], visible: false);
-        b.AddEnum(isRu, x => x.TransportKindIdRu, x => x.TransportKindIdEn, L["TransportLegDto.TransportKindName"], filterValuesRu: TransportKindSets.MainRu, filterValuesEn: TransportKindSets.MainEn);
+        b.AddEnum(isRu, x => x.TransportKindIdRu, x => x.TransportKindIdEn, L["TransportLegDto.TransportKindName"], filterValuesRu: TransportKindSets.MainRu, filterValuesEn: TransportKindSets.MainEn, multiSelect: true);
         b.Add(x => x.NodeFromCode, L["TransportLegDto.NodeFromCode"], visible: false);
         b.AddLocalized(isRu, x => x.NodeFromNameRu, x => x.NodeFromNameEn, L["TransportLegDto.NodeFromName"]);
         b.Add(x => x.RegionFromCode, L["TransportLegDto.RegionFromCode"], visible: false);
@@ -44,7 +44,9 @@ public class TransportLegGridSettingsService(
         b.Add(x => x.UnLoadTimeT, L["TransportLegDto.UnLoadTime"], visible: false, filterable: false);
         b.Add(x => x.TransportationTimeT, L["TransportLegDto.TransportationTime"], filterable: false);
         b.AddSystemColumns(
+            x => x.CreationUserName,
             x => x.CreationDate,
+            x => x.LastChangeUserName,
             x => x.LastChangeDate,
             x => x.IsArchive,
             L["TransportLegDto.CreationDate"],

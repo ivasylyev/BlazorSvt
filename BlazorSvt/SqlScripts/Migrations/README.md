@@ -16,8 +16,10 @@ Migrations/
 │   └── 001.…005.…
 ├── 2.3.48/            ← очередь Атласа (не править)
 │   └── 001.…020.…
-└── 2.3.49/            ← текущий VersionPrefix
-    └── 001.…056.…
+├── 2.3.49/            ← Contractor … TransportKind, SVT-5317 (не править)
+│   └── 001.…058.…
+└── 2.3.50/            ← текущий VersionPrefix
+    └── 001.…004.…
 ```
 
 Пакет одной версии (приложение, склейка этой папки, zip) собирает skill `svt-publish`:
@@ -36,16 +38,16 @@ Migrations/
 | **Programmability** | views, SP, fn (`CREATE OR ALTER`) | идемпотентно, всегда latest | SoT для локального наката; в папке версии — последний файл `All_Programmability.sql` |
 
 Накат на **уже развёрнутую** БД: скрипты ещё не применённой папки версии по порядку номеров (снимок programmability — последний).
-Greenfield: `2.0.0` → `2.0.1` → `2.3.46` → `2.3.48` → `2.3.49`.
+Greenfield: `2.0.0` → `2.0.1` → `2.3.46` → `2.3.48` → `2.3.49` → `2.3.50`.
 
 Рекомендуется (пока вручную) вести учёт: какая версия уже на стенде (хотя бы запись в wiki / будущая `v2.SchemaVersion`).
 
 ## Правила текущего релиза
 
-Имя папки — `VersionPrefix` из `BlazorSvt/BlazorSvt.csproj` (сейчас `2.3.49`), без суффикса числа коммитов. Это не «следующий номер после 2.0.1» и не пункт бэклога `2.0.2`.
+Имя папки — `VersionPrefix` из `BlazorSvt/BlazorSvt.csproj` (сейчас `2.3.50`), без суффикса числа коммитов. Это не «следующий номер после 2.0.1» и не пункт бэклога `2.0.2`.
 
 1. Перед записью скриптов выяснить, выкачена ли папка текущего `VersionPrefix`. Выкаченная папка read-only: `VersionPrefix` поднимается, новая папка начинается с `001`, старая не правится. Папка, которая ещё не выкатывалась, продолжается следующим номером. Баг уже выкаченного релиза уходит новым скриптом в папку новой версии.
-2. В папке версии — дельта схемы (Structure, `ALTER`, индексы, data fix), затем **последним файлом полный снимок** всей programmability `v2` (`All_Programmability.sql`). В текущем релизе последний снимок — `2.3.49/056`. В `2.3.48` это `020` (2026-11-03). В `2.3.46` это `005`. В `2.0.1` такой пакет стоял дважды: `045` и `052`.
+2. В папке версии — дельта схемы (Structure, `ALTER`, индексы, data fix), затем **последним файлом полный снимок** всей programmability `v2` (`All_Programmability.sql`). В текущем релизе последний снимок — `2.3.50/004`. В `2.3.49` это `058` (2026-11-24). В `2.3.48` это `020` (2026-11-03). В `2.3.46` это `005`. В `2.0.1` такой пакет стоял дважды: `045` и `052`.
 3. Новая папка версии нумеруется с `001`. Невыкаченная папка продолжается следующим номером, а не с `001`. Исторические `038…` в `2.0.1` не переименовываем.
 4. SoT остаётся в `Platform/` и `Modules/`: локальный `Create-Programmability.ps1` читает его, а не `Migrations/`. В папку версии попадает копия дельты и снимок programmability.
 5. Запись скриптов в папку версии пакет не собирает. Пакет — `svt-publish.ps1` (skill `svt-publish`).
@@ -143,7 +145,9 @@ MTR — справочник с watermark-sync. `RowVer` на `dbo.PrimitiveEnti
 
 TransportTypeLevel3 — стабильный словарь с enum. В миграции нет `sp_TransportTypeLevel3_PopulateAffectedKeys`, `RowVer` и `SyncState`. В снимке `020` у TransportTypeLevel3 только `vw_TransportTypeLevel3_Detail` и `vw_TransportTypeLevel3_SnapshotSource`.
 
-## Текущий релиз 2.3.49
+## Релиз 2.3.49
+
+Папка выкачена. `VersionPrefix` сменился на `2.3.50`: файлы `2.3.49` не править.
 
 | Файл | Что это |
 |------|---------|
@@ -198,39 +202,51 @@ TransportTypeLevel3 — стабильный словарь с enum. В мигр
 | `053.vw_TransportKind_SnapshotSource.sql` | Проекция из `dbo.vw_TransportKind`; выполняется до заливки |
 | `054.02.TransportKind_Insert.sql` | Разовая заливка, без курсора `v2.SyncState` |
 | `055.03.TransportKind_CreateIndexes.sql` | Уникальный индекс, фильтры по `Code` и `StatusId`, индекс по ключу, full-text по `Code`, `Name`, `NameEnRu`, `Level`, `KindCode` |
-| `056.All_Programmability.sql` | Полный снимок programmability, 75 скриптов (2026-11-23) |
+| `057.SVT-5317_NumericCodes.sql` | SVT-5317: `Code` → `INT` у RateSyncClass, ReportConstructor, Coefficient, RateAutoSelectionSetting, TransportRoute, RateType, Country, MTR, Contractor; `Country.ISOCode`, `Currency.Digital`, `Currency.Code_NSI` → `INT`. Идемпотентно, в конце проверка типов с `THROW` |
+| `058.All_Programmability.sql` | Полный снимок programmability, 75 скриптов (2026-11-24): `INT`-коды в проекциях, поиск по началу значения (`LIKE`) в `GetBlazorGridData` для колонок без full-text |
 
 Contractor (SVT-5290) — справочник с watermark-sync. Примитив LegalType, чтение из `dbo.vw_LegalType`. `001` добавляет `RowVer` на `dbo.PrimitiveEntityData_2028`.
 
-Coefficient — справочник с watermark-sync. `009` добавляет `RowVer` на `dbo.PrimitiveEntityData_2081`. CoefficientType (2077) и RateType (2048) — enum, в каскад не входят. `vw_Coefficient_Detail` и `sp_Coefficient_PopulateAffectedKeys` — в снимке `056`.
+Coefficient — справочник с watermark-sync. `009` добавляет `RowVer` на `dbo.PrimitiveEntityData_2081`. CoefficientType (2077) и RateType (2048) — enum, в каскад не входят. `vw_Coefficient_Detail` и `sp_Coefficient_PopulateAffectedKeys` — в снимке `058`.
 
-RateSyncClass — класс simple, разовый снимок. `RowVer` на `dbo.PrimitiveEntityData_2127` не добавлялся. `vw_RateSyncClass_Detail` — в снимке `056`. Процедуры PopulateAffectedKeys нет.
+RateSyncClass — класс simple, разовый снимок. `RowVer` на `dbo.PrimitiveEntityData_2127` не добавлялся. `vw_RateSyncClass_Detail` — в снимке `058`. Процедуры PopulateAffectedKeys нет.
 
-RateCalcType — класс simple, разовый снимок. `RowVer` на `dbo.PrimitiveEntityData_2092` не добавлялся. `vw_RateCalcType_Detail` — в снимке `056`. Процедуры PopulateAffectedKeys нет.
+RateCalcType — класс simple, разовый снимок. `RowVer` на `dbo.PrimitiveEntityData_2092` не добавлялся. `vw_RateCalcType_Detail` — в снимке `058`. Процедуры PopulateAffectedKeys нет.
 
-RateAutoSelectionSetting — справочник с watermark-sync. `023` добавляет новый `RowVer` на `dbo.PrimitiveEntityData_2101`. Других источников нет. `vw_RateAutoSelectionSetting_Detail` и `sp_RateAutoSelectionSetting_PopulateAffectedKeys` — в снимке `056`.
+RateAutoSelectionSetting — справочник с watermark-sync. `023` добавляет новый `RowVer` на `dbo.PrimitiveEntityData_2101`. Других источников нет. `vw_RateAutoSelectionSetting_Detail` и `sp_RateAutoSelectionSetting_PopulateAffectedKeys` — в снимке `058`.
 
-ReportConstructor — справочник с watermark-sync. `028` добавляет новый `RowVer` на `dbo.PrimitiveEntityData_2130`. `RowVer` на LocationsNodes (1014), ProductGroup (1013) и MTR (1015) уже был. `vw_ReportConstructor_Detail` и `sp_ReportConstructor_PopulateAffectedKeys` — в снимке `056`.
+ReportConstructor — справочник с watermark-sync. `028` добавляет новый `RowVer` на `dbo.PrimitiveEntityData_2130`. `RowVer` на LocationsNodes (1014), ProductGroup (1013) и MTR (1015) уже был. `vw_ReportConstructor_Detail` и `sp_ReportConstructor_PopulateAffectedKeys` — в снимке `058`.
 
-Relevance — класс simple, разовый снимок. `RowVer` на `dbo.PrimitiveEntityData_2108` не добавлялся. `vw_Relevance_Detail` — в снимке `056`. Процедуры PopulateAffectedKeys нет.
+Relevance — класс simple, разовый снимок. `RowVer` на `dbo.PrimitiveEntityData_2108` не добавлялся. `vw_Relevance_Detail` — в снимке `058`. Процедуры PopulateAffectedKeys нет.
 
-TransportRoute — справочник с watermark-sync. `038` добавляет новый `RowVer` и NC-индекс на `dbo.PrimitiveEntityData_2010`. `RowVer` на LocationsNodes (1014) и Region (1008) уже был. `vw_TransportRoute_Detail` и `sp_TransportRoute_PopulateAffectedKeys` — в снимке `056`. `v2.vw_TransportRouteLeg_Detail` (дочерний примитив, `dbo.PrimitiveEntityData_2035`) добавлен в тот же снимок `056`, отдельной дельты нет.
+TransportRoute — справочник с watermark-sync. `038` добавляет новый `RowVer` и NC-индекс на `dbo.PrimitiveEntityData_2010`. `RowVer` на LocationsNodes (1014) и Region (1008) уже был. `vw_TransportRoute_Detail` и `sp_TransportRoute_PopulateAffectedKeys` — в снимке `058`. `v2.vw_TransportRouteLeg_Detail` (дочерний примитив, `dbo.PrimitiveEntityData_2035`) добавлен в тот же снимок `058`, отдельной дельты нет.
 
-Region — справочник с watermark-sync. Новый `RowVer` не добавлялся: на `dbo.PrimitiveEntityData_1008` и `dbo.PrimitiveEntityData_1009` он уже есть. `vw_Region_Detail` и `sp_Region_PopulateAffectedKeys` — в снимке `056`.
+Region — справочник с watermark-sync. Новый `RowVer` не добавлялся: на `dbo.PrimitiveEntityData_1008` и `dbo.PrimitiveEntityData_1009` он уже есть. `vw_Region_Detail` и `sp_Region_PopulateAffectedKeys` — в снимке `058`.
 
-Country — справочник с watermark-sync. Новый `RowVer` не добавлялся: на `dbo.PrimitiveEntityData_1009` он уже есть. `vw_Country_Detail` и `sp_Country_PopulateAffectedKeys` — в снимке `056`.
+Country — справочник с watermark-sync. Новый `RowVer` не добавлялся: на `dbo.PrimitiveEntityData_1009` он уже есть. `vw_Country_Detail` и `sp_Country_PopulateAffectedKeys` — в снимке `058`.
 
-TransportRate — доработка. Проекции детей `v2.vw_TransportRateTenderServicePack_Detail` (`dbo.PrimitiveEntityData_2089`) и `v2.vw_TransportRateCoefficient_Detail` (`dbo.PrimitiveEntityData_2106`) добавлены в снимок `056`, отдельной дельты нет. Structure, `vw_TransportRate_SnapshotSource`, `vw_TransportRate_Detail`, `PopulateAffectedKeys`, `RowVer` и SyncState не менялись.
+TransportRate — доработка. Проекции детей `v2.vw_TransportRateTenderServicePack_Detail` (`dbo.PrimitiveEntityData_2089`) и `v2.vw_TransportRateCoefficient_Detail` (`dbo.PrimitiveEntityData_2106`) добавлены в снимок `058`, отдельной дельты нет. Structure, `vw_TransportRate_SnapshotSource`, `vw_TransportRate_Detail`, `PopulateAffectedKeys`, `RowVer` и SyncState не менялись.
 
-AverageRateLevel3 — доработка. Проекция ребёнка `v2.vw_RatesOfAverageRate_Detail` (`dbo.PrimitiveEntityData_2058`) добавлена в снимок `056`, отдельной дельты нет. Structure, `vw_AverageRateLevel3_SnapshotSource`, `vw_AverageRateLevel3_Detail`, `PopulateAffectedKeys`, `RowVer` и SyncState не менялись.
+AverageRateLevel3 — доработка. Проекция ребёнка `v2.vw_RatesOfAverageRate_Detail` (`dbo.PrimitiveEntityData_2058`) добавлена в снимок `058`, отдельной дельты нет. Structure, `vw_AverageRateLevel3_SnapshotSource`, `vw_AverageRateLevel3_Detail`, `PopulateAffectedKeys`, `RowVer` и SyncState не менялись.
 
-Contractor — доработка. Проекция ребёнка `v2.vw_Address_Detail` (`dbo.PrimitiveEntityData_2027`, ключ родителя `LegalTypeId`) добавлена в снимок `056`, отдельной дельты нет. Structure, `vw_Contractor_SnapshotSource`, `vw_Contractor_Detail`, `PopulateAffectedKeys`, `RowVer` и SyncState не менялись.
+Contractor — доработка. Проекция ребёнка `v2.vw_Address_Detail` (`dbo.PrimitiveEntityData_2027`, ключ родителя `LegalTypeId`) добавлена в снимок `058`, отдельной дельты нет. Structure, `vw_Contractor_SnapshotSource`, `vw_Contractor_Detail`, `PopulateAffectedKeys`, `RowVer` и SyncState не менялись.
 
-TransportLeg — доработка. Проекции детей `v2.vw_LegRate_Detail` (`dbo.PrimitiveEntityData_2044`), `v2.vw_LegAverageRateLevel3_Detail` (`dbo.PrimitiveEntityData_2059`) и `v2.vw_Leadtime_Detail` (`dbo.PrimitiveEntityData_2126`) добавлены в снимок `056`, отдельной дельты нет. Structure, `vw_TransportLeg_SnapshotSource`, `vw_TransportLeg_Detail`, `PopulateAffectedKeys`, `RowVer` и SyncState не менялись.
+TransportLeg — доработка. Проекции детей `v2.vw_LegRate_Detail` (`dbo.PrimitiveEntityData_2044`), `v2.vw_LegAverageRateLevel3_Detail` (`dbo.PrimitiveEntityData_2059`) и `v2.vw_Leadtime_Detail` (`dbo.PrimitiveEntityData_2126`) добавлены в снимок `058`, отдельной дельты нет. Structure, `vw_TransportLeg_SnapshotSource`, `vw_TransportLeg_Detail`, `PopulateAffectedKeys`, `RowVer` и SyncState не менялись.
 
-TransportKind — класс simple, разовый снимок. `RowVer` на `dbo.PrimitiveEntityData_2008` не добавлялся. `vw_TransportKind_Detail` — в снимке `056`. Процедуры PopulateAffectedKeys нет.
+TransportKind — класс simple, разовый снимок. `RowVer` на `dbo.PrimitiveEntityData_2008` не добавлялся. `vw_TransportKind_Detail` — в снимке `058`. Процедуры PopulateAffectedKeys нет.
 
-Файл `008` — прежнее имя снимка programmability: после дельты Coefficient его переименовали в `014`. Файл `014` — прежнее имя снимка: после дельты RateSyncClass, RateCalcType, RateAutoSelectionSetting и ReportConstructor его переименовали в `033`. Файл `033` — прежнее имя снимка: после дельты Relevance, TransportRoute, Region и Country его переименовали в `051`. Файл `051` — прежнее имя снимка: после дельты TransportKind его переименовали в `056`. Актуальный полный снимок — `056`.
+Файл `008` — прежнее имя снимка programmability: после дельты Coefficient его переименовали в `014`. Файл `014` — прежнее имя снимка: после дельты RateSyncClass, RateCalcType, RateAutoSelectionSetting и ReportConstructor его переименовали в `033`. Файл `033` — прежнее имя снимка: после дельты Relevance, TransportRoute, Region и Country его переименовали в `051`. Файл `051` — прежнее имя снимка: после дельты TransportKind его переименовали в `056`. Файл `056` — прежнее имя снимка: после дельты `057` (SVT-5317) его переименовали в `058`. Актуальный полный снимок — `058`.
+
+## Текущий релиз 2.3.50
+
+| Файл | Что это |
+|------|---------|
+| `001.vw_UserDisplayName.sql` | SVT-5320: `v2.vw_UserDisplayName` — ФИО из `dbo.[User]` (Name, при пустом — Login). Нужна до `002` и `003` |
+| `002.SVT-5320_SnapshotSource.sql` | Копия 21 проекции `vw_*_SnapshotSource` с `CreationUserName` / `LastChangeUserName`. Идёт до `ALTER TABLE`: лишние колонки проекции `Sync_UpsertAffected` не мешают, окна сбоя sync нет. Нужна и для `004`: `vw_*_Detail` ссылается на новые колонки проекции и в снимке стоит раньше неё |
+| `003.SVT-5320_Snapshot_AddUserColumns.sql` | `ALTER TABLE ADD CreationUserName / LastChangeUserName NVARCHAR(255) NULL` в 21 snapshot (идемпотентно, отсутствующая таблица пропускается) и backfill из легаси-вью пачками по 50 тыс. внутри партиции `IsArchive`. В конце проверка колонок с `THROW`. Локально около 40 с на 2,9 млн строк |
+| `004.All_Programmability.sql` | Полный снимок programmability, 76 скриптов (2026-11-26): `vw_UserDisplayName`, авторы в `vw_*_SnapshotSource` и `vw_*_Detail`; `GetBlazorGridData` — парсинг дат фильтров без зависимости от языка сессии, голая дата в DATETIME-фильтре = весь день, точность фильтра день/час/минута/секунда (`Precision` в `@FilterJson`, иначе по длине значения); втянут ранее пропущенный `IN`-мультивыбор по ID (`InValues`) |
+
+SVT-5320 — колонки «Автор» и «Автор изм.» в гридах, карточках и Excel-отчётах 21 справочника. `PopulateAffectedKeys`, `RowVer`, SyncState и индексы не менялись. Переименование пользователя в `dbo.[User]` в snapshot не каскадируется — см. `SqlScripts/README.md`, раздел синхронизации.
 
 ## Чеклист нового релиза
 

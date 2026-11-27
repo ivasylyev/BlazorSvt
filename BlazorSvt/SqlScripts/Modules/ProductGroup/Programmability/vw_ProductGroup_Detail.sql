@@ -23,7 +23,9 @@ AS
         NameEn,
         RateSyncClassId AS RateSyncClassIdRu,
         RateSyncClassId AS RateSyncClassIdEn,
+        CreationUserName,
         CreationDate,
+        LastChangeUserName,
         LastChangeDate
     FROM v2.vw_ProductGroup_SnapshotSource;
 GO

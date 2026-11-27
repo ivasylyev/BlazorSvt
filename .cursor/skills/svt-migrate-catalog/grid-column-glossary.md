@@ -18,6 +18,7 @@
 | `*Code` | Отдельный короткий лейбл (не «Код» + полное имя), напр. «Код гр. пр.» / `Group code` |
 | EN направления | From / To (не Origin / Destination) |
 | Единицы измерения | Только в Detail (в скобках у полного имени), не в заголовке грида |
+| Ячейки таблиц | Только то, что названо в заголовке колонки. Пояснения (порядок колонок, источник данных, где лежит подпись) в глоссарий не писать — им место в `csharp.md` / `sql.md` |
 | Точки | После точки в аббревиатурах — пробел (`Рег. отпр.`, не `Рег.отпр.`) |
 | Detail формат | `Короткое (полное)`, **только если** короткое ≠ текущему полному. Если полное уже начинается с короткого, на карточке остаётся полное, без второй обёртки: short `INN`, full `INN (taxpayer identification number)` → карточка `INN (taxpayer identification number)` |
 | Detail-only | Поля без пары в гриде — **не** сокращать |
@@ -99,7 +100,9 @@
 | Дефлируется | `IsDeflated` | Дефлируется | — | Deflated | — |
 | Синхронизация | `IsIntoSyncClass` | Синхронизация | — | Sync | — |
 | Архив | `IsArchive` | Архив | — | Archive | — |
+| Автор | `CreationUserName` | Автор | — | Author | — |
 | Дата создания | `CreationDate` | Создано | — | Created | — |
+| Автор последних изменений | `LastChangeUserName` | Автор изм. | — | Last change author | — |
 | Дата изменения | `LastChangeDate` | Изменено | — | Changed | — |
 | Дата начала | `StartDate` | Начало | — | Start | — |
 | Дата окончания | `EndDate` | Окончание | — | End | — |
@@ -301,12 +304,13 @@
 
 ### Region
 
-Согласовано для грида и карточки Region. `Code`, `Code_NSI`, `RegionCode` («Код региона» / `Region code`), `CountryName` и системные поля — из общего глоссария. `NameRu` и `NameEn` — две колонки; подписи не из строк `Name` / `NameEn`. У `Status` короткое имя общее, полное на карточке — «Статус записи» / `Record status`.
+Согласовано для грида и карточки Region. `Code`, `Code_NSI`, `RegionCode` («Код региона» / `Region code`), `CountryName` и системные поля — из общего глоссария. В гриде `NameRu` и `NameEn` — одна колонка по языку интерфейса, ключ `Name` (как у плеч); на карточке — два поля, подписи не из строк `Name` / `NameEn`. `Status` в гриде нет (SVT-5317); на карточке полное имя — «Статус записи» / `Record status`.
 
 | Key | RU полное | EN полное | RU short | EN short |
 |-----|-----------|-----------|----------|----------|
 | `RegionCodePlanning` | Код региона для планирования | Region code for planning | Код план. | Plan code |
 | `RegionCodeRF` | Код региона РФ | Russian region code | Код РФ | RF code |
+| `Name` | Регион | Region | Регион | Region |
 | `NameRu` | Регион (RU) | Регион (RU) | Регион (RU) | Регион (RU) |
 | `NameEn` | Регион (EN) | Регион (EN) | Регион (EN) | Регион (EN) |
 | `Market` | Макрорегион | Macroregion | Макрорегион | Macroregion |

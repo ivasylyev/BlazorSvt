@@ -16,7 +16,12 @@ public partial class HomeRatePivotWidget : SvtComponentBase, IDisposable
         "Month.Jul", "Month.Aug", "Month.Sep", "Month.Oct", "Month.Nov", "Month.Dec"
     ];
 
-    private static readonly string BarColor = ColorUtility.CategoricalTwelveColors[0];
+    // Первый ряд графика — ДНК СИБУР (sibur_style.md)
+    private const string BarColor = "#008C95";
+    // Названия осей — тёмно-зелёный, подписи делений — серый 50% (#5A5A5A), сетка — линия --svt-line (app.css)
+    private const string TextColor = "#00313C";
+    private const string TickColor = "#5A5A5A";
+    private const string GridColor = "#D6DEE0";
 
     [Inject]
     private IHomeRatePivotService PivotService { get; set; } = default!;
@@ -155,14 +160,23 @@ public partial class HomeRatePivotWidget : SvtComponentBase, IDisposable
         {
             Text = EL["HomeRatePivotWidget.Month"].Value,
             Display = true,
+            Color = TextColor,
             Font = new ChartFont { Family = "Roboto" }
         };
         options.Scales.Y!.Title = new ChartAxesTitle
         {
             Text = EL["HomeRatePivotWidget.AverageRate"].Value,
             Display = true,
+            Color = TextColor,
             Font = new ChartFont { Family = "Roboto" }
         };
+        // Подписи делений, сетка и линия оси — цвета палитры СИБУР вместо серых по умолчанию
+        options.Scales.X.Ticks = new ChartAxesTicks { Color = TickColor };
+        options.Scales.Y.Ticks = new ChartAxesTicks { Color = TickColor };
+        options.Scales.X.Grid = new ChartAxesGrid { Color = GridColor };
+        options.Scales.Y.Grid = new ChartAxesGrid { Color = GridColor };
+        options.Scales.X.Border = new ChartAxesBorder { Color = GridColor };
+        options.Scales.Y.Border = new ChartAxesBorder { Color = GridColor };
         options.Plugins.Legend.Display = false;
 
         return options;

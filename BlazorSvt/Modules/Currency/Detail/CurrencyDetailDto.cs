@@ -11,13 +11,17 @@ public class CurrencyDetailDto
 
     public string? Symbolic { get; set; }
 
-    public decimal? Digital { get; set; }
+    public long? Digital { get; set; }
 
-    public string? Code_NSI { get; set; }
+    public long? Code_NSI { get; set; }
 
     public bool IsArchive { get; set; }
 
+    public string? CreationUserName { get; set; }
+
     public DateTime CreationDate { get; set; }
+
+    public string? LastChangeUserName { get; set; }
 
     public DateTime LastChangeDate { get; set; }
 }

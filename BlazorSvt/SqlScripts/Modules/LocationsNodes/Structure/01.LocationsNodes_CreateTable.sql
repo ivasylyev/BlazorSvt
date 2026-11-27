@@ -96,7 +96,9 @@ CREATE TABLE v2.LocationsNodes_Snapshot (
     CountryNameRu           NVARCHAR(100) NULL,
     CountryNameEn           NVARCHAR(100) NULL,
 
+    CreationUserName        NVARCHAR(255) NULL,
     CreationDate            DATETIME NOT NULL,
+    LastChangeUserName      NVARCHAR(255) NULL,
     LastChangeDate          DATETIME NOT NULL,
 
     CONSTRAINT PK_LocationsNodes_Snapshot PRIMARY KEY CLUSTERED (IsArchive, Id)

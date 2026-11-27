@@ -15,7 +15,7 @@ CREATE OR ALTER VIEW v2.vw_Contractor_SnapshotSource
 AS
     SELECT
         CAST(c.Id AS BIGINT)                                                     AS ContractorId,
-        LEFT(c.Code, 50)                                                         AS Code,
+        TRY_CAST(c.Code AS INT)                                                 AS Code,
         CASE WHEN ISNULL(c.PrimitiveEntityDataStateId, 2) = 2 THEN 1 ELSE 0 END  AS IsArchive,
 
         LEFT(c.NameSearch, 4000)                                                 AS NameSearch,
@@ -27,7 +27,11 @@ AS
         ISNULL(c.IsCreditor, 0)                                                  AS IsCreditor,
         LEFT(c.INN, 4000)                                                        AS INN,
 
+        cu.DisplayName                                                           AS CreationUserName,
         c.CreationDate                                                           AS CreationDate,
+        lu.DisplayName                                                           AS LastChangeUserName,
         ISNULL(c.LastChangeDate, c.CreationDate)                                 AS LastChangeDate
-    FROM dbo.vw_LegalType c;
+    FROM dbo.vw_LegalType c
+    LEFT JOIN v2.vw_UserDisplayName cu ON cu.UserId = c.CreationUserId
+    LEFT JOIN v2.vw_UserDisplayName lu ON lu.UserId = ISNULL(c.LastChangeUserId, c.CreationUserId);
 GO

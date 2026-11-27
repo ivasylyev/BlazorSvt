@@ -23,7 +23,9 @@ public class RateTypeGridSettingsService(
         b.Add(x => x.Comment, L["RateTypeDto.Comment"]);
         b.Add(x => x.IsIntoSyncClass, L["RateTypeDto.IsIntoSyncClass"], display: dto => YesNo(dto.IsIntoSyncClass));
         b.AddSystemColumns(
+            x => x.CreationUserName,
             x => x.CreationDate,
+            x => x.LastChangeUserName,
             x => x.LastChangeDate,
             x => x.IsArchive,
             L["RateTypeDto.CreationDate"],

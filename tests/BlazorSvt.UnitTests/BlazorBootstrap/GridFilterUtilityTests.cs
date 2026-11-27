@@ -43,6 +43,9 @@ public class GridFilterUtilityTests
     [InlineData("DateTime", "1753-01-01T00:00")]
     [InlineData("DateTime", "2025-09-30T14:30")]
     [InlineData("DateTime", "9999-12-31T23:59:59")]
+    [InlineData("DateTime", "2025-09-30")]
+    [InlineData("DateTime", "2025-09-30T14")]
+    [InlineData("DateTime", "2025-09-30 14")]
     public void IsPendingDateFilter_WhenWithinSqlDateTimeRange_ReturnsFalse(string propertyTypeName, string value)
     {
         GridFilterUtility.IsPendingDateFilter(propertyTypeName, value).Should().BeFalse();

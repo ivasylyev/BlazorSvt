@@ -16,7 +16,9 @@ public class RegionDetailSettingsService(
         var group = L["RegionDetailDto.Group.0.Default"];
 
         b.Add(group, x => x.Code, L["RegionDetailDto.Code"]);
+        b.AddCreationUser(group, x => x.CreationUserName);
         b.Add(group, x => x.CreationDate, L["RegionDetailDto.CreationDate"]);
+        b.AddLastChangeUser(group, x => x.LastChangeUserName);
         b.Add(group, x => x.LastChangeDate, L["RegionDetailDto.LastChangeDate"]);
         b.AddArchiveStatus(group, x => x.IsArchive, L["RegionDetailDto.IsArchive"]);
         b.Add(group, x => x.NameRu, L["RegionDetailDto.NameRu"]);

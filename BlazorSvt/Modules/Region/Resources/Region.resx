@@ -10,6 +10,7 @@
   <data name="RegionDto.Code_NSI" xml:space="preserve"><value>NSI code</value></data>
   <data name="RegionDto.RegionCodePlanning" xml:space="preserve"><value>Plan code</value></data>
   <data name="RegionDto.RegionCodeRF" xml:space="preserve"><value>RF code</value></data>
+  <data name="RegionDto.Name" xml:space="preserve"><value>Region</value></data>
   <data name="RegionDto.NameRu" xml:space="preserve"><value>Регион (RU)</value></data>
   <data name="RegionDto.NameEn" xml:space="preserve"><value>Регион (EN)</value></data>
   <data name="RegionDto.CountryName" xml:space="preserve"><value>Country</value></data>

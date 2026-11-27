@@ -20,8 +20,8 @@ CREATE UNIQUE NONCLUSTERED INDEX UX_Country_Snapshot_Id
     ON [PRIMARY];
 GO
 
--- Code записи — короткие цифровые строки, в full-text не входит.
--- ISOCode — decimal, в full-text не входит.
+-- Code записи — INT, в full-text не входит.
+-- ISOCode — INT, в full-text не входит.
 CREATE FULLTEXT INDEX ON v2.Country_Snapshot
 (
     NameRu      LANGUAGE 1049,

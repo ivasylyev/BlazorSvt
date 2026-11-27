@@ -10,6 +10,12 @@ public class GridColumnSetting<T> : IGridColumnSetting
     public bool Visible { get; set; }
     public bool Filterable { get; set; }
 
+    /// <summary>NVARCHAR без full-text: подпись фильтра «начинается с», оператор Contains.</summary>
+    public bool WithoutFullText { get; set; }
+
+    /// <summary>Enum-фильтр с выбором нескольких значений (список чекбоксов, оператор In).</summary>
+    public bool FilterMultiSelect { get; set; }
+
     public string FilterValue { get; set; } = null!;
 
     public IReadOnlyList<Enum>? FilterEnumValues { get; set; }

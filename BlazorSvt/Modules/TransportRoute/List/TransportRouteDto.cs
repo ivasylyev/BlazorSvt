@@ -13,7 +13,7 @@ public class TransportRouteDto
     public long TransportRouteId { get; set; }
 
     [GridColumn]
-    public required string Code { get; set; }
+    public required long Code { get; set; }
 
     [GridColumn]
     public string? CodeSAP { get; set; }
@@ -93,8 +93,14 @@ public class TransportRouteDto
     [GridColumn]
     public bool IsArchive { get; set; }
 
+    [GridColumn(WithoutFullText = true)]
+    public string? CreationUserName { get; set; }
+
     [GridColumn]
     public DateTime CreationDate { get; set; }
+
+    [GridColumn(WithoutFullText = true)]
+    public string? LastChangeUserName { get; set; }
 
     [GridColumn]
     public DateTime LastChangeDate { get; set; }

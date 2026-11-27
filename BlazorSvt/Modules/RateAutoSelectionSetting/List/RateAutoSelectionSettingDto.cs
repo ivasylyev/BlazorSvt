@@ -13,7 +13,7 @@ public class RateAutoSelectionSettingDto
     public bool IsArchive { get; set; }
 
     [GridColumn]
-    public required string Code { get; set; }
+    public required long Code { get; set; }
 
     [GridColumn]
     public bool? DestinationNodeToRegion { get; set; }
@@ -27,8 +27,14 @@ public class RateAutoSelectionSettingDto
     [GridColumn]
     public bool? AnyTransportKind { get; set; }
 
+    [GridColumn(WithoutFullText = true)]
+    public string? CreationUserName { get; set; }
+
     [GridColumn]
     public DateTime CreationDate { get; set; }
+
+    [GridColumn(WithoutFullText = true)]
+    public string? LastChangeUserName { get; set; }
 
     [GridColumn]
     public DateTime? LastChangeDate { get; set; }

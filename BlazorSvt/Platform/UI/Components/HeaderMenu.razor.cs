@@ -28,7 +28,7 @@ public partial class HeaderMenu : SvtComponentBase, IDisposable
     }
 
     private string GetButtonClass(bool active) =>
-        active ? "sibur-dark-inverted-btn" : "sibur-dark-btn";
+        active ? "sibur-dark-btn sibur-nav-active" : "sibur-dna-btn";
 
     private bool IsHomeActive() => IsActive("");
 

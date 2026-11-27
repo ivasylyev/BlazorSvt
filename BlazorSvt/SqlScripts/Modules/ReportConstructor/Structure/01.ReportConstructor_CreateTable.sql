@@ -52,7 +52,7 @@ CREATE TABLE v2.ReportConstructor_Snapshot (
     Id                      BIGINT NOT NULL,
     ReportConstructorId     BIGINT NOT NULL,
     IsArchive               BIT NOT NULL,
-    Code                    NVARCHAR(50) NOT NULL,
+    Code                    INT          NOT NULL,
     ReportTypeId            BIGINT NOT NULL,
     DateFrom                DATETIME2(7) NULL,
     DateTo                  DATETIME2(7) NULL,
@@ -76,7 +76,9 @@ CREATE TABLE v2.ReportConstructor_Snapshot (
     ProductNameRu           NVARCHAR(255) NULL,
     ProductNameEn           NVARCHAR(255) NULL,
     ProductId               BIGINT NULL,
+    CreationUserName        NVARCHAR(255) NULL,
     CreationDate            DATETIME NOT NULL,
+    LastChangeUserName      NVARCHAR(255) NULL,
     LastChangeDate          DATETIME NOT NULL,
 
     CONSTRAINT PK_ReportConstructor_Snapshot PRIMARY KEY CLUSTERED (IsArchive, Id)

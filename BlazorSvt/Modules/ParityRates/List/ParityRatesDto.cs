@@ -1,4 +1,4 @@
-﻿using BlazorSvt.Platform.Api.Catalogs;
+using BlazorSvt.Platform.Api.Catalogs;
 using BlazorSvt.Platform.Domain.IdsEnum;
 
 namespace BlazorSvt.Modules.ParityRates.List;
@@ -21,13 +21,19 @@ public class ParityRatesDto
     [GridColumn]
     public DateOnly EndDate { get; set; }
 
+    [GridColumn(WithoutFullText = true)]
+    public string? CreationUserName { get; set; }
+
     [GridColumn]
     public DateTime CreationDate { get; set; }
+
+    [GridColumn(WithoutFullText = true)]
+    public string? LastChangeUserName { get; set; }
 
     [GridColumn]
     public DateTime LastChangeDate { get; set; }
 
-    [GridColumn]
+    [GridColumn(WithoutFullText = true)]
     public required string Code { get; set; }
 
     [GridColumn(SqlColumn = "RelevanceId")]

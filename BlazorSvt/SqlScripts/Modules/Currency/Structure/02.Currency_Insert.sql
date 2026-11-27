@@ -15,7 +15,9 @@ INSERT INTO v2.Currency_Snapshot (
     ,Symbolic
     ,Digital
     ,Code_NSI
+    ,CreationUserName
     ,CreationDate
+    ,LastChangeUserName
     ,LastChangeDate
 )
 SELECT
@@ -26,7 +28,9 @@ SELECT
     ,Symbolic
     ,Digital
     ,Code_NSI
+    ,CreationUserName
     ,CreationDate
+    ,LastChangeUserName
     ,LastChangeDate
 FROM v2.vw_Currency_SnapshotSource;
 GO

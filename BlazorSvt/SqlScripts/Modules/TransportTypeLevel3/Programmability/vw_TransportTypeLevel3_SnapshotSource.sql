@@ -30,7 +30,11 @@ AS
         LEFT(t.SAPCode, 4000)                                                    AS SAPCode,
         LEFT(t.OrionCode, 4000)                                                  AS OrionCode,
         CAST(t.Status AS INT)                                                    AS StatusId,
+        cu.DisplayName                                                           AS CreationUserName,
         t.CreationDate                                                           AS CreationDate,
+        lu.DisplayName                                                           AS LastChangeUserName,
         ISNULL(t.LastChangeDate, t.CreationDate)                                 AS LastChangeDate
-    FROM dbo.vw_TransportType_level_3 t;
+    FROM dbo.vw_TransportType_level_3 t
+    LEFT JOIN v2.vw_UserDisplayName cu ON cu.UserId = t.CreationUserId
+    LEFT JOIN v2.vw_UserDisplayName lu ON lu.UserId = ISNULL(t.LastChangeUserId, t.CreationUserId);
 GO

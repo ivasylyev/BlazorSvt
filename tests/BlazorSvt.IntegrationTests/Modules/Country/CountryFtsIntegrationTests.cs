@@ -1,6 +1,5 @@
 using BlazorSvt.IntegrationTests.Infrastructure;
 using BlazorSvt.Modules.Country.List;
-using BlazorSvt.Platform.Domain.IdsEnum;
 using FluentAssertions;
 
 namespace BlazorSvt.IntegrationTests.Modules.Country;
@@ -28,13 +27,12 @@ public class CountryFtsIntegrationTests(DatabaseFixture fixture) : IntegrationTe
     }
 
     [SkippableFact]
-    public async Task GetBlazorGridData_WithNameRuMarketAndStatus_ReturnsRows()
+    public async Task GetBlazorGridData_WithNameRuAndMarket_ReturnsRows()
     {
         var connectionString = RequireConnectionString();
         var query = FtsFilterTestSupport.CreateQuery(
             FtsFilterTestSupport.Contains(nameof(CountryDto.NameRu), "Афганистан"),
-            FtsFilterTestSupport.Contains(nameof(CountryDto.Market), "Азия"),
-            FtsFilterTestSupport.IdEquals(nameof(CountryDto.StatusIdRu), (int)StatusElementRu.Active));
+            FtsFilterTestSupport.Contains(nameof(CountryDto.Market), "Азия"));
 
         var (rows, totalCount) = await GridSpTestHelper.ExecuteGetBlazorGridDataAsync<CountryDto>(
             connectionString,
@@ -44,7 +42,6 @@ public class CountryFtsIntegrationTests(DatabaseFixture fixture) : IntegrationTe
         rows.Should().NotBeEmpty();
         totalCount.Should().Be(1);
         rows.Should().OnlyContain(r => !r.IsArchive);
-        rows.Should().OnlyContain(r => r.StatusIdRu == StatusElementRu.Active);
         rows.Should().OnlyContain(r => r.Market != null && r.Market.Contains("Азия", StringComparison.OrdinalIgnoreCase));
     }
 }

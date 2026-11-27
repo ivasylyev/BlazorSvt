@@ -20,18 +20,7 @@ CREATE UNIQUE NONCLUSTERED INDEX UX_RateAutoSelectionSetting_Snapshot_Id
     ON [PRIMARY];
 GO
 
-CREATE FULLTEXT INDEX ON v2.RateAutoSelectionSetting_Snapshot
-(
-    Code LANGUAGE 1033
-)
-KEY INDEX UX_RateAutoSelectionSetting_Snapshot_Id
-WITH STOPLIST = SYSTEM,
-     CHANGE_TRACKING = AUTO;
-GO
-
-ALTER FULLTEXT INDEX ON v2.RateAutoSelectionSetting_Snapshot
-SET STOPLIST = OFF;
-GO
+-- Code — INT, в full-text не входит. Других строковых колонок нет: full-text индекса нет.
 
 DROP INDEX IF EXISTS ix_RateAutoSelectionSetting_Snapshot_Active_Code ON [v2].[RateAutoSelectionSetting_Snapshot];
 GO

@@ -49,9 +49,9 @@ INCREMENT BY 1;
 GO
 
 CREATE TABLE v2.Country_Snapshot (
-    Code                NVARCHAR(50) NOT NULL,
+    Code                INT          NOT NULL,
     NameRu              NVARCHAR(4000) NULL,
-    ISOCode             DECIMAL(19, 4) NULL,
+    ISOCode             INT NULL,
     NameEn              NVARCHAR(4000) NULL,
     PlanCode            NVARCHAR(4000) NULL,
     Market              NVARCHAR(4000) NULL,
@@ -60,7 +60,9 @@ CREATE TABLE v2.Country_Snapshot (
     Id                  BIGINT NOT NULL,
     CountryId           BIGINT NOT NULL,
     IsArchive           BIT NOT NULL,
+    CreationUserName    NVARCHAR(255) NULL,
     CreationDate        DATETIME NOT NULL,
+    LastChangeUserName  NVARCHAR(255) NULL,
     LastChangeDate      DATETIME NULL,
 
     CONSTRAINT PK_Country_Snapshot PRIMARY KEY CLUSTERED (IsArchive, Id)

@@ -40,7 +40,9 @@ public class TransportRouteDetailSettingsService(
         b.Add(group, x => x.Leg_02Code, L["TransportRouteDetailDto.Leg_02Code"]);
         b.Add(group, x => x.Leg_03Code, L["TransportRouteDetailDto.Leg_03Code"]);
         b.AddArchiveStatus(group, x => x.IsArchive, L["TransportRouteDetailDto.IsArchive"]);
+        b.AddCreationUser(group, x => x.CreationUserName);
         b.Add(group, x => x.CreationDate, L["TransportRouteDetailDto.CreationDate"]);
+        b.AddLastChangeUser(group, x => x.LastChangeUserName);
         b.Add(group, x => x.LastChangeDate, L["TransportRouteDetailDto.LastChangeDate"]);
 
         return b.Build();

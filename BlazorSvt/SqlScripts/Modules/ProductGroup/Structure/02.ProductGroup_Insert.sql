@@ -31,7 +31,9 @@ INSERT INTO v2.ProductGroup_Snapshot (
     ,RateSyncClassCode
     ,RateSyncClassNameRu
 
+    ,CreationUserName
     ,CreationDate
+    ,LastChangeUserName
     ,LastChangeDate
 )
 SELECT
@@ -53,7 +55,9 @@ SELECT
     ,RateSyncClassCode
     ,RateSyncClassNameRu
 
+    ,CreationUserName
     ,CreationDate
+    ,LastChangeUserName
     ,LastChangeDate
 FROM v2.vw_ProductGroup_SnapshotSource;
 GO

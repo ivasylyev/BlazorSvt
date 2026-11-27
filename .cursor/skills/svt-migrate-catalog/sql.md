@@ -41,7 +41,7 @@ BlazorSvt/SqlScripts/Modules/{Entity}/
 
 ### Structure
 
-**01 — CreateTable:** системные поля + атрибуты короткого списка (порядок discovery §1); партиционирование; SEQUENCE; DEFAULT на `Id`, `CreationDate`; скрытые FK (`*_Id`) для каскада sync.  
+**01 — CreateTable:** системные поля (включая `CreationUserName` / `LastChangeUserName` перед своими датами) + атрибуты короткого списка (порядок discovery §1); партиционирование; SEQUENCE; DEFAULT на `Id`, `CreationDate`; скрытые FK (`*_Id`) для каскада sync.  
 Образец: `SqlScripts/Modules/TransportRate/Structure/01.TransportRate_CreateTable.sql`.
 
 **02 — Insert:** `INSERT INTO v2.{Entity}_Snapshot … SELECT … FROM v2.vw_{Entity}_SnapshotSource` (не напрямую из legacy `vw_{LegacyName}`).  
@@ -63,6 +63,7 @@ UNION ALL SELECT N'dbo.PrimitiveEntityData_1014'  -- LocationsNodes
   - whitelist Codes (`NodeFromCode`, …)
   - **все прочие NVARCHAR-поля короткого списка / грида** (свободный текст: `Comment`, `DataSource`, `Methodology`, …)
   - `Code` сущности: **только** если `NVARCHAR` **и** значения — осмысленный текст для поиска. Если `Code` — GUID / UUID-строка (как у ParityRates) — **FTS не ставить**, достаточно фильтрованных NCIX по `Code`
+  - `NVARCHAR`-колонку без full-text `v2.GetBlazorGridData` фильтрует через `LIKE N'значение%'` с любой длины ввода; на свойстве list-DTO — `[GridColumn(WithoutFullText = true)]` (фильтр грида «a**» / «Начинается с», оператор Contains). Колонку с full-text — через `CONTAINS`, от 3 символов, без этого флага
   - числовой `Code` (`INT`) — FTS не нужен, только фильтрованные индексы
   - `decimal` / даты / bit / Id — **не** в FTS
 - `ALTER FULLTEXT … SET STOPLIST = OFF`
@@ -72,9 +73,9 @@ UNION ALL SELECT N'dbo.PrimitiveEntityData_1014'  -- LocationsNodes
 
 ### Programmability
 
-**vw_{Entity}_SnapshotSource** — единая проекция для первичной заливки и incremental MERGE. WHERE-фильтр членства из эталона не переносить. Отсечение (NOT NULL ключевой метрики, `EXISTS` «без связанных X — битая запись») писать только для бизнес-правила этого справочника. Форма такого отсечения — у `vw_TransportRate_SnapshotSource` и `vw_AverageRateLevel3_SnapshotSource`.
+**vw_{Entity}_SnapshotSource** — единая проекция для первичной заливки и incremental MERGE. Авторы записи — два `LEFT JOIN v2.vw_UserDisplayName`: `cu ON cu.UserId = {a}.CreationUserId` и `lu ON lu.UserId = ISNULL({a}.LastChangeUserId, {a}.CreationUserId)`; в SELECT `cu.DisplayName AS CreationUserName` перед `CreationDate`, `lu.DisplayName AS LastChangeUserName` перед `LastChangeDate`. Эталон — `vw_Relevance_SnapshotSource`. WHERE-фильтр членства из эталона не переносить. Отсечение (NOT NULL ключевой метрики, `EXISTS` «без связанных X — битая запись») писать только для бизнес-правила этого справочника. Форма такого отсечения — у `vw_TransportRate_SnapshotSource` и `vw_AverageRateLevel3_SnapshotSource`.
 
-**vw_{Entity}_Detail** — карточка и полный Excel. Читает легаси-представление основной таблицы (шаг 0: это не всегда `dbo.vw_{Entity}`) и связанные `dbo.vw_*`; грид читает `v2.{Entity}_Snapshot`. Поля длинного списка (discovery §4) + системные; ссылки: Code/Name из joined views; при необходимости плечи/лидтаймы (эталон: `vw_TransportRate_Detail`, `vw_AverageRateLevel3_Detail`).  
+**vw_{Entity}_Detail** — карточка и полный Excel. Читает легаси-представление основной таблицы (шаг 0: это не всегда `dbo.vw_{Entity}`) и связанные `dbo.vw_*`; грид читает `v2.{Entity}_Snapshot`. Поля длинного списка (discovery §4) + системные, включая `CreationUserName` / `LastChangeUserName` (поверх `*_SnapshotSource` — взять из неё, иначе те же два `LEFT JOIN v2.vw_UserDisplayName`); ссылки: Code/Name из joined views; при необходимости плечи/лидтаймы (эталон: `vw_TransportRate_Detail`, `vw_AverageRateLevel3_Detail`).  
 **Дочерний примитив** — своя проекция `v2.vw_{Child}_Detail` и группа-таблица на карточке: [child-primitives.md](child-primitives.md), раздел «SQL». Вычисляемое поле через `STRING_AGG` **только в detail / export**, не в snapshot, — для связанной сущности, которая не является дочерним примитивом.
 
 **sp_{Entity}_PopulateAffectedKeys** — детекция по `@Source` / `@Lo` / `@Hi`. В шапке и у каждой ветки `IF` / `FROM` — комментарий «номер таблицы → справочник» (как у TransportRate / AverageRateLevel3). Для стабильного словаря с enum процедуру не создавать.
@@ -94,6 +95,7 @@ UNION ALL SELECT N'dbo.PrimitiveEntityData_1014'  -- LocationsNodes
 | Бизнес-ключ | `IsEntityKey = true` на `{Entity}Id` |
 | Только отображение / сортировка | `Filterable = false` |
 | Невыводимый CLR-тип + фильтрация | явный `ColumnType = GridColumnType.…` |
+| `NVARCHAR` без full-text | `[GridColumn(WithoutFullText = true)]` |
 
 `GridColumnType` для whitelist:
 

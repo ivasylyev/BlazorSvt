@@ -42,42 +42,87 @@
     }
     else if (PropertyTypeName == StringConstants.PropertyTypeNameDateOnly)
     {
-        <input @key="inputKey" class="form-control" style="@filterStyle" type="date" lang="@CultureInfo.CurrentUICulture.Name" value="@filterValue" @oninput="@(async args => await OnFilterValueChangedAsync(args))" />
+        <input @key="inputKey" class="form-control" style="@filterStyle" type="date" lang="@CultureInfo.CurrentUICulture.Name" value="@filterValue" onpaste="svtDateFilterPaste(event)" @oninput="@(async args => await OnFilterValueChangedAsync(args))" />
     }
     else if (PropertyTypeName == StringConstants.PropertyTypeNameDateTime)
     {
-        <input @key="inputKey" class="form-control" style="@filterStyle" type="datetime-local" lang="@CultureInfo.CurrentUICulture.Name" value="@filterValue" @oninput="@(async args => await OnFilterValueChangedAsync(args))" />
+        @if (ShowDateTimePrecision)
+        {
+            <select @key="@($"precision{inputKey}")" class="form-select me-1 flex-shrink-0" style="width:auto" value="@dateTimePrecision" @onchange="OnDateTimePrecisionChangedAsync" title="@DateTimePrecisionTitle">
+                <option value="day">@DateTimePrecisionLabel("day")</option>
+                <option value="hour">@DateTimePrecisionLabel("hour")</option>
+                <option value="minute">@DateTimePrecisionLabel("minute")</option>
+            </select>
+        }
+        <input @key="inputKey" class="form-control" style="@filterStyle" type="@DateTimeInputType" step="@DateTimeStep" lang="@CultureInfo.CurrentUICulture.Name" value="@filterValue" onpaste="svtDateFilterPaste(event)" @oninput="@(async args => await OnFilterValueChangedAsync(args))" />
     }
     else if (PropertyTypeName == StringConstants.PropertyTypeNameBoolean)
     {
-        <div class="d-flex align-items-center" style="height: 38px;"> <!-- 38px — стандартная высота form-control в Bootstrap 5 -->
-            <input @key="inputKey" class="form-check-input" type="checkbox" checked="@IsFilterChecked" value="@filterValue" @onchange="@(async args => await OnFilterValueChangedAsync(args))" />
+        <div class="d-flex align-items-center form-check form-switch sibur-switch-color mb-0" style="height: 38px;"> <!-- 38px — стандартная высота form-control в Bootstrap 5; form-switch — переключатель вместо чекбокса (СВТ) -->
+            <input @key="inputKey" class="form-check-input" type="checkbox" role="switch" checked="@IsFilterChecked" value="@filterValue" @onchange="@(async args => await OnFilterValueChangedAsync(args))" />
         </div>
     }
     else if (PropertyTypeName == StringConstants.PropertyTypeNameEnum)
     {
-        <Dropdown @key="inputKey" Color="DropdownColor.Light">
-            <DropdownToggleButton Class="px-1" Style="@filterStyle" AdditionalAttributes="fixedStrategyPopperAttributes">
-                @if (string.IsNullOrWhiteSpace(filterValue))
-                {
-                    <span class="px-2">@EnumFilterSelectText</span>
-                }
-                else
-                {
-                    <span class="px-2">@(PropertyType!.GetDisplayName(filterValue))</span>
-                }
-            </DropdownToggleButton>
-            <DropdownMenu Class="bb-dropdown-menu-enum" Style="max-height: var(--bb-grid-filter-dropdown-max-height); overflow-x: hidden; overflow-y: auto;">
-                @if (PropertyType is not null)
-                {
-                    @foreach (var item in EnumFilterItems)
+        @if (MultiSelect)
+        {
+            <Dropdown @key="inputKey" Color="DropdownColor.Light" AutoCloseBehavior="DropdownAutoCloseBehavior.Outside">
+                <DropdownToggleButton Class="px-1" Style="@filterStyle" AdditionalAttributes="fixedStrategyPopperAttributes">
+                    @if (selectedEnumNames.Count == 0)
                     {
-                        var name = PropertyType!.GetDisplayName(Enum.GetName(PropertyType!, item));
-                        <DropdownItem @onclick="@(async () => await OnEnumFilterValueChangedAsync(item))">@name</DropdownItem>
+                        <span class="px-2">@EnumFilterSelectText</span>
                     }
-                }
-            </DropdownMenu>
-        </Dropdown>
+                    else
+                    {
+                        <span class="px-2" title="@SelectedEnumFilterText">@SelectedEnumFilterText</span>
+                    }
+                </DropdownToggleButton>
+                <DropdownMenu Class="bb-dropdown-menu-enum" Style="max-height: var(--bb-grid-filter-dropdown-max-height); overflow-x: hidden; overflow-y: auto;">
+                    @if (PropertyType is not null)
+                    {
+                        @foreach (var item in EnumFilterItems)
+                        {
+                            var enumName = Enum.GetName(PropertyType!, item);
+                            var name = PropertyType!.GetDisplayName(enumName);
+                            var isChecked = enumName is not null && selectedEnumNames.Contains(enumName);
+                            <DropdownItem @onclick="@(async () => await OnEnumMultiFilterValueChangedAsync(enumName))">
+                                <span class="d-inline-flex align-items-center gap-1">
+                                    <span @onclick:stopPropagation="true">
+                                        <input class="form-check-input m-0" type="checkbox" tabindex="-1" checked="@isChecked" @onchange="@(async () => await OnEnumMultiFilterValueChangedAsync(enumName))" />
+                                    </span>
+                                    <span>@name</span>
+                                </span>
+                            </DropdownItem>
+                        }
+                    }
+                </DropdownMenu>
+            </Dropdown>
+        }
+        else
+        {
+            <Dropdown @key="inputKey" Color="DropdownColor.Light">
+                <DropdownToggleButton Class="px-1" Style="@filterStyle" AdditionalAttributes="fixedStrategyPopperAttributes">
+                    @if (string.IsNullOrWhiteSpace(filterValue))
+                    {
+                        <span class="px-2">@EnumFilterSelectText</span>
+                    }
+                    else
+                    {
+                        <span class="px-2">@(PropertyType!.GetDisplayName(filterValue))</span>
+                    }
+                </DropdownToggleButton>
+                <DropdownMenu Class="bb-dropdown-menu-enum" Style="max-height: var(--bb-grid-filter-dropdown-max-height); overflow-x: hidden; overflow-y: auto;">
+                    @if (PropertyType is not null)
+                    {
+                        @foreach (var item in EnumFilterItems)
+                        {
+                            var name = PropertyType!.GetDisplayName(Enum.GetName(PropertyType!, item));
+                            <DropdownItem @onclick="@(async () => await OnEnumFilterValueChangedAsync(item))">@name</DropdownItem>
+                        }
+                    }
+                </DropdownMenu>
+            </Dropdown>
+        }
     }
     else // guid or string
     {

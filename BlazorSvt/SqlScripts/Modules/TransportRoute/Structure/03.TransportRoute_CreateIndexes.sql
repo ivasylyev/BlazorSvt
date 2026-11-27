@@ -20,7 +20,7 @@ CREATE UNIQUE NONCLUSTERED INDEX UX_TransportRoute_Snapshot_Id
     ON [PRIMARY];
 GO
 
--- Code записи — короткие цифровые строки, в full-text не входит.
+-- Code записи — INT, в full-text не входит.
 -- Денорм enum (RouteTransportKind*, Leg*_TransportType Code/Name) в full-text не входит.
 CREATE FULLTEXT INDEX ON v2.TransportRoute_Snapshot
 (

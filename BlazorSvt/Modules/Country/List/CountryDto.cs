@@ -1,5 +1,3 @@
-using BlazorSvt.Platform.Domain.IdsEnum;
-
 namespace BlazorSvt.Modules.Country.List;
 
 [GridSnapshot("v2.Country_Snapshot")]
@@ -12,7 +10,7 @@ public class CountryDto
     public long CountryId { get; set; }
 
     [GridColumn]
-    public required string Code { get; set; }
+    public required long Code { get; set; }
 
     [GridColumn]
     public bool IsArchive { get; set; }
@@ -21,7 +19,7 @@ public class CountryDto
     public string? NameRu { get; set; }
 
     [GridColumn]
-    public decimal? ISOCode { get; set; }
+    public long? ISOCode { get; set; }
 
     [GridColumn]
     public string? NameEn { get; set; }
@@ -35,14 +33,14 @@ public class CountryDto
     [GridColumn]
     public string? ISOCode3 { get; set; }
 
-    [GridColumn(SqlColumn = "StatusId")]
-    public StatusElementRu? StatusIdRu { get; set; }
-
-    [GridColumn(SqlColumn = "StatusId")]
-    public StatusElementEn? StatusIdEn { get; set; }
+    [GridColumn(WithoutFullText = true)]
+    public string? CreationUserName { get; set; }
 
     [GridColumn]
     public DateTime CreationDate { get; set; }
+
+    [GridColumn(WithoutFullText = true)]
+    public string? LastChangeUserName { get; set; }
 
     [GridColumn]
     public DateTime? LastChangeDate { get; set; }

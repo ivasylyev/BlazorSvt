@@ -25,7 +25,7 @@ description: >-
 - Команда «добавить справочник», «создать модуль для {PrimitiveEntityInfo}»
 - Перенос сущности из легаси MDM в BlazorSVT (read-only grid + detail + export)
 
-Перед добавлением сверься с [catalogs-scope.md](../svt-architecture/catalogs-scope.md): справочник должен быть **в скоупе**; домен, видимость меню ЕО и тип работ — из реестра. Сущности из раздела «Вне скоупа», в том числе `TransportRequest` и `MassiveRequest`, этим навыком не переносятся. Этот навык покрывает только **RO** (грид/карточка/sync). Редактор и загрузчик — отдельные пакеты бэклога (с вехи 21). Домен «Заявки» — вехи 9–11, не справочник.
+Перед добавлением сверься с [catalogs-scope.md](../svt-architecture/catalogs-scope.md): справочник должен быть **в скоупе**; домен, видимость меню ЕО и тип работ — из реестра. Сущности из раздела «Вне скоупа», в том числе `TransportRequest` и `MassiveRequest`, этим навыком не переносятся. Этот навык покрывает только **RO** (грид/карточка/sync). Редактор и загрузчик — отдельные пакеты бэклога (с вехи 10). Домен «Заявки» — вехи 4–6, не справочник.
 
 ## Шаг 0 — имя справочника
 
@@ -91,9 +91,10 @@ WHERE e.Name = N'{RegistryName}';
 
 - `Id` (SEQUENCE + DEFAULT)
 - `{Entity}Id` (бизнес-ключ, `CAST(Id AS …)` из `vw_{LegacyName}`)
-- `Code`
+- `Code`. Тип — [discovery-rules.md](discovery-rules.md) §2: `INT` по ответу пользователя, иначе `NVARCHAR`
 - `IsArchive` (`CASE WHEN ISNULL(PrimitiveEntityDataStateId, 2) = 2 THEN 1 ELSE 0 END`)
 - `CreationDate`, `LastChangeDate`. `LastChangeDate` в снимке — `DATETIME NOT NULL`. Пустое значение легаси заменять на дату создания: `ISNULL(LastChangeDate, CreationDate)`. В DTO тип `DateTime`
+- `CreationUserName` («Автор») перед `CreationDate`, `LastChangeUserName` («Автор изм.») перед `LastChangeDate` — `NVARCHAR(255) NULL`. ФИО из `v2.vw_UserDisplayName` по `CreationUserId` и `ISNULL(LastChangeUserId, CreationUserId)` легаси-представления (SVT-5320). В DTO тип `string?`
 
 **Бизнес-флаги** (например `CanBeUsed`) — только если есть в коротком списке (см. [discovery-rules.md](discovery-rules.md) §1).
 
@@ -128,10 +129,17 @@ WHERE e.Name = N'{RegistryName}';
 | TypeNode | `Modules/LocationsNodes/List/IdsEnum/TypeNodeRu`, `TypeNodeEn` |
 | RateSyncClass | `Platform/Domain/IdsEnum/RateSyncClassRu`, `RateSyncClassEn` |
 | RateCalcType | `Platform/Domain/IdsEnum/RateCalcTypeRu`, `RateCalcTypeEn` |
+| CoefficientType | `Platform/Domain/IdsEnum/CoefficientTypeRu`, `CoefficientTypeEn` |
 
-`TransportType` в этот класс не входит. Enum уже есть: `Platform/Domain/IdsEnum/TransportTypeRu`, `TransportTypeEn`. Собственный RO-грид делается со watermark-sync: `RowVer`, `TransportTypeSyncJob`, `sp_TransportType_PopulateAffectedKeys`, инициализация `v2.SyncState`. Чужие гриды этот справочник в каскад не включают и показывают enum. То, что чужой грид не каскадит на справочник, разовый снимок для его собственного грида не задаёт.
+`TransportType` и `ShipmentType` входят в класс «стабильный словарь с enum». У `TransportType` enum уже есть: `TransportTypeRu`, `TransportTypeEn`. Перед заливкой сверить неархивные строки `vw_TransportType` с enum: `Id` и состав членов. Расхождение — стоп и вопрос, enum не перегенерировать. У `ShipmentType` пары нет: `ShipmentTypeRu` / `ShipmentTypeEn` создаются при переносе, имена членов — из `Code`. Оба грида — разовый снимок, без `RowVer`, SyncJob, `PopulateAffectedKeys` и `v2.SyncState`. Чужие гриды эти справочники в каскад не включают. `ShipmentTypeCodeT` у TransportLeg остаётся сырым `NVARCHAR`.
 
-`ShipmentType` в класс не входит: отдельного enum нет. У TransportLeg тип отправки — сырой `ShipmentTypeCodeT`. Справочники «хранит константы» без enum не входят, пока enum не появится.
+`Federal_Districts`, `DangerClass`, `VehicleType` и `IntegrationDataType` входят в этот класс. У `Federal_Districts` и `DangerClass` enum уже есть. У `VehicleType` и `IntegrationDataType` enum создаётся при переносе. Свой грид — разовый снимок. Расхождение существующего enum с неархивными строками (`Id` и состав членов) — стоп и вопрос, enum не перегенерировать.
+
+`TransportTypeForProduct` в класс не входит и enum не получает. Свой грид — разовый снимок, без `RowVer`, SyncJob, `PopulateAffectedKeys` и `v2.SyncState`.
+
+`PlanFact`, `MTR_DPO`, `Integration`, `FeatureToggle` и `CurrencyRate` в класс не входят: свой грид — watermark-sync, enum нет.
+
+`Basis`, `CoefficientCondition`, `CoefficientComponent`, `RateComponentType` и `RateKind` входят в этот класс. Enum создаётся при переносе RO-грида по `discovery-rules.md` §7: пара `{Entity}Ru` / `{Entity}En` в `Platform/Domain/IdsEnum`, значение члена = `Id` из `vw_{LegacyName}`. Неархивных строк 100 или больше — стоп и вопрос, enum не создавать. После появления файлов строка дописывается в таблицу выше. Дальше шаги RateType: разовый снимок, без `RowVer`, `SyncJob`, `PopulateAffectedKeys` и `v2.SyncState`. `Priority_Rate` в класс не входит.
 
 `RateSyncClass` входит в таблицу выше: enum уже есть, свой грид — разовый снимок, без `RowVer` и `SyncJob`. Enum сам по себе класс не задаёт: в класс справочник попадает решением, не фактом enum. `TypePlace` вне скоупа (исторический, вместо него TypeNode): свой RO-грид не делать; enum `LocationType*` остаётся для LocationsNodes.
 

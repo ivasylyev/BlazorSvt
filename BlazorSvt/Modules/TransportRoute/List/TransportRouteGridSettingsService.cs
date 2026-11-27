@@ -32,13 +32,15 @@ public class TransportRouteGridSettingsService(
         b.AddLocalized(isRu, x => x.EndNodeNameRu, x => x.EndNodeNameEn, L["TransportRouteDto.EndNodeName"]);
         b.Add(x => x.RegionToCode, L["TransportRouteDto.RegionToCode"], visible: false);
         b.AddLocalized(isRu, x => x.RegionToNameRu, x => x.RegionToNameEn, L["TransportRouteDto.RegionToName"]);
-        b.AddEnum(isRu, x => x.RouteTransportKindIdRu, x => x.RouteTransportKindIdEn, L["TransportRouteDto.RouteTransportKindName"]);
+        b.AddEnum(isRu, x => x.RouteTransportKindIdRu, x => x.RouteTransportKindIdEn, L["TransportRouteDto.RouteTransportKindName"], multiSelect: true);
         b.AddYesNo(x => x.IsActive, L["TransportRouteDto.IsActive"]);
-        AddEnum(b, isRu, x => x.Leg1_TransportTypeIdRu, x => x.Leg1_TransportTypeIdEn, L["TransportRouteDto.Leg1_TransportTypeName"]);
-        AddEnum(b, isRu, x => x.Leg2_TransportTypeIdRu, x => x.Leg2_TransportTypeIdEn, L["TransportRouteDto.Leg2_TransportTypeName"]);
+        AddEnum(b, isRu, x => x.Leg1_TransportTypeIdRu, x => x.Leg1_TransportTypeIdEn, L["TransportRouteDto.Leg1_TransportTypeName"], multiSelect: true);
+        AddEnum(b, isRu, x => x.Leg2_TransportTypeIdRu, x => x.Leg2_TransportTypeIdEn, L["TransportRouteDto.Leg2_TransportTypeName"], multiSelect: true);
         b.Add(x => x.ChainNodes, L["TransportRouteDto.ChainNodes"]);
         b.AddSystemColumns(
+            x => x.CreationUserName,
             x => x.CreationDate,
+            x => x.LastChangeUserName,
             x => x.LastChangeDate,
             x => x.IsArchive,
             L["TransportRouteDto.CreationDate"],
@@ -53,19 +55,20 @@ public class TransportRouteGridSettingsService(
         bool isRu,
         System.Linq.Expressions.Expression<Func<TransportRouteDto, TRu?>> ru,
         System.Linq.Expressions.Expression<Func<TransportRouteDto, TEn?>> en,
-        string header)
+        string header,
+        bool multiSelect = false)
         where TRu : struct, Enum
         where TEn : struct, Enum
     {
         if (isRu)
         {
             var compiled = ru.Compile();
-            builder.Add(ru, header, display: dto => Label(compiled(dto)));
+            builder.Add(ru, header, display: dto => Label(compiled(dto)), multiSelect: multiSelect);
         }
         else
         {
             var compiled = en.Compile();
-            builder.Add(en, header, display: dto => Label(compiled(dto)));
+            builder.Add(en, header, display: dto => Label(compiled(dto)), multiSelect: multiSelect);
         }
     }
 

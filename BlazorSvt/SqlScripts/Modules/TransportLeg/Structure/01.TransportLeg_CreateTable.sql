@@ -126,7 +126,9 @@ CREATE TABLE v2.TransportLeg_Snapshot (
     RegionToNameEn      NVARCHAR(60) NULL,
     RegionToNameRu      NVARCHAR(60) NULL,
     
+    CreationUserName    NVARCHAR(255) NULL,
     CreationDate        DATETIME NOT NULL,
+    LastChangeUserName  NVARCHAR(255) NULL,
     LastChangeDate      DATETIME NOT NULL,
 
     -- Скрытые FK для каскадной синхронизации (не участвуют в гриде).

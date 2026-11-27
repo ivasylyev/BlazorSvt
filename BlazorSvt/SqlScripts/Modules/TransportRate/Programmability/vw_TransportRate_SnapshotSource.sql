@@ -33,7 +33,9 @@ AS
         ISNULL(r.IsDefRate, 0)                              AS IsDefRate,
         r.StartDate                                         AS StartDate,
         r.EndDate                                           AS EndDate,
+        cu.DisplayName                                      AS CreationUserName,
         r.CreationDate                                      AS CreationDate,
+        lu.DisplayName                                      AS LastChangeUserName,
         ISNULL(r.LastChangeDate, r.CreationDate)            AS LastChangeDate,
 
         r.TotalCostTon                                      AS TotalCostTon,
@@ -89,6 +91,8 @@ AS
     JOIN vw_TransportKind tk (NOLOCK) ON r.TransportKind = tk.Id
     JOIN vw_TransportType_level_3 tt (NOLOCK) ON r.TransportType = tt.Id
     JOIN vw_Currency cur (NOLOCK) ON r.CurrencyStandard = cur.Id
+    LEFT JOIN v2.vw_UserDisplayName cu ON cu.UserId = r.CreationUserId
+    LEFT JOIN v2.vw_UserDisplayName lu ON lu.UserId = ISNULL(r.LastChangeUserId, r.CreationUserId)
 
     WHERE r.TotalCostTon IS NOT NULL
       AND r.TotalCostTransport IS NOT NULL

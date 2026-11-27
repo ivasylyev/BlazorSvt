@@ -44,20 +44,20 @@ public class RegionDto
     [GridColumn]
     public string? Market { get; set; }
 
-    [GridColumn(SqlColumn = "StatusId")]
-    public required StatusElementRu StatusIdRu { get; set; }
-
-    [GridColumn(SqlColumn = "StatusId")]
-    public required StatusElementEn StatusIdEn { get; set; }
-
     [GridColumn(SqlColumn = "FederalDistrictsId")]
     public FederalDistrictsRu? FederalDistrictsIdRu { get; set; }
 
     [GridColumn(SqlColumn = "FederalDistrictsId")]
     public FederalDistrictsEn? FederalDistrictsIdEn { get; set; }
 
+    [GridColumn(WithoutFullText = true)]
+    public string? CreationUserName { get; set; }
+
     [GridColumn]
     public DateTime CreationDate { get; set; }
+
+    [GridColumn(WithoutFullText = true)]
+    public string? LastChangeUserName { get; set; }
 
     [GridColumn]
     public DateTime LastChangeDate { get; set; }

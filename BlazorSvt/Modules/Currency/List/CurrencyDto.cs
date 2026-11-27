@@ -19,16 +19,22 @@ public class CurrencyDto
     public string? Symbolic { get; set; }
 
     [GridColumn]
-    public decimal? Digital { get; set; }
+    public long? Digital { get; set; }
 
     [GridColumn]
-    public string? Code_NSI { get; set; }
+    public long? Code_NSI { get; set; }
 
     [GridColumn]
     public bool IsArchive { get; set; }
 
+    [GridColumn(WithoutFullText = true)]
+    public string? CreationUserName { get; set; }
+
     [GridColumn]
     public DateTime CreationDate { get; set; }
+
+    [GridColumn(WithoutFullText = true)]
+    public string? LastChangeUserName { get; set; }
 
     [GridColumn]
     public DateTime LastChangeDate { get; set; }

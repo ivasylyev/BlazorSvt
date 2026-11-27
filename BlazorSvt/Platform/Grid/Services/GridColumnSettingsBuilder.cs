@@ -1,4 +1,5 @@
 using System.Linq.Expressions;
+using System.Reflection;
 using BlazorBootstrap;
 using Microsoft.Extensions.Localization;
 
@@ -18,7 +19,8 @@ public sealed class GridColumnSettingsBuilder<T>(IStringLocalizer<PlatformResour
         string header,
         bool visible = true,
         bool filterable = true,
-        Func<T, object>? display = null)
+        Func<T, object>? display = null,
+        bool multiSelect = false)
     {
         var compiled = property.Compile();
         columns.Add(new GridColumnSetting<T>
@@ -28,7 +30,9 @@ public sealed class GridColumnSettingsBuilder<T>(IStringLocalizer<PlatformResour
             DisplaySelector = display ?? (dto => GridValueFormatter.Format(compiled(dto))),
             SortSelector = ToSort(property),
             Visible = visible,
-            Filterable = filterable
+            Filterable = filterable,
+            WithoutFullText = IsWithoutFullText(property),
+            FilterMultiSelect = multiSelect
         });
         return this;
     }
@@ -52,7 +56,8 @@ public sealed class GridColumnSettingsBuilder<T>(IStringLocalizer<PlatformResour
         bool visible = true,
         bool filterable = true,
         IReadOnlyList<TRu>? filterValuesRu = null,
-        IReadOnlyList<TEn>? filterValuesEn = null)
+        IReadOnlyList<TEn>? filterValuesEn = null,
+        bool multiSelect = false)
         where TRu : Enum
         where TEn : Enum
     {
@@ -64,7 +69,8 @@ public sealed class GridColumnSettingsBuilder<T>(IStringLocalizer<PlatformResour
                 header,
                 visible,
                 filterable,
-                dto => typeof(TRu).GetDisplayName(compiled(dto).ToString()) ?? string.Empty);
+                dto => typeof(TRu).GetDisplayName(compiled(dto).ToString()) ?? string.Empty,
+                multiSelect);
             columns[^1].FilterEnumValues = filterValuesRu?.Cast<Enum>().ToList();
             return this;
         }
@@ -75,7 +81,8 @@ public sealed class GridColumnSettingsBuilder<T>(IStringLocalizer<PlatformResour
             header,
             visible,
             filterable,
-            dto => typeof(TEn).GetDisplayName(compiledEn(dto).ToString()) ?? string.Empty);
+            dto => typeof(TEn).GetDisplayName(compiledEn(dto).ToString()) ?? string.Empty,
+            multiSelect);
         columns[^1].FilterEnumValues = filterValuesEn?.Cast<Enum>().ToList();
         return this;
     }
@@ -85,7 +92,8 @@ public sealed class GridColumnSettingsBuilder<T>(IStringLocalizer<PlatformResour
         string header,
         bool visible = true,
         bool filterable = true,
-        IReadOnlyList<TEnum>? filterValues = null)
+        IReadOnlyList<TEnum>? filterValues = null,
+        bool multiSelect = false)
         where TEnum : Enum
     {
         var compiled = property.Compile();
@@ -94,7 +102,8 @@ public sealed class GridColumnSettingsBuilder<T>(IStringLocalizer<PlatformResour
             header,
             visible,
             filterable,
-            dto => typeof(TEnum).GetDisplayName(compiled(dto).ToString()) ?? string.Empty);
+            dto => typeof(TEnum).GetDisplayName(compiled(dto).ToString()) ?? string.Empty,
+            multiSelect);
         columns[^1].FilterEnumValues = filterValues?.Cast<Enum>().ToList();
         return this;
     }
@@ -130,14 +139,18 @@ public sealed class GridColumnSettingsBuilder<T>(IStringLocalizer<PlatformResour
     }
 
     public GridColumnSettingsBuilder<T> AddSystemColumns(
+        Expression<Func<T, string?>> creationUser,
         Expression<Func<T, DateTime>> creationDate,
+        Expression<Func<T, string?>> lastChangeUser,
         Expression<Func<T, DateTime>> lastChangeDate,
         Expression<Func<T, bool>> isArchive,
         string creationDateHeader,
         string lastChangeDateHeader,
         string isArchiveHeader)
     {
+        AddCreationUser(creationUser);
         Add(creationDate, creationDateHeader, visible: false);
+        AddLastChangeUser(lastChangeUser);
         Add(lastChangeDate, lastChangeDateHeader, visible: false);
 
         var compiledArchive = isArchive.Compile();
@@ -155,6 +168,27 @@ public sealed class GridColumnSettingsBuilder<T>(IStringLocalizer<PlatformResour
         };
         columns.Add(archive);
         return this;
+    }
+
+    /// <summary>Колонка «Автор» (перед датой создания): скрыта по умолчанию, заголовок из Platform-ресурсов.</summary>
+    public GridColumnSettingsBuilder<T> AddCreationUser(Expression<Func<T, string?>> creationUser) =>
+        Add(creationUser, platform["Common.CreationUser"], visible: false);
+
+    /// <summary>Колонка «Автор изм.» (перед датой изменения): скрыта по умолчанию, заголовок из Platform-ресурсов.</summary>
+    public GridColumnSettingsBuilder<T> AddLastChangeUser(Expression<Func<T, string?>> lastChangeUser) =>
+        Add(lastChangeUser, platform["Common.LastChangeUser"], visible: false);
+
+    private static bool IsWithoutFullText<TProp>(Expression<Func<T, TProp>> property)
+    {
+        var member = property.Body switch
+        {
+            MemberExpression direct => direct.Member,
+            UnaryExpression { Operand: MemberExpression inner } => inner.Member,
+            _ => null
+        };
+
+        return member is PropertyInfo propertyInfo
+            && propertyInfo.GetCustomAttribute<GridColumnAttribute>()?.WithoutFullText == true;
     }
 
     private static string MemberName<TProp>(Expression<Func<T, TProp>> property) =>

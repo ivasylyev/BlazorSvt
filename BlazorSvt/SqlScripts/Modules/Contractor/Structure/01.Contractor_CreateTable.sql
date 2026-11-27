@@ -51,7 +51,7 @@ GO
 CREATE TABLE v2.Contractor_Snapshot (
     Id              BIGINT NOT NULL,
     ContractorId    BIGINT NOT NULL,
-    Code            NVARCHAR(50) NOT NULL,
+    Code            INT          NOT NULL,
     IsArchive       BIT NOT NULL,
 
     NameSearch      NVARCHAR(4000) NULL,
@@ -63,7 +63,9 @@ CREATE TABLE v2.Contractor_Snapshot (
     IsCreditor      BIT NOT NULL,
     INN             NVARCHAR(4000) NULL,
 
+    CreationUserName NVARCHAR(255) NULL,
     CreationDate    DATETIME NOT NULL,
+    LastChangeUserName NVARCHAR(255) NULL,
     LastChangeDate  DATETIME NOT NULL,
 
     CONSTRAINT PK_Contractor_Snapshot PRIMARY KEY CLUSTERED (IsArchive, Id)

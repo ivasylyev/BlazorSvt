@@ -6,7 +6,7 @@ namespace BlazorSvt.Modules.ReportConstructor.Detail;
 public class ReportConstructorDetailDto
 {
     public long ReportConstructorId { get; set; }
-    public required string Code { get; set; }
+    public required long Code { get; set; }
     public required ReportDictionaryTypesRu ReportTypeIdRu { get; set; }
     public required ReportDictionaryTypesEn ReportTypeIdEn { get; set; }
     public DateOnly DateFrom { get; set; }
@@ -29,7 +29,9 @@ public class ReportConstructorDetailDto
     public string? ProductCode { get; set; }
     public string? ProductNameRu { get; set; }
     public string? ProductNameEn { get; set; }
+    public string? CreationUserName { get; set; }
     public DateTime CreationDate { get; set; }
+    public string? LastChangeUserName { get; set; }
     public DateTime LastChangeDate { get; set; }
     public bool IsArchive { get; set; }
 }

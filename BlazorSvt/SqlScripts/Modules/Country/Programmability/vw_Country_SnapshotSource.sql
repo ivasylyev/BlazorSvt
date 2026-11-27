@@ -15,9 +15,9 @@ GO
 CREATE OR ALTER VIEW v2.vw_Country_SnapshotSource
 AS
     SELECT
-        LEFT(c.Code, 50)                                                         AS Code,
+        TRY_CAST(c.Code AS INT)                                                 AS Code,
         LEFT(c.Name_ru, 4000)                                                    AS NameRu,
-        c.ISOCode                                                                AS ISOCode,
+        CAST(c.ISOCode AS INT)                                                   AS ISOCode,
         LEFT(c.Name_en, 4000)                                                    AS NameEn,
         LEFT(c.PlanCode, 4000)                                                   AS PlanCode,
         LEFT(c.Market, 4000)                                                     AS Market,
@@ -25,7 +25,11 @@ AS
         CAST(c.Status AS BIGINT)                                                 AS StatusId,
         CAST(c.Id AS BIGINT)                                                     AS CountryId,
         CASE WHEN ISNULL(c.PrimitiveEntityDataStateId, 2) = 2 THEN 1 ELSE 0 END  AS IsArchive,
+        cu.DisplayName                                                           AS CreationUserName,
         c.CreationDate                                                           AS CreationDate,
+        lu.DisplayName                                                           AS LastChangeUserName,
         c.LastChangeDate                                                         AS LastChangeDate
-    FROM dbo.vw_Country c (NOLOCK);
+    FROM dbo.vw_Country c (NOLOCK)
+    LEFT JOIN v2.vw_UserDisplayName cu ON cu.UserId = c.CreationUserId
+    LEFT JOIN v2.vw_UserDisplayName lu ON lu.UserId = ISNULL(c.LastChangeUserId, c.CreationUserId);
 GO

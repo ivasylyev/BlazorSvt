@@ -1,5 +1,6 @@
 using BlazorSvt.IntegrationTests.Infrastructure;
 using BlazorSvt.Modules.TransportLeg.List;
+using BlazorSvt.Platform.Domain.IdsEnum;
 using BlazorSvt.Platform.Grid.Models;
 using FluentAssertions;
 
@@ -62,6 +63,31 @@ public class GetBlazorGridDataTests(DatabaseFixture fixture) : IntegrationTestBa
         firstCall.Should().ContainSingle();
         secondCall.Should().ContainSingle();
         firstCall[0].Code.Should().Be(secondCall[0].Code);
+    }
+
+    [SkippableFact]
+    public async Task Execute_WhenInFilterOnEnumColumn_ReturnsOnlyListedValues()
+    {
+        var connectionString = RequireConnectionString();
+        var ids = $"{(int)TransportKindRu.Auto},{(int)TransportKindRu.Rail}";
+        var query = new GridQuery(
+            1,
+            20,
+            new GridSort(null, "ASC"),
+            [
+                new GridFilter("IsArchive", "False", GridFilterOperators.EqualsOperator),
+                new GridFilter(nameof(TransportLegDto.TransportKindIdRu), ids, GridFilterOperators.InOperator)
+            ]);
+
+        var (rows, totalCount) = await GridSpTestHelper.ExecuteGetBlazorGridDataAsync<TransportLegDto>(
+            connectionString,
+            typeof(TransportLegDto),
+            query);
+
+        var allowed = new[] { TransportKindRu.Auto, TransportKindRu.Rail };
+        rows.Should().NotBeEmpty();
+        rows.Should().OnlyContain(row => allowed.Contains(row.TransportKindIdRu));
+        totalCount.Should().BeGreaterThanOrEqualTo(rows.Count);
     }
 
     [SkippableFact]

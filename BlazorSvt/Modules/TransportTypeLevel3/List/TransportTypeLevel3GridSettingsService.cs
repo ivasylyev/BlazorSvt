@@ -19,8 +19,8 @@ public class TransportTypeLevel3GridSettingsService(
 
         b.Add(x => x.IsBasic_forCBD, L["TransportTypeLevel3Dto.IsBasic_forCBD"], display: dto => YesNo(dto.IsBasic_forCBD));
         b.Add(x => x.Code, L["TransportTypeLevel3Dto.Code"]);
-        b.AddEnum(isRu, x => x.TransportKindIdRu, x => x.TransportKindIdEn, L["TransportTypeLevel3Dto.TransportKindName"]);
-        b.AddEnum(isRu, x => x.TransportTypeIdRu, x => x.TransportTypeIdEn, L["TransportTypeLevel3Dto.TransportTypeName"]);
+        b.AddEnum(isRu, x => x.TransportKindIdRu, x => x.TransportKindIdEn, L["TransportTypeLevel3Dto.TransportKindName"], multiSelect: true);
+        b.AddEnum(isRu, x => x.TransportTypeIdRu, x => x.TransportTypeIdEn, L["TransportTypeLevel3Dto.TransportTypeName"], multiSelect: true);
         b.Add(x => x.Name, L["TransportTypeLevel3Dto.Name"]);
         b.Add(x => x.NameEnRu, L["TransportTypeLevel3Dto.NameEnRu"]);
         b.Add(x => x.TypeCode, L["TransportTypeLevel3Dto.TypeCode"]);
@@ -28,7 +28,9 @@ public class TransportTypeLevel3GridSettingsService(
         b.Add(x => x.OrionCode, L["TransportTypeLevel3Dto.OrionCode"]);
         b.AddEnum(isRu, x => x.StatusIdRu, x => x.StatusIdEn, L["TransportTypeLevel3Dto.Status"]);
         b.AddSystemColumns(
+            x => x.CreationUserName,
             x => x.CreationDate,
+            x => x.LastChangeUserName,
             x => x.LastChangeDate,
             x => x.IsArchive,
             L["TransportTypeLevel3Dto.CreationDate"],

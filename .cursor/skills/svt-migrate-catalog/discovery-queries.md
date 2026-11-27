@@ -16,7 +16,7 @@ Legacy DDL/views: `C:\Work\SVT\DB\SVT.DB.MDM\dbo\Views` и `dbo\Tables`.
 
 В конвейере оркестратора запросы выполняет роль discovery, без вложенного субагента. Вне конвейера их выполняет один read-only субагент; родитель этот файл не открывает. Если родитель — Claude, модель субагента — `grok-4.7-high-fast`. Если инструмент отклонил этот slug, взять самый новый slug Grok из списка в ответе. Если родитель не Claude, модель субагента не задавать.
 
-Возврат — таблица, по строке на атрибут: системное имя, русское описание, ранг, список (грид или карточка), включён после счётчика п.3, тип SQL, длина, цель ссылки или «скаляр». Перевод en/ru — если он уже есть в тех же запросах. Для словаря короче 100 неархивных строк — вторая таблица: Id, Code и имена как в представлении, без имён членов enum. Имена членов по правилам раздела 7 [discovery-rules.md](discovery-rules.md) собирает родитель.
+Возврат — таблица, по строке на атрибут: системное имя, русское описание, ранг, список (грид или карточка), включён после счётчика п.3, тип SQL, длина, цель ссылки или «скаляр». Перевод en/ru — если он уже есть в тех же запросах. Отдельной строкой — результат §2а: генератор `Code`, `Total`, `NotInt`. Для словаря короче 100 неархивных строк — вторая таблица: Id, Code и имена как в представлении, без имён членов enum. Имена членов по правилам раздела 7 [discovery-rules.md](discovery-rules.md) собирает родитель.
 
 Блокер — отдельная строка, без продолжения: нет строки примитива, нет атрибута, типа или длины, пустой `Description` заголовка, поле похоже на ссылку и эвристика не закрыта, коллизия или пустое имя в цепочке раздела 7.
 
@@ -48,6 +48,24 @@ ORDER BY AttributeRank;
 Сопоставить короткий список с `vw_{LegacyName}` (скрипт создания во legacy `dbo\Views`).  
 Длины `NVARCHAR` — из `dbo\Tables` legacy + `LEFT(..., N)` в Insert.  
 Какие колонки view игнорировать — [discovery-rules.md](discovery-rules.md) §2.
+
+## 2а. Тип Code
+
+`{PrimitiveEntityInfoId}` — Id основного примитива из шага 0. Считаются все строки, включая архивные. Пустая строка считается нецелой: `TRY_CONVERT(INT, N'')` возвращает `0`.
+
+```sql
+SELECT a.ValueGeneratorId,
+       g.Name AS ValueGenerator,
+       COUNT(*) AS Total,
+       SUM(CASE WHEN TRY_CONVERT(INT, d.Code) IS NULL OR LTRIM(d.Code) = N'' THEN 1 ELSE 0 END) AS NotInt
+FROM dbo.PrimitiveEntityData_{PrimitiveEntityInfoId} d
+JOIN dbo.AttributeInfo a
+    ON a.PrimitiveEntityInfoId = {PrimitiveEntityInfoId} AND a.Name = N'Code'
+LEFT JOIN dbo.ValueGenerator g ON g.Id = a.ValueGeneratorId
+GROUP BY a.ValueGeneratorId, g.Name;
+```
+
+Что делать с результатом — [discovery-rules.md](discovery-rules.md) §2.
 
 ## 3. Фильтр неиспользуемых атрибутов
 

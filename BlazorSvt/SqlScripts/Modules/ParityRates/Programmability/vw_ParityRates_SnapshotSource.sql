@@ -24,7 +24,9 @@ AS
         CASE WHEN ISNULL(pr.PrimitiveEntityDataStateId, 2) = 2 THEN 1 ELSE 0 END AS IsArchive,
         pr.StartDate                                            AS StartDate,
         pr.EndDate                                              AS EndDate,
+        cu.DisplayName                                          AS CreationUserName,
         pr.CreationDate                                         AS CreationDate,
+        lu.DisplayName                                          AS LastChangeUserName,
         ISNULL(pr.LastChangeDate, pr.CreationDate)              AS LastChangeDate,
 
         LEFT(pr.Code, 50)                                       AS Code,
@@ -91,6 +93,8 @@ AS
     JOIN vw_ProductGroup pg (NOLOCK) ON pr.ProductGroupCode = pg.Id
     LEFT JOIN vw_MTR p (NOLOCK) ON pr.Product = p.Id
     JOIN vw_Currency cur (NOLOCK) ON pr.CurrencyStandard = cur.Id
+    LEFT JOIN v2.vw_UserDisplayName cu ON cu.UserId = pr.CreationUserId
+    LEFT JOIN v2.vw_UserDisplayName lu ON lu.UserId = ISNULL(pr.LastChangeUserId, pr.CreationUserId)
 
     WHERE pr.Code IS NOT NULL
       AND LTRIM(RTRIM(pr.Code)) <> N''

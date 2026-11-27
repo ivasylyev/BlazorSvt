@@ -62,11 +62,14 @@ public required RateTypeEn RateTypeIdEn { get; set; }
 - Наследник `BaseGridSettingsService<{Entity}Dto>`
 - `StorageKey` → `"{Entity}GridColumnSettings"`
 - `GetDefaultSettings`: порядок как **короткий список (discovery §1)**
-- **Все колонки видимы**, кроме `IsArchive`, `CreationDate`, `LastChangeDate`
+- **Все колонки видимы**, кроме `IsArchive`, `CreationUserName`, `CreationDate`, `LastChangeUserName`, `LastChangeDate`
+- Системные колонки — одним вызовом `b.AddSystemColumns(x => x.CreationUserName, x => x.CreationDate, x => x.LastChangeUserName, x => x.LastChangeDate, x => x.IsArchive, …)` в конце списка: порядок «Автор, Создано, Автор изм., Изменено, Архив». Заголовки авторов берутся из `Platform.resx` (`Common.CreationUser` / `Common.LastChangeUser`), в resx модуля их не писать
 - `IsArchive`: `Visible = false`, `FilterValue = "False"` **всегда**
-- `CreationDate`, `LastChangeDate`: `Visible = false` **всегда** (без `FilterValue`)
+- `CreationUserName`, `CreationDate`, `LastChangeUserName`, `LastChangeDate`: `Visible = false` **всегда** (без `FilterValue`)
+- В list-DTO и detail-DTO: `public string? CreationUserName` перед `CreationDate`, `public string? LastChangeUserName` перед `LastChangeDate` (list — с `[GridColumn(WithoutFullText = true)]`: full-text на авторах нет)
 - `LastChangeDate` в DTO — `DateTime`, не `DateTime?`. В снимке колонка `NOT NULL`: пустая дата легаси уже заменена на `CreationDate` (`ISNULL(LastChangeDate, CreationDate)`)
 - **Короткий словарь (enum):** видимая колонка `{X}IdRu`/`{X}IdEn` с `GetDisplayName`; без `Code`/`Name*`.
+- **Мультивыбор enum-фильтра:** для полей «Тип ставки» (`RateTypeId*`), «Вид транспорта» (`TransportKindId*`, `RouteTransportKindId*`) и «Тип транспорта» (`TransportTypeId*`, `Leg*_TransportTypeId*`) в `AddEnum`/`Add` передавать `multiSelect: true` — в гриде чекбокс-список, SQL `IN (...)`. Остальные enum-колонки — одиночный выбор.
 - **Длинный словарь:** видимая `{X}NameRu`/`{X}NameEn`; **без Id**, без дублирующей скрытой Name-колонки.
 - **Whitelist Code** (`NodeToCode`, `RegionCode`, …): `{X}Code` — `Visible = false`, `Filterable = true` (пользователь может включить в настройках).
 - `Filterable = true` для текстовых и enum; `false` для вычисляемых числовых полей
@@ -75,6 +78,7 @@ public required RateTypeEn RateTypeIdEn { get; set; }
 
 - `IDetailSettingsService<{Entity}DetailDto>`
 - Порядок и группы как **длинный список (discovery §4)**
+- Авторы — `b.AddCreationUser(group, x => x.CreationUserName)` перед `CreationDate` и `b.AddLastChangeUser(group, x => x.LastChangeUserName)` перед `LastChangeDate`. Если у `CreationDate` был `hasMargin: true`, он переходит на `AddCreationUser`. Подписи «Автор» / «Автор последних изменений» — из `Platform.resx` (`Common.CreationUser.Long` / `Common.LastChangeUser.Long`). Нет дат на карточке — авторы всё равно добавляются: полный Excel строится из полей карточки
 - `GroupHeader` из resx: ключ `{Entity}DetailDto.Group.{GroupRank}.{SanitizedGroupNameEn}`
 - `SanitizedGroupNameEn`: PascalCase, только буквы/цифры (пробелы и спецсимволы удалить)
 - Пустые значения (`null` / `""` / whitespace) скрываются в UI при `Grid:HideEmptyDetailFields` (default `true`) — не дублировать `visible: dto => x is not null` для обычных optional-строк
@@ -144,7 +148,7 @@ services.AddCatalogMenu(new CatalogMenuContribution(
 | Интеграция с ЦБД | `Cbd` |
 | Вспомогательные | `Other` |
 
-`VisibleToEditor` — колонка «Меню ЕО» (`да` → `true`, `нет` → `false`). До ролевой модели 21.1 шапка по этому флагу не фильтрует. Порядок пункта не задаётся: шапка сортирует подписи по алфавиту текущего языка. Ключ `HeaderMenu.{Entity}` добавляется в Platform.resx и равен заголовку грида; порядком пункта меню он не управляет.
+`VisibleToEditor` — колонка «Меню ЕО» (`да` → `true`, `нет` → `false`). До ролевой модели 10.1 шапка по этому флагу не фильтрует. Порядок пункта не задаётся: шапка сортирует подписи по алфавиту текущего языка. Ключ `HeaderMenu.{Entity}` добавляется в Platform.resx и равен заголовку грида; порядком пункта меню он не управляет.
 
 **`{Entity}SyncJob`:** каркас — `TransportRateSyncJob`. Sources = основная таблица. Чужой справочник добавлять следующим источником, только если проекция его читает. Узлы и продукт в `TransportRateSyncJob` — источники TransportRate, в другой job их не переносить; то же для источников `AverageRateLevel3SyncJob`. Стабильные словари (RateType, Currency, …) в чужой каскад **не** включать. Если сам `{Entity}` — стабильный словарь с enum, SyncJob нет: только разовая заливка. У каждого источника — комментарий с именем справочника.
 

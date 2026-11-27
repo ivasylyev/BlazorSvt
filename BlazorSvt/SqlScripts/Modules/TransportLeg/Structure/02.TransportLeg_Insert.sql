@@ -52,7 +52,9 @@ INSERT INTO v2.TransportLeg_Snapshot (
     ,RegionToNameEn
     ,RegionToNameRu
 
+    ,CreationUserName
     ,CreationDate
+    ,LastChangeUserName
     ,LastChangeDate
 
     ,NodeFromId
@@ -102,7 +104,9 @@ SELECT
     ,RegionToNameEn
     ,RegionToNameRu
 
+    ,CreationUserName
     ,CreationDate
+    ,LastChangeUserName
     ,LastChangeDate
 
     ,NodeFromId

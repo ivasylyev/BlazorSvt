@@ -26,6 +26,7 @@ grill-with-docs
 | [svt-migrate-catalog-orchestrator](svt/svt-migrate-catalog-orchestrator.md) | человек (явный вызов) | Конвейер миграции RO-справочников; канон правил — svt-migrate-catalog |
 | [svt-create-programmability](svt/svt-create-programmability.md) | человек `/create_programmability` и агент | Накат Programmability на localhost/`mdm` |
 | [svt-publish](svt/svt-publish.md) | человек `/publish` и агент | Пакет версии в `C:\publish\{версия}` и zip |
+| [svt-update-user-guide](svt/svt-update-user-guide.md) | агент | Текст и снимки `1`–`13` в `docs/user-guide`. В цепочку выше не входит |
 
 ## Атлас
 

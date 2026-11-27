@@ -22,7 +22,6 @@ GO
 
 CREATE FULLTEXT INDEX ON v2.MTR_Snapshot
 (
-    Code                LANGUAGE 1033,
     NameFullRu          LANGUAGE 1049,
     NameShortEn         LANGUAGE 1033,
     ProductGroupCode    LANGUAGE 1033,

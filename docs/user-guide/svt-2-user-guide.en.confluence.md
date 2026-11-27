@@ -31,13 +31,13 @@ h2. 1. What SVT 2.0 is and how it differs from the legacy system
 SVT 2.0 is read-only. You cannot create, edit, or delete records here yet.
 {warning}
 
-SVT 2.0 data is synchronized from the legacy system. After a change in legacy SVT, the update usually appears in SVT 2.0 *within about 2 minutes*.
+SVT 2.0 data is synchronized from the legacy system. After a change in legacy SVT, the update usually appears in SVT 2.0 in *about 2 minutes*.
 
 Exceptions:
 
 * Every night from *01:00 to 02:30* updates wait until this window ends. On Saturdays there is an additional pause from *04:00 to 06:00*.
 * A record deleted in the legacy system appears in SVT 2.0 after the nightly reconciliation, *around 02:00*.
-* Constant dictionaries (for example, *Rate type*) are refreshed *once* at deployment, not every ~2 minutes.
+* *Rate type*, *Currencies*, *Means of transport (level 3)*, *Rate synchronization class*, *Rate calculation type*, *Relevance*, and *Means of transport* are refreshed *once* at deployment, not every ~2 minutes.
 
 ----
 
@@ -58,11 +58,11 @@ Use one of the URLs below (corporate network access is required):
 
 h2. 3. Menu and language
 
-At the top of the page you will find the *Home* button, the domain menus, the current user, and the language selector.
+At the top of the page you will find the SIBUR logo, a home icon, the domain menus, the current user, and the language selector. There is no visible *Home* label.
 
 !1-menu-en.png|width=800,alt="SVT 2.0 menu"!
 
-*Home* opens the average-rates summary. The other reference books are grouped by domain: hover a domain name and choose a reference book. Items inside a domain are listed *alphabetically* by the label in the current language. A domain that has no reference books yet is not shown.
+The logo opens the site root. The home icon opens the SVT home page. The other reference books are grouped by domain: a domain menu opens on hover and on click. Items inside a domain are listed *alphabetically* by the label in the current language. A domain that has no reference books yet is not shown.
 
 On the right side of the header are the *current user* (usually the display name; hover to see the login in the form *DOMAIN\account*) and the UI language (for example, *English (United States)*). When you change the language, button labels, menu items, and column labels change, and the order of reference books inside a domain is recalculated alphabetically. Column visibility settings are stored *separately for each language* (see section 7).
 
@@ -71,7 +71,7 @@ At the bottom of the page there is a footer bar: on the left, the load time of t
 !2-footer-en.png|width=800,alt="Footer: load time and version"!
 
 ||Domain||Menu item||Page title (as shown in the system)||
-|—|Home|Summary «Average rates by direction»|
+|—|home icon|Average rates by directions|
 |Rates|Average Rate|Average Rate|
 |Rates|Coefficient|Coefficient|
 |Rates|Contractors|Contractors|
@@ -98,7 +98,7 @@ At the bottom of the page there is a footer bar: on the left, the load time of t
 
 h2. 4. Home page
 
-The home page shows the *«Average rates by direction»* summary. This is a fixed slice; the user cannot configure it:
+The home page shows *Average rates by directions*. The subtitle is *Product: Polyolefins · …*. The table has a *Vehicle type* column with the value *auto*. This is a fixed slice; the user cannot configure it:
 
 * product — polyolefins;
 * rate type — agreement;
@@ -119,16 +119,17 @@ The contents of this summary cannot be changed by the user.
 
 h2. 5. Working with a reference book (common rules)
 
-Hover a domain in the top menu and choose a reference book. A table of records opens.
+Open a domain menu at the top of the page by hovering or clicking, then choose a reference book. A table of records opens.
 
 *Common for all reference books:*
 
 * Data is view-only.
 * By default, *non-archive* (active) records are shown.
-* To view archive records, enable the *Archive* column in Settings and filter by it (section 6.5).
+* To view archive records, show the *Archive* column and turn on the switch in its filter (section 6.5).
 * A filter row is under the column headers. If all records fit on one page and no filters are set, the filter row is hidden.
 * You can sort: click a column header.
 * Pagination is at the bottom (*«1 - 10 from … items»*). Use the arrows or page numbers.
+* *Items per page*: 10, 15, 20, 30, or 50. One value for all reference books. It is stored in the browser and does not depend on the language.
 * The arrow on the left of a row opens the *detail card* (all fields of the record).
 
 Buttons to the right of the page title:
@@ -141,7 +142,7 @@ h3. 5.1. Detail card
 
 # Find the required row.
 # Click the arrow on the left of the row.
-# Field groups open expanded; you can collapse them. Groups that contain tables sit above them and start collapsed: the rows appear after a click on the header. *Collapse all* / *Expand all* control all groups at once.
+# Field groups open expanded; you can collapse them. The child table sits above the field groups and opens collapsed. Inside it there are pages, sorting by a column header, and filters. The page size is the same as for the reference book; there is no separate page-size switch. If there are more than 100 rows, *Shown N of M* appears under the table: the first 100 rows are in the table. Those rows are not in Excel. The *Expand all* / *Collapse all* button is a single button and is shown when there are at least two groups.
 
 !4-averare-rate-en.png|width=800,alt="Average Rate detail card"!
 
@@ -157,11 +158,19 @@ The filter types below are shown for the *Average Rate* reference book. Other bo
 
 h3. 6.1. Drop-down list
 
-Used for fields such as *Rate type*, *Transport kind*, *Transport type*, *Currency*.
+Used for fields such as *Currency*:
 
 # In the filter row under the column, open the list (often labeled *Select*).
 # Choose a value (for example, *Tender*).
 # The table refreshes.
+
+h4. 6.1.1. Checkbox list (several values at once)
+
+For *Rate type*, *Transport kind* and *Transport type* the list has checkboxes — you can select *several* values at once. The table shows rows with *any* of the selected values.
+
+# Open the list in the filter under the column — it stays open.
+# Check the required values (for example, *Tender* and *Preferential*).
+# The table refreshes after each click. To remove a value, uncheck it; to clear everything, uncheck all values or click *Reset Filters*.
 
 !5-average-rate-filter-dropdown-en.png|width=800,alt="Filter: rate type"!
 
@@ -169,15 +178,17 @@ h3. 6.2. Text search (nodes, names, product groups)
 
 Used for *From*, *Proxy*, *To*, *Group*, *Product*, and similar text columns.
 
-This is full-text search: the system finds records that contain the entered fragment.
+Search matches from the start of the value: *Kazan* finds Kazan; *azan* does not. A string shorter than 3 characters is not searched.
 
 # Click the filter field under the column.
-# Enter part of the name (for example, *Kazan*, *port*, *China*).
+# Enter the start of the name (for example, *Kazan*).
 # Wait for the table to refresh.
 
 {tip:title=Tip}
 Enter *at least 3 characters*. A shorter string will not work.
 {tip}
+
+*Contains*, *Equals*, and *Starts With* do not change the result on a reference-book text column. In a table on the card, these operators work as labeled and only on the loaded rows.
 
 You can combine several text filters (for example, From + Proxy + To).
 
@@ -203,17 +214,18 @@ Used for *Avg rate*, *Per ton*, *Load*, and other numeric columns.
 
 # If needed, choose an operator next to the filter icon (*Equals*, *Greater Than*, *Less Than*, and so on).
 # Enter a number (for example, *100*).
-# The table shows matching rows. The footer shows how many records were found (for example, *«1 - 4 from 4 items»*).
+# The table shows matching rows. At the bottom the format is *«1 - 10 from … items»*.
 
 !8-average-rate-filter-numbers-en.png|width=800,alt="Numeric filter by average rate"!
 
 h3. 6.5. How to view archive records
 
-By default, the archive is hidden.
+By default, active records are shown: the filter switch is off, including when the *Archive* column is hidden. The column value is *Active* or *Archive*.
 
-# Click *Settings*.
-# Enable the *Archive* column and click *Ok*.
-# In the *Archive* column filter, select the required value (archive / active).
+# To see archived records, turn on the *Archive* column in *Settings* (section 7) and turn on the switch in that column's filter.
+# Switch off — active records. Switch on — archived records.
+# Both at once — clear this column's filter with the funnel (*Clear*).
+# The same switch is used for *yes/no* fields, for example *Deflator*.
 # When finished, you can hide the column again or click *Reset Filters*.
 
 ----
@@ -247,7 +259,7 @@ Export respects the *current table filters*.
 # Click *Reports*.
 # Choose:
 ** *Short report* — only the columns turned on in *Settings*;
-** *Full report* — an extended field set (as in the detail card).
+** *Full report* — the fields of the card groups, without the tables inside the card.
 # The Excel file is downloaded to your browser downloads folder.
 
 !10-reports-menu-en.png|width=800,alt="Reports menu"!
@@ -318,7 +330,7 @@ Do the following:
 ** entered «Kazan» in the From filter;
 ** clicked the row arrow — an error appeared.
 # *Click* the error banner — details open (a dark box with text).
-# Take a *second screenshot* with the details expanded, *or* select the text with the mouse (*Message*, *Type*, *StackTrace*), copy it (*Ctrl + C*), and paste it into the email / ticket.
+# Take a *second screenshot* with the details expanded, *or* copy the message, the type, and the stack from the screen (*Message*, *Type*, *StackTrace*, *Ctrl + C*) and paste them into the email / ticket.
 
 !14-error-en.png|width=800,alt="Expanded error details"!
 

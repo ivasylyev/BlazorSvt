@@ -50,7 +50,9 @@ INSERT INTO v2.TransportRoute_Snapshot (
     ,ChainNodes
     ,TransportRouteId
     ,IsArchive
+    ,CreationUserName
     ,CreationDate
+    ,LastChangeUserName
     ,LastChangeDate
 )
 SELECT
@@ -93,7 +95,9 @@ SELECT
     ,ChainNodes
     ,TransportRouteId
     ,IsArchive
+    ,CreationUserName
     ,CreationDate
+    ,LastChangeUserName
     ,LastChangeDate
 FROM v2.vw_TransportRoute_SnapshotSource;
 GO

@@ -20,9 +20,13 @@ AS
         LEFT(c.Code, 50)                                                         AS Code,
         LEFT(c.Name, 4000)                                                       AS Name,
         LEFT(c.Symbolic, 4000)                                                   AS Symbolic,
-        c.Digital                                                                AS Digital,
-        LEFT(c.Code_NSI, 50)                                                     AS Code_NSI,
+        CAST(c.Digital AS INT)                                                   AS Digital,
+        TRY_CAST(c.Code_NSI AS INT)                                              AS Code_NSI,
+        cu.DisplayName                                                           AS CreationUserName,
         c.CreationDate                                                           AS CreationDate,
+        lu.DisplayName                                                           AS LastChangeUserName,
         ISNULL(c.LastChangeDate, c.CreationDate)                                 AS LastChangeDate
-    FROM dbo.vw_Currency c;
+    FROM dbo.vw_Currency c
+    LEFT JOIN v2.vw_UserDisplayName cu ON cu.UserId = c.CreationUserId
+    LEFT JOIN v2.vw_UserDisplayName lu ON lu.UserId = ISNULL(c.LastChangeUserId, c.CreationUserId);
 GO

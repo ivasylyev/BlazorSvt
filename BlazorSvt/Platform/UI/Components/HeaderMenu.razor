@@ -5,11 +5,16 @@
     <div class="d-flex align-items-center w-100">
 
         <div class="d-flex align-items-center gap-2">
+            @* Логотип ведёт в корень сайта (href="/"), кнопка «Главная» — на корень приложения (относительно base href, например /v2/) *@
+            <a href="/" class="sibur-logo-link" aria-label="СИБУР">
+                <img src="images/sibur-logo-light-theme.svg" alt="СИБУР" class="sibur-logo" />
+            </a>
             <Button Class="@GetButtonClass(IsHomeActive())"
                     Type="ButtonType.Link"
                     To="">
-                <Icon Name="@IconName.HouseDoorFill" Class="me-2"/>
-                @L["HeaderMenu.Home"]
+                <Icon Name="@IconName.HouseDoorFill" />
+                @* Подпись для скринридеров. Не aria-label на Button: Blazor.Bootstrap теряет href, если компоненту переданы произвольные атрибуты *@
+                <span class="visually-hidden">@L["HeaderMenu.Home"]</span>
             </Button>
 
             @foreach (var group in DomainGroups)
@@ -17,7 +22,9 @@
                 <div class="sibur-domain-menu">
                     <button type="button"
                             class="btn dropdown-toggle @GetButtonClass(IsDomainActive(group))"
-                            aria-haspopup="true">
+                            data-bs-toggle="dropdown"
+                            aria-haspopup="true"
+                            aria-expanded="false">
                         @L[group.TextResourceKey]
                     </button>
                     <ul class="dropdown-menu sibur-domain-menu-panel">

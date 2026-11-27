@@ -18,7 +18,11 @@ AS
         LEFT(r.Code, 50)                                                         AS Code,
         LEFT(r.Name, 50)                                                         AS Name,
         LEFT(r.SearchCode, 50)                                                   AS SearchCode,
+        cu.DisplayName                                                           AS CreationUserName,
         r.CreationDate                                                           AS CreationDate,
+        lu.DisplayName                                                           AS LastChangeUserName,
         ISNULL(r.LastChangeDate, r.CreationDate)                                 AS LastChangeDate
-    FROM dbo.vw_RateCalcType r (NOLOCK);
+    FROM dbo.vw_RateCalcType r (NOLOCK)
+    LEFT JOIN v2.vw_UserDisplayName cu ON cu.UserId = r.CreationUserId
+    LEFT JOIN v2.vw_UserDisplayName lu ON lu.UserId = ISNULL(r.LastChangeUserId, r.CreationUserId);
 GO

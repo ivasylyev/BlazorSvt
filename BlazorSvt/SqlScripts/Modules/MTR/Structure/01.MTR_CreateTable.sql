@@ -51,7 +51,7 @@ GO
 CREATE TABLE v2.MTR_Snapshot (
     Id                   BIGINT NOT NULL,
     MTRId                BIGINT NOT NULL,
-    Code                 NVARCHAR(50) NOT NULL,
+    Code                 INT          NOT NULL,
     IsArchive            BIT NOT NULL,
 
     NameFullRu           NVARCHAR(4000) NULL,
@@ -80,7 +80,9 @@ CREATE TABLE v2.MTR_Snapshot (
     DangerClassCode      NVARCHAR(50) NULL,
     DangerClassNameRu    NVARCHAR(4000) NULL,
 
+    CreationUserName     NVARCHAR(255) NULL,
     CreationDate         DATETIME NOT NULL,
+    LastChangeUserName   NVARCHAR(255) NULL,
     LastChangeDate       DATETIME NOT NULL,
 
     CONSTRAINT PK_MTR_Snapshot PRIMARY KEY CLUSTERED (IsArchive, Id)

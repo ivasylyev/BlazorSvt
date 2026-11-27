@@ -14,12 +14,16 @@ AS
     SELECT
         CAST(r.Id AS BIGINT)                                                     AS RateAutoSelectionSettingId,
         CASE WHEN ISNULL(r.PrimitiveEntityDataStateId, 2) = 2 THEN 1 ELSE 0 END  AS IsArchive,
-        LEFT(r.Code, 50)                                                         AS Code,
+        TRY_CAST(r.Code AS INT)                                                 AS Code,
         r.DestinationNodeToRegion                                                AS DestinationNodeToRegion,
         r.DestinationNodeToCountry                                               AS DestinationNodeToCountry,
         r.ProductToProductGroup                                                  AS ProductToProductGroup,
         r.AnyTransportKind                                                       AS AnyTransportKind,
+        cu.DisplayName                                                           AS CreationUserName,
         r.CreationDate                                                           AS CreationDate,
+        lu.DisplayName                                                           AS LastChangeUserName,
         r.LastChangeDate                                                         AS LastChangeDate
-    FROM dbo.vw_RateAutoSelectionSetting r (NOLOCK);
+    FROM dbo.vw_RateAutoSelectionSetting r (NOLOCK)
+    LEFT JOIN v2.vw_UserDisplayName cu ON cu.UserId = r.CreationUserId
+    LEFT JOIN v2.vw_UserDisplayName lu ON lu.UserId = ISNULL(r.LastChangeUserId, r.CreationUserId);
 GO

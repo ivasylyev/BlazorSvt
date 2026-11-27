@@ -20,7 +20,7 @@ CREATE UNIQUE NONCLUSTERED INDEX UX_Coefficient_Snapshot_Id
     ON [PRIMARY];
 GO
 
--- Code коэффициента — числовая строка, в full-text не входит (фильтрованные индексы ниже).
+-- Code коэффициента — INT, в full-text не входит (фильтрованные индексы ниже).
 CREATE FULLTEXT INDEX ON v2.Coefficient_Snapshot
 (
     Name                    LANGUAGE 1049,

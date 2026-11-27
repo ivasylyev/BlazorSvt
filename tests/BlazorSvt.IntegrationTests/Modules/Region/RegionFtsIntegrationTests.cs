@@ -1,6 +1,5 @@
 using BlazorSvt.IntegrationTests.Infrastructure;
 using BlazorSvt.Modules.Region.List;
-using BlazorSvt.Platform.Domain.IdsEnum;
 using FluentAssertions;
 
 namespace BlazorSvt.IntegrationTests.Modules.Region;
@@ -28,11 +27,10 @@ public class RegionFtsIntegrationTests(DatabaseFixture fixture) : IntegrationTes
     }
 
     [SkippableFact]
-    public async Task GetBlazorGridData_WithNameRuMarketAndStatusFilter_ReturnsRows()
+    public async Task GetBlazorGridData_WithNameRuAndMarketFilter_ReturnsRows()
     {
         var connectionString = RequireConnectionString();
         var query = FtsFilterTestSupport.CreateQuery(
-            FtsFilterTestSupport.IdEquals(nameof(RegionDto.StatusIdRu), (int)StatusElementRu.Active),
             FtsFilterTestSupport.Contains(nameof(RegionDto.NameRu), "Кабул"),
             FtsFilterTestSupport.Contains(nameof(RegionDto.Market), "Азия"));
 
@@ -44,7 +42,6 @@ public class RegionFtsIntegrationTests(DatabaseFixture fixture) : IntegrationTes
         rows.Should().NotBeEmpty();
         totalCount.Should().BeGreaterThan(0);
         rows.Should().OnlyContain(r => !r.IsArchive);
-        rows.Should().OnlyContain(r => r.StatusIdRu == StatusElementRu.Active);
         rows.Should().OnlyContain(r => r.NameRu != null && r.NameRu.Contains("Кабул", StringComparison.OrdinalIgnoreCase));
         rows.Should().OnlyContain(r => r.Market != null && r.Market.Contains("Азия", StringComparison.OrdinalIgnoreCase));
     }

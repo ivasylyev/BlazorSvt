@@ -18,6 +18,13 @@
 Колонки view, которых нет в коротком списке — **игнорировать**.  
 Длины `NVARCHAR` — из `dbo\Tables` legacy + `LEFT(..., N)` в Insert.
 
+**Тип `Code`.** Запрос — [discovery-queries.md](discovery-queries.md) §2а. В легаси `Code` всегда `nvarchar(100)`, по типу колонки число не отличить. Кто ставит код, задаёт `AttributeInfo.ValueGeneratorId` (`dbo.ValueGenerator`): `1` Guid и `2` OrdinalNumber — система, `3` Manual — пользователь.
+
+- `NotInt = 0`: все коды, включая архивные, — целые и помещаются в `INT`. **Стоп, вопрос пользователю** с рекомендацией `INT`. В вопросе назвать генератор. При Manual — риск: нецелый код, который введут в легаси, даст `NULL` в проекции, и синхронизация строки упадёт на `NOT NULL`.
+- Иначе — `NVARCHAR` длиной из легаси. Генератор сам по себе тип не задаёт: у ProductGroup генератор `2`, а коды `T1`…`T9`.
+- Guid (`1`) — `NVARCHAR`, не `uniqueidentifier`: поиск по началу кода (`LIKE`) работает только по строке. Full-text на нём нет — [sql.md](sql.md), фаза 2, 03. На list-DTO: `[GridColumn(WithoutFullText = true)]`.
+- Ответ `INT`: проекция `TRY_CAST(x.Code AS INT) AS Code`, снимок `Code INT NOT NULL`, в list- и detail-DTO `long Code`. Образец — `TransportRate`, `TransportRoute`.
+
 ## 3. Фильтр неиспользуемых атрибутов
 
 Счётчик — [discovery-queries.md](discovery-queries.md) §3.
@@ -165,6 +172,7 @@ python .cursor/skills/svt-migrate-catalog/scripts/generate-module-resx.py `
 
 1. **Ветка Code** — если **каждое** значение `Code` валидно как идентификатор C#: ASCII, не начинается с цифры, не ключевое слово C#, символы только `[A-Za-z0-9_]`. Тогда имя поля = `Code`.
 2. Если **хотя бы одно** значение `Code` невалидно — `Code` **не используем для всего словаря**.
+2а. **Ветка SearchCode.** Если `Code` невалиден (п.2) и у словаря есть `SearchCode`, каждое значение которого валидно как идентификатор C# (правила ветки Code), имя члена = `SearchCode`. Если `SearchCode` нет, а `Name` валидно как идентификатор C#, имя члена = `Name`. В обоих случаях `Display` английского enum берётся дословно из той же колонки, что и имя члена. `Display` русского enum — дословно `Name`, а при имени члена из `Name` — `FullName`, если оно есть. Коллизии и невалидные идентификаторы — стоп, как в п.7 и п.9. Ветка Name из п.3 остаётся для словарей без подходящих `SearchCode` и `Name`.
 3. **Ветка Name** — цепочка источников (первое непустое):
    `NameEn` → `Name_en` → `NameEnRu` (legacy: без кириллицы — как `NameEn`; иначе — как `NameRuEn`) → `NameRuEn` (часть без кириллицы, разделитель `/`) → `NameRu` → `Name_ru` → `ShortNameEn` → `ShortNameRu` → `FullNameEn` → `FullNameRu`.
 4. Многословные имена: разделители (пробел, `/`, `-`, `|`, …) → `_`; первая буква заглавная (`Railway_station`, `Auto_10`).

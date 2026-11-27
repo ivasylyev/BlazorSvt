@@ -1,13 +1,13 @@
 ﻿/*
   Auto-generated: All v2 Programmability
-  Generated: 2026-11-23 17:19:38
-  Scripts: 75
-  Order: Create-Programmability.ps1 (Platform -> Modules by name)
+  Generated: 2026-11-26 20:25:38
+  Scripts: 76
+  Order: svt-create-programmability.ps1 (Platform -> Modules by name)
 */
 GO
 
 --------------------------------------------------------------------------------
--- [1/75] Platform :: fn_GetDateSqlOperator.sql
+-- [1/76] Platform :: fn_GetDateSqlOperator.sql
 -- Source: Platform\Programmability\fn_GetDateSqlOperator.sql
 --------------------------------------------------------------------------------
 GO
@@ -39,7 +39,29 @@ END
 GO
 
 --------------------------------------------------------------------------------
--- [2/75] Platform :: sp_ExportBlazorGridDetail.sql
+-- [2/76] Platform :: vw_UserDisplayName.sql
+-- Source: Platform\Programmability\vw_UserDisplayName.sql
+--------------------------------------------------------------------------------
+GO
+USE [mdm];
+GO
+
+/*
+    ФИО пользователя легаси для колонок «Автор» и «Автор изм.» (SVT-5320).
+    Name, при пустом Name — Login. Ключ — dbo.[User].Id
+    (CreationUserId / LastChangeUserId в dbo.vw_*).
+*/
+
+CREATE OR ALTER VIEW v2.vw_UserDisplayName
+AS
+    SELECT
+        u.Id                                                AS UserId,
+        LEFT(ISNULL(NULLIF(u.Name, N''), u.Login), 255)     AS DisplayName
+    FROM dbo.[User] u (NOLOCK);
+GO
+
+--------------------------------------------------------------------------------
+-- [3/76] Platform :: sp_ExportBlazorGridDetail.sql
 -- Source: Platform\Programmability\sp_ExportBlazorGridDetail.sql
 --------------------------------------------------------------------------------
 GO
@@ -161,7 +183,7 @@ END
 GO
 
 --------------------------------------------------------------------------------
--- [3/75] Platform :: sp_GetBlazorGridData.sql
+-- [4/76] Platform :: sp_GetBlazorGridData.sql
 -- Source: Platform\Programmability\sp_GetBlazorGridData.sql
 --------------------------------------------------------------------------------
 GO
@@ -255,6 +277,7 @@ EXEC v2.GetBlazorGridData
     @SortDirection=N'ASC',
     @FilterJson=N'[
         {"PropertyName":"RateTypeIdRu","Value":"543746","Operator":"Equals"},
+        {"PropertyName":"TransportKindIdRu","Value":"543746,543799","Operator":"In"},
         {"PropertyName":"NodeFromNameRu","Value":"казань","Operator":"Contains"},
         {"PropertyName":"ProxyNodeNameRu","Value":"находка","Operator":"Contains"},
         {"PropertyName":"IsArchive","Value":"False","Operator":"Equals"}
@@ -288,11 +311,15 @@ BEGIN
         ColumnName    SYSNAME NOT NULL,
         SqlColumnName NVARCHAR(258) NOT NULL,
         ColumnType    NVARCHAR(20) NOT NULL,
+        IsFullText    BIT NOT NULL,
         ColumnValue   NVARCHAR(4000) NULL,
         Operator      NVARCHAR(50) NULL,
+        Precision     NVARCHAR(10) NULL,
         SqlOperator   NVARCHAR(2) NULL,
         SqlValue      NVARCHAR(4000) NULL,
+        InValues      NVARCHAR(4000) NULL,
         FtsValue      NVARCHAR(4000) NULL,
+        LikeValue     NVARCHAR(4000) NULL,
         FilterPart    NVARCHAR(MAX) NULL
     )
     DECLARE
@@ -397,18 +424,21 @@ BEGIN
     END;
 
     
-    INSERT INTO @FilteredColumns (ColumnName, SqlColumnName, ColumnType, ColumnValue, Operator)
+    INSERT INTO @FilteredColumns (ColumnName, SqlColumnName, ColumnType, IsFullText, ColumnValue, Operator, Precision)
     SELECT
         AC.ColumnName,
         QUOTENAME(AC.SqlColumnName),
         AC.ColumnType,
+        ISNULL(COLUMNPROPERTY(@TableObjectId, AC.SqlColumnName, 'IsFulltextIndexed'), 0),
         ISNULL(LTRIM(RTRIM(JS.[Value])), N'') AS ColumnValue,
-        JS.Operator
+        JS.Operator,
+        JS.Precision
     FROM OPENJSON(@FilterJson)
     WITH (
         PropertyName     NVARCHAR(100)  '$.PropertyName',
         [Value]          NVARCHAR(MAX)  '$.Value',
-        Operator         NVARCHAR(50)   '$.Operator'
+        Operator         NVARCHAR(50)   '$.Operator',
+        Precision        NVARCHAR(10)   '$.Precision'
     ) JS
     JOIN @AllowedColumns AC
         ON JS.PropertyName = AC.ColumnName
@@ -418,18 +448,30 @@ BEGIN
         SqlValue = CASE ColumnType
             WHEN N'ID' THEN CONVERT(NVARCHAR(30), TRY_CONVERT(BIGINT, ColumnValue))
             WHEN N'DECIMAL' THEN CONVERT(NVARCHAR(50), TRY_CONVERT(DECIMAL(38, 10), ColumnValue))
-            -- DATETIME range (1753-01-01..9999-12-31): reject intermediate type=date values (e.g. 0002-09-30)
+            -- DATETIME range (1753-01-01..9999-12-31): reject intermediate type=date values (e.g. 0002-09-30).
+            -- Парсинг через DATETIME2 и литералы 'yyyymmdd'/ISO-T: TRY_CONVERT(DATETIME, 'yyyy-MM-dd')
+            -- и сравнение колонки datetime с 'yyyy-MM-dd' читают дату как 'yyyy-dd-MM' при DATEFORMAT dmy (русский логин).
             WHEN N'DATE' THEN
                 CASE
-                    WHEN TRY_CONVERT(DATETIME, ColumnValue) IS NOT NULL
-                        THEN CONVERT(NVARCHAR(10), CONVERT(DATE, TRY_CONVERT(DATETIME, ColumnValue)), 23)
+                    WHEN TRY_CONVERT(DATETIME2, ColumnValue) >= '1753-01-01'
+                        THEN CONVERT(NVARCHAR(8), TRY_CONVERT(DATETIME2, ColumnValue), 112)
                     ELSE NULL
                 END
             WHEN N'DATETIME' THEN
-                CASE LEN(ColumnValue) - LEN(REPLACE(ColumnValue, N':', N''))
-                    WHEN 0 THEN CONVERT(NVARCHAR(16), TRY_CONVERT(DATETIME, ColumnValue), 126)
-                    WHEN 1 THEN CONVERT(NVARCHAR(16), TRY_CONVERT(DATETIME, ColumnValue + N':00'), 126)
-                    ELSE CONVERT(NVARCHAR(19), TRY_CONVERT(DATETIME, ColumnValue), 126)
+                CASE
+                    WHEN TRY_CONVERT(DATETIME2, ColumnValue +
+                            CASE LEN(ColumnValue) - LEN(REPLACE(ColumnValue, N':', N''))
+                                WHEN 1 THEN N':00'
+                                WHEN 0 THEN IIF(LEN(ColumnValue) > 10, N':00:00', N'')
+                                ELSE N''
+                            END) >= '1753-01-01'
+                        THEN CONVERT(NVARCHAR(19), TRY_CONVERT(DATETIME2, ColumnValue +
+                            CASE LEN(ColumnValue) - LEN(REPLACE(ColumnValue, N':', N''))
+                                WHEN 1 THEN N':00'
+                                WHEN 0 THEN IIF(LEN(ColumnValue) > 10, N':00:00', N'')
+                                ELSE N''
+                            END), 126)
+                    ELSE NULL
                 END
             ELSE ColumnValue
         END,
@@ -447,13 +489,46 @@ BEGIN
                     N')', N' '),
                 N'&', N' '),
             N'|', N' ')
-        )), N'');
+        )), N''),
+        LikeValue = NULLIF(
+            REPLACE(
+                REPLACE(
+                    REPLACE(
+                        REPLACE(ColumnValue, N'[', N'[[]'),
+                    N'%', N'[%]'),
+                N'_', N'[_]'),
+            N'''', N''''''),
+        N'');
+
+    -- Мультивыбор ID: список значений через запятую → проверенный список BIGINT для IN (...)
+    UPDATE FC
+    SET InValues = Parsed.List
+    FROM @FilteredColumns FC
+    CROSS APPLY
+    (
+        SELECT STRING_AGG(CONVERT(NVARCHAR(30), items.ItemId), N',') AS List
+        FROM
+        (
+            SELECT DISTINCT TRY_CONVERT(BIGINT, LTRIM(RTRIM(S.value))) AS ItemId
+            FROM STRING_SPLIT(FC.ColumnValue, N',') S
+        ) items
+        WHERE items.ItemId IS NOT NULL
+    ) Parsed
+    WHERE FC.ColumnType = N'ID'
+      AND UPPER(FC.Operator) = N'IN';
 
     UPDATE FC
     SET FilterPart = CASE ColumnType         
-            -- Логика для СТРОК c полнотекстовым поиском 
+            -- Логика для СТРОК без полнотекстового индекса: поиск по началу значения с любой длины
             WHEN N'NVARCHAR' THEN 
-                CASE WHEN LEN(FtsValue) > 2 THEN
+                CASE WHEN IsFullText = 0 THEN
+                    CASE WHEN LikeValue IS NOT NULL THEN
+                        N'
+                    AND ' + SqlColumnName + N' LIKE N''' + LikeValue + N'%'' '
+                    ELSE ''
+                    END
+            -- Логика для СТРОК c полнотекстовым поиском 
+                WHEN LEN(FtsValue) > 2 THEN
                     N'
                     AND CONTAINS(' + SqlColumnName + ', N''"' + FtsValue + '*"'') '
                 ELSE '' 
@@ -461,7 +536,10 @@ BEGIN
                 
             -- Логика для ID INT
             WHEN N'ID' THEN
-                CASE WHEN SqlOperator IS NOT NULL AND SqlValue IS NOT NULL THEN
+                CASE WHEN InValues IS NOT NULL THEN
+                    N'
+                    AND ' + SqlColumnName + N' IN (' + InValues + N') '
+                WHEN SqlOperator IS NOT NULL AND SqlValue IS NOT NULL THEN
                     N'
                     AND ' + SqlColumnName + N' ' + SqlOperator + N' ' + SqlValue + N' '
                 ELSE ''
@@ -523,17 +601,25 @@ BEGIN
             ELSE ''
         END
     FROM @FilteredColumns FC
+    -- Шаг диапазона: Precision из @FilterJson, иначе по длине входа — дата → день, дата+час → час, до минут — минута, дальше — секунда
     CROSS APPLY (
         SELECT
-            RangeFrom = N'''' + SqlValue + IIF(LEN(SqlValue) = 16, N':00', N'') + N'''',
-            RangeTo = N'DATEADD(' + IIF(LEN(SqlValue) = 16, N'MINUTE', N'SECOND')
-                + N', 1, ''' + SqlValue + IIF(LEN(SqlValue) = 16, N':00', N'') + N''')'
+            RangeFrom = N'''' + SqlValue + N'''',
+            RangeTo = N'DATEADD(' + CASE
+                        WHEN UPPER(FC.Precision) IN (N'DAY', N'HOUR', N'MINUTE', N'SECOND') THEN UPPER(FC.Precision)
+                        WHEN LEN(FC.ColumnValue) <= 10 THEN N'DAY'
+                        WHEN LEN(FC.ColumnValue) <= 13 THEN N'HOUR'
+                        WHEN LEN(FC.ColumnValue) <= 16 THEN N'MINUTE'
+                        ELSE N'SECOND'
+                    END
+                + N', 1, ''' + SqlValue + N''')'
     ) DT;
 
 
     SELECT @FulltextFilterCount = COUNT(1) 
     FROM  @FilteredColumns
     WHERE ColumnType = N'NVARCHAR'
+      AND IsFullText = 1
       AND LEN(FtsValue) > 2
 
     -- Запрос считается сложным, если есть 2 и более полнотекстовых фильтров с сортировкой.
@@ -553,7 +639,7 @@ BEGIN
     -- Для сложных запросов полнотекстовый поиск исключается из условия Where и включается в специаьно созданную для результатов поиска промежуточную таблицу
     SELECT @MainWhereClause = STRING_AGG(FilterPart, '')
     FROM @FilteredColumns
-    WHERE (ColumnType <> 'NVARCHAR' OR @IsComplexQuery = 0)
+    WHERE (ColumnType <> 'NVARCHAR' OR IsFullText = 0 OR @IsComplexQuery = 0)
 
     SET @MainWhereClause = CONCAT('WHERE 1 = 1', @MainWhereClause)
 
@@ -570,6 +656,7 @@ BEGIN
                 RN = ROW_NUMBER() OVER (ORDER BY ColumnName)
             FROM @FilteredColumns
             WHERE ColumnType = N'NVARCHAR' 
+                  AND IsFullText = 1
                   AND FtsValue IS NOT NULL
                   AND LEN(FtsValue) > 2
         )
@@ -671,7 +758,7 @@ END
 GO
 
 --------------------------------------------------------------------------------
--- [4/75] Platform :: sp_Sync_GetHighWatermark.sql
+-- [5/76] Platform :: sp_Sync_GetHighWatermark.sql
 -- Source: Platform\Programmability\sp_Sync_GetHighWatermark.sql
 --------------------------------------------------------------------------------
 GO
@@ -698,7 +785,7 @@ END
 GO
 
 --------------------------------------------------------------------------------
--- [5/75] Platform :: sp_Sync_Reconcile.sql
+-- [6/76] Platform :: sp_Sync_Reconcile.sql
 -- Source: Platform\Programmability\sp_Sync_Reconcile.sql
 --------------------------------------------------------------------------------
 GO
@@ -749,7 +836,7 @@ END
 GO
 
 --------------------------------------------------------------------------------
--- [6/75] Platform :: sp_Sync_UpsertAffected.sql
+-- [7/76] Platform :: sp_Sync_UpsertAffected.sql
 -- Source: Platform\Programmability\sp_Sync_UpsertAffected.sql
 --------------------------------------------------------------------------------
 GO
@@ -865,7 +952,7 @@ END
 GO
 
 --------------------------------------------------------------------------------
--- [7/75] Platform :: sp_SyncState_Get.sql
+-- [8/76] Platform :: sp_SyncState_Get.sql
 -- Source: Platform\Programmability\sp_SyncState_Get.sql
 --------------------------------------------------------------------------------
 GO
@@ -892,7 +979,7 @@ END
 GO
 
 --------------------------------------------------------------------------------
--- [8/75] Platform :: sp_SyncState_MarkReconciled.sql
+-- [9/76] Platform :: sp_SyncState_MarkReconciled.sql
 -- Source: Platform\Programmability\sp_SyncState_MarkReconciled.sql
 --------------------------------------------------------------------------------
 GO
@@ -918,7 +1005,7 @@ END
 GO
 
 --------------------------------------------------------------------------------
--- [9/75] Platform :: sp_SyncState_Upsert.sql
+-- [10/76] Platform :: sp_SyncState_Upsert.sql
 -- Source: Platform\Programmability\sp_SyncState_Upsert.sql
 --------------------------------------------------------------------------------
 GO
@@ -954,7 +1041,7 @@ END
 GO
 
 --------------------------------------------------------------------------------
--- [10/75] AverageRateLevel3 :: vw_AverageRateLevel3_Detail.sql
+-- [11/76] AverageRateLevel3 :: vw_AverageRateLevel3_Detail.sql
 -- Source: Modules\AverageRateLevel3\Programmability\vw_AverageRateLevel3_Detail.sql
 --------------------------------------------------------------------------------
 GO
@@ -994,7 +1081,9 @@ AS
     ,CASE WHEN ISNULL(ar.PrimitiveEntityDataStateId, 2) = 2 THEN 1 ELSE 0 END 
                                     AS IsArchive
     ,ISNULL(ar.IsDefRate, 0)         AS IsDefRate
+    ,cu.DisplayName  	            AS CreationUserName
     ,ar.CreationDate 	            AS CreationDate
+    ,lu.DisplayName  	            AS LastChangeUserName
     ,ar.LastChangeDate 	            AS LastChangeDate
     ,trc.TransportRateCodes          AS TransportRateCodes
     ,CAST(ar.CalcDate AS DATE)       AS CalcDate
@@ -1137,6 +1226,8 @@ AS
     ,lt.Leg2_TransportationTime 	AS LeadTimeLeg2_TransportationTime
     ,lt.Leg2_Distance 		        AS LeadTimeLeg2_Distance
     FROM vw_AverageRateLevel3 AS ar
+    LEFT JOIN v2.vw_UserDisplayName cu ON cu.UserId = ar.CreationUserId
+    LEFT JOIN v2.vw_UserDisplayName lu ON lu.UserId = ISNULL(ar.LastChangeUserId, ar.CreationUserId)
 
     OUTER APPLY (
         SELECT STRING_AGG(CAST(r.Code AS NVARCHAR(50)), ', ') AS TransportRateCodes
@@ -1260,7 +1351,7 @@ AS
 GO
 
 --------------------------------------------------------------------------------
--- [11/75] AverageRateLevel3 :: vw_AverageRateLevel3_SnapshotSource.sql
+-- [12/76] AverageRateLevel3 :: vw_AverageRateLevel3_SnapshotSource.sql
 -- Source: Modules\AverageRateLevel3\Programmability\vw_AverageRateLevel3_SnapshotSource.sql
 --------------------------------------------------------------------------------
 GO
@@ -1285,7 +1376,9 @@ AS
         ISNULL(ar.IsDefRate, 0)                                         AS IsDefRate,
         ar.StartDate                                                    AS StartDate,
         ar.EndDate                                                      AS EndDate,
+        cu.DisplayName                                                  AS CreationUserName,
         ar.CreationDate                                                 AS CreationDate,
+        lu.DisplayName                                                  AS LastChangeUserName,
         ISNULL(ar.LastChangeDate, ar.CreationDate)                        AS LastChangeDate,
         ar.RateLevel3                                                   AS RateLevel3,
         ISNULL(ar.EffectiveLoadOfTransportType, 0)                      AS EffectiveLoadOfTransportType,
@@ -1328,6 +1421,8 @@ AS
     JOIN vw_TransportKind tk (NOLOCK) ON ar.TransportKind = tk.Id
     JOIN vw_TransportType_level_3 tt (NOLOCK) ON ar.TransportType = tt.Id
     JOIN vw_Currency cur (NOLOCK) ON ar.CurrencyStandard = cur.Id
+    LEFT JOIN v2.vw_UserDisplayName cu ON cu.UserId = ar.CreationUserId
+    LEFT JOIN v2.vw_UserDisplayName lu ON lu.UserId = ISNULL(ar.LastChangeUserId, ar.CreationUserId)
     WHERE ar.RateLevel3 IS NOT NULL
       AND TRY_CAST(LEFT(ar.Code, 10) AS INT) IS NOT NULL
       AND TRY_CAST(LEFT(rt.Code, 2) AS INT) IS NOT NULL
@@ -1343,7 +1438,7 @@ AS
 GO
 
 --------------------------------------------------------------------------------
--- [12/75] AverageRateLevel3 :: vw_RatesOfAverageRate_Detail.sql
+-- [13/76] AverageRateLevel3 :: vw_RatesOfAverageRate_Detail.sql
 -- Source: Modules\AverageRateLevel3\Programmability\vw_RatesOfAverageRate_Detail.sql
 --------------------------------------------------------------------------------
 GO
@@ -1373,7 +1468,7 @@ AS
 GO
 
 --------------------------------------------------------------------------------
--- [13/75] AverageRateLevel3 :: sp_AverageRateLevel3_PopulateAffectedKeys.sql
+-- [14/76] AverageRateLevel3 :: sp_AverageRateLevel3_PopulateAffectedKeys.sql
 -- Source: Modules\AverageRateLevel3\Programmability\sp_AverageRateLevel3_PopulateAffectedKeys.sql
 --------------------------------------------------------------------------------
 GO
@@ -1481,7 +1576,7 @@ END
 GO
 
 --------------------------------------------------------------------------------
--- [14/75] Coefficient :: vw_Coefficient_Detail.sql
+-- [15/76] Coefficient :: vw_Coefficient_Detail.sql
 -- Source: Modules\Coefficient\Programmability\vw_Coefficient_Detail.sql
 --------------------------------------------------------------------------------
 GO
@@ -1501,9 +1596,11 @@ AS
     SELECT
         CAST(c.Id AS BIGINT)                                                     AS CoefficientId,
         CASE WHEN ISNULL(c.PrimitiveEntityDataStateId, 2) = 2 THEN 1 ELSE 0 END  AS IsArchive,
+        cu.DisplayName                                                           AS CreationUserName,
         c.CreationDate                                                           AS CreationDate,
+        lu.DisplayName                                                           AS LastChangeUserName,
         ISNULL(c.LastChangeDate, c.CreationDate)                                 AS LastChangeDate,
-        LEFT(c.Code, 50)                                                         AS Code,
+        TRY_CAST(c.Code AS INT)                                                 AS Code,
 
         CAST(c.[Type] AS BIGINT)                                                 AS CoefficientTypeIdRu,
         CAST(c.[Type] AS BIGINT)                                                 AS CoefficientTypeIdEn,
@@ -1516,11 +1613,13 @@ AS
 
         CAST(c.RateType AS BIGINT)                                               AS RateTypeIdRu,
         CAST(c.RateType AS BIGINT)                                               AS RateTypeIdEn
-    FROM dbo.vw_Coefficient c (NOLOCK);
+    FROM dbo.vw_Coefficient c (NOLOCK)
+    LEFT JOIN v2.vw_UserDisplayName cu ON cu.UserId = c.CreationUserId
+    LEFT JOIN v2.vw_UserDisplayName lu ON lu.UserId = ISNULL(c.LastChangeUserId, c.CreationUserId);
 GO
 
 --------------------------------------------------------------------------------
--- [15/75] Coefficient :: vw_Coefficient_SnapshotSource.sql
+-- [16/76] Coefficient :: vw_Coefficient_SnapshotSource.sql
 -- Source: Modules\Coefficient\Programmability\vw_Coefficient_SnapshotSource.sql
 --------------------------------------------------------------------------------
 GO
@@ -1543,7 +1642,7 @@ CREATE OR ALTER VIEW v2.vw_Coefficient_SnapshotSource
 AS
     SELECT
         CAST(c.Id AS BIGINT)                                                     AS CoefficientId,
-        LEFT(c.Code, 50)                                                         AS Code,
+        TRY_CAST(c.Code AS INT)                                                 AS Code,
         CASE WHEN ISNULL(c.PrimitiveEntityDataStateId, 2) = 2 THEN 1 ELSE 0 END  AS IsArchive,
 
         CAST(c.[Type] AS BIGINT)                                                 AS CoefficientTypeId,
@@ -1560,15 +1659,19 @@ AS
         LEFT(rt.Code, 50)                                                        AS RateTypeCode,
         LEFT(rt.Name, 100)                                                       AS RateTypeNameRu,
 
+        cu.DisplayName                                                           AS CreationUserName,
         c.CreationDate                                                           AS CreationDate,
+        lu.DisplayName                                                           AS LastChangeUserName,
         ISNULL(c.LastChangeDate, c.CreationDate)                                 AS LastChangeDate
     FROM dbo.vw_Coefficient c (NOLOCK)
     LEFT JOIN dbo.vw_CoefficientType ct (NOLOCK) ON c.[Type] = ct.Id
-    LEFT JOIN dbo.vw_RateType rt (NOLOCK) ON c.RateType = rt.Id;
+    LEFT JOIN dbo.vw_RateType rt (NOLOCK) ON c.RateType = rt.Id
+    LEFT JOIN v2.vw_UserDisplayName cu ON cu.UserId = c.CreationUserId
+    LEFT JOIN v2.vw_UserDisplayName lu ON lu.UserId = ISNULL(c.LastChangeUserId, c.CreationUserId);
 GO
 
 --------------------------------------------------------------------------------
--- [16/75] Coefficient :: vw_CoefficientComponentValue_Detail.sql
+-- [17/76] Coefficient :: vw_CoefficientComponentValue_Detail.sql
 -- Source: Modules\Coefficient\Programmability\vw_CoefficientComponentValue_Detail.sql
 --------------------------------------------------------------------------------
 GO
@@ -1596,7 +1699,7 @@ AS
 GO
 
 --------------------------------------------------------------------------------
--- [17/75] Coefficient :: vw_CoefficientConditionValue_Detail.sql
+-- [18/76] Coefficient :: vw_CoefficientConditionValue_Detail.sql
 -- Source: Modules\Coefficient\Programmability\vw_CoefficientConditionValue_Detail.sql
 --------------------------------------------------------------------------------
 GO
@@ -1640,7 +1743,7 @@ AS
 GO
 
 --------------------------------------------------------------------------------
--- [18/75] Coefficient :: sp_Coefficient_PopulateAffectedKeys.sql
+-- [19/76] Coefficient :: sp_Coefficient_PopulateAffectedKeys.sql
 -- Source: Modules\Coefficient\Programmability\sp_Coefficient_PopulateAffectedKeys.sql
 --------------------------------------------------------------------------------
 GO
@@ -1680,7 +1783,7 @@ END
 GO
 
 --------------------------------------------------------------------------------
--- [19/75] Contractor :: vw_Address_Detail.sql
+-- [20/76] Contractor :: vw_Address_Detail.sql
 -- Source: Modules\Contractor\Programmability\vw_Address_Detail.sql
 --------------------------------------------------------------------------------
 GO
@@ -1734,7 +1837,7 @@ AS
 GO
 
 --------------------------------------------------------------------------------
--- [20/75] Contractor :: vw_Contractor_Detail.sql
+-- [21/76] Contractor :: vw_Contractor_Detail.sql
 -- Source: Modules\Contractor\Programmability\vw_Contractor_Detail.sql
 --------------------------------------------------------------------------------
 GO
@@ -1753,9 +1856,11 @@ AS
     SELECT
         CAST(c.Id AS BIGINT)                                                     AS ContractorId,
         CASE WHEN ISNULL(c.PrimitiveEntityDataStateId, 2) = 2 THEN 1 ELSE 0 END  AS IsArchive,
+        cu.DisplayName                                                           AS CreationUserName,
         c.CreationDate                                                           AS CreationDate,
+        lu.DisplayName                                                           AS LastChangeUserName,
         ISNULL(c.LastChangeDate, c.CreationDate)                                 AS LastChangeDate,
-        LEFT(c.Code, 50)                                                         AS Code,
+        TRY_CAST(c.Code AS INT)                                                 AS Code,
         LEFT(c.NameSearch, 4000)                                                 AS NameSearch,
         ISNULL(c.Consignee, 0)                                                   AS Consignee,
         ISNULL(c.IsTrader, 0)                                                    AS IsTrader,
@@ -1769,11 +1874,13 @@ AS
         LEFT(c.Customs, 4000)                                                    AS Customs,
         LEFT(c.CustomCode, 4000)                                                 AS CustomCode,
         LEFT(c.OrgAffiliation, 4000)                                             AS OrgAffiliation
-    FROM dbo.vw_LegalType c;
+    FROM dbo.vw_LegalType c
+    LEFT JOIN v2.vw_UserDisplayName cu ON cu.UserId = c.CreationUserId
+    LEFT JOIN v2.vw_UserDisplayName lu ON lu.UserId = ISNULL(c.LastChangeUserId, c.CreationUserId);
 GO
 
 --------------------------------------------------------------------------------
--- [21/75] Contractor :: vw_Contractor_SnapshotSource.sql
+-- [22/76] Contractor :: vw_Contractor_SnapshotSource.sql
 -- Source: Modules\Contractor\Programmability\vw_Contractor_SnapshotSource.sql
 --------------------------------------------------------------------------------
 GO
@@ -1794,7 +1901,7 @@ CREATE OR ALTER VIEW v2.vw_Contractor_SnapshotSource
 AS
     SELECT
         CAST(c.Id AS BIGINT)                                                     AS ContractorId,
-        LEFT(c.Code, 50)                                                         AS Code,
+        TRY_CAST(c.Code AS INT)                                                 AS Code,
         CASE WHEN ISNULL(c.PrimitiveEntityDataStateId, 2) = 2 THEN 1 ELSE 0 END  AS IsArchive,
 
         LEFT(c.NameSearch, 4000)                                                 AS NameSearch,
@@ -1806,13 +1913,17 @@ AS
         ISNULL(c.IsCreditor, 0)                                                  AS IsCreditor,
         LEFT(c.INN, 4000)                                                        AS INN,
 
+        cu.DisplayName                                                           AS CreationUserName,
         c.CreationDate                                                           AS CreationDate,
+        lu.DisplayName                                                           AS LastChangeUserName,
         ISNULL(c.LastChangeDate, c.CreationDate)                                 AS LastChangeDate
-    FROM dbo.vw_LegalType c;
+    FROM dbo.vw_LegalType c
+    LEFT JOIN v2.vw_UserDisplayName cu ON cu.UserId = c.CreationUserId
+    LEFT JOIN v2.vw_UserDisplayName lu ON lu.UserId = ISNULL(c.LastChangeUserId, c.CreationUserId);
 GO
 
 --------------------------------------------------------------------------------
--- [22/75] Contractor :: sp_Contractor_PopulateAffectedKeys.sql
+-- [23/76] Contractor :: sp_Contractor_PopulateAffectedKeys.sql
 -- Source: Modules\Contractor\Programmability\sp_Contractor_PopulateAffectedKeys.sql
 --------------------------------------------------------------------------------
 GO
@@ -1852,7 +1963,7 @@ END
 GO
 
 --------------------------------------------------------------------------------
--- [23/75] Country :: vw_Country_Detail.sql
+-- [24/76] Country :: vw_Country_Detail.sql
 -- Source: Modules\Country\Programmability\vw_Country_Detail.sql
 --------------------------------------------------------------------------------
 GO
@@ -1877,14 +1988,16 @@ AS
         ISOCode3,
         StatusId                                                            AS StatusIdRu,
         StatusId                                                            AS StatusIdEn,
+        CreationUserName,
         CreationDate,
+        LastChangeUserName,
         LastChangeDate,
         IsArchive
     FROM v2.vw_Country_SnapshotSource;
 GO
 
 --------------------------------------------------------------------------------
--- [24/75] Country :: vw_Country_SnapshotSource.sql
+-- [25/76] Country :: vw_Country_SnapshotSource.sql
 -- Source: Modules\Country\Programmability\vw_Country_SnapshotSource.sql
 --------------------------------------------------------------------------------
 GO
@@ -1905,9 +2018,9 @@ GO
 CREATE OR ALTER VIEW v2.vw_Country_SnapshotSource
 AS
     SELECT
-        LEFT(c.Code, 50)                                                         AS Code,
+        TRY_CAST(c.Code AS INT)                                                 AS Code,
         LEFT(c.Name_ru, 4000)                                                    AS NameRu,
-        c.ISOCode                                                                AS ISOCode,
+        CAST(c.ISOCode AS INT)                                                   AS ISOCode,
         LEFT(c.Name_en, 4000)                                                    AS NameEn,
         LEFT(c.PlanCode, 4000)                                                   AS PlanCode,
         LEFT(c.Market, 4000)                                                     AS Market,
@@ -1915,13 +2028,17 @@ AS
         CAST(c.Status AS BIGINT)                                                 AS StatusId,
         CAST(c.Id AS BIGINT)                                                     AS CountryId,
         CASE WHEN ISNULL(c.PrimitiveEntityDataStateId, 2) = 2 THEN 1 ELSE 0 END  AS IsArchive,
+        cu.DisplayName                                                           AS CreationUserName,
         c.CreationDate                                                           AS CreationDate,
+        lu.DisplayName                                                           AS LastChangeUserName,
         c.LastChangeDate                                                         AS LastChangeDate
-    FROM dbo.vw_Country c (NOLOCK);
+    FROM dbo.vw_Country c (NOLOCK)
+    LEFT JOIN v2.vw_UserDisplayName cu ON cu.UserId = c.CreationUserId
+    LEFT JOIN v2.vw_UserDisplayName lu ON lu.UserId = ISNULL(c.LastChangeUserId, c.CreationUserId);
 GO
 
 --------------------------------------------------------------------------------
--- [25/75] Country :: sp_Country_PopulateAffectedKeys.sql
+-- [26/76] Country :: sp_Country_PopulateAffectedKeys.sql
 -- Source: Modules\Country\Programmability\sp_Country_PopulateAffectedKeys.sql
 --------------------------------------------------------------------------------
 GO
@@ -1959,7 +2076,7 @@ END
 GO
 
 --------------------------------------------------------------------------------
--- [26/75] Currency :: vw_Currency_Detail.sql
+-- [27/76] Currency :: vw_Currency_Detail.sql
 -- Source: Modules\Currency\Programmability\vw_Currency_Detail.sql
 --------------------------------------------------------------------------------
 GO
@@ -1981,13 +2098,15 @@ AS
         Symbolic,
         Digital,
         Code_NSI,
+        CreationUserName,
         CreationDate,
+        LastChangeUserName,
         LastChangeDate
     FROM v2.vw_Currency_SnapshotSource;
 GO
 
 --------------------------------------------------------------------------------
--- [27/75] Currency :: vw_Currency_SnapshotSource.sql
+-- [28/76] Currency :: vw_Currency_SnapshotSource.sql
 -- Source: Modules\Currency\Programmability\vw_Currency_SnapshotSource.sql
 --------------------------------------------------------------------------------
 GO
@@ -2013,15 +2132,19 @@ AS
         LEFT(c.Code, 50)                                                         AS Code,
         LEFT(c.Name, 4000)                                                       AS Name,
         LEFT(c.Symbolic, 4000)                                                   AS Symbolic,
-        c.Digital                                                                AS Digital,
-        LEFT(c.Code_NSI, 50)                                                     AS Code_NSI,
+        CAST(c.Digital AS INT)                                                   AS Digital,
+        TRY_CAST(c.Code_NSI AS INT)                                              AS Code_NSI,
+        cu.DisplayName                                                           AS CreationUserName,
         c.CreationDate                                                           AS CreationDate,
+        lu.DisplayName                                                           AS LastChangeUserName,
         ISNULL(c.LastChangeDate, c.CreationDate)                                 AS LastChangeDate
-    FROM dbo.vw_Currency c;
+    FROM dbo.vw_Currency c
+    LEFT JOIN v2.vw_UserDisplayName cu ON cu.UserId = c.CreationUserId
+    LEFT JOIN v2.vw_UserDisplayName lu ON lu.UserId = ISNULL(c.LastChangeUserId, c.CreationUserId);
 GO
 
 --------------------------------------------------------------------------------
--- [28/75] LocationsNodes :: vw_LocationsNodes_Detail.sql
+-- [29/76] LocationsNodes :: vw_LocationsNodes_Detail.sql
 -- Source: Modules\LocationsNodes\Programmability\vw_LocationsNodes_Detail.sql
 --------------------------------------------------------------------------------
 GO
@@ -2164,7 +2287,9 @@ AS
         n.[4_level_CityEN] AS Level4CityEN,
         n.[4_level_City_FIAS] AS Level4CityFias,
 
+        cu.DisplayName AS CreationUserName,
         n.CreationDate AS CreationDate,
+        lu.DisplayName AS LastChangeUserName,
         ISNULL(n.LastChangeDate, n.CreationDate) AS LastChangeDate
 
     FROM vw_LocationsNodes n (NOLOCK)
@@ -2173,10 +2298,12 @@ AS
     LEFT JOIN vw_TypeNode tn (NOLOCK) ON n.TypeNode = tn.Id
     LEFT JOIN vw_Region r (NOLOCK) ON n.Region = r.Id
     LEFT JOIN vw_Country c (NOLOCK) ON n.Country = c.Id
+    LEFT JOIN v2.vw_UserDisplayName cu ON cu.UserId = n.CreationUserId
+    LEFT JOIN v2.vw_UserDisplayName lu ON lu.UserId = ISNULL(n.LastChangeUserId, n.CreationUserId)
 GO
 
 --------------------------------------------------------------------------------
--- [29/75] LocationsNodes :: vw_LocationsNodes_SnapshotSource.sql
+-- [30/76] LocationsNodes :: vw_LocationsNodes_SnapshotSource.sql
 -- Source: Modules\LocationsNodes\Programmability\vw_LocationsNodes_SnapshotSource.sql
 --------------------------------------------------------------------------------
 GO
@@ -2230,7 +2357,9 @@ AS
         LEFT(c.Name_ru, 100) AS CountryNameRu,
         LEFT(c.Name_en, 100) AS CountryNameEn,
 
+        cu.DisplayName AS CreationUserName,
         n.CreationDate AS CreationDate,
+        lu.DisplayName AS LastChangeUserName,
         ISNULL(n.LastChangeDate, n.CreationDate) AS LastChangeDate
 
     FROM vw_LocationsNodes n (NOLOCK)
@@ -2238,10 +2367,12 @@ AS
     LEFT JOIN vw_TypeNode tn (NOLOCK) ON n.TypeNode = tn.Id
     LEFT JOIN vw_Region r (NOLOCK) ON n.Region = r.Id
     LEFT JOIN vw_Country c (NOLOCK) ON n.Country = c.Id
+    LEFT JOIN v2.vw_UserDisplayName cu ON cu.UserId = n.CreationUserId
+    LEFT JOIN v2.vw_UserDisplayName lu ON lu.UserId = ISNULL(n.LastChangeUserId, n.CreationUserId)
 GO
 
 --------------------------------------------------------------------------------
--- [30/75] LocationsNodes :: sp_LocationsNodes_PopulateAffectedKeys.sql
+-- [31/76] LocationsNodes :: sp_LocationsNodes_PopulateAffectedKeys.sql
 -- Source: Modules\LocationsNodes\Programmability\sp_LocationsNodes_PopulateAffectedKeys.sql
 --------------------------------------------------------------------------------
 GO
@@ -2317,7 +2448,7 @@ END
 GO
 
 --------------------------------------------------------------------------------
--- [31/75] MTR :: vw_MTR_Detail.sql
+-- [32/76] MTR :: vw_MTR_Detail.sql
 -- Source: Modules\MTR\Programmability\vw_MTR_Detail.sql
 --------------------------------------------------------------------------------
 GO
@@ -2355,14 +2486,16 @@ AS
         CAST(m.Status AS BIGINT) AS StatusIdRu,
         CAST(m.Status AS BIGINT) AS StatusIdEn,
         LEFT(m.ProductCode, 50) AS ProductCode,
+        s.CreationUserName,
         s.CreationDate,
+        s.LastChangeUserName,
         s.LastChangeDate
     FROM v2.vw_MTR_SnapshotSource s
     JOIN dbo.vw_MTR m (NOLOCK) ON m.Id = s.MTRId;
 GO
 
 --------------------------------------------------------------------------------
--- [32/75] MTR :: vw_MTR_SnapshotSource.sql
+-- [33/76] MTR :: vw_MTR_SnapshotSource.sql
 -- Source: Modules\MTR\Programmability\vw_MTR_SnapshotSource.sql
 --------------------------------------------------------------------------------
 GO
@@ -2392,7 +2525,7 @@ CREATE OR ALTER VIEW v2.vw_MTR_SnapshotSource
 AS
     SELECT
         CAST(m.Id AS BIGINT)                                                     AS MTRId,
-        LEFT(m.Code, 50)                                                         AS Code,
+        TRY_CAST(m.Code AS INT)                                                 AS Code,
         CASE WHEN ISNULL(m.PrimitiveEntityDataStateId, 2) = 2 THEN 1 ELSE 0 END  AS IsArchive,
 
         LEFT(m.NameFull_ru, 4000)                                                AS NameFullRu,
@@ -2421,18 +2554,22 @@ AS
         LEFT(dc.Code, 50)                                                        AS DangerClassCode,
         LEFT(dc.Name, 4000)                                                      AS DangerClassNameRu,
 
+        cu.DisplayName                                                           AS CreationUserName,
         m.CreationDate                                                           AS CreationDate,
+        lu.DisplayName                                                           AS LastChangeUserName,
         ISNULL(m.LastChangeDate, m.CreationDate)                                 AS LastChangeDate
 
     FROM dbo.vw_MTR m (NOLOCK)
     LEFT JOIN dbo.vw_ProductGroup pg (NOLOCK) ON m.TransportName = pg.Id
     LEFT JOIN dbo.vw_ETSNG e (NOLOCK) ON m.ETSNGCode = e.Id
     LEFT JOIN dbo.vw_Unit u (NOLOCK) ON m.Unit = u.Id
-    LEFT JOIN dbo.vw_DangerClass dc (NOLOCK) ON m.DangerClass = dc.Id;
+    LEFT JOIN dbo.vw_DangerClass dc (NOLOCK) ON m.DangerClass = dc.Id
+    LEFT JOIN v2.vw_UserDisplayName cu ON cu.UserId = m.CreationUserId
+    LEFT JOIN v2.vw_UserDisplayName lu ON lu.UserId = ISNULL(m.LastChangeUserId, m.CreationUserId);
 GO
 
 --------------------------------------------------------------------------------
--- [33/75] MTR :: sp_MTR_PopulateAffectedKeys.sql
+-- [34/76] MTR :: sp_MTR_PopulateAffectedKeys.sql
 -- Source: Modules\MTR\Programmability\sp_MTR_PopulateAffectedKeys.sql
 --------------------------------------------------------------------------------
 GO
@@ -2497,7 +2634,7 @@ END
 GO
 
 --------------------------------------------------------------------------------
--- [34/75] ParityRates :: vw_ParityRates_Detail.sql
+-- [35/76] ParityRates :: vw_ParityRates_Detail.sql
 -- Source: Modules\ParityRates\Programmability\vw_ParityRates_Detail.sql
 --------------------------------------------------------------------------------
 GO
@@ -2519,7 +2656,9 @@ AS
         CAST(pr.Id AS INT)                                      AS ParityRatesId,
         LEFT(pr.Code, 50)                                       AS Code,
         CASE WHEN ISNULL(pr.PrimitiveEntityDataStateId, 2) = 2 THEN 1 ELSE 0 END AS IsArchive,
+        cu.DisplayName                                          AS CreationUserName,
         pr.CreationDate                                         AS CreationDate,
+        lu.DisplayName                                          AS LastChangeUserName,
         pr.LastChangeDate                                       AS LastChangeDate,
         CAST(pr.StartDate AS DATE)                              AS StartDate,
         CAST(pr.EndDate AS DATE)                                AS EndDate,
@@ -2583,10 +2722,12 @@ AS
     LEFT JOIN vw_ProductGroup pg (NOLOCK) ON pr.ProductGroupCode = pg.Id
     LEFT JOIN vw_MTR p (NOLOCK) ON pr.Product = p.Id
     LEFT JOIN vw_Currency cur (NOLOCK) ON pr.CurrencyStandard = cur.Id
+    LEFT JOIN v2.vw_UserDisplayName cu ON cu.UserId = pr.CreationUserId
+    LEFT JOIN v2.vw_UserDisplayName lu ON lu.UserId = ISNULL(pr.LastChangeUserId, pr.CreationUserId)
 GO
 
 --------------------------------------------------------------------------------
--- [35/75] ParityRates :: vw_ParityRates_SnapshotSource.sql
+-- [36/76] ParityRates :: vw_ParityRates_SnapshotSource.sql
 -- Source: Modules\ParityRates\Programmability\vw_ParityRates_SnapshotSource.sql
 --------------------------------------------------------------------------------
 GO
@@ -2616,7 +2757,9 @@ AS
         CASE WHEN ISNULL(pr.PrimitiveEntityDataStateId, 2) = 2 THEN 1 ELSE 0 END AS IsArchive,
         pr.StartDate                                            AS StartDate,
         pr.EndDate                                              AS EndDate,
+        cu.DisplayName                                          AS CreationUserName,
         pr.CreationDate                                         AS CreationDate,
+        lu.DisplayName                                          AS LastChangeUserName,
         ISNULL(pr.LastChangeDate, pr.CreationDate)              AS LastChangeDate,
 
         LEFT(pr.Code, 50)                                       AS Code,
@@ -2683,6 +2826,8 @@ AS
     JOIN vw_ProductGroup pg (NOLOCK) ON pr.ProductGroupCode = pg.Id
     LEFT JOIN vw_MTR p (NOLOCK) ON pr.Product = p.Id
     JOIN vw_Currency cur (NOLOCK) ON pr.CurrencyStandard = cur.Id
+    LEFT JOIN v2.vw_UserDisplayName cu ON cu.UserId = pr.CreationUserId
+    LEFT JOIN v2.vw_UserDisplayName lu ON lu.UserId = ISNULL(pr.LastChangeUserId, pr.CreationUserId)
 
     WHERE pr.Code IS NOT NULL
       AND LTRIM(RTRIM(pr.Code)) <> N''
@@ -2698,7 +2843,7 @@ AS
 GO
 
 --------------------------------------------------------------------------------
--- [36/75] ParityRates :: sp_ParityRates_PopulateAffectedKeys.sql
+-- [37/76] ParityRates :: sp_ParityRates_PopulateAffectedKeys.sql
 -- Source: Modules\ParityRates\Programmability\sp_ParityRates_PopulateAffectedKeys.sql
 --------------------------------------------------------------------------------
 GO
@@ -2791,7 +2936,7 @@ END
 GO
 
 --------------------------------------------------------------------------------
--- [37/75] ProductGroup :: vw_ProductGroup_Detail.sql
+-- [38/76] ProductGroup :: vw_ProductGroup_Detail.sql
 -- Source: Modules\ProductGroup\Programmability\vw_ProductGroup_Detail.sql
 --------------------------------------------------------------------------------
 GO
@@ -2820,13 +2965,15 @@ AS
         NameEn,
         RateSyncClassId AS RateSyncClassIdRu,
         RateSyncClassId AS RateSyncClassIdEn,
+        CreationUserName,
         CreationDate,
+        LastChangeUserName,
         LastChangeDate
     FROM v2.vw_ProductGroup_SnapshotSource;
 GO
 
 --------------------------------------------------------------------------------
--- [38/75] ProductGroup :: vw_ProductGroup_SnapshotSource.sql
+-- [39/76] ProductGroup :: vw_ProductGroup_SnapshotSource.sql
 -- Source: Modules\ProductGroup\Programmability\vw_ProductGroup_SnapshotSource.sql
 --------------------------------------------------------------------------------
 GO
@@ -2867,15 +3014,19 @@ AS
         LEFT(rsc.Code, 50)                                                       AS RateSyncClassCode,
         LEFT(rsc.Name, 2000)                                                     AS RateSyncClassNameRu,
 
+        cu.DisplayName                                                           AS CreationUserName,
         pg.CreationDate                                                          AS CreationDate,
+        lu.DisplayName                                                           AS LastChangeUserName,
         ISNULL(pg.LastChangeDate, pg.CreationDate)                               AS LastChangeDate
 
     FROM dbo.vw_ProductGroup pg (NOLOCK)
-    LEFT JOIN dbo.vw_RateSyncClass rsc (NOLOCK) ON pg.RateSyncClass = rsc.Id;
+    LEFT JOIN dbo.vw_RateSyncClass rsc (NOLOCK) ON pg.RateSyncClass = rsc.Id
+    LEFT JOIN v2.vw_UserDisplayName cu ON cu.UserId = pg.CreationUserId
+    LEFT JOIN v2.vw_UserDisplayName lu ON lu.UserId = ISNULL(pg.LastChangeUserId, pg.CreationUserId);
 GO
 
 --------------------------------------------------------------------------------
--- [39/75] ProductGroup :: sp_ProductGroup_PopulateAffectedKeys.sql
+-- [40/76] ProductGroup :: sp_ProductGroup_PopulateAffectedKeys.sql
 -- Source: Modules\ProductGroup\Programmability\sp_ProductGroup_PopulateAffectedKeys.sql
 --------------------------------------------------------------------------------
 GO
@@ -2925,7 +3076,7 @@ END
 GO
 
 --------------------------------------------------------------------------------
--- [40/75] RateAutoSelectionSetting :: vw_RateAutoSelectionSetting_Detail.sql
+-- [41/76] RateAutoSelectionSetting :: vw_RateAutoSelectionSetting_Detail.sql
 -- Source: Modules\RateAutoSelectionSetting\Programmability\vw_RateAutoSelectionSetting_Detail.sql
 --------------------------------------------------------------------------------
 GO
@@ -2947,14 +3098,16 @@ AS
         DestinationNodeToCountry,
         ProductToProductGroup,
         AnyTransportKind,
+        CreationUserName,
         CreationDate,
+        LastChangeUserName,
         LastChangeDate,
         IsArchive
     FROM v2.vw_RateAutoSelectionSetting_SnapshotSource;
 GO
 
 --------------------------------------------------------------------------------
--- [41/75] RateAutoSelectionSetting :: vw_RateAutoSelectionSetting_SnapshotSource.sql
+-- [42/76] RateAutoSelectionSetting :: vw_RateAutoSelectionSetting_SnapshotSource.sql
 -- Source: Modules\RateAutoSelectionSetting\Programmability\vw_RateAutoSelectionSetting_SnapshotSource.sql
 --------------------------------------------------------------------------------
 GO
@@ -2974,18 +3127,22 @@ AS
     SELECT
         CAST(r.Id AS BIGINT)                                                     AS RateAutoSelectionSettingId,
         CASE WHEN ISNULL(r.PrimitiveEntityDataStateId, 2) = 2 THEN 1 ELSE 0 END  AS IsArchive,
-        LEFT(r.Code, 50)                                                         AS Code,
+        TRY_CAST(r.Code AS INT)                                                 AS Code,
         r.DestinationNodeToRegion                                                AS DestinationNodeToRegion,
         r.DestinationNodeToCountry                                               AS DestinationNodeToCountry,
         r.ProductToProductGroup                                                  AS ProductToProductGroup,
         r.AnyTransportKind                                                       AS AnyTransportKind,
+        cu.DisplayName                                                           AS CreationUserName,
         r.CreationDate                                                           AS CreationDate,
+        lu.DisplayName                                                           AS LastChangeUserName,
         r.LastChangeDate                                                         AS LastChangeDate
-    FROM dbo.vw_RateAutoSelectionSetting r (NOLOCK);
+    FROM dbo.vw_RateAutoSelectionSetting r (NOLOCK)
+    LEFT JOIN v2.vw_UserDisplayName cu ON cu.UserId = r.CreationUserId
+    LEFT JOIN v2.vw_UserDisplayName lu ON lu.UserId = ISNULL(r.LastChangeUserId, r.CreationUserId);
 GO
 
 --------------------------------------------------------------------------------
--- [42/75] RateAutoSelectionSetting :: sp_RateAutoSelectionSetting_PopulateAffectedKeys.sql
+-- [43/76] RateAutoSelectionSetting :: sp_RateAutoSelectionSetting_PopulateAffectedKeys.sql
 -- Source: Modules\RateAutoSelectionSetting\Programmability\sp_RateAutoSelectionSetting_PopulateAffectedKeys.sql
 --------------------------------------------------------------------------------
 GO
@@ -3022,7 +3179,7 @@ END
 GO
 
 --------------------------------------------------------------------------------
--- [43/75] RateCalcType :: vw_RateCalcType_Detail.sql
+-- [44/76] RateCalcType :: vw_RateCalcType_Detail.sql
 -- Source: Modules\RateCalcType\Programmability\vw_RateCalcType_Detail.sql
 --------------------------------------------------------------------------------
 GO
@@ -3039,7 +3196,9 @@ AS
     SELECT
         RateCalcTypeId,
         Code,
+        CreationUserName,
         CreationDate,
+        LastChangeUserName,
         LastChangeDate,
         IsArchive,
         Name,
@@ -3048,7 +3207,7 @@ AS
 GO
 
 --------------------------------------------------------------------------------
--- [44/75] RateCalcType :: vw_RateCalcType_SnapshotSource.sql
+-- [45/76] RateCalcType :: vw_RateCalcType_SnapshotSource.sql
 -- Source: Modules\RateCalcType\Programmability\vw_RateCalcType_SnapshotSource.sql
 --------------------------------------------------------------------------------
 GO
@@ -3072,13 +3231,17 @@ AS
         LEFT(r.Code, 50)                                                         AS Code,
         LEFT(r.Name, 50)                                                         AS Name,
         LEFT(r.SearchCode, 50)                                                   AS SearchCode,
+        cu.DisplayName                                                           AS CreationUserName,
         r.CreationDate                                                           AS CreationDate,
+        lu.DisplayName                                                           AS LastChangeUserName,
         ISNULL(r.LastChangeDate, r.CreationDate)                                 AS LastChangeDate
-    FROM dbo.vw_RateCalcType r (NOLOCK);
+    FROM dbo.vw_RateCalcType r (NOLOCK)
+    LEFT JOIN v2.vw_UserDisplayName cu ON cu.UserId = r.CreationUserId
+    LEFT JOIN v2.vw_UserDisplayName lu ON lu.UserId = ISNULL(r.LastChangeUserId, r.CreationUserId);
 GO
 
 --------------------------------------------------------------------------------
--- [45/75] RateSyncClass :: vw_RateSyncClass_Detail.sql
+-- [46/76] RateSyncClass :: vw_RateSyncClass_Detail.sql
 -- Source: Modules\RateSyncClass\Programmability\vw_RateSyncClass_Detail.sql
 --------------------------------------------------------------------------------
 GO
@@ -3097,13 +3260,15 @@ AS
         IsArchive,
         Code,
         Name,
+        CreationUserName,
         CreationDate,
+        LastChangeUserName,
         LastChangeDate
     FROM v2.vw_RateSyncClass_SnapshotSource;
 GO
 
 --------------------------------------------------------------------------------
--- [46/75] RateSyncClass :: vw_RateSyncClass_SnapshotSource.sql
+-- [47/76] RateSyncClass :: vw_RateSyncClass_SnapshotSource.sql
 -- Source: Modules\RateSyncClass\Programmability\vw_RateSyncClass_SnapshotSource.sql
 --------------------------------------------------------------------------------
 GO
@@ -3124,15 +3289,19 @@ AS
     SELECT
         CAST(r.Id AS BIGINT)                                                     AS RateSyncClassId,
         CASE WHEN ISNULL(r.PrimitiveEntityDataStateId, 2) = 2 THEN 1 ELSE 0 END  AS IsArchive,
-        LEFT(r.Code, 50)                                                         AS Code,
+        TRY_CAST(r.Code AS INT)                                                 AS Code,
         LEFT(r.Name, 2000)                                                       AS Name,
+        cu.DisplayName                                                           AS CreationUserName,
         r.CreationDate                                                           AS CreationDate,
+        lu.DisplayName                                                           AS LastChangeUserName,
         ISNULL(r.LastChangeDate, r.CreationDate)                                 AS LastChangeDate
-    FROM dbo.vw_RateSyncClass r (NOLOCK);
+    FROM dbo.vw_RateSyncClass r (NOLOCK)
+    LEFT JOIN v2.vw_UserDisplayName cu ON cu.UserId = r.CreationUserId
+    LEFT JOIN v2.vw_UserDisplayName lu ON lu.UserId = ISNULL(r.LastChangeUserId, r.CreationUserId);
 GO
 
 --------------------------------------------------------------------------------
--- [47/75] RateType :: vw_RateType_Detail.sql
+-- [48/76] RateType :: vw_RateType_Detail.sql
 -- Source: Modules\RateType\Programmability\vw_RateType_Detail.sql
 --------------------------------------------------------------------------------
 GO
@@ -3155,13 +3324,15 @@ AS
         IsDeflated,
         Comment,
         IsIntoSyncClass,
+        CreationUserName,
         CreationDate,
+        LastChangeUserName,
         LastChangeDate
     FROM v2.vw_RateType_SnapshotSource;
 GO
 
 --------------------------------------------------------------------------------
--- [48/75] RateType :: vw_RateType_SnapshotSource.sql
+-- [49/76] RateType :: vw_RateType_SnapshotSource.sql
 -- Source: Modules\RateType\Programmability\vw_RateType_SnapshotSource.sql
 --------------------------------------------------------------------------------
 GO
@@ -3184,20 +3355,24 @@ AS
     SELECT
         CAST(r.Id AS BIGINT)                                            AS RateTypeId,
         CASE WHEN ISNULL(r.PrimitiveEntityDataStateId, 2) = 2 THEN 1 ELSE 0 END AS IsArchive,
-        LEFT(r.Code, 50)                                                AS Code,
+        TRY_CAST(r.Code AS INT)                                         AS Code,
         LEFT(r.Name, 4000)                                              AS Name,
         ISNULL(r.IsUseNomination, 0)                                    AS IsUseNomination,
         ISNULL(r.IsDeflated, 0)                                         AS IsDeflated,
         LEFT(r.Comment, 4000)                                           AS Comment,
         ISNULL(r.IsIntoSyncClass, 0)                                    AS IsIntoSyncClass,
+        cu.DisplayName                                                  AS CreationUserName,
         r.CreationDate                                                  AS CreationDate,
+        lu.DisplayName                                                  AS LastChangeUserName,
         ISNULL(r.LastChangeDate, r.CreationDate)                        AS LastChangeDate
     FROM dbo.vw_RateType r
+    LEFT JOIN v2.vw_UserDisplayName cu ON cu.UserId = r.CreationUserId
+    LEFT JOIN v2.vw_UserDisplayName lu ON lu.UserId = ISNULL(r.LastChangeUserId, r.CreationUserId)
     WHERE r.Name IS NOT NULL;
 GO
 
 --------------------------------------------------------------------------------
--- [49/75] Region :: vw_Region_Detail.sql
+-- [50/76] Region :: vw_Region_Detail.sql
 -- Source: Modules\Region\Programmability\vw_Region_Detail.sql
 --------------------------------------------------------------------------------
 GO
@@ -3214,7 +3389,9 @@ AS
     SELECT
         RegionId,
         Code,
+        CreationUserName,
         CreationDate,
+        LastChangeUserName,
         LastChangeDate,
         IsArchive,
         NameRu,
@@ -3236,7 +3413,7 @@ AS
 GO
 
 --------------------------------------------------------------------------------
--- [50/75] Region :: vw_Region_SnapshotSource.sql
+-- [51/76] Region :: vw_Region_SnapshotSource.sql
 -- Source: Modules\Region\Programmability\vw_Region_SnapshotSource.sql
 --------------------------------------------------------------------------------
 GO
@@ -3276,15 +3453,19 @@ AS
         CAST(r.Id AS BIGINT)                                                     AS RegionId,
         LEFT(r.Code, 50)                                                         AS Code,
         CASE WHEN ISNULL(r.PrimitiveEntityDataStateId, 2) = 2 THEN 1 ELSE 0 END  AS IsArchive,
+        cu.DisplayName                                                           AS CreationUserName,
         r.CreationDate                                                           AS CreationDate,
+        lu.DisplayName                                                           AS LastChangeUserName,
         ISNULL(r.LastChangeDate, r.CreationDate)                                 AS LastChangeDate
     FROM dbo.vw_Region r (NOLOCK)
     LEFT JOIN dbo.vw_Country c (NOLOCK) ON r.Country = c.Id
-    LEFT JOIN dbo.vw_Federal_Districts fd (NOLOCK) ON r.Federal_Districts = fd.Id;
+    LEFT JOIN dbo.vw_Federal_Districts fd (NOLOCK) ON r.Federal_Districts = fd.Id
+    LEFT JOIN v2.vw_UserDisplayName cu ON cu.UserId = r.CreationUserId
+    LEFT JOIN v2.vw_UserDisplayName lu ON lu.UserId = ISNULL(r.LastChangeUserId, r.CreationUserId);
 GO
 
 --------------------------------------------------------------------------------
--- [51/75] Region :: sp_Region_PopulateAffectedKeys.sql
+-- [52/76] Region :: sp_Region_PopulateAffectedKeys.sql
 -- Source: Modules\Region\Programmability\sp_Region_PopulateAffectedKeys.sql
 --------------------------------------------------------------------------------
 GO
@@ -3336,7 +3517,7 @@ END
 GO
 
 --------------------------------------------------------------------------------
--- [52/75] Relevance :: vw_Relevance_Detail.sql
+-- [53/76] Relevance :: vw_Relevance_Detail.sql
 -- Source: Modules\Relevance\Programmability\vw_Relevance_Detail.sql
 --------------------------------------------------------------------------------
 GO
@@ -3354,14 +3535,16 @@ AS
         RelevanceId,
         Code,
         Name,
+        CreationUserName,
         CreationDate,
+        LastChangeUserName,
         LastChangeDate,
         IsArchive
     FROM v2.vw_Relevance_SnapshotSource;
 GO
 
 --------------------------------------------------------------------------------
--- [53/75] Relevance :: vw_Relevance_SnapshotSource.sql
+-- [54/76] Relevance :: vw_Relevance_SnapshotSource.sql
 -- Source: Modules\Relevance\Programmability\vw_Relevance_SnapshotSource.sql
 --------------------------------------------------------------------------------
 GO
@@ -3384,13 +3567,17 @@ AS
         LEFT(r.Name, 100)                                                        AS Name,
         CAST(r.Id AS BIGINT)                                                     AS RelevanceId,
         CASE WHEN ISNULL(r.PrimitiveEntityDataStateId, 2) = 2 THEN 1 ELSE 0 END  AS IsArchive,
+        cu.DisplayName                                                           AS CreationUserName,
         r.CreationDate                                                           AS CreationDate,
+        lu.DisplayName                                                           AS LastChangeUserName,
         ISNULL(r.LastChangeDate, r.CreationDate)                                 AS LastChangeDate
-    FROM dbo.vw_Relevance r (NOLOCK);
+    FROM dbo.vw_Relevance r (NOLOCK)
+    LEFT JOIN v2.vw_UserDisplayName cu ON cu.UserId = r.CreationUserId
+    LEFT JOIN v2.vw_UserDisplayName lu ON lu.UserId = ISNULL(r.LastChangeUserId, r.CreationUserId);
 GO
 
 --------------------------------------------------------------------------------
--- [54/75] ReportConstructor :: vw_ReportConstructor_Detail.sql
+-- [55/76] ReportConstructor :: vw_ReportConstructor_Detail.sql
 -- Source: Modules\ReportConstructor\Programmability\vw_ReportConstructor_Detail.sql
 --------------------------------------------------------------------------------
 GO
@@ -3431,14 +3618,16 @@ AS
         ProductCode,
         ProductNameRu,
         ProductNameEn,
+        CreationUserName,
         CreationDate,
+        LastChangeUserName,
         LastChangeDate,
         IsArchive
     FROM v2.vw_ReportConstructor_SnapshotSource;
 GO
 
 --------------------------------------------------------------------------------
--- [55/75] ReportConstructor :: vw_ReportConstructor_SnapshotSource.sql
+-- [56/76] ReportConstructor :: vw_ReportConstructor_SnapshotSource.sql
 -- Source: Modules\ReportConstructor\Programmability\vw_ReportConstructor_SnapshotSource.sql
 --------------------------------------------------------------------------------
 GO
@@ -3462,7 +3651,7 @@ AS
     SELECT
         CAST(r.Id AS BIGINT)                                                     AS ReportConstructorId,
         CASE WHEN ISNULL(r.PrimitiveEntityDataStateId, 2) = 2 THEN 1 ELSE 0 END  AS IsArchive,
-        LEFT(r.Code, 50)                                                         AS Code,
+        TRY_CAST(r.Code AS INT)                                                 AS Code,
         CAST(r.ReportType AS BIGINT)                                             AS ReportTypeId,
         CAST(r.DateFrom AS DATETIME2(7))                                         AS DateFrom,
         CAST(r.DateTo AS DATETIME2(7))                                           AS DateTo,
@@ -3493,7 +3682,9 @@ AS
         LEFT(p.NameShort_en, 255)                                                AS ProductNameEn,
         CAST(r.Product AS BIGINT)                                                AS ProductId,
 
+        cu.DisplayName                                                           AS CreationUserName,
         r.CreationDate                                                           AS CreationDate,
+        lu.DisplayName                                                           AS LastChangeUserName,
         ISNULL(r.LastChangeDate, r.CreationDate)                                 AS LastChangeDate
     FROM dbo.vw_ReportConstructor r (NOLOCK)
     LEFT JOIN dbo.vw_LocationsNodes nf (NOLOCK) ON r.NodeFrom = nf.Id
@@ -3501,11 +3692,13 @@ AS
     LEFT JOIN dbo.vw_TransportKind tk (NOLOCK) ON r.TransportKind = tk.Id
     LEFT JOIN dbo.vw_TransportType_level_3 tt (NOLOCK) ON r.TransportType = tt.Id
     LEFT JOIN dbo.vw_ProductGroup pg (NOLOCK) ON r.ProductGroup = pg.Id
-    LEFT JOIN dbo.vw_MTR p (NOLOCK) ON r.Product = p.Id;
+    LEFT JOIN dbo.vw_MTR p (NOLOCK) ON r.Product = p.Id
+    LEFT JOIN v2.vw_UserDisplayName cu ON cu.UserId = r.CreationUserId
+    LEFT JOIN v2.vw_UserDisplayName lu ON lu.UserId = ISNULL(r.LastChangeUserId, r.CreationUserId);
 GO
 
 --------------------------------------------------------------------------------
--- [56/75] ReportConstructor :: sp_ReportConstructor_PopulateAffectedKeys.sql
+-- [57/76] ReportConstructor :: sp_ReportConstructor_PopulateAffectedKeys.sql
 -- Source: Modules\ReportConstructor\Programmability\sp_ReportConstructor_PopulateAffectedKeys.sql
 --------------------------------------------------------------------------------
 GO
@@ -3592,7 +3785,7 @@ END
 GO
 
 --------------------------------------------------------------------------------
--- [57/75] TransportKind :: vw_TransportKind_Detail.sql
+-- [58/76] TransportKind :: vw_TransportKind_Detail.sql
 -- Source: Modules\TransportKind\Programmability\vw_TransportKind_Detail.sql
 --------------------------------------------------------------------------------
 GO
@@ -3615,14 +3808,16 @@ AS
         StatusId        AS StatusIdEn,
         Level,
         KindCode,
+        CreationUserName,
         CreationDate,
+        LastChangeUserName,
         LastChangeDate,
         IsArchive
     FROM v2.vw_TransportKind_SnapshotSource;
 GO
 
 --------------------------------------------------------------------------------
--- [58/75] TransportKind :: vw_TransportKind_SnapshotSource.sql
+-- [59/76] TransportKind :: vw_TransportKind_SnapshotSource.sql
 -- Source: Modules\TransportKind\Programmability\vw_TransportKind_SnapshotSource.sql
 --------------------------------------------------------------------------------
 GO
@@ -3651,13 +3846,17 @@ AS
         LEFT(t.KindCode, 4000)                                                   AS KindCode,
         CAST(t.Id AS BIGINT)                                                     AS TransportKindId,
         CASE WHEN ISNULL(t.PrimitiveEntityDataStateId, 2) = 2 THEN 1 ELSE 0 END  AS IsArchive,
+        cu.DisplayName                                                           AS CreationUserName,
         t.CreationDate                                                           AS CreationDate,
+        lu.DisplayName                                                           AS LastChangeUserName,
         ISNULL(t.LastChangeDate, t.CreationDate)                                 AS LastChangeDate
-    FROM dbo.vw_TransportKind t (NOLOCK);
+    FROM dbo.vw_TransportKind t (NOLOCK)
+    LEFT JOIN v2.vw_UserDisplayName cu ON cu.UserId = t.CreationUserId
+    LEFT JOIN v2.vw_UserDisplayName lu ON lu.UserId = ISNULL(t.LastChangeUserId, t.CreationUserId);
 GO
 
 --------------------------------------------------------------------------------
--- [59/75] TransportLeg :: vw_Leadtime_Detail.sql
+-- [60/76] TransportLeg :: vw_Leadtime_Detail.sql
 -- Source: Modules\TransportLeg\Programmability\vw_Leadtime_Detail.sql
 --------------------------------------------------------------------------------
 GO
@@ -3708,7 +3907,7 @@ AS
 GO
 
 --------------------------------------------------------------------------------
--- [60/75] TransportLeg :: vw_LegAverageRateLevel3_Detail.sql
+-- [61/76] TransportLeg :: vw_LegAverageRateLevel3_Detail.sql
 -- Source: Modules\TransportLeg\Programmability\vw_LegAverageRateLevel3_Detail.sql
 --------------------------------------------------------------------------------
 GO
@@ -3754,7 +3953,7 @@ AS
 GO
 
 --------------------------------------------------------------------------------
--- [61/75] TransportLeg :: vw_LegRate_Detail.sql
+-- [62/76] TransportLeg :: vw_LegRate_Detail.sql
 -- Source: Modules\TransportLeg\Programmability\vw_LegRate_Detail.sql
 --------------------------------------------------------------------------------
 GO
@@ -3800,7 +3999,7 @@ AS
 GO
 
 --------------------------------------------------------------------------------
--- [62/75] TransportLeg :: vw_TransportLeg_Detail.sql
+-- [63/76] TransportLeg :: vw_TransportLeg_Detail.sql
 -- Source: Modules\TransportLeg\Programmability\vw_TransportLeg_Detail.sql
 --------------------------------------------------------------------------------
 GO
@@ -3878,7 +4077,9 @@ AS
         rt.Name_en                      AS RegionToNameEn,   
         rt.Name_ru                      AS RegionToNameRu,   
 
+        cu.DisplayName                  AS CreationUserName,
         l.CreationDate                  AS CreationDate,
+        lu.DisplayName                  AS LastChangeUserName,
         ISNULL(l.LastChangeDate, l.CreationDate) AS LastChangeDate,
         l.Leg1_TransportType            AS Leg1_TransportTypeIdRu,
         l.Leg1_TransportType            AS Leg1_TransportTypeIdEn,
@@ -3899,6 +4100,8 @@ AS
 
     FROM vw_TransportLeg l (NOLOCK)
     JOIN vw_TransportKind tk (NOLOCK) ON l.TransportKind = tk.Id
+    LEFT JOIN v2.vw_UserDisplayName cu ON cu.UserId = l.CreationUserId
+    LEFT JOIN v2.vw_UserDisplayName lu ON lu.UserId = ISNULL(l.LastChangeUserId, l.CreationUserId)
 
     JOIN vw_LocationsNodes nf (NOLOCK) ON l.NodeFrom = nf.Id
     LEFT JOIN vw_Region rf (NOLOCK) ON rf.Id = nf.Region
@@ -3909,7 +4112,7 @@ AS
 GO
 
 --------------------------------------------------------------------------------
--- [63/75] TransportLeg :: vw_TransportLeg_SnapshotSource.sql
+-- [64/76] TransportLeg :: vw_TransportLeg_SnapshotSource.sql
 -- Source: Modules\TransportLeg\Programmability\vw_TransportLeg_SnapshotSource.sql
 --------------------------------------------------------------------------------
 GO
@@ -3978,7 +4181,9 @@ AS
         LEFT(rt.Name_en, 60)            AS RegionToNameEn,
         LEFT(rt.Name_ru, 60)            AS RegionToNameRu,
 
+        cu.DisplayName                  AS CreationUserName,
         l.CreationDate                  AS CreationDate,
+        lu.DisplayName                  AS LastChangeUserName,
         ISNULL(l.LastChangeDate, l.CreationDate) AS LastChangeDate,
 
         -- Скрытые FK для каскадной инвалидации (не в гриде)
@@ -3991,6 +4196,8 @@ AS
 
     FROM vw_TransportLeg l (NOLOCK)
     JOIN vw_TransportKind tk (NOLOCK) ON l.TransportKind = tk.Id
+    LEFT JOIN v2.vw_UserDisplayName cu ON cu.UserId = l.CreationUserId
+    LEFT JOIN v2.vw_UserDisplayName lu ON lu.UserId = ISNULL(l.LastChangeUserId, l.CreationUserId)
 
     JOIN vw_LocationsNodes nf (NOLOCK) ON l.NodeFrom = nf.Id
     LEFT JOIN vw_Region rf (NOLOCK) ON rf.Id = nf.Region
@@ -4001,7 +4208,7 @@ AS
 GO
 
 --------------------------------------------------------------------------------
--- [64/75] TransportLeg :: sp_TransportLeg_PopulateAffectedKeys.sql
+-- [65/76] TransportLeg :: sp_TransportLeg_PopulateAffectedKeys.sql
 -- Source: Modules\TransportLeg\Programmability\sp_TransportLeg_PopulateAffectedKeys.sql
 --------------------------------------------------------------------------------
 GO
@@ -4104,7 +4311,7 @@ END
 GO
 
 --------------------------------------------------------------------------------
--- [65/75] TransportRate :: vw_TransportRate_Detail.sql
+-- [66/76] TransportRate :: vw_TransportRate_Detail.sql
 -- Source: Modules\TransportRate\Programmability\vw_TransportRate_Detail.sql
 --------------------------------------------------------------------------------
 GO
@@ -4144,7 +4351,9 @@ AS
     ,CASE WHEN ISNULL(r.PrimitiveEntityDataStateId, 2) = 2 THEN 1 ELSE 0 END 
                                     AS IsArchive
     ,ISNULL(r.IsDefRate, 0)         AS IsDefRate
+    ,cu.DisplayName 	            AS CreationUserName
     ,r.CreationDate 	            AS CreationDate
+    ,lu.DisplayName 	            AS LastChangeUserName
     ,r.LastChangeDate 	            AS LastChangeDate
     ,ar.Code		                AS AverageRateCode
     ,ar.RateLevel3 		            AS AverageRateLevel3TotalCostTon
@@ -4294,6 +4503,8 @@ AS
     ,lt.Leg2_TransportationTime 	AS LeadTimeLeg2_TransportationTime
     ,lt.Leg2_Distance 		        AS LeadTimeLeg2_Distance
     FROM vw_TransportRate AS r 
+    LEFT JOIN v2.vw_UserDisplayName cu ON cu.UserId = r.CreationUserId
+    LEFT JOIN v2.vw_UserDisplayName lu ON lu.UserId = ISNULL(r.LastChangeUserId, r.CreationUserId)
     CROSS APPLY (
         SELECT TOP 1
             rar.AverageRateLevel3Id
@@ -4435,7 +4646,7 @@ AS
 GO
 
 --------------------------------------------------------------------------------
--- [66/75] TransportRate :: vw_TransportRate_SnapshotSource.sql
+-- [67/76] TransportRate :: vw_TransportRate_SnapshotSource.sql
 -- Source: Modules\TransportRate\Programmability\vw_TransportRate_SnapshotSource.sql
 --------------------------------------------------------------------------------
 GO
@@ -4474,7 +4685,9 @@ AS
         ISNULL(r.IsDefRate, 0)                              AS IsDefRate,
         r.StartDate                                         AS StartDate,
         r.EndDate                                           AS EndDate,
+        cu.DisplayName                                      AS CreationUserName,
         r.CreationDate                                      AS CreationDate,
+        lu.DisplayName                                      AS LastChangeUserName,
         ISNULL(r.LastChangeDate, r.CreationDate)            AS LastChangeDate,
 
         r.TotalCostTon                                      AS TotalCostTon,
@@ -4530,6 +4743,8 @@ AS
     JOIN vw_TransportKind tk (NOLOCK) ON r.TransportKind = tk.Id
     JOIN vw_TransportType_level_3 tt (NOLOCK) ON r.TransportType = tt.Id
     JOIN vw_Currency cur (NOLOCK) ON r.CurrencyStandard = cur.Id
+    LEFT JOIN v2.vw_UserDisplayName cu ON cu.UserId = r.CreationUserId
+    LEFT JOIN v2.vw_UserDisplayName lu ON lu.UserId = ISNULL(r.LastChangeUserId, r.CreationUserId)
 
     WHERE r.TotalCostTon IS NOT NULL
       AND r.TotalCostTransport IS NOT NULL
@@ -4539,7 +4754,7 @@ AS
 GO
 
 --------------------------------------------------------------------------------
--- [67/75] TransportRate :: vw_TransportRateCoefficient_Detail.sql
+-- [68/76] TransportRate :: vw_TransportRateCoefficient_Detail.sql
 -- Source: Modules\TransportRate\Programmability\vw_TransportRateCoefficient_Detail.sql
 --------------------------------------------------------------------------------
 GO
@@ -4579,7 +4794,7 @@ AS
 GO
 
 --------------------------------------------------------------------------------
--- [68/75] TransportRate :: vw_TransportRateTenderServicePack_Detail.sql
+-- [69/76] TransportRate :: vw_TransportRateTenderServicePack_Detail.sql
 -- Source: Modules\TransportRate\Programmability\vw_TransportRateTenderServicePack_Detail.sql
 --------------------------------------------------------------------------------
 GO
@@ -4606,7 +4821,7 @@ AS
 GO
 
 --------------------------------------------------------------------------------
--- [69/75] TransportRate :: sp_TransportRate_PopulateAffectedKeys.sql
+-- [70/76] TransportRate :: sp_TransportRate_PopulateAffectedKeys.sql
 -- Source: Modules\TransportRate\Programmability\sp_TransportRate_PopulateAffectedKeys.sql
 --------------------------------------------------------------------------------
 GO
@@ -4713,7 +4928,7 @@ END
 GO
 
 --------------------------------------------------------------------------------
--- [70/75] TransportRoute :: vw_TransportRoute_Detail.sql
+-- [71/76] TransportRoute :: vw_TransportRoute_Detail.sql
 -- Source: Modules\TransportRoute\Programmability\vw_TransportRoute_Detail.sql
 --------------------------------------------------------------------------------
 GO
@@ -4764,7 +4979,9 @@ AS
         LEFT(l02.Code, 50)                                                  AS Leg_02Code,
         LEFT(l03.Code, 50)                                                  AS Leg_03Code,
         s.IsArchive,
+        s.CreationUserName,
         s.CreationDate,
+        s.LastChangeUserName,
         s.LastChangeDate
     FROM v2.vw_TransportRoute_SnapshotSource s
     JOIN dbo.vw_TransportRoute r (NOLOCK) ON r.Id = s.TransportRouteId
@@ -4774,7 +4991,7 @@ AS
 GO
 
 --------------------------------------------------------------------------------
--- [71/75] TransportRoute :: vw_TransportRoute_SnapshotSource.sql
+-- [72/76] TransportRoute :: vw_TransportRoute_SnapshotSource.sql
 -- Source: Modules\TransportRoute\Programmability\vw_TransportRoute_SnapshotSource.sql
 --------------------------------------------------------------------------------
 GO
@@ -4796,7 +5013,7 @@ GO
 CREATE OR ALTER VIEW v2.vw_TransportRoute_SnapshotSource
 AS
     SELECT
-        LEFT(r.Code, 50)                                                         AS Code,
+        TRY_CAST(r.Code AS INT)                                                 AS Code,
         LEFT(r.CodeSAP, 50)                                                      AS CodeSAP,
         LEFT(r.Route, 4000)                                                      AS Route,
 
@@ -4846,7 +5063,9 @@ AS
 
         CAST(r.Id AS BIGINT)                                                     AS TransportRouteId,
         CASE WHEN ISNULL(r.PrimitiveEntityDataStateId, 2) = 2 THEN 1 ELSE 0 END  AS IsArchive,
+        cu.DisplayName                                                           AS CreationUserName,
         r.CreationDate                                                           AS CreationDate,
+        lu.DisplayName                                                           AS LastChangeUserName,
         ISNULL(r.LastChangeDate, r.CreationDate)                                 AS LastChangeDate
     FROM dbo.vw_TransportRoute r (NOLOCK)
     LEFT JOIN dbo.vw_LocationsNodes sn (NOLOCK) ON r.StartNode = sn.Id
@@ -4856,11 +5075,13 @@ AS
     LEFT JOIN dbo.vw_Region rt (NOLOCK) ON en.Region = rt.Id
     LEFT JOIN dbo.vw_TransportKind tk (NOLOCK) ON r.RouteTransportKind = tk.Id
     LEFT JOIN dbo.vw_TransportType_level_3 l1 (NOLOCK) ON r.Leg1_TransportType = l1.Id
-    LEFT JOIN dbo.vw_TransportType_level_3 l2 (NOLOCK) ON r.Leg2_TransportType = l2.Id;
+    LEFT JOIN dbo.vw_TransportType_level_3 l2 (NOLOCK) ON r.Leg2_TransportType = l2.Id
+    LEFT JOIN v2.vw_UserDisplayName cu ON cu.UserId = r.CreationUserId
+    LEFT JOIN v2.vw_UserDisplayName lu ON lu.UserId = ISNULL(r.LastChangeUserId, r.CreationUserId);
 GO
 
 --------------------------------------------------------------------------------
--- [72/75] TransportRoute :: vw_TransportRouteLeg_Detail.sql
+-- [73/76] TransportRoute :: vw_TransportRouteLeg_Detail.sql
 -- Source: Modules\TransportRoute\Programmability\vw_TransportRouteLeg_Detail.sql
 --------------------------------------------------------------------------------
 GO
@@ -4907,7 +5128,7 @@ AS
 GO
 
 --------------------------------------------------------------------------------
--- [73/75] TransportRoute :: sp_TransportRoute_PopulateAffectedKeys.sql
+-- [74/76] TransportRoute :: sp_TransportRoute_PopulateAffectedKeys.sql
 -- Source: Modules\TransportRoute\Programmability\sp_TransportRoute_PopulateAffectedKeys.sql
 --------------------------------------------------------------------------------
 GO
@@ -4994,7 +5215,7 @@ END
 GO
 
 --------------------------------------------------------------------------------
--- [74/75] TransportTypeLevel3 :: vw_TransportTypeLevel3_Detail.sql
+-- [75/76] TransportTypeLevel3 :: vw_TransportTypeLevel3_Detail.sql
 -- Source: Modules\TransportTypeLevel3\Programmability\vw_TransportTypeLevel3_Detail.sql
 --------------------------------------------------------------------------------
 GO
@@ -5024,13 +5245,15 @@ AS
         OrionCode,
         StatusId        AS StatusIdRu,
         StatusId        AS StatusIdEn,
+        CreationUserName,
         CreationDate,
+        LastChangeUserName,
         LastChangeDate
     FROM v2.vw_TransportTypeLevel3_SnapshotSource;
 GO
 
 --------------------------------------------------------------------------------
--- [75/75] TransportTypeLevel3 :: vw_TransportTypeLevel3_SnapshotSource.sql
+-- [76/76] TransportTypeLevel3 :: vw_TransportTypeLevel3_SnapshotSource.sql
 -- Source: Modules\TransportTypeLevel3\Programmability\vw_TransportTypeLevel3_SnapshotSource.sql
 --------------------------------------------------------------------------------
 GO
@@ -5066,7 +5289,11 @@ AS
         LEFT(t.SAPCode, 4000)                                                    AS SAPCode,
         LEFT(t.OrionCode, 4000)                                                  AS OrionCode,
         CAST(t.Status AS INT)                                                    AS StatusId,
+        cu.DisplayName                                                           AS CreationUserName,
         t.CreationDate                                                           AS CreationDate,
+        lu.DisplayName                                                           AS LastChangeUserName,
         ISNULL(t.LastChangeDate, t.CreationDate)                                 AS LastChangeDate
-    FROM dbo.vw_TransportType_level_3 t;
+    FROM dbo.vw_TransportType_level_3 t
+    LEFT JOIN v2.vw_UserDisplayName cu ON cu.UserId = t.CreationUserId
+    LEFT JOIN v2.vw_UserDisplayName lu ON lu.UserId = ISNULL(t.LastChangeUserId, t.CreationUserId);
 GO

@@ -16,7 +16,9 @@ INSERT INTO v2.RateType_Snapshot (
     ,IsDeflated
     ,Comment
     ,IsIntoSyncClass
+    ,CreationUserName
     ,CreationDate
+    ,LastChangeUserName
     ,LastChangeDate
 )
 SELECT
@@ -28,7 +30,9 @@ SELECT
     ,IsDeflated
     ,Comment
     ,IsIntoSyncClass
+    ,CreationUserName
     ,CreationDate
+    ,LastChangeUserName
     ,LastChangeDate
 FROM v2.vw_RateType_SnapshotSource;
 GO

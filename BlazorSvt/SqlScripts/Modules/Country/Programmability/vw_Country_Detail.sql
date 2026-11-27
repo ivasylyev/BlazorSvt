@@ -19,7 +19,9 @@ AS
         ISOCode3,
         StatusId                                                            AS StatusIdRu,
         StatusId                                                            AS StatusIdEn,
+        CreationUserName,
         CreationDate,
+        LastChangeUserName,
         LastChangeDate,
         IsArchive
     FROM v2.vw_Country_SnapshotSource;

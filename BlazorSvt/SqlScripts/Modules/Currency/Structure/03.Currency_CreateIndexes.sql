@@ -24,8 +24,7 @@ CREATE FULLTEXT INDEX ON v2.Currency_Snapshot
 (
     Name     LANGUAGE 1049,
     Symbolic LANGUAGE 1033,
-    Code     LANGUAGE 1033,
-    Code_NSI LANGUAGE 1033
+    Code     LANGUAGE 1033
 )
 KEY INDEX UX_Currency_Snapshot_Id
 WITH STOPLIST = SYSTEM,

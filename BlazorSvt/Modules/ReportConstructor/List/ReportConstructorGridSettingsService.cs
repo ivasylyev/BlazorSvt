@@ -28,15 +28,17 @@ public class ReportConstructorGridSettingsService(
         b.Add(x => x.NodeToCode, L["ReportConstructorDto.NodeToCode"], visible: false);
         b.AddLocalized(isRu, x => x.NodeToNameRu, x => x.NodeToNameEn, L["ReportConstructorDto.NodeToName"]);
         b.Add(x => x.TransportKindCode, L["ReportConstructorDto.TransportKindCode"], visible: false);
-        AddNullableEnum(b, isRu, x => x.TransportKindIdRu, x => x.TransportKindIdEn, L["ReportConstructorDto.TransportKindName"]);
+        AddNullableEnum(b, isRu, x => x.TransportKindIdRu, x => x.TransportKindIdEn, L["ReportConstructorDto.TransportKindName"], multiSelect: true);
         b.Add(x => x.TransportTypeCode, L["ReportConstructorDto.TransportTypeCode"], visible: false);
-        AddNullableEnum(b, isRu, x => x.TransportTypeIdRu, x => x.TransportTypeIdEn, L["ReportConstructorDto.TransportTypeName"]);
+        AddNullableEnum(b, isRu, x => x.TransportTypeIdRu, x => x.TransportTypeIdEn, L["ReportConstructorDto.TransportTypeName"], multiSelect: true);
         b.Add(x => x.ProductGroupCode, L["ReportConstructorDto.ProductGroupCode"], visible: false);
         b.AddLocalized(isRu, x => x.ProductGroupNameRu, x => x.ProductGroupNameEn, L["ReportConstructorDto.ProductGroupName"]);
         b.Add(x => x.ProductCode, L["ReportConstructorDto.ProductCode"], visible: false);
         b.AddLocalized(isRu, x => x.ProductNameRu, x => x.ProductNameEn, L["ReportConstructorDto.ProductName"]);
         b.AddSystemColumns(
+            x => x.CreationUserName,
             x => x.CreationDate,
+            x => x.LastChangeUserName,
             x => x.LastChangeDate,
             x => x.IsArchive,
             L["ReportConstructorDto.CreationDate"],
@@ -51,19 +53,20 @@ public class ReportConstructorGridSettingsService(
         bool isRu,
         System.Linq.Expressions.Expression<Func<ReportConstructorDto, TRu?>> ru,
         System.Linq.Expressions.Expression<Func<ReportConstructorDto, TEn?>> en,
-        string header)
+        string header,
+        bool multiSelect = false)
         where TRu : struct, Enum
         where TEn : struct, Enum
     {
         if (isRu)
         {
             var compiled = ru.Compile();
-            builder.Add(ru, header, display: dto => Label(compiled(dto)));
+            builder.Add(ru, header, display: dto => Label(compiled(dto)), multiSelect: multiSelect);
         }
         else
         {
             var compiled = en.Compile();
-            builder.Add(en, header, display: dto => Label(compiled(dto)));
+            builder.Add(en, header, display: dto => Label(compiled(dto)), multiSelect: multiSelect);
         }
     }
 

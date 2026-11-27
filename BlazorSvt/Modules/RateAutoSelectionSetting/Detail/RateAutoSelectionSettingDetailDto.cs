@@ -5,7 +5,7 @@ public class RateAutoSelectionSettingDetailDto
 {
     public long RateAutoSelectionSettingId { get; set; }
 
-    public required string Code { get; set; }
+    public required long Code { get; set; }
 
     public bool? DestinationNodeToRegion { get; set; }
 
@@ -15,7 +15,11 @@ public class RateAutoSelectionSettingDetailDto
 
     public bool? AnyTransportKind { get; set; }
 
+    public string? CreationUserName { get; set; }
+
     public DateTime CreationDate { get; set; }
+
+    public string? LastChangeUserName { get; set; }
 
     public DateTime? LastChangeDate { get; set; }
 
